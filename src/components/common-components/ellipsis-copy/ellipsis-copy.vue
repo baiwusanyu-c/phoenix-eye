@@ -9,7 +9,7 @@
 <template>
     <div class="ellipsis-copy" @mouseover="enter"  @mouseout="leave">
         <el-tooltip placement="top" effect="light" class="address">
-            <span slot="content">{{targetStr}}</span>
+            <span slot="content">{{getTooltipTxt()}}</span>
             <span>{{changeEllipsisStr(targetStr)}}</span>
         </el-tooltip>
         <span class="copy-btn">
@@ -48,7 +48,28 @@ export default {
         isShowCopyBtn:{
             type: Boolean,
             default: true
+        },
+        // 是否缩略
+        isEllipsis:{
+            type: Boolean,
+            default: true
+        },
+        // tooltip显示内容
+        tooltipTxt:{
+            type: String,
+            default: ''
         }
+    },
+    computed:{
+      getTooltipTxt(){
+          return function (){
+              if(!this.tooltipTxt){
+                  return this.targetStr
+              }
+              return this.tooltipTxt
+          }
+
+      }
     },
     data() {
         return {
@@ -75,6 +96,7 @@ export default {
         * @param {String} str 当前地址/交易数
          */
         changeEllipsisStr(str) {
+            if(!this.isEllipsis) return str
             const frontLen = this.fontLength;
             const endLen = this.endLength;
             return str.substring(0, frontLen) + '...' + str.substring(str.length - endLen);

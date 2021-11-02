@@ -51,7 +51,14 @@
                 <div v-for="(item) in profitData" :key="item.txHash" class="detail-profit-container">
                     <div class="detail-profit-grid">
                         <be-svg-icon disabled-tool-tip icon-class="file"></be-svg-icon>
+                        <be-ellipsis-copy :targetStr="item.tag"
+                                          :tooltip-txt="item.txHash"
+                                          :isEllipsis="false"
+                                          v-if="item.tag"
+                                          :elpNum = '0'>
+                        </be-ellipsis-copy>
                         <be-ellipsis-copy :targetStr="item.txHash"
+                                          v-if="!item.tag"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
@@ -72,6 +79,7 @@
 
 <script>
 import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon";
+
 export default {
     name: "risk-warning-detail",
     components: {BeSvgIcon},
