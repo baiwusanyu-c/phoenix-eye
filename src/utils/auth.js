@@ -861,3 +861,12 @@ Vue.prototype.$browserInfo = ()=>{
         version:browserMatch.version,
     }
 }
+Vue.prototype.$openWindow = (strUrl)=>{
+    // 模拟a标签点击，实现无糖浏览器下的新开tab
+    let aDom = document.createElement("a");
+    aDom.href = strUrl
+    aDom.target = '_blank'
+    document.body.appendChild(aDom);
+    aDom.click();
+    document.body.removeChild(aDom);
+}

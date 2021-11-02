@@ -49,12 +49,13 @@ import {
     MenuItem,
     ButtonGroup,
     MenuItemGroup,
+    Tag,
 } from 'element-ui';
 import { message  } from './resetMessage';
 
 var list = [Input, DatePicker, Select, Option, Button, Dialog, Form, FormItem, Popover, Autocomplete, Loading, Scrollbar, Tooltip, Table, TableColumn, Pagination, Switch,
     Dropdown, DropdownMenu, DropdownItem, Icon, Tabs, TabPane, Carousel, CarouselItem, Checkbox, CheckboxGroup, Radio, Drawer, Collapse, CollapseItem, Slider,InputNumber,
-    RadioGroup,Badge, Menu, Submenu,MenuItem,MenuItemGroup,ButtonGroup
+    RadioGroup,Badge, Menu, Submenu,MenuItem,MenuItemGroup,ButtonGroup,Tag
 ]
 
 function init(list) {
