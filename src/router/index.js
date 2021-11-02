@@ -26,36 +26,35 @@ export const routerOption = {
                     path: '/blockchainSituation',
                     name: 'BlockchainSituation',
                     component: () => import('../views/pc/blockchain-situation/blotua-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName0'},
+                    meta: {title: 'lang.navTextConfig.navName0'},
                     children: []
                 },
                 {
                     path: '/projectRanking',
                     name: 'ProjectRanking',
                     component: () => import('../views/pc/project-ranking/project-ranking-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName1'},
+                    meta: {title: 'lang.navTextConfig.navName1'},
                     children: []
                 },
                 {
                     path: '/riskWarning',
                     name: 'RiskWarning',
                     component: () => import('../views/pc/risk-warning/risk-warning-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName2'},
+                    meta: {title: 'lang.navTextConfig.navName2'},
                     children: []
                 },
                 {
                     path: '/projectManagement',
                     name: 'ProjectManagement',
                     component: () => import('../views/pc/project-management/project-manage-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName3'},
+                    meta: {title: 'lang.navTextConfig.navName3'},
                     children: []
                 },
                 {
                     path: '/systemConfig',
                     name: 'SystemConfig',
                     component: () => import('../views/pc/system-config/system-config-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName4'},
-                    children: []
+                    meta: {title: 'lang.navTextConfig.navName4'},
                 },
                 {
                     path: '/404',

@@ -5,6 +5,11 @@ export const lang = {
     loginConfig:{
         prodWelcome:'欢迎使用成都链安',
         prodName:'区块链态势感知管理平台',
+        titleLogin:'登录',
+        titleRegister:'新用户注册',
+        titleReset:'忘记密码',
+        titleDeadline:'到期提示',
+        infoDeadLine:'您的账号权益已到期，请及时续费。在此期间可通过免费版用户登录入口使用产品免费版!',
         loginInfo:'登录成功!',
         register:'注册',
         rember:'忘记密码',
@@ -24,6 +29,14 @@ export const lang = {
         navName2:'RiskWarning',
         navName3:'ProjectManagement',
         navName4:'SystemConfig',
+    },
+    subNav:{
+        navName0:'链上态势',
+        navName1:'项目排行',
+        navName2:'风险警告',
+        navName3:'项目管理',
+        navName4s1:'风险类型配置',
+        navName4s2:'风险评分配置',
         createProjectTitle:'CreateProject',
     }
 }

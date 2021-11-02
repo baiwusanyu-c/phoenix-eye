@@ -37,5 +37,13 @@ export const lang = {
         createProjectConfirm:'确定',
         createProjectKeyWords:'',
         createProjectKeyWordsInput:'',
+    },
+    subNav:{
+        navName0:'链上态势',
+        navName1:'项目排行',
+        navName2:'风险警告',
+        navName3:'项目管理',
+        navName4s1:'风险类型配置',
+        navName4s2:'风险评分配置',
     }
 }
