@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import _this from '../main.js'
+
 Vue.use(Router);
 //获取原型对象上的push函数
 const originalPush = Router.prototype.push
@@ -41,7 +42,20 @@ export const routerOption = {
                     name: 'RiskWarning',
                     component: () => import('../views/pc/risk-warning/risk-warning-main.vue'),
                     meta: {title: 'lang.navTextConfig.navName2'},
-                    children: []
+                    children: [
+                        {
+                            path: '/riskWarning/list',
+                            name: 'RiskWarningList',
+                            component: () => import('../views/pc/risk-warning/risk-warning-list.vue'),
+                            meta: {title: 'lang.navTextConfig.navName2'},
+                        },
+                        {
+                            path: '/riskWarning/detail',
+                            name: 'RiskWarningDetail',
+                            component: () => import('../views/pc/risk-warning/risk-warning-detail.vue'),
+                            meta: {title: 'lang.navTextConfig.navName2',subTitle: 'lang.navTextConfig.navName2'},
+                        }
+                    ]
                 },
                 {
                     path: '/projectManagement',
@@ -87,7 +101,7 @@ export const routerOption = {
  * 路由守卫方法
  * @param {Object} router - 路由对象
  */
-const beforeEachHandle = (router)=>{
+const beforeEachHandle = (router) => {
     router.beforeEach((to, from, next) => {
         setTimeout(() => {
             _this.$i18n.locale = 'zh_CN'
@@ -101,7 +115,7 @@ const beforeEachHandle = (router)=>{
  * @param {Object} option 路由配置
  * @returns {VueRouter}
  */
-export const routerInit = (option)=>{
+export const routerInit = (option) => {
     const router = new Router(option)
     beforeEachHandle(router)
     return router

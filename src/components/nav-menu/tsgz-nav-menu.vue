@@ -237,7 +237,7 @@ export default {
           index: '2',
           name: this.$t('lang.navTextConfig.navName2'),
           show: false,
-          path: '/riskWarning',
+          path: '/riskWarning/list',
           isPush: true,
           children: [],
           isDisabled: false,

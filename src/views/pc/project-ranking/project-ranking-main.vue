@@ -5,7 +5,15 @@
 * @update (czh 2021/11/1)
 */
 <template>
-  <div></div>
+  <div class="project-ranking-main">
+      <div>
+
+      </div>
+      <div>
+          <div></div>
+          <div></div>
+      </div>
+  </div>
 </template>
 
 <script>
@@ -20,6 +28,9 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.project-ranking-main{
+    width: 100%;
+    height: 100%;
+}
 </style>

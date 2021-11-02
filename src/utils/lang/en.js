@@ -2,6 +2,7 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 let obj = {...enLocale }.el
 export const lang = {
     ...obj,
+    emptyData:'暂无数据',
     loginConfig:{
         prodWelcome:'欢迎使用成都链安',
         prodName:'区块链态势感知管理平台',
@@ -47,5 +48,23 @@ export const lang = {
         proPublic:'异常特征',
         proPrivate:'异常特征',
         createTime:'创建时间'
+    },
+    riskConfig:{
+        platform:'链平台',
+        searchBtn:'搜索',
+        searchP:'输入交易哈希、发送方、接收方',
+        platformP:'请选择链平台',
+        tableHeader:{
+            txHash:'交易哈希',
+            txTime:'交易时间',
+            state:'交易状态',
+            from:'发送方',
+            to:'接收方',
+            warningType:'疑似风险类型',
+            score:'风险评估',
+            detail:'分析详情',
+        },
+        stateSuccess:'成功',
+        stateFailed:'失败'
     }
 }
