@@ -64,7 +64,11 @@ export const lang = {
             score:'风险评估',
             detail:'分析详情',
         },
+        features:'交易特征',
+        values:'金额',
+        txDetail:'交易详情',
         stateSuccess:'成功',
-        stateFailed:'失败'
+        stateFailed:'失败',
+        profit:'地址收益',
     }
 }
