@@ -1,0 +1,112 @@
+.Be-contextmenu{
+  position: absolute;
+  margin: 0;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 2px 2px 8px 0px rgba(150, 150, 150, 0.2);
+  list-style: none;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  z-index: 2800;
+  -webkit-tap-highlight-color: transparent;
+  .Be-contextmenu-item {
+    text-align: center;
+    padding: 9px 36px;
+    line-height: 1;
+    color: #333;
+    &.Be-contextmenu-item--hover {
+      color: #fff;
+    //   border-radius: 4px;
+    }
+    &.Be-contextmenu-item--disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+  /deep/ .Be-contextmenu-divider{
+    height: 0;
+    margin: 5px 0;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  /deep/ .Be-contextmenu-group__menus{
+    padding: 0 5px;
+    margin: 0;
+    list-style: none;
+    .Be-contextmenu-item{
+      display: inline-block;
+      padding: 5px 11px;
+      }
+  }
+  /deep/ .Be-contextmenu-submenu{
+    position: relative;
+    text-align: center;
+    & > .Be-contextmenu{
+      position: absolute;
+      text-align: center;
+      &.left{
+        left: 0;
+        transform: translateX(-100%);
+      }
+      &.right{
+        right: 0;
+        transform: translateX(100%);
+      }
+      &.top{
+        top: -(5px) - 1;
+      }
+      &.bottom{
+        bottom: -(5px) - 1;
+      }
+    }
+    .Be-contextmenu-submenu__title{
+      margin-right: 0px;
+    }
+    /deep/ .Be-contextmenu-submenu__icon{
+      position: absolute;
+      right: 5px;
+      &::before{
+        content: ">";
+      }
+    }
+  }
+}
+.Be-contextmenu--default{
+  .Be-contextmenu-item--hover{
+    background-color:  #46a0fc;
+    }
+}
+
+.Be-contextmenu--bright{
+  .Be-contextmenu-item--hover{
+    background-color: #ef5350;
+  }
+}
+.Be-contextmenu--dark{
+  .Be-contextmenu-item--hover{
+    background-color: #2d3035;
+    }
+}
+.Be-contextmenu--violet{
+  .Be-contextmenu-item{
+    color: #7D8397;
+  }
+  .Be-contextmenu-item--hover{
+    background-color: #6A7DC4
+  }
+}
+.Be-contextmenu--blues{
+  .Be-contextmenu-item{
+    color: #7D8397;
+  }
+  .Be-contextmenu-item--hover{
+    background-color: #206596
+  }
+}
+.Be-contextmenu-iconfont{
+  font-size: inherit;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

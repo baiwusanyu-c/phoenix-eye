@@ -1,0 +1,85 @@
+{
+  "name": "anti-fraud-front",
+  "version": "3.1.0",
+  "private": true,
+  "scripts": {
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build:dev": "vue-cli-service build --mode dev",
+    "build:stage": "cross-env NODE_ENV=staging vue-cli-service build",
+    "build:prod": "vue-cli-service build --mode production",
+    "dev": "vue-cli-service serve",
+    "styleguide": "vue-cli-service styleguidist",
+    "styleguide:build": "vue-cli-service styleguidist:build",
+    "test": "vue-cli-service serve --mode test",
+    "serve": "cross-env NODE_ENV=pretest vue-cli-service serve --open",
+    "build:pretest": "cross-env NODE_ENV=pretest vue-cli-service build",
+    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"
+  },
+  "dependencies": {
+    "@antv/g2": "^4.1.32",
+    "@antv/g6": "^4.3.4",
+    "animate.css": "^4.1.1",
+    "axios": "^0.19.2",
+    "babel-polyfill": "^6.26.0",
+    "compression-webpack-plugin": "^4.0.0",
+    "core-js": "^3.6.5",
+    "element-ui": "^2.13.2",
+    "file-loader": "^6.2.0",
+    "js-base64": "^2.6.2",
+    "js-cookie": "^2.2.1",
+    "node-sass": "^4.14.1",
+    "qs": "^6.10.1",
+    "sass-loader": "^9.0.2",
+    "svg-sprite-loader": "^6.0.7",
+    "terser-webpack-plugin": "^3.0.6",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "vue": "^2.6.11",
+    "vue-i18n": "^8.18.2",
+    "vue-infinite-loading": "^2.4.5",
+    "vue-router": "^3.3.4",
+    "vue2-ace-editor": "^0.0.15",
+    "vuex": "^3.6.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
+    "@vue/babel-preset-jsx": "^1.2.4",
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "cross-env": "^7.0.3",
+    "vue-cli-plugin-styleguidist": "~4.38.1",
+    "vue-styleguidist": "^4.38.1",
+    "vue-template-compiler": "^2.6.11",
+    "vue2-ace-editor": "^0.0.15",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
