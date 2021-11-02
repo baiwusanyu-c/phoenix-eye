@@ -7,7 +7,7 @@
  * @FilePath: \anti-fraud-front\src\components\common-components\ellipsis-copy\ellipsis-copy.vue
 -->
 <template>
-    <div class="ellipsis_copy" @mouseover="enter"  @mouseout="leave">
+    <div class="ellipsis-copy" @mouseover="enter"  @mouseout="leave">
         <el-tooltip placement="top" effect="light" class="address">
             <span slot="content">{{targetStr}}</span>
             <span>{{changeEllipsisStr(targetStr)}}</span>
@@ -83,7 +83,7 @@ export default {
 };
 </script>
 <style lang="scss">
-.ellipsis_copy{
+.ellipsis-copy{
     display: flex;
     align-items: center;
     overflow: hidden;

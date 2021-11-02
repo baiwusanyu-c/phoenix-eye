@@ -43,19 +43,19 @@ export default {
          * 新增类型方法
          */
         addType(){
-
+            console.log('addType')
         },
         /**
          * 编辑类型方法
          */
         editType(){
-
+            console.log('editType')
         },
         /**
          * 删除类型方法
          */
         deleteType(){
-
+            console.log('deleteType')
         },
     },
 }
@@ -66,9 +66,9 @@ export default {
     margin-top: 12px;
     width: calc(100% - 12px);
     height: 100%;
-    display: flex;
+   /* display: flex;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap;*/
 }
 
 </style>

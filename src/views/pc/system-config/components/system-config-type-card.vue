@@ -6,7 +6,7 @@
 */
 <template>
     <div class="system-config-type-card">
-        <div v-if="type === 'edit'"  class="card-title-body">
+        <div v-if="type === 'edit'"  class="card-title">
             <h3>
                 {{title}}
             </h3>
@@ -15,17 +15,17 @@
                 <be-svg-icon @click = 'emitFunc("delete")' style="cursor: pointer" icon-class="-renwuguanli-shanchu" disabled-tool-tip></be-svg-icon>
             </div>
         </div>
-        <div v-if="type === 'edit'">
-            <p></p>
+        <div v-if="type === 'edit'" class="card-edit">
+            <p>{{ $t('lang.systemConfig.features') }}：</p>
             <div>
-
+                <el-tag v-for="(item) in features" :key="item + _uid">{{ item }}</el-tag>
             </div>
         </div>
         <!--    新增时显示   -->
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click = 'emitFunc("add")'>
                 <img src="@/assets/image/pc/add-type-icon.png"/>
-                <p>新增风险类型</p>
+                <p>{{ $t('lang.systemConfig.addType') }}</p>
             </div>
         </div>
     </div>
@@ -66,14 +66,16 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
 .system-config-type-card{
     background-color: $mainColor7;
     width: 400px;
     height: 310px;
     margin: 6px 8px;
     box-shadow: 0 1px 4px 0 $mainColor8;
-    .card-title-body{
+    display: inline-block;
+    float: left;
+    .card-title{
         background: linear-gradient(270deg, #074E8F 0%, #0468C2 100%);
         border-radius: 4px 4px 0 0;
         line-height: 20px;
@@ -84,6 +86,20 @@ export default {
         justify-content: space-between;
         .svg-icon{
             margin: 0 5px;
+        }
+    }
+    .card-edit{
+        padding: 20px;
+        box-sizing: border-box;
+        p{
+            color: $textColor4;
+            margin-bottom: 15px;
+        }
+        .el-tag{
+            height: 23px;
+            line-height: 23px;
+            margin-right: 10px;
+            margin-top: 5px;
         }
     }
     .card-add{

@@ -1,6 +1,5 @@
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 let obj = {...zhLocale }.el
-
 export const lang = {
     ...obj,
     loginConfig:{
@@ -38,5 +37,15 @@ export const lang = {
         navName3:'项目管理',
         navName4s1:'风险类型配置',
         navName4s2:'风险评分配置',
+    },
+    systemConfig:{
+        addType:'新增风险类型',
+        features:'异常特征'
+    },
+    proManageConfig:{
+        addPro:'点击创建项目',
+        proPublic:'公开',
+        proPrivate:'保密',
+        createTime:'创建时间'
     }
 }

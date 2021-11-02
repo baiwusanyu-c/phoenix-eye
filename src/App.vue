@@ -86,7 +86,7 @@
             }
         },
         mounted() {
-            this.$message.warning(this.$t('el.testInfo'))
+
         },
         methods: {
             /**

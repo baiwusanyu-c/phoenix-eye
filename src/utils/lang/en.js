@@ -37,5 +37,15 @@ export const lang = {
         navName3:'项目管理',
         navName4s1:'风险类型配置',
         navName4s2:'风险评分配置',
+    },
+    systemConfig:{
+        addType:'新增风险类型',
+        features:'异常特征'
+    },
+    proManageConfig:{
+        addPro:'点击创建项目',
+        proPublic:'异常特征',
+        proPrivate:'异常特征',
+        createTime:'创建时间'
     }
 }
