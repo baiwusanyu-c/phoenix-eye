@@ -24,14 +24,16 @@
                 v-for="(item) in projectList" :key="item.id">
             </project-manage-card>
         </div>
+        <create-project ref="createProjectDialog"></create-project>
     </div>
 </template>
 
 <script>
 import ProjectManageCard from "./components/project-manage-card";
+import CreateProject from "./components/create-project";
 export default {
     name: "ProjectManageMain",
-    components: {ProjectManageCard},
+    components: {CreateProject, ProjectManageCard},
     data() {
         return {
             projectList:[
@@ -58,6 +60,7 @@ export default {
          * 新增类型方法
          */
         addProject(){
+            this.$refs.createProjectDialog.createProjectWindow = true
             console.log('addProject')
         },
         /**

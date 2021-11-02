@@ -6,7 +6,7 @@
         </el-select>
         <el-input v-model="contractSite.site" class="contractSiteSite" :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
         <el-input v-model="contractSite.lable" class="contractSiteLabel" :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
-        <img src="../../../assets/image/pc/subtract.png" class="subtract"/>
+        <img src="../../../../assets/image/pc/subtract.png" class="subtract"/>
     </div>
 </template>
 

@@ -6,8 +6,7 @@
                     class="createProjectBox"
                     :title="$t('lang.createProject.createProjectTitle')"
                     :visible.sync="createProjectWindow"
-                    width="856px"
-            >
+                    width="856px">
                 <div>
                     <el-form :label-position="labelPosition" label-width="80px" class="projectForm">
                         <el-form-item :label="$t('lang.createProject.createProjectName')" >
@@ -31,7 +30,7 @@
                                 <el-input v-model="contractSite.site" class="contractSiteSite" :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
                                 <el-input v-model="contractSite.lable" class="contractSiteLabel" :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
                                 <!--<img src="../../../assets/image/pc/subtract.png" class="subtract"/>-->
-                                <img src="../../../assets/image/pc/add.png" class="add" @click="addContract++"/>
+                                <img src="../../../../assets/image/pc/add.png" class="add" @click="addContract++"/>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -53,7 +52,7 @@
         name: "CreateProject",
         data(){
             return{
-                createProjectWindow: true,
+                createProjectWindow: false,
                 projectName:'',
                 projectKeyWords:'',
                 contractSite: {

@@ -6,14 +6,13 @@
 */
 <template>
     <div :class="`project-manage-card`">
+        <!--    非新增时显示   -->
         <div v-if="type === 'edit'" :class="`card-title card-title-${projectType}`">
             <div style="display: flex">
                 <h3>
                     {{ title }}
                 </h3>
-                <span>{{
-                        projectType === 'public' ? $t('lang.proManageConfig.proPublic') : $t('lang.proManageConfig.proPrivate')
-                    }}</span>
+                <span>{{projectType === 'public' ? $t('lang.proManageConfig.proPublic') : $t('lang.proManageConfig.proPrivate')}}</span>
             </div>
             <div>
                 <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
@@ -24,6 +23,7 @@
                              disabled-tool-tip></be-svg-icon>
             </div>
         </div>
+        <!--   非新增时显示   -->
         <div v-if="type === 'edit'" class="card-edit">
             <div>
                 <el-tag v-for="(item) in tagList" :key="item + _uid">{{ item }}</el-tag>

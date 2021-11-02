@@ -94,11 +94,6 @@ export const routerOption = {
         {
             path: '*',
             redirect: '/404'
-        },
-        {
-          path:'/createProject',
-          name:'createProject',
-          component: () => import('../views/pc/create-project/create-project.vue')
         }
     ]
 }
