@@ -27,6 +27,9 @@
           </phoneLogin>
           <!--          注冊賬號          -->
           <userRegistration v-if="areaType === 3"></userRegistration>
+
+          <!--测试按钮-->
+          <create-project></create-project>
         </div>
       </div>
       <div class="footer-box">
@@ -52,6 +55,7 @@
 <script>
 import phoneLogin from "./components/phone-login";
 import userRegistration from "./components/user-registration";
+import CreateProject from "../create-project/create-project";
 // import resetPwd from "./components/reset-password";
 import animatedInit, {destroyTHERR} from "./login-3d";
 
@@ -72,6 +76,7 @@ export default {
   components: {
     phoneLogin,
     userRegistration,
+    CreateProject,
   },
   mounted() {
 

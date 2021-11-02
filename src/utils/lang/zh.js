@@ -30,5 +30,23 @@ export const lang = {
         navName2:'风险警告',
         navName3:'项目管理',
         navName4:'系统配置',
+
+    },
+    subNav:{
+        navName0:'链上态势',
+        navName1:'项目排行',
+        navName2:'风险警告',
+        navName3:'项目管理',
+        navName4s1:'风险类型配置',
+        navName4s2:'风险评分配置',
+    },
+    createProject:{
+        createProjectTitle:'创建项目',
+        createProjectName:'项目名称: ',
+        createProjectNameInput:'如: PancakeSwap',
+        createProjectCancel:'取消',
+        createProjectConfirm:'确定',
+        createProjectKeyWords:'关键词:  ',
+        createProjectKeyWordsInput:'',
     }
 }

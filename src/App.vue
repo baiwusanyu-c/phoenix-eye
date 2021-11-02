@@ -73,8 +73,7 @@
             }
         },
         components: {
-            BeDialog
-
+            BeDialog,
         },
         created() {
            this.getPlatformInfo()
@@ -99,7 +98,6 @@
              * 获取币种汇率信息
              */
             getRateInfo(){
-
 
             },
             /**
