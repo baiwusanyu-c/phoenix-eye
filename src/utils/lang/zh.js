@@ -48,5 +48,11 @@ export const lang = {
         createProjectConfirm:'确定',
         createProjectKeyWords:'关键词:  ',
         createProjectKeyWordsInput:'',
+        createProjectOpenTitle:'是否公开',
+        createProjectOpenSecret:'保密',
+        contractSite:'合约地址:',
+        selectContractClass:'请选择',
+        contractSiteInput:'如: xC1323fe4b68E9a4838168aea...',
+        contractSiteLabel:'输入合约标签, 多个用分号隔开',
     }
 }
