@@ -122,6 +122,7 @@
                     align="center">
                     <template slot-scope="scope">
                         <span style="color: #1496F2;cursor: pointer"
+                              @click="openDetail"
                               v-if="scope.row.state === 'failed'">查看 >></span>
                     </template>
                 </el-table-column>
@@ -142,6 +143,7 @@
 
 <script>
 import BePagination from "../../../components/common-components/pagination/be-pagination";
+import qs from 'qs'
 export default {
     name: "risk-warning-list",
     components: {BePagination},
@@ -240,6 +242,13 @@ export default {
 
         pageChange(){
 
+        },
+        /**
+         * 打開交易分析詳情tab
+         */
+        openDetail(){
+            let params = {}
+            this.$openWindow(`#/riskWarning/detail?${qs.stringify(params)}`, 'view_window')
         }
     },
 }
