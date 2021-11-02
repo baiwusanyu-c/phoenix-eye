@@ -1,7 +1,6 @@
 <template>
     <div>
         <!--触发按钮测试用-->
-        <button @click="createProjectWindow = true">创建新的项目</button>
         <div class="createBox">
             <el-dialog
                     class="createProjectBox"
@@ -19,8 +18,8 @@
                         </el-form-item>
                     </el-form>
                     <span slot="footer" class="dialog-footer">
-                    <el-button @click="createProjectWindow = false">{{$t('lang.createProject.createProjectCancel')}}</el-button>
-                    <el-button type="primary" @click="createProjectWindow = false">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
+                    <el-button @click="createProjectCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
+                    <el-button type="primary" @click="createProjectConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
                 </span>
                 </div>
             </el-dialog>
@@ -35,7 +34,7 @@
         name: "CreateProject",
         data(){
             return{
-                createProjectWindow: false,
+                createProjectWindow: true,
                 projectName:'',
                 projectKeyWords:'',
                 contractSite: {
@@ -46,14 +45,20 @@
             }
         },
         methods:{
-
+            createProjectConfirm(){
+                this.createProjectWindow = false
+            },
+            createProjectCancel(){
+                this.createProjectWindow = false
+            }
         }
     }
 </script>
 
 <style scoped lang="scss">
-    .projectNameInput{
+    .projectNameInput.el-input__inner{
         width: 440px;
+        height: 40px;
     }
 
 </style>
