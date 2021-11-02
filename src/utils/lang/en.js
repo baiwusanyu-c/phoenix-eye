@@ -24,5 +24,6 @@ export const lang = {
         navName2:'RiskWarning',
         navName3:'ProjectManagement',
         navName4:'SystemConfig',
+        createProjectTitle:'CreateProject',
     }
 }
