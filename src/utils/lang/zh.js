@@ -86,5 +86,13 @@ export const lang = {
         selectContractClass:'请选择',
         contractSiteInput:'如: xC1323fe4b68E9a4838168aea...',
         contractSiteLabel:'输入合约标签, 多个用分号隔开',
-    }
+    },
+    addRiskWindow:{
+        addRiskWindowTitle:'添加风险类型识别规则',
+        addRiskWindowClassName:'类型名称',
+        addRiskWindowNameInput:'输入自定义的风险类型名称',
+        abnormalSelect:'异常特征',
+        abnormalSelectInput:'全选/取消',
+        selectAll:'全选'
+    },
 }

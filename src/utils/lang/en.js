@@ -72,6 +72,25 @@ export const lang = {
         profit:'地址收益',
     },
     createProject:{
-        createProjectTitle:'CreateProject',
-    }
+        createProjectTitle:'创建项目',
+        createProjectName:'项目名称: ',
+        createProjectNameInput:'如: PancakeSwap',
+        createProjectCancel:'取消',
+        createProjectConfirm:'确定',
+        createProjectKeyWords:'关键词:  ',
+        createProjectKeyWordsInput:'',
+        createProjectOpenTitle:'是否公开',
+        createProjectOpenSecret:'保密',
+        contractSite:'合约地址:',
+        selectContractClass:'请选择',
+        contractSiteInput:'如: xC1323fe4b68E9a4838168aea...',
+        contractSiteLabel:'输入合约标签, 多个用分号隔开',
+    },
+    addRiskWindow:{
+        addRiskWindowTitle:'添加风险类型识别规则',
+        addRiskWindowClassName:'类型名称',
+        addRiskWindowNameInput:'输入自定义的风险类型名称',
+        abnormalSelect:'异常特征',
+        abnormalSelectInput:'全选/取消',
+    },
 }
