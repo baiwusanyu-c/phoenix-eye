@@ -36,6 +36,7 @@ export default {
     components: {CreateProject, ProjectManageCard},
     data() {
         return {
+            // 项目列表示例
             projectList:[
                 {name:'uniswap',type:'private',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqsaafga'},
                 {name:'uniswap',type:'public',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqaqwe21fga'},
@@ -43,6 +44,7 @@ export default {
                 {name:'uniswap',type:'public',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqaqrfga'},
                 {name:'uniswap',type:'public',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqadwqfga'},
             ],
+            // 项目列表的地址列表示例
             addrList:[
                 {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWi2TWYu9H2yFMTi7P2D',},
                 {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWi2TdWYu9H2yFMTi7P2D',},
@@ -92,9 +94,9 @@ export default {
     .project-manage-list {
         width: 100%;
         height: 100%;
-       /* display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;*/
+        /* display: flex;
+         justify-content: flex-start;
+         flex-wrap: wrap;*/
 
     }
 }

@@ -212,6 +212,9 @@ export default {
         this.getData()
     },
     methods: {
+        /**
+         * 获取表格数据
+         */
         getData() {
             this.tableData = [
                 {
@@ -239,7 +242,9 @@ export default {
             ]
             this.pageParams.total =  this.tableData.length
         },
-
+        /**
+         * 分页方法
+         */
         pageChange(){
 
         },

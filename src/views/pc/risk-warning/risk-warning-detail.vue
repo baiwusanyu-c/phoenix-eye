@@ -115,9 +115,7 @@ export default {
         this.getData()
     },
     computed:{
-      createKey(){
-          return this.$createKeys()
-      }
+
     },
     methods: {
         /**

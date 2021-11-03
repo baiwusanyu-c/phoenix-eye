@@ -23,7 +23,7 @@
                              disabled-tool-tip></be-svg-icon>
             </div>
         </div>
-        <!--   非新增时显示   -->
+        <!--   非新增时显示 卡片地址列表   -->
         <div v-if="type === 'edit'" class="card-edit">
             <div>
                 <el-tag v-for="(item) in tagList" :key="item + _uid">{{ item }}</el-tag>
@@ -59,24 +59,44 @@ export default {
         return {}
     },
     props: {
+        /**
+         * 类型
+         * @value add/edit
+         */
         type: {
             type: String,
             default: 'add'
         },
+        /**
+         * 标签列表
+         */
         tagList: {
             type: Array,
             default: () => []
         },
+        /**
+         * 卡片标题
+         */
         title: {
             type: String,
         },
+        /**
+         * 卡片类型
+         * @value public/private
+         */
         projectType: {
             type: String,
             default: 'public'
         },
+        /**
+         * 创建时间
+         */
         createTime: {
             type: String,
         },
+        /**
+         * 卡片地址列表
+         */
         addrList: {
             type: Array,
             default: () => []
