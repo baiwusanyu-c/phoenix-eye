@@ -36,12 +36,12 @@ export default {
         },
         // 目标地址前面显示个数
         fontLength:{
-            type: Number,
+            type: [Number,String],
             default: 8
         },
         // 目标地址后面显示个数
         endLength:{
-            type: Number,
+            type: [Number,String],
             default: 8
         },
         // 是否显示复制的按钮
