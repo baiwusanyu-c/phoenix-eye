@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!--触发按钮测试用-->
         <div class="createBox">
             <el-dialog
                     class="createProjectBox"
@@ -22,15 +21,24 @@
                             <el-input class="projectKeyWordsInput" v-model="projectKeyWords" :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"></el-input>
                         </el-form-item>
                         <el-form-item :label="$t('lang.createProject.contractSite')">
-                            <div class="contractSiteBox" v-for="(o,index) in addContract" :key="index" :offset="index > 0 ? addContract.n : 0">
-                                <el-select v-model="contractSite.class" class="contractSiteClass" :placeholder="$t('lang.createProject.selectContractClass')">
+                            <div class="contractSiteBox" v-for="(o,index) in contractSiteSubtractClassLength" :key="index" :offset="index > 0 ? addContract.n : 0">
+                                <el-select v-model="contractSiteClass[o]" class="contractSiteClass" :placeholder="$t('lang.createProject.selectContractClass')">
                                     <el-option label="select1" value="name1"></el-option>
                                     <el-option label="select2" value="name2"></el-option>
                                 </el-select>
-                                <el-input v-model="contractSite.site" class="contractSiteSite" :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
-                                <el-input v-model="contractSite.lable" class="contractSiteLabel" :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
+                                <el-input v-model="contractSiteSite[o]" class="contractSiteSite" :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
+                                <el-input v-model="contractSiteLable[o]" class="contractSiteLabel" :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
+                                <img src="../../../../assets/image/pc/subtract.png" class="subtract" @click="deleteContractSite(o)"/>
+                            </div>
+                            <div class="contractSiteBox">
+                                <el-select v-model="contractSiteAdd.class" class="contractSiteClass" :placeholder="$t('lang.createProject.selectContractClass')">
+                                    <el-option label="select1" value="name1"></el-option>
+                                    <el-option label="select2" value="name2"></el-option>
+                                </el-select>
+                                <el-input v-model="contractSiteAdd.site" class="contractSiteSite" :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
+                                <el-input v-model="contractSiteAdd.lable" class="contractSiteLabel" :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
                                 <!--<img src="../../../assets/image/pc/subtract.png" class="subtract"/>-->
-                                <img src="../../../../assets/image/pc/add.png" class="add" @click="addContract++"/>
+                                <img src="../../../../assets/image/pc/add.png" class="add" @click="addContractSite"/>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -47,7 +55,7 @@
 </template>
 
 <script>
-    /*import createProjectContract from "../create-project/create-project-contract"*/
+    /*import createProjectContract from "../components/create-project-contract"*/
     export default {
         name: "CreateProject",
         data(){
@@ -55,25 +63,49 @@
                 createProjectWindow: false,
                 projectName:'',
                 projectKeyWords:'',
-                contractSite: {
+                contractSiteAdd: {
                     class: '',
                     site: '',
                     lable: '',
                 },
+                contractSiteSubtract:{
+                    class: '',
+                    site: '',
+                    lable: '',
+                },
+                contractSiteSubtractClassLength:0,
                 openTF:false,
                 labelPosition: 'right',
-                addContract: 1,
+                addContract: 0,
+                contractSiteClass: [],
+                contractSiteSite: [],
+                contractSiteLable: [],
             }
         },
-        /*components:{
-          createProjectContract,
-        },*/
+        components:{
+          /*createProjectContract,*/
+        },
         methods:{
             createProjectConfirm(){
                 this.createProjectWindow = false
             },
             createProjectCancel(){
                 this.createProjectWindow = false
+            },
+            addContractSite(){
+                this.contractSiteClass.unshift(this.contractSiteSubtract.class)
+                this.contractSiteSite.unshift(this.contractSiteSubtract.site)
+                this.contractSiteLable.unshift(this.contractSiteSubtract.lable)
+                this.contractSiteSubtractClassLength++
+                console.log(this.contractSiteSubtractClassLength)
+            },
+            deleteContractSite(i){
+                console.log('@')
+                this.contractSiteClass.splice(i,1)
+                this.contractSiteSite.splice(i,1)
+                this.contractSiteLable.splice(i,1)
+                this.contractSiteSubtractClassLength--
+                console.log(this.contractSiteSubtractClassLength)
             }
         }
     }
@@ -123,8 +155,6 @@
         border-color: #0468C2;
         background-color: #0468C2;
     }
-
-
     .contractSiteBox{
         margin-top: 8px;
     }
@@ -145,5 +175,8 @@
         height: 20px;
         margin-left: 10px;
         background-color: white;
+    }
+    .subtract:hover{
+        background-color: #0468C2;
     }
 </style>
