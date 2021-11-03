@@ -47,15 +47,14 @@
         <!--   地址收益     -->
         <div class="detail-profit">
             <h3>{{ $t('lang.riskConfig.profit') }}</h3>
-            <div class="detail-profit-body">
+            <div class="detail-profit-body scrollDiy">
                 <div v-for="(item) in profitData" :key="item.txHash" class="detail-profit-container">
                     <div class="detail-profit-grid">
                         <be-svg-icon disabled-tool-tip icon-class="file"></be-svg-icon>
                         <be-ellipsis-copy :targetStr="item.tag"
                                           :tooltip-txt="item.txHash"
                                           :isEllipsis="false"
-                                          v-if="item.tag"
-                                          :elpNum = '0'>
+                                          v-if="item.tag">
                         </be-ellipsis-copy>
                         <be-ellipsis-copy :targetStr="item.txHash"
                                           v-if="!item.tag"
@@ -68,8 +67,28 @@
                         <be-svg-icon v-if="item.up === 'false'" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
                         <span>{{item.value}}</span>
                     </div>
-                    <div>
-
+                    <div class="profit-grid-list">
+                        <div>
+                            <ul>
+                                <li v-for="(addrItem) in item.addrList" :key="addrItem">
+                                    {{addrItem}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul>
+                                <li v-for="(valueItem) in item.valueList" :key="valueItem">
+                                    {{valueItem}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul>
+                                <li v-for="(dollarItem) in item.dollarList" :key="dollarItem">
+                                    {{dollarItem}}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,6 +114,11 @@ export default {
         this.getInfoData()
         this.getData()
     },
+    computed:{
+      createKey(){
+          return this.$createKeys()
+      }
+    },
     methods: {
         /**
          * 獲取地址收益數據
@@ -105,23 +129,35 @@ export default {
                     tag:'AAVE',
                     txHash: '0x8c93d63a242ef09d0x8c93dd63a242ef09d0x8c93',
                     up:'false',
-                    value:'-21930989 $'
+                    value:'-21930989 $',
+                    addrList:['3Crv' ,'aWETH' ,'cvxyDAI+yUSDC+yUSDT+yTUSD' ,'DAI'],
+                    valueList:['-36558164.848' ,'-0.0054737' ,'30266810.422' ,'10'],
+                    dollarList:['(-21930989 $)' ,'(10 $)' ,'(18159662 $)' ,'(0 $)'],
                 },
                 {
                     tag:'',
                     txHash: '0x8c93d63a242ef09d0x8c93qd63a242ef09d0x8c93',
                     up:'true',
-                    value:'+21930989 $'
+                    value:'+21930989 $',
+                    addrList:['3Crv' ,'aWETH' ,'cvxyDAI+qyUSDC+yUSDT+yTUSD' ,'DAwI'],
+                    valueList:['-3655164.848' ,'-0.000154737' ,'3026610.422' ,'40'],
+                    dollarList:['(-21930989 $)' ,'(110 $)' ,'(18159662 $)' ,'(50 $)'],
                 }, {
                     tag:'AAVE',
                     txHash: '0x8c93d63a242ef09d0x8cs93d63a242ef09d0x8c93',
                     up:'true',
-                    value:'+21930989 $'
+                    value:'+21930989 $',
+                    addrList:['3Crsv' ,'aWEcTH' ,'cvxyDAI+ydUSDC+yUSDT+yTUSD' ,'DqAI'],
+                    valueList:['-36553164.848' ,'-0.0001454737' ,'30266610.422' ,'0'],
+                    dollarList:['(-21930989 $)' ,'(1000 $)' ,'(18159662 $)' ,'(40 $)'],
                 }, {
                     tag:'',
                     txHash: '0x8c93d63a242ef09d0x8cc93d63a242ef09d0x8c93',
                     up:'false',
-                    value:'-21930989 $'
+                    value:'-21930989 $',
+                    addrList:['3Crv' ,'aWETH' ,'cvxyDAI+yUSDC+yUSDTf+yTUSD' ,'DAfI'],
+                    valueList:['-36551964.848' ,'-0.0000154737' ,'30266170.422' ,'60'],
+                    dollarList:['(-21930989 $)' ,'(120 $)' ,'(18159662 $)' ,'(10 $)'],
                 }
             ]
         },
@@ -193,6 +229,7 @@ export default {
                 align-items: center;
                 flex-direction: row;
                 min-height: 50px;
+                margin-top: 36px;
                 .ellipsis-copy{
                  width: auto;
                     margin-left: 24px;
@@ -202,7 +239,32 @@ export default {
                     align-items: center;
                     flex-direction: row;
                     justify-content: center;
-                    width: 25%;
+                    width: 20%;
+                }
+                .profit-grid-list{
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    width: 50%;
+                    div:nth-child(1){
+                        width: 40%;
+                        color: $textColor4;
+                        text-align: right;
+                    }
+                    div:nth-child(2){
+                        width: 30%;
+                        color: $textColor4;
+                        text-align: right;
+                    }
+                    div:nth-child(3){
+                        width: 30%;
+                        font-weight: bold;
+                        text-align: right;
+                    }
+                    li{
+                        margin-bottom: 10px;
+                    }
                 }
             }
 
