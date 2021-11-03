@@ -19,12 +19,25 @@
                 :createTime="item.createTime"
                 :addrList="addrList"
                 @edit="editProject"
-                @fresh="freshProject"
-                @delete="deleteProject"
+                @fresh="freshProject(item)"
+                @delete="deleteProject(item)"
                 v-for="(item) in projectList" :key="item.id">
             </project-manage-card>
         </div>
+        <!--    新增、编辑项目弹窗    -->
         <create-project ref="createProjectDialog"></create-project>
+        <!--    新增、编辑项目弹窗    -->
+        <be-msg-dialog @confirm="confirmDelete"
+                       headerTitle="删除"
+                       :isShow.sync="showDelete"
+                       :title="deleteText">
+        </be-msg-dialog>
+        <!--    重新评估彈窗   -->
+        <be-msg-dialog @confirm="confirmFresh"
+                       headerTitle="重新评估"
+                       :isShow.sync="showFresh"
+                       :title="freshText">
+        </be-msg-dialog>
     </div>
 </template>
 
@@ -36,6 +49,14 @@ export default {
     components: {CreateProject, ProjectManageCard},
     data() {
         return {
+            // 重新评估弹窗显示
+            showFresh:false,
+            // 重新评估弹窗显示内容
+            freshText:'',
+            // 删除弹窗显示
+            showDelete:false,
+            // 删除弹窗显示内容
+            deleteText:'',
             // 项目列表示例
             projectList:[
                 {name:'uniswap',type:'private',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqsaafga'},
@@ -69,19 +90,36 @@ export default {
          * 编辑类型方法
          */
         editProject(){
+            this.$refs.createProjectDialog.createProjectWindow = true
             console.log('editProject')
         },
         /**
          * 删除类型方法
+         * @param {Object} item - 项目数据对象
          */
-        deleteProject(){
-            console.log('deleteProject')
+        deleteProject(item){
+            this.deleteText = `是否要删除${item.name}？`
+            this.showDelete = true
         },
         /**
          * 刷新项目信息
+         * @param {Object} item - 项目数据对象
          */
-        freshProject(){
-            console.log('freshProject')
+        freshProject(item){
+            this.freshText = `是否对${item.name}的所有安全项进行重新评估？`
+            this.showFresh = true
+        },
+        /**
+         * 确认刷新项目信息
+         */
+        confirmFresh(){
+            this.showFresh = false
+        },
+        /**
+         * 确认删除项目信息
+         */
+        confirmDelete(){
+            this.showDelete = false
         }
     },
 }
