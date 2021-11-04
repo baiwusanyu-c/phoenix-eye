@@ -44,8 +44,8 @@
                     </el-form>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                    <el-button class="createProjectBtn" @click="createProjectCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
-                    <el-button class="createProjectBtnConfirm" type="primary" @click="createProjectConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
+                    <el-button class="default" type="primary" @click="createProjectCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
+                    <el-button class="primary hbjbh" type="primary" @click="createProjectConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -137,23 +137,6 @@
         height: 20px;
         margin-left: 10px;
         background-color: white;
-    }
-    .createProjectBtn{
-        width: 88px;
-        height: 32px;
-    }
-    .createProjectBtnConfirm{
-        width: 88px;
-        height: 32px;
-
-    }
-    .el-button--primary{
-        background: #0468C2;
-        border-color: #0468C2;
-     }
-    .el-switch.is-checked .el-switch__core {
-        border-color: #0468C2;
-        background-color: #0468C2;
     }
     .contractSiteBox{
         margin-top: 8px;

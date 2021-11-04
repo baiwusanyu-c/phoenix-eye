@@ -27,10 +27,19 @@
                             label="权重"
                             width="148px">
                         <template slot-scope="scope">
-                            <span v-if="scope.$index === 1">{{staticDetectionWeight}}</span>
-                            <span v-if="scope.$index === 2">{{tradeSafetyWeight}}</span>
-                            <span v-if="scope.$index === 4">{{stableWeight}}</span>
-                            <span v-if="scope.$index === 5">{{safetyPublicOptionWeight}}</span>
+                            <span>{{scope.row.weight}}</span>
+                            <span v-show="inputShow === false">
+                                <span v-if="scope.$index === 1">{{staticDetectionWeight}}</span>
+                                <span v-if="scope.$index === 2">{{tradeSafetyWeight}}</span>
+                                <span v-if="scope.$index === 4">{{stableWeight}}</span>
+                                <span v-if="scope.$index === 5">{{safetyPublicOptionWeight}}</span>
+                            </span>
+                            <span v-show="inputShow === true">
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model.number="staticDetectionWeightInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model.number="tradeSafetyWeightInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 4" v-model.number="stableWeightInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 5" v-model.number="safetyPublicOptionWeightInput"></el-input>
+                            </span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -38,15 +47,29 @@
                             label="详细配置st"
                             width="204px">
                         <template slot-scope="scope">
+                            <!--事件范围数字显示在前面-->
+                            <span v-if="scope.$index === 6 && inputShow === false">{{timeTradeDateNum}}</span>
+                            <el-input class="tableInput" v-show="scope.$index === 6 && inputShow === true">{{timeTradeDateNumInput}}</el-input>
+                            <!--分割线-->
                             <span>{{scope.row.configFst}}</span>
                             <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
-                            <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerHighNum"></el-input>
-                            <span v-if="scope.$index === 4" style="margin: 0 10px">{{tradeScoreNum}}</span>
-                            <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16"/>
-                            <span v-if="scope.$index ===5" style="margin: 0 10px">-{{safetyPublicOptionNum}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}</span>
-                            <!--交易安全分数-->
-                            <span v-if="scope.$index === 2">{{tradeSafetyNum1}}</span>
-                            <span v-if="scope.$index === 3">{{tradeSafetyNum5}}</span>
+                            <!--输入框部分-->
+                            <span v-show="inputShow === false">
+                                <span  v-show="scope.$index === 1">{{dangerHighNum}}</span>
+                                <span v-if="scope.$index === 4" style="margin: 0 10px">{{tradeScoreNum}}</span>
+                                <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16"/>
+                                <span v-if="scope.$index ===5" style="margin: 0 10px">-{{safetyPublicOptionNum}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}</span>
+                                <!--交易安全分数-->
+                                <span v-if="scope.$index === 2">{{tradeSafetyNum1}}</span>
+                                <span v-if="scope.$index === 3">{{tradeSafetyNum5}}</span>
+                            </span>
+                            <span v-show="inputShow === true">
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model.number="dangerHighNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model.number="dangerHighNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 3" v-model.number="dangerHighNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 4" v-model.number="dangerHighNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 5" v-model.number="dangerHighNumInput"></el-input>
+                            </span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -56,10 +79,17 @@
                         <template slot-scope="scope">
                             <span>{{scope.row.configSnd}}</span>
                             <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
-                            <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerMiddleNum"></el-input>
-                            <!--交易安全分数-->
-                            <span v-if="scope.$index === 2">{{tradeSafetyNum2}}</span>
-                            <span v-if="scope.$index === 3">{{tradeSafetyNum6}}</span>
+                            <span v-show="inputShow === false">
+                                <span  v-show="scope.$index === 1">{{dangerMiddleNum}}</span>
+                                <span v-if="scope.$index === 2">{{tradeSafetyNum2}}</span>
+                                <span v-if="scope.$index === 3">{{tradeSafetyNum6}}</span>
+                            </span>
+                            <!--输入框部分-->
+                            <span v-show="inputShow === true">
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerMiddleNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model="tradeSafetyNum2Input"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 3" v-model="tradeSafetyNum6Input"></el-input>
+                            </span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -69,10 +99,18 @@
                         <template slot-scope="scope">
                             <span>{{scope.row.configTrd}}</span>
                             <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
-                            <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerLowNum"></el-input>
+                            <span v-show="inputShow === false">
+                                <span class="tableInput" v-show="scope.$index === 1">{{dangerLowNum}}</span>
+                                <span v-if="scope.$index === 2">{{tradeSafetyNum3}}</span>
+                                <span v-if="scope.$index === 3">{{tradeSafetyNum7}}</span>
+                            </span>
+                            <!--输入框部分-->
+                            <span v-show="inputShow === true">
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerMiddleNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model="tradeSafetyNum2Input"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 3" v-model="tradeSafetyNum6Input"></el-input>
+                            </span>
                             <!--交易安全分数-->
-                            <span v-if="scope.$index === 2">{{tradeSafetyNum3}}</span>
-                            <span v-if="scope.$index === 3">{{tradeSafetyNum7}}</span>
                         </template >
                     </el-table-column>
                     <el-table-column
@@ -82,41 +120,38 @@
                         <template slot-scope="scope">
                             <span>{{scope.row.configFth}}</span>
                             <span v-if="scope.$index === 2||scope.$index === 3">-</span>
+                            <span v-show="inputShow === false">
+                                <span v-if="scope.$index === 2">{{tradeSafetyNum4}}</span>
+                                <span v-if="scope.$index === 3">{{tradeSafetyNum8}}</span>
+                            </span>
+                            <!--输入框部分-->
+                            <span v-show="inputShow === true">
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model="tradeSafetyNum4Input"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 3" v-model="tradeSafetyNum8Input"></el-input>
+                            </span>
                             <!--交易安全分数-->
-                            <span v-if="scope.$index === 2">{{tradeSafetyNum4}}</span>
-                            <span v-if="scope.$index === 3">{{tradeSafetyNum8}}</span>
                         </template >
                     </el-table-column>
                 </el-table>
             </div>
         </div>
-        <div>
-            <el-button-group class="changeConfig">
+        <div class="btnClass">
+            <div class="changeConfig">
                 <el-button class="changeConfigBtnText" icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">初始化参数</el-button>
-                <el-button class="changeConfigBtn" @click="changeConfig">{{$t('lang.systemConfigScore.changeConfig')}}</el-button>
-            </el-button-group>
-        </div>
-        <el-dialog
-                :title="$t('lang.systemConfigScore.formatConfigData')"
-                :visible.sync="changeConfigWarning"
-                width="416px"
-                class="dialogWarning"
-                >
-            <div>
-                <img src="../../../assets/image/pc/warning.png" style="margin-left: 150px" height="60" width="60"/>
+                <el-button class="primary hbjbh" type="primary"  @click="changeConfig">{{$t('lang.systemConfigScore.changeConfig')}}</el-button>
             </div>
-            <span style="color: #777777;margin-left: 50px">{{$t('lang.systemConfigScore.changeConfigWarning')}}</span>
-            <span slot="footer" class="dialog-footer">
-                <el-button class="changeConfigCancelBtn" @click="warningDialogCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
-                <el-button class="changeConfigConfirmBtn" type="primary" @click="warningDialogConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
-            </span>
-        </el-dialog>
-
-        <el-button-group class="cancelConfirm">
-            <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">初始化参数</el-button>
-            <el-button class="changeConfigCancelBtn" @click="changeConfigCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
-            <el-button class="changeConfigConfirmBtn" @click="changeConfigConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
-        </el-button-group>
+            <div class="cancelConfirm">
+                <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">初始化参数</el-button>
+                <el-button class="default" type="primary" @click="changeConfigCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
+                <el-button class="primary hbjbh" type="primary"  @click="changeConfigConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
+            </div>
+        </div>
+        <be-msg-dialog @confirm="warningDialogConfirm"
+                       :isShow.sync="changeConfigWarning"
+                       :title="$t('lang.systemConfigScore.formatConfigData')"
+                       :sub-title="$t('lang.systemConfigScore.changeConfigWarning')"
+        >
+        </be-msg-dialog>
     </div>
 </template>
 
@@ -125,24 +160,44 @@ export default {
     name: "system-config-score",
     data() {
         return {
+            inputShow:false,
             tradeSafetyNum1:20,
+            tradeSafetyNum1Input:'',
             tradeSafetyNum2:20,
+            tradeSafetyNum2Input:'',
             tradeSafetyNum3:20,
+            tradeSafetyNum3Input:'',
             tradeSafetyNum4:20,
+            tradeSafetyNum4Input:'',
             tradeSafetyNum5:20,
+            tradeSafetyNum5Input:'',
             tradeSafetyNum6:20,
+            tradeSafetyNum6Input:'',
             tradeSafetyNum7:20,
+            tradeSafetyNum7Input:'',
             tradeSafetyNum8: 20,
+            tradeSafetyNum8Input:'',
             staticDetectionWeight:'30%',
+            staticDetectionWeightInput:'',
             tradeSafetyWeight:'20%',
+            tradeSafetyWeightInput:'',
             stableWeight:'25%',
+            stableWeightInput:'',
             safetyPublicOptionWeight:'20%',
+            safetyPublicOptionWeightInput:'',
             changeConfigWarning:false,
             dangerHighNum:12,
+            dangerHighNumInput:'',
             dangerMiddleNum:12,
+            dangerMiddleNumInput:'',
             dangerLowNum:12,
+            dangerLowNumInput:'',
             safetyPublicOptionNum: 1,
+            safetyPublicOptionNumInput: '',
             tradeScoreNum: 1,
+            tradeScoreNumInput: '',
+            timeTradeDateNum: 25,
+            timeTradeDateNumInput: '',
             systemConfigScore:[
                 {
                     project:this.$t('lang.systemConfigScore.configProject'),
@@ -204,19 +259,18 @@ export default {
     mounted() {
     },
     methods: {
-        warningDialogCancel(){
-            this.changeConfigWarning=false
-        },
         warningDialogConfirm(){
             this.changeConfigWarning=false
         },
         changeConfig(){
+            this.inputShow = true
             console.log('修改')
         },
         changeConfigCancel(){
             console.log('取消')
         },
         changeConfigConfirm(){
+            this.inputShow = false
             console.log('确定')
         },
         //通过给table传入span-method方法可以实现合并行或列，方法的参数是一个对象
@@ -266,55 +320,27 @@ export default {
         padding-top: 25px;
         padding-left: 22px;
     }
-    .el-button--primary{
-        background: #0468C2;
-        border-color: #0468C2;
-    }
-    .changeConfigBtn{
-        width: 88px;
-        height: 32px;
-        background: #0468C2;
-        border-color: #0468C2;
-        color: white;
-    }
-    .changeConfigConfirmBtn{
-        width: 88px;
-        height: 32px;
-        background: #0468C2;
-        border-color: #0468C2;
-        color: white;
-    }
-    .changeConfigCancelBtn{
-        width: 88px;
-        height: 32px;
-    }
     .el-dialog__body{
-        margin: auto;
+        display: flex;
+        align-items: center;
+    }
+    .btnClass{
+        width: 1136px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
     }
     .changeConfig{
-        width: 1000px;
-        margin: 40px 490px;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
     }
     .cancelConfirm{
-        margin-left: 450px;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
     }
-    .el-button-group>.el-button+.el-button {
-        margin-left: 26px;
-    }
-    .el-button-group>.el-button:last-child {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-    }
-    .el-button-group>.el-button:not(:first-child):not(:last-child) {
-        border-radius: 4px;
-    }
-    .el-button{
-        border-radius: 4px;
-    }
-    /*.tableInput{
-        width: 60px;
-        margin-left: 5px;
-    }*/
     .el-input__inner{
         padding-left: 5px;
     }

@@ -120,6 +120,6 @@ export const lang = {
         safetyPublicOption:'安全舆情:',
         safetyPublicOptionPiece:'条',
         timeRange:'时间范围',
-        timeTradeDate:'25天内交易数据'
+        timeTradeDate:'天内交易数据'
     },
 }

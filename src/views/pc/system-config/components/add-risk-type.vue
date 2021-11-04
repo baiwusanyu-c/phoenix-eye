@@ -28,8 +28,8 @@
                     </el-form>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                    <el-button class="addRiskBtn" @click="addRiskCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
-                    <el-button class="addRiskBtnConfirm" type="primary" @click="addRiskConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
+                    <el-button class="default" type="primary" @click="addRiskCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
+                    <el-button class="primary hbjbh" type="primary" @click="addRiskConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -75,18 +75,6 @@
     /deep/ .el-input__inner{
         height: 40px;
         border-radius: 2px;
-    }
-    .addRiskBtn{
-        width: 88px;
-        height: 32px;
-    }
-    .addRiskBtnConfirm{
-        width: 88px;
-        height: 32px;
-    }
-    .el-button--primary{
-        background: #0468C2;
-        border-color: #0468C2;
     }
     .checkboxSelectAll{
         margin-left: 120px;
