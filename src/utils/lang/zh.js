@@ -30,7 +30,6 @@ export const lang = {
         navName2:'风险警告',
         navName3:'项目管理',
         navName4:'系统配置',
-
     },
     subNav:{
         navName0:'链上态势',
@@ -93,7 +92,7 @@ export const lang = {
         addRiskWindowNameInput:'输入自定义的风险类型名称',
         abnormalSelect:'异常特征',
         abnormalSelectInput:'全选/取消',
-        selectAll:'全选'
+        selectAll:'全选/取消'
     },
     systemConfigScore:{
         changeConfig:'修改',

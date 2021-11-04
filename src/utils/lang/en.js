@@ -75,8 +75,8 @@ export const lang = {
         createProjectTitle:'创建项目',
         createProjectName:'项目名称: ',
         createProjectNameInput:'如: PancakeSwap',
-        createProjectCancel:'取消',
-        createProjectConfirm:'确定',
+        createProjectCancel:'取 消',
+        createProjectConfirm:'确 定',
         createProjectKeyWords:'关键词:  ',
         createProjectKeyWordsInput:'',
         createProjectOpenTitle:'是否公开',
@@ -92,6 +92,7 @@ export const lang = {
         addRiskWindowNameInput:'输入自定义的风险类型名称',
         abnormalSelect:'异常特征',
         abnormalSelectInput:'全选/取消',
+        selectAll:'全选/取消'
     },
     systemConfigScore:{
         changeConfig:'修改',

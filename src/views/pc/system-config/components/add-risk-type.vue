@@ -11,12 +11,19 @@
                         <el-form-item :label="$t('lang.addRiskWindow.addRiskWindowClassName')">
                             <el-input class="projectKeyWordsInput" v-model="addRiskName" :placeholder="$t('lang.addRiskWindow.addRiskWindowNameInput')"></el-input>
                         </el-form-item>
+                        <!--异常特征选择-->
                         <el-form-item :label="$t('lang.addRiskWindow.abnormalSelect')">
-                            <el-select v-model="abnormalSelectValue" clearable multiple class="contractSiteClass" :placeholder="$t('lang.addRiskWindow.abnormalSelectInput')">
-                                <!--暂未实现全选功能-->
-                                <el-checkbox class="checkboxSelectAll">{{$t('lang.addRiskWindow.selectAll')}}</el-checkbox>
-                                <el-option v-for="(o, index) in selectNameClass" :key="index" :label="o.selectName" :value="o.value"></el-option>
-                            </el-select>
+                            <template>
+                                <el-select v-model="abnormalSelectValue" multiple  @change="handleCheckedCitiesChange" :placeholder="$t('lang.addRiskWindow.abnormalSelectInput')">
+                                    <el-checkbox :indeterminate="checked" v-model="checkAll" class="checkboxSelectAll" @change="handleCheckAllChange">{{$t('lang.addRiskWindow.selectAll')}}</el-checkbox>
+                                    <el-option
+                                           v-for="o in selectNameClass"
+                                           :label="o"
+                                           :key="o"
+                                           :value="o">
+                                   </el-option>
+                               </el-select>
+                            </template>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -34,14 +41,12 @@
         name: "addRiskType",
         data(){
             return{
+                checkAll: false,
                 checked:true,
                 addRiskWindowOpen: true,
                 addRiskName:'',
                 abnormalSelectValue:[],
-                selectNameClass:[
-                    {selectName:'select1',value:'name1'},
-                    {selectName:'select2',value:'name2'}
-                ],
+                selectNameClass:['select1','select2','select3'],
                 selectNameLength:[],
             }
         },
@@ -52,6 +57,16 @@
             addRiskCancel(){
                 this.addRiskWindowOpen = false
             },
+            handleCheckAllChange(val) {
+                let selectName = this.selectNameClass
+                this.abnormalSelectValue = val ? selectName : [];
+                this.checked = false;
+            },
+            handleCheckedCitiesChange(value) {
+                let checkedCount = value.length;
+                this.checkAll = checkedCount === this.selectNameClass.length;
+                this.checked = checkedCount > 0 && checkedCount < this.selectNameClass.length;
+            }
         }
     }
 </script>
@@ -74,6 +89,6 @@
         border-color: #0468C2;
     }
     .checkboxSelectAll{
-        margin-left: 145px;
+        margin-left: 120px;
     }
 </style>
