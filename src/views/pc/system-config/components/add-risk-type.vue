@@ -43,7 +43,7 @@
             return{
                 checkAll: false,
                 checked:true,
-                addRiskWindowOpen: true,
+                addRiskWindowOpen: false,
                 addRiskName:'',
                 abnormalSelectValue:[],
                 selectNameClass:['select1','select2','select3'],

@@ -179,13 +179,22 @@
             top: 26vh;
             background: white;
             .be-dialog-title{
+                padding: 20px 30px 0 30px;
+                line-height: 24px;
                 .be-dialog-contanter-head{
                     height: 30px;
+                    padding: 0;
+                    .be-title{
+                        font-size: 18px;
+                        color:$textColor3;
+                        line-height: 20px;
+                        font-weight: bold;
+                    }
                 }
             }
             .el-icon-close{
                 font-size: 25px;
-                color: $textColor1;
+                color: $textColor3;
             }
             .msg-dialog-body{
                 padding: 0 22px;
