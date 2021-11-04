@@ -26,6 +26,12 @@
                             prop="weight"
                             label="权重"
                             width="148px">
+                        <template slot-scope="scope">
+                            <span v-if="scope.$index === 1">{{staticDetectionWeight}}</span>
+                            <span v-if="scope.$index === 2">{{tradeSafetyWeight}}</span>
+                            <span v-if="scope.$index === 4">{{stableWeight}}</span>
+                            <span v-if="scope.$index === 5">{{safetyPublicOptionWeight}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="configFst"
@@ -33,10 +39,14 @@
                             width="204px">
                         <template slot-scope="scope">
                             <span>{{scope.row.configFst}}</span>
+                            <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
                             <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerHighNum"></el-input>
                             <span v-if="scope.$index === 4" style="margin: 0 10px">{{tradeScoreNum}}</span>
                             <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16"/>
-                            <span v-if="scope.$index ===5" style="margin: 0 10px">-{{safetyPublicOptionNum}}/条</span>
+                            <span v-if="scope.$index ===5" style="margin: 0 10px">-{{safetyPublicOptionNum}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}</span>
+                            <!--交易安全分数-->
+                            <span v-if="scope.$index === 2">{{tradeSafetyNum1}}</span>
+                            <span v-if="scope.$index === 3">{{tradeSafetyNum5}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -45,7 +55,11 @@
                             width="204px">
                         <template slot-scope="scope">
                             <span>{{scope.row.configSnd}}</span>
+                            <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
                             <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerMiddleNum"></el-input>
+                            <!--交易安全分数-->
+                            <span v-if="scope.$index === 2">{{tradeSafetyNum2}}</span>
+                            <span v-if="scope.$index === 3">{{tradeSafetyNum6}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -54,13 +68,24 @@
                             width="204px">
                         <template slot-scope="scope">
                             <span>{{scope.row.configTrd}}</span>
+                            <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
                             <el-input class="tableInput" v-show="scope.$index === 1" v-model="dangerLowNum"></el-input>
-                        </template>
+                            <!--交易安全分数-->
+                            <span v-if="scope.$index === 2">{{tradeSafetyNum3}}</span>
+                            <span v-if="scope.$index === 3">{{tradeSafetyNum7}}</span>
+                        </template >
                     </el-table-column>
                     <el-table-column
                             prop="configFth"
                             label="详细配置th"
                             width="204px">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.configFth}}</span>
+                            <span v-if="scope.$index === 2||scope.$index === 3">-</span>
+                            <!--交易安全分数-->
+                            <span v-if="scope.$index === 2">{{tradeSafetyNum4}}</span>
+                            <span v-if="scope.$index === 3">{{tradeSafetyNum8}}</span>
+                        </template >
                     </el-table-column>
                 </el-table>
             </div>
@@ -100,6 +125,18 @@ export default {
     name: "system-config-score",
     data() {
         return {
+            tradeSafetyNum1:20,
+            tradeSafetyNum2:20,
+            tradeSafetyNum3:20,
+            tradeSafetyNum4:20,
+            tradeSafetyNum5:20,
+            tradeSafetyNum6:20,
+            tradeSafetyNum7:20,
+            tradeSafetyNum8: 20,
+            staticDetectionWeight:'30%',
+            tradeSafetyWeight:'20%',
+            stableWeight:'25%',
+            safetyPublicOptionWeight:'20%',
             changeConfigWarning:false,
             dangerHighNum:12,
             dangerMiddleNum:12,
@@ -117,7 +154,7 @@ export default {
                 },
                 {
                     project:this.$t('lang.systemConfigScore.staticDetection'),
-                    weight:'30%',
+                    weight:'',
                     configFst:this.$t('lang.systemConfigScore.dangerHigh'),
                     configSnd:this.$t('lang.systemConfigScore.dangerMiddle'),
                     configTrd:this.$t('lang.systemConfigScore.dangerLow'),
@@ -125,7 +162,7 @@ export default {
                 },
                 {
                     project:this.$t('lang.systemConfigScore.tradeSafetyClass'),
-                    weight:'20%',
+                    weight:'',
                     configFst:this.$t('lang.systemConfigScore.tradeSafety1'),
                     configSnd:this.$t('lang.systemConfigScore.tradeSafety2'),
                     configTrd:this.$t('lang.systemConfigScore.tradeSafety3'),
@@ -139,7 +176,7 @@ export default {
                 },
                 {
                     project: this.$t('lang.systemConfigScore.tradeStable'),
-                    weight:'25%',
+                    weight:'',
                     configFst:this.$t('lang.systemConfigScore.tradeScore'),
                     configSnd:'',
                     configTrd:'',
@@ -147,7 +184,7 @@ export default {
                 },
                 {
                     project: this.$t('lang.systemConfigScore.safetyPublicOptionClass'),
-                    weight:'20%',
+                    weight:'',
                     configFst:this.$t('lang.systemConfigScore.safetyPublicOption'),
                     configSnd:'',
                     configTrd:'',
