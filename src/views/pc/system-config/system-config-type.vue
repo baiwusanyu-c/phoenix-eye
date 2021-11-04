@@ -8,26 +8,36 @@
     <div class="system-config-type">
         <system-config-type-card
           type="add"
-         @add="addType">
+          @add="addType">
         </system-config-type-card>
         <system-config-type-card
             type="edit"
             :title="item.name"
             :features="item.features"
-            @edit="editType"
-            @delete="deleteType"
+            @edit="editType(item)"
+            @delete="deleteType(item)"
             v-for="(item) in configList" :key="item.id">
         </system-config-type-card>
+        <!--    新增、编辑风险类型弹窗    -->
+        <add-risk-type ref="addRiskType"></add-risk-type>
+        <!--    删除风险类型弹窗    -->
+        <be-msg-dialog @confirm="confirmDelete"
+                       headerTitle="删除"
+                       :isShow.sync="showDelete"
+                       title="确认删除该风险类型？">
+        </be-msg-dialog>
     </div>
 </template>
 
 <script>
 import SystemConfigTypeCard from "./components/system-config-type-card";
+import AddRiskType from "./components/add-risk-type";
 export default {
     name: "system-config-type",
-    components: {SystemConfigTypeCard},
+    components: {AddRiskType, SystemConfigTypeCard},
     data() {
         return {
+            showDelete:false,
             configList:[
                 {id:'qwqwdadds',name:'疑似闪电贷攻击',features:['闪电贷','币种兑换']},
                 {id:'qwqwdas',name:'涉黑交易',features:['闪电贷','币种兑换']},
@@ -43,20 +53,31 @@ export default {
          * 新增类型方法
          */
         addType(){
-            console.log('addType')
+            this.$refs.addRiskType.addRiskWindowOpen = true
+
         },
         /**
          * 编辑类型方法
+         * @param {Object} item - 风险类型数据对象
          */
-        editType(){
-            console.log('editType')
+        editType(item){
+            this.$refs.addRiskType.addRiskWindowOpen = true
+
         },
         /**
          * 删除类型方法
+         * @param {Object} item - 风险类型数据对象
          */
-        deleteType(){
+        deleteType(item){
+            this.showDelete = true
             console.log('deleteType')
         },
+        /**
+         * q确认删除类型方法
+         */
+        confirmDelete(){
+            this.showDelete = false
+        }
     },
 }
 </script>

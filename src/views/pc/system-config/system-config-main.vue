@@ -7,8 +7,6 @@
 <template>
   <div class="system-config-main">
       <div class="system-config-tab">
-          <!--测试新增风险类型弹窗-->
-          <add-risk-type></add-risk-type>
           <el-button-group>
               <el-button :class="`${active === 1 ? 'primary' : 'default'}`" type="primary" @click="switchRender(1)">
                   {{$t('lang.subNav.navName4s1')}}
@@ -30,12 +28,10 @@
 <script>
 import SystemConfigScore from "./system-config-score";
 import SystemConfigType from "./system-config-type";
-
 //测试新增风险类型弹窗
-import addRiskType from "../system-config/components/add-risk-type"
 export default {
   name: "SystemConfigMain",
-    components: {SystemConfigType, SystemConfigScore, addRiskType},
+    components: {SystemConfigType, SystemConfigScore},
     data() {
     return {
         active:1

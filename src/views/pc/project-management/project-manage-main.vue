@@ -26,7 +26,7 @@
         </div>
         <!--    新增、编辑项目弹窗    -->
         <create-project ref="createProjectDialog"></create-project>
-        <!--    新增、编辑项目弹窗    -->
+        <!--    删除项目弹窗    -->
         <be-msg-dialog @confirm="confirmDelete"
                        headerTitle="删除"
                        :isShow.sync="showDelete"

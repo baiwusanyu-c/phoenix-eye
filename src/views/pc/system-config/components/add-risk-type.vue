@@ -35,7 +35,7 @@
         data(){
             return{
                 checked:true,
-                addRiskWindowOpen: true,
+                addRiskWindowOpen: false,
                 addRiskName:'',
                 abnormalSelectValue:[],
                 selectNameClass:[
