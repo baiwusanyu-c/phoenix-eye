@@ -70,6 +70,7 @@
                                 <el-input class="tableInput" v-show="scope.$index === 2" v-model.number="inputValue.peerToPeerLendingInput"></el-input>
                                 <el-input class="tableInput" v-show="scope.$index === 3" v-model.number="inputValue.tradeCircleInput"></el-input>
                                 <el-input class="tableInput" v-show="scope.$index === 4" v-model.number="inputValue.tradeScoreNumInput"></el-input>
+                                <span v-show="scope.$index === 5">-</span>
                                 <el-input class="tableInput" v-show="scope.$index === 5" v-model.number="inputValue.safetyPublicOptionNumInput"></el-input>
                             </span>
                         </template>
