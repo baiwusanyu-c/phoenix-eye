@@ -5,7 +5,6 @@
 * @update (czh 2021/11/2)
 */
 <template>
-    <!--未完成-->
     <div class="systemConfigScoreBox">
         <div class="systemConfigTable">
             <div>
@@ -29,17 +28,17 @@
                         <template slot-scope="scope">
                             <span>{{scope.row.weight}}</span>
                             <span v-show="inputShow === false">
-                                <span v-if="scope.$index === 1">{{staticDetectionWeight}}</span>
-                                <span v-if="scope.$index === 2">{{tradeSafetyWeight}}</span>
-                                <span v-if="scope.$index === 4">{{stableWeight}}</span>
-                                <span v-if="scope.$index === 5">{{safetyPublicOptionWeight}}</span>
+                                <span v-if="scope.$index === 1">{{inputValue.staticDetectionWeightInput}}</span>
+                                <span v-if="scope.$index === 2">{{inputValue.tradeSafetyWeightInput}}</span>
+                                <span v-if="scope.$index === 4">{{inputValue.stableWeightInput}}</span>
+                                <span v-if="scope.$index === 5">{{inputValue.safetyPublicOptionWeightInput}}</span>
                             </span>
                             <span v-show="inputShow === true">
                                 <!--百分数字符串-->
-                                <el-input class="tableInput" v-show="scope.$index === 1" v-model.number="inputValue.staticDetectionWeightInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 2" v-model.number="inputValue.tradeSafetyWeightInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 4" v-model.number="inputValue.stableWeightInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 5" v-model.number="inputValue.safetyPublicOptionWeightInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model="inputValue.staticDetectionWeightInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model="inputValue.tradeSafetyWeightInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 4" v-model="inputValue.stableWeightInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 5" v-model="inputValue.safetyPublicOptionWeightInput"></el-input>
                             </span>
                             <span v-if="scope.$index !== 0 && scope.$index !== 6">%</span>
                         </template>
@@ -50,28 +49,27 @@
                             width="204px">
                         <template slot-scope="scope">
                             <!--事件范围数字显示在前面-->
-                            <span v-if="scope.$index === 6 && inputShow === false">{{timeTradeDateNum}}</span>
+                            <span v-if="scope.$index === 6 && inputShow === false">{{inputValue.timeTradeDateNumInput}}</span>
                             <el-input class="tableInput" v-show="scope.$index === 6 && inputShow === true" v-model="inputValue.timeTradeDateNumInput"></el-input>
                             <!--分割线-->
                             <span>{{scope.row.configFst}}</span>
-                            <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
                             <span v-show="inputShow === false">
-                                <span  v-show="scope.$index === 1">{{dangerHighNum}}</span>
-                                <span v-if="scope.$index === 4" style="margin: 0 10px">{{tradeScoreNum}}</span>
+                                <span  v-show="scope.$index === 1">{{inputValue.dangerHighNumInput}}</span>
+                                <span v-if="scope.$index === 4" style="margin: 0 10px">{{inputValue.tradeScoreNumInput}}</span>
                                 <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16"/>
-                                <span v-if="scope.$index ===5" style="margin: 0 10px">-{{safetyPublicOptionNum}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}</span>
+                                <span v-if="scope.$index ===5" style="margin: 0 10px">{{inputValue.safetyPublicOptionNumInput}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}</span>
                                 <!--交易安全分数-->
-                                <span v-if="scope.$index === 2">{{peerToPeerLending}}</span>
-                                <span v-if="scope.$index === 3">{{tradeCircle}}</span>
+                                <span v-if="scope.$index === 2">{{inputValue.peerToPeerLendingInput}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.tradeCircleInput}}</span>
                             </span>
                             <!--输入框部分-->
                             <span v-show="inputShow === true">
-                                <el-input class="tableInput" v-show="scope.$index === 1" v-model.number="inputValue.dangerHighNumInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 2" v-model.number="inputValue.peerToPeerLendingInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 3" v-model.number="inputValue.tradeCircleInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 4" v-model.number="inputValue.tradeScoreNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model="inputValue.dangerHighNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model="inputValue.peerToPeerLendingInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 3" v-model="inputValue.tradeCircleInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 4" v-model="inputValue.tradeScoreNumInput"></el-input>
                                 <span v-show="scope.$index === 5">-</span>
-                                <el-input class="tableInput" v-show="scope.$index === 5" v-model.number="inputValue.safetyPublicOptionNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 5" v-model="inputValue.safetyPublicOptionNumInput"></el-input>
                             </span>
                         </template>
                     </el-table-column>
@@ -81,17 +79,16 @@
                             width="204px">
                         <template slot-scope="scope">
                             <span>{{scope.row.configSnd}}</span>
-                            <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
                             <span v-show="inputShow === false">
-                                <span  v-show="scope.$index === 1">{{dangerMiddleNum}}</span>
-                                <span v-if="scope.$index === 2">{{contractExecute}}</span>
-                                <span v-if="scope.$index === 3">{{blackSocietiesAddress}}</span>
+                                <span  v-show="scope.$index === 1">{{inputValue.dangerMiddleNumInput}}</span>
+                                <span v-if="scope.$index === 2">{{inputValue.contractExecuteInput}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.blackSocietiesAddressInput}}</span>
                             </span>
                             <!--输入框部分-->
                             <span v-show="inputShow === true">
-                                <el-input class="tableInput" v-show="scope.$index === 1" v-model.number="inputValue.dangerMiddleNumInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 2" v-model.number="inputValue.contractExecuteInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 3" v-model.number="inputValue.blackSocietiesAddressInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model="inputValue.dangerMiddleNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model="inputValue.contractExecuteInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 3" v-model="inputValue.blackSocietiesAddressInput"></el-input>
                             </span>
                         </template>
                     </el-table-column>
@@ -101,17 +98,16 @@
                             width="204px">
                         <template slot-scope="scope">
                             <span>{{scope.row.configTrd}}</span>
-                            <span v-if="scope.$index === 1||scope.$index === 2||scope.$index === 3">-</span>
                             <span v-show="inputShow === false">
-                                <span class="tableInput" v-show="scope.$index === 1">{{dangerLowNum}}</span>
-                                <span v-if="scope.$index === 2">{{currencyConversion}}</span>
-                                <span v-if="scope.$index === 3">{{blockTrade}}</span>
+                                <span class="tableInput" v-show="scope.$index === 1">{{inputValue.dangerLowNumInput}}</span>
+                                <span v-if="scope.$index === 2">{{inputValue.currencyConversionInput}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.blockTradeInput}}</span>
                             </span>
                             <!--输入框部分-->
                             <span v-show="inputShow === true">
-                                <el-input class="tableInput" v-show="scope.$index === 1" v-model.number="inputValue.dangerLowNumInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 2" v-model.number="inputValue.currencyConversionInput"></el-input>
-                                <el-input class="tableInput" v-show="scope.$index === 3" v-model.number="inputValue.blockTradeInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 1" v-model="inputValue.dangerLowNumInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 2" v-model="inputValue.currencyConversionInput"></el-input>
+                                <el-input class="tableInput" v-show="scope.$index === 3" v-model="inputValue.blockTradeInput"></el-input>
                             </span>
                             <!--交易安全分数-->
                         </template >
@@ -122,10 +118,9 @@
                             width="204px">
                         <template slot-scope="scope">
                             <span>{{scope.row.configFth}}</span>
-                            <span v-if="scope.$index === 2||scope.$index === 3">-</span>
                             <span v-show="inputShow === false">
-                                <span v-if="scope.$index === 2">{{repeatedCalls}}</span>
-                                <span v-if="scope.$index === 3">{{riskIdentifyByAI}}</span>
+                                <span v-if="scope.$index === 2">{{inputValue.repeatedCallsInput}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.riskIdentifyByAIInput}}</span>
                             </span>
                             <!--输入框部分-->
                             <span v-show="inputShow === true">
@@ -140,30 +135,20 @@
         </div>
         <div class="btnClass">
             <div class="changeConfig" v-show="inputShow === false">
-                <el-button class="changeConfigBtnText" icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">初始化参数</el-button>
+                <el-button class="changeConfigBtnText" icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
                 <el-button class="primary hbjbh" type="primary" @click="changeConfig">{{$t('lang.systemConfigScore.changeConfig')}}</el-button>
             </div>
             <div class="cancelConfirm" v-show="inputShow === true">
-                <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarningInput = true">初始化参数</el-button>
+                <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning = true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
                 <el-button class="default" type="primary" @click="changeConfigCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
                 <el-button class="primary hbjbh" type="primary"  @click="changeConfigConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
             </div>
         </div>
+        <!--是否初始化数据警告框-->
         <be-msg-dialog @confirm="warningDialogConfirm"
                        :isShow.sync="changeConfigWarning"
                        :title="$t('lang.systemConfigScore.formatConfigData')"
                        :sub-title="$t('lang.systemConfigScore.changeConfigWarning')"
-        >
-        </be-msg-dialog>
-        <be-msg-dialog @confirm="warningDialogConfirmInput"
-                       :isShow.sync="changeConfigWarningInput"
-                       :title="$t('lang.systemConfigScore.formatConfigData')"
-                       :sub-title="$t('lang.systemConfigScore.changeConfigWarning')"
-        >
-        </be-msg-dialog>
-        <be-msg-dialog @confirm="changeConfigConfirm"
-                       :isShow.sync="configConfirm"
-                       :title="$t('lang.systemConfigScore.checkInput')"
         >
         </be-msg-dialog>
     </div>
@@ -174,77 +159,35 @@ export default {
     name: "system-config-score",
     data() {
         return {
-            configConfirm:false,
             changeConfigWarning:false,
             changeConfigWarningInput:false,
             inputShow:false,
-            /*静态初始化数据*/
-            /*交易安全详细信息*/
-            peerToPeerLendingStatic:20,
-            contractExecuteStatic:20,
-            currencyConversionStatic:20,
-            repeatedCallsStatic:20,
-            tradeCircleStatic:20,
-            blackSocietiesAddressStatic:20,
-            blockTradeStatic:20,
-            riskIdentifyByAIStatic: 20,
-            /*权重 百分比*/
-            staticDetectionWeightStatic:30,
-            tradeSafetyWeightStatic:20,
-            stableWeightStatic:25,
-            safetyPublicOptionWeightStatic:20,
-            /*静态检测详细信息*/
-            dangerHighNumStatic:12,
-            dangerMiddleNumStatic:12,
-            dangerLowNumStatic:12,
-
-            safetyPublicOptionNumStatic: 1,
-            tradeScoreNumStatic: 1,
-            timeTradeDateNumStatic: 25,
-            /*显示的数据*/
-            /*交易安全详细信息*/
-            peerToPeerLending:20,
-            contractExecute:20,
-            currencyConversion:20,
-            repeatedCalls:20,
-            tradeCircle:20,
-            blackSocietiesAddress:20,
-            blockTrade:20,
-            riskIdentifyByAI: 20,
-            /*权重 百分比*/
-            staticDetectionWeight:30,
-            tradeSafetyWeight:20,
-            stableWeight:25,
-            safetyPublicOptionWeight:20,
-            /*静态检测详细信息*/
-            dangerHighNum:12,
-            dangerMiddleNum:12,
-            dangerLowNum:12,
-
-            safetyPublicOptionNum: 1,
-            tradeScoreNum: 1,
-            timeTradeDateNum: 25,
-
-            /*输入框绑定数据*/
+            /*输入框绑定以及显示的数据*/
             inputValue:{
-                peerToPeerLendingInput:'',
-                contractExecuteInput:'',
-                currencyConversionInput:'',
-                repeatedCallsInput:'',
-                tradeCircleInput:'',
-                blackSocietiesAddressInput:'',
-                blockTradeInput:'',
-                riskIdentifyByAIInput:'',
-                staticDetectionWeightInput:'',
-                tradeSafetyWeightInput:'',
-                stableWeightInput:'',
-                safetyPublicOptionWeightInput:'',
-                dangerHighNumInput:'',
-                dangerMiddleNumInput:'',
-                dangerLowNumInput:'',
-                safetyPublicOptionNumInput: '',
-                tradeScoreNumInput: '',
-                timeTradeDateNumInput: '',
+                /*交易安全详细信息*/
+                peerToPeerLendingInput:'-20',
+                contractExecuteInput:'-20',
+                currencyConversionInput:'-20',
+                repeatedCallsInput:'-20',
+                tradeCircleInput:'-20',
+                blackSocietiesAddressInput:'-20',
+                blockTradeInput:'-20',
+                riskIdentifyByAIInput:'-20',
+                /*权重 百分比*/
+                staticDetectionWeightInput:'30',
+                tradeSafetyWeightInput:'20',
+                stableWeightInput:'25',
+                safetyPublicOptionWeightInput:'20',
+                /*静态检测详细信息*/
+                dangerHighNumInput:'-12',
+                dangerMiddleNumInput:'-12',
+                dangerLowNumInput:'-12',
+                /*交易稳定性评分系数*/
+                tradeScoreNumInput: '1',
+                /*安全舆情*/
+                safetyPublicOptionNumInput: '-1',
+                /*时间范围*/
+                timeTradeDateNumInput: '25',
             },
             systemConfigScore:[
                 {
@@ -305,110 +248,71 @@ export default {
         }
     },
     mounted() {
+        this.initData('init')
     },
     methods: {
+        /**
+         * 初始化\参数
+         * @param type
+         */
+        initData(type = 'init'){
+            if(type === 'init'){
+                // 这里应该调接口拿数据
+
+            }else{
+                // 重置初始化参数
+                this.inputValue = {
+                    peerToPeerLendingInput:'-20',
+                    contractExecuteInput:'-20',
+                    currencyConversionInput:'-20',
+                    repeatedCallsInput:'-20',
+                    tradeCircleInput:'-20',
+                    blackSocietiesAddressInput:'-20',
+                    blockTradeInput:'-20',
+                    riskIdentifyByAIInput:'-20',
+                    staticDetectionWeightInput:'30',
+                    tradeSafetyWeightInput:'20',
+                    stableWeightInput:'25',
+                    safetyPublicOptionWeightInput:'20',
+                    dangerHighNumInput:'-12',
+                    dangerMiddleNumInput:'-12',
+                    dangerLowNumInput:'-12',
+                    safetyPublicOptionNumInput: '-1',
+                    tradeScoreNumInput: '-1',
+                    timeTradeDateNumInput: '-25',
+                }
+
+            }
+        },
+        /*初始化参数*/
         warningDialogConfirm(){
             this.changeConfigWarningInput = false
-            /*不点击修改时的初始化参数*/
-            this.peerToPeerLending = this.peerToPeerLendingStatic
-            this.contractExecute = this.contractExecuteStatic
-            this.currencyConversion = this.currencyConversionStatic
-            this.repeatedCalls = this.repeatedCallsStatic
-            this.tradeCircle = this.tradeCircleStatic
-            this.blackSocietiesAddress = this.blackSocietiesAddressStatic
-            this.blockTrade = this.blockTradeStatic
-            this.riskIdentifyByAI = this.riskIdentifyByAIStatic
-            this.staticDetectionWeight = this.staticDetectionWeightStatic
-            this.tradeSafetyWeight = this.tradeSafetyWeightStatic
-            this.stableWeight = this.stableWeightStatic
-            this.safetyPublicOptionWeight = this.safetyPublicOptionWeightStatic
-            this.dangerHighNum = this.dangerHighNumStatic
-            this.dangerMiddleNum = this.dangerMiddleNumStatic
-            this.dangerLowNum = this.dangerLowNumStatic
-            this.safetyPublicOptionNum = this.safetyPublicOptionNumStatic
-            this.tradeScoreNum = this.tradeScoreNumStatic
-            this.timeTradeDateNum = this.timeTradeDateNumStatic
-            console.log('不点击修改按钮时的初始化参数成功')
+            /*初始化参数*/
+            this.initData('reset')
         },
-        warningDialogConfirmInput(){
-            this.changeConfigWarning = false
-            /*点击修改时的初始化参数*/
-            this.inputValue.peerToPeerLendingInput = this.peerToPeerLendingStatic
-            this.inputValue.contractExecuteInput = this.contractExecuteStatic
-            this.inputValue.currencyConversionInput = this.currencyConversionStatic
-            this.inputValue.repeatedCallsInput = this.repeatedCallsStatic
-            this.inputValue.tradeCircleInput = this.tradeCircleStatic
-            this.inputValue.blackSocietiesAddressInput = this.blackSocietiesAddressStatic
-            this.inputValue.blockTradeInput = this.blockTradeStatic
-            this.inputValue.riskIdentifyByAIInput = this.riskIdentifyByAIStatic
-            this.inputValue.staticDetectionWeightInput = this.staticDetectionWeightStatic
-            this.inputValue.tradeSafetyWeightInput = this.tradeSafetyWeightStatic
-            this.inputValue.stableWeightInput = this.stableWeightStatic
-            this.inputValue.safetyPublicOptionWeightInput = this.safetyPublicOptionWeightStatic
-            this.inputValue.dangerHighNumInput = this.dangerHighNumStatic
-            this.inputValue.dangerMiddleNumInput = this.dangerMiddleNumStatic
-            this.inputValue.dangerLowNumInput = this.dangerLowNumStatic
-            this.inputValue.safetyPublicOptionNumInput = this.safetyPublicOptionNumStatic
-            this.inputValue.tradeScoreNumInput = this.tradeScoreNumStatic
-            this.inputValue.timeTradeDateNumInput = this.timeTradeDateNumStatic
-            console.log('点击修改按钮时的初始化参数成功放入输入框')
-        },
+        /*修改，显示input框*/
         changeConfig(){
             this.inputShow = true
-            console.log('我要修改啦')
         },
+        /*取消修改*/
         changeConfigCancel(){
             this.inputShow = false
-            console.log('取消修改')
+            // 再调取一次接口，拿到上次修改的数据
+            this.initData('init')
         },
+        /*修改风险评分配置信息*/
         changeConfigConfirm(){
             let valArr = Object.values(this.inputValue)
             let valArrEmpty = valArr.filter((t)=>{
                 return t === ''
             })
-            console.log(valArrEmpty.length)
-            if(valArrEmpty.length === 0){
-                this.peerToPeerLending = this.inputValue.peerToPeerLendingInput
-                this.contractExecute = this.inputValue.contractExecuteInput
-                this.currencyConversion = this.inputValue.currencyConversionInput
-                this.repeatedCalls = this.inputValue.repeatedCallsInput
-                this.tradeCircle = this.inputValue.tradeCircleInput
-                this.blackSocietiesAddress = this.inputValue.blackSocietiesAddressInput
-                this.blockTrade = this.inputValue.blockTradeInput
-                this.riskIdentifyByAI = this.inputValue.riskIdentifyByAIInput
-                this.staticDetectionWeight = this.inputValue.staticDetectionWeightInput
-                this.tradeSafetyWeight = this.inputValue.tradeSafetyWeightInput
-                this.stableWeight = this.inputValue.stableWeightInput
-                this.safetyPublicOptionWeight = this.inputValue.safetyPublicOptionWeightInput
-                this.dangerHighNum = this.inputValue.dangerHighNumInput
-                this.dangerMiddleNum = this.inputValue.dangerMiddleNumInput
-                this.dangerLowNum = this.inputValue.dangerLowNumInput
-                this.safetyPublicOptionNum = this.inputValue.safetyPublicOptionNumInput
-                this.tradeScoreNum = this.inputValue.tradeScoreNumInput
-                this.timeTradeDateNum = this.inputValue.timeTradeDateNumInput
-                this.inputShow = false
-                this.inputValue.peerToPeerLendingInput = ''
-                this.inputValue.contractExecuteInput = ''
-                this.inputValue.currencyConversionInput = ''
-                this.inputValue.repeatedCallsInput = ''
-                this.inputValue.tradeCircleInput = ''
-                this.inputValue.blackSocietiesAddressInput = ''
-                this.inputValue.blockTradeInput = ''
-                this.inputValue.riskIdentifyByAIInput = ''
-                this.inputValue.staticDetectionWeightInput = ''
-                this.inputValue.tradeSafetyWeightInput = ''
-                this.inputValue.stableWeightInput = ''
-                this.inputValue.safetyPublicOptionWeightInput = ''
-                this.inputValue.dangerHighNumInput = ''
-                this.inputValue.dangerMiddleNumInput = ''
-                this.inputValue.dangerLowNumInput = ''
-                this.inputValue.safetyPublicOptionNumInput = ''
-                this.inputValue.tradeScoreNumInput = ''
-                this.inputValue.timeTradeDateNumInput = ''
-                console.log('确定修改')
-            }else{
-                this.configConfirm = true
+            // 大于0 说明有不合格的参数 直接返回
+            if(valArrEmpty.length > 0){
+                this.$message.warning('参数输入错误')
+                return
             }
+            this.inputShow = false
+            // 调用后端接口，存储表单数据
         },
         //通过给table传入span-method方法可以实现合并行或列，方法的参数是一个对象
         // ，里面包含当前行row、当前列column、当前行号rowIndex、当前列号columnIndex四个属性。
@@ -437,9 +341,6 @@ export default {
           if(rowIndex === 0 || columnIndex === 0){
               return 'font-weight: 700;text-align: center'
           }
-        },
-        handleEdit(index, row) {
-            console.log(index, row);
         },
     },
 }

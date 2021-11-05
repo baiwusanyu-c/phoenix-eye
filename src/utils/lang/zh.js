@@ -96,7 +96,7 @@ export const lang = {
     },
     systemConfigScore:{
         changeConfig:'修改',
-        formatConfigData:'初始化数据',
+        formatConfigData:'初始化参数',
         changeConfigWarning:'是否要将本页面所有参数重置为初始状态？',
         configProject:'配置项目',
         weight:'权重',
