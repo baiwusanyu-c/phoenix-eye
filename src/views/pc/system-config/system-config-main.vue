@@ -16,7 +16,7 @@
               </el-button>
           </el-button-group>
       </div>
-      <div class="system-config-body">
+      <div class="system-config-body scrollDiy">
         <!--    系统类型配置      -->
         <system-config-type v-if="active === 1"></system-config-type>
           <!--  系统评分配置      -->
@@ -59,6 +59,11 @@ export default {
         width: 100%;
         display: flex;
         justify-content: center;
+    }
+    .system-config-body{
+        margin-top: 12px;
+        height: calc(100% - 30px);
+        overflow-y: auto;
     }
 }
 </style>

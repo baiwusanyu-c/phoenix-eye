@@ -665,6 +665,9 @@ export default {
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
     .tsgz-nav-menu {
+        .tsgz-name {
+            font-size: 12px;
+        }
         .expend-logo {
             width: 146px !important;
             margin: 10px 10px 0 10px !important;

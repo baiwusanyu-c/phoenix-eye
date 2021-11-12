@@ -259,7 +259,6 @@ export default {
         /**
          * 根据屏幕分辨率调整表格宽度
          */
-
         initView(){
             const width = window.screen.availWidth
             const height = window.screen.availHeight

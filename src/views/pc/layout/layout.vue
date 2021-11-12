@@ -165,7 +165,7 @@ export default {
 @media screen and (max-width: 1366px) and (max-height: 768px) {
     #app_layout {
         .tsgz-menu-info {
-            height: 60px;
+            height: 45px;
 
             .tsgz-slogan h3 {
                 font-size: 14px;

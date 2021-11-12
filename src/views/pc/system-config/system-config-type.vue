@@ -84,7 +84,6 @@ export default {
 
 <style scoped lang="scss">
 .system-config-type{
-    margin-top: 12px;
     width: calc(100% - 12px);
     height: 100%;
    /* display: flex;

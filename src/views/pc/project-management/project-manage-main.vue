@@ -6,7 +6,7 @@
 */
 <template>
     <div class="project-manage-main">
-        <div class="project-manage-list">
+        <div class="project-manage-list scrollDiy">
             <project-manage-card
                 type="add"
                 @add="addProject">
@@ -130,6 +130,7 @@ export default {
     height: 100%;
     width: 100%;
     .project-manage-list {
+        overflow-y: auto;
         width: 100%;
         height: 100%;
         /* display: flex;

@@ -125,3 +125,26 @@ export default {
 }
 
 </style>
+
+<!--1080p的145% - 150%放大-->
+<style scoped lang="scss">
+@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+    .system-config-type-card{
+        width: 336px;
+        height: 280px;
+        .card-title{
+            padding: 10px 15px;
+        }
+        .card-edit{
+            padding: 5px 10px;
+            .card-edit-addr{
+                height: 168px;
+                margin: 5px 0;
+            }
+            p{
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
+</style>

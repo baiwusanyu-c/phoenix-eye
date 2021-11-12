@@ -32,7 +32,7 @@
                 <ul>
                     <li v-for="(addrItem) in addrList" :key="addrItem.addr">
                         <span class="addr-cury">{{ addrItem.currency }}</span>
-                        <be-ellipsis-copy :targetStr="addrItem.addr" fontLength="14" endLength="14">
+                        <be-ellipsis-copy :targetStr="addrItem.addr" :fontLength="showLength" :endLength="showLength">
                         </be-ellipsis-copy>
                     </li>
                 </ul>
@@ -56,7 +56,9 @@ export default {
     name: "project-manage-card",
     components: {BeSvgIcon},
     data() {
-        return {}
+        return {
+            showLength:'14'
+        }
     },
     props: {
         /**
@@ -103,8 +105,19 @@ export default {
         }
     },
     mounted() {
+        this.initView()
     },
     methods: {
+        /**
+         * 根据屏幕分辨率调整
+         */
+        initView(){
+            const width = window.screen.availWidth
+            const height = window.screen.availHeight
+            if(height >= 680 || width >=1280) {
+                this.showLength = '12'
+            }
+        },
         /**
          * 触发事件方法
          * @param {String} evtName - 事件名称
@@ -215,4 +228,23 @@ export default {
     }
 }
 
+</style>
+<!--1080p的145% - 150%放大-->
+<style scoped lang="scss">
+@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+    .project-manage-card{
+        width: 336px;
+        height: 280px;
+        .card-title{
+            padding: 10px 15px;
+        }
+        .card-edit{
+            padding: 5px 10px;
+            .card-edit-addr{
+                height: 168px;
+                margin: 5px 0;
+            }
+        }
+    }
+}
 </style>
