@@ -1,5 +1,5 @@
 <template>
-    <div class="formArea">
+    <div class="formArea user-registration">
         <el-form :model="form" :rules="rules" ref="form">
             <el-form-item class="label" prop='name'>
                 <el-input maxlength="15" autocomplete="off" placeholder="请输入真实姓名" v-model="form.name">
@@ -252,5 +252,19 @@ export default {
 }
 
 </style>
+<!--1080p的145% - 150%放大-->
 <style lang="scss">
+@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+    .formArea.user-registration {
+        .el-form-item{
+            margin-bottom: 20px;
+            .el-form-item__content{
+                padding: 4px;
+            }
+        }
+        .primary{
+            margin-top: 0;
+        }
+    }
+}
 </style>

@@ -36,7 +36,7 @@
                 <el-table-column
                     prop="platform"
                     :label="$t('lang.riskConfig.platform')"
-                    width="180"
+                    width="80"
                     align="center">
                     <template slot-scope="scope">
                         {{scope.row.platform}}
@@ -45,7 +45,7 @@
                 <el-table-column
                     prop="txHash"
                     :label="$t('lang.riskConfig.tableHeader.txHash')"
-                    width="220"
+                    width="170"
                     align="center">
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.txHash"
@@ -56,6 +56,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="txTime"
+                    show-tooltip-when-overflow
                     :label="$t('lang.riskConfig.tableHeader.txTime')"
                     align="center">
                     <template slot-scope="scope">
@@ -63,7 +64,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="100"
+                    width="80"
                     prop="state"
                     :label="$t('lang.riskConfig.tableHeader.state')"
                     align="center">
@@ -75,6 +76,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="from"
+                    width="170"
                     :label="$t('lang.riskConfig.tableHeader.from')"
                     align="center">
                     <template slot-scope="scope">
@@ -86,9 +88,9 @@
                 </el-table-column>
                 <el-table-column
                     prop="to"
+                    width="170"
                     :label="$t('lang.riskConfig.tableHeader.to')"
-                    align="center"
-                    show-overflow-tooltip>
+                    align="center" >
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.to"
                                           v-if="!scope.row.tag"
@@ -118,12 +120,13 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                    width="80"
                     :label="$t('lang.riskConfig.tableHeader.detail')"
                     align="center">
                     <template slot-scope="scope">
                         <span style="color: #1496F2;cursor: pointer"
                               @click="openDetail"
-                              v-if="scope.row.state === 'failed'">查看 >></span>
+                              v-if="scope.row.state === 'failed'">{{ $t('lang.scan') }} >></span>
                     </template>
                 </el-table-column>
             </el-table>

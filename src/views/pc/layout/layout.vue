@@ -22,9 +22,7 @@
                  :class="{'viewArea': true}">
                 <transition name="fade" mode="out-in">
                     <!--  只缓存二级路由下的 AnalysisMain 所有路径和 investigation、DebugMain 所有路径 -->
-                    <keep-alive :include="['AnalysisMain','investigation','DebugMain']">
                         <router-view ref="parentRouterRef" :key="key"/>
-                    </keep-alive>
                 </transition>
             </div>
         </div>

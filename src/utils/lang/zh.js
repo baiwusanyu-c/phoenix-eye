@@ -3,6 +3,14 @@ let obj = {...zhLocale }.el
 export const lang = {
     ...obj,
     emptyData:'暂无数据',
+    scan:'查看',
+    warningType: {
+        recall:'重复调用',
+        currencyTrade:'币种兑换',
+        flash:'闪电贷',
+        tradeLoop:'交易回环',
+        ContractExecution:'合约执行',
+    },
     loginConfig:{
         prodWelcome:'欢迎使用成都链安',
         prodName:'区块链态势感知管理平台',

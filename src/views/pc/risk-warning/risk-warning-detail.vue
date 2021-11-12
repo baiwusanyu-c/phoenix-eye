@@ -169,7 +169,13 @@ export default {
                 value:0.004105453105278,
                 from:'0x8c93d63a242ef09d0x8c93d63a242ef09d0x8c93',
                 to:'0x8c93d63a242ef09d0x8c93d63a242ef09d0x8c93',
-                features:['合约执行','交易回环','重复调用','币种兑换','闪电贷']
+                features:[
+                    this.$t('lang.warningType.ContractExecution'),
+                    this.$t('lang.warningType.recall'),
+                    this.$t('lang.warningType.currencyTrade'),
+                    this.$t('lang.warningType.flash'),
+                    this.$t('lang.warningType.tradeLoop'),
+                ]
             }
         },
         /**
@@ -266,6 +272,36 @@ export default {
                 }
             }
 
+        }
+    }
+}
+</style>
+<!--1080p的145% - 150%放大-->
+<style scoped lang="scss">
+@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+    .risk-warning-detail {
+        .detail-body{
+            padding: 10px;
+            .detail-item {
+                .detail-item-txt{
+                    margin-top: 5px;
+                    font-size: 12px;
+                }
+                .default{
+                    font-size: 12px;
+                    height: 25px;
+                }
+            }
+        }
+        .detail-profit{
+            height: 65.5%;
+            padding: 10px;
+            h3{
+                font-size: 16px;
+            }
+            .detail-profit-body{
+                font-size: 12px;
+            }
         }
     }
 }

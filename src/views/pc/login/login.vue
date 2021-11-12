@@ -269,6 +269,12 @@ export default {
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
   .login {
     .content-area {
+        .area-r{
+            .regTitle{
+                margin-top: 20px;
+                margin-bottom: 15px;
+            }
+        }
       .logo-box {
         margin-top: 10px;
       }

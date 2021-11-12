@@ -4051,6 +4051,11 @@ define-property@^2.0.2:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
+defu@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/defu/-/defu-4.0.1.tgz#9d7d7a48f9295f08285d153dcff174c89b9bcb22"
+  integrity sha512-lC+G0KvvWRbisQa50+iFelm3/eMmwo4IlBmfASOVlw9MZpHHyQeVsZxc5j23+TQy5ydgEoTVSrWl7ptou1kzJQ==
+
 del@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npm.taobao.org/del/download/del-4.1.1.tgz"
@@ -11339,6 +11344,14 @@ vue-cli-plugin-styleguidist@~4.38.1:
     vue-styleguidist "^4.38.1"
     webpack-merge "^4.2.2"
 
+vue-cli-plugin-windicss@~1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-windicss/-/vue-cli-plugin-windicss-1.1.2.tgz#c5559b268ac4c6de1dbe6b5341ca4c6970472f71"
+  integrity sha512-CPF2Q2H/n1XAP9sd29ic9W0btfchamQ2Wl7fOj59i3MCiUK+0GDBkQr0d2dqmLK/EkmDPMMvlcpIEqjO9AlLMg==
+  dependencies:
+    defu "^4.0.1"
+    windicss-webpack-plugin "^1.5.3"
+
 vue-docgen-api@^4.38.1:
   version "4.38.1"
   resolved "https://registry.npm.taobao.org/vue-docgen-api/download/vue-docgen-api-4.38.1.tgz"
@@ -11752,10 +11765,10 @@ wide-align@^1.1.0:
   dependencies:
     string-width "^1.0.2 || 2"
 
-windicss-webpack-plugin@^1.5.5:
+windicss-webpack-plugin@^1.5.3:
   version "1.5.5"
-  resolved "https://r.cnpmjs.org/windicss-webpack-plugin/download/windicss-webpack-plugin-1.5.5.tgz#476d309f63f53a0d1053cf84b1af7da4a60c736b"
-  integrity sha1-R20wn2P1Og0QU8+Esa99pKYMc2s=
+  resolved "https://registry.yarnpkg.com/windicss-webpack-plugin/-/windicss-webpack-plugin-1.5.5.tgz#476d309f63f53a0d1053cf84b1af7da4a60c736b"
+  integrity sha512-ZAVZSmxtfeAYVBQR+QnhfGh44s4WGNcexNjPBX1PaObzR562JlGnbuT6z7r12kO2bDqz37qSnH50o73UjMNFFw==
   dependencies:
     "@windicss/plugin-utils" "^1.4.12"
     debug "^4.3.2"
