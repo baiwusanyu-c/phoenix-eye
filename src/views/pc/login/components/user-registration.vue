@@ -2,7 +2,7 @@
     <div class="formArea user-registration">
         <el-form :model="form" :rules="rules" ref="form">
             <el-form-item class="label" prop='name'>
-                <el-input maxlength="15" autocomplete="off" placeholder="请输入真实姓名" v-model="form.name">
+                <el-input maxlength="15" autocomplete="off" :placeholder="$t('lang.loginConfig.tname')" v-model="form.name">
                     <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
@@ -11,7 +11,7 @@
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='unit'>
-                <el-input maxlength="15" autocomplete="off" placeholder="请输入单位名称" v-model="form.unit">
+                <el-input maxlength="15" autocomplete="off" :placeholder="$t('lang.loginConfig.uname')" v-model="form.unit">
                     <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/unit.png" alt="">
@@ -19,21 +19,21 @@
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='addr'>
-                <el-input maxlength="15" autocomplete="off" placeholder="请输入小区住址" v-model="form.addr">
+                <el-input maxlength="15" autocomplete="off" :placeholder="$t('lang.loginConfig.addr')" v-model="form.addr">
                     <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
                     <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/addr.png" alt="">
                     </template>
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='email'>
-                <el-input maxlength="15" autocomplete="off" placeholder="请输入邮箱地址" v-model="form.email">
+                <el-input maxlength="15" autocomplete="off" :placeholder="$t('lang.loginConfig.email')" v-model="form.email">
                     <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
                     <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/email.png" alt="">
                     </template>
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='phoneNumber'>
-                <el-input autocomplete="off" placeholder="请输入手机号" v-model="form.phoneNumber">
+                <el-input autocomplete="off" :placeholder="$t('lang.loginConfig.phone')" v-model="form.phoneNumber">
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/phone.png" alt="">
                         <span class="reg-start">*</span>
@@ -43,20 +43,20 @@
             <div class="flex">
                 <el-form-item class="label" prop='code' style="width: 58%;">
                     <el-input maxlength="6" @keyup.enter.native="getCode()" type="text" autocomplete="off"
-                              placeholder="请输入验证码" v-model="form.code">
+                              :placeholder="$t('lang.loginConfig.loginVerCodeValid')" v-model="form.code">
                         <template slot="prepend">
                             <img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
                             <span class="reg-start">*</span>
                         </template>
                     </el-input>
                 </el-form-item>
-                <p class="codeBtn" v-if="!isTip" @click="getCode">获取验证码</p>
-                <p class="tips" v-else>{{ number }}s</p>
+                <p class="codeBtn" v-if="!isTip" @click="getCode">{{ $t('lang.loginConfig.getVerCodeValid') }}</p>
+                <p class="tips" v-else>{{ number }}</p>
             </div>
         </el-form>
-        <el-button class="primary" type="primary" :loading="isLogin" @click="registerUser">快速注册</el-button>
+        <el-button class="primary" type="primary" :loading="isLogin" @click="registerUser">{{ $t('lang.loginConfig.register') }}</el-button>
         <p class="flex flex-center checkArea">
-            <span class="phone cursor" @click="$parent.areaType = 2;">已有账号去登录</span>
+            <span class="phone cursor" @click="$parent.areaType = 1;">{{ $t('lang.loginConfig.goNameLogin') }}</span>
         </p>
     </div>
 </template>
@@ -71,19 +71,19 @@ export default {
             if (this.phoneReg.test(value)) {
                 callback();
             } else {
-                callback(new Error('手机号格式错误'));
+                callback(new Error(this.$t('lang.loginConfig.phoneErr')));
             }
         };
         var validateUserName = (rule, value, callback) => {
             if (!this.nameReg.test(value)) {
-                callback(new Error('英文或英文+数字组合，不超过15个字符'));
+                callback(new Error(this.$t('lang.loginConfig.tnameErr')));
             } else {
                 callback();
             }
         };
         var validateEmail = (rule, value, callback) => {
             if (!this.emailReg.test(value)) {
-                callback(new Error('邮箱地址错误'));
+                callback(new Error(this.$t('lang.loginConfig.emailErr')));
             } else {
                 callback();
             }
@@ -97,18 +97,18 @@ export default {
             isLogin: false,
             rules: {
                 name: [
-                    {required: true, message: '请输入真实姓名', trigger: 'blur'},
+                    {required: true, message: this.$t('lang.loginConfig.tname'), trigger: 'blur'},
                     {validator: validateUserName, trigger: 'blur'}
                 ],
                 code: [
-                    {required: true, message: '请输入验证码', trigger: 'blur'},
+                    {required: true, message: this.$t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},
                 ],
                 phoneNumber: [
-                    {required: true, message: '请输入手机号', trigger: 'blur'},
+                    {required: true, message: this.$t('lang.loginConfig.phone'), trigger: 'blur'},
                     {validator: validatePhonenumber, trigger: 'blur'}
                 ],
                 email: [
-                    {required: false, message: '请输入邮箱地址', trigger: 'blur'},
+                    {required: false, message: this.$t('lang.loginConfig.email'), trigger: 'blur'},
                     {validator: validateEmail, trigger: 'blur'}
                 ]
             },
@@ -127,7 +127,7 @@ export default {
                     getRegCode({
                         userName: this.form.phoneNumber
                     }).then(res => {
-                        this.$message.success('获取验证码成功');
+                        this.$message.success(this.$t('lang.loginConfig.getVerCodeValid') + this.$t('lang.success'));
                         this.form.uuid = res;
                         this.isTip = true;
                         this.number = 60;
@@ -160,7 +160,7 @@ export default {
                         password: this.form.pwd,
                         sourceCode: 'fraud_system',
                     }).then(() => {
-                        this.$message.success('注册成功');
+                        this.$message.success(this.$t('lang.loginConfig.register') + this.$t('lang.success'));
                         this.$parent.areaType = 1;
                     }).catch(error => {
                         console.error(error)

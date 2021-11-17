@@ -8,14 +8,15 @@
     <div class="formArea">
         <el-form :model="form" :rules="rules" ref="form">
             <el-form-item class="label" prop='name'>
-                <el-input maxlength="40" autocomplete="off" :disabled="!!chipId"
-                          :placeholder="chipId ? '请插入加密锁' : '请输入用户名/手机号'" v-model="form.name">
+                <el-input maxlength="40" autocomplete="off"
+                          :placeholder="$t('lang.loginConfig.loginNameP')" v-model="form.name">
                     <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
                     </template>
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='pwd'>
-                <el-input maxlength="40" :type="visible ? 'text' : 'password'" autocomplete="off" placeholder="请输入密码"
+                <el-input maxlength="40" :type="visible ? 'text' : 'password'" autocomplete="off"
+                          :placeholder="$t('lang.loginConfig.loginPwdP')"
                           v-model="form.pwd">
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
@@ -31,7 +32,7 @@
             <div class="flex">
                 <el-form-item class="label" prop='code' style="width: calc(100% - 130px);">
                     <el-input maxlength="4" @keyup.enter.native="login()" type="text" autocomplete="off"
-                              placeholder="请输入验证码" v-model="form.code">
+                              :placeholder="$t('lang.loginConfig.loginVerCodeP')" v-model="form.code">
                         <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
                         </template>
                     </el-input>
@@ -44,23 +45,17 @@
                 </div>
             </div>
         </el-form>
-        <el-button class="primary" type="primary" v-if='!chipId || isSignatured' :loading="isLogin" @click="login">登录
+        <el-button class="primary" type="primary" v-if='!chipId || isSignatured' :loading="isLogin" @click="login">
+            {{ $t('lang.loginConfig.login') }}
         </el-button>
-        <el-tooltip content="未授权，禁止登录" placement="top" effect="light" v-else>
-            <el-button class="primary errBtn" type="primary">登 录</el-button>
-        </el-tooltip>
         <p class=" flex-end checkArea">
-         <span class="phone cursor" @click="$parent.areaType = 2">免费版用户登录</span>
+         <span class="phone cursor" @click="$parent.areaType = 3">{{ $t('lang.loginConfig.titleRegister') }}</span>
             <span class="phone cursor" ></span>
             <span class="reg">
         <!-- <span class="cursor" @click="$parent.areaType = 3">注册</span>-->
 
-          <span class="cursor" @click="$parent.areaType = 4">忘记密码</span>
+          <span class="cursor" @click="$parent.areaType = 4">{{ $t('lang.loginConfig.titleReset') }}</span>
         </span>
-        </p>
-        <p class=" flex-center checkArea">
-            登录即表明同意
-            <span class="reg" style="cursor: pointer" @click="openServiceArg()">《链必追平台服务协议》</span>
         </p>
     </div>
 </template>
@@ -68,21 +63,21 @@
 <script>
 import {nameLoginUkey, login, getCodeImg, getInfo} from '@/api/login.js';
 import {deleteDataBase, getDataBase} from "../../../../utils/index-database";
-import {getPlatforms, getRate} from "../../../../api/common";
+// import {getPlatforms, getRate} from "../../../../api/common";
 
 export default {
     name: "NameLogin",
     data() {
         var validatePwd = (rule, value, callback) => {
             if (!this.pwdReg.test(value)) {
-                callback(new Error('6-12位字母+数字组合，可含特殊字符'));
+                callback(new Error(this.$t('lang.loginConfig.phoneNumErr')));
             } else {
                 callback();
             }
         };
         var validateUserName = (rule, value, callback) => {
             if (!this.nameReg.test(value)) {
-                callback(new Error('用户名格式错误'));
+                callback(new Error(this.$t('lang.loginConfig.unameError')));
             } else {
                 callback();
             }
@@ -97,15 +92,15 @@ export default {
             isLogin: false,
             rules: {
                 name: [
-                    {required: true, message: '请输入账户/手机号', trigger: 'blur'},
+                    {required: true, message: this.$t('lang.loginConfig.loginNameP'), trigger: 'blur'},
                     // { validator: validateUserName, trigger: 'blur' }
                 ],
                 pwd: [
-                    {required: true, message: '请输入密码', trigger: 'blur'},
+                    {required: true, message: this.$t('lang.loginConfig.loginPwdP'), trigger: 'blur'},
                     // { validator: validatePwd, trigger: 'blur' }
                 ],
                 code: [
-                    {required: true, message: '请输入验证码', trigger: 'blur'},
+                    {required: true, message: this.$t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},
                 ],
             },
             isFocus: false,
@@ -136,25 +131,25 @@ export default {
          * 获取用户的币种平台信息
          */
         getPlatformInfo(){
-            getPlatforms().then(res => {
+           /* getPlatforms().then(res => {
                 this.setCookie('platforms', JSON.stringify(res));
                 this.setStore('platforms', JSON.stringify(res));
                 this.$root.platforms = res;
             }).catch(error => {
                 console.log(error)
-            });
+            });*/
         },
         /**
          * 获取币种汇率信息
          */
         getRateInfo(){
-            getRate().then(res => {
+           /* getRate().then(res => {
                 this.setCookie('currencyRates', JSON.stringify(res));
                 this.setStore('currencyRates', JSON.stringify(res));
                 this.$root.currencyRates = res;
             }).catch(error => {
                 console.log(error)
-            });
+            });*/
         },
         deleteDataBase() {
             // let webDataBase = new indexDB()

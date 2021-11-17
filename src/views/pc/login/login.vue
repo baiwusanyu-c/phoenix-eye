@@ -20,13 +20,23 @@
               areaType === 3 ? $t('lang.loginConfig.titleRegister') : areaType === 4 ? $t('lang.loginConfig.titleLogin') : $t('lang.loginConfig.titleLogin')
             }}
           </p>
-          <phoneLogin
+            <!--          賬號登錄          -->
+            <name-login
+                ref="nameLogin"
+                v-if="areaType === 1"
+                :isSignatured="isSignatured"
+                :chipId="form.chipId"
+                :name="this.form.name">
+            </name-login>
+<!--          <phoneLogin
               v-if="areaType === 2"
               :isSignatured="isSignatured"
               :chipId="form.chipId">
-          </phoneLogin>
+          </phoneLogin>-->
           <!--          注冊賬號          -->
           <userRegistration v-if="areaType === 3"></userRegistration>
+            <!--     忘记密码       -->
+            <reset-password v-if="areaType === 4"></reset-password>
         </div>
       </div>
       <div class="footer-box">
@@ -50,10 +60,11 @@
 </template>
 
 <script>
-import phoneLogin from "./components/phone-login";
 import userRegistration from "./components/user-registration";
 // import resetPwd from "./components/reset-password";
 import animatedInit, {destroyTHERR} from "./login-3d";
+import NameLogin from "./components/name-login";
+import ResetPassword from "./components/reset-password";
 
 export default {
   name: "Login",
@@ -65,12 +76,13 @@ export default {
         chipId: this.$root.chipId,
       },
       isSignatured: false,
-      areaType: 2,
+      areaType: 1,
       delTip: false,
     };
   },
   components: {
-    phoneLogin,
+      ResetPassword,
+      NameLogin,
     userRegistration,
   },
   mounted() {
