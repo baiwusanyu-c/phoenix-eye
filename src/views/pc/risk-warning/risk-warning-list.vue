@@ -49,8 +49,8 @@
                     align="center">
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.txHash"
-                                          fontLength="10"
-                                          endLength="10">
+                                          fontLength="8"
+                                          endLength="8">
                         </be-ellipsis-copy>
                     </template>
                 </el-table-column>
@@ -64,7 +64,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="80"
+                    width="100"
                     prop="state"
                     :label="$t('lang.riskConfig.tableHeader.state')"
                     align="center">
@@ -105,9 +105,11 @@
                     :label="$t('lang.riskConfig.tableHeader.warningType')"
                     align="center">
                     <template slot-scope="scope">
-                        <el-tag v-for="item in scope.row.warningType"
-                                style="margin-top: 10px"
-                                :key="item">{{item}}</el-tag>
+                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center">
+                            <el-tag v-for="item in scope.row.warningType"
+                                    style="margin-top: 10px;width: min-content;"
+                                    :key="item">{{item}}</el-tag>
+                        </div>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -120,7 +122,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="80"
+                    width="100"
                     :label="$t('lang.riskConfig.tableHeader.detail')"
                     align="center">
                     <template slot-scope="scope">
