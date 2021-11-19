@@ -35,28 +35,28 @@
                                           :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
-                                <img src="../../../../assets/image/pc/subtract.png"
+                                <!--<img src="../../../../assets/image/pc/subtract.png"
                                      v-show="index < contractSite.length - 1"
                                      class="subtract"
-                                     @click="deleteContractSite(index)"/>
-                                <img src="../../../../assets/image/pc/add.png"
+                                     @click="deleteContractSite(index)"/>-->
+                                <!--<img src="../../../../assets/image/pc/add.png"
                                      v-show="index === contractSite.length - 1"
                                      class="add"
-                                     @click="addContractSite"/>
+                                     @click="addContractSite"/>-->
+                                <div class="subtract">
+                                    <svg-icon icon-class="subtract"
+                                              class="subtract-btn"
+                                              disabled-tool-tip
+                                              v-show="index < contractSite.length - 1"
+                                              @click="deleteContractSite(index)"
+                                    ></svg-icon>
+                                </div>
+                                <div class="add-btn"
+                                     v-show="index === contractSite.length - 1"
+                                     @click="addContractSite">
+                                    <svg-icon icon-class="add" class="add-create" disabled-tool-tip></svg-icon>
+                                </div>
                             </div>
-                            <!--<div class="contractSiteBox">
-                                <el-select v-model="contractSiteAdd.platform" class="contractSiteClass"
-                                           :placeholder="$t('lang.createProject.selectContractClass')">
-                                    <el-option label="select1" value="name1"></el-option>
-                                    <el-option label="select2" value="name2"></el-option>
-                                </el-select>
-                                <el-input v-model="contractSiteAdd.contract_address" class="contractSiteSite"
-                                          :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
-                                <el-input v-model="contractSiteAdd.label" class="contractSiteLabel"
-                                          :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
-                                &lt;!&ndash;<img src="../../../assets/image/pc/subtract.png" class="subtract"/>&ndash;&gt;
-                                <img src="../../../../assets/image/pc/add.png" class="add" @click="addContractSite"/>
-                            </div>-->
                         </el-form-item>
                     </el-form>
                 </div>
@@ -179,6 +179,52 @@ export default {
     width: 682px;
 }
 
+.subtract:hover{
+    .svg-icon.subtract-btn{
+        fill:#0468C2
+    }
+}
+
+.svg-icon.subtract-btn{
+    margin-left: 11px;
+    width: 20px;
+    height: 20px;
+    vertical-align: -0.3em;
+    fill: gray;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+
+
+.add-btn{
+    width: 16px;
+    height: 16px;
+    border: solid 1px darkgray;
+    border-radius: 2px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 12px;
+}
+
+.add-btn:hover{
+    border-color: #0468C2;
+    .svg-icon.add-create{
+        fill:#0468C2
+    }
+}
+
+.svg-icon.add-create{
+    width: 14px;
+    height: 14px;
+    vertical-align: -0.3em;
+    fill: gray;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+
 /deep/ .el-input__inner {
     height: 40px;
     border-radius: 2px;
@@ -196,16 +242,10 @@ export default {
     margin-left: 16px;
 }
 
-.add {
-    z-index: 378;
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    background-color: white;
-}
-
 .contractSiteBox {
     margin-top: 8px;
+    display: flex;
+    align-items: center;
 }
 
 .contractSiteClass {
@@ -220,17 +260,5 @@ export default {
 .contractSiteLabel {
     width: 234px;
     margin-left: 8px;
-}
-
-.subtract {
-    z-index: 378;
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    background-color: white;
-}
-
-.subtract:hover {
-    background-color: #0468C2;
 }
 </style>
