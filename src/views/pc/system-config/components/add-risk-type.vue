@@ -17,10 +17,10 @@
                                 <el-select v-model="abnormalSelectValue" multiple  @change="handleCheckedCitiesChange" :placeholder="$t('lang.addRiskWindow.abnormalSelectInput')">
                                     <el-checkbox :indeterminate="checked" v-model="checkAll" class="checkboxSelectAll" @change="handleCheckAllChange">{{$t('lang.addRiskWindow.selectAll')}}</el-checkbox>
                                     <el-option
-                                           v-for="o in selectNameClass"
-                                           :label="o"
-                                           :key="o"
-                                           :value="o">
+                                           v-for="(item) in featuresList"
+                                           :label="item.label"
+                                           :key="item.code"
+                                           :value="item">
                                    </el-option>
                                </el-select>
                             </template>
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+    import {getRiskTypeInfo} from "../../../../api/system-config";
+
     export default {
         name: "addRiskType",
         data(){
@@ -46,26 +48,99 @@
                 addRiskWindowOpen: false,
                 addRiskName:'',
                 abnormalSelectValue:[],
-                selectNameClass:['select1','select2','select3'],
                 selectNameLength:[],
             }
         },
+        props:{
+            // 特徵列表
+            featuresList:{
+                type:Array,
+                default:()=>[]
+            },
+            // 操作類型
+            type:{
+                type:String,
+                default:'add'
+            },
+            // 風險類型名稱
+            riskId:{
+                type:String,
+                default:''
+            }
+        },
+        watch:{
+            addRiskWindowOpen(nVal) {
+                if(nVal){
+                    // 獲取詳情信息，包含當前風險類型已經有的風險類型特徵
+                    this.getDetailData()
+                }else{
+                    // 重置表單
+                    this.resetVar()
+                }
+            }
+        },
         methods:{
+            /**
+             * 彈窗確認方法
+             */
             addRiskConfirm(){
+                let data = {
+                    name:this.addRiskName,
+                    risk_features:this.abnormalSelectValue
+                }
+                // 確認編輯 、 保存
+                this.$emit('confirm',data)
                 this.addRiskWindowOpen = false
             },
+            /**
+             * 關閉彈窗
+             */
             addRiskCancel(){
                 this.addRiskWindowOpen = false
             },
             handleCheckAllChange(val) {
-                let selectName = this.selectNameClass
+                let selectName = this.featuresList
                 this.abnormalSelectValue = val ? selectName : [];
                 this.checked = false;
             },
             handleCheckedCitiesChange(value) {
                 let checkedCount = value.length;
-                this.checkAll = checkedCount === this.selectNameClass.length;
-                this.checked = checkedCount > 0 && checkedCount < this.selectNameClass.length;
+                this.checkAll = checkedCount === this.featuresList.length;
+                this.checked = checkedCount > 0 && checkedCount < this.featuresList.length;
+            },
+            /**
+             * 重置參數變量
+             */
+            resetVar(){
+                    this.checkAll = false
+                    this.checked = true
+                    this.addRiskWindowOpen = false
+                    this.addRiskName = ''
+                    this.abnormalSelectValue = []
+                    this.selectNameLength =[]
+            },
+            /**
+             * 获取风险类型详情数据
+             */
+            getDetailData(){
+                const _this = this
+                if(this.type === 'add'){
+                    this.addRiskName = ''
+                    return
+                }
+                const pathParams = {
+                    id:this.riskId
+                }
+                getRiskTypeInfo(null,pathParams).then(res=>{
+                    if(res){
+                        _this.addRiskName = res.risk_type.name
+                        _this.abnormalSelectValue = res.risk_type.risk_features
+                    }
+                }).catch(err=>{
+                    const msg = _this.$t('lang.search')+ _this.$t('lang.failed')
+                    _this.$message.error(msg)
+                    console.error(err)
+                })
             }
         }
     }

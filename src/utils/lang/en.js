@@ -6,6 +6,13 @@ export const lang = {
     scan:'查看',
     success:'成功',
     failed:'失败',
+    create:'创建',
+    add:'新增',
+    edit:'编辑',
+    delete:'删除',
+    search:'查询',
+
+
     warningType: {
         recall:'重复调用',
         currencyTrade:'币种兑换',

@@ -18,7 +18,7 @@
         <div v-if="type === 'edit'" class="card-edit">
             <p>{{ $t('lang.systemConfig.features') }}：</p>
             <div>
-                <el-tag v-for="(item) in features" :key="item + _uid">{{ item }}</el-tag>
+                <el-tag v-for="(item) in features" :key="item.code">{{ item.label }}</el-tag>
             </div>
         </div>
         <!--    新增时显示   -->
