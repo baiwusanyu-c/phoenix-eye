@@ -24,35 +24,39 @@
                                       :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"></el-input>
                         </el-form-item>
                         <el-form-item :label="$t('lang.createProject.contractSite')">
-
-                            <div class="contractSiteBox" v-for="(o,index) in contractSiteSubtractClassLength"
+                            <div class="contractSiteBox" v-for="(o,index) in contractSite"
                                  :key="index" :offset="index > 0 ? addContract.n : 0">
-                                <el-select v-model="contractSiteClass[o]" class="contractSiteClass"
+                                <el-select v-model="contractSite[index].platform" class="contractSiteClass"
                                            :placeholder="$t('lang.createProject.selectContractClass')">
                                     <el-option label="select1" value="name1"></el-option>
                                     <el-option label="select2" value="name2"></el-option>
                                 </el-select>
-                                <el-input v-model="contractSiteSite[o]" class="contractSiteSite"
+                                <el-input v-model="contractSite[index].contract_address" class="contractSiteSite"
                                           :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
-                                <el-input v-model="contractSiteLable[o]" class="contractSiteLabel"
+                                <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
-                                <img src="../../../../assets/image/pc/subtract.png" class="subtract"
-                                     @click="deleteContractSite(o)"/>
+                                <img src="../../../../assets/image/pc/subtract.png"
+                                     v-show="index < contractSite.length - 1"
+                                     class="subtract"
+                                     @click="deleteContractSite(index)"/>
+                                <img src="../../../../assets/image/pc/add.png"
+                                     v-show="index === contractSite.length - 1"
+                                     class="add"
+                                     @click="addContractSite"/>
                             </div>
-
-                            <div class="contractSiteBox">
-                                <el-select v-model="contractSiteAdd.class" class="contractSiteClass"
+                            <!--<div class="contractSiteBox">
+                                <el-select v-model="contractSiteAdd.platform" class="contractSiteClass"
                                            :placeholder="$t('lang.createProject.selectContractClass')">
                                     <el-option label="select1" value="name1"></el-option>
                                     <el-option label="select2" value="name2"></el-option>
                                 </el-select>
-                                <el-input v-model="contractSiteAdd.site" class="contractSiteSite"
+                                <el-input v-model="contractSiteAdd.contract_address" class="contractSiteSite"
                                           :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
-                                <el-input v-model="contractSiteAdd.lable" class="contractSiteLabel"
+                                <el-input v-model="contractSiteAdd.label" class="contractSiteLabel"
                                           :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
-                                <!--<img src="../../../assets/image/pc/subtract.png" class="subtract"/>-->
+                                &lt;!&ndash;<img src="../../../assets/image/pc/subtract.png" class="subtract"/>&ndash;&gt;
                                 <img src="../../../../assets/image/pc/add.png" class="add" @click="addContractSite"/>
-                            </div>
+                            </div>-->
                         </el-form-item>
                     </el-form>
                 </div>
@@ -79,23 +83,10 @@ export default {
             createProjectWindow: false,
             projectName: '',
             projectKeyWords: '',
-            contractSiteAdd: {
-                class: '',
-                site: '',
-                lable: '',
-            },
-            contractSiteSubtract: {
-                class: '',
-                site: '',
-                lable: '',
-            },
-            contractSiteSubtractClassLength: 0,
             openTF: false,
             labelPosition: 'right',
             addContract: 0,
-            contractSiteClass: [],
-            contractSiteSite: [],
-            contractSiteLable: [],
+            contractSite:[{platform: '', contract_address: '', label: ''}],
         }
     },
     props: {
@@ -129,19 +120,14 @@ export default {
             this.createProjectWindow = false
         },
         addContractSite() {
-            this.contractSiteClass.unshift(this.contractSiteSubtract.class)
-            this.contractSiteSite.unshift(this.contractSiteSubtract.site)
-            this.contractSiteLable.unshift(this.contractSiteSubtract.lable)
+            this.contractSite.unshift({platform: '', contract_address: '', label: ''})
             this.contractSiteSubtractClassLength++
-            console.log(this.contractSiteSubtractClassLength)
         },
         deleteContractSite(i) {
             console.log('@')
-            this.contractSiteClass.splice(i, 1)
-            this.contractSiteSite.splice(i, 1)
-            this.contractSiteLable.splice(i, 1)
+            this.contractSite.splice(i, 1)
+
             this.contractSiteSubtractClassLength--
-            console.log(this.contractSiteSubtractClassLength)
         },
         /**
          * 重置參數變量
@@ -150,23 +136,11 @@ export default {
             this.createProjectWindow = false
             this.projectName = ''
             this.projectKeyWords = ''
-            this.contractSiteAdd = {
-                class: '',
-                site: '',
-                lable: '',
-            }
-            this.contractSiteSubtract = {
-                class: '',
-                site: '',
-                lable: '',
-            }
-            this.contractSiteSubtractClassLength = 0
-            this.openTF = false
-            this.labelPosition = 'right'
-            this.addContract = 0
-            this.contractSiteClass = []
-            this.contractSiteSite = []
-            this.contractSiteLable = []
+            this.openTF=false
+            this.labelPosition='right'
+            this.addContract= 0
+            this.contractSite=[{platform: '', contract_address: '', label: ''}]
+
         },
         /**
          * 获取风险类型详情数据
