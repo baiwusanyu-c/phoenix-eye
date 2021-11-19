@@ -11,3 +11,19 @@ export const platformDict = {
     HECO:'heco',
     Polygon:'polygon'
 }
+export const platformListDict =  [
+    {
+        label: 'ETH',
+        value: 'eth'
+    }, {
+        label: 'BSC',
+        value: 'bsc'
+    }, {
+        label: 'HECO',
+        value: 'heco'
+    },
+    {
+        label: 'Polygon',
+        value: 'polygon'
+    },
+]

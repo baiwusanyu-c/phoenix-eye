@@ -49,7 +49,13 @@
 <script>
 import ProjectManageCard from "./components/project-manage-card";
 import CreateProject from "./components/create-project";
-import {deleteProject, getProjectList, reappraiseProject} from "../../../api/project-management";
+import {
+    createProject,
+    deleteProject,
+    getProjectList,
+    reappraiseProject,
+    saveEditProject
+} from "../../../api/project-management";
 
 
 
@@ -105,7 +111,7 @@ export default {
          */
         confirmAdd(param){
             const _this = this
-           /* createRiskType(param).then(res=>{
+            createProject(param).then(res=>{
                 if(res){
                     const msg = _this.$t('lang.add')+ _this.$t('lang.success')
                     _this.$message.success(msg)
@@ -116,7 +122,7 @@ export default {
                 const msg = _this.$t('lang.add')+ _this.$t('lang.failed')
                 _this.$message.error(msg)
                 console.error(err)
-            })*/
+            })
         },
         /**
          * 编辑类型方法
@@ -132,11 +138,11 @@ export default {
          * @param {Object} param - 表单参数
          */
         confirmEdit(param){
-            /*const _this = this
+            const _this = this
             const pathParams = {
                 id:this.curItem.id
             }
-            saveEditRiskType(param,pathParams).then(res=>{
+            saveEditProject(param,pathParams).then(res=>{
                 if(res){
                     const msg = _this.$t('lang.edit')+ _this.$t('lang.success')
                     _this.$message.success(msg)
@@ -147,7 +153,7 @@ export default {
                 const msg = _this.$t('lang.edit')+ _this.$t('lang.failed')
                 _this.$message.error(msg)
                 console.error(err)
-            })*/
+            })
         },
         /**
          * 删除类型方法

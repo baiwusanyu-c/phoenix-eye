@@ -50,7 +50,7 @@ service.interceptors.response.use(
                 })
             }
             if (res.code === 401 || res.code === 920000003) {
-                $vue.$router.push({path: "/login"})
+               // $vue.$router.push({path: "/login"})
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
             return Promise.reject(new Error(res.msg || 'Error'))

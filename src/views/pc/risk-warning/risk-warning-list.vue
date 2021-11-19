@@ -20,7 +20,7 @@
             <div class="search-area search-area-input">
                 <el-input autocomplete="off" :placeholder="$t('lang.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getData">{{ $t('lang.riskConfig.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getData(searchParams)">{{ $t('lang.riskConfig.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -43,56 +43,56 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="txHash"
+                    prop="tx_hash"
                     :label="$t('lang.riskConfig.tableHeader.txHash')"
                     width="170"
                     align="center">
                     <template slot-scope="scope">
-                        <be-ellipsis-copy :targetStr="scope.row.txHash"
+                        <be-ellipsis-copy :targetStr="scope.row.tx_hash"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="txTime"
+                    prop="tx_time"
                     show-tooltip-when-overflow
                     :label="$t('lang.riskConfig.tableHeader.txTime')"
                     align="center">
                     <template slot-scope="scope">
-                        <span>{{formatDate($createDate(scope.row.txTime))}}</span>
+                        <span>{{formatDate($createDate(scope.row.tx_time))}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     width="100"
-                    prop="state"
+                    prop="tx_status"
                     :label="$t('lang.riskConfig.tableHeader.state')"
                     align="center">
                     <template slot-scope="scope">
-                        <span :style="stateSuccess(scope.row.state)">
-                            {{stateTxt(scope.row.state)}}
+                        <span :style="stateSuccess(scope.row.tx_status)">
+                            {{stateTxt(scope.row.tx_status)}}
                         </span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="from"
+                    prop="from_address"
                     width="170"
                     :label="$t('lang.riskConfig.tableHeader.from')"
                     align="center">
                     <template slot-scope="scope">
-                        <be-ellipsis-copy :targetStr="scope.row.from"
+                        <be-ellipsis-copy :targetStr="scope.row.from_address"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="to"
+                    prop="to_address"
                     width="170"
                     :label="$t('lang.riskConfig.tableHeader.to')"
                     align="center" >
                     <template slot-scope="scope">
-                        <be-ellipsis-copy :targetStr="scope.row.to"
+                        <be-ellipsis-copy :targetStr="scope.row.to_address"
                                           v-if="!scope.row.tag"
                                           fontLength="8"
                                           endLength="8">
@@ -101,24 +101,24 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="warningType"
+                    prop="risk_features"
                     :label="$t('lang.riskConfig.tableHeader.warningType')"
                     align="center">
                     <template slot-scope="scope">
                         <div style="display: flex;flex-direction: column;justify-content: center;align-items: center">
-                            <el-tag v-for="item in scope.row.warningType"
+                            <el-tag v-for="item in scope.row.risk_features"
                                     style="margin-top: 10px;width: min-content;"
                                     :key="item">{{item}}</el-tag>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="score"
+                    prop="risk_score"
                     :label="$t('lang.riskConfig.tableHeader.score')"
                     align="center"
                     show-overflow-tooltip>
                     <template slot-scope="scope">
-                        {{scope.row.score}}
+                        {{scope.row.risk_score}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -137,7 +137,7 @@
                 :pageSize='pageParams.pageSize'
                 :currentPage='pageParams.currentPage'
                 :total='pageParams.total'
-                @updatePage="pageChange"
+                 @updatePage="pageChange"
                 :is-front="false">
                 <span slot="prev" class="table-page-info">共计{{pageParams.total}}条</span>
                 <span slot="next"></span>
@@ -149,6 +149,8 @@
 <script>
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import qs from 'qs'
+import {platformListDict} from "../../../utils/platformDict";
+import {getProjWarning} from "../../../api/risk-warning";
 export default {
     name: "risk-warning-list",
     components: {BePagination},
@@ -167,26 +169,7 @@ export default {
                 total: 0
             },
             // 下拉列表币种
-            platformList: [
-                {
-                    label: 'BTC',
-                    value: 'btc'
-                },
-                {
-                    label: 'ETH',
-                    value: 'eth'
-                },
-                {
-                    label: 'TRX',
-                    value: 'tron'
-                }, {
-                    label: 'BSC',
-                    value: 'bsc'
-                }, {
-                    label: 'HECO',
-                    value: 'heco'
-                }
-            ],
+            platformList: [],
             // 表格数据
             tableData:[]
         }
@@ -213,6 +196,9 @@ export default {
             }
         }
     },
+    created() {
+      this.platformList = platformListDict
+    },
     mounted() {
         this.getData()
     },
@@ -220,38 +206,35 @@ export default {
         /**
          * 获取表格数据
          */
-        getData() {
-            this.tableData = [
-                {
-                    txHash:'0xf1fae42f35dbe8b1d2d135cca9a9bd99e590519c76e5d024e3b3813f138e3444',
-                    platform: 'BSC',
-                    txTime:'2019-12-23 14:07:23',
-                    from:'0xb0d2c76ddeeea50e88a5170562ba834243339efa',
-                    to:'0x6488aa4d1955ee33403f8ccb1d4de5fb97c7ade2',
-                    tag:'AAVE',
-                    score:'20',
-                    state:'success',
-                    warningType:['疑似闪电贷攻击','疑似重入攻击'],
-                },
-                {
-                    txHash:'0xf1fae42f35dbe8b1d2d135cca9a9bd99e590519c76e5d024e3b3813f138e3444',
-                    platform: 'BSC',
-                    txTime:'2019-12-23 14:07:23',
-                    from:'0xb0d2c76ddeeea50e88a5170562ba834243339efa',
-                    to:'0x6488aa4d1955ee33403f8ccb1d4de5fb97c7ade2',
-                    state:'failed',
-                    tag:'',
-                    score:'12',
-                    warningType:['疑似闪电贷攻击','疑似重入攻击'],
-                },
-            ]
+        getData(searchParam) {
+            const _this = this
+            let params = {
+                page_num:this.pageParams.pageNum,
+                page_size:this.pageParams.pageSize,
+                param:this.searchParams.addr
+            }
+            if(searchParam){
+                params.platfrom = searchParam.platform
+            }
+            getProjWarning(params).then(res=>{
+                if(res){
+                    _this.tableData = res.data
+                }
+            }).catch(err=>{
+                const msg = _this.$t('lang.operation')+ _this.$t('lang.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })
             this.pageParams.total =  this.tableData.length
         },
         /**
          * 分页方法
+         * @param {Object} item - 分页参数对象
          */
-        pageChange(){
-
+        pageChange(item){
+            this.pageParams.pageNum = item.currentPage
+            this.pageParams.currentPage = item.currentPage
+            this.getData(this.searchParams)
         },
         /**
          * 打開交易分析詳情tab
