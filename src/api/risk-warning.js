@@ -4,7 +4,7 @@ import config from '@/config/index' // 路径配置
 // 获取项目列表
 export function getProjWarning(params) {
     return request({
-        url: `${config.baseURL}/ussa/risk/warning/list`,
+        url: `${config.baseURL}/ussa/risk_warning/list`,
         method: 'get',
         params
     })

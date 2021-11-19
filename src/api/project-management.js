@@ -1,34 +1,34 @@
 // 项目管理api
 import request from '@/utils/request'
 import config from '@/config/index' // 路径配置
-// 获取项目列表
+// 获取项目列表 √
 export function getProjectList() {
     return request({
-        url: `${config.baseURL}/ussa/project/manage/list`,
+        url: `${config.baseURL}/ussa/project_manage/list`,
         method: 'get'
     })
 }
 //创建项目
 export function createProject(params) {
     return request({
-        url: `${config.baseURL}/ussa/project/manage/create`,
+        url: `${config.baseURL}/ussa/project_manage/create`,
         method: 'post',
         params
     })
 }
-// 重新评估项目
-export function reappraiseProject(params) {
+// 重新评估项目 √
+export function reappraiseProject(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project/manage/reappraise/`,
+        url: `${config.baseURL}/ussa/project_manage/reappraise?id=${pathParams.id}`,
         method: 'post',
         params
     })
 }
 
 //项目编辑-获取项目详情
-export function getProjectInfo(params) {
+export function getProjectInfo(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project/manage/edit/`,
+        url: `${config.baseURL}/ussa/project_manage/edit?id=${pathParams.id}`,
         method: 'get',
         params
     })
@@ -36,15 +36,15 @@ export function getProjectInfo(params) {
 //项目编辑-保存编辑项目
 export function saveEditProject(params) {
     return request({
-        url: `${config.baseURL}/ussa/project/manage/edit/`,
+        url: `${config.baseURL}/ussa/project_manage/edit/`,
         method: 'post',
         params
     })
 }
-// 删除项目
-export function deleteProject(params) {
+// 删除项目 √
+export function deleteProject(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project/manage/delete/`,
+        url: `${config.baseURL}/ussa/project_manage/delete?id=${pathParams.id}`,
         method: 'post',
         params
     })

@@ -75,6 +75,7 @@ export default {
         },
         /**
          * 確認新增方法
+         * @param {Object} param - 表单参数
          */
         confirmAdd(param){
             const _this = this
@@ -92,7 +93,17 @@ export default {
             })
         },
         /**
+         * 编辑类型方法
+         * @param {Object} item - 风险类型数据对象
+         */
+        editType(item){
+            this.opType = 'edit'
+            this.curItem = item
+            this.$refs.addRiskType.addRiskWindowOpen = true
+        },
+        /**
          * 確認編輯方法
+         * @param {Object} param - 表单参数
          */
         confirmEdit(param){
             const _this = this
@@ -111,15 +122,6 @@ export default {
                 _this.$message.error(msg)
                 console.error(err)
             })
-        },
-        /**
-         * 编辑类型方法
-         * @param {Object} item - 风险类型数据对象
-         */
-        editType(item){
-            this.opType = 'edit'
-            this.curItem = item
-            this.$refs.addRiskType.addRiskWindowOpen = true
         },
         /**
          * 删除类型方法
@@ -142,6 +144,8 @@ export default {
                 if(res){
                     const msg = _this.$t('lang.delete')+ _this.$t('lang.success')
                     _this.$message.success(msg)
+                    // 更新列表
+                    _this.getList()
                 }
             }).catch(err=>{
                 const msg = _this.$t('lang.delete')+ _this.$t('lang.failed')

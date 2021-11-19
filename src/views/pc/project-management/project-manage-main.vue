@@ -14,18 +14,23 @@
             <project-manage-card
                 type="edit"
                 :title="item.name"
-                :project-type="item.type"
-                :tag-list="item.tagList"
-                :createTime="item.createTime"
-                :addrList="addrList"
-                @edit="editProject"
+                :is-public="item.is_public"
+                :keyword-list="item.keywords"
+                :create-time="item.create_time"
+                :contract-list="contract_infos"
+                @edit="editProject(editProject)"
                 @fresh="freshProject(item)"
                 @delete="deleteProject(item)"
                 v-for="(item) in projectList" :key="item.id">
             </project-manage-card>
         </div>
         <!--    新增、编辑项目弹窗    -->
-        <create-project ref="createProjectDialog"></create-project>
+        <create-project
+            :type="opType"
+            :riskId = 'curItem.id'
+            @confirm = "()=>{return this.opType === 'add' ? this.confirmAdd() : this.confirmEdit()}"
+            ref="createProjectDialog">
+        </create-project>
         <!--    删除项目弹窗    -->
         <be-msg-dialog @confirm="confirmDelete"
                        headerTitle="删除"
@@ -44,11 +49,19 @@
 <script>
 import ProjectManageCard from "./components/project-manage-card";
 import CreateProject from "./components/create-project";
+import {deleteProject, getProjectList, reappraiseProject} from "../../../api/project-management";
+
+
+
 export default {
     name: "ProjectManageMain",
     components: {CreateProject, ProjectManageCard},
     data() {
         return {
+            // 当前操作的项目对象
+            curItem:{},
+            // 当前操作类型
+            opType:'add',
             // 重新评估弹窗显示
             showFresh:false,
             // 重新评估弹窗显示内容
@@ -83,43 +96,135 @@ export default {
          * 新增类型方法
          */
         addProject(){
+            this.opType = 'add'
             this.$refs.createProjectDialog.createProjectWindow = true
-            console.log('addProject')
+        },
+        /**
+         * 確認新增方法
+         * @param {Object} param - 表单参数
+         */
+        confirmAdd(param){
+            const _this = this
+           /* createRiskType(param).then(res=>{
+                if(res){
+                    const msg = _this.$t('lang.add')+ _this.$t('lang.success')
+                    _this.$message.success(msg)
+                    // 更新列表
+                    _this.getList()
+                }
+            }).catch(err=>{
+                const msg = _this.$t('lang.add')+ _this.$t('lang.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })*/
         },
         /**
          * 编辑类型方法
          */
-        editProject(){
+        editProject(item){
+            this.opType = 'edit'
+            this.curItem = item
             this.$refs.createProjectDialog.createProjectWindow = true
-            console.log('editProject')
+
+        },
+        /**
+         * 確認編輯方法
+         * @param {Object} param - 表单参数
+         */
+        confirmEdit(param){
+            /*const _this = this
+            const pathParams = {
+                id:this.curItem.id
+            }
+            saveEditRiskType(param,pathParams).then(res=>{
+                if(res){
+                    const msg = _this.$t('lang.edit')+ _this.$t('lang.success')
+                    _this.$message.success(msg)
+                    // 更新列表
+                    _this.getList()
+                }
+            }).catch(err=>{
+                const msg = _this.$t('lang.edit')+ _this.$t('lang.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })*/
         },
         /**
          * 删除类型方法
          * @param {Object} item - 项目数据对象
          */
         deleteProject(item){
+            this.curItem = item
             this.deleteText = `是否要删除${item.name}？`
             this.showDelete = true
-        },
-        /**
-         * 刷新项目信息
-         * @param {Object} item - 项目数据对象
-         */
-        freshProject(item){
-            this.freshText = `是否对${item.name}的所有安全项进行重新评估？`
-            this.showFresh = true
-        },
-        /**
-         * 确认刷新项目信息
-         */
-        confirmFresh(){
-            this.showFresh = false
         },
         /**
          * 确认删除项目信息
          */
         confirmDelete(){
             this.showDelete = false
+            const _this = this
+            const pathParams = {
+                id:this.curItem.id
+            }
+            deleteProject(null,pathParams).then(res=>{
+                if(res){
+                    const msg = _this.$t('lang.delete')+ _this.$t('lang.success')
+                    _this.$message.success(msg)
+                    // 更新列表
+                    _this.getList()
+                }
+            }).catch(err=>{
+                const msg = _this.$t('lang.delete')+ _this.$t('lang.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })
+        },
+        /**
+         * 重新评估项目
+         * @param {Object} item - 项目数据对象
+         */
+        freshProject(item){
+            this.curItem = item
+            this.freshText = `是否对${item.name}的所有安全项进行重新评估？`
+            this.showFresh = true
+        },
+        /**
+         * 确认重新评估项目
+         */
+        confirmFresh(){
+            this.showFresh = false
+            const _this = this
+            const pathParams = {
+                id:this.curItem.id
+            }
+            reappraiseProject(null,pathParams).then(res=>{
+                if(res){
+                    const msg = _this.$t('lang.operation')+ _this.$t('lang.success')
+                    _this.$message.success(msg)
+                    // 更新列表
+                    _this.getList()
+                }
+            }).catch(err=>{
+                const msg = _this.$t('lang.operation')+ _this.$t('lang.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })
+        },
+
+        /**
+         * 获取项目列表
+         */
+        getList(){
+            const _this = this
+            getProjectList().then(res => {
+                // 项目列表
+                _this.projectList =  res.data
+            }).catch(err=>{
+                const msg = _this.$t('lang.search')+ _this.$t('lang.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })
         }
     },
 }

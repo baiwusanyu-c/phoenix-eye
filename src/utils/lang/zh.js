@@ -11,6 +11,7 @@ export const lang = {
     edit:'编辑',
     delete:'删除',
     search:'查询',
+    operation:'操作',
 
     warningType: {
         recall:'重复调用',

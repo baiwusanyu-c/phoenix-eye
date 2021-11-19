@@ -62,7 +62,7 @@
                 type:String,
                 default:'add'
             },
-            // 風險類型名稱
+            // 風險類型id
             riskId:{
                 type:String,
                 default:''

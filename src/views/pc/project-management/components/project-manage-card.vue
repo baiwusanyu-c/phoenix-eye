@@ -7,12 +7,12 @@
 <template>
     <div :class="`project-manage-card`">
         <!--    非新增时显示   -->
-        <div v-if="type === 'edit'" :class="`card-title card-title-${projectType}`">
+        <div v-if="type === 'edit'" :class="`card-title card-title-${isPublic ? 'public' : 'private'}`">
             <div style="display: flex">
                 <h3>
                     {{ title }}
                 </h3>
-                <span>{{projectType === 'public' ? $t('lang.proManageConfig.proPublic') : $t('lang.proManageConfig.proPrivate')}}</span>
+                <span>{{isPublic? $t('lang.proManageConfig.proPublic') : $t('lang.proManageConfig.proPrivate')}}</span>
             </div>
             <div>
                 <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
@@ -26,13 +26,13 @@
         <!--   非新增时显示 卡片地址列表   -->
         <div v-if="type === 'edit'" class="card-edit">
             <div>
-                <el-tag v-for="(item) in tagList" :key="item + _uid">{{ item }}</el-tag>
+                <el-tag v-for="(item) in keywordList" :key="item + _uid">{{ item }}</el-tag>
             </div>
             <div class="card-edit-addr scrollDiy">
                 <ul>
-                    <li v-for="(addrItem) in addrList" :key="addrItem.addr">
-                        <span class="addr-cury">{{ addrItem.currency }}</span>
-                        <be-ellipsis-copy :targetStr="addrItem.addr" :fontLength="showLength" :endLength="showLength">
+                    <li v-for="(addrItem) in contractList" :key="addrItem.contract_address">
+                        <span class="addr-cury">{{ addrItem.platform }}</span>
+                        <be-ellipsis-copy :targetStr="addrItem.contract_address" :fontLength="showLength" :endLength="showLength">
                         </be-ellipsis-copy>
                     </li>
                 </ul>
@@ -70,9 +70,9 @@ export default {
             default: 'add'
         },
         /**
-         * 标签列表
+         * 关键词列表
          */
-        tagList: {
+        keywordList: {
             type: Array,
             default: () => []
         },
@@ -83,12 +83,12 @@ export default {
             type: String,
         },
         /**
-         * 卡片类型
+         * 是否公共项目
          * @value public/private
          */
-        projectType: {
-            type: String,
-            default: 'public'
+        isPublic: {
+            type: Boolean,
+            default: true
         },
         /**
          * 创建时间
@@ -97,9 +97,9 @@ export default {
             type: String,
         },
         /**
-         * 卡片地址列表
+         * 项目合约地址列表
          */
-        addrList: {
+        contractList: {
             type: Array,
             default: () => []
         }
