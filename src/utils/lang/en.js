@@ -12,7 +12,8 @@ export const el = {
     delete:'删除',
     search:'查询',
     operation:'操作',
-
+    pleaseInput:'请输入',
+    pleaseSelect:'请选择',
     warningType: {
         recall:'重复调用',
         currencyTrade:'币种兑换',
@@ -108,11 +109,11 @@ export const el = {
     },
     createProject:{
         createProjectTitle:'创建项目',
-        createProjectName:'项目名称: ',
+        createProjectName:'项目名称',
         createProjectNameInput:'如: PancakeSwap',
         createProjectCancel:'取 消',
         createProjectConfirm:'确 定',
-        createProjectKeyWords:'关键词:  ',
+        createProjectKeyWords:'关键词',
         createProjectKeyWordsInput:'',
         createProjectOpenTitle:'是否公开',
         createProjectOpenSecret:'保密',

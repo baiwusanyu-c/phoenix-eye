@@ -22,7 +22,7 @@
         <add-risk-type
             :type="opType"
             :riskId = 'curItem.id'
-             @confirm = "()=>{return this.opType === 'add' ? this.confirmAdd() : this.confirmEdit()}"
+             @confirm = "(params)=>{return this.opType === 'add' ? this.confirmAdd(params) : this.confirmEdit(params)}"
             :featuresList="featuresList"
             ref="addRiskType">
         </add-risk-type>
@@ -67,6 +67,23 @@ export default {
     },
     methods: {
         /**
+         * 表單校驗方法
+         * @param {Object} params - 搜索参数
+         */
+        formVerification(params){
+            this.$refs.addRiskType.verName = ''
+            this.$refs.addRiskType.verFeatures = ''
+            if(!params.name){
+                this.$refs.addRiskType.verName = this.$t('el.pleaseInput') + this.$t('el.addRiskWindow.addRiskWindowClassName')
+                return false
+            }
+            if(params.risk_features.length  === 0){
+                this.$refs.addRiskType.verFeatures = this.$t('el.pleaseInput') + this.$t('el.addRiskWindow.abnormalSelect')
+                return false
+            }
+            return true
+        },
+        /**
          * 新增类型方法
          */
         addType(){
@@ -79,12 +96,14 @@ export default {
          */
         confirmAdd(param){
             const _this = this
+            if(!this.formVerification(param)) return
             createRiskType(param).then(res=>{
                 if(res){
                     const msg = _this.$t('el.add')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
+                    _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.add')+ _this.$t('el.failed')
@@ -110,12 +129,14 @@ export default {
             const pathParams = {
                 id:this.curItem.id
             }
+            if(!this.formVerification(param)) return
             saveEditRiskType(param,pathParams).then(res=>{
                 if(res){
                     const msg = _this.$t('el.edit')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
+                    _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.edit')+ _this.$t('el.failed')

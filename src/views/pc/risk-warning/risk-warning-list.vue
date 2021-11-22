@@ -211,10 +211,14 @@ export default {
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
-                param:this.searchParams.addr
             }
             if(searchParam){
                 params.platfrom = searchParam.platform
+                params.param = searchParam.addr
+                if(!params.param){
+                    _this.$message.warning(_this.$t('el.riskConfig.searchP'))
+                    return
+                }
             }
             getProjWarning(params).then(res=>{
                 if(res){
