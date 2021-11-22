@@ -1,6 +1,6 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 let obj = {...enLocale }.el
-export const lang = {
+export const el = {
     ...obj,
     emptyData:'暂无数据',
     scan:'查看',

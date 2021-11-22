@@ -58,7 +58,7 @@
                                 <span  v-show="scope.$index === 1">{{inputValue.dangerHighNumInput}}</span>
                                 <span v-if="scope.$index === 4" style="margin: 0 10px">{{inputValue.tradeScoreNumInput}}</span>
                                 <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16"/>
-                                <span v-if="scope.$index ===5" style="margin: 0 10px">{{inputValue.safetyPublicOptionNumInput}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}</span>
+                                <span v-if="scope.$index ===5" style="margin: 0 10px">{{inputValue.safetyPublicOptionNumInput}}/{{$t('el.systemConfigScore.safetyPublicOptionPiece')}}</span>
                                     <!--交易安全分数-->
                                 <span v-if="scope.$index === 2">{{inputValue.peerToPeerLendingInput}}</span>
                                 <span v-if="scope.$index === 3">{{inputValue.tradeCircleInput}}</span>
@@ -136,20 +136,20 @@
             </div>
             <div class="btn-class">
                 <div class="change-config" v-show="inputShow === false">
-                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
-                    <el-button class="primary hbjbh" type="primary" @click="changeConfig">{{$t('lang.systemConfigScore.changeConfig')}}</el-button>
+                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">{{$t('el.systemConfigScore.formatConfigData')}}</el-button>
+                    <el-button class="primary hbjbh" type="primary" @click="changeConfig">{{$t('el.systemConfigScore.changeConfig')}}</el-button>
                 </div>
                 <div class="cancel-confirm" v-show="inputShow === true">
-                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning = true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
-                    <el-button class="default" type="primary" @click="changeConfigCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
-                    <el-button class="primary hbjbh" type="primary"  @click="changeConfigConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
+                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning = true">{{$t('el.systemConfigScore.formatConfigData')}}</el-button>
+                    <el-button class="default" type="primary" @click="changeConfigCancel">{{$t('el.createProject.createProjectCancel')}}</el-button>
+                    <el-button class="primary hbjbh" type="primary"  @click="changeConfigConfirm">{{$t('el.createProject.createProjectConfirm')}}</el-button>
                 </div>
             </div>
             <!--是否初始化数据警告框-->
             <be-msg-dialog @confirm="warningDialogConfirm"
                            :isShow.sync="changeConfigWarning"
-                           :title="$t('lang.systemConfigScore.formatConfigData')"
-                           :sub-title="$t('lang.systemConfigScore.changeConfigWarning')"
+                           :title="$t('el.systemConfigScore.formatConfigData')"
+                           :sub-title="$t('el.systemConfigScore.changeConfigWarning')"
             >
             </be-msg-dialog>
         </div>
@@ -195,55 +195,55 @@ export default {
             },
             systemConfigScore:[
                 {
-                    project:this.$t('lang.systemConfigScore.configProject'),
-                    weight:this.$t('lang.systemConfigScore.weight'),
-                    configFst:this.$t('lang.systemConfigScore.detailConfig'),
+                    project:this.$t('el.systemConfigScore.configProject'),
+                    weight:this.$t('el.systemConfigScore.weight'),
+                    configFst:this.$t('el.systemConfigScore.detailConfig'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',
                 },
                 {
-                    project:this.$t('lang.systemConfigScore.staticDetection'),
+                    project:this.$t('el.systemConfigScore.staticDetection'),
                     weight:'',
-                    configFst:this.$t('lang.systemConfigScore.dangerHigh'),
-                    configSnd:this.$t('lang.systemConfigScore.dangerMiddle'),
-                    configTrd:this.$t('lang.systemConfigScore.dangerLow'),
+                    configFst:this.$t('el.systemConfigScore.dangerHigh'),
+                    configSnd:this.$t('el.systemConfigScore.dangerMiddle'),
+                    configTrd:this.$t('el.systemConfigScore.dangerLow'),
                     configFth:'',
                 },
                 {
-                    project:this.$t('lang.systemConfigScore.tradeSafetyClass'),
+                    project:this.$t('el.systemConfigScore.tradeSafetyClass'),
                     weight:'',
-                    configFst:this.$t('lang.systemConfigScore.peerToPeerLending'),
-                    configSnd:this.$t('lang.systemConfigScore.contractExecute'),
-                    configTrd:this.$t('lang.systemConfigScore.currencyConversion'),
-                    configFth:this.$t('lang.systemConfigScore.repeatedCalls'),
+                    configFst:this.$t('el.systemConfigScore.peerToPeerLending'),
+                    configSnd:this.$t('el.systemConfigScore.contractExecute'),
+                    configTrd:this.$t('el.systemConfigScore.currencyConversion'),
+                    configFth:this.$t('el.systemConfigScore.repeatedCalls'),
                 },
                 {
-                    configFst:this.$t('lang.systemConfigScore.tradeCircle'),
-                    configSnd:this.$t('lang.systemConfigScore.blackSocietiesAddress'),
-                    configTrd:this.$t('lang.systemConfigScore.blockTrade'),
-                    configFth:this.$t('lang.systemConfigScore.riskIdentifyByAI'),
+                    configFst:this.$t('el.systemConfigScore.tradeCircle'),
+                    configSnd:this.$t('el.systemConfigScore.blackSocietiesAddress'),
+                    configTrd:this.$t('el.systemConfigScore.blockTrade'),
+                    configFth:this.$t('el.systemConfigScore.riskIdentifyByAI'),
                 },
                 {
-                    project: this.$t('lang.systemConfigScore.tradeStable'),
+                    project: this.$t('el.systemConfigScore.tradeStable'),
                     weight:'',
-                    configFst:this.$t('lang.systemConfigScore.tradeScore'),
+                    configFst:this.$t('el.systemConfigScore.tradeScore'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',
                 },
                 {
-                    project: this.$t('lang.systemConfigScore.safetyPublicOptionClass'),
+                    project: this.$t('el.systemConfigScore.safetyPublicOptionClass'),
                     weight:'',
-                    configFst:this.$t('lang.systemConfigScore.safetyPublicOption'),
+                    configFst:this.$t('el.systemConfigScore.safetyPublicOption'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',
                 },
                 {
-                    project: this.$t('lang.systemConfigScore.timeRange'),
+                    project: this.$t('el.systemConfigScore.timeRange'),
                     weight:'',
-                    configFst:this.$t('lang.systemConfigScore.timeTradeDate'),
+                    configFst:this.$t('el.systemConfigScore.timeTradeDate'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',

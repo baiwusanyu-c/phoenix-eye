@@ -2,22 +2,22 @@
   <div class="formArea">
     <el-form :model="form" :rules="rules" ref="form">
       <el-form-item class="label" prop='name'>
-        <el-input autocomplete="off" :placeholder="$t('lang.loginConfig.phone')" v-model="form.name">
+        <el-input autocomplete="off" :placeholder="$t('el.loginConfig.phone')" v-model="form.name">
           <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/user.png" alt=""></template>
         </el-input>
       </el-form-item>
       <div class="flex">
         <el-form-item class="label" prop='code' style="width: 58%;">
-          <el-input maxlength="6" type="text" autocomplete="off" :placeholder="$t('lang.loginConfig.loginVerCodeValid')" v-model="form.code">
+          <el-input maxlength="6" type="text" autocomplete="off" :placeholder="$t('el.loginConfig.loginVerCodeValid')" v-model="form.code">
             <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt=""></template>
           </el-input>
         </el-form-item>
-        <p class="codeBtn" v-if="!isTip" @click="getCode">{{ $t('lang.loginConfig.getVerCodeValid') }}</p>
+        <p class="codeBtn" v-if="!isTip" @click="getCode">{{ $t('el.loginConfig.getVerCodeValid') }}</p>
         <p class="tips" v-else>{{number}}s</p>
       </div>
       <el-form-item class="label" prop='newPwd'>
         <el-input maxlength="12" @keyup.native="form.newPwd=form.newPwd.replace(/[ ]/g,'')" :type="visible ? 'text' : 'password'"
-                  autocomplete="off" :placeholder="$t('lang.loginConfig.newPassword')" v-model="form.newPwd">
+                  autocomplete="off" :placeholder="$t('el.loginConfig.newPassword')" v-model="form.newPwd">
           <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt=""></template>
           <template slot="append">
             <img class="showIcon" v-if="!visible" @click="visible = !visible" src="../../../../assets/image/pc/hide.png" alt="">
@@ -27,7 +27,7 @@
       </el-form-item>
       <el-form-item class="label" prop='password'>
         <el-input maxlength="12" @keyup.native="form.password=form.password.replace(/[ ]/g,'')" :type="visibleAgain ? 'text' : 'password'"
-                  autocomplete="off" :placeholder="$t('lang.loginConfig.confirmPassword')" v-model="form.password">
+                  autocomplete="off" :placeholder="$t('el.loginConfig.confirmPassword')" v-model="form.password">
           <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt=""></template>
           <template slot="append">
             <img class="showIcon" v-if="!visibleAgain" @click="visibleAgain = !visibleAgain" src="../../../../assets/image/pc/hide.png" alt="">
@@ -36,9 +36,9 @@
         </el-input>
       </el-form-item>
     </el-form>
-    <el-button class="primary" type="primary" :loading="isLogin" @click="resetPwd">{{ $t('lang.loginConfig.confirmReset') }}</el-button>
+    <el-button class="primary" type="primary" :loading="isLogin" @click="resetPwd">{{ $t('el.loginConfig.confirmReset') }}</el-button>
     <p class="checkArea">
-      <span class="phone cursor" @click="$parent.areaType = 1;">{{ $t('lang.loginConfig.confirmReset') }}</span>
+      <span class="phone cursor" @click="$parent.areaType = 1;">{{ $t('el.loginConfig.confirmReset') }}</span>
     </p>
   </div>
 </template>
@@ -53,24 +53,24 @@ export default {
       if (this.phoneReg.test(value)) {
         callback();
       } else {
-        callback(new Error(this.$t('lang.loginConfig.phoneErr')));
+        callback(new Error(this.$t('el.loginConfig.phoneErr')));
       }
     };
     var validateNewPwd = (rule, value, callback) => {
       if(!this.pwdReg.test(value)) {
-          callback(new Error(this.$t('lang.loginConfig.phoneNumErr')));
+          callback(new Error(this.$t('el.loginConfig.phoneNumErr')));
       }else {
         callback();
       }
     };
     var validatePwd = (rule, value, callback) => {
       if(!this.pwdReg.test(value)) {
-          callback(new Error(this.$t('lang.loginConfig.phoneNumErr')));
+          callback(new Error(this.$t('el.loginConfig.phoneNumErr')));
       }else{
         if (this.form.newPwd === this.form.password) {
           callback();
         }else {
-            callback(new Error(this.$t('lang.loginConfig.passwordAgreement')));
+            callback(new Error(this.$t('el.loginConfig.passwordAgreement')));
         }
       }
     };
@@ -85,20 +85,20 @@ export default {
       isLogin: false,
       rules: {
         name: [
-          { required: true, message: this.$t('lang.loginConfig.phone'), trigger: 'blur' },
+          { required: true, message: this.$t('el.loginConfig.phone'), trigger: 'blur' },
           { validator: validatePhonenumber, trigger: 'blur' }
         ],
         code: [
-          { required: true, message: this.$t('lang.loginConfig.loginVerCodeValid'), trigger: 'blur' },
+          { required: true, message: this.$t('el.loginConfig.loginVerCodeValid'), trigger: 'blur' },
         ],
         newPwd: [
-          { required: true, message: this.$t('lang.loginConfig.newPassword'), trigger: 'blur' },
-          { min: 6, max: 12, message: this.$t('lang.loginConfig.phoneNumErr'), trigger: 'blur' },
+          { required: true, message: this.$t('el.loginConfig.newPassword'), trigger: 'blur' },
+          { min: 6, max: 12, message: this.$t('el.loginConfig.phoneNumErr'), trigger: 'blur' },
           { validator: validateNewPwd, trigger: 'blur' }
         ],
         password: [
-          { required: true, message: this.$t('lang.loginConfig.confirmPassword'), trigger: 'blur' },
-          { min: 6, max: 12, message: this.$t('lang.loginConfig.phoneNumErr'), trigger: 'blur' },
+          { required: true, message: this.$t('el.loginConfig.confirmPassword'), trigger: 'blur' },
+          { min: 6, max: 12, message: this.$t('el.loginConfig.phoneNumErr'), trigger: 'blur' },
           { validator: validatePwd, trigger: 'blur' }
         ],
       },
@@ -117,7 +117,7 @@ export default {
           getResetCode({
             userName: this.form.name
           }).then(res => {
-            this.$message.success(this.$t('lang.loginConfig.getVerCodeValid') + this.$t('lang.success'));
+            this.$message.success(this.$t('el.loginConfig.getVerCodeValid') + this.$t('el.success'));
             this.form.uuid = res;
             this.isTip = true;
             this.number = 60;
@@ -145,7 +145,7 @@ export default {
             uuid: this.form.uuid,
             code: this.form.code,
           }).then(() => {
-            this.$message.success(this.$t('lang.loginConfig.resetPassword') + this.$t('lang.success'));
+            this.$message.success(this.$t('el.loginConfig.resetPassword') + this.$t('el.success'));
             this.$parent.areaType = 1;
           }).catch(() => {
             this.isLogin = false;

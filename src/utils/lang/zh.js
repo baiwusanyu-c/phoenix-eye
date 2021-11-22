@@ -1,6 +1,6 @@
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 let obj = {...zhLocale }.el
-export const lang = {
+export const el = {
     ...obj,
     emptyData:'暂无数据',
     scan:'查看',

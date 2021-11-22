@@ -8,8 +8,8 @@
     <div class="risk-warning-list">
         <div class="search-area">
             <div>
-                {{ $t('lang.riskConfig.platform') }}:
-                <el-select v-model="searchParams.platform" :placeholder="$t('lang.riskConfig.platformP')">
+                {{ $t('el.riskConfig.platform') }}:
+                <el-select v-model="searchParams.platform" :placeholder="$t('el.riskConfig.platformP')">
                     <el-option v-for="(item) in platformList"
                                :key="item.label + item.value"
                                :value="item.value"
@@ -18,9 +18,9 @@
                 </el-select>
             </div>
             <div class="search-area search-area-input">
-                <el-input autocomplete="off" :placeholder="$t('lang.riskConfig.searchP')" v-model="searchParams.addr">
+                <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getData(searchParams)">{{ $t('lang.riskConfig.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getData(searchParams)">{{ $t('el.riskConfig.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -31,11 +31,11 @@
                 <div slot="empty"
                      class = 'empty-table'>
                     <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
-                    <p style="line-height: 25px">{{$t('lang.emptyData')}}</p>
+                    <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
                 </div>
                 <el-table-column
                     prop="platform"
-                    :label="$t('lang.riskConfig.platform')"
+                    :label="$t('el.riskConfig.platform')"
                     width="80"
                     align="center">
                     <template slot-scope="scope">
@@ -44,7 +44,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="tx_hash"
-                    :label="$t('lang.riskConfig.tableHeader.txHash')"
+                    :label="$t('el.riskConfig.tableHeader.txHash')"
                     width="170"
                     align="center">
                     <template slot-scope="scope">
@@ -57,7 +57,7 @@
                 <el-table-column
                     prop="tx_time"
                     show-tooltip-when-overflow
-                    :label="$t('lang.riskConfig.tableHeader.txTime')"
+                    :label="$t('el.riskConfig.tableHeader.txTime')"
                     align="center">
                     <template slot-scope="scope">
                         <span>{{formatDate($createDate(scope.row.tx_time))}}</span>
@@ -66,7 +66,7 @@
                 <el-table-column
                     width="100"
                     prop="tx_status"
-                    :label="$t('lang.riskConfig.tableHeader.state')"
+                    :label="$t('el.riskConfig.tableHeader.state')"
                     align="center">
                     <template slot-scope="scope">
                         <span :style="stateSuccess(scope.row.tx_status)">
@@ -77,7 +77,7 @@
                 <el-table-column
                     prop="from_address"
                     width="170"
-                    :label="$t('lang.riskConfig.tableHeader.from')"
+                    :label="$t('el.riskConfig.tableHeader.from')"
                     align="center">
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.from_address"
@@ -89,7 +89,7 @@
                 <el-table-column
                     prop="to_address"
                     width="170"
-                    :label="$t('lang.riskConfig.tableHeader.to')"
+                    :label="$t('el.riskConfig.tableHeader.to')"
                     align="center" >
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.to_address"
@@ -102,7 +102,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="risk_features"
-                    :label="$t('lang.riskConfig.tableHeader.warningType')"
+                    :label="$t('el.riskConfig.tableHeader.warningType')"
                     align="center">
                     <template slot-scope="scope">
                         <div style="display: flex;flex-direction: column;justify-content: center;align-items: center">
@@ -114,7 +114,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="risk_score"
-                    :label="$t('lang.riskConfig.tableHeader.score')"
+                    :label="$t('el.riskConfig.tableHeader.score')"
                     align="center"
                     show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -123,12 +123,12 @@
                 </el-table-column>
                 <el-table-column
                     width="100"
-                    :label="$t('lang.riskConfig.tableHeader.detail')"
+                    :label="$t('el.riskConfig.tableHeader.detail')"
                     align="center">
                     <template slot-scope="scope">
                         <span style="color: #1496F2;cursor: pointer"
                               @click="openDetail"
-                              v-if="scope.row.state === 'failed'">{{ $t('lang.scan') }} >></span>
+                              v-if="scope.row.state === 'failed'">{{ $t('el.scan') }} >></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -190,9 +190,9 @@ export default {
         stateTxt(){
             return function (val){
                 if(val !== 'success'){
-                    return this.$t('lang.riskConfig.stateFailed')
+                    return this.$t('el.riskConfig.stateFailed')
                 }
-                return this.$t('lang.riskConfig.stateSuccess')
+                return this.$t('el.riskConfig.stateSuccess')
             }
         }
     },
@@ -221,7 +221,7 @@ export default {
                     _this.tableData = res.data
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.operation')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })

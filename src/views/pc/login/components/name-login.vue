@@ -9,14 +9,14 @@
         <el-form :model="form" :rules="rules" ref="form">
             <el-form-item class="label" prop='name'>
                 <el-input maxlength="40" autocomplete="off"
-                          :placeholder="$t('lang.loginConfig.loginNameP')" v-model="form.name">
+                          :placeholder="$t('el.loginConfig.loginNameP')" v-model="form.name">
                     <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
                     </template>
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='pwd'>
                 <el-input maxlength="40" :type="visible ? 'text' : 'password'" autocomplete="off"
-                          :placeholder="$t('lang.loginConfig.loginPwdP')"
+                          :placeholder="$t('el.loginConfig.loginPwdP')"
                           v-model="form.pwd">
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
@@ -32,7 +32,7 @@
             <div class="flex">
                 <el-form-item class="label" prop='code' style="width: calc(100% - 130px);">
                     <el-input maxlength="4" @keyup.enter.native="login()" type="text" autocomplete="off"
-                              :placeholder="$t('lang.loginConfig.loginVerCodeP')" v-model="form.code">
+                              :placeholder="$t('el.loginConfig.loginVerCodeP')" v-model="form.code">
                         <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
                         </template>
                     </el-input>
@@ -46,15 +46,15 @@
             </div>
         </el-form>
         <el-button class="primary" type="primary" v-if='!chipId || isSignatured' :loading="isLogin" @click="login">
-            {{ $t('lang.loginConfig.login') }}
+            {{ $t('el.loginConfig.login') }}
         </el-button>
         <p class=" flex-end checkArea">
-         <span class="phone cursor" @click="$parent.areaType = 3">{{ $t('lang.loginConfig.titleRegister') }}</span>
+         <span class="phone cursor" @click="$parent.areaType = 3">{{ $t('el.loginConfig.titleRegister') }}</span>
             <span class="phone cursor" ></span>
             <span class="reg">
         <!-- <span class="cursor" @click="$parent.areaType = 3">注册</span>-->
 
-          <span class="cursor" @click="$parent.areaType = 4">{{ $t('lang.loginConfig.titleReset') }}</span>
+          <span class="cursor" @click="$parent.areaType = 4">{{ $t('el.loginConfig.titleReset') }}</span>
         </span>
         </p>
     </div>
@@ -70,14 +70,14 @@ export default {
     data() {
         var validatePwd = (rule, value, callback) => {
             if (!this.pwdReg.test(value)) {
-                callback(new Error(this.$t('lang.loginConfig.phoneNumErr')));
+                callback(new Error(this.$t('el.loginConfig.phoneNumErr')));
             } else {
                 callback();
             }
         };
         var validateUserName = (rule, value, callback) => {
             if (!this.nameReg.test(value)) {
-                callback(new Error(this.$t('lang.loginConfig.unameError')));
+                callback(new Error(this.$t('el.loginConfig.unameError')));
             } else {
                 callback();
             }
@@ -92,15 +92,15 @@ export default {
             isLogin: false,
             rules: {
                 name: [
-                    {required: true, message: this.$t('lang.loginConfig.loginNameP'), trigger: 'blur'},
+                    {required: true, message: this.$t('el.loginConfig.loginNameP'), trigger: 'blur'},
                     // { validator: validateUserName, trigger: 'blur' }
                 ],
                 pwd: [
-                    {required: true, message: this.$t('lang.loginConfig.loginPwdP'), trigger: 'blur'},
+                    {required: true, message: this.$t('el.loginConfig.loginPwdP'), trigger: 'blur'},
                     // { validator: validatePwd, trigger: 'blur' }
                 ],
                 code: [
-                    {required: true, message: this.$t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},
+                    {required: true, message: this.$t('el.loginConfig.loginVerCodeP'), trigger: 'blur'},
                 ],
             },
             isFocus: false,

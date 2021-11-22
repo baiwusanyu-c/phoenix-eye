@@ -3,53 +3,48 @@
         <div class="createBox">
             <el-dialog
                 class="createProjectBox"
-                :title="$t('lang.createProject.createProjectTitle')"
+                :title="$t('el.createProject.createProjectTitle')"
                 :visible.sync="createProjectWindow"
                 width="856px">
                 <div>
                     <el-form :label-position="labelPosition" label-width="80px" class="projectForm">
-                        <el-form-item :label="$t('lang.createProject.createProjectName')">
+                        <el-form-item :label="$t('el.createProject.createProjectName')">
                             <el-input class="projectNameInput" v-model="projectName"
-                                      :placeholder="$t('lang.createProject.createProjectNameInput')"></el-input>
-                            <span class="projectOpenTitle">{{ $t('lang.createProject.createProjectOpenTitle') }}</span>
-                            <el-switch
-                                v-model="openTF"
-                            >
-                            </el-switch>
+                                      :placeholder="$t('el.createProject.createProjectNameInput')"></el-input>
+                            <span class="projectOpenTitle">{{ $t('el.createProject.createProjectOpenTitle') }}</span>
+                            <el-switch v-model="openTF">  </el-switch>
                             <span
-                                class="projectOpenSecret">{{ $t('lang.createProject.createProjectOpenSecret') }}</span>
+                                class="projectOpenSecret">{{ $t('el.createProject.createProjectOpenSecret') }}</span>
                         </el-form-item>
-                        <el-form-item :label="$t('lang.createProject.createProjectKeyWords')">
+                        <el-form-item :label="$t('el.createProject.createProjectKeyWords')">
                             <el-input class="projectKeyWordsInput" v-model="projectKeyWords"
-                                      :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"></el-input>
+                                      :placeholder="$t('el.createProject.createProjectKeyWordsInput')"></el-input>
                         </el-form-item>
-                        <el-form-item :label="$t('lang.createProject.contractSite')">
+                        <el-form-item :label="$t('el.createProject.contractSite')">
 
                             <div class="contractSiteBox" v-for="(o,index) in contractSiteSubtractClassLength"
                                  :key="index" :offset="index > 0 ? addContract.n : 0">
                                 <el-select v-model="contractSiteClass[o]" class="contractSiteClass"
-                                           :placeholder="$t('lang.createProject.selectContractClass')">
-                                    <el-option label="select1" value="name1"></el-option>
-                                    <el-option label="select2" value="name2"></el-option>
+                                           :placeholder="$t('el.createProject.selectContractClass')">
+                                    <el-option :label="item.label" :value="item.value" v-for="(item) in platformListDict" :key="item.id"></el-option>
                                 </el-select>
                                 <el-input v-model="contractSiteSite[o]" class="contractSiteSite"
-                                          :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
+                                          :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
                                 <el-input v-model="contractSiteLable[o]" class="contractSiteLabel"
-                                          :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
+                                          :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
                                 <img src="../../../../assets/image/pc/subtract.png" class="subtract"
                                      @click="deleteContractSite(o)"/>
                             </div>
 
                             <div class="contractSiteBox">
                                 <el-select v-model="contractSiteAdd.class" class="contractSiteClass"
-                                           :placeholder="$t('lang.createProject.selectContractClass')">
-                                    <el-option label="select1" value="name1"></el-option>
-                                    <el-option label="select2" value="name2"></el-option>
+                                           :placeholder="$t('el.createProject.selectContractClass')">
+                                    <el-option :label="item.label" :value="item.value" v-for="(item) in platformListDict" :key="item.id"></el-option>
                                 </el-select>
                                 <el-input v-model="contractSiteAdd.site" class="contractSiteSite"
-                                          :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
+                                          :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
                                 <el-input v-model="contractSiteAdd.lable" class="contractSiteLabel"
-                                          :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
+                                          :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
                                 <!--<img src="../../../assets/image/pc/subtract.png" class="subtract"/>-->
                                 <img src="../../../../assets/image/pc/add.png" class="add" @click="addContractSite"/>
                             </div>
@@ -58,9 +53,9 @@
                 </div>
                 <span slot="footer" class="dialog-footer">
                     <el-button class="default" type="primary"
-                               @click="createProjectCancel">{{ $t('lang.createProject.createProjectCancel') }}</el-button>
+                               @click="createProjectCancel">{{ $t('el.createProject.createProjectCancel') }}</el-button>
                     <el-button class="primary hbjbh" type="primary"
-                               @click="createProjectConfirm">{{ $t('lang.createProject.createProjectConfirm') }}</el-button>
+                               @click="createProjectConfirm">{{ $t('el.createProject.createProjectConfirm') }}</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -71,6 +66,7 @@
 
 <script>
 import {getProjectInfo} from "../../../../api/project-management";
+import {platformListDict} from "../../../../utils/platformDict";
 
 export default {
     name: "CreateProject",
@@ -96,6 +92,8 @@ export default {
             contractSiteClass: [],
             contractSiteSite: [],
             contractSiteLable: [],
+            // 币种平台
+            platformListDict:[]
         }
     },
     props: {
@@ -120,6 +118,9 @@ export default {
                 this.resetVar()
             }
         }
+    },
+    created() {
+        this.platformListDict = platformListDict
     },
     methods: {
         createProjectConfirm() {
@@ -172,6 +173,10 @@ export default {
          * 获取风险类型详情数据
          */
         getDetailData() {
+            this.projectName = 'res.data.name'
+            this.openTF = true
+            this.projectKeyWords = 'res.data.keyword'
+            return;
             const _this = this
             if (this.type === 'add') {
                 this.projectName = ''
@@ -187,7 +192,7 @@ export default {
                     this.projectKeyWords = res.data.keyword
                 }
             }).catch(err => {
-                const msg = _this.$t('lang.search') + _this.$t('lang.failed')
+                const msg = _this.$t('el.search') + _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })

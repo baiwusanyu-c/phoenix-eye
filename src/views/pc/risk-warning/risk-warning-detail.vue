@@ -10,35 +10,35 @@
         <div class="detail-body">
             <div class="detail-item">
                 <div class="detail-item-txt">
-                    {{ $t('lang.riskConfig.tableHeader.txHash') }}：
+                    {{ $t('el.riskConfig.tableHeader.txHash') }}：
                     {{ baseInfo.txHash }}
                 </div>
-                <el-button class="default" @click="openWeb">{{ $t('lang.riskConfig.txDetail') }} >></el-button>
+                <el-button class="default" @click="openWeb">{{ $t('el.riskConfig.txDetail') }} >></el-button>
             </div>
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.platform') }}：</span>
+                    <span class="label">{{ $t('el.riskConfig.platform') }}：</span>
                     {{ baseInfo.platform }}
                 </div>
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.values') }}：</span>
+                    <span class="label">{{ $t('el.riskConfig.values') }}：</span>
                     {{baseInfo.value}}
                     Ether ($17)
                 </div>
             </div>
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
+                    <span class="label">{{ $t('el.riskConfig.tableHeader.from') }}：</span>
                     {{ baseInfo.from }}
                 </div>
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
+                    <span class="label">{{ $t('el.riskConfig.tableHeader.to') }}：</span>
                     {{ baseInfo.to }}
                 </div>
             </div>
             <div class="detail-item">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.features') }}：</span>
+                    <span class="label">{{ $t('el.riskConfig.features') }}：</span>
                     <el-tag v-for="item in baseInfo.features"
                             :key="item">{{item}}</el-tag>
                 </div>
@@ -46,7 +46,7 @@
         </div>
         <!--   地址收益     -->
         <div class="detail-profit">
-            <h3>{{ $t('lang.riskConfig.profit') }}</h3>
+            <h3>{{ $t('el.riskConfig.profit') }}</h3>
             <div class="detail-profit-body scrollDiy">
                 <div v-for="(item) in profitData" :key="item.txHash" class="detail-profit-container">
                     <div class="detail-profit-grid">
@@ -170,11 +170,11 @@ export default {
                 from:'0x8c93d63a242ef09d0x8c93d63a242ef09d0x8c93',
                 to:'0x8c93d63a242ef09d0x8c93d63a242ef09d0x8c93',
                 features:[
-                    this.$t('lang.warningType.ContractExecution'),
-                    this.$t('lang.warningType.recall'),
-                    this.$t('lang.warningType.currencyTrade'),
-                    this.$t('lang.warningType.flash'),
-                    this.$t('lang.warningType.tradeLoop'),
+                    this.$t('el.warningType.ContractExecution'),
+                    this.$t('el.warningType.recall'),
+                    this.$t('el.warningType.currencyTrade'),
+                    this.$t('el.warningType.flash'),
+                    this.$t('el.warningType.tradeLoop'),
                 ]
             }
         },

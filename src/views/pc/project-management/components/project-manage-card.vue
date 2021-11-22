@@ -12,7 +12,7 @@
                 <h3>
                     {{ title }}
                 </h3>
-                <span>{{isPublic? $t('lang.proManageConfig.proPublic') : $t('lang.proManageConfig.proPrivate')}}</span>
+                <span>{{isPublic? $t('el.proManageConfig.proPublic') : $t('el.proManageConfig.proPrivate')}}</span>
             </div>
             <div>
                 <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
@@ -37,13 +37,13 @@
                     </li>
                 </ul>
             </div>
-            <p>{{ $t('lang.proManageConfig.createTime') }} : {{ createTime }}</p>
+            <p>{{ $t('el.proManageConfig.createTime') }} : {{ createTime }}</p>
         </div>
         <!--    新增时显示   -->
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click='emitFunc("add")'>
                 <img src="@/assets/image/pc/add-type-icon.png"/>
-                <p>{{ $t('lang.proManageConfig.addPro') }}</p>
+                <p>{{ $t('el.proManageConfig.addPro') }}</p>
             </div>
         </div>
     </div>

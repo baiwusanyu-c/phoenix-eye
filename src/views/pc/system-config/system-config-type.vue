@@ -81,13 +81,13 @@ export default {
             const _this = this
             createRiskType(param).then(res=>{
                 if(res){
-                    const msg = _this.$t('lang.add')+ _this.$t('lang.success')
+                    const msg = _this.$t('el.add')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.add')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.add')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
@@ -112,13 +112,13 @@ export default {
             }
             saveEditRiskType(param,pathParams).then(res=>{
                 if(res){
-                    const msg = _this.$t('lang.edit')+ _this.$t('lang.success')
+                    const msg = _this.$t('el.edit')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.edit')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
@@ -142,13 +142,13 @@ export default {
             }
             deleteRiskType(null,pathParams).then(res=>{
                 if(res){
-                    const msg = _this.$t('lang.delete')+ _this.$t('lang.success')
+                    const msg = _this.$t('el.delete')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.delete')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.delete')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
@@ -164,7 +164,7 @@ export default {
                 // 交易特徵列表
                 _this.featuresList = res.data.system_risk_features
             }).catch(err=>{
-                const msg = _this.$t('lang.search')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.search')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })

@@ -10,14 +10,14 @@
       <img class="logo-box" src="@/assets/image/pc/logo.png" alt=""/>
       <div class="inner">
         <div class="area_l">
-          <p class="text-w">{{ $t('lang.loginConfig.prodWelcome') }}</p>
-          <p class="text-t">{{ $t('lang.loginConfig.prodName') }}</p>
+          <p class="text-w">{{ $t('el.loginConfig.prodWelcome') }}</p>
+          <p class="text-t">{{ $t('el.loginConfig.prodName') }}</p>
           <p class="text-w-e">Welcome to Beosin-Secure</p>
         </div>
         <div class="area-r">
           <p class="title" :class="{otherTitle: areaType === 4,regTitle: areaType === 3}">
             {{
-              areaType === 3 ? $t('lang.loginConfig.titleRegister') : areaType === 4 ? $t('lang.loginConfig.titleLogin') : $t('lang.loginConfig.titleLogin')
+              areaType === 3 ? $t('el.loginConfig.titleRegister') : areaType === 4 ? $t('el.loginConfig.titleLogin') : $t('el.loginConfig.titleLogin')
             }}
           </p>
             <!--          賬號登錄          -->
@@ -50,11 +50,11 @@
     </div>
     <!--到期弹窗-->
     <be-msg-dialog
-        :headerTitle="$t('lang.loginConfig.titleDeadline')"
+        :headerTitle="$t('el.loginConfig.titleDeadline')"
         @confirm="() => (this.delTip = false)"
         :isShow.sync="delTip"
         :isShowCancel="false"
-        :title="$t('lang.loginConfig.infoDeadLine')">
+        :title="$t('el.loginConfig.infoDeadLine')">
     </be-msg-dialog>
   </div>
 </template>

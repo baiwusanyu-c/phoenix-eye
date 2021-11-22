@@ -17,7 +17,7 @@
                 :is-public="item.is_public"
                 :keyword-list="item.keywords"
                 :create-time="item.create_time"
-                :contract-list="contract_infos"
+                :contract-list="item.contract_infos"
                 @edit="editProject(editProject)"
                 @fresh="freshProject(item)"
                 @delete="deleteProject(item)"
@@ -113,13 +113,13 @@ export default {
             const _this = this
             createProject(param).then(res=>{
                 if(res){
-                    const msg = _this.$t('lang.add')+ _this.$t('lang.success')
+                    const msg = _this.$t('el.add')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.add')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.add')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
@@ -144,13 +144,13 @@ export default {
             }
             saveEditProject(param,pathParams).then(res=>{
                 if(res){
-                    const msg = _this.$t('lang.edit')+ _this.$t('lang.success')
+                    const msg = _this.$t('el.edit')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.edit')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
@@ -175,13 +175,13 @@ export default {
             }
             deleteProject(null,pathParams).then(res=>{
                 if(res){
-                    const msg = _this.$t('lang.delete')+ _this.$t('lang.success')
+                    const msg = _this.$t('el.delete')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.delete')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.delete')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
@@ -206,13 +206,13 @@ export default {
             }
             reappraiseProject(null,pathParams).then(res=>{
                 if(res){
-                    const msg = _this.$t('lang.operation')+ _this.$t('lang.success')
+                    const msg = _this.$t('el.operation')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('lang.operation')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
@@ -227,7 +227,7 @@ export default {
                 // 项目列表
                 _this.projectList =  res.data
             }).catch(err=>{
-                const msg = _this.$t('lang.search')+ _this.$t('lang.failed')
+                const msg = _this.$t('el.search')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })

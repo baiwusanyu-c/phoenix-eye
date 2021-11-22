@@ -14,16 +14,20 @@ export const platformDict = {
 export const platformListDict =  [
     {
         label: 'ETH',
-        value: 'eth'
+        value: 'eth',
+        id:'jhgadjghzngrgegkdfjg'
     }, {
         label: 'BSC',
-        value: 'bsc'
+        value: 'bsc',
+        id:'jhgadjghzngradwqgegkdfjg'
     }, {
         label: 'HECO',
-        value: 'heco'
+        value: 'heco',
+        id:'jhgadjghzngrdfggegkdfjg'
     },
     {
         label: 'Polygon',
-        value: 'polygon'
+        value: 'polygon',
+        id:'jhgadjghzngrgefdghhgkdfjg'
     },
 ]

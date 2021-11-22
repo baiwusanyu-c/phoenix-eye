@@ -214,7 +214,7 @@ export default {
                 'FRAUD_BS': {
                     icon: '-renwu',
                     index: '0',
-                    name: this.$t('lang.navTextConfig.navName0'),
+                    name: this.$t('el.navTextConfig.navName0'),
                     show: false,
                     path: '/blockchainSituation',
                     isPush: true,
@@ -223,7 +223,7 @@ export default {
                 },
                 'FRAUD_PR': {
                     icon: '-liulanqi',
-                    name: this.$t('lang.navTextConfig.navName1'),
+                    name: this.$t('el.navTextConfig.navName1'),
                     show: false,
                     path: '/projectRanking',
                     index: '1',
@@ -235,7 +235,7 @@ export default {
                 'FRAUD_WAR': {
                     icon: '-tiaochaquzheng',
                     index: '2',
-                    name: this.$t('lang.navTextConfig.navName2'),
+                    name: this.$t('el.navTextConfig.navName2'),
                     show: false,
                     path: '/riskWarning/list',
                     isPush: true,
@@ -245,7 +245,7 @@ export default {
                 'FRAUD_PM': {
                     icon: '-jiaoyifenxi',
                     index: '3',
-                    name: this.$t('lang.navTextConfig.navName3'),
+                    name: this.$t('el.navTextConfig.navName3'),
                     show: false,
                     path: '/projectManagement',
                     isPush: true,
@@ -254,7 +254,7 @@ export default {
                 },
                 'FRAUD_SC': {
                     icon: '-xitongpeizhi',
-                    name: this.$t('lang.navTextConfig.navName4'),
+                    name: this.$t('el.navTextConfig.navName4'),
                     show: false,
                     index: '4',
                     path: '/systemConfig',

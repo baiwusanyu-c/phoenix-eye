@@ -3,19 +3,19 @@
         <div class="createBox">
             <el-dialog
                     class="createProjectBox"
-                    :title="$t('lang.addRiskWindow.addRiskWindowTitle')"
+                    :title="$t('el.addRiskWindow.addRiskWindowTitle')"
                     :visible.sync="addRiskWindowOpen"
                     width="558px">
                 <div>
                     <el-form label-width="80px" class="addRiskForm">
-                        <el-form-item :label="$t('lang.addRiskWindow.addRiskWindowClassName')">
-                            <el-input class="projectKeyWordsInput" v-model="addRiskName" :placeholder="$t('lang.addRiskWindow.addRiskWindowNameInput')"></el-input>
+                        <el-form-item :label="$t('el.addRiskWindow.addRiskWindowClassName')">
+                            <el-input class="projectKeyWordsInput" v-model="addRiskName" :placeholder="$t('el.addRiskWindow.addRiskWindowNameInput')"></el-input>
                         </el-form-item>
                         <!--异常特征选择-->
-                        <el-form-item :label="$t('lang.addRiskWindow.abnormalSelect')">
+                        <el-form-item :label="$t('el.addRiskWindow.abnormalSelect')">
                             <template>
-                                <el-select v-model="abnormalSelectValue" multiple  @change="handleCheckedCitiesChange" :placeholder="$t('lang.addRiskWindow.abnormalSelectInput')">
-                                    <el-checkbox :indeterminate="checked" v-model="checkAll" class="checkboxSelectAll" @change="handleCheckAllChange">{{$t('lang.addRiskWindow.selectAll')}}</el-checkbox>
+                                <el-select v-model="abnormalSelectValue" multiple  @change="handleCheckedCitiesChange" :placeholder="$t('el.addRiskWindow.abnormalSelectInput')">
+                                    <el-checkbox :indeterminate="checked" v-model="checkAll" class="checkboxSelectAll" @change="handleCheckAllChange">{{$t('el.addRiskWindow.selectAll')}}</el-checkbox>
                                     <el-option
                                            v-for="(item) in featuresList"
                                            :label="item.label"
@@ -28,8 +28,8 @@
                     </el-form>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                    <el-button class="default" type="primary" @click="addRiskCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
-                    <el-button class="primary hbjbh" type="primary" @click="addRiskConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
+                    <el-button class="default" type="primary" @click="addRiskCancel">{{$t('el.createProject.createProjectCancel')}}</el-button>
+                    <el-button class="primary hbjbh" type="primary" @click="addRiskConfirm">{{$t('el.createProject.createProjectConfirm')}}</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -137,7 +137,7 @@
                         _this.abnormalSelectValue = res.risk_type.risk_features
                     }
                 }).catch(err=>{
-                    const msg = _this.$t('lang.search')+ _this.$t('lang.failed')
+                    const msg = _this.$t('el.search')+ _this.$t('el.failed')
                     _this.$message.error(msg)
                     console.error(err)
                 })
