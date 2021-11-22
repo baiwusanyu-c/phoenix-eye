@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import {getProjectInfo} from "../../../../api/project-management";
+import {createProject, getProjectInfo, saveEditProject} from "../../../../api/project-management";
 import {platformListDict} from "../../../../utils/platformDict";
 
 export default {
@@ -73,6 +73,8 @@ export default {
             labelPosition: 'right',
             addContract: 0,
             contractSite:[{platform: '', contract_address: '', label: ''}],
+            // 下拉平台字典
+            platformListDict:[]
         }
     },
     props: {
@@ -102,9 +104,21 @@ export default {
         this.platformListDict = platformListDict
     },
     methods: {
-        createProjectConfirm() {
+        /**
+         * 弹窗确认方法
+         */
+        async createProjectConfirm() {
+            if(this.type === 'add'){
+                await this.addProject()
+            }
+            if(this.type === 'edit'){
+                await this.editProject()
+            }
             this.createProjectWindow = false
         },
+        /**
+         * 弹窗取消方法
+         */
         createProjectCancel() {
             this.createProjectWindow = false
         },
@@ -113,9 +127,7 @@ export default {
             this.contractSiteSubtractClassLength++
         },
         deleteContractSite(i) {
-            console.log('@')
             this.contractSite.splice(i, 1)
-
             this.contractSiteSubtractClassLength--
         },
         /**
@@ -135,10 +147,6 @@ export default {
          * 获取风险类型详情数据
          */
         getDetailData() {
-            this.projectName = 'res.data.name'
-            this.openTF = true
-            this.projectKeyWords = 'res.data.keyword'
-            return;
             const _this = this
             if (this.type === 'add') {
                 this.projectName = ''
@@ -152,9 +160,72 @@ export default {
                     this.projectName = res.data.name
                     this.openTF = res.data.is_public
                     this.projectKeyWords = res.data.keyword
+                    this.contractSite = res.data.contract_address
                 }
             }).catch(err => {
                 const msg = _this.$t('el.search') + _this.$t('el.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })
+        },
+        /**
+         * 表單校驗方法
+         */
+        formVerification(){
+
+        },
+        /**
+         * 确认增加项目方法
+         */
+        addProject(){
+            const _this = this
+            let params = {
+                name:_this.projectName,
+                is_public:_this.openTF,
+                keyword:_this.projectKeyWords,
+                contract_infos:_this.contractSite
+            }
+            // 表单校验
+            this.formVerification(params)
+            createProject(params).then(res=>{
+                if(res){
+                    const msg = _this.$t('el.add')+ _this.$t('el.success')
+                    _this.$message.success(msg)
+                    // 更新列表
+                    _this.$parent.getList()
+                }
+            }).catch(err=>{
+                const msg = _this.$t('el.add')+ _this.$t('el.failed')
+                _this.$message.error(msg)
+                console.error(err)
+            })
+
+        },
+        /**
+         * 确认编辑项目方法
+         */
+        editProject(){
+            const _this = this
+            let params = {
+                name:_this.projectName,
+                is_public:_this.openTF,
+                keyword:_this.projectKeyWords,
+                contract_infos:_this.contractSite
+            }
+            const pathParams = {
+                id: this.projectId
+            }
+            // 表单校验
+            this.formVerification(params)
+            saveEditProject(params,pathParams).then(res=>{
+                if(res){
+                    const msg = _this.$t('el.edit')+ _this.$t('el.success')
+                    _this.$message.success(msg)
+                    // 更新列表
+                    _this.$parent.getList()
+                }
+            }).catch(err=>{
+                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })

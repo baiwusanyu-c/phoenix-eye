@@ -8,7 +8,7 @@ export function getProjectList() {
         method: 'get'
     })
 }
-//创建项目
+//创建项目 √
 export function createProject(params) {
     return request({
         url: `${config.baseURL}/ussa/project_manage/create`,
@@ -25,7 +25,7 @@ export function reappraiseProject(params,pathParams) {
     })
 }
 
-//项目编辑-获取项目详情
+//项目编辑-获取项目详情 √
 export function getProjectInfo(params,pathParams) {
     return request({
         url: `${config.baseURL}/ussa/project_manage/edit?id=${pathParams.id}`,
@@ -33,10 +33,10 @@ export function getProjectInfo(params,pathParams) {
         params
     })
 }
-//项目编辑-保存编辑项目
-export function saveEditProject(params) {
+//项目编辑-保存编辑项目 √
+export function saveEditProject(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project_manage/edit/`,
+        url: `${config.baseURL}/ussa/project_manage/edit?id=${pathParams.id}`,
         method: 'post',
         params
     })
