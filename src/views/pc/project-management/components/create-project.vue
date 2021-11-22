@@ -35,23 +35,12 @@
                                           :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
-                                <!--<img src="../../../../assets/image/pc/subtract.png"
+                                <div class="btn-border"
                                      v-show="index < contractSite.length - 1"
-                                     class="subtract"
-                                     @click="deleteContractSite(index)"/>-->
-                                <!--<img src="../../../../assets/image/pc/add.png"
-                                     v-show="index === contractSite.length - 1"
-                                     class="add"
-                                     @click="addContractSite"/>-->
-                                <div class="subtract">
-                                    <svg-icon icon-class="subtract"
-                                              class="subtract-btn"
-                                              disabled-tool-tip
-                                              v-show="index < contractSite.length - 1"
-                                              @click="deleteContractSite(index)"
-                                    ></svg-icon>
+                                     @click="deleteContractSite(index)">
+                                    <span class="subtract-create"></span>
                                 </div>
-                                <div class="add-btn"
+                                <div class="btn-border"
                                      v-show="index === contractSite.length - 1"
                                      @click="addContractSite">
                                     <svg-icon icon-class="add" class="add-create" disabled-tool-tip></svg-icon>
@@ -179,7 +168,7 @@ export default {
     width: 682px;
 }
 
-.subtract:hover{
+/*.subtract:hover{
     .svg-icon.subtract-btn{
         fill:#0468C2
     }
@@ -193,11 +182,11 @@ export default {
     fill: gray;
     overflow: hidden;
     font-size: 15px;
-}
+}*/
 
 
 
-.add-btn{
+.btn-border{
     width: 16px;
     height: 16px;
     border: solid 1px darkgray;
@@ -208,11 +197,19 @@ export default {
     margin-left: 12px;
 }
 
-.add-btn:hover{
+.btn-border:hover{
     border-color: #0468C2;
     .svg-icon.add-create{
         fill:#0468C2
     }
+    .subtract-create{
+        border: solid 1px #81b3e0;
+    }
+}
+
+.subtract-create{
+        width: 12px;
+        border: solid 1px darkgray;
 }
 
 .svg-icon.add-create{
