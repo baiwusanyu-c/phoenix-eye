@@ -20,17 +20,17 @@
                             <el-input class="projectKeyWordsInput" v-model="projectKeyWords"
                                       :placeholder="$t('el.createProject.createProjectKeyWordsInput')"></el-input>
                         </el-form-item>
-                        <el-form-item :label="$t('lang.createProject.contractSite')">
+                        <el-form-item :label="$t('el.createProject.contractSite')">
                             <div class="contractSiteBox" v-for="(o,index) in contractSite"
                                  :key="index" :offset="index > 0 ? addContract.n : 0">
                                 <el-select v-model="contractSite[index].platform" class="contractSiteClass"
-                                           :placeholder="$t('lang.createProject.selectContractClass')">
+                                           :placeholder="$t('el.createProject.selectContractClass')">
                                     <el-option :label="item.label" :value="item.value" v-for="(item) in platformListDict" :key="item.id"></el-option>
                                 </el-select>
                                 <el-input v-model="contractSite[index].contract_address" class="contractSiteSite"
-                                          :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
+                                          :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
-                                          :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
+                                          :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
                                 <div class="btn-border"
                                      v-show="index < contractSite.length - 1"
                                      @click="deleteContractSite(index)">
