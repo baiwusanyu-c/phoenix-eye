@@ -20,33 +20,27 @@
                             <el-input class="projectKeyWordsInput" v-model="projectKeyWords"
                                       :placeholder="$t('el.createProject.createProjectKeyWordsInput')"></el-input>
                         </el-form-item>
-                        <el-form-item :label="$t('el.createProject.contractSite')">
-
-                            <div class="contractSiteBox" v-for="(o,index) in contractSiteSubtractClassLength"
+                        <el-form-item :label="$t('lang.createProject.contractSite')">
+                            <div class="contractSiteBox" v-for="(o,index) in contractSite"
                                  :key="index" :offset="index > 0 ? addContract.n : 0">
-                                <el-select v-model="contractSiteClass[o]" class="contractSiteClass"
-                                           :placeholder="$t('el.createProject.selectContractClass')">
+                                <el-select v-model="contractSite[index].platform" class="contractSiteClass"
+                                           :placeholder="$t('lang.createProject.selectContractClass')">
                                     <el-option :label="item.label" :value="item.value" v-for="(item) in platformListDict" :key="item.id"></el-option>
                                 </el-select>
-                                <el-input v-model="contractSiteSite[o]" class="contractSiteSite"
-                                          :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
-                                <el-input v-model="contractSiteLable[o]" class="contractSiteLabel"
-                                          :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
-                                <img src="../../../../assets/image/pc/subtract.png" class="subtract"
-                                     @click="deleteContractSite(o)"/>
-                            </div>
-
-                            <div class="contractSiteBox">
-                                <el-select v-model="contractSiteAdd.class" class="contractSiteClass"
-                                           :placeholder="$t('el.createProject.selectContractClass')">
-                                    <el-option :label="item.label" :value="item.value" v-for="(item) in platformListDict" :key="item.id"></el-option>
-                                </el-select>
-                                <el-input v-model="contractSiteAdd.site" class="contractSiteSite"
-                                          :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
-                                <el-input v-model="contractSiteAdd.lable" class="contractSiteLabel"
-                                          :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
-                                <!--<img src="../../../assets/image/pc/subtract.png" class="subtract"/>-->
-                                <img src="../../../../assets/image/pc/add.png" class="add" @click="addContractSite"/>
+                                <el-input v-model="contractSite[index].contract_address" class="contractSiteSite"
+                                          :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
+                                <el-input v-model="contractSite[index].label" class="contractSiteLabel"
+                                          :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
+                                <div class="btn-border"
+                                     v-show="index < contractSite.length - 1"
+                                     @click="deleteContractSite(index)">
+                                    <span class="subtract-create"></span>
+                                </div>
+                                <div class="btn-border"
+                                     v-show="index === contractSite.length - 1"
+                                     @click="addContractSite">
+                                    <svg-icon icon-class="add" class="add-create" disabled-tool-tip></svg-icon>
+                                </div>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -75,25 +69,10 @@ export default {
             createProjectWindow: false,
             projectName: '',
             projectKeyWords: '',
-            contractSiteAdd: {
-                class: '',
-                site: '',
-                lable: '',
-            },
-            contractSiteSubtract: {
-                class: '',
-                site: '',
-                lable: '',
-            },
-            contractSiteSubtractClassLength: 0,
             openTF: false,
             labelPosition: 'right',
             addContract: 0,
-            contractSiteClass: [],
-            contractSiteSite: [],
-            contractSiteLable: [],
-            // 币种平台
-            platformListDict:[]
+            contractSite:[{platform: '', contract_address: '', label: ''}],
         }
     },
     props: {
@@ -130,19 +109,14 @@ export default {
             this.createProjectWindow = false
         },
         addContractSite() {
-            this.contractSiteClass.unshift(this.contractSiteSubtract.class)
-            this.contractSiteSite.unshift(this.contractSiteSubtract.site)
-            this.contractSiteLable.unshift(this.contractSiteSubtract.lable)
+            this.contractSite.unshift({platform: '', contract_address: '', label: ''})
             this.contractSiteSubtractClassLength++
-            console.log(this.contractSiteSubtractClassLength)
         },
         deleteContractSite(i) {
             console.log('@')
-            this.contractSiteClass.splice(i, 1)
-            this.contractSiteSite.splice(i, 1)
-            this.contractSiteLable.splice(i, 1)
+            this.contractSite.splice(i, 1)
+
             this.contractSiteSubtractClassLength--
-            console.log(this.contractSiteSubtractClassLength)
         },
         /**
          * 重置參數變量
@@ -151,23 +125,11 @@ export default {
             this.createProjectWindow = false
             this.projectName = ''
             this.projectKeyWords = ''
-            this.contractSiteAdd = {
-                class: '',
-                site: '',
-                lable: '',
-            }
-            this.contractSiteSubtract = {
-                class: '',
-                site: '',
-                lable: '',
-            }
-            this.contractSiteSubtractClassLength = 0
-            this.openTF = false
-            this.labelPosition = 'right'
-            this.addContract = 0
-            this.contractSiteClass = []
-            this.contractSiteSite = []
-            this.contractSiteLable = []
+            this.openTF=false
+            this.labelPosition='right'
+            this.addContract= 0
+            this.contractSite=[{platform: '', contract_address: '', label: ''}]
+
         },
         /**
          * 获取风险类型详情数据
@@ -210,6 +172,60 @@ export default {
     width: 682px;
 }
 
+/*.subtract:hover{
+    .svg-icon.subtract-btn{
+        fill:#0468C2
+    }
+}
+
+.svg-icon.subtract-btn{
+    margin-left: 11px;
+    width: 20px;
+    height: 20px;
+    vertical-align: -0.3em;
+    fill: gray;
+    overflow: hidden;
+    font-size: 15px;
+}*/
+
+
+
+.btn-border{
+    width: 16px;
+    height: 16px;
+    border: solid 1px darkgray;
+    border-radius: 2px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 12px;
+}
+
+.btn-border:hover{
+    border-color: #0468C2;
+    .svg-icon.add-create{
+        fill:#0468C2
+    }
+    .subtract-create{
+        border: solid 1px #81b3e0;
+    }
+}
+
+.subtract-create{
+        width: 12px;
+        border: solid 1px darkgray;
+}
+
+.svg-icon.add-create{
+    width: 14px;
+    height: 14px;
+    vertical-align: -0.3em;
+    fill: gray;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+
 /deep/ .el-input__inner {
     height: 40px;
     border-radius: 2px;
@@ -227,16 +243,10 @@ export default {
     margin-left: 16px;
 }
 
-.add {
-    z-index: 378;
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    background-color: white;
-}
-
 .contractSiteBox {
     margin-top: 8px;
+    display: flex;
+    align-items: center;
 }
 
 .contractSiteClass {
@@ -251,17 +261,5 @@ export default {
 .contractSiteLabel {
     width: 234px;
     margin-left: 8px;
-}
-
-.subtract {
-    z-index: 378;
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    background-color: white;
-}
-
-.subtract:hover {
-    background-color: #0468C2;
 }
 </style>
