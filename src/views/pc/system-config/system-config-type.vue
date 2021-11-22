@@ -51,12 +51,7 @@ export default {
             featuresList:[],
             // 彈窗狀態 編輯 或 新增
             opType:'add',
-            configList:[
-                {id:'qwqwdadds',name:'疑似闪电贷攻击',features:['闪电贷','币种兑换']},
-                {id:'qwqwdas',name:'涉黑交易',features:['闪电贷','币种兑换']},
-                {id:'qwqwddadds',name:'疑似闪电贷攻击2',features:['闪电贷','币种兑换']},
-                {id:'qwqwqdas',name:'涉黑交易2',features:['闪电贷','币种兑换']}
-            ]
+            configList:[]
         }
     },
     created() {

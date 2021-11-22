@@ -18,11 +18,21 @@
                         <el-form-item :label="$t('el.addRiskWindow.abnormalSelect')">
                             <span class="reg-start project-star">*</span>
                             <template>
-                                <el-select v-model="abnormalSelectValue" multiple @change="handleCheckedCitiesChange"
+<!--                                <el-select v-model="abnormalSelectValue" multiple @change="handleCheckedCitiesChange"
                                            :placeholder="$t('el.addRiskWindow.abnormalSelectInput')">
                                     <el-checkbox :indeterminate="checked" v-model="checkAll" class="checkboxSelectAll"
                                                  @change="handleCheckAllChange">{{ $t('el.addRiskWindow.selectAll') }}
                                     </el-checkbox>
+                                    <el-option
+                                        v-for="(item) in featuresList"
+                                        :label="item.label"
+                                        :key="item.code"
+                                        :value="item">
+                                    </el-option>
+                                </el-select>-->
+                                <el-select v-model="abnormalSelectValue" multiple
+                                           value-key="code"
+                                           :placeholder="$t('el.addRiskWindow.abnormalSelectInput')">
                                     <el-option
                                         v-for="(item) in featuresList"
                                         :label="item.label"
@@ -111,7 +121,7 @@ export default {
         addRiskCancel() {
             this.addRiskWindowOpen = false
         },
-        handleCheckAllChange(val) {
+        /*handleCheckAllChange(val) {
             let selectName = this.featuresList
             this.abnormalSelectValue = val ? selectName : [];
             this.checked = false;
@@ -120,7 +130,7 @@ export default {
             let checkedCount = value.length;
             this.checkAll = checkedCount === this.featuresList.length;
             this.checked = checkedCount > 0 && checkedCount < this.featuresList.length;
-        },
+        },*/
         /**
          * 重置參數變量
          */

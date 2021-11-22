@@ -43,12 +43,12 @@
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
                                 <div class="btn-border"
-                                     v-show="index < contractSite.length - 1"
+                                     v-show="index < contractSite.length && index > 0"
                                      @click="deleteContractSite(index)">
                                     <span class="subtract-create"></span>
                                 </div>
                                 <div class="btn-border"
-                                     v-show="index === contractSite.length - 1"
+                                     v-show="index === 0"
                                      @click="addContractSite">
                                     <svg-icon icon-class="add" class="add-create" disabled-tool-tip></svg-icon>
                                 </div>
@@ -137,12 +137,10 @@ export default {
             this.createProjectWindow = false
         },
         addContractSite() {
-            this.contractSite.unshift({platform: 'eth', contract_address: '', label: '',verAddr:''})
-            this.contractSiteSubtractClassLength++
+            this.contractSite.push({platform: 'eth', contract_address: '', label: '',verAddr:''})
         },
         deleteContractSite(i) {
             this.contractSite.splice(i, 1)
-            this.contractSiteSubtractClassLength--
         },
         /**
          * 重置參數變量

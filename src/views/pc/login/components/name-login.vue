@@ -61,10 +61,8 @@
 </template>
 
 <script>
-import {nameLoginUkey, login, getCodeImg, getInfo} from '@/api/login.js';
-import {deleteDataBase, getDataBase} from "../../../../utils/index-database";
-// import {getPlatforms, getRate} from "../../../../api/common";
-
+import {login, getCodeImg} from '@/api/login.js';
+import {Base64} from 'js-base64';
 export default {
     name: "NameLogin",
     data() {
@@ -93,11 +91,11 @@ export default {
             rules: {
                 name: [
                     {required: true, message: this.$t('el.loginConfig.loginNameP'), trigger: 'blur'},
-                    // { validator: validateUserName, trigger: 'blur' }
+                     { validator: validateUserName, trigger: 'blur' }
                 ],
                 pwd: [
                     {required: true, message: this.$t('el.loginConfig.loginPwdP'), trigger: 'blur'},
-                    // { validator: validatePwd, trigger: 'blur' }
+                     { validator: validatePwd, trigger: 'blur' }
                 ],
                 code: [
                     {required: true, message: this.$t('el.loginConfig.loginVerCodeP'), trigger: 'blur'},
@@ -124,47 +122,9 @@ export default {
     },
     created() {
         this.getCode();
-        this.deleteDataBase()
+
     },
     methods: {
-        /**
-         * 获取用户的币种平台信息
-         */
-        getPlatformInfo(){
-           /* getPlatforms().then(res => {
-                this.setCookie('platforms', JSON.stringify(res));
-                this.setStore('platforms', JSON.stringify(res));
-                this.$root.platforms = res;
-            }).catch(error => {
-                console.log(error)
-            });*/
-        },
-        /**
-         * 获取币种汇率信息
-         */
-        getRateInfo(){
-           /* getRate().then(res => {
-                this.setCookie('currencyRates', JSON.stringify(res));
-                this.setStore('currencyRates', JSON.stringify(res));
-                this.$root.currencyRates = res;
-            }).catch(error => {
-                console.log(error)
-            });*/
-        },
-        deleteDataBase() {
-            // let webDataBase = new indexDB()
-            // webDataBase.deleteDataBase('xnhb').then(()=>{}).catch(err=>{console.error(err)})
-            // webDataBase.deleteDataBase('tsgz-addr').then(()=>{}).catch(err=>{console.error(err)})
-            // 獲取開啓的數據庫實例
-            const dataBase = getDataBase('xnhb')
-            if (dataBase) {
-                dataBase.dbInstance.close()
-                deleteDataBase('xnhb').then(() => {
-                }).catch(err => {
-                    console.error(err)
-                })
-            }
-        },
         /**
          * 获取登录验证码
          */
@@ -182,98 +142,41 @@ export default {
             this.form.code = this.trim(this.form.code);
             this.$refs['form'].validate((valid) => {
                 if (valid) {
-                    this.isLogin = true;
-                    this.$router.push({path: '/case'})
-                   // if (this.chipId) {
-                    // 付费版全部都走登录接口，ukey检查、版本降级校验放在后台
-                        // login({
-                        //     login_type: 'u_key',
-                        //     username: this.form.name,
-                        //     password: Base64.encode(this.form.pwd),
-                        //     code: this.form.code,
-                        //     key_id: this.chipId,
-                        //     uuid: this.form.uuid,
-                        //     client_id: 'fraud_system',
-                        //     client_secret: '123456',
-                        //     grant_type: 'password',
-                        //     scope: 'server',
-                        // }).then(res => {
-                        //     window.localStorage.clear();
-                        //     // 由于使用了localStorage 存储汇率和平台，导致在App中接口获取
-                        //     // 与这里localStorage.clear() 异步，会使得接口先存数据，后被清空
-                        //     this.getPlatformInfo()
-                        //     this.getRateInfo()
-                        //     this.isLogin = false;
-                        //     this.setCookie('userInfo', JSON.stringify({
-                        //         username: res.username
-                        //     }));
-                        //     this.setStore('userInfo', JSON.stringify({
-                        //         username: res.username
-                        //     }));
-                        //     this.setCookie('token', res.access_token);
-                        //     this.setStore('token', res.access_token);
-                        //     this.$root.userInfo = {
-                        //         username: res.username
-                        //     };
-                        //     this.$root.token = res.access_token;
-                        //     !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
-                        //     // 获取用户信息
-                        //     this.getUserInfo(res)
-                        // }).catch(error => {
-                        //     if (error.code && error.code == 920000001) {
-                        //         this.$parent.delTip = true;
-                        //     }
-                        //     this.getCode();
-                        //     this.isLogin = false;
-                        // });
-                  //  } else {
-                      /*  this.$message({
-                            message: '请插入加密锁',
-                            type: 'error',
-                            showClose: true,
-                            duration: 2 * 1000
-                        })
-                        this.isLogin = false;*/
-                      /*   nameLoginUkey({
-                           login_type: 'password',
-                           username: this.form.name,
-                           password: Base64.encode(this.form.pwd),
-                           code: this.form.code,
-                           uuid: this.form.uuid,
-                           client_id: 'fraud_system',
-                           client_secret: '123456',
-                           grant_type: 'password',
-                           scope: 'server',
-                         })
-                             .then(res => {
-                           console.log(res)
-                           window.localStorage.clear();
-                             // 由于使用了localStorage 存储汇率和平台，导致在App中接口获取
-                             // 与这里localStorage.clear() 异步，会使得接口先存数据，后被清空
-                             this.getPlatformInfo()
-                             this.getRateInfo()
-                           this.isLogin = false;
-                           this.setCookie('userInfo', JSON.stringify({
-                             username: res.username
-                           }));
-                             this.setStore('userInfo', JSON.stringify({
-                                 username: res.username
-                             }));
-                           this.setCookie('token', res.access_token);
-                            this.setStore('token', res.access_token);
-                           this.$root.userInfo = {
-                             username: res.username
-                           };
-                           this.$root.token = res.access_token;
-                           !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
-                             // 获取用户信息
-                             this.getUserInfo(res)
-                         }).catch(error => {
-                           console.log(error)
-                           this.getCode();
-                           this.isLogin = false;
-                         });*/
-                   // }
+                    login({
+                        username:this.form.name,
+                        password:Base64.encode(this.form.pwd),
+                        code: this.form.code,
+                        uuid: this.form.uuid,
+                        client_id: 'IMS_SYSTEM',
+                        client_secret: '123456',
+                        grant_type: 'password',
+                        login_type:"password",
+                        scope: 'server',
+
+                    }).then(res => {
+                        window.localStorage.clear();
+                        this.isLogin = false;
+                        this.setCookie('userInfo', JSON.stringify({
+                            username: res.username
+                        }));
+                        this.setStore('userInfo', JSON.stringify({
+                            username: res.username
+                        }));
+                        this.setCookie('token', res.access_token);
+                        this.setStore('token', res.access_token);
+                        this.$root.userInfo = {
+                            username: res.username
+                        };
+                        this.$root.token = res.access_token;
+                        !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
+                        this.$router.push({path: '/case'})
+                    }).catch(error => {
+                        if (error.code && error.code == 920000001) {
+                            this.$parent.delTip = true;
+                        }
+                        this.getCode();
+                        this.isLogin = false;
+                    });
                 } else {
                     return false;
                 }
@@ -285,27 +188,7 @@ export default {
         openServiceArg(){
             window.openWindow('#/serviceArgument','serviceArgument')
         },
-        /**
-         * 获取用户基本信息
-         */
-        getUserInfo(res){
-            getInfo().then(userInfo => {
-                // 用户是否已读更新状态
-                this.$root.userNoticeReadStatus = userInfo.userNoticeReadStatus;
-                // 用户类型标识，区别版本
-                this.$root.versionNoSuger = userInfo.versionType
-                this.$root.versionTrialDays = res.versionTrialDays
-                this.$root.versionExpiredDay = res.versionExpiredDay
-                // 金斗云的一些弹窗控制复位（0 显示 ，1不显示）
-                this.setStore('CaseHistoryListJdY', '0')
-                this.setStore('investigationJdY', '0')
-                // 标识一下是否登录页进入案件分析，
-                this.setStore('isFromLogin', 'true')
-                this.$router.push({path: '/case'})
-            }).catch(err => {
-                console.error(err)
-            })
-        }
+
     },
 };
 </script>

@@ -149,8 +149,7 @@
             <be-msg-dialog @confirm="warningDialogConfirm"
                            :isShow.sync="changeConfigWarning"
                            :title="$t('el.systemConfigScore.formatConfigData')"
-                           :sub-title="$t('el.systemConfigScore.changeConfigWarning')"
-            >
+                           :sub-title="$t('el.systemConfigScore.changeConfigWarning')">
             </be-msg-dialog>
         </div>
     </div>

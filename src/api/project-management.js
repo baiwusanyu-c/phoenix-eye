@@ -19,7 +19,7 @@ export function createProject(params) {
 // 重新评估项目 √
 export function reappraiseProject(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project_manage/reappraise?id=${pathParams.id}`,
+        url: `${config.baseURL}/ussa/project_manage/reappraise/${pathParams.id}`,
         method: 'post',
         params
     })
@@ -28,7 +28,7 @@ export function reappraiseProject(params,pathParams) {
 //项目编辑-获取项目详情 √
 export function getProjectInfo(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project_manage/edit?id=${pathParams.id}`,
+        url: `${config.baseURL}/ussa/project_manage/edit/${pathParams.id}`,
         method: 'get',
         params
     })
@@ -36,7 +36,7 @@ export function getProjectInfo(params,pathParams) {
 //项目编辑-保存编辑项目 √
 export function saveEditProject(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project_manage/edit?id=${pathParams.id}`,
+        url: `${config.baseURL}/ussa/project_manage/edit/${pathParams.id}`,
         method: 'post',
         params
     })
@@ -44,7 +44,7 @@ export function saveEditProject(params,pathParams) {
 // 删除项目 √
 export function deleteProject(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/project_manage/delete?id=${pathParams.id}`,
+        url: `${config.baseURL}/ussa/project_manage/delete/${pathParams.id}`,
         method: 'post',
         params
     })
