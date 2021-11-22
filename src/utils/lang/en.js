@@ -14,6 +14,7 @@ export const el = {
     operation:'操作',
     pleaseInput:'请输入',
     pleaseSelect:'请选择',
+    formatError:'格式错误',
     warningType: {
         recall:'重复调用',
         currencyTrade:'币种兑换',

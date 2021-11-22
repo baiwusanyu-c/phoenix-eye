@@ -42,9 +42,6 @@
                                 <!--   合约标签   -->
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
-                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'62%'}">
-                                    {{contractSite[index].verContract}}
-                                </span>
                                 <div class="btn-border"
                                      v-show="index < contractSite.length - 1"
                                      @click="deleteContractSite(index)">
@@ -86,7 +83,7 @@ export default {
             openTF: false,
             labelPosition: 'right',
             addContract: 0,
-            contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}],
+            contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:''}],
             // 下拉平台字典
             platformListDict:[],
             // 名称校验信息
@@ -140,7 +137,7 @@ export default {
             this.createProjectWindow = false
         },
         addContractSite() {
-            this.contractSite.unshift({platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''})
+            this.contractSite.unshift({platform: 'eth', contract_address: '', label: '',verAddr:''})
             this.contractSiteSubtractClassLength++
         },
         deleteContractSite(i) {
@@ -159,7 +156,7 @@ export default {
             this.openTF=false
             this.labelPosition='right'
             this.addContract= 0
-            this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
+            this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:''}]
 
         },
         /**
@@ -205,26 +202,23 @@ export default {
             let contractInfos = []
             let hasEmpty = false
             const platformReg = {
-                bsc:this.ETHaddress.test,
-                eth:this.ETHaddress.test,
-                heco:this.ETHaddress.test,
-                polygon:this.ETHaddress.test,
+                bsc:(addr)=>this.ETHaddress.test(addr),
+                eth:(addr)=>this.ETHaddress.test(addr),
+                heco:(addr)=>this.ETHaddress.test(addr),
+                polygon:(addr)=>this.ETHaddress.test(addr),
             }
             params.contract_infos.forEach(val=>{
                 val.verAddr = ''
-                val.verContract = ''
-                // 只填了地址
-                if(val.contract_address && !val.label){
-                    val.verContract = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractLabel')
-                    hasEmpty = true
-                }
                 // 只填了合約標簽
-                if(!val.contract_address && val.label){
+                if(!val.contract_address){
                     val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
                     hasEmpty = true
                 }
                 // 校验地址格式
-                if(!platformReg[val.platform](val.contract_address))
+                if(!platformReg[val.platform](val.contract_address)){
+                    val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
+                    hasEmpty = true
+                }
                 if(val.contract_address && val.label){
                     contractInfos.push(val)
                 }
