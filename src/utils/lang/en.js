@@ -88,7 +88,7 @@ export const el = {
     riskConfig:{
         platform:'链平台',
         searchBtn:'搜索',
-        searchP:'输入交易哈希、发送方、接收方',
+        searchP:'请输入交易哈希、发送方、接收方',
         platformP:'请选择链平台',
         tableHeader:{
             txHash:'交易哈希',
@@ -117,7 +117,8 @@ export const el = {
         createProjectKeyWordsInput:'',
         createProjectOpenTitle:'是否公开',
         createProjectOpenSecret:'保密',
-        contractSite:'合约地址:',
+        contractSite:'合约地址',
+        contractLabel:'合约标签',
         selectContractClass:'请选择',
         contractSiteInput:'如: xC1323fe4b68E9a4838168aea...',
         contractSiteLabel:'输入合约标签, 多个用分号隔开',

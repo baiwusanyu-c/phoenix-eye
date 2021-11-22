@@ -8,29 +8,43 @@
                 width="856px">
                 <div>
                     <el-form :label-position="labelPosition" label-width="80px" class="projectForm">
-                        <el-form-item :label="$t('el.createProject.createProjectName')">
+                        <el-form-item :label="$t('el.createProject.createProjectName') + ':'">
+                            <span class="reg-start project-star">*</span>
                             <el-input class="projectNameInput" v-model="projectName"
                                       :placeholder="$t('el.createProject.createProjectNameInput')"></el-input>
+                            <span class="reg-start project-Ver">{{ verName }}</span>
                             <span class="projectOpenTitle">{{ $t('el.createProject.createProjectOpenTitle') }}</span>
-                            <el-switch v-model="openTF">  </el-switch>
-                            <span
-                                class="projectOpenSecret">{{ $t('el.createProject.createProjectOpenSecret') }}</span>
+                            <el-switch v-model="openTF"></el-switch>
+                            <span class="projectOpenSecret">{{ $t('el.createProject.createProjectOpenSecret') }}</span>
                         </el-form-item>
-                        <el-form-item :label="$t('el.createProject.createProjectKeyWords')">
+                        <el-form-item :label="$t('el.createProject.createProjectKeyWords') + ':'">
+                            <span class="reg-start project-star">*</span>
                             <el-input class="projectKeyWordsInput" v-model="projectKeyWords"
                                       :placeholder="$t('el.createProject.createProjectKeyWordsInput')"></el-input>
+                            <span class="reg-start project-Ver">{{ verKeyword }}</span>
                         </el-form-item>
-                        <el-form-item :label="$t('el.createProject.contractSite')">
-                            <div class="contractSiteBox" v-for="(o,index) in contractSite"
+                        <!--        合约地址    -->
+                        <el-form-item :label="$t('el.createProject.contractSite') + ':'">
+                            <span class="reg-start project-star">*</span>
+                            <div :class="`contractSiteBox ${index > 0 ? 'contract-site-box-item' : ''}`" v-for="(o,index) in contractSite"
                                  :key="index" :offset="index > 0 ? addContract.n : 0">
+                                <!--   币种平台    -->
                                 <el-select v-model="contractSite[index].platform" class="contractSiteClass"
                                            :placeholder="$t('el.createProject.selectContractClass')">
                                     <el-option :label="item.label" :value="item.value" v-for="(item) in platformListDict" :key="item.id"></el-option>
                                 </el-select>
+                                <!--   合约地址    -->
                                 <el-input v-model="contractSite[index].contract_address" class="contractSiteSite"
                                           :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
+                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'120px'}">
+                                    {{contractSite[index].verAddr}}
+                                </span>
+                                <!--   合约标签   -->
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
+                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'62%'}">
+                                    {{contractSite[index].verContract}}
+                                </span>
                                 <div class="btn-border"
                                      v-show="index < contractSite.length - 1"
                                      @click="deleteContractSite(index)">
@@ -72,9 +86,13 @@ export default {
             openTF: false,
             labelPosition: 'right',
             addContract: 0,
-            contractSite:[{platform: '', contract_address: '', label: ''}],
+            contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}],
             // 下拉平台字典
-            platformListDict:[]
+            platformListDict:[],
+            // 名称校验信息
+            verName:'',
+            // 关键词校验信息
+            verKeyword:''
         }
     },
     props: {
@@ -114,7 +132,6 @@ export default {
             if(this.type === 'edit'){
                 await this.editProject()
             }
-            this.createProjectWindow = false
         },
         /**
          * 弹窗取消方法
@@ -123,7 +140,7 @@ export default {
             this.createProjectWindow = false
         },
         addContractSite() {
-            this.contractSite.unshift({platform: '', contract_address: '', label: ''})
+            this.contractSite.unshift({platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''})
             this.contractSiteSubtractClassLength++
         },
         deleteContractSite(i) {
@@ -137,10 +154,12 @@ export default {
             this.createProjectWindow = false
             this.projectName = ''
             this.projectKeyWords = ''
+            this.verKeyword = ''
+            this.verName = ''
             this.openTF=false
             this.labelPosition='right'
             this.addContract= 0
-            this.contractSite=[{platform: '', contract_address: '', label: ''}]
+            this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
 
         },
         /**
@@ -157,10 +176,10 @@ export default {
             }
             getProjectInfo(null, pathParams).then(res => {
                 if (res) {
-                    this.projectName = res.data.name
-                    this.openTF = res.data.is_public
-                    this.projectKeyWords = res.data.keyword
-                    this.contractSite = res.data.contract_address
+                    _this.projectName = res.data.name
+                    _this.openTF = res.data.is_public
+                    _this.projectKeyWords = res.data.keyword
+                    _this.contractSite = res.data.contract_address
                 }
             }).catch(err => {
                 const msg = _this.$t('el.search') + _this.$t('el.failed')
@@ -170,9 +189,56 @@ export default {
         },
         /**
          * 表單校驗方法
+         * @param {Object} params - 搜索参数
          */
-        formVerification(){
-
+        formVerification(params){
+            this.verName = ''
+            this.verKeyword = ''
+            if(!params.name){
+                this.verName = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectName')
+                return false
+            }
+            if(!params.keyword){
+                this.verKeyword = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectKeyWords')
+                return false
+            }
+            let contractInfos = []
+            let hasEmpty = false
+            const platformReg = {
+                bsc:this.ETHaddress.test,
+                eth:this.ETHaddress.test,
+                heco:this.ETHaddress.test,
+                polygon:this.ETHaddress.test,
+            }
+            params.contract_infos.forEach(val=>{
+                val.verAddr = ''
+                val.verContract = ''
+                // 只填了地址
+                if(val.contract_address && !val.label){
+                    val.verContract = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractLabel')
+                    hasEmpty = true
+                }
+                // 只填了合約標簽
+                if(!val.contract_address && val.label){
+                    val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
+                    hasEmpty = true
+                }
+                // 校验地址格式
+                if(!platformReg[val.platform](val.contract_address))
+                if(val.contract_address && val.label){
+                    contractInfos.push(val)
+                }
+            })
+            if(hasEmpty) {
+                return false
+            }
+            if(contractInfos.length === 0) {
+                const msg = '请至少填写一条有效合约地址'
+                this.$message.warning(msg)
+                return false
+            }
+            params.contract_infos = contractInfos
+            return true
         },
         /**
          * 确认增加项目方法
@@ -186,13 +252,16 @@ export default {
                 contract_infos:_this.contractSite
             }
             // 表单校验
-            this.formVerification(params)
+            if(!this.formVerification(params)){
+                return
+            }
             createProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.add')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.$parent.getList()
+                    _this.createProjectWindow = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.add')+ _this.$t('el.failed')
@@ -216,13 +285,16 @@ export default {
                 id: this.projectId
             }
             // 表单校验
-            this.formVerification(params)
+            if(!this.formVerification(params)){
+                return
+            }
             saveEditProject(params,pathParams).then(res=>{
                 if(res){
                     const msg = _this.$t('el.edit')+ _this.$t('el.success')
                     _this.$message.success(msg)
                     // 更新列表
                     _this.$parent.getList()
+                    _this.createProjectWindow = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.edit')+ _this.$t('el.failed')
@@ -235,6 +307,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.createBox{
+    .project-star{
+        position: absolute;
+        left: -92px;
+        top: 4px;
+    }
+    .project-Ver{
+        position: absolute;
+        left: 0;
+        top: 34px;
+    }
+    .contract-ver{
+        position: absolute;
+        left: 0;
+    }
+}
 .projectNameInput {
     width: 440px;
 }
@@ -319,7 +407,9 @@ export default {
     display: flex;
     align-items: center;
 }
-
+.contract-site-box-item {
+    margin-top: 16px;
+}
 .contractSiteClass {
     width: 110px;
 }

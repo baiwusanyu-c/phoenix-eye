@@ -5,7 +5,7 @@ import Vue from 'vue'
 // Vue.prototype.emailReg = /^[\.a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
 Vue.prototype.emailReg = /^(\w)+((\.\w+)|(\-\w+))*@(\w|\-)+((\.\w+)+)$/;
 //手机
-Vue.prototype.phoneReg =  /^1\d{10}$/;
+Vue.prototype.phoneReg = /^1\d{10}$/;
 //币种与交易
 Vue.prototype.BTChash = /^[0-9a-fA-F]{64}$/;
 Vue.prototype.BTCaddress = /^(1|3)[1-9a-km-zA-HJ-NP-Z]{32,33}$|^(bc1)[0-9a-z]{39}$|^(bc1)[0-9a-z]{59}$|^(p|q)[0-9a-hj-np-z]{41}$/;
