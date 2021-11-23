@@ -130,6 +130,7 @@ export const el = {
         selectContractClass:'请选择',
         contractSiteInput:'如: xC1323fe4b68E9a4838168aea...',
         contractSiteLabel:'输入合约标签, 多个用分号隔开',
+        verInfo:'请至少填写一条有效合约地址'
     },
     addRiskWindow:{
         addRiskWindowTitle:'添加风险类型识别规则',

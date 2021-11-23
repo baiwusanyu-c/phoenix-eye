@@ -225,7 +225,7 @@ export default {
                 return false
             }
             if(contractInfos.length === 0) {
-                const msg = '请至少填写一条有效合约地址'
+                const msg = this.$t('el.createProject.verInfo')
                 this.$message.warning(msg)
                 return false
             }

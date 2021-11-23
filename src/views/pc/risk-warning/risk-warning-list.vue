@@ -125,7 +125,7 @@
                     align="center"
                     show-overflow-tooltip>
                     <template slot-scope="scope">
-                        {{scope.row.risk_score || '暂无'}}
+                        <span style="font-weight: bold">{{scope.row.risk_score || '暂无'}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -220,7 +220,7 @@ export default {
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
-                platfrom:this.searchParams.platform,
+                platform:this.searchParams.platform,
                 param:this.searchParams.addr
             }
             getProjWarning(params).then(res=>{
