@@ -15,6 +15,13 @@ export const el = {
     pleaseInput:'请输入',
     pleaseSelect:'请选择',
     formatError:'格式错误',
+    header:{
+        me:'me',
+        language:'language',
+        chinese:'Chinese',
+        english:'English',
+        logout:'logout'
+    },
     warningType: {
         recall:'重复调用',
         currencyTrade:'币种兑换',
@@ -33,7 +40,7 @@ export const el = {
         loginInfo:'登录成功!',
         register:'注册',
         rember:'忘记密码',
-        login:'登 录',
+        login:'login',
         loging:'登 录 中..',
         loginNameP:'请输入用户名/手机号',
         loginPwdP:'请输入密码',
@@ -81,10 +88,10 @@ export const el = {
         features:'异常特征'
     },
     proManageConfig:{
-        addPro:'点击创建项目',
+        addPro:'click to create',
         proPublic:'公开',
         proPrivate:'保密',
-        createTime:'创建时间'
+        createTime:'createTime'
     },
     riskConfig:{
         platform:'链平台',
@@ -110,7 +117,7 @@ export const el = {
     },
     createProject:{
         createProjectTitle:'创建项目',
-        createProjectName:'项目名称',
+        createProjectName:'name',
         createProjectNameInput:'如: PancakeSwap',
         createProjectCancel:'取 消',
         createProjectConfirm:'确 定',

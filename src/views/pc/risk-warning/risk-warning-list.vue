@@ -84,9 +84,11 @@
                     align="center">
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.from_address"
+                                          v-if="!scope.row.from_address_tag"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
+                        <span style="color: #1496F2" v-if="scope.row.from_address_tag">{{scope.row.from_tag}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -96,11 +98,11 @@
                     align="center" >
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.to_address"
-                                          v-if="!scope.row.tag"
+                                          v-if="!scope.row.to_address_tag"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
-                        <span style="color: #1496F2" v-if="scope.row.tag">{{scope.row.tag}}</span>
+                        <span style="color: #1496F2" v-if="scope.row.to_address_tag">{{scope.row.to_address_tag}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column

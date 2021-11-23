@@ -104,8 +104,8 @@ export const routerOption = {
 const beforeEachHandle = (router) => {
     router.beforeEach((to, from, next) => {
         setTimeout(() => {
-            _this.$i18n.locale = 'zh_CN'
-            to.meta.title = _this.$t(to.meta.title)
+            _this.$i18n.locale = _this.getStore('language')
+            to.meta.titleInfo = _this.$t(to.meta.title)
             next()
         }, 100)
     })

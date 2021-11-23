@@ -15,6 +15,13 @@ export const el = {
     pleaseInput:'请输入',
     pleaseSelect:'请选择',
     formatError:'格式错误',
+    header:{
+      me:'我',
+      language:'语言',
+      chinese:'中文',
+      english:'英文',
+      logout:'退出登录'
+    },
     warningType: {
         recall:'重复调用',
         currencyTrade:'币种兑换',

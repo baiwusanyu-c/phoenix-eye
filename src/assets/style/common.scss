@@ -574,7 +574,10 @@
     min-width: 1000px;
     min-height: calc(100vh - 141px);
 }
-
+.active-dropdown{
+    color: $mainColor3;
+    background-color: #ecf5ff;
+}
 //暂无数据
 .noData {
     width: 100%;

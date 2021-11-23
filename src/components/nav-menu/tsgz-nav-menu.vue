@@ -24,13 +24,13 @@
                                   :disabled="value.isDisabled"
                                   @click="routerPush(value,value.isPush)">
                         <svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></svg-icon>
-                        <span style="margin-left: 10px">{{ value.name }}</span>
+                        <span style="margin-left: 10px">{{ $t(value.name )}}</span>
                     </el-menu-item>
                     <el-submenu v-if='value.show && value.children.length > 0' :index="value.index"
                                 :disabled="value.isDisabled">
                         <template slot="title">
                             <svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></svg-icon>
-                            <span style="margin-left: 10px">{{ value.name }}</span>
+                            <span style="margin-left: 10px">{{ $t(value.name )}}}</span>
                         </template>
                         <div v-for="item in value.children" :key="item.key">
                             <el-menu-item :index="item.index" @click.self="routerPush(item,value.isPush)">
@@ -214,7 +214,7 @@ export default {
                 'FRAUD_BS': {
                     icon: '-renwu',
                     index: '0',
-                    name: this.$t('el.navTextConfig.navName0'),
+                    name: 'el.navTextConfig.navName0',
                     show: false,
                     path: '/blockchainSituation',
                     isPush: true,
@@ -223,7 +223,7 @@ export default {
                 },
                 'FRAUD_PR': {
                     icon: '-liulanqi',
-                    name: this.$t('el.navTextConfig.navName1'),
+                    name: 'el.navTextConfig.navName1',
                     show: false,
                     path: '/projectRanking',
                     index: '1',
@@ -235,7 +235,7 @@ export default {
                 'FRAUD_WAR': {
                     icon: '-tiaochaquzheng',
                     index: '2',
-                    name: this.$t('el.navTextConfig.navName2'),
+                    name: 'el.navTextConfig.navName2',
                     show: false,
                     path: '/riskWarning/list',
                     isPush: true,
@@ -245,7 +245,7 @@ export default {
                 'FRAUD_PM': {
                     icon: '-jiaoyifenxi',
                     index: '3',
-                    name: this.$t('el.navTextConfig.navName3'),
+                    name: 'el.navTextConfig.navName3',
                     show: false,
                     path: '/projectManagement',
                     isPush: true,
@@ -254,7 +254,7 @@ export default {
                 },
                 'FRAUD_SC': {
                     icon: '-xitongpeizhi',
-                    name: this.$t('el.navTextConfig.navName4'),
+                    name: 'el.navTextConfig.navName4',
                     show: false,
                     index: '4',
                     path: '/systemConfig',
@@ -302,8 +302,8 @@ export default {
             this.$nextTick(() => {
                 try {
                     Object.keys(this.headerConfig).forEach(val => {
-
-                        if (_this.$route.path.indexOf(_this.headerConfig[val].path) > -1) {
+                        if (_this.$route.path.indexOf(_this.headerConfig[val].path) > -1 || _this.$route.meta.title === _this.headerConfig[val].name
+                        ) {
                             _this.active = _this.headerConfig[val].index
                             throw new Error('')
                         }

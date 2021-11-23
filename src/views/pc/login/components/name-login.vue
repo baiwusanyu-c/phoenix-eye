@@ -63,6 +63,7 @@
 <script>
 import {login, getCodeImg} from '@/api/login.js';
 import {Base64} from 'js-base64';
+import _this from "../../../../main";
 export default {
     name: "NameLogin",
     data() {
@@ -154,7 +155,9 @@ export default {
                         scope: 'server',
 
                     }).then(res => {
+                        const langCache = this.getStore('language')
                         window.localStorage.clear();
+                        this.setStore('language',langCache)
                         this.isLogin = false;
                         this.setCookie('userInfo', JSON.stringify({
                             username: res.username
@@ -169,7 +172,7 @@ export default {
                         };
                         this.$root.token = res.access_token;
                         !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
-                        this.$router.push({path: '/case'})
+                        this.$router.push({path: '/riskWarning/list'})
                     }).catch(error => {
                         if (error.code && error.code == 920000001) {
                             this.$parent.delTip = true;
@@ -182,12 +185,7 @@ export default {
                 }
             });
         },
-        /**
-         * 开启跳转到平台服务协议页面方法
-         */
-        openServiceArg(){
-            window.openWindow('#/serviceArgument','serviceArgument')
-        },
+
 
     },
 };
