@@ -5,7 +5,7 @@
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="system-config-type">
+    <div class="system-config-type" v-loading="loading">
         <system-config-type-card
           type="add"
           @add="addType">
@@ -51,7 +51,9 @@ export default {
             featuresList:[],
             // 彈窗狀態 編輯 或 新增
             opType:'add',
-            configList:[]
+            configList:[],
+            // loading
+            loading:false,
         }
     },
     created() {
@@ -174,11 +176,13 @@ export default {
          */
         getList(){
             const _this = this
+            _this.loading = true
             getRiskTypeList().then(res => {
                 // 風險類型列表
                 _this.configList =  res.data.risk_types
                 // 交易特徵列表
                 _this.featuresList = res.data.system_risk_features
+                _this.loading = false
             }).catch(err=>{
                 const msg = _this.$t('el.search')+ _this.$t('el.failed')
                 _this.$message.error(msg)

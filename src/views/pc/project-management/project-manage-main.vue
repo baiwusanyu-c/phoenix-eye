@@ -5,8 +5,8 @@
 * @update (czh 2021/11/1)
 */
 <template>
-    <div class="project-manage-main">
-        <div class="project-manage-list scrollDiy">
+    <div class="project-manage-main" >
+        <div class="project-manage-list scrollDiy" v-loading="loading">
             <project-manage-card
                 type="add"
                 @add="addProject">
@@ -79,7 +79,9 @@ export default {
             // 项目列表示例
             projectList:[],
             // 项目列表的地址列表示例
-            addrList:[]
+            addrList:[],
+            // loading
+            loading:false,
         }
     },
     created() {
@@ -213,6 +215,7 @@ export default {
          */
         getList(){
             const _this = this
+            _this.loading = true
             getProjectList().then(res => {
                 // 项目列表
                 _this.projectList =  res.data
@@ -220,6 +223,7 @@ export default {
                 _this.projectList.forEach(val=>{
                     val.keywordList =  val.keyword.split(';').filter(val=>val)
                 })
+                _this.loading = false
             }).catch(err=>{
                 const msg = _this.$t('el.search')+ _this.$t('el.failed')
                 _this.$message.error(msg)

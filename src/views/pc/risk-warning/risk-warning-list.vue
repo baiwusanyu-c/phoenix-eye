@@ -27,6 +27,7 @@
             <el-table
                 tooltip-effect="light"
                 :data="tableData"
+                v-loading="loading"
                 ref="riskWarningList">
                 <div slot="empty"
                      class = 'empty-table'>
@@ -131,8 +132,7 @@
                     align="center">
                     <template slot-scope="scope">
                         <span style="color: #1496F2;cursor: pointer"
-                              @click="openDetail"
-                              v-if="scope.row.state === 'failed'">{{ $t('el.scan') }} >></span>
+                              @click="openDetail(scope.row)">{{ $t('el.scan') }} >></span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -175,7 +175,9 @@ export default {
             // 下拉列表币种
             platformList: [],
             // 表格数据
-            tableData:[]
+            tableData:[],
+            // loading
+            loading:false,
         }
     },
     computed:{
@@ -212,6 +214,7 @@ export default {
          */
         getData() {
             const _this = this
+            _this.loading = true
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
@@ -220,8 +223,9 @@ export default {
             }
             getProjWarning(params).then(res=>{
                 if(res){
-                    _this.tableData = res.data
-                   // _this.pageParams.total =  _this.tableData.length
+                    _this.tableData = res.data.page_infos
+                    _this.pageParams.total =  res.data.page_total
+                    _this.loading = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.operation')+ _this.$t('el.failed')
@@ -241,9 +245,8 @@ export default {
         /**
          * 打開交易分析詳情tab
          */
-        openDetail(){
-            let params = {}
-            this.$openWindow(`#/riskWarning/detail?${qs.stringify(params)}`, 'view_window')
+        openDetail(params){
+            this.$openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`, 'view_window')
         }
     },
 }
