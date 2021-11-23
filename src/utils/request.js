@@ -40,7 +40,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         const res = response.data
-        debugger
         if (res.code !== 200 && res.code !== '0000') {
             Message({
                 message: res.msg || 'Error',

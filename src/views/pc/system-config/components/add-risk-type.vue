@@ -159,8 +159,8 @@ export default {
             }
             getRiskTypeInfo(null, pathParams).then(res => {
                 if (res) {
-                    _this.addRiskName = res.risk_type.name
-                    _this.abnormalSelectValue = res.risk_type.risk_features
+                    _this.addRiskName = res.data.risk_type.name
+                    _this.abnormalSelectValue = res.data.risk_type.risk_features
                 }
             }).catch(err => {
                 const msg = _this.$t('el.search') + _this.$t('el.failed')
