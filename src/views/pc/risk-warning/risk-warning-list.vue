@@ -60,7 +60,10 @@
                     :label="$t('el.riskConfig.tableHeader.txTime')"
                     align="center">
                     <template slot-scope="scope">
-                        <span>{{formatDate($createDate(scope.row.tx_time))}}</span>
+                        <el-tooltip placement="top" effect="light">
+                            <span slot="content">UTC：{{beijing2utc(scope.row.tx_time)}}</span>
+                            <span class="cursor">{{formatDate($createDate(scope.row.tx_time))}}</span>
+                        </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -105,11 +108,13 @@
                     :label="$t('el.riskConfig.tableHeader.warningType')"
                     align="center">
                     <template slot-scope="scope">
-                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center">
+                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center"
+                             v-if="scope.row.risk_features && scope.row.risk_features.length > 0 ">
                             <el-tag v-for="item in scope.row.risk_features"
                                     style="margin-top: 10px;width: min-content;"
                                     :key="item">{{item}}</el-tag>
                         </div>
+                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>暂无</div>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -118,7 +123,7 @@
                     align="center"
                     show-overflow-tooltip>
                     <template slot-scope="scope">
-                        {{scope.row.risk_score}}
+                        {{scope.row.risk_score || '暂无'}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -177,7 +182,7 @@ export default {
     computed:{
         stateSuccess(){
             return function (val){
-                if(val !== 'success'){
+                if(val !== '成功'){
                     return {
                         color:'#FA6400'
                     }
@@ -189,7 +194,7 @@ export default {
         },
         stateTxt(){
             return function (val){
-                if(val !== 'success'){
+                if(val !== '成功'){
                     return this.$t('el.riskConfig.stateFailed')
                 }
                 return this.$t('el.riskConfig.stateSuccess')
