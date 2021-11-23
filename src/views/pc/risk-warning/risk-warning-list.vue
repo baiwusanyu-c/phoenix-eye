@@ -20,7 +20,7 @@
             <div class="search-area search-area-input">
                 <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getData(searchParams)">{{ $t('el.riskConfig.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getData()">{{ $t('el.riskConfig.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -56,7 +56,6 @@
                 </el-table-column>
                 <el-table-column
                     prop="tx_time"
-                    show-tooltip-when-overflow
                     :label="$t('el.riskConfig.tableHeader.txTime')"
                     align="center">
                     <template slot-scope="scope">
@@ -211,30 +210,24 @@ export default {
         /**
          * 获取表格数据
          */
-        getData(searchParam) {
+        getData() {
             const _this = this
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
-            }
-            if(searchParam){
-                params.platfrom = searchParam.platform
-                params.param = searchParam.addr
-                if(!params.param){
-                    _this.$message.warning(_this.$t('el.riskConfig.searchP'))
-                    return
-                }
+                platfrom:this.searchParams.platform,
+                param:this.searchParams.addr
             }
             getProjWarning(params).then(res=>{
                 if(res){
                     _this.tableData = res.data
+                   // _this.pageParams.total =  _this.tableData.length
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.operation')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
             })
-            this.pageParams.total =  this.tableData.length
         },
         /**
          * 分页方法
@@ -243,7 +236,7 @@ export default {
         pageChange(item){
             this.pageParams.pageNum = item.currentPage
             this.pageParams.currentPage = item.currentPage
-            this.getData(this.searchParams)
+            this.getData()
         },
         /**
          * 打開交易分析詳情tab

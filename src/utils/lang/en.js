@@ -115,7 +115,7 @@ export const el = {
         createProjectCancel:'取 消',
         createProjectConfirm:'确 定',
         createProjectKeyWords:'关键词',
-        createProjectKeyWordsInput:'',
+        createProjectKeyWordsInput:'多个关键词用“；”隔开，如：PancakeSwap;CAKE',
         createProjectOpenTitle:'是否公开',
         createProjectOpenSecret:'保密',
         contractSite:'合约地址',

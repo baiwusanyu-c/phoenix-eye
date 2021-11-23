@@ -15,10 +15,10 @@
                 type="edit"
                 :title="item.name"
                 :is-public="item.is_public"
-                :keyword-list="item.keywords"
+                :keyword-list="item.keywordList"
                 :create-time="item.create_time"
                 :contract-list="item.contract_infos"
-                @edit="editProject(editProject)"
+                @edit="editProject(item)"
                 @fresh="freshProject(item)"
                 @delete="deleteProject(item)"
                 v-for="(item) in projectList" :key="item.id">
@@ -27,7 +27,7 @@
         <!--    新增、编辑项目弹窗    -->
         <create-project
             :type="opType"
-            :riskId = 'curItem.id'
+            :projectId = 'curItem.id'
             @confirm = "()=>{return this.opType === 'add' ? this.confirmAdd() : this.confirmEdit()}"
             ref="createProjectDialog">
         </create-project>
@@ -77,25 +77,13 @@ export default {
             // 删除弹窗显示内容
             deleteText:'',
             // 项目列表示例
-            projectList:[
-                {name:'uniswap',type:'private',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqsaafga'},
-                {name:'uniswap',type:'public',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqaqwe21fga'},
-                {name:'uniswap',type:'private',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqarfga'},
-                {name:'uniswap',type:'public',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqaqrfga'},
-                {name:'uniswap',type:'public',createTime:'2020-03-10 12:30:30',tagList:['PancakeSwap','uniswap'],id:'wdwqadwqfga'},
-            ],
+            projectList:[],
             // 项目列表的地址列表示例
-            addrList:[
-                {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWi2TWYu9H2yFMTi7P2D',},
-                {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWi2TdWYu9H2yFMTi7P2D',},
-                {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWi2TcWYu9H2yFMTi7P2D',},
-                {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWis2TWYu9H2yFMTi7P2D',},
-                {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWi2aTWYu9H2yFMTi7P2D',},
-                {currency:'Polygon',addr:'1KKo4c3eZAoJ7zqWi2aTWYu9H2yFMTi7aP2D',},
-            ]
+            addrList:[]
         }
     },
-    mounted() {
+    created() {
+        this.getList()
     },
     methods: {
         /**
@@ -117,6 +105,7 @@ export default {
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
+                    _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.add')+ _this.$t('el.failed')
@@ -148,6 +137,7 @@ export default {
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
+                    _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.edit')+ _this.$t('el.failed')
@@ -168,7 +158,6 @@ export default {
          * 确认删除项目信息
          */
         confirmDelete(){
-            this.showDelete = false
             const _this = this
             const pathParams = {
                 id:this.curItem.id
@@ -179,6 +168,7 @@ export default {
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
+                    _this.showDelete = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.delete')+ _this.$t('el.failed')
@@ -199,7 +189,6 @@ export default {
          * 确认重新评估项目
          */
         confirmFresh(){
-            this.showFresh = false
             const _this = this
             const pathParams = {
                 id:this.curItem.id
@@ -210,6 +199,7 @@ export default {
                     _this.$message.success(msg)
                     // 更新列表
                     _this.getList()
+                    _this.showFresh = false
                 }
             }).catch(err=>{
                 const msg = _this.$t('el.operation')+ _this.$t('el.failed')
@@ -226,6 +216,10 @@ export default {
             getProjectList().then(res => {
                 // 项目列表
                 _this.projectList =  res.data
+                // 關鍵詞字符串轉化為數組
+                _this.projectList.forEach(val=>{
+                    val.keywordList =  val.keyword.split(';').filter(val=>val)
+                })
             }).catch(err=>{
                 const msg = _this.$t('el.search')+ _this.$t('el.failed')
                 _this.$message.error(msg)

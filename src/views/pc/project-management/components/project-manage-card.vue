@@ -8,15 +8,15 @@
     <div :class="`project-manage-card`">
         <!--    非新增时显示   -->
         <div v-if="type === 'edit'" :class="`card-title card-title-${isPublic ? 'public' : 'private'}`">
-            <div style="display: flex">
+            <div style="display: flex;align-items: center;">
                 <h3>
                     {{ title }}
                 </h3>
-                <span>{{isPublic? $t('el.proManageConfig.proPublic') : $t('el.proManageConfig.proPrivate')}}</span>
+                <span class="card-title-public-txt">{{isPublic? $t('el.proManageConfig.proPublic') : $t('el.proManageConfig.proPrivate')}}</span>
             </div>
             <div>
-                <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
-                             disabled-tool-tip></be-svg-icon>
+            <!-- <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
+                             disabled-tool-tip></be-svg-icon>-->
                 <be-svg-icon @click='emitFunc("edit")' style="cursor: pointer" icon-class="-renwuguanli-xiugai"
                              disabled-tool-tip></be-svg-icon>
                 <be-svg-icon @click='emitFunc("delete")' style="cursor: pointer" icon-class="-renwuguanli-shanchu"
@@ -32,7 +32,10 @@
                 <ul>
                     <li v-for="(addrItem) in contractList" :key="addrItem.contract_address">
                         <span class="addr-cury">{{ addrItem.platform }}</span>
-                        <be-ellipsis-copy :targetStr="addrItem.contract_address" :fontLength="showLength" :endLength="showLength">
+                        <be-ellipsis-copy :targetStr="addrItem.contract_address"
+                                          :is-ellipsis="addrItem.contract_address.length > 30"
+                                          :fontLength="showLength"
+                                          :endLength="showLength">
                         </be-ellipsis-copy>
                     </li>
                 </ul>
@@ -132,7 +135,7 @@ export default {
 <style lang="scss">
 .project-manage-card {
     background-color: $mainColor7;
-    width: 400px;
+    width:398px;
     height: 340px;
     margin: 6px 10px;
     box-shadow: 0 1px 4px 0 $mainColor8;
@@ -150,6 +153,11 @@ export default {
 
         .svg-icon {
             margin: 0 5px;
+        }
+        .card-title-public-txt{
+            border: 1px solid $mainColor7;
+            margin-left: 10px;
+            padding: 0 5px;
         }
     }
 

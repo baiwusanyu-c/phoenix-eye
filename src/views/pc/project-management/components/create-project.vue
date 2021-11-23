@@ -151,7 +151,7 @@ export default {
             this.projectKeyWords = ''
             this.verKeyword = ''
             this.verName = ''
-            this.openTF=false
+            this.openTF = false
             this.labelPosition='right'
             this.addContract= 0
             this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:''}]
@@ -174,7 +174,7 @@ export default {
                     _this.projectName = res.data.name
                     _this.openTF = res.data.is_public
                     _this.projectKeyWords = res.data.keyword
-                    _this.contractSite = res.data.contract_address
+                    _this.contractSite = res.data.contract_infos
                 }
             }).catch(err => {
                 const msg = _this.$t('el.search') + _this.$t('el.failed')
@@ -217,7 +217,7 @@ export default {
                     val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
                     hasEmpty = true
                 }
-                if(val.contract_address && val.label){
+                if(val.contract_address){
                     contractInfos.push(val)
                 }
             })
@@ -247,6 +247,13 @@ export default {
             if(!this.formVerification(params)){
                 return
             }
+            params.contract_infos.map(val=>{
+                return {
+                    platform:val.platform,
+                    contract_address:val.contract_address,
+                    label:val.label
+                }
+            })
             createProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.add')+ _this.$t('el.success')
@@ -280,6 +287,13 @@ export default {
             if(!this.formVerification(params)){
                 return
             }
+            params.contract_infos.map(val=>{
+                return {
+                    platform:val.platform,
+                    contract_address:val.contract_address,
+                    label:val.label
+                }
+            })
             saveEditProject(params,pathParams).then(res=>{
                 if(res){
                     const msg = _this.$t('el.edit')+ _this.$t('el.success')
