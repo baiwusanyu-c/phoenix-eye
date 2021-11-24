@@ -167,4 +167,9 @@ export const el = {
         inputEmpty:'输入为空',
         checkInput:'检查输入信息'
     },
+    projectRinking:{
+        safetyOpinion: {
+            textOriginal:'查看原文>>',
+        },
+    },
 }
