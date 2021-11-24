@@ -7,6 +7,7 @@
 <template>
     <div class="project-ranking-main">
         <div class="project-ranking-search">
+
             <project-ranking-radar></project-ranking-radar>
 <!--            <project-ranking-radar></project-ranking-radar>
             <project-ranking-radar></project-ranking-radar>-->
@@ -17,6 +18,9 @@
             <div>
 
             </div>
+        </div>
+        <div>
+            <project-ranking-market-performance></project-ranking-market-performance>
         </div>
         <div class="project-ranking-safety-opinion">
             <project-ranking-safety-opinion></project-ranking-safety-opinion>
@@ -29,10 +33,11 @@
 import ProjectRankingRadar from "./components/project-ranking-radar";
 import ProjectRankingNumCard from "./components/project-ranking-num-card";
 import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opinion"
+import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance"
 
 export default {
     name: "ProjectRankingMain",
-    components: {ProjectRankingNumCard, ProjectRankingRadar,ProjectRankingSafetyOpinion},
+    components: {ProjectRankingNumCard, ProjectRankingRadar,ProjectRankingSafetyOpinion,ProjectRankingMarketPerformance},
     data() {
         return {}
     },
