@@ -3,18 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "serve": "cross-env NODE_ENV=pretest vue-cli-service serve --open",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build:dev": "vue-cli-service build --mode dev",
-    "build:stage": "cross-env NODE_ENV=staging vue-cli-service build",
+    "build:pretest": "cross-env NODE_ENV=pretest vue-cli-service build",
     "build:prod": "vue-cli-service build --mode production",
+    "build:stage": "cross-env NODE_ENV=staging vue-cli-service build",
     "dev": "vue-cli-service serve",
+    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
     "styleguide": "vue-cli-service styleguidist",
     "styleguide:build": "vue-cli-service styleguidist:build",
-    "test": "vue-cli-service serve --mode test",
-    "serve": "cross-env NODE_ENV=pretest vue-cli-service serve --open",
-    "build:pretest": "cross-env NODE_ENV=pretest vue-cli-service build",
-    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"
+    "test": "vue-cli-service serve --mode test"
   },
   "dependencies": {
     "@antv/data-set": "^0.11.8",
@@ -48,20 +49,22 @@
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-service": "~4.4.0",
+    "@vue/test-utils": "^1.0.3",
+    "babel-eslint": "^10.1.0",
     "babel-plugin-component": "^1.1.1",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "cross-env": "^7.0.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
     "vue-cli-plugin-styleguidist": "~4.38.1",
     "vue-styleguidist": "^4.38.1",
     "vue-template-compiler": "^2.6.11",
-    "vue2-ace-editor": "^0.0.15",
-    "@vue/cli-plugin-eslint": "~4.4.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2"
+    "vue2-ace-editor": "^0.0.15"
   },
   "eslintConfig": {
     "root": true,
@@ -75,7 +78,18 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",

@@ -23,7 +23,6 @@
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('el.riskConfig.values') }}：</span>
                     {{baseInfo.money}}
-                    {{ platformToCurrencyInner[baseInfo.platform] }} ($17)
                 </div>
             </div>
             <div class="detail-item detail-form">
