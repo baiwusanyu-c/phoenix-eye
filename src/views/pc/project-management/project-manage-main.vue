@@ -221,7 +221,8 @@ export default {
                 _this.projectList =  res.data
                 // 關鍵詞字符串轉化為數組
                 _this.projectList.forEach(val=>{
-                    val.keywordList =  val.keyword.split(';').filter(val=>val)
+                    let keyword = val.keyword.replace('；',';')
+                    val.keywordList =  keyword.split(';').filter(val=>val)
                 })
                 _this.loading = false
             }).catch(err=>{

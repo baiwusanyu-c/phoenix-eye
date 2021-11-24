@@ -52,7 +52,7 @@
                     <div class="detail-profit-grid">
                         <be-svg-icon disabled-tool-tip icon-class="files"></be-svg-icon>
                         <be-ellipsis-copy :targetStr="item.address_tag"
-                                           styles="font-weight: bold;"
+                                          styles="font-weight: bold;color:#409EFF"
                                           :tooltip-txt="item.address"
                                           :isEllipsis="false"
                                           v-if="item.address_tag">
@@ -83,7 +83,7 @@
                                                       :endLength="ellipsis">
                                     </be-ellipsis-copy>
                                     <be-ellipsis-copy :targetStr="addrItem.tag"
-                                                      styles="font-weight: bold;"
+                                                      styles="font-weight: bold;color:#409EFF"
                                                       :tooltip-txt="addrItem.val"
                                                       :isEllipsis="false"
                                                       v-if="addrItem.tag">

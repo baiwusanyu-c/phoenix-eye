@@ -25,3 +25,7 @@ Vue.prototype.pwdReg = new RegExp("^[0-9a-zA-Z,./?@#$%，。、？~`！￥…&*�
 Vue.prototype.specialChar = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、\s]/img; //new RegExp("^[0-9a-zA-Z,./?@#$%，。、？~`！￥…&*（）()+_‘’|；:;!,\",\'-~]{6,20}$");
 //用户名(根据bug 2828，修改为15位)
 Vue.prototype.nameReg = /^(?!\d+$)[\da-zA-Z]{1,15}$/;
+// 只允許中英文，和中英文分號，且不允许符号开头
+Vue.prototype.ceSemicolonReg = /^(?![;；])[\u4e00-\u9fa5a-zA-Z0-9；;]+$/
+// 只允許中英文数字
+Vue.prototype.ceReg = /^[\u4e00-\u9fa5a-zA-Z0-9]+$/

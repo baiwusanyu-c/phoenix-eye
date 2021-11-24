@@ -42,6 +42,9 @@
                                 <!--   合约标签   -->
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
+                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'62%'}">
+                                    {{contractSite[index].verContract}}
+                                </span>
                                 <div class="btn-border"
                                      v-show="index < contractSite.length && index > 0"
                                      @click="deleteContractSite(index)">
@@ -83,7 +86,7 @@ export default {
             openTF: false,
             labelPosition: 'right',
             addContract: 0,
-            contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:''}],
+            contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}],
             // 下拉平台字典
             platformListDict:[],
             // 名称校验信息
@@ -137,7 +140,7 @@ export default {
             this.createProjectWindow = false
         },
         addContractSite() {
-            this.contractSite.push({platform: 'eth', contract_address: '', label: '',verAddr:''})
+            this.contractSite.push({platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''})
         },
         deleteContractSite(i) {
             this.contractSite.splice(i, 1)
@@ -154,7 +157,7 @@ export default {
             this.openTF = false
             this.labelPosition='right'
             this.addContract= 0
-            this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:''}]
+            this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
 
         },
         /**
@@ -183,6 +186,19 @@ export default {
             })
         },
         /**
+         * 分号处理方法
+         * @param {String} params - 处理字符串
+         */
+        semicolonVerification(params){
+            // 那中文分号处理成英文
+            let res = params.replace('；',';')
+            // 如果最后一个字符是分号，去除末尾的符号
+            if(res.charAt(res.length-1) === '；' || res.charAt(res.length-1) === ';'){
+                res = res.substring(0,res.length -1)
+            }
+            return res
+        },
+        /**
          * 表單校驗方法
          * @param {Object} params - 搜索参数
          */
@@ -193,10 +209,25 @@ export default {
                 this.verName = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectName')
                 return false
             }
+            if(params.name && !this.ceReg.test(params.name)){
+                this.verName =this.$t('el.createProject.verCE')
+                return false
+            }
             if(!params.keyword){
                 this.verKeyword = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectKeyWords')
                 return false
             }
+
+            // 校驗中英文，分號
+            if(params.keyword){
+                let keyword = this.semicolonVerification(params.keyword)
+                if(!this.ceSemicolonReg.test(keyword)){
+                    this.verKeyword = this.$t('el.createProject.verCeSemicolonReg')
+                    return false
+                }
+                params.keyword = keyword
+            }
+
             let contractInfos = []
             let hasEmpty = false
             const platformReg = {
@@ -207,7 +238,8 @@ export default {
             }
             params.contract_infos.forEach(val=>{
                 val.verAddr = ''
-                // 只填了合約標簽
+                val.verContract = ''
+                // 没有填写合约地址
                 if(!val.contract_address){
                     val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
                     hasEmpty = true
@@ -216,6 +248,17 @@ export default {
                 if(!platformReg[val.platform](val.contract_address)){
                     val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
                     hasEmpty = true
+                }
+                // 填写了合约标签，则进行校验
+                if(val.label){
+                    let label = this.semicolonVerification(val.label)
+                    if(!this.ceSemicolonReg.test(label)){
+                        val.verContract = this.$t('el.createProject.verCeSemicolonTag')
+                        hasEmpty = true
+                    }else{
+                        val.label = label
+                    }
+
                 }
                 if(val.contract_address){
                     contractInfos.push(val)
