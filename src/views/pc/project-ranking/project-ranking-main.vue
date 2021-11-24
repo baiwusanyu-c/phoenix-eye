@@ -18,6 +18,9 @@
 
             </div>
         </div>
+        <div class="project-ranking-safety-opinion">
+            <project-ranking-safety-opinion></project-ranking-safety-opinion>
+        </div>
     </div>
 </template>
 
@@ -25,10 +28,11 @@
 
 import ProjectRankingRadar from "./components/project-ranking-radar";
 import ProjectRankingNumCard from "./components/project-ranking-num-card";
+import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opinion"
 
 export default {
     name: "ProjectRankingMain",
-    components: {ProjectRankingNumCard, ProjectRankingRadar},
+    components: {ProjectRankingNumCard, ProjectRankingRadar,ProjectRankingSafetyOpinion},
     data() {
         return {}
     },
@@ -51,9 +55,9 @@ export default {
         height: 40%;
     }
 
-    .project-ranking-list {
+    /*.project-ranking-list {
         background: $mainColor7;
         height: 80%;
-    }
+    }*/
 }
 </style>
