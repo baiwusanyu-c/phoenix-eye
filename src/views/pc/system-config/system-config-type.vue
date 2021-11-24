@@ -74,6 +74,10 @@ export default {
                 this.$refs.addRiskType.verName = this.$t('el.pleaseInput') + this.$t('el.addRiskWindow.addRiskWindowClassName')
                 return false
             }
+            if(params.name && !this.ceReg.test(params.name)){
+                this.$refs.addRiskType.verName = this.$t('el.createProject.verCE')
+                return false
+            }
             if(params.risk_features.length  === 0){
                 this.$refs.addRiskType.verFeatures = this.$t('el.pleaseInput') + this.$t('el.addRiskWindow.abnormalSelect')
                 return false

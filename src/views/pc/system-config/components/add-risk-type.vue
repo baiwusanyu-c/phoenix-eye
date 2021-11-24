@@ -88,7 +88,7 @@ export default {
         },
         // 風險類型id
         riskId: {
-            type: String,
+            type: [String,Number],
             default: ''
         }
     },
@@ -186,7 +186,7 @@ export default {
         top: 34px;
     }
     .project-features{
-        position: absolute;
+        position: relative;
         left: -52%;
         top: 34px;
     }
