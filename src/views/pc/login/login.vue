@@ -41,10 +41,10 @@
       </div>
       <div class="footer-box">
         <p class="footer-w">
-          成都链安科技有限公司&nbsp;版权所有&nbsp;&nbsp;｜&nbsp;&nbsp;蜀ICP备18013498号-1&nbsp;&nbsp;&nbsp;&nbsp;
+            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;
         </p>
         <p class="footer-w">
-          联系地址：成都市武侯区世纪城南路599号天府软件园D7座504室&nbsp;&nbsp;&nbsp;&nbsp;联系电话：&nbsp;028-8326-2585
+          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}
         </p>
       </div>
     </div>

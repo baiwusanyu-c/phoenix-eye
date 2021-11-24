@@ -8,9 +8,9 @@
 -->
 <template>
     <div class="ellipsis-copy" @mouseover="enter"  @mouseout="leave">
-        <el-tooltip placement="top" effect="light" class="address">
+        <el-tooltip placement="top" effect="light" class="address" :disabled="!isTooltip">
             <span slot="content">{{getTooltipTxt()}}</span>
-            <span>{{changeEllipsisStr(targetStr)}}</span>
+            <span :style="styles">{{changeEllipsisStr(targetStr)}}</span>
         </el-tooltip>
         <span class="copy-btn">
             <svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="$copyAddress(targetStr)"></svg-icon>
@@ -54,11 +54,21 @@ export default {
             type: Boolean,
             default: true
         },
+        // 是否tooltip
+        isTooltip:{
+            type: Boolean,
+            default: true
+        },
         // tooltip显示内容
         tooltipTxt:{
             type: String,
             default: ''
-        }
+        },
+        // 样式
+        styles:{
+            type: String,
+            default: ''
+        },
     },
     computed:{
       getTooltipTxt(){

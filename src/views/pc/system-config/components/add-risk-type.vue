@@ -41,7 +41,7 @@
                                     </el-option>
                                 </el-select>
                             </template>
-                            <span class="reg-start project-Ver">{{ verFeatures }}</span>
+                            <span class="reg-start project-features">{{ verFeatures }}</span>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -183,6 +183,11 @@ export default {
     .project-Ver {
         position: absolute;
         left: 0;
+        top: 34px;
+    }
+    .project-features{
+        position: absolute;
+        left: -52%;
         top: 34px;
     }
 }

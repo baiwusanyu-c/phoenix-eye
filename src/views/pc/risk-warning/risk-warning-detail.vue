@@ -13,17 +13,17 @@
                     {{ $t('el.riskConfig.tableHeader.txHash') }}：
                     {{ baseInfo.tx_hash }}
                 </div>
-                <el-button class="default" @click="openWeb">{{ $t('el.riskConfig.txDetail') }} >></el-button>
+                <el-button class="default open-web" @click="openWeb">{{ $t('el.riskConfig.txDetail') }} >></el-button>
             </div>
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('el.riskConfig.platform') }}：</span>
-                    {{ baseInfo.platform }}
+                    {{ baseInfo.platform ? baseInfo.platform.toUpperCase() : '' }}
                 </div>
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('el.riskConfig.values') }}：</span>
                     {{baseInfo.money}}
-                    Ether ($17)
+                    {{ platformToCurrencyInner[baseInfo.platform] }} ($17)
                 </div>
             </div>
             <div class="detail-item detail-form">
@@ -50,42 +50,58 @@
             <div class="detail-profit-body scrollDiy" v-if="profitData.length > 0">
                 <div v-for="(item) in profitData" :key="item.address" class="detail-profit-container">
                     <div class="detail-profit-grid">
-                        <be-svg-icon disabled-tool-tip icon-class="file"></be-svg-icon>
-                        <be-ellipsis-copy :targetStr="item.tag"
+                        <be-svg-icon disabled-tool-tip icon-class="files"></be-svg-icon>
+                        <be-ellipsis-copy :targetStr="item.address_tag"
+                                           styles="font-weight: bold;"
                                           :tooltip-txt="item.address"
                                           :isEllipsis="false"
-                                          v-if="item.tag">
+                                          v-if="item.address_tag">
                         </be-ellipsis-copy>
                         <be-ellipsis-copy :targetStr="item.address"
-                                          v-if="!item.tag"
+                                          v-if="!item.address_tag"
+                                          styles="font-weight: bold;"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
                     </div>
-                    <div class="detail-profit-grid">
-                        <be-svg-icon v-if="item.profit > 0"  disabled-tool-tip icon-class="-arrow-up"></be-svg-icon>
-                        <be-svg-icon v-if="item.profit < 0" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
-                        <span>{{item.profit}}</span>
+                    <div class="detail-profit-grid" style="width: 30px">
+                            <be-svg-icon v-if="item.profit > 0"  disabled-tool-tip icon-class="-arrow-up"></be-svg-icon>
+                            <be-svg-icon v-if="item.profit < 0" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
+                    </div>
+                    <div class="detail-profit-grid detail-profit-val">
+                            <span  style="font-weight: bold;">{{handleProfit(item.profit)}}</span>
                     </div>
                     <div class="profit-grid-list">
-                        <div>
+                        <div class="profit-grid-list-addr">
                             <ul>
-                                <li v-for="(addrItem) in item.addrList" :key="addrItem">
-                                    {{addrItem}}
+                                <li v-for="(addrItem) in item.addrList" :key="addrItem.itemId">
+                                    <be-ellipsis-copy :targetStr="addrItem.val"
+                                                      :is-ellipsis="isEllipsis"
+                                                      :is-tooltip="isEllipsis"
+                                                      v-if="!addrItem.tag"
+                                                      :fontLength="ellipsis"
+                                                      :endLength="ellipsis">
+                                    </be-ellipsis-copy>
+                                    <be-ellipsis-copy :targetStr="addrItem.tag"
+                                                      styles="font-weight: bold;"
+                                                      :tooltip-txt="addrItem.val"
+                                                      :isEllipsis="false"
+                                                      v-if="addrItem.tag">
+                                    </be-ellipsis-copy>
                                 </li>
                             </ul>
                         </div>
                         <div>
                             <ul>
-                                <li v-for="(valueItem) in item.valueList" :key="valueItem">
-                                    {{valueItem}}
+                                <li v-for="(valueItem) in item.valueList" :key="valueItem.itemId">
+                                    {{valueItem.val}}
                                 </li>
                             </ul>
                         </div>
                         <div>
                             <ul>
-                                <li v-for="(dollarItem) in item.dollarList" :key="dollarItem">
-                                    {{dollarItem}}
+                                <li v-for="(dollarItem) in item.dollarList" :key="dollarItem.itemId">
+                                    {{dollarItem.val}}
                                 </li>
                             </ul>
                         </div>
@@ -104,7 +120,8 @@
 <script>
 import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon";
 import {getProjWarningDetail} from "../../../api/risk-warning";
-
+import webURL from '../../../../public/web-url.json'
+import {platformToCurrency} from "../../../utils/platformDict";
 export default {
     name: "risk-warning-detail",
     components: {BeSvgIcon},
@@ -115,16 +132,48 @@ export default {
             // 收益信息
             profitData:[],
             // loading
-            loading:false
+            loading:false,
+            // 是否缩略
+            isEllipsis:false,
+            // 缩略数量
+            ellipsis:'8',
+            // 链平台转化币种
+            platformToCurrencyInner:platformToCurrency
         }
     },
     mounted() {
         this.getInfoData()
+        this.initView()
+        window.onresize = this.initView
+    },
+    beforeDestroy() {
+        window.onresize = null
     },
     computed:{
-
+        handleProfit(){
+            return function (val){
+                if(val>0){
+                    return `$${val}`
+                }
+                if(val< 0){
+                    return `-$${Math.abs(val)}`
+                }
+                return `$${val}`
+            }
+        }
     },
     methods: {
+        /**
+         * 根据屏幕分辨率调整
+         */
+        initView(){
+            const width = window.screen.availWidth
+            const height = window.screen.availHeight
+            if(height <= 680 || width <=1280) {
+                this.isEllipsis = true
+                this.ellipsis = '12'
+            }
+        },
         /**
          * 獲得基本信息
          */
@@ -138,10 +187,14 @@ export default {
                 _this.baseInfo = res.data
                 _this.profitData = res.data.address_profits
                 _this.profitData.forEach(val=>{
+                    val.addrList = []
+                    val.dollarList = []
+                    val.valueList = []
                     val.token_profits.forEach(res=>{
-                        val.addrList.push(res.token_name)
-                        val.valueList.push(res.token_num)
-                        val.dollarList.push(res.token_profit)
+                        res.itemId = this.$getUuid
+                        val.addrList.push({val:res.contract_address,itemId:'token_name'+_this.$getUuid(),tag:res.contract_address_tag})
+                        val.valueList.push({val:res.token_profit_no_dollar,itemId:'token_profit_no_dollar'+_this.$getUuid()})
+                        val.dollarList.push({val:res.token_profit_dollar,itemId:'token_profit_dollar'+_this.$getUuid()})
                     })
                 })
                 _this.loading = false
@@ -156,7 +209,8 @@ export default {
          * 跳轉到第三方頁面
          */
         openWeb(){
-
+            const url = `${webURL[this.baseInfo.platform]}${this.baseInfo.tx_hash}`
+            this.$openWindow(url, 'view_window')
         }
 
     },
@@ -173,6 +227,9 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            .open-web{
+                width: 126px;
+            }
             .detail-item-txt{
                 flex:1;
                 margin-top: 15px;
@@ -207,7 +264,10 @@ export default {
                 align-items: center;
                 flex-direction: row;
                 min-height: 50px;
-                margin-top: 36px;
+                margin-top: 16px;
+                background: $mainColor8;
+                padding: 15px 0;
+                border-radius: 2px;
                 .ellipsis-copy{
                  width: auto;
                     margin-left: 24px;
@@ -219,14 +279,17 @@ export default {
                     justify-content: center;
                     width: 20%;
                 }
+                .detail-profit-val{
+                    justify-content: flex-start;
+                }
                 .profit-grid-list{
                     display: flex;
                     align-items: center;
                     flex-direction: row;
                     justify-content: flex-start;
                     width: 50%;
-                    div:nth-child(1){
-                        width: 40%;
+                    .profit-grid-list-addr{
+                        width: 60%;
                         color: $textColor4;
                         text-align: right;
                     }
@@ -241,7 +304,7 @@ export default {
                         text-align: right;
                     }
                     li{
-                        margin-bottom: 10px;
+                        margin: 10px 0;
                     }
                 }
             }
@@ -275,6 +338,22 @@ export default {
             }
             .detail-profit-body{
                 font-size: 12px;
+                .detail-profit-container{
+                    .profit-grid-list{
+                        width: 50%;
+                        .profit-grid-list-addr{
+                            width: 60%;
+
+                        }
+                        div:nth-child(2){
+                            width: 30%;
+
+                        }
+                        div:nth-child(3){
+                            width: 30%;
+                        }
+                    }
+                }
             }
         }
     }

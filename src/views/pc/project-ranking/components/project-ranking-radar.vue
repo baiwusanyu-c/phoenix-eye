@@ -75,6 +75,7 @@ export default {
                 container: `radar_chart${this._uid}`,
                 autoFit: true,
                 height: 250,
+                appendPadding:[10]
             });
             chart.data(dv.rows);
             chart.scale('score', {
@@ -82,7 +83,7 @@ export default {
                 max: 80,
             });
             chart.coordinate('polar', {
-                radius: 0.8,
+                radius:1,
             });
             // 坐标轴 - label文字
             chart.axis('item', {
@@ -126,6 +127,7 @@ export default {
                 .area()
                 .position('item*score')
                 .color('#1890FF');
+            chart.legend(false);
             chart.render();
 
         }

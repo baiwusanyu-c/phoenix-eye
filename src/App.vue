@@ -64,20 +64,10 @@
             }
 
         },
-        watch: {
-            $route(to){
-                if(to.path === '/login_sso'){
-                    this.getPlatformInfo()
-                    this.getRateInfo()
-                }
-            }
-        },
         components: {
             BeDialog,
         },
         created() {
-           this.getPlatformInfo()
-           this.getRateInfo()
             // 显示浏览器提示
             console.log('浏览器版本信息:',this.$browserInfo())
             if(this.$browserInfo().browser !== 'chrome'){
@@ -89,18 +79,6 @@
         },
         methods: {
             /**
-             * 获取用户的币种平台信息
-             */
-            getPlatformInfo(){
-
-            },
-            /**
-             * 获取币种汇率信息
-             */
-            getRateInfo(){
-
-            },
-            /**
              * 下线弹窗显示方法
              */
             tips() {
@@ -110,9 +88,7 @@
             closeWebPage() {
                this.$closePage()
             },
-            /*
-             * 创建项目弹窗
-             */
+
 
         },
     }

@@ -7,7 +7,7 @@
 
 export const platformDict = {
     ETH:'eth',
-    BTC:'BTC',
+    BSC:'bsc',
     HECO:'heco',
     Polygon:'polygon'
 }
@@ -31,3 +31,9 @@ export const platformListDict =  [
         id:'jhgadjghzngrgefdghhgkdfjg'
     },
 ]
+export const platformToCurrency = {
+    eth:'ETH',
+    bsc:'BNB',
+    heco:'HT',
+    Polygon:'POLYGON'
+}

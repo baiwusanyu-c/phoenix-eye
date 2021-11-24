@@ -154,7 +154,6 @@
 
 <script>
 import BePagination from "../../../components/common-components/pagination/be-pagination";
-import qs from 'qs'
 import {platformListDict} from "../../../utils/platformDict";
 import {getProjWarning} from "../../../api/risk-warning";
 export default {
@@ -185,22 +184,43 @@ export default {
     computed:{
         stateSuccess(){
             return function (val){
-                if(val !== '成功'){
+                const lang = this.getStore('language')
+                if(lang === 'zh_CN'){
+                    if(val !== '成功'){
+                        return {
+                            color:'#FA6400'
+                        }
+                    }
                     return {
-                        color:'#FA6400'
+                        color:'#44D7B6'
+                    }
+                }else{
+                    if(val !== 'success'){
+                        return {
+                            color:'#FA6400'
+                        }
+                    }
+                    return {
+                        color:'#44D7B6'
                     }
                 }
-                return {
-                    color:'#44D7B6'
-                }
+
             }
         },
         stateTxt(){
             return function (val){
-                if(val !== '成功'){
-                    return this.$t('el.riskConfig.stateFailed')
+                const lang = this.getStore('language')
+                if(lang === 'zh_CN'){
+                    if(val !== '成功'){
+                        return this.$t('el.riskConfig.stateFailed')
+                    }
+                    return this.$t('el.riskConfig.stateSuccess')
+                }else{
+                    if(val !== 'success'){
+                        return this.$t('el.riskConfig.stateFailed')
+                    }
+                    return this.$t('el.riskConfig.stateSuccess')
                 }
-                return this.$t('el.riskConfig.stateSuccess')
             }
         }
     },

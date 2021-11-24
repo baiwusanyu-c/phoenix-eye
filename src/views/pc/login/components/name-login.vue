@@ -63,7 +63,6 @@
 <script>
 import {login, getCodeImg} from '@/api/login.js';
 import {Base64} from 'js-base64';
-import _this from "../../../../main";
 export default {
     name: "NameLogin",
     data() {

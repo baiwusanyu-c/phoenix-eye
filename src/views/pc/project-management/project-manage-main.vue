@@ -33,13 +33,13 @@
         </create-project>
         <!--    删除项目弹窗    -->
         <be-msg-dialog @confirm="confirmDelete"
-                       headerTitle="删除"
+                       :headerTitle="$t('el.delete')"
                        :isShow.sync="showDelete"
                        :title="deleteText">
         </be-msg-dialog>
         <!--    重新评估彈窗   -->
         <be-msg-dialog @confirm="confirmFresh"
-                       headerTitle="重新评估"
+                       :headerTitle="$t('el.systemConfig.reassess')"
                        :isShow.sync="showFresh"
                        :title="freshText">
         </be-msg-dialog>
@@ -153,7 +153,7 @@ export default {
          */
         deleteProject(item){
             this.curItem = item
-            this.deleteText = `是否要删除${item.name}？`
+            this.deleteText = `${this.$t('el.systemConfig.delete')}${item.name}？`
             this.showDelete = true
         },
         /**
@@ -184,7 +184,7 @@ export default {
          */
         freshProject(item){
             this.curItem = item
-            this.freshText = `是否对${item.name}的所有安全项进行重新评估？`
+            this.freshText = `${this.$t('el.systemConfig.isConfirm')}${item.name}${this.$t('el.systemConfig.reassessInfo')}？`
             this.showFresh = true
         },
         /**

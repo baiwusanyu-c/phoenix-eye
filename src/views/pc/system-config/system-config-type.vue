@@ -28,9 +28,9 @@
         </add-risk-type>
         <!--    删除风险类型弹窗    -->
         <be-msg-dialog @confirm="confirmDelete"
-                       headerTitle="删除"
+                       :headerTitle="$t('el.delete')"
                        :isShow.sync="showDelete"
-                       title="确认删除该风险类型？">
+                       :title="$t('el.confirm')+ $t('el.delete') + $t('el.systemConfig.warningType')">
         </be-msg-dialog>
     </div>
 </template>

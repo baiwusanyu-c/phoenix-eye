@@ -2,6 +2,11 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 let obj = {...enLocale }.el
 export const el = {
     ...obj,
+    companyAddr:'联系地址：成都市武侯区世纪城南路599号天府软件园D7座504室',
+    companyTel:'联系电话： 028-8326-2585',
+    companyRecord:'蜀ICP备18013498号-1',
+    companyName:'成都链安科技有限公司',
+    copyright:'版权所有',
     emptyData:'暂无数据',
     scan:'查看',
     success:'成功',
@@ -15,6 +20,7 @@ export const el = {
     pleaseInput:'请输入',
     pleaseSelect:'请选择',
     formatError:'格式错误',
+    confirm:'确认',
     header:{
         me:'me',
         language:'language',
@@ -85,7 +91,12 @@ export const el = {
     },
     systemConfig:{
         addType:'新增风险类型',
-        features:'异常特征'
+        warningType:'风险类型',
+        features:'异常特征',
+        reassess:'重新评估',
+        delete:'是否要删除',
+        isConfirm:'是否对',
+        reassessInfo:'的所有安全项进行重新评估'
     },
     proManageConfig:{
         addPro:'click to create',
@@ -110,7 +121,7 @@ export const el = {
         },
         features:'交易特征',
         values:'金额',
-        txDetail:'交易详情',
+        txDetail:'在浏览器查看',
         stateSuccess:'成功',
         stateFailed:'失败',
         profit:'地址收益',

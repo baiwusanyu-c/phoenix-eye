@@ -25,12 +25,8 @@ Vue.prototype.setStore = (name, content) => {
 /**
  * 获取localStorage
  */
-const getStore = (name, isListen = false) =>{
+const getStore = (name )=>{
     if (!name) return;
-    //开启监听
-    if(isListen){
-
-    }
     return window.localStorage.getItem(name);
 }
 Vue.prototype.getStore = getStore
@@ -870,3 +866,15 @@ Vue.prototype.$openWindow = (strUrl)=>{
     aDom.click();
     document.body.removeChild(aDom);
 }
+export const getUuid = () => {
+    let arr = [];
+    let hexDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    for (let i = 0; i < 36; i++) {
+        arr[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
+    }
+    arr[14] = "4"
+    arr[19] = hexDigits.substr((arr[19] & 0x3) | 0x8, 1)
+    arr[8] = arr[13] = arr[18] = arr[23] = "-"
+    return arr.join("")
+}
+Vue.prototype.$getUuid = getUuid

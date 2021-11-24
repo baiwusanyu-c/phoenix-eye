@@ -1,0 +1,6 @@
+{
+  "bsc": "https://bscscan.com/tx/",
+  "heco": "https://polygonscan.com/tx/",
+  "eth": " https://cn.etherscan.com/tx/",
+  "polygon": " https://polygonscan.com/tx/"
+}
