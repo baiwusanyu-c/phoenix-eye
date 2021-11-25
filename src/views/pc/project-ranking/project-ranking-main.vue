@@ -19,10 +19,16 @@
 
             </div>
         </div>
+        <!--合约态势详情  交易稳定-->
+        <div>
+            <project-ranking-trade-stability></project-ranking-trade-stability>
+        </div>
+        <!--项目态势详情  市场表现-->
         <div>
             <project-ranking-market-performance></project-ranking-market-performance>
         </div>
-        <div class="project-ranking-safety-opinion">
+        <!--项目态势详情  安全舆情-->
+        <div>
             <project-ranking-safety-opinion></project-ranking-safety-opinion>
         </div>
     </div>
@@ -34,10 +40,11 @@ import ProjectRankingRadar from "./components/project-ranking-radar";
 import ProjectRankingNumCard from "./components/project-ranking-num-card";
 import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opinion"
 import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance"
+import ProjectRankingTradeStability from "./components/project-ranking-trade-stability"
 
 export default {
     name: "ProjectRankingMain",
-    components: {ProjectRankingNumCard, ProjectRankingRadar,ProjectRankingSafetyOpinion,ProjectRankingMarketPerformance},
+    components: {ProjectRankingNumCard, ProjectRankingRadar,ProjectRankingSafetyOpinion,ProjectRankingMarketPerformance,ProjectRankingTradeStability},
     data() {
         return {}
     },

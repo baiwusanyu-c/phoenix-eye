@@ -168,6 +168,18 @@ export const el = {
         checkInput:'检查输入信息'
     },
     projectRinking:{
+        marketPerformance:{
+            tradeVolume:'总交易量:',
+            userVolume:'总用户数:',
+            contractVolume:'总合约数:',
+            tradeNum:'交易量',
+            newUserNum:'新增用户',
+            time:'日期',
+            userNum:'用户数'
+        },
+        tradeStb:{
+            all:'全部'
+        },
         safetyOpinion: {
             textOriginal:'查看原文>>',
         },

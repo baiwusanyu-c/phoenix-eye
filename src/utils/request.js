@@ -19,6 +19,7 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         config.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
+        config.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
         if (config.method === 'post' && config.url!=='/auth/oauth/login') {
             config.data = config.params
             config.headers['Content-Type'] = 'application/json;charset=UTF-8'
