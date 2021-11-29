@@ -264,19 +264,3 @@
 <style lang="scss">
 @import "../../../assets/style/BeContextmenu";
 </style>
-<docs>
-  ## 事例
-  配合be-contextmenu-item、be-contextmenu-submenu使用实现右键菜单:
-  ```jsx
-  <be-context-menu ref="contextmenu" :theme="'blues'">
-    <be-contextmenu-item @click='copy' >复制</be-contextmenu-item>
-    <be-contextmenu-submenu  title="发送" v-show="menuConfig.send">
-    <be-contextmenu-item @click="jumpToOther('/browser','browser')" >浏览器</be-contextmenu-item>
-    <be-contextmenu-item @click="jumpToOther('/analysis','analysis')">案件分析 </be-contextmenu-item>
-    <be-contextmenu-item @click="openTrack" >地址监控</be-contextmenu-item>
-    <be-contextmenu-item @click="jumpToOther('/investigation','investigation')" >调证分析</be-contextmenu-item>
-    <be-contextmenu-item @click="jumpToOther('/debug/createDebug','createDebug')" >一键调证</be-contextmenu-item>
-    </be-contextmenu-submenu>
-  </be-context-menu>
-  ```
-</docs>

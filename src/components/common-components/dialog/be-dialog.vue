@@ -330,23 +330,3 @@
 
 
 </style>
-<docs>
-    ## 事例
-    ```jsx
-    <be-dialog
-            titles="查看更多子节点"
-            ref='moreNodeDialog'
-            animIn='animate__fadeInBottomLeft'
-            animOut='animate__fadeOutBottomLeft'
-            :is-show.sync="isExpandMoreNode"
-            :is-open-modal="true"
-            :escExit = 'true'
-            @escCb="closePanel()"
-            custom-class="plus-dialog">
-        <div slot="headerIcon" style="display: inline-block;float: right">
-        </div>
-        <div  slot="body" class="plus-dialog-body">
-        </div>
-    </be-dialog>
-    ```
-</docs>
