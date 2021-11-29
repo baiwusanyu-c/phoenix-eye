@@ -53,7 +53,7 @@
 
 <script>
 import TsgzNavMenu from "../../../components/nav-menu/tsgz-nav-menu";
-import _this from "../../../main";
+
 
 export default {
     name: 'layout',
@@ -190,7 +190,7 @@ export default {
         height: calc(100vh - 60px);
         transition: all .5s;
         background: #F2F4F5;
-        overflow: inherit;
+        overflow-y: auto;
     }
 
     .fold {

@@ -1,34 +1,5 @@
 <template>
     <div class="market-performance">
-        <div class="market-performance-header">
-            <div class="market-performance-header-card">
-                <div class="card-info">
-                    <img src="../../../../assets/image/pc/tx-num.png" height="48" width="48"/>
-                    <div class="card-msg">
-                        <span class="card-title">{{$t('el.projectRinking.marketPerformance.tradeVolume')}}</span>
-                        <span class="card-num">{{tradeVolume}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="market-performance-header-card">
-                <div class="card-info">
-                    <img src="../../../../assets/image/pc/user-num.png" height="48" width="48"/>
-                    <div class="card-msg">
-                        <span class="card-title">{{$t('el.projectRinking.marketPerformance.userVolume')}}</span>
-                        <span class="card-num">{{userVolume}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="market-performance-header-card">
-                <div class="card-info">
-                    <img src="../../../../assets/image/pc/contract-num.png" height="48" width="48"/>
-                    <div class="card-msg">
-                        <span class="card-title">{{$t('el.projectRinking.marketPerformance.contractVolume')}}</span>
-                        <span class="card-num">{{contractVolume}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="chart-box">
             <div class="chart-title">
                 <span>{{$t('el.projectRinking.marketPerformance.tradeNum')}}</span>
@@ -56,9 +27,7 @@
         name: "project-ranking-market-performance",
         data(){
             return{
-                tradeVolume:123456,
-                userVolume:123456,
-                contractVolume:123456,
+
                 // 图表内容
                 quantity:[
                     { time: '01/03', num: -35 },
@@ -210,26 +179,11 @@
 
 <style scoped lang="scss">
     .market-performance{
-        width: 1184px;
+        width: 100%;
         height: 704px;
         margin: auto;
         display: flex;
         flex-direction: column;
-        align-items: center;
-    }
-    .market-performance-header{
-        width: 1184px;
-        height: 136px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .market-performance-header-card{
-        width: 384px;
-        height: 88px;
-        background: linear-gradient(90deg, #FFFFFF 0%, #E3FBFF 100%);
-        border-radius: 4px;
-        display: flex;
         align-items: center;
     }
     .card-info{
@@ -254,14 +208,16 @@
         height: 32px;
     }
     .chart-box{
-        width: 1136px;
+
+        width: 100%;
         height: 284px;
         background-color: white;
         margin: 24px auto;
         padding: 0 24px;
+        box-sizing: border-box;
     }
     .chart{
-        width: 1136px;
+        width: 100%;
         height: 243px;
     }
     .chart-title{

@@ -117,7 +117,7 @@
 
 <style scoped lang="scss">
     .project-ranking-safety-opinion{
-        width: 1184px;
+
         background-color: white;
         margin: auto;
         display: flex;

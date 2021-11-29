@@ -21,6 +21,7 @@ export const el = {
     pleaseSelect:'请选择',
     formatError:'格式错误',
     confirm:'确认',
+    searchBtn:'搜 索',
     header:{
         me:'me',
         language:'language',
@@ -106,7 +107,6 @@ export const el = {
     },
     riskConfig:{
         platform:'链平台',
-        searchBtn:'搜索',
         searchP:'请输入交易哈希、发送方、接收方',
         platformP:'请选择链平台',
         tableHeader:{
@@ -182,7 +182,12 @@ export const el = {
         checkInput:'检查输入信息'
     },
     projectRinking:{
+        searchP:'输入项目名称或合约地址',
+        onlineTime:'上线时间',
+        contractSecurity:'合约安全',
+        feelingSecurity:'舆情安全',
         marketPerformance:{
+            headerTitle:'市场表现',
             tradeVolume:'总交易量:',
             userVolume:'总用户数:',
             contractVolume:'总合约数:',

@@ -20,7 +20,7 @@
             <div class="search-area search-area-input">
                 <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getData()">{{ $t('el.riskConfig.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getData()">{{ $t('el.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
