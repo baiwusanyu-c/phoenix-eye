@@ -11,7 +11,7 @@
         </div>
         <div class="project-ranking-info">
             <h3>{{ title }}</h3>
-            <p v-for="(item) in labelConfig" :key="item">
+            <p v-for="(item) in labelConfig" :key="JSON.stringify(item)">
                 {{item.label}}:{{data[item.val]}}
             </p>
         </div>
@@ -94,6 +94,7 @@ export default {
         color: $textColor3;
         p{
             margin-top: 8px;
+            color: $textColor4;
         }
     }
 }

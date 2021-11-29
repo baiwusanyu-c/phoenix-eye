@@ -9,34 +9,22 @@
         <div class="project-ranking-search">
             <el-input :placeholder="$t('el.projectRinking.searchP')" v-model="searchParams">
                 <template slot="append">
-                    <el-button type="primary" class="primary" @click="search" >{{ $t('el.searchBtn') }}</el-button>
+                    <el-button type="primary" @click="search" >{{ $t('el.searchBtn') }}</el-button>
                 </template>
             </el-input>
         </div>
         <project-ranking-projsitu></project-ranking-projsitu>
-
-        <!--合约态势详情  交易稳定-->
-<!--        <div>
-            <div></div>
-            <project-ranking-trade-stability></project-ranking-trade-stability>
-        </div>
-        &lt;!&ndash;项目态势详情  市场表现&ndash;&gt;
-        <div>
-            <project-ranking-market-performance></project-ranking-market-performance>
-        </div>
-        &lt;!&ndash;项目态势详情  安全舆情&ndash;&gt;
-        <div>
-            <project-ranking-safety-opinion></project-ranking-safety-opinion>
-        </div>-->
+<!--        <project-ranking-contractjsitu></project-ranking-contractjsitu>-->
     </div>
 </template>
 
 <script>
 import ProjectRankingProjsitu from "./project-ranking-projsitu";
+import ProjectRankingContractjsitu from "./project-ranking-contractjsitu";
 
 export default {
     name: "ProjectRankingMain",
-    components: {ProjectRankingProjsitu},
+    components: {ProjectRankingContractjsitu, ProjectRankingProjsitu},
     data() {
         return {
             searchParams:''

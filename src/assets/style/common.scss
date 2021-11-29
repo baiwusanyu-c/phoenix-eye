@@ -51,7 +51,9 @@
 .el-table::before {
     height: 0;
 }
-
+.el-table__empty-text{
+    margin-bottom: 16px;
+}
 .v-modal {
     z-index: 2000!important;
 }

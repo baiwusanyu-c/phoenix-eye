@@ -23,6 +23,7 @@ export const el = {
     confirm:'确认',
     searchBtn:'搜 索',
     sevenD:'以上为近七日数据分析结果',
+    detail:'查看详情',
     header:{
         me:'me',
         language:'language',
@@ -191,6 +192,7 @@ export const el = {
         txStability:'交易稳定',
         staticDetection:'静态检测',
         feeling:'舆论情绪',
+        highCall:'高频调用',
         outlineTitle:'项目态势概要',
         outlineSDTxt:'共检测出',
         outlineSDH:'高危漏洞',
@@ -200,6 +202,9 @@ export const el = {
         outlineTSM:'风险交易，可能遭受',
         outlineTST:'交易金额波动范围为',
         outlineFL:'负面舆情',
+        hCRanking:'排名',
+        hCAddr:'地址',
+        hCCallNum:'调用次数',
         marketPerformance:{
             headerTitle:'市场表现',
             tradeVolume:'总交易量:',

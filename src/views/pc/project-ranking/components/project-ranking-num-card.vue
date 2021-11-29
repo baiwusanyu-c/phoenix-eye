@@ -76,7 +76,7 @@ export default {
     }
     .project-ranking-info{
         flex: 2;
-        color: $textColor3;
+        color: $textColor4;
         h2{
             margin-top: 8px;
         }

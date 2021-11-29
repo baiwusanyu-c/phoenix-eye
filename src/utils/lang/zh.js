@@ -23,6 +23,7 @@ export const el = {
     confirm:'确认',
     searchBtn:'搜 索',
     sevenD:'以上为近七日数据分析结果',
+    detail:'查看详情',
     header:{
       me:'我',
       language:'语言',
@@ -94,17 +95,17 @@ export const el = {
     systemConfig:{
         addType:'新增风险类型',
         warningType:'风险类型',
-        features:'异常特征'
-    },
-    proManageConfig:{
-        addPro:'点击创建项目',
-        proPublic:'公开',
-        proPrivate:'保密',
-        createTime:'创建时间',
+        features:'异常特征',
         reassess:'重新评估',
         delete:'是否要删除',
         isConfirm:'是否对',
         reassessInfo:'的所有安全项进行重新评估'
+    },
+    proManageConfig:{
+        addPro:'click to create',
+        proPublic:'公开',
+        proPrivate:'保密',
+        createTime:'createTime'
     },
     riskConfig:{
         platform:'链平台',
@@ -191,6 +192,7 @@ export const el = {
         txStability:'交易稳定',
         staticDetection:'静态检测',
         feeling:'舆论情绪',
+        highCall:'高频调用',
         outlineTitle:'项目态势概要',
         outlineSDTxt:'共检测出',
         outlineSDH:'高危漏洞',
@@ -200,6 +202,9 @@ export const el = {
         outlineTSM:'风险交易，可能遭受',
         outlineTST:'交易金额波动范围为',
         outlineFL:'负面舆情',
+        hCRanking:'排名',
+        hCAddr:'地址',
+        hCCallNum:'调用次数',
         marketPerformance:{
             headerTitle:'市场表现',
             tradeVolume:'总交易量:',

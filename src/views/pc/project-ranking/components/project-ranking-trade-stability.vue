@@ -174,14 +174,13 @@
 
 <style scoped lang="scss">
     .chart-box{
-        width: 1136px;
+        width: 100%;
         height: 296px;
         background-color: white;
-        margin: 24px auto;
         padding: 0 24px;
     }
     .chart{
-        width: 1136px;
+        width: 100%;
         height: 243px;
     }
     .chart-title{
