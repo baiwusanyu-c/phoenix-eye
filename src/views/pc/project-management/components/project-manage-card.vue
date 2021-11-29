@@ -7,16 +7,16 @@
 <template>
     <div :class="`project-manage-card`">
         <!--    非新增时显示   -->
-        <div v-if="type === 'edit'" :class="`card-title card-title-${projectType}`">
-            <div style="display: flex">
+        <div v-if="type === 'edit'" :class="`card-title card-title-${isPublic ? 'public' : 'private'}`">
+            <div style="display: flex;align-items: center;">
                 <h3>
                     {{ title }}
                 </h3>
-                <span>{{projectType === 'public' ? $t('lang.proManageConfig.proPublic') : $t('lang.proManageConfig.proPrivate')}}</span>
+                <span class="card-title-public-txt">{{isPublic? $t('el.proManageConfig.proPublic') : $t('el.proManageConfig.proPrivate')}}</span>
             </div>
             <div>
-                <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
-                             disabled-tool-tip></be-svg-icon>
+            <!-- <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
+                             disabled-tool-tip></be-svg-icon>-->
                 <be-svg-icon @click='emitFunc("edit")' style="cursor: pointer" icon-class="-renwuguanli-xiugai"
                              disabled-tool-tip></be-svg-icon>
                 <be-svg-icon @click='emitFunc("delete")' style="cursor: pointer" icon-class="-renwuguanli-shanchu"
@@ -26,24 +26,27 @@
         <!--   非新增时显示 卡片地址列表   -->
         <div v-if="type === 'edit'" class="card-edit">
             <div>
-                <el-tag v-for="(item) in tagList" :key="item + _uid">{{ item }}</el-tag>
+                <el-tag v-for="(item) in keywordList" :key="item + _uid">{{ item }}</el-tag>
             </div>
             <div class="card-edit-addr scrollDiy">
                 <ul>
-                    <li v-for="(addrItem) in addrList" :key="addrItem.addr">
-                        <span class="addr-cury">{{ addrItem.currency }}</span>
-                        <be-ellipsis-copy :targetStr="addrItem.addr" :fontLength="showLength" :endLength="showLength">
+                    <li v-for="(addrItem) in contractList" :key="addrItem.contract_address">
+                        <span class="addr-cury">{{ addrItem.platform }}</span>
+                        <be-ellipsis-copy :targetStr="addrItem.contract_address"
+                                          :is-ellipsis="addrItem.contract_address.length > 30"
+                                          :fontLength="showLength"
+                                          :endLength="showLength">
                         </be-ellipsis-copy>
                     </li>
                 </ul>
             </div>
-            <p>{{ $t('lang.proManageConfig.createTime') }} : {{ createTime }}</p>
+            <p>{{ $t('el.proManageConfig.createTime') }} : {{ createTime }}</p>
         </div>
         <!--    新增时显示   -->
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click='emitFunc("add")'>
                 <img src="@/assets/image/pc/add-type-icon.png"/>
-                <p>{{ $t('lang.proManageConfig.addPro') }}</p>
+                <p>{{ $t('el.proManageConfig.addPro') }}</p>
             </div>
         </div>
     </div>
@@ -70,9 +73,9 @@ export default {
             default: 'add'
         },
         /**
-         * 标签列表
+         * 关键词列表
          */
-        tagList: {
+        keywordList: {
             type: Array,
             default: () => []
         },
@@ -83,12 +86,12 @@ export default {
             type: String,
         },
         /**
-         * 卡片类型
+         * 是否公共项目
          * @value public/private
          */
-        projectType: {
-            type: String,
-            default: 'public'
+        isPublic: {
+            type: Boolean,
+            default: true
         },
         /**
          * 创建时间
@@ -97,9 +100,9 @@ export default {
             type: String,
         },
         /**
-         * 卡片地址列表
+         * 项目合约地址列表
          */
-        addrList: {
+        contractList: {
             type: Array,
             default: () => []
         }
@@ -132,7 +135,7 @@ export default {
 <style lang="scss">
 .project-manage-card {
     background-color: $mainColor7;
-    width: 400px;
+    width:398px;
     height: 340px;
     margin: 6px 10px;
     box-shadow: 0 1px 4px 0 $mainColor8;
@@ -150,6 +153,11 @@ export default {
 
         .svg-icon {
             margin: 0 5px;
+        }
+        .card-title-public-txt{
+            border: 1px solid $mainColor7;
+            margin-left: 10px;
+            padding: 0 5px;
         }
     }
 

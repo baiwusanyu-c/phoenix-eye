@@ -5,19 +5,30 @@
 * @update (czh 2021/9/29)
 */
 import axios from 'axios'
+import qs from 'qs'
 import {MessageBox, Message} from 'element-ui'
 import config from '../config/index'
 import $vue from '../main.js'
 // create an axios instance
 const service = axios.create({
-    baseURL: config.baseURL + '/api/', // url = base url + request url
+    baseURL: config.baseURL, // url = base url + request url
     timeout: 50000 // request timeout
 })
 
 // request interceptor
 service.interceptors.request.use(
     config => {
-       // config.headers['Authorization'] = getToken('token') ? 'Bearer ' + getToken('token') : '';
+        config.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
+        config.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
+        if (config.method === 'post' && config.url!=='/auth/oauth/login') {
+            config.data = config.params
+            config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+            config.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+            delete config.params
+            if (config.otherParams) {
+                config.data = qs.stringify(config.data)
+            }
+        }
         return config
     },
     error => {
@@ -30,7 +41,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         const res = response.data
-        if (res.code !== 200) {
+        if (res.code !== 200 && res.code !== '0000') {
             Message({
                 message: res.msg || 'Error',
                 type: 'error',
@@ -50,7 +61,7 @@ service.interceptors.response.use(
                 })
             }
             if (res.code === 401 || res.code === 920000003) {
-                $vue.$router.push({path: "/login"})
+                 $vue.$router.push({path: "/login"})
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
             return Promise.reject(new Error(res.msg || 'Error'))

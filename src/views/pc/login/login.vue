@@ -10,14 +10,14 @@
       <img class="logo-box" src="@/assets/image/pc/logo.png" alt=""/>
       <div class="inner">
         <div class="area_l">
-          <p class="text-w">{{ $t('lang.loginConfig.prodWelcome') }}</p>
-          <p class="text-t">{{ $t('lang.loginConfig.prodName') }}</p>
+          <p class="text-w">{{ $t('el.loginConfig.prodWelcome') }}</p>
+          <p class="text-t">{{ $t('el.loginConfig.prodName') }}</p>
           <p class="text-w-e">Welcome to Beosin-Secure</p>
         </div>
         <div class="area-r">
           <p class="title" :class="{otherTitle: areaType === 4,regTitle: areaType === 3}">
             {{
-              areaType === 3 ? $t('lang.loginConfig.titleRegister') : areaType === 4 ? $t('lang.loginConfig.titleLogin') : $t('lang.loginConfig.titleLogin')
+              areaType === 3 ? $t('el.loginConfig.titleRegister') : areaType === 4 ? $t('el.loginConfig.titleLogin') : $t('el.loginConfig.titleLogin')
             }}
           </p>
             <!--          賬號登錄          -->
@@ -41,20 +41,20 @@
       </div>
       <div class="footer-box">
         <p class="footer-w">
-          成都链安科技有限公司&nbsp;版权所有&nbsp;&nbsp;｜&nbsp;&nbsp;蜀ICP备18013498号-1&nbsp;&nbsp;&nbsp;&nbsp;
+            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;
         </p>
         <p class="footer-w">
-          联系地址：成都市武侯区世纪城南路599号天府软件园D7座504室&nbsp;&nbsp;&nbsp;&nbsp;联系电话：&nbsp;028-8326-2585
+          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}
         </p>
       </div>
     </div>
     <!--到期弹窗-->
     <be-msg-dialog
-        :headerTitle="$t('lang.loginConfig.titleDeadline')"
+        :headerTitle="$t('el.loginConfig.titleDeadline')"
         @confirm="() => (this.delTip = false)"
         :isShow.sync="delTip"
         :isShowCancel="false"
-        :title="$t('lang.loginConfig.infoDeadLine')">
+        :title="$t('el.loginConfig.infoDeadLine')">
     </be-msg-dialog>
   </div>
 </template>
@@ -153,7 +153,7 @@ export default {
         overflow-wrap: break-word;
         color: #9BC8DF;
         font-size: 14px;
-        font-family: PingFangSC-Regular, sans-serif;
+          font-family: PingFangSC-Medium, PingFang SC,sans-serif;
         white-space: nowrap;
         line-height: 24px;
       }
@@ -172,7 +172,7 @@ export default {
         margin-top: 64px;
         color: $mainColor13;
         font-size: 40px;
-        font-family: PingFangSC-Regular, sans-serif;
+          font-family: PingFangSC-Medium, PingFang SC,sans-serif;
         white-space: nowrap;
         line-height: 56px;
         align-self: flex-start;
@@ -181,7 +181,7 @@ export default {
       .text-t {
         color: rgba(255, 255, 255, 1);
         font-size: 51px;
-        font-family: PingFangSC-Regular, sans-serif;
+          font-family: PingFangSC-Medium, PingFang SC,sans-serif;
         white-space: nowrap;
         line-height: 72px;
         background-image: linear-gradient(180deg, $mainColor7 0%, #B6E0FF 100%);

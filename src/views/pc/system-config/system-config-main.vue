@@ -9,10 +9,10 @@
       <div class="system-config-tab">
           <el-button-group>
               <el-button :class="`${active === 1 ? 'primary' : 'default'}`" type="primary" @click="switchRender(1)">
-                  {{$t('lang.subNav.navName4s1')}}
+                  {{$t('el.subNav.navName4s1')}}
               </el-button>
               <el-button :class="`${active === 2 ? 'primary' : 'default'}`" type="primary" @click="switchRender(2)">
-                  {{$t('lang.subNav.navName4s2')}}
+                  {{$t('el.subNav.navName4s2')}}
               </el-button>
           </el-button-group>
       </div>

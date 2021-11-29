@@ -1,15 +1,15 @@
 // 系统配置 api
 import request from '@/utils/request'
 import config from '@/config/index' // 路径配置
-// 获取系统配置列表
-export function getConfigList() {
+// 获取风险类型列表 (完成)
+export function getRiskTypeList() {
     return request({
         url: `${config.baseURL}/ussa/system_config/risk_type/list`,
         method: 'get'
     })
 }
 
-//新增 风险类型
+//新增 风险类型(完成)
 export function createRiskType(params) {
     return request({
         url: `${config.baseURL}/ussa/system_config/risk_type/create`,
@@ -17,30 +17,32 @@ export function createRiskType(params) {
         params
     })
 }
-//风险类型编辑-获取风险类型详情
-export function getRiskTypeInfo(params) {
+//风险类型编辑-获取风险类型详情(完成)
+export function getRiskTypeInfo(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/system_config/risk_type/edit`,
+        url: `${config.baseURL}/ussa/system_config/risk_type/edit/${pathParams.id}`,
         method: 'get',
         params
     })
 }
-//风险类型编辑-风险类型编辑保存详情
-export function saveEditRiskType(params) {
+//风险类型编辑-风险类型编辑保存详情(完成)
+export function saveEditRiskType(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/system_config/risk_type/edit`,
+        url: `${config.baseURL}/ussa/system_config/risk_type/edit/${pathParams.id}`,
         method: 'post',
         params
     })
 }
-// 删除 风险类型
-export function deleteRiskType(params) {
+// 删除 风险类型(完成)
+export function deleteRiskType(params,pathParams) {
     return request({
-        url: `${config.baseURL}/ussa/system_config/risk_type/delete`,
+        url: `${config.baseURL}/ussa/system_config/risk_type/delete/${pathParams.id}`,
         method: 'post',
         params
     })
 }
+
+
 
 // 获取当前设置风险评分
 export function getRiskScore() {

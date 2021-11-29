@@ -51,7 +51,9 @@
 .el-table::before {
     height: 0;
 }
-
+.el-table__empty-text{
+    margin-bottom: 16px;
+}
 .v-modal {
     z-index: 2000!important;
 }
@@ -574,7 +576,10 @@
     min-width: 1000px;
     min-height: calc(100vh - 141px);
 }
-
+.active-dropdown{
+    color: $mainColor3;
+    background-color: #ecf5ff;
+}
 //暂无数据
 .noData {
     width: 100%;
@@ -700,7 +705,14 @@
     cursor: not-allowed !important;
     color: $textColor5 !important;
 }
-
+.empty-data{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 60px;
+    color:$textColor5;
+}
 
 @media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px)  {
     .el-table td, .el-table th {

@@ -8,12 +8,34 @@
                 <div class="tsgz-menu-info">
                     <div class="mission-select">
                         <h3>
-                            {{ $route.meta.title }}
+                            {{ $route.meta.titleInfo }}
                         </h3>
                     </div>
                     <div class="tsgz-slogan">
-                        <div class="tsgz-user">我</div>
-                        <h3>{{ loginUser }}</h3>
+                        <div class="tsgz-user">{{ $t('el.header.me') }}</div>
+                        <el-dropdown @command="changeLanguage">
+                            <span class="el-dropdown-link">
+                              <h3>{{ loginUser }}</h3>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="logout">{{$t('el.header.logout')}}</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                        <el-dropdown @command="changeLanguage">
+                            <span class="el-dropdown-link">
+                              {{$t('el.header.language')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="zh_CN"
+                                                  :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''}`">
+                                    {{$t('el.header.chinese')}}
+                                </el-dropdown-item>
+                                <el-dropdown-item command="en_US"
+                                                  :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''}`">
+                                    {{$t('el.header.english')}}
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </div>
                 </div>
             </transition>
@@ -22,7 +44,7 @@
                  :class="{'viewArea': true}">
                 <transition name="fade" mode="out-in">
                     <!--  只缓存二级路由下的 AnalysisMain 所有路径和 investigation、DebugMain 所有路径 -->
-                        <router-view ref="parentRouterRef" :key="key"/>
+                    <router-view ref="parentRouterRef" :key="key"/>
                 </transition>
             </div>
         </div>
@@ -32,6 +54,7 @@
 <script>
 import TsgzNavMenu from "../../../components/nav-menu/tsgz-nav-menu";
 
+
 export default {
     name: 'layout',
     components: {TsgzNavMenu},
@@ -40,7 +63,7 @@ export default {
             isUnfold: false,
             listStatus: 'ANALYSING',// 状态 ：ANALYSING 分析中，ARCHIVED 已结案
             isPreview: false,
-            loginUser: ''
+            loginUser: '',
         }
     },
     props: [],
@@ -57,7 +80,21 @@ export default {
             }
         },
     },
-    methods: {}
+    created() {
+
+        this.loginUser = JSON.parse(this.getStore('userInfo')).username
+    },
+    methods: {
+        changeLanguage(data){
+            if(data === 'logout'){
+                this.$router.push('/login')
+                return
+            }
+            this.setStore('language', data)
+            this.$i18n.locale = data
+            this.$route.meta.titleInfo = this.$t(this.$route.meta.title)
+        }
+    }
 }
 </script>
 
@@ -114,7 +151,7 @@ export default {
             align-items: center;
             justify-content: flex-end;
             height: 100%;
-
+            margin-right: 30px;
             .tsgz-user {
                 width: 28px;
                 height: 28px;
@@ -129,7 +166,7 @@ export default {
                 font-weight: 500;
                 color: $textColor4;
                 font-size: 20px;
-                margin: 0 5px;
+                margin: 0 10px;
                 font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
             }
         }
@@ -153,7 +190,7 @@ export default {
         height: calc(100vh - 60px);
         transition: all .5s;
         background: #F2F4F5;
-        overflow: inherit;
+        overflow-y: auto;
     }
 
     .fold {

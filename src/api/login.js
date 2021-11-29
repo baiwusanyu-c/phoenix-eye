@@ -10,7 +10,7 @@ import config from '@/config/index' // 路径配置
 // 获取验证码
 export function getCodeImg() {
     return request({
-        url: '/code',
+        url: config.baseURL + '/code',
         method: 'get'
     })
 }
@@ -40,7 +40,6 @@ export function getRegCode(params) {
 
 //注册
 export function registerUser(params) {
-    console.log(params,'1212121')
     return request({
         url: '/system/user/register',
         method: 'post',

@@ -5,92 +5,112 @@
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="risk-warning-detail">
+    <div class="risk-warning-detail" v-loading>
         <!--   基本信息     -->
         <div class="detail-body">
             <div class="detail-item">
                 <div class="detail-item-txt">
-                    {{ $t('lang.riskConfig.tableHeader.txHash') }}：
-                    {{ baseInfo.txHash }}
+                    {{ $t('el.riskConfig.tableHeader.txHash') }}：
+                    {{ baseInfo.tx_hash }}
                 </div>
-                <el-button class="default" @click="openWeb">{{ $t('lang.riskConfig.txDetail') }} >></el-button>
+                <el-button class="default open-web" @click="openWeb">{{ $t('el.riskConfig.txDetail') }} >></el-button>
             </div>
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.platform') }}：</span>
-                    {{ baseInfo.platform }}
+                    <span class="label">{{ $t('el.riskConfig.platform') }}：</span>
+                    {{ baseInfo.platform ? baseInfo.platform.toUpperCase() : '' }}
                 </div>
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.values') }}：</span>
-                    {{baseInfo.value}}
-                    Ether ($17)
+                    <span class="label">{{ $t('el.riskConfig.values') }}：</span>
+                    {{baseInfo.money}}
                 </div>
             </div>
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
-                    {{ baseInfo.from }}
+                    <span class="label">{{ $t('el.riskConfig.tableHeader.from') }}：</span>
+                    {{ baseInfo.from_address }}
                 </div>
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
-                    {{ baseInfo.to }}
+                    <span class="label">{{ $t('el.riskConfig.tableHeader.to') }}：</span>
+                    {{ baseInfo.to_address }}
                 </div>
             </div>
             <div class="detail-item">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.features') }}：</span>
-                    <el-tag v-for="item in baseInfo.features"
+                    <span class="label">{{ $t('el.riskConfig.features') }}：</span>
+                    <el-tag v-for="item in baseInfo.risk_features"
                             :key="item">{{item}}</el-tag>
                 </div>
             </div>
         </div>
         <!--   地址收益     -->
         <div class="detail-profit">
-            <h3>{{ $t('lang.riskConfig.profit') }}</h3>
-            <div class="detail-profit-body scrollDiy">
-                <div v-for="(item) in profitData" :key="item.txHash" class="detail-profit-container">
+            <h3>{{ $t('el.riskConfig.profit') }}</h3>
+            <div class="detail-profit-body scrollDiy" v-if="profitData.length > 0">
+                <div v-for="(item) in profitData" :key="item.address" class="detail-profit-container">
                     <div class="detail-profit-grid">
-                        <be-svg-icon disabled-tool-tip icon-class="file"></be-svg-icon>
-                        <be-ellipsis-copy :targetStr="item.tag"
-                                          :tooltip-txt="item.txHash"
+                        <be-svg-icon disabled-tool-tip icon-class="files"></be-svg-icon>
+                        <be-ellipsis-copy :targetStr="item.address_tag"
+                                          styles="font-weight: bold;color:#409EFF"
+                                          :tooltip-txt="item.address"
                                           :isEllipsis="false"
-                                          v-if="item.tag">
+                                          v-if="item.address_tag">
                         </be-ellipsis-copy>
-                        <be-ellipsis-copy :targetStr="item.txHash"
-                                          v-if="!item.tag"
+                        <be-ellipsis-copy :targetStr="item.address"
+                                          v-if="!item.address_tag"
+                                          styles="font-weight: bold;"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
                     </div>
-                    <div class="detail-profit-grid">
-                        <be-svg-icon v-if="item.up === 'true'"  disabled-tool-tip icon-class="-arrow-up"></be-svg-icon>
-                        <be-svg-icon v-if="item.up === 'false'" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
-                        <span>{{item.value}}</span>
+                    <div class="detail-profit-grid" style="width: 30px">
+                            <be-svg-icon v-if="item.profit > 0"  disabled-tool-tip icon-class="-arrow-up"></be-svg-icon>
+                            <be-svg-icon v-if="item.profit < 0" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
+                    </div>
+                    <div class="detail-profit-grid detail-profit-val">
+                            <span  style="font-weight: bold;">{{handleProfit(item.profit)}}</span>
                     </div>
                     <div class="profit-grid-list">
-                        <div>
+                        <div class="profit-grid-list-addr">
                             <ul>
-                                <li v-for="(addrItem) in item.addrList" :key="addrItem">
-                                    {{addrItem}}
+                                <li v-for="(addrItem) in item.addrList" :key="addrItem.itemId">
+                                    <be-ellipsis-copy :targetStr="addrItem.val"
+                                                      :is-ellipsis="isEllipsis"
+                                                      :is-tooltip="isEllipsis"
+                                                      v-if="!addrItem.tag"
+                                                      :fontLength="ellipsis"
+                                                      :endLength="ellipsis">
+                                    </be-ellipsis-copy>
+                                    <be-ellipsis-copy :targetStr="addrItem.tag"
+                                                      styles="font-weight: bold;color:#409EFF"
+                                                      :tooltip-txt="addrItem.val"
+                                                      :isEllipsis="false"
+                                                      v-if="addrItem.tag">
+                                    </be-ellipsis-copy>
                                 </li>
                             </ul>
                         </div>
                         <div>
                             <ul>
-                                <li v-for="(valueItem) in item.valueList" :key="valueItem">
-                                    {{valueItem}}
+                                <li v-for="(valueItem) in item.valueList" :key="valueItem.itemId">
+                                    {{valueItem.val}}
                                 </li>
                             </ul>
                         </div>
                         <div>
                             <ul>
-                                <li v-for="(dollarItem) in item.dollarList" :key="dollarItem">
-                                    {{dollarItem}}
+                                <li v-for="(dollarItem) in item.dollarList" :key="dollarItem.itemId">
+                                    {{dollarItem.val}}
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div v-if="profitData.length === 0"
+                 class = 'empty-data'>
+                <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
+                <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
             </div>
         </div>
     </div>
@@ -98,7 +118,9 @@
 
 <script>
 import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon";
-
+import {getProjWarningDetail} from "../../../api/risk-warning";
+import webURL from '../../../../public/web-url.json'
+import {platformToCurrency} from "../../../utils/platformDict";
 export default {
     name: "risk-warning-detail",
     components: {BeSvgIcon},
@@ -107,82 +129,87 @@ export default {
             // 基础信息
             baseInfo:{},
             // 收益信息
-            profitData:[]
+            profitData:[],
+            // loading
+            loading:false,
+            // 是否缩略
+            isEllipsis:false,
+            // 缩略数量
+            ellipsis:'8',
+            // 链平台转化币种
+            platformToCurrencyInner:platformToCurrency
         }
     },
     mounted() {
         this.getInfoData()
-        this.getData()
+        this.initView()
+        window.onresize = this.initView
+    },
+    beforeDestroy() {
+        window.onresize = null
     },
     computed:{
-
+        handleProfit(){
+            return function (val){
+                if(val>0){
+                    return `$${val}`
+                }
+                if(val< 0){
+                    return `-$${Math.abs(val)}`
+                }
+                return `$${val}`
+            }
+        }
     },
     methods: {
         /**
-         * 獲取地址收益數據
+         * 根据屏幕分辨率调整
          */
-        getData(){
-            this.profitData = [
-                {
-                    tag:'AAVE',
-                    txHash: '0x8c93d63a242ef09d0x8c93dd63a242ef09d0x8c93',
-                    up:'false',
-                    value:'-21930989 $',
-                    addrList:['3Crv' ,'aWETH' ,'cvxyDAI+yUSDC+yUSDT+yTUSD' ,'DAI'],
-                    valueList:['-36558164.848' ,'-0.0054737' ,'30266810.422' ,'10'],
-                    dollarList:['(-21930989 $)' ,'(10 $)' ,'(18159662 $)' ,'(0 $)'],
-                },
-                {
-                    tag:'',
-                    txHash: '0x8c93d63a242ef09d0x8c93qd63a242ef09d0x8c93',
-                    up:'true',
-                    value:'+21930989 $',
-                    addrList:['3Crv' ,'aWETH' ,'cvxyDAI+qyUSDC+yUSDT+yTUSD' ,'DAwI'],
-                    valueList:['-3655164.848' ,'-0.000154737' ,'3026610.422' ,'40'],
-                    dollarList:['(-21930989 $)' ,'(110 $)' ,'(18159662 $)' ,'(50 $)'],
-                }, {
-                    tag:'AAVE',
-                    txHash: '0x8c93d63a242ef09d0x8cs93d63a242ef09d0x8c93',
-                    up:'true',
-                    value:'+21930989 $',
-                    addrList:['3Crsv' ,'aWEcTH' ,'cvxyDAI+ydUSDC+yUSDT+yTUSD' ,'DqAI'],
-                    valueList:['-36553164.848' ,'-0.0001454737' ,'30266610.422' ,'0'],
-                    dollarList:['(-21930989 $)' ,'(1000 $)' ,'(18159662 $)' ,'(40 $)'],
-                }, {
-                    tag:'',
-                    txHash: '0x8c93d63a242ef09d0x8cc93d63a242ef09d0x8c93',
-                    up:'false',
-                    value:'-21930989 $',
-                    addrList:['3Crv' ,'aWETH' ,'cvxyDAI+yUSDC+yUSDTf+yTUSD' ,'DAfI'],
-                    valueList:['-36551964.848' ,'-0.0000154737' ,'30266170.422' ,'60'],
-                    dollarList:['(-21930989 $)' ,'(120 $)' ,'(18159662 $)' ,'(10 $)'],
-                }
-            ]
+        initView(){
+            const width = window.screen.availWidth
+            const height = window.screen.availHeight
+            if(height <= 680 || width <=1280) {
+                this.isEllipsis = true
+                this.ellipsis = '12'
+            }
         },
         /**
          * 獲得基本信息
          */
         getInfoData(){
-            this.baseInfo = {
-                txHash:'0x8c93d63a242ef09d0x8c93d63a242ef09d0x8c93',
-                platform:'ETH',
-                value:0.004105453105278,
-                from:'0x8c93d63a242ef09d0x8c93d63a242ef09d0x8c93',
-                to:'0x8c93d63a242ef09d0x8c93d63a242ef09d0x8c93',
-                features:[
-                    this.$t('lang.warningType.ContractExecution'),
-                    this.$t('lang.warningType.recall'),
-                    this.$t('lang.warningType.currencyTrade'),
-                    this.$t('lang.warningType.flash'),
-                    this.$t('lang.warningType.tradeLoop'),
-                ]
+            const _this = this
+            const params = {
+                tx_hash:_this.$route.query.tx_hash
             }
+            _this.loading = true
+            getProjWarningDetail(params).then(res=>{
+                _this.baseInfo = res.data
+                _this.profitData = res.data.address_profits
+                _this.profitData.forEach(val=>{
+                    val.addrList = []
+                    val.dollarList = []
+                    val.valueList = []
+                    val.token_profits.forEach(res=>{
+                        res.itemId = this.$getUuid
+                        val.addrList.push({val:res.contract_address,itemId:'token_name'+_this.$getUuid(),tag:res.contract_address_tag})
+                        val.valueList.push({val:res.token_profit_no_dollar,itemId:'token_profit_no_dollar'+_this.$getUuid()})
+                        val.dollarList.push({val:res.token_profit_dollar,itemId:'token_profit_dollar'+_this.$getUuid()})
+                    })
+                })
+                _this.loading = false
+            }).catch(err=>{
+                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
+                _this.$message.error(msg)
+                console.error(err)
+                _this.loading = false
+            })
         },
         /**
          * 跳轉到第三方頁面
          */
         openWeb(){
-
+            const url = `${webURL[this.baseInfo.platform]}${this.baseInfo.tx_hash}`
+            this.$openWindow(url, 'view_window')
         }
 
     },
@@ -199,6 +226,9 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            .open-web{
+                width: 126px;
+            }
             .detail-item-txt{
                 flex:1;
                 margin-top: 15px;
@@ -233,7 +263,10 @@ export default {
                 align-items: center;
                 flex-direction: row;
                 min-height: 50px;
-                margin-top: 36px;
+                margin-top: 16px;
+                background: $mainColor8;
+                padding: 15px 0;
+                border-radius: 2px;
                 .ellipsis-copy{
                  width: auto;
                     margin-left: 24px;
@@ -245,14 +278,17 @@ export default {
                     justify-content: center;
                     width: 20%;
                 }
+                .detail-profit-val{
+                    justify-content: flex-start;
+                }
                 .profit-grid-list{
                     display: flex;
                     align-items: center;
                     flex-direction: row;
                     justify-content: flex-start;
                     width: 50%;
-                    div:nth-child(1){
-                        width: 40%;
+                    .profit-grid-list-addr{
+                        width: 60%;
                         color: $textColor4;
                         text-align: right;
                     }
@@ -267,7 +303,7 @@ export default {
                         text-align: right;
                     }
                     li{
-                        margin-bottom: 10px;
+                        margin: 10px 0;
                     }
                 }
             }
@@ -301,6 +337,22 @@ export default {
             }
             .detail-profit-body{
                 font-size: 12px;
+                .detail-profit-container{
+                    .profit-grid-list{
+                        width: 50%;
+                        .profit-grid-list-addr{
+                            width: 60%;
+
+                        }
+                        div:nth-child(2){
+                            width: 30%;
+
+                        }
+                        div:nth-child(3){
+                            width: 30%;
+                        }
+                    }
+                }
             }
         }
     }

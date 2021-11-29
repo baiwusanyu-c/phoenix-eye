@@ -16,16 +16,16 @@
             </div>
         </div>
         <div v-if="type === 'edit'" class="card-edit">
-            <p>{{ $t('lang.systemConfig.features') }}：</p>
+            <p>{{ $t('el.systemConfig.features') }}：</p>
             <div>
-                <el-tag v-for="(item) in features" :key="item + _uid">{{ item }}</el-tag>
+                <el-tag v-for="(item) in features" :key="item.code">{{ item.label }}</el-tag>
             </div>
         </div>
         <!--    新增时显示   -->
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click = 'emitFunc("add")'>
                 <img src="@/assets/image/pc/add-type-icon.png"/>
-                <p>{{ $t('lang.systemConfig.addType') }}</p>
+                <p>{{ $t('el.systemConfig.addType') }}</p>
             </div>
         </div>
     </div>

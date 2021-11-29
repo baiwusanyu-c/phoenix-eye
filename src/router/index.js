@@ -27,33 +27,33 @@ export const routerOption = {
                     path: '/blockchainSituation',
                     name: 'BlockchainSituation',
                     component: () => import('../views/pc/blockchain-situation/blotua-main.vue'),
-                    meta: {title: 'lang.navTextConfig.navName0'},
+                    meta: {title: 'el.navTextConfig.navName0'},
                     children: []
                 },
                 {
                     path: '/projectRanking',
                     name: 'ProjectRanking',
                     component: () => import('../views/pc/project-ranking/project-ranking-main.vue'),
-                    meta: {title: 'lang.navTextConfig.navName1'},
+                    meta: {title: 'el.navTextConfig.navName1'},
                     children: []
                 },
                 {
                     path: '/riskWarning',
                     name: 'RiskWarning',
                     component: () => import('../views/pc/risk-warning/risk-warning-main.vue'),
-                    meta: {title: 'lang.navTextConfig.navName2'},
+                    meta: {title: 'el.navTextConfig.navName2'},
                     children: [
                         {
                             path: '/riskWarning/list',
                             name: 'RiskWarningList',
                             component: () => import('../views/pc/risk-warning/risk-warning-list.vue'),
-                            meta: {title: 'lang.navTextConfig.navName2'},
+                            meta: {title: 'el.navTextConfig.navName2'},
                         },
                         {
                             path: '/riskWarning/detail',
                             name: 'RiskWarningDetail',
                             component: () => import('../views/pc/risk-warning/risk-warning-detail.vue'),
-                            meta: {title: 'lang.navTextConfig.navName2',subTitle: 'lang.navTextConfig.navName2'},
+                            meta: {title: 'el.navTextConfig.navName2',subTitle: 'el.navTextConfig.navName2'},
                         }
                     ]
                 },
@@ -61,14 +61,14 @@ export const routerOption = {
                     path: '/projectManagement',
                     name: 'ProjectManagement',
                     component: () => import('../views/pc/project-management/project-manage-main.vue'),
-                    meta: {title: 'lang.navTextConfig.navName3'},
+                    meta: {title: 'el.navTextConfig.navName3'},
                     children: []
                 },
                 {
                     path: '/systemConfig',
                     name: 'SystemConfig',
                     component: () => import('../views/pc/system-config/system-config-main.vue'),
-                    meta: {title: 'lang.navTextConfig.navName4'},
+                    meta: {title: 'el.navTextConfig.navName4'},
                 },
                 {
                     path: '/404',
@@ -104,8 +104,8 @@ export const routerOption = {
 const beforeEachHandle = (router) => {
     router.beforeEach((to, from, next) => {
         setTimeout(() => {
-            _this.$i18n.locale = 'zh_CN'
-            to.meta.title = _this.$t(to.meta.title)
+            _this.$i18n.locale = _this.getStore('language')
+            to.meta.titleInfo = _this.$t(to.meta.title)
             next()
         }, 100)
     })
