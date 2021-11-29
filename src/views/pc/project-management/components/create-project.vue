@@ -103,7 +103,7 @@ export default {
         },
         // 项目id
         projectId: {
-            type: String,
+            type: [String,Number],
             default: ''
         }
     },

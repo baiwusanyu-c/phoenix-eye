@@ -102,10 +102,10 @@ export const el = {
         reassessInfo:'的所有安全项进行重新评估'
     },
     proManageConfig:{
-        addPro:'click to create',
+        addPro:'点击创建',
         proPublic:'公开',
         proPrivate:'保密',
-        createTime:'createTime'
+        createTime:'创建时间'
     },
     riskConfig:{
         platform:'链平台',

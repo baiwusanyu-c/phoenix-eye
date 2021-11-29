@@ -151,7 +151,13 @@ export default {
                 pageNum: 1,
                 pageSize: 5,
                 total: 0
-            }
+            },
+            staticPieData:[
+                { item: '静态检测', a: 70, },
+                { item: '交易安全', a: 60 },
+                { item: '交易稳定', a: 50 },
+                { item: '安全舆情', a: 50 },
+            ]
         }
     },
     mounted() {
@@ -182,13 +188,7 @@ export default {
          */
         renderOutlineRadar(){
             const { DataView } = DataSet;
-            const data = [
-                { item: '静态检测', a: 70, },
-                { item: '交易安全', a: 60 },
-                { item: '交易稳定', a: 50 },
-                { item: '安全舆情', a: 50 },
-            ];
-            const dv = new DataView().source(data);
+            const dv = new DataView().source(this.staticPieData);
             dv.transform({
                 type: 'fold',
                 fields: ['a'], // 展开字段集
@@ -252,6 +252,9 @@ export default {
                 .position('item*score')
                 .color('#1890FF');
             chart.legend(false);
+            chart.on('afterrender', () => {
+                debugger
+            })
             chart.render();
 
         },

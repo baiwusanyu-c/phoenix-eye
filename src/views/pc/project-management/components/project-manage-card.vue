@@ -31,7 +31,7 @@
             <div class="card-edit-addr scrollDiy">
                 <ul>
                     <li v-for="(addrItem) in contractList" :key="addrItem.contract_address">
-                        <span class="addr-cury">{{ addrItem.platform }}</span>
+                        <span class="addr-cury">{{ formatePlatform(addrItem.platform) }}</span>
                         <be-ellipsis-copy :targetStr="addrItem.contract_address"
                                           :is-ellipsis="addrItem.contract_address.length > 30"
                                           :fontLength="showLength"
@@ -106,6 +106,13 @@ export default {
             type: Array,
             default: () => []
         }
+    },
+    computed:{
+      formatePlatform(){
+          return function (val){
+              return val.charAt(0).toUpperCase() + val.slice(1)
+          }
+      }
     },
     mounted() {
         this.initView()
@@ -192,6 +199,7 @@ export default {
                 margin-bottom: 5px;
                 .addr-cury{
                     font-size: 14px;
+                    font-weight: bold;
                     font-family: PingFang-SC-Heavy, PingFang-SC sans-serif;
                     color: $mainColor15;
                 }
