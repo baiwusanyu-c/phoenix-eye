@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="safety-opinion-info-right">
-                        <span>这是一个图片</span>
+                        <span>{{opinion.img}}</span>
                     </div>
                 </div>
                 <div v-show="index < safetyOpinion.length-1">
@@ -67,7 +67,8 @@
                         'label1',
                         'label2',
                         'label3',
-                    ]
+                    ],
+                    img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
                 },
                     {
                         negative:false,
@@ -84,7 +85,8 @@
                             'label1',
                             'label2',
                             'label3',
-                        ]
+                        ],
+                        img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
                     },
                     {
                         negative:false,
@@ -101,7 +103,8 @@
                             'label1',
                             'label2',
                             'label3',
-                        ]
+                        ],
+                        img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
                     },
                 ],
             }
@@ -117,7 +120,6 @@
 
 <style scoped lang="scss">
     .project-ranking-safety-opinion{
-
         background-color: white;
         margin: auto;
         display: flex;
@@ -125,15 +127,16 @@
         align-items: center;
     }
     .safety-opinion-info{
-        width: 1136px;
+        width: 100%;
+        padding: 0 24px;
     }
     .safety-opinion-header{
-        width: 680px;
+        width: 100%;
         display: flex;
         justify-content: space-between;
     }
     .safety-opinion-footer{
-        width: 680px;
+        width: 100%;
         display: flex;
         justify-content: space-between;
     }
@@ -152,7 +155,9 @@
         justify-content: space-between;
     }
     .safety-opinion-info-left{
-        width: 680px;
+        min-width: 528px;
+        max-width: 1136px;
+        width: 100%;
         height: 144px;
         display: flex;
         flex-direction: column;
@@ -162,13 +167,15 @@
     }
     .safety-opinion-info-right{
         width: 296px;
+        min-width: 296px;
         height: 148px;
-        background-color: whitesmoke;
+        background-color: lightslategray;
+        margin-left: 160px;
     }
 
     .safety-opinion-body-msg{
         height: 66px;
-        width: 680px;
+        width: 100%;
         font-size: 14px;
         color: #5c5c5c;
     }

@@ -185,29 +185,7 @@
         flex-direction: column;
         align-items: center;
     }
-    .card-info{
-        height: 48px;
-        width: 238px;
-        padding-left: 44px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .card-msg{
-        display: flex;
-        flex-direction: column;
-    }
-    .card-title{
-        font-size: 14px;
-        color: #777777;
-    }
-    .card-num{
-        font-size: 24px;
-        font-weight: bold;
-        width: 145px;
-        height: 32px;
-    }
     .chart-box{
-
         width: 100%;
         height: 284px;
         background-color: white;
