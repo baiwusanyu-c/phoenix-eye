@@ -73,6 +73,9 @@
             if(this.$browserInfo().browser !== 'chrome'){
                 this.showBrowserTip = true
             }
+            if(!this.getStore('language')){
+                this.setStore('language','zh_CN')
+            }
         },
         mounted() {
 
