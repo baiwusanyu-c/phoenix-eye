@@ -71,8 +71,8 @@ export default {
             margin-bottom: 30px;
         }
         .el-input__inner{
-            height: 40px;
-            line-height: 40px;
+            height: 45px;
+            line-height: 45px;
         }
         .el-input-group__append{
             opacity: 0.8;

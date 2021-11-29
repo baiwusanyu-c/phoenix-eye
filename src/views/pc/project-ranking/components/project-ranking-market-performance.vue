@@ -180,7 +180,6 @@
 <style scoped lang="scss">
     .market-performance{
         width: 100%;
-        height: 704px;
         margin: auto;
         display: flex;
         flex-direction: column;

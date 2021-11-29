@@ -29,10 +29,10 @@ export default {
     data() {
         return {
             imgCodeDict:{
-                bsc: require('@/assets/image/pc/tx-num.png'),
-                heco: require('@/assets/image/pc/user-num.png'),
-                eth: require('@/assets/image/pc/contract-num.png'),
-                polygon: require('@/assets/image/pc/contract-num.png'),
+                bsc: require('@/assets/image/pc/bsc.png'),
+                heco: require('@/assets/image/pc/heco.png'),
+                eth: require('@/assets/image/pc/eth.png'),
+                polygon: require('@/assets/image/pc/heco.png'),
             }
         }
     },
@@ -143,6 +143,7 @@ export default {
     box-sizing: border-box;
     border-radius: 4px;
     align-items: center;
+    margin-bottom: 16px;
     width: 32.5%;
     flex-direction: column;
     .project-ranking-radar-info{
