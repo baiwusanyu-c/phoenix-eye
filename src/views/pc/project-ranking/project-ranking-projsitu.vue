@@ -18,7 +18,12 @@
                 </span>
             </div>
             <div class="projsitu-item-outline">
-                <div class="outline-radar" id="outline_radar"></div>
+                <div class="outline-radar" id="outline_radar">
+                    <div  class = 'empty-data' v-if="staticPieData.length === 0" style="margin-top: 0">
+                        <img class="img" src="@/assets/image/pc/empty-data.png" alt=""  style="height: 180px;" >
+                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                    </div>
+                </div>
                 <div class="outline-info">
                     <h2>{{ $t('el.projectRinking.outlineTitle') }}</h2>
                     <div class="outline-info-txt">
@@ -48,13 +53,19 @@
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.contractSecurity') }}</h2>
             </div>
-            <div class="projsitu-item-contractSecur">
+            <div  :class="{
+                        'projsitu-item-contractSecur':true,
+                        'projsitu-item-hyaq':contractSecurity.length === 0
+                    }"
+                 v-loading = 'loadingCs'>
                 <project-ranking-radar v-for="(item) in contractSecurity"
-                                       :addr="item.addr"
+                                       :addr="item.contract_address"
                                        :platform="item.platform"
-                                       :key="item.addr">
+                                       :radar-data="radarDataCs(item.score)"
+                                       :key="item.contract_address_id">
                 </project-ranking-radar>
                 <be-pagination
+                    v-if="contractSecurity.length > 0"
                     custom-class="table-page"
                     :pageSize='pageParamsCs.pageSize'
                     :currentPage='pageParamsCs.currentPage'
@@ -64,6 +75,10 @@
                     <span slot="prev" class="table-page-info">共计{{ pageParamsCs.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
+                <div  class = 'empty-data' v-if="contractSecurity.length === 0" style="margin-top: 0">
+                    <img class="img" src="@/assets/image/pc/empty-data.png" alt=""  style="height: 180px;" >
+                    <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                </div>
             </div>
         </div>
         <!--市场表现-->
@@ -88,7 +103,7 @@
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.feelingSecurity') }}</h2>
             </div>
-            <div class="projsitu-item-feelingSecurity">
+            <div class="projsitu-item-feelingSecurity" v-loading="loadingFs">
                 <project-ranking-safety-opinion></project-ranking-safety-opinion>
                 <be-pagination
                     custom-class="table-page"
@@ -114,6 +129,7 @@ import ProjectRankingMarketPerformance from "./components/project-ranking-market
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import DataSet from "@antv/data-set";
 import {Chart, registerGeometryLabelLayout} from "@antv/g2";
+import {getContractSecurity, getPublicSentimentSecurity} from "../../../api/project-ranking";
 
 export default {
     name: "project-ranking-projsitu",
@@ -133,6 +149,8 @@ export default {
                 txStability: '',
                 feeling: ''
             },
+            // 项目检测评分 雷达图数据
+            staticPieData: [],
             // 市场表现 基本数据
             marketPerformance: [],
             // 市場表現 交易量
@@ -140,14 +158,7 @@ export default {
             // 市場表現 新增用户
             mpNewUserNum:[],
             // 合约安全数据
-            contractSecurity: [
-                {platform: 'bsc', addr: '0x123123123c123211231'},
-                {platform: 'heco', addr: '0x1231231q23123211231'},
-                {platform: 'eth', addr: '0x123123123s123211231'},
-                {platform: 'bsc', addr: '0x123123s123123211231'},
-                {platform: 'bsc', addr: '0x123123c123123211231'},
-                {platform: 'bsc', addr: '0x1qw23123123123211231'},
-            ],
+            contractSecurity: [],
             // 合约安全分页参数
             pageParamsCs: {
                 currentPage: 1,
@@ -162,23 +173,103 @@ export default {
                 pageSize: 5,
                 total: 0
             },
-            staticPieData: [
-                {item: '静态检测', a: 70,},
-                {item: '交易安全', a: 60},
-                {item: '交易稳定', a: 50},
-                {item: '安全舆情', a: 50},
-            ],
+
             // 项目信息
-            projectInfo: {}
+            projectInfo: {},
+            // 合约安全loading
+            loadingCs:false,
+            // 舆情安全loading
+            loadingFs:false,
+            // 项目id
+            projectId:'',
+            // 舆情安全数据
+            safetyData:[]
+        }
+    },
+    computed:{
+        radarDataCs(){
+            return function (data){
+                if(data){
+                    return [
+                        {item: '静态检测', a: data.static_testing.score},
+                        {item: '交易安全', a: data.tx_safety.score},
+                        {item: '交易稳定', a: data.tx_stability.score},
+                    ]
+                }
+                return []
+            }
         }
     },
     mounted() {
+        this.projectId = this.$route.query.param || this.$route.query.project_id
         this.getProSituData()
         this.$nextTick(() => {
             this.renderOutlineRadar()
         })
     },
     methods: {
+        /**
+         * 获取舆情安全数据
+         */
+        getPublicSentimentSecurData(){
+            const _this = this
+            _this.loadingFs = true
+            let params = {
+                project_id:_this.projectId,
+                page_num:_this.pageParamsFs.pageNum,
+                page_size:_this.pageParamsFs.pageSize,
+            }
+            getPublicSentimentSecurity(params).then(res=>{
+                if(res){
+                    //_this.contractSecurity = res.data.page_infos
+                    _this.pageParamsFs.total =  res.data.page_total
+                    _this.loadingFs = false
+                }
+            }).catch(err=>{
+                _this.$message.error(err.message)
+                console.error(err)
+            })
+        },
+        /**
+         * 舆情安全分页方法
+         * @param {Object} item - 分页参数对象
+         */
+        pageChangeFs(item) {
+            this.pageParamsFs.pageNum = item.currentPage
+            this.pageParamsFs.currentPage = item.currentPage
+            this.getPublicSentimentSecurData()
+        },
+        /**
+         * 获取合约安全数据
+         */
+        getContractSecurData(){
+            const _this = this
+            _this.loadingCs = true
+            let params = {
+                project_id:_this.projectId,
+                page_num:_this.pageParamsCs.pageNum,
+                page_size:_this.pageParamsCs.pageSize,
+            }
+            getContractSecurity(params).then(res=>{
+                if(res){
+                    _this.contractSecurity = res.data.page_infos
+                    _this.pageParamsCs.total =  res.data.page_total
+                    _this.loadingCs = false
+                }
+            }).catch(err=>{
+                _this.$message.error(err.message)
+                console.error(err)
+            })
+        },
+        /**
+         * 合约安全分页方法
+         * @param {Object} item - 分页参数对象
+         */
+        pageChangeCs(item) {
+            this.pageParamsCs.pageNum = item.currentPage
+            this.pageParamsCs.currentPage = item.currentPage
+            this.getContractSecurData()
+        },
         /**
          * 数据重置
          */
@@ -195,13 +286,14 @@ export default {
                 {title: '用户总数', num: '暂无数据'},
                 {title: '合约总数', num: '暂无数据'},
             ]
+            this.staticPieData = []
             this.mpTxNum = []
             this.mpNewUserNum = []
         },
         /**
          * 获取项目态势详情数据
          */
-        getProSituData() {
+        async getProSituData() {
             // 这是在上级路由存储的数据
             const data = JSON.parse(this.getStore('ContractProjectTs'))
             if (!data) {
@@ -212,6 +304,13 @@ export default {
             this.projectInfo = data.project_info
             // 项目检测评分信息
             this.getOutLineData(this.projectInfo)
+            // 项目检测评分雷达图
+            this.staticPieData = [
+                {item: '静态检测', a: this.projectInfo.static_testing.score},
+                {item: '交易安全', a: this.projectInfo.tx_safety.score},
+                {item: '交易稳定', a: this.projectInfo.tx_stability.score},
+                {item: '安全舆情', a: this.projectInfo.safety_opinion.score},
+            ]
             // 市场表现数据
             this.marketPerformance = [
                 {title: '交易总量', num: data.market_performance.tx_total},
@@ -221,31 +320,53 @@ export default {
             // 市场表现图表数据
             this.mpTxNum = data.market_performance.tx_amounts
             this.mpNewUserNum = data.market_performance.new_user_nums
+            // 获取合约安全数据
+            await this.getContractSecurData()
+            // 获取舆情安全数据
+            await this.getPublicSentimentSecurData()
+        },
+        /**
+         * 获取概要数据
+         */
+        getOutLineData(data) {
+            this.outlineInfo.staticDetection = data.static_testing.text
+            this.outlineInfo.txSecurity = data.tx_safety.text
+            this.outlineInfo.txStability = data.tx_stability.text
+            this.outlineInfo.feeling = data.safety_opinion.text
+            /*const attackList = `<span class="height-light">闪电贷攻击</span>、<span class="height-light">重入攻击</span>`
+            this.outlineInfo.staticDetection = `
+                ${this.$t('el.projectRinking.outlineSDTxt')}
+                <span class="height-light">10</span>
+                  ${this.$t('el.projectRinking.outlineSDH')} ，
+                 <span class="height-light">10</span>
+                  ${this.$t('el.projectRinking.outlineSDM')} ，
+                 <span class="height-light">10</span>
+                  ${this.$t('el.projectRinking.outlineSDL')}
+            `
+            this.outlineInfo.txSecurity = `
+                 ${this.$t('el.projectRinking.outlineTS')}
+                <span class="height-light">1024笔</span>
+                 ${this.$t('el.projectRinking.outlineTSM')}
+                ${attackList}
+            `
+            this.outlineInfo.txStability = `
+                 ${this.$t('el.projectRinking.outlineTST')}
+                <span class="height-light">20%</span>`
+            this.outlineInfo.feeling = `
+                 ${this.$t('el.projectRinking.outlineTS')}
+                <span class="height-light">20%条</span>
+                 ${this.$t('el.projectRinking.outlineFL')}  `*/
+        },
 
-        },
-        /**
-         * 合约安全分页方法
-         * @param {Object} item - 分页参数对象
-         */
-        pageChangeCs(item) {
-            this.pageParamsCs.pageNum = item.currentPage
-            this.pageParamsCs.currentPage = item.currentPage
-        },
-        /**
-         * 舆情安全分页方法
-         * @param {Object} item - 分页参数对象
-         */
-        pageChangeFs(item) {
-            this.pageParamsFs.pageNum = item.currentPage
-            this.pageParamsFs.currentPage = item.currentPage
-        },
         /**
          * 渲染概要雷達圖
          */
         renderOutlineRadar() {
+            if(this.staticPieData.length === 0){
+                return
+            }
             const {DataView} = DataSet;
             const labelCache = []
-
             function limitInShape(items, labels, shapes, region) {
                 labels.forEach((labelGroup, index) => {
                     const labelBBox = labelGroup.getCanvasBBox()
@@ -379,38 +500,7 @@ export default {
             chart.render();
 
         },
-        /**
-         * 获取概要数据
-         */
-        getOutLineData(data) {
-            this.outlineInfo.staticDetection = data.static_testing.text
-            this.outlineInfo.txSecurity = data.tx_safety.text
-            this.outlineInfo.txStability = data.safety_opinion.text
-            this.outlineInfo.feeling = data.tx_stability.text
-            /*const attackList = `<span class="height-light">闪电贷攻击</span>、<span class="height-light">重入攻击</span>`
-            this.outlineInfo.staticDetection = `
-                ${this.$t('el.projectRinking.outlineSDTxt')}
-                <span class="height-light">10</span>
-                  ${this.$t('el.projectRinking.outlineSDH')} ，
-                 <span class="height-light">10</span>
-                  ${this.$t('el.projectRinking.outlineSDM')} ，
-                 <span class="height-light">10</span>
-                  ${this.$t('el.projectRinking.outlineSDL')}
-            `
-            this.outlineInfo.txSecurity = `
-                 ${this.$t('el.projectRinking.outlineTS')}
-                <span class="height-light">1024笔</span>
-                 ${this.$t('el.projectRinking.outlineTSM')}
-                ${attackList}
-            `
-            this.outlineInfo.txStability = `
-                 ${this.$t('el.projectRinking.outlineTST')}
-                <span class="height-light">20%</span>`
-            this.outlineInfo.feeling = `
-                 ${this.$t('el.projectRinking.outlineTS')}
-                <span class="height-light">20%条</span>
-                 ${this.$t('el.projectRinking.outlineFL')}  `*/
-        }
+
     },
 }
 </script>
@@ -439,6 +529,9 @@ export default {
             display: flex;
 
             .outline-radar {
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 background: linear-gradient(90deg, #FFFFFF 0%, #E3F2FF 100%);
                 height: 400px;
                 flex: 1;
@@ -496,7 +589,13 @@ export default {
             margin-bottom: 24px;
             flex-wrap: wrap;
         }
-
+        .projsitu-item-hyaq{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            background-color: $mainColor7;
+        }
         .projsitu-item-feelingSecurity {
             padding-bottom: 15px;
             box-sizing: border-box;

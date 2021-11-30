@@ -33,7 +33,9 @@ export default {
                 heco: require('@/assets/image/pc/heco.png'),
                 eth: require('@/assets/image/pc/eth.png'),
                 polygon: require('@/assets/image/pc/heco.png'),
-            }
+            },
+            // 雷达图实例对象
+            radarChart:null
         }
     },
     computed:{
@@ -49,7 +51,19 @@ export default {
         addr:{
             type:String,
             default:'8acef67c2719fb0fdd1a22c78fb7746f13e824c66b55c0f3dd0e17f50226f029'
+        },
+        radarData:{
+            type:Array,
+            default:()=>[]
         }
+    },
+    watch:{
+        radarData: {
+            deep: true, //深度监听设置为 true
+            handler: function () {
+                this.renderRadar(true)
+            }
+        },
     },
     mounted() {
         this.$nextTick(()=>{
@@ -57,7 +71,7 @@ export default {
         })
     },
     methods: {
-        renderRadar(){
+        renderRadar(isUpdate){
             const { DataView } = DataSet;
             const data = [
                 { item: '静态检测', a: 70, },
@@ -71,12 +85,19 @@ export default {
                 key: 'user', // 设置数据key对应展开字段-》 user:'a'
                 value: 'score', // 设置数据value字段 对应展开字段-》 a:70 => score:70
             });
+            // 更新
+            if(isUpdate){
+                this.radarChart.data(dv.rows);
+                this.radarChart.render(isUpdate);
+                return
+            }
             const chart = new Chart({
                 container: `radar_chart${this._uid}`,
                 autoFit: true,
                 height: 250,
                 appendPadding:[10]
             });
+            this.radarChart = chart
             chart.data(dv.rows);
             chart.scale('score', {
                 min: 0,
