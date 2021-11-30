@@ -1,7 +1,7 @@
 <template>
     <div class="project-ranking-safety-opinion">
         <div class="safety-opinion-info">
-            <div v-for="(opinion,index) in safetyOpinion" :key="index">
+            <div v-for="(opinion,index) in infoData" :key="opinion.sourceUrl">
                 <div class="safety-opinion-info-body">
                     <div class="safety-opinion-info-left">
                         <div class="safety-opinion-header">
@@ -11,7 +11,7 @@
                                 </el-tooltip>
                                 <span style="font-size: 16px;font-weight: bold">{{opinion.title}}</span>
                             </div>
-                            <el-button type="text" @click="lookTextOriginal">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}</el-button>
+                            <el-button type="text" @click="lookTextOriginal(opinion.sourceUrl)">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}>></el-button>
                         </div>
                         <div class="safety-opinion-body">
                             <!--未限制字数-->
@@ -35,10 +35,14 @@
                         </div>
                     </div>
                     <div class="safety-opinion-info-right">
-                        <span>{{opinion.img}}</span>
+                        <el-image
+                            style="width: 100%; height:  100%"
+                            :src="opinion.img"
+                            fit="scale-down">
+                        </el-image>
                     </div>
                 </div>
-                <div v-show="index < safetyOpinion.length-1">
+                <div v-show="index < infoData.length-1">
                     <el-divider style="margin: 0 0;"></el-divider>
                 </div>
             </div>
@@ -47,72 +51,26 @@
 </template>
 
 <script>
+    import webURL from "../../../../../public/web-url.json";
+
     export default {
         name: "project-ranking-safety-opinion",
         data(){
             return{
-                safetyOpinion: [{
-                    // 是否为负面信息
-                    negative:true,
-                    negativeMsg:'负面消息，负面消息',
-                    title:'这是一个标题，这是一个标题',
-                    message:'这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，',
-                    from:'来源：真不戳',
-                    time:'1小时前',
-                    label:[
-                        'label1',
-                        'label2',
-                        'label3',
-                    ],
-                    img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
-                },
-                    {
-                        negative:false,
-                        negativeMsg:'负面消息，负面消息',
-                        title:'这是一个标题，这是一个标题',
-                        message:'这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，',
-                        from:'来源：真不戳',
-                        time:'1小时前',
-                        label:[
-                            'label1',
-                            'label2',
-                            'label3',
-                        ],
-                        img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
-                    },
-                    {
-                        negative:false,
-                        negativeMsg:'负面消息，负面消息',
-                        title:'这是一个标题，这是一个标题',
-                        message:'这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，',
-                        from:'来源：真不戳',
-                        time:'2小时前',
-                        label:[
-                            'label1',
-                            'label2',
-                            'label3',
-                        ],
-                        img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
-                    },
-                ],
+            }
+        },
+        props:{
+            infoData:{
+                type:Array,
+                default:()=>[]
             }
         },
         methods:{
             // 查看原文按钮
-            lookTextOriginal(){
-                console.log('lookTextOriginal')
+            lookTextOriginal(url){
+                if(url){
+                    this.$openWindow(url, 'view_window')
+                }
             }
         }
     }

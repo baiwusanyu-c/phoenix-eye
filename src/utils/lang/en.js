@@ -227,7 +227,7 @@ export const el = {
             all:'全部'
         },
         safetyOpinion: {
-            textOriginal:'查看原文>>',
+            textOriginal:'查看原文',
         },
     },
 }

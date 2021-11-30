@@ -19,9 +19,9 @@
             </div>
             <div class="projsitu-item-outline">
                 <div class="outline-radar" id="outline_radar">
-                    <div  class = 'empty-data' v-if="staticPieData.length === 0" style="margin-top: 0">
-                        <img class="img" src="@/assets/image/pc/empty-data.png" alt=""  style="height: 180px;" >
-                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                    <div class='empty-data' v-if="staticPieData.length === 0" style="margin-top: 0">
+                        <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
+                        <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
                     </div>
                 </div>
                 <div class="outline-info">
@@ -53,11 +53,11 @@
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.contractSecurity') }}</h2>
             </div>
-            <div  :class="{
+            <div :class="{
                         'projsitu-item-contractSecur':true,
                         'projsitu-item-hyaq':contractSecurity.length === 0
                     }"
-                 v-loading = 'loadingCs'>
+                 v-loading='loadingCs'>
                 <project-ranking-radar v-for="(item) in contractSecurity"
                                        :addr="item.contract_address"
                                        :platform="item.platform"
@@ -75,9 +75,9 @@
                     <span slot="prev" class="table-page-info">共计{{ pageParamsCs.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
-                <div  class = 'empty-data' v-if="contractSecurity.length === 0" style="margin-top: 0">
-                    <img class="img" src="@/assets/image/pc/empty-data.png" alt=""  style="height: 180px;" >
-                    <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                <div class='empty-data' v-if="contractSecurity.length === 0" style="margin-top: 0">
+                    <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
+                    <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
                 </div>
             </div>
         </div>
@@ -103,8 +103,15 @@
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.feelingSecurity') }}</h2>
             </div>
-            <div class="projsitu-item-feelingSecurity" v-loading="loadingFs">
-                <project-ranking-safety-opinion></project-ranking-safety-opinion>
+            <div :class="{
+                        'projsitu-item-feelingSecurity':true,
+                        'projsitu-item-hyaq':safetyData.length === 0
+                    }"
+                 v-loading="loadingFs">
+                <project-ranking-safety-opinion
+                    v-if="safetyData.length > 0"
+                    :infoData="safetyData">
+                </project-ranking-safety-opinion>
                 <be-pagination
                     v-if="safetyData.length > 0"
                     custom-class="table-page"
@@ -116,6 +123,10 @@
                     <span slot="prev" class="table-page-info">共计{{ pageParamsFs.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
+                <div class='empty-data' v-if="safetyData.length === 0" style="margin-top: 0">
+                    <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
+                    <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -155,9 +166,9 @@ export default {
             // 市场表现 基本数据
             marketPerformance: [],
             // 市場表現 交易量
-            mpTxNum:[],
+            mpTxNum: [],
             // 市場表現 新增用户
-            mpNewUserNum:[],
+            mpNewUserNum: [],
             // 合约安全数据
             contractSecurity: [],
             // 合约安全分页参数
@@ -178,19 +189,19 @@ export default {
             // 项目信息
             projectInfo: {},
             // 合约安全loading
-            loadingCs:false,
+            loadingCs: false,
             // 舆情安全loading
-            loadingFs:false,
+            loadingFs: false,
             // 项目id
-            projectId:'',
+            projectId: '',
             // 舆情安全数据
-            safetyData:[]
+            safetyData: []
         }
     },
-    computed:{
-        radarDataCs(){
-            return function (data){
-                if(data){
+    computed: {
+        radarDataCs() {
+            return function (data) {
+                if (data) {
                     return [
                         {item: '静态检测', a: data.static_testing.score},
                         {item: '交易安全', a: data.tx_safety.score},
@@ -212,21 +223,33 @@ export default {
         /**
          * 获取舆情安全数据
          */
-        getPublicSentimentSecurData(){
+        getPublicSentimentSecurData() {
             const _this = this
             _this.loadingFs = true
             let params = {
-                project_id:_this.projectId,
-                page_num:_this.pageParamsFs.pageNum,
-                page_size:_this.pageParamsFs.pageSize,
+                project_id: _this.projectId,
+                page_num: _this.pageParamsFs.pageNum,
+                page_size: _this.pageParamsFs.pageSize,
             }
-            getPublicSentimentSecurity(params).then(res=>{
-                if(res){
-                    _this.safetyData = res.data.page_infos
-                    _this.pageParamsFs.total =  res.data.page_total
+            getPublicSentimentSecurity(params).then(res => {
+                if (res) {
+                    res.data.page_infos.forEach(val => {
+                        _this.safetyData.push({
+                            negative: val.is_negative_news,
+                            negativeMsg: '经自动识别，该资讯为负面信息',
+                            sourceUrl: val.url,
+                            title: val.title,
+                            message: val.source,
+                            from: val.content,
+                            time: val.pub_time,
+                            label: val.tag,
+                            img: val.img_url
+                        })
+                    })
+                    _this.pageParamsFs.total = res.data.page_total
                     _this.loadingFs = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -243,21 +266,21 @@ export default {
         /**
          * 获取合约安全数据
          */
-        getContractSecurData(){
+        getContractSecurData() {
             const _this = this
             _this.loadingCs = true
             let params = {
-                project_id:_this.projectId,
-                page_num:_this.pageParamsCs.pageNum,
-                page_size:_this.pageParamsCs.pageSize,
+                project_id: _this.projectId,
+                page_num: _this.pageParamsCs.pageNum,
+                page_size: _this.pageParamsCs.pageSize,
             }
-            getContractSecurity(params).then(res=>{
-                if(res){
+            getContractSecurity(params).then(res => {
+                if (res) {
                     _this.contractSecurity = res.data.page_infos
-                    _this.pageParamsCs.total =  res.data.page_total
+                    _this.pageParamsCs.total = res.data.page_total
                     _this.loadingCs = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -275,6 +298,33 @@ export default {
          * 数据重置
          */
         resetData() {
+            // 合约安全数据
+            this.contractSecurity = []
+            // 合约安全分页参数
+            this.pageParamsCs = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
+                total: 0
+            }
+            // 舆情安全分页参数
+            this.pageParamsFs = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
+                total: 0
+            }
+            // 项目信息
+            this.projectInfo = {}
+            // 合约安全loading
+            this.loadingCs = false
+            // 舆情安全loading
+            this.loadingFs = false
+            // 项目id
+            this.projectId = ''
+            // 舆情安全数据
+            this.safetyData = []
+
             this.projectInfo = {}
             this.outlineInfo = {
                 staticDetection: '暂无数据',
@@ -363,11 +413,12 @@ export default {
          * 渲染概要雷達圖
          */
         renderOutlineRadar() {
-            if(this.staticPieData.length === 0){
+            if (this.staticPieData.length === 0) {
                 return
             }
             const {DataView} = DataSet;
             const labelCache = []
+
             function limitInShape(items, labels, shapes, region) {
                 labels.forEach((labelGroup, index) => {
                     const labelBBox = labelGroup.getCanvasBBox()
@@ -590,13 +641,15 @@ export default {
             margin-bottom: 24px;
             flex-wrap: wrap;
         }
-        .projsitu-item-hyaq{
+
+        .projsitu-item-hyaq {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 300px;
             background-color: $mainColor7;
         }
+
         .projsitu-item-feelingSecurity {
             padding-bottom: 15px;
             box-sizing: border-box;
