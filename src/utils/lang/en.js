@@ -179,7 +179,7 @@ export const el = {
         timeRange:'时间范围',
         timeTradeDate:'天内交易数据',
         inputEmpty:'输入为空',
-        checkInput:'检查输入信息'
+        checkInput:'参数输入错误，请检查输入信息'
     },
     projectRinking:{
         searchP:'输入项目名称或合约地址',

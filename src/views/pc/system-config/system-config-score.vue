@@ -344,7 +344,7 @@ export default {
             let time_range = valArr[valArr.length - 1]
             // 大于0 说明有不合格的参数 直接返回
             if(valArrEmpty.length > 0||typeof time_range !== "number" ||time_range < 0||time_range > 100){
-                this.$message.warning('参数输入错误')
+                this.$message.warning(_this.$t('el.systemConfigScore.checkInput'))
                 return
             }
 
