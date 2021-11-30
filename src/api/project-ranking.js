@@ -11,7 +11,21 @@ export function getProjectRankList() {
 // 獲取合約態勢 或 项目态势 數據
 export function getContractProjectTs() {
     return request({
-        url: `${config.baseURL}/ussa/project/search `,
+        url: `${config.baseURL}/ussa/project/search`,
+        method: 'post'
+    })
+}
+// 獲取合約安全数据
+export function getContractSecurity() {
+    return request({
+        url: `${config.baseURL}/ussa/project/contract/safety/list`,
+        method: 'post'
+    })
+}
+// 獲取舆情安全数据
+export function getPublicSentimentSecurity() {
+    return request({
+        url: `${config.baseURL}/ussa/project/safety_opinion/list`,
         method: 'post'
     })
 }

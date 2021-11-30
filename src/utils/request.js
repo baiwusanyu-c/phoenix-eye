@@ -42,11 +42,6 @@ service.interceptors.response.use(
     response => {
         const res = response.data
         if (res.code !== 200 && res.code !== '0000') {
-            Message({
-                message: res.msg || 'Error',
-                type: 'error',
-                duration: 5 * 1000
-            })
             // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
             if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
                 // to re-login
@@ -64,7 +59,7 @@ service.interceptors.response.use(
                 // $vue.$router.push({path: "/login"})
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
-            return Promise.reject(new Error(res.msg || 'Error'))
+            return Promise.reject(new Error(res.msg || res.message ||'Error'))
         } else {
             return res
         }
