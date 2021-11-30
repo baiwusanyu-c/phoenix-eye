@@ -51,7 +51,7 @@
                             <template slot-scope="scope">
                                 <!--事件范围数字显示在前面-->
                                 <span v-if="scope.$index === 6 && inputShow === false">{{inputValue.time_range}}</span>
-                                <el-input class="table-input" v-show="scope.$index === 6 && inputShow === true" v-model="inputValue.time_range"></el-input>
+                                <el-input class="table-input" v-show="scope.$index === 6 && inputShow === true" v-model.number="inputValue.time_range"></el-input>
                                 <!--分割线-->
                                 <span>{{scope.row.configFst}}</span>
                                 <span v-if="scope.$index !== 0 && scope.$index !== 6 && scope.$index !== 4 && scope.$index !== 3">-</span>
@@ -317,15 +317,37 @@ export default {
         // 修改风险评分配置信息
         changeConfigConfirm(){
             const _this = this
+
+            // 开始表单校验
+            let sum = 0
             let valArr = Object.values(this.inputValue)
-            let valArrEmpty = valArr.filter((t)=>{
-                return t === ''
-            })
+            let valArrEmpty = []
+            for(let i = 0;i < valArr.length - 1;i++){
+                let valArrCfg = Object.values(valArr[i].config)
+                let ArrEmpty = valArrCfg.filter((t)=>{
+                    return t === ''||typeof t !== 'number'||t < 0||t > 100
+                })
+                if(valArr[i].weight < 0){
+                    valArrEmpty.push(1)
+                    break
+                }
+                if(ArrEmpty.length > 0){
+                    valArrEmpty.push(1)
+                    break
+                }
+                sum += valArr[i].weight
+                console.log(sum)
+            }
+            if(sum != 100){
+                valArrEmpty.push(1)
+            }
+            let time_range = valArr[valArr.length - 1]
             // 大于0 说明有不合格的参数 直接返回
-            if(valArrEmpty.length > 0){
-                this.$message.warning('参数输入错误')
+            if(valArrEmpty.length > 0||typeof time_range !== "number" ||time_range < 0||time_range > 100){
+                this.$message.warning(_this.$t('el.systemConfigScore.checkInput'))
                 return
             }
+
             let params = this.inputValue
             // 调用后端接口，存储表单数据
             saveRiskScore(params).then(res => {
