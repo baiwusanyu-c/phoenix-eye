@@ -105,7 +105,7 @@ import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opi
 import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance";
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import DataSet from "@antv/data-set";
-import {Chart} from "@antv/g2";
+import {Chart,registerGeometryLabelLayout} from "@antv/g2";
 export default {
     name: "project-ranking-projsitu",
     components: {
@@ -188,6 +188,28 @@ export default {
          */
         renderOutlineRadar(){
             const { DataView } = DataSet;
+            const labelCache = []
+            function limitInShape(items, labels, shapes, region) {
+                labels.forEach((labelGroup,index)=>{
+                    const labelBBox = labelGroup.getCanvasBBox()
+                    labelGroup.cfg.children[0].cfg.visible = false
+                    labelGroup.addShape('text', {
+                        attrs: {
+                            x: labelCache[index ].point.x + labelBBox.width + 5,
+                            y: labelCache[index ].point.y + labelBBox.height/2,
+                            text: items[index].data.score,
+                            textBaseline: 'middle',
+                            fill: '#1890FF',
+                            fontWeight:'bold',
+                            fontSize:16
+                        },
+                    })
+                })
+               // items[0].y = labelCache[0].point.y
+            }
+
+            // Step 2: 注册 label 布局函数
+            registerGeometryLabelLayout('limit-in-shape', limitInShape);
             const dv = new DataView().source(this.staticPieData);
             dv.transform({
                 type: 'fold',
@@ -224,8 +246,12 @@ export default {
                     style:{
                         fontWeight:'bold',
                         fontSize:16
+                    },
+                    formatter:(text, item)=>{
+                        labelCache.push(JSON.parse(JSON.stringify(item)))
+                        return text
                     }
-                }
+                },
             });
             // 坐标轴 - 刻度
             chart.axis('score', {
@@ -246,15 +272,53 @@ export default {
                 .position('item*score')
                 .color('#1890FF')
                 .size(2)
+                .label('item*score', {
+                    layout: {
+                        type: 'limit-in-shape',
+                    },
+                });
 
             chart
                 .area()
                 .position('item*score')
-                .color('#1890FF');
+                .color('#1890FF')
+
             chart.legend(false);
-            chart.on('afterrender', () => {
-                debugger
-            })
+            /*chart.on('afterrender', (data) => {
+                const foregroundGroup = chart.foregroundGroup;
+                let labelGroup = foregroundGroup.findById('customLabels');
+               /!* const elements = interval.elements;
+                const originData = element.getData();*!/
+                const coordinate = chart.getCoordinate();
+                const center = coordinate.getCenter();
+                if (labelGroup) {
+                    labelGroup.clear();
+                } else {
+                    labelGroup = chart.foregroundGroup.addGroup({
+                        capture: false,
+                        id: 'customLabels'
+                    });
+                }
+                const label = labelGroup.addGroup();
+                label.addShape('text', {
+                    attrs: {
+                        x: center.x + 50,
+                        y: center.y,
+                        text: 'originData.type + originData.sold',
+                        textBaseline: 'middle',
+                        fill: 'red',
+                    },
+                });
+                label.addShape('text', {
+                    attrs: {
+                        x: center.x ,
+                        y: center.y,
+                        text: 'originData.type + originData.sold',
+                        textBaseline: 'middle',
+                        fill: 'green',
+                    },
+                });
+            })*/
             chart.render();
 
         },
