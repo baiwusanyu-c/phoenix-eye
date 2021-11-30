@@ -20,7 +20,7 @@
             <div class="search-area search-area-input">
                 <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getData()">{{ $t('el.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getList()">{{ $t('el.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -228,13 +228,13 @@ export default {
       this.platformList = platformListDict
     },
     mounted() {
-        this.getData()
+        this.getList()
     },
     methods: {
         /**
          * 获取表格数据
          */
-        getData() {
+        getList() {
             const _this = this
             _this.loading = true
             let params = {
@@ -250,8 +250,7 @@ export default {
                     _this.loading = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -262,7 +261,7 @@ export default {
         pageChange(item){
             this.pageParams.pageNum = item.currentPage
             this.pageParams.currentPage = item.currentPage
-            this.getData()
+            this.getList()
         },
         /**
          * 打開交易分析詳情tab

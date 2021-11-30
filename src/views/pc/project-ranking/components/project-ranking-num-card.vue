@@ -45,7 +45,7 @@ export default {
             default:'合约总数'
         },
         num:{
-            type:Number,
+            type:[Number,String],
             default:0
         }
     },

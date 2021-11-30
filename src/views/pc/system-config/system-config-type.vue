@@ -107,8 +107,7 @@ export default {
                     _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.add')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -140,8 +139,7 @@ export default {
                     _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -170,8 +168,7 @@ export default {
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.delete')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -188,8 +185,7 @@ export default {
                 _this.featuresList = res.data.system_risk_features
                 _this.loading = false
             }).catch(err=>{
-                const msg = _this.$t('el.search')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         }

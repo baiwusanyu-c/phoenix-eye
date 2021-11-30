@@ -87,6 +87,8 @@ export const el = {
     subNav:{
         navName0:'链上态势',
         navName1:'项目排行',
+        navName1s1:'合约态势详情',
+        navName1s2:'项目态势详情',
         navName2:'风险警告',
         navName3:'项目管理',
         navName4s1:'风险类型配置',
@@ -184,6 +186,11 @@ export const el = {
         checkInput:'参数输入错误，请检查输入信息'
     },
     projectRinking:{
+        proNum:'编号',
+        name:'项目名',
+        contractNum:'合约数量',
+        score: '安全评分',
+        txScale:'交易规模',
         searchP:'输入项目名称或合约地址',
         onlineTime:'上线时间',
         contractSecurity:'合约安全',

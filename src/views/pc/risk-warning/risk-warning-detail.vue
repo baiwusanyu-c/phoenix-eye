@@ -198,8 +198,7 @@ export default {
                 })
                 _this.loading = false
             }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
                 _this.loading = false
             })

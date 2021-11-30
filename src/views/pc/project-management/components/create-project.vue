@@ -306,8 +306,7 @@ export default {
                     _this.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.add')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
 
@@ -346,8 +345,7 @@ export default {
                     _this.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         }

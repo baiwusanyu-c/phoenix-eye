@@ -9,8 +9,13 @@
         <!--态势概要-->
         <div class="projsitu-item" style="margin-bottom: 20px">
             <div class="item-title">
-                <h2>PancakeSwap</h2>
-                <span>{{ $t('el.projectRinking.onlineTime') }}：2020/10/10</span>
+                <h2>{{ projectInfo.name }}</h2>
+                <span>{{ $t('el.projectRinking.onlineTime') }}：
+                     <el-tooltip placement="top" effect="light">
+                            <span slot="content">UTC：{{ beijing2utc(projectInfo.create_time) }}</span>
+                            <span class="cursor">{{ formatDate($createDate(projectInfo.create_time)) }}</span>
+                        </el-tooltip>
+                </span>
             </div>
             <div class="projsitu-item-outline">
                 <div class="outline-radar" id="outline_radar"></div>
@@ -56,7 +61,7 @@
                     :total='pageParamsCs.total'
                     @updatePage="pageChangeCs"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">共计{{pageParamsCs.total}}条</span>
+                    <span slot="prev" class="table-page-info">共计{{ pageParamsCs.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
             </div>
@@ -73,7 +78,10 @@
                                           :title="item.title">
                 </project-ranking-num-card>
             </div>
-            <project-ranking-market-performance></project-ranking-market-performance>
+            <project-ranking-market-performance
+                :tx-quantity="mpTxNum"
+                :new-user="mpNewUserNum">
+            </project-ranking-market-performance>
         </div>
         <!--舆情安全-->
         <div class="projsitu-item">
@@ -89,7 +97,7 @@
                     :total='pageParamsFs.total'
                     @updatePage="pageChangeFs"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">共计{{pageParamsFs.total}}条</span>
+                    <span slot="prev" class="table-page-info">共计{{ pageParamsFs.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
             </div>
@@ -105,7 +113,8 @@ import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opi
 import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance";
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import DataSet from "@antv/data-set";
-import {Chart,registerGeometryLabelLayout} from "@antv/g2";
+import {Chart, registerGeometryLabelLayout} from "@antv/g2";
+
 export default {
     name: "project-ranking-projsitu",
     components: {
@@ -117,18 +126,19 @@ export default {
     },
     data() {
         return {
-            outlineInfo:{
-                staticDetection:'',
-                txSecurity:'',
-                txStability:'',
-                feeling:''
+            // 项目检测评分信息
+            outlineInfo: {
+                staticDetection: '',
+                txSecurity: '',
+                txStability: '',
+                feeling: ''
             },
             // 市场表现 基本数据
-            marketPerformance: [
-                {title: '交易总量', num: 0},
-                {title: '用户总数', num: 0},
-                {title: '合约总数', num: 0}
-            ],
+            marketPerformance: [],
+            // 市場表現 交易量
+            mpTxNum:[],
+            // 市場表現 新增用户
+            mpNewUserNum:[],
             // 合约安全数据
             contractSecurity: [
                 {platform: 'bsc', addr: '0x123123123c123211231'},
@@ -139,39 +149,85 @@ export default {
                 {platform: 'bsc', addr: '0x1qw23123123123211231'},
             ],
             // 合约安全分页参数
-            pageParamsCs:{
+            pageParamsCs: {
                 currentPage: 1,
                 pageNum: 1,
                 pageSize: 5,
                 total: 0
             },
             // 舆情安全分页参数
-            pageParamsFs:{
+            pageParamsFs: {
                 currentPage: 1,
                 pageNum: 1,
                 pageSize: 5,
                 total: 0
             },
-            staticPieData:[
-                { item: '静态检测', a: 70, },
-                { item: '交易安全', a: 60 },
-                { item: '交易稳定', a: 50 },
-                { item: '安全舆情', a: 50 },
-            ]
+            staticPieData: [
+                {item: '静态检测', a: 70,},
+                {item: '交易安全', a: 60},
+                {item: '交易稳定', a: 50},
+                {item: '安全舆情', a: 50},
+            ],
+            // 项目信息
+            projectInfo: {}
         }
     },
     mounted() {
-        this.getOutLineData()
-        this.$nextTick(()=>{
+        this.getProSituData()
+        this.$nextTick(() => {
             this.renderOutlineRadar()
         })
     },
     methods: {
         /**
+         * 数据重置
+         */
+        resetData() {
+            this.projectInfo = {}
+            this.outlineInfo = {
+                staticDetection: '暂无数据',
+                txSecurity: '暂无数据',
+                txStability: '暂无数据',
+                feeling: '暂无数据'
+            }
+            this.marketPerformance = [
+                {title: '交易总量', num: '暂无数据'},
+                {title: '用户总数', num: '暂无数据'},
+                {title: '合约总数', num: '暂无数据'},
+            ]
+            this.mpTxNum = []
+            this.mpNewUserNum = []
+        },
+        /**
+         * 获取项目态势详情数据
+         */
+        getProSituData() {
+            // 这是在上级路由存储的数据
+            const data = JSON.parse(this.getStore('ContractProjectTs'))
+            if (!data) {
+                this.resetData()
+                return
+            }
+            // 项目态势基本信息
+            this.projectInfo = data.project_info
+            // 项目检测评分信息
+            this.getOutLineData(this.projectInfo)
+            // 市场表现数据
+            this.marketPerformance = [
+                {title: '交易总量', num: data.market_performance.tx_total},
+                {title: '用户总数', num: data.market_performance.user_total},
+                {title: '合约总数', num: data.market_performance.contract_total},
+            ]
+            // 市场表现图表数据
+            this.mpTxNum = data.market_performance.tx_amounts
+            this.mpNewUserNum = data.market_performance.new_user_nums
+
+        },
+        /**
          * 合约安全分页方法
          * @param {Object} item - 分页参数对象
          */
-        pageChangeCs(item){
+        pageChangeCs(item) {
             this.pageParamsCs.pageNum = item.currentPage
             this.pageParamsCs.currentPage = item.currentPage
         },
@@ -179,33 +235,34 @@ export default {
          * 舆情安全分页方法
          * @param {Object} item - 分页参数对象
          */
-        pageChangeFs(item){
+        pageChangeFs(item) {
             this.pageParamsFs.pageNum = item.currentPage
             this.pageParamsFs.currentPage = item.currentPage
         },
         /**
          * 渲染概要雷達圖
          */
-        renderOutlineRadar(){
-            const { DataView } = DataSet;
+        renderOutlineRadar() {
+            const {DataView} = DataSet;
             const labelCache = []
+
             function limitInShape(items, labels, shapes, region) {
-                labels.forEach((labelGroup,index)=>{
+                labels.forEach((labelGroup, index) => {
                     const labelBBox = labelGroup.getCanvasBBox()
                     labelGroup.cfg.children[0].cfg.visible = false
                     labelGroup.addShape('text', {
                         attrs: {
-                            x: labelCache[index ].point.x + labelBBox.width + 5,
-                            y: labelCache[index ].point.y + labelBBox.height/2,
+                            x: labelCache[index].point.x + labelBBox.width + 5,
+                            y: labelCache[index].point.y + labelBBox.height / 2,
                             text: items[index].data.score,
                             textBaseline: 'middle',
                             fill: '#1890FF',
-                            fontWeight:'bold',
-                            fontSize:16
+                            fontWeight: 'bold',
+                            fontSize: 16
                         },
                     })
                 })
-               // items[0].y = labelCache[0].point.y
+                // items[0].y = labelCache[0].point.y
             }
 
             // Step 2: 注册 label 布局函数
@@ -221,7 +278,7 @@ export default {
                 container: `outline_radar`,
                 autoFit: true,
                 height: 250,
-                appendPadding:[20,0,20,0]
+                appendPadding: [20, 0, 20, 0]
             });
             chart.data(dv.rows);
             chart.scale('score', {
@@ -229,7 +286,7 @@ export default {
                 max: 80,
             });
             chart.coordinate('polar', {
-                radius:1,
+                radius: 1,
             });
             // 坐标轴 - label文字
             chart.axis('item', {
@@ -242,12 +299,12 @@ export default {
                         },
                     },
                 },
-                label:{
-                    style:{
-                        fontWeight:'bold',
-                        fontSize:16
+                label: {
+                    style: {
+                        fontWeight: 'bold',
+                        fontSize: 16
                     },
-                    formatter:(text, item)=>{
+                    formatter: (text, item) => {
                         labelCache.push(JSON.parse(JSON.stringify(item)))
                         return text
                     }
@@ -325,8 +382,12 @@ export default {
         /**
          * 获取概要数据
          */
-        getOutLineData(){
-            const attackList = `<span class="height-light">闪电贷攻击</span>、<span class="height-light">重入攻击</span>`
+        getOutLineData(data) {
+            this.outlineInfo.staticDetection = data.static_testing.text
+            this.outlineInfo.txSecurity = data.tx_safety.text
+            this.outlineInfo.txStability = data.safety_opinion.text
+            this.outlineInfo.feeling = data.tx_stability.text
+            /*const attackList = `<span class="height-light">闪电贷攻击</span>、<span class="height-light">重入攻击</span>`
             this.outlineInfo.staticDetection = `
                 ${this.$t('el.projectRinking.outlineSDTxt')}
                 <span class="height-light">10</span>
@@ -348,7 +409,7 @@ export default {
             this.outlineInfo.feeling = `
                  ${this.$t('el.projectRinking.outlineTS')}
                 <span class="height-light">20%条</span>
-                 ${this.$t('el.projectRinking.outlineFL')}  `
+                 ${this.$t('el.projectRinking.outlineFL')}  `*/
         }
     },
 }
@@ -363,80 +424,95 @@ export default {
             margin-bottom: 16px;
 
             h2 {
-                font-family: PingFangSC-Medium, PingFang SC,sans-serif;
+                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
                 color: $textColor3;
                 margin-right: 15px;
             }
 
             span {
-                font-family: PingFangSC-Medium, PingFang SC,sans-serif;
+                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
                 color: $textColor4;
             }
         }
-        .projsitu-item-outline{
+
+        .projsitu-item-outline {
             display: flex;
-            .outline-radar{
+
+            .outline-radar {
                 background: linear-gradient(90deg, #FFFFFF 0%, #E3F2FF 100%);
                 height: 400px;
-                flex:1;
+                flex: 1;
             }
-            .outline-info{
-                background:$mainColor7;
+
+            .outline-info {
+                background: $mainColor7;
                 height: 400px;
-                flex:1;
+                flex: 1;
                 padding: 40px 30px 20px 30px;
                 box-sizing: border-box;
+
                 h2 {
-                    font-family: PingFangSC-Medium, PingFang SC,sans-serif;
+                    font-family: PingFangSC-Medium, PingFang SC, sans-serif;
                     color: $textColor3;
                     margin-bottom: 20px;
                 }
-                .outline-info-txt{
+
+                .outline-info-txt {
                     height: 80%;
-                    div{
+
+                    div {
                         display: flex;
                         margin-bottom: 15px;
-                        .label{
-                            font-family: PingFangSC-Medium, PingFang SC,sans-serif;
+
+                        .label {
+                            font-family: PingFangSC-Medium, PingFang SC, sans-serif;
                             font-weight: 500;
                             color: $textColor3;
                             margin-right: 15px;
                         }
-                        .inner-text{
+
+                        .inner-text {
                             color: $textColor4;
                         }
                     }
                 }
-                .height-light{
-                    color:#FA6400;
+
+                .height-light {
+                    color: #FA6400;
                     font-weight: bold
                 }
-                p{
+
+                p {
                     text-align: right;
                     color: $mainColor14;
                     font-size: 12px;
                 }
             }
         }
+
         .projsitu-item-contractSecur {
             display: flex;
             justify-content: space-between;
             margin-bottom: 24px;
             flex-wrap: wrap;
         }
-        .projsitu-item-feelingSecurity{
+
+        .projsitu-item-feelingSecurity {
             padding-bottom: 15px;
             box-sizing: border-box;
         }
-        .projsitu-item-market{
+
+        .projsitu-item-market {
             display: flex;
             justify-content: space-between;
             margin-bottom: 24px;
         }
+
         .table-page {
             display: flex;
             justify-content: flex-end;
             align-items: center;
+
             .table-page-info {
                 font-size: 14px;
                 margin-top: 20px;

@@ -35,7 +35,20 @@ export const routerOption = {
                     name: 'ProjectRanking',
                     component: () => import('../views/pc/project-ranking/project-ranking-main.vue'),
                     meta: {title: 'el.navTextConfig.navName1'},
-                    children: []
+                    children: [
+                        {
+                            path: '/projectRanking/project',
+                            name: 'projectRankingProjsitu',
+                            component: () => import('../views/pc/project-ranking/project-ranking-projsitu.vue'),
+                            meta: {title: 'el.navTextConfig.navName1',subTitle: 'el.navTextConfig.navName1s2'},
+                        },
+                        {
+                            path: '/projectRanking/contract',
+                            name: 'projectRankingContractjsitu',
+                            component: () => import('../views/pc/project-ranking/project-ranking-contractjsitu.vue'),
+                            meta: {title: 'el.navTextConfig.navName1',subTitle: 'el.navTextConfig.navName1s1'},
+                        }
+                    ]
                 },
                 {
                     path: '/riskWarning',

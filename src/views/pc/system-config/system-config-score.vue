@@ -355,8 +355,7 @@ export default {
                     return
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
             this.inputShow = false

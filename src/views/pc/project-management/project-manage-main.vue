@@ -110,8 +110,7 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.add')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -142,8 +141,7 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -173,8 +171,7 @@ export default {
                     _this.showDelete = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.delete')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -204,8 +201,7 @@ export default {
                     _this.showFresh = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
@@ -226,8 +222,7 @@ export default {
                 })
                 _this.loading = false
             }).catch(err=>{
-                const msg = _this.$t('el.search')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         }
