@@ -36,8 +36,8 @@
                     </div>
                     <div class="safety-opinion-info-right">
                         <el-image
-                            style="width: 100%; height:  100%"
-                            :src="opinion.img"
+                            style="width: 100%; height:100%"
+                            :src="require('@/assets/image/pc/news@2x.jpg')"
                             fit="scale-down">
                         </el-image>
                     </div>
@@ -51,8 +51,6 @@
 </template>
 
 <script>
-    import webURL from "../../../../../public/web-url.json";
-
     export default {
         name: "project-ranking-safety-opinion",
         data(){

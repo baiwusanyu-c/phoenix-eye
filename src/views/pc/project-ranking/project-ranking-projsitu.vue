@@ -195,7 +195,7 @@ export default {
             // 项目id
             projectId: '',
             // 舆情安全数据
-            safetyData: []
+            safetyData:[]
         }
     },
     computed: {
@@ -243,7 +243,6 @@ export default {
                             from: val.content,
                             time: val.pub_time,
                             label: val.tag,
-                            img: val.img_url
                         })
                     })
                     _this.pageParamsFs.total = res.data.page_total
