@@ -15,7 +15,7 @@
                             <span class="reg-start project-Ver">{{ verName }}</span>
                             <span class="projectOpenTitle">{{ $t('el.createProject.createProjectOpenTitle') }}</span>
                             <el-switch v-model="openTF"></el-switch>
-                            <span class="projectOpenSecret">{{ $t('el.createProject.createProjectOpenSecret') }}</span>
+                            <span class="projectOpenSecret">{{ isPublic }}</span>
                         </el-form-item>
                         <el-form-item :label="$t('el.createProject.createProjectKeyWords') + ':'">
                             <span class="reg-start project-star">*</span>
@@ -83,7 +83,7 @@ export default {
             createProjectWindow: false,
             projectName: '',
             projectKeyWords: '',
-            openTF: false,
+            openTF: true,
             labelPosition: 'right',
             addContract: 0,
             contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}],
@@ -106,6 +106,15 @@ export default {
             type: [String,Number],
             default: ''
         }
+    },
+    computed:{
+      isPublic(){
+          if(this.openTF){
+              return this.$t('el.createProject.createProjectUnSecret')
+          }else{
+              return this.$t('el.createProject.createProjectOpenSecret')
+          }
+      }
     },
     watch: {
         createProjectWindow(nVal) {
@@ -154,7 +163,7 @@ export default {
             this.projectKeyWords = ''
             this.verKeyword = ''
             this.verName = ''
-            this.openTF = false
+            this.openTF = true
             this.labelPosition='right'
             this.addContract= 0
             this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]

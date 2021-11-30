@@ -9,7 +9,9 @@
         <div class="search-area">
             <div>
                 {{ $t('el.riskConfig.platform') }}:
-                <el-select v-model="searchParams.platform" :placeholder="$t('el.riskConfig.platformP')">
+                <el-select v-model="searchParams.platform"
+                            @change="getList"
+                           :placeholder="$t('el.riskConfig.platformP')">
                     <el-option v-for="(item) in platformList"
                                :key="item.id"
                                :value="item.value"
@@ -40,7 +42,7 @@
                     width="80"
                     align="center">
                     <template slot-scope="scope">
-                        {{scope.row.platform}}
+                        {{scope.row.platform.toUpperCase()}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -163,14 +165,14 @@ export default {
         return {
             // 搜索参数
             searchParams: {
-                platform: 'eth',
+                platform: 'all',
                 addr: ''
             },
             // 分页参数
             pageParams:{
                 currentPage: 1,
                 pageNum: 1,
-                pageSize: 5,
+                pageSize: 10,
                 total: 0
             },
             // 下拉列表币种
@@ -226,6 +228,13 @@ export default {
     },
     created() {
       this.platformList = platformListDict
+       this.platformList.unshift(
+           {
+               label: '全部',
+               value: 'all',
+               id:'jhgadjghzngrgegkdfjallg'
+           },
+       )
     },
     mounted() {
         this.getList()
@@ -240,7 +249,7 @@ export default {
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
-                platform:this.searchParams.platform,
+                platform:this.searchParams.platform === 'all' ? '' : this.searchParams.platform,
                 param:this.searchParams.addr
             }
             getProjWarning(params).then(res=>{

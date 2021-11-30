@@ -140,6 +140,7 @@ export const el = {
         createProjectKeyWordsInput:'多个关键词用“；”隔开，如：PancakeSwap;CAKE',
         createProjectOpenTitle:'是否公开',
         createProjectOpenSecret:'保密',
+        createProjectUnSecret:'公开',
         contractSite:'合约地址',
         contractLabel:'合约标签',
         selectContractClass:'请选择',

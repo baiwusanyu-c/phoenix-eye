@@ -106,6 +106,7 @@
             <div class="projsitu-item-feelingSecurity" v-loading="loadingFs">
                 <project-ranking-safety-opinion></project-ranking-safety-opinion>
                 <be-pagination
+                    v-if="safetyData.length > 0"
                     custom-class="table-page"
                     :pageSize='pageParamsFs.pageSize'
                     :currentPage='pageParamsFs.currentPage'
@@ -221,7 +222,7 @@ export default {
             }
             getPublicSentimentSecurity(params).then(res=>{
                 if(res){
-                    //_this.contractSecurity = res.data.page_infos
+                    _this.safetyData = res.data.page_infos
                     _this.pageParamsFs.total =  res.data.page_total
                     _this.loadingFs = false
                 }
