@@ -71,7 +71,7 @@
                                 </be-ellipsis-copy>
                                 <be-ellipsis-copy :targetStr="scope.row.address"
                                                   v-if="!scope.row.address_tag"
-                                                  :is-ellipsis="isEllipsis"
+                                                  :is-ellipsis="isEllipsis || scope.row.address.length >=45"
                                                   styles="font-weight: bold;"
                                                   fontLength="8"
                                                   endLength="8">
