@@ -5,7 +5,7 @@
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="risk-warning-detail scrollDiy" v-loading>
+    <div class="risk-warning-detail scrollDiy" v-loading="loading">
         <!--   基本信息     -->
         <div class="detail-body">
             <div class="detail-item">
@@ -49,8 +49,7 @@
             <div class="detail-profit-body" v-if="profitData.length > 0">
                 <el-table
                     tooltip-effect="light"
-                    :data="profitData"
-                    v-loading="loading">
+                    :data="profitData">
                     <div slot="empty"
                          class = 'empty-table'>
                         <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
@@ -287,30 +286,6 @@ export default {
         padding: 20px;
         background: $mainColor7;
         min-height: 69.5%;
-        .detail-profit-head{
-            height: 48px;
-            display: flex;
-            align-items: center;
-            span{
-                text-align: center;
-                font-weight: bold;
-            }
-            span:nth-child(1){
-                width: 21%;
-            }
-            span:nth-child(2){
-                width: 18%;
-                text-align: left;
-            }
-            span:nth-child(3){
-                width: 30%;
-                text-align: center;
-            }
-            span:nth-child(4){
-                width: 18%;
-                text-align: center;
-            }
-        }
         .detail-profit-body{
             margin-top: 20px;
             height: calc(100% - 40px);
