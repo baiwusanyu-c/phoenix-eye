@@ -25,7 +25,6 @@ export default {
 
 <style scoped lang="scss">
 .risk-warning-main{
-    height: 100%;
-    width: 100%;
+    min-height: 100%;
 }
 </style>

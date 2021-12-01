@@ -10,7 +10,8 @@
         <div class="projsitu-item" style="margin-bottom: 20px">
             <div class="item-title">
                 <h2>{{ projectInfo.name }}</h2>
-                <span>{{ $t('el.projectRinking.onlineTime') }}：
+                <span v-if="projectInfo.create_time">
+                    {{ $t('el.projectRinking.onlineTime') }}：
                      <el-tooltip placement="top" effect="light">
                             <span slot="content">UTC：{{ beijing2utc(projectInfo.create_time) }}</span>
                             <span class="cursor">{{ formatDate($createDate(projectInfo.create_time)) }}</span>
@@ -203,9 +204,9 @@ export default {
             return function (data) {
                 if (data) {
                     return [
-                        {item: '静态检测', a: data.static_testing.score},
-                        {item: '交易安全', a: data.tx_safety.score},
-                        {item: '交易稳定', a: data.tx_stability.score},
+                        {item: this.$t('el.projectRinking.staticDetection'), a: data.static_testing.score},
+                        {item: this.$t('el.projectRinking.txSecurity'), a: data.tx_safety.score},
+                        {item: this.$t('el.projectRinking.txStability'), a: data.tx_stability.score},
                     ]
                 }
                 return []
@@ -326,17 +327,22 @@ export default {
 
             this.projectInfo = {}
             this.outlineInfo = {
-                staticDetection: '暂无数据',
-                txSecurity: '暂无数据',
-                txStability: '暂无数据',
-                feeling: '暂无数据'
+                staticDetection: this.$t('el.emptyData'),
+                txSecurity:this.$t('el.emptyData'),
+                txStability: this.$t('el.emptyData'),
+                feeling: this.$t('el.emptyData'),
             }
             this.marketPerformance = [
-                {title: '交易总量', num: '暂无数据'},
-                {title: '用户总数', num: '暂无数据'},
-                {title: '合约总数', num: '暂无数据'},
+                {title: this.$t('el.projectRinking.txSumNum'), num: this.$t('el.emptyData'),},
+                {title: this.$t('el.projectRinking.userSumNum'), num: this.$t('el.emptyData'),},
+                {title: this.$t('el.projectRinking.contractSumNum'), num: this.$t('el.emptyData'),},
             ]
-            this.staticPieData = []
+            this.staticPieData = [
+                { key:'jtjc-staticDetection',        item: '静态检测', a: 70, },
+                { key:'jyaq-txSecurity',             item: '交易安全', a: 60 },
+                { key:'jywd-txStability',            item: '交易稳定', a: 50 },
+                { key:'yqaq-safetyPublicOptionClass',item: '安全舆情', a: 50 },
+            ]
             this.mpTxNum = []
             this.mpNewUserNum = []
         },
@@ -356,16 +362,16 @@ export default {
             this.getOutLineData(this.projectInfo)
             // 项目检测评分雷达图
             this.staticPieData = [
-                {item: '静态检测', a: this.projectInfo.static_testing.score},
-                {item: '交易安全', a: this.projectInfo.tx_safety.score},
-                {item: '交易稳定', a: this.projectInfo.tx_stability.score},
-                {item: '安全舆情', a: this.projectInfo.safety_opinion.score},
+                {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: this.projectInfo.static_testing.score},
+                {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: this.projectInfo.tx_safety.score},
+                {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: this.projectInfo.tx_stability.score},
+                {key:'yqaq-safetyPublicOptionClass',item: this.$t('el.systemConfigScore.safetyPublicOptionClass'), a: this.projectInfo.safety_opinion.score},
             ]
             // 市场表现数据
             this.marketPerformance = [
-                {title: '交易总量', num: data.market_performance.tx_total},
-                {title: '用户总数', num: data.market_performance.user_total},
-                {title: '合约总数', num: data.market_performance.contract_total},
+                {title: this.$t('el.projectRinking.txSumNum'), num: data.market_performance.tx_total},
+                {title: this.$t('el.projectRinking.userSumNum'), num: data.market_performance.user_total},
+                {title: this.$t('el.projectRinking.contractSumNum'), num: data.market_performance.contract_total},
             ]
             // 市场表现图表数据
             this.mpTxNum = data.market_performance.tx_amounts
@@ -420,12 +426,31 @@ export default {
 
             function limitInShape(items, labels, shapes, region) {
                 labels.forEach((labelGroup, index) => {
+                    console.log(labelGroup)
+                    console.log(labelCache[index].point.y)
                     const labelBBox = labelGroup.getCanvasBBox()
+                    console.log(labelBBox.height)
                     labelGroup.cfg.children[0].cfg.visible = false
+                    let offsetX = labelCache[index].point.x
+                    let offsetY = labelCache[index].point.y
+                    if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
+                        offsetX = offsetX + labelBBox.width/2 + 15
+                        offsetY = offsetY + labelGroup.cfg.children[0].cfg.attrs.y - labelBBox.height * 2
+                    }
+                    if(labelGroup.cfg.data.key === 'jywd-txStability'){
+                        offsetX = offsetX + labelBBox.width/2 + 15
+                        offsetY = offsetY - labelGroup.cfg.children[0].cfg.attrs.y //+ labelBBox.height * 2
+                    }
+                    if(labelGroup.cfg.data.key === 'jyaq-txSecurity'){
+
+                    }
+                    if(labelGroup.cfg.data.key === 'yqaq-safetyPublicOptionClass'){
+
+                    }
                     labelGroup.addShape('text', {
                         attrs: {
-                            x: labelCache[index].point.x + labelBBox.width + 5,
-                            y: labelCache[index].point.y + labelBBox.height / 2,
+                            x: offsetX,
+                            y: offsetY,
                             text: items[index].data.score,
                             textBaseline: 'middle',
                             fill: '#1890FF',

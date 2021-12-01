@@ -22,7 +22,7 @@
             <div class="search-area search-area-input">
                 <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getList()">{{ $t('el.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getList('reset')">{{ $t('el.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -244,9 +244,17 @@ export default {
         /**
          * 获取表格数据
          */
-        getList() {
+        getList(type) {
             const _this = this
             _this.loading = true
+            if(type === 'reset'){
+                this.pageParams = {
+                    currentPage: 1,
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                }
+            }
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,

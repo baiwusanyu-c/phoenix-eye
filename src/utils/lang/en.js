@@ -213,6 +213,10 @@ export const el = {
         hCRanking:'排名',
         hCAddr:'地址',
         hCCallNum:'调用次数',
+        allProJ:'全部项目',
+        txSumNum:'交易总量',
+        userSumNum:'用户总数',
+        contractSumNum:'合约总数',
         marketPerformance:{
             headerTitle:'市场表现',
             tradeVolume:'总交易量:',

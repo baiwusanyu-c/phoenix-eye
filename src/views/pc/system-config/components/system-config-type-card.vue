@@ -69,7 +69,7 @@ export default {
 <style  lang="scss">
 .system-config-type-card{
     background-color: $mainColor7;
-    width: 400px;
+    width: 398px;
     height: 310px;
     margin: 6px 8px;
     box-shadow: 0 1px 4px 0 $mainColor8;
