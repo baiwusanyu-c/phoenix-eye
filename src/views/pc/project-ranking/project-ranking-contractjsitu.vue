@@ -9,25 +9,28 @@
         <!--态势概要-->
         <div class="contractjsitu-item" style="margin-bottom: 20px">
             <div class="item-res">
-             合约：{{resData.addr}}
-              <div class="platform-logo" style="margin-left: 15px;">
-                  <img :src="logoType(resData.platform)"/>
-                  {{resData.platform && resData.platform.toUpperCase()}}
-              </div>
+                {{ $t('el.projectRinking.contract') }}：{{ resData.contract_address || $t('el.emptyData') }}
+                <div class="platform-logo" style="margin-left: 15px;" v-if="resData.platform">
+                    <img :src="logoType(resData.platform)"/>
+                    {{ resData.platform && resData.platform.toUpperCase() }}
+                </div>
             </div>
             <div class="item-res-tag">
-                <div class="platform-logo" v-for="(item) in resData.tagList" :key="item">
-                    {{item}}
+                <div class="platform-logo" v-for="(item) in resData.label" :key="item">
+                    {{ item }}
                 </div>
             </div>
             <div class="contractjsitu-item-outline">
-               <project-ranking-score-card title="安全评估 value" :label-config="aqpgConfig" :data="aqpgData"></project-ranking-score-card>
-               <project-ranking-score-card title="合约概况" :label-config="hyGkConfig" :data="hyGkData"></project-ranking-score-card>
-               <project-ranking-score-card title="合约余额" :label-config="hyYeConfig" :data="hyYeData"></project-ranking-score-card>
+                <project-ranking-score-card title="安全评估 value" :label-config="aqpgConfig"
+                                            :data="aqpgData"></project-ranking-score-card>
+                <project-ranking-score-card title="合约概况" :label-config="hyGkConfig"
+                                            :data="hyGkData"></project-ranking-score-card>
+                <project-ranking-score-card title="合约余额" :label-config="hyYeConfig"
+                                            :data="hyYeData"></project-ranking-score-card>
             </div>
         </div>
         <!--静态检测-->
-<!--        <div class="contractjsitu-item">
+        <!--        <div class="contractjsitu-item">
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.staticDetection') }} value</h2>
             </div>
@@ -42,18 +45,18 @@
         <!--交易安全-->
         <div class="contractjsitu-item">
             <div class="item-title">
-                <h2>{{ $t('el.projectRinking.txSecurity') }} value</h2>
+                <h2>{{ $t('el.projectRinking.txSecurity') }}</h2>
             </div>
             <div class="contractjsitu-item-tx-secur">
                 <el-table
                     tooltip-effect="light"
                     :data="tableDataTxSecur"
-                    v-loading="loading"
+                    v-loading="loadingTxS"
                     ref="riskWarningList">
                     <div slot="empty"
-                         class = 'empty-table'>
+                         class='empty-table'>
                         <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
-                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                        <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
                     </div>
                     <el-table-column
                         prop="tx_hash"
@@ -73,8 +76,8 @@
                         align="center">
                         <template slot-scope="scope">
                             <el-tooltip placement="top" effect="light">
-                                <span slot="content">UTC：{{beijing2utc(scope.row.tx_time)}}</span>
-                                <span class="cursor">{{formatDate($createDate(scope.row.tx_time))}}</span>
+                                <span slot="content">UTC：{{ beijing2utc(scope.row.tx_time) }}</span>
+                                <span class="cursor">{{ formatDate($createDate(scope.row.tx_time)) }}</span>
                             </el-tooltip>
                         </template>
                     </el-table-column>
@@ -85,7 +88,7 @@
                         align="center">
                         <template slot-scope="scope">
                         <span :style="stateSuccess(scope.row.tx_status)">
-                            {{stateTxt(scope.row.tx_status)}}
+                            {{ stateTxt(scope.row.tx_status) }}
                         </span>
                         </template>
                     </el-table-column>
@@ -100,21 +103,23 @@
                                               fontLength="8"
                                               endLength="8">
                             </be-ellipsis-copy>
-                            <span style="color: #1496F2" v-if="scope.row.from_address_tag">{{scope.row.from_tag}}</span>
+                            <span style="color: #1496F2"
+                                  v-if="scope.row.from_address_tag">{{ scope.row.from_tag }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="to_address"
                         width="170"
                         :label="$t('el.riskConfig.tableHeader.to')"
-                        align="center" >
+                        align="center">
                         <template slot-scope="scope">
                             <be-ellipsis-copy :targetStr="scope.row.to_address"
                                               v-if="!scope.row.to_address_tag"
                                               fontLength="8"
                                               endLength="8">
                             </be-ellipsis-copy>
-                            <span style="color: #1496F2" v-if="scope.row.to_address_tag">{{scope.row.to_address_tag}}</span>
+                            <span style="color: #1496F2"
+                                  v-if="scope.row.to_address_tag">{{ scope.row.to_address_tag }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -122,13 +127,17 @@
                         :label="$t('el.riskConfig.features')"
                         align="center">
                         <template slot-scope="scope">
-                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center"
-                                 v-if="scope.row.risk_features && scope.row.risk_features.length > 0 ">
+                            <div
+                                style="display: flex;flex-direction: column;justify-content: center;align-items: center"
+                                v-if="scope.row.risk_features && scope.row.risk_features.length > 0 ">
                                 <el-tag v-for="item in scope.row.risk_features"
                                         style="margin-top: 10px;width: min-content;"
-                                        :key="item">{{item}}</el-tag>
+                                        :key="item">{{ item }}
+                                </el-tag>
                             </div>
-                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>暂无</div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center"
+                                v-else>{{ $t('el.emptyData') }}
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -137,7 +146,7 @@
                         align="center"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
-                            <span style="font-weight: bold">{{scope.row.risk_score || '暂无'}}</span>
+                            <span style="font-weight: bold">{{ scope.row.risk_score || $t('el.emptyData') }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -157,7 +166,7 @@
                     :total='pageParams.total'
                     @updatePage="pageChange"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">共计{{pageParams.total}}条</span>
+                    <span slot="prev" class="table-page-info">共计{{ pageParams.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
             </div>
@@ -165,27 +174,27 @@
         <!--交易稳定-->
         <div class="contractjsitu-item">
             <div class="item-title">
-                <h2>{{ $t('el.projectRinking.txStability') }} value</h2>
+                <h2>{{ $t('el.projectRinking.txStability') }}</h2>
             </div>
             <div class="contractjsitu-item-tx-stable">
-              <project-ranking-trade-stability></project-ranking-trade-stability>
+                <project-ranking-trade-stability></project-ranking-trade-stability>
             </div>
         </div>
         <!--高频调用-->
         <div class="contractjsitu-item">
             <div class="item-title">
-                <h2>{{ $t('el.projectRinking.highCall') }} value</h2>
+                <h2>{{ $t('el.projectRinking.highCall') }}</h2>
             </div>
             <div class="contractjsitu-item-high-call">
                 <el-table
                     tooltip-effect="light"
-                    :data="tableData"
-                    v-loading="loading"
+                    :data="tableDataHC"
+                    v-loading="loadingHC"
                     ref="riskWarningList">
                     <div slot="empty"
-                         class = 'empty-table'>
+                         class='empty-table'>
                         <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
-                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                        <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
                     </div>
                     <el-table-column
                         prop="no"
@@ -193,15 +202,15 @@
                         width="80"
                         align="center">
                         <template slot-scope="scope">
-                            {{scope.row.no}}
+                            {{ scope.row.no }}
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="addr"
+                        prop="from_address"
                         :label="$t('el.projectRinking.hCAddr')"
                         align="center">
                         <template slot-scope="scope">
-                            <be-ellipsis-copy :targetStr="scope.row.addr"
+                            <be-ellipsis-copy :targetStr="scope.row.from_address"
                                               fontLength="8"
                                               :is-ellipsis="false"
                                               endLength="8">
@@ -209,11 +218,11 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="num"
+                        prop="call_num"
                         :label="$t('el.projectRinking.hCCallNum')"
                         align="center">
                         <template slot-scope="scope">
-                            {{scope.row.num}}
+                            {{ scope.row.call_num }}
                         </template>
                     </el-table-column>
                 </el-table>
@@ -226,104 +235,118 @@
 import ProjectRankingScoreCard from "./components/project-ranking-score-card";
 import ProjectRankingTradeStability from "./components/project-ranking-trade-stability";
 import BePagination from "../../../components/common-components/pagination/be-pagination";
-import { Chart } from '@antv/g2';
+import {Chart} from '@antv/g2';
+
 export default {
     name: "project-ranking-contractjsitu",
     components: {BePagination, ProjectRankingTradeStability, ProjectRankingScoreCard},
     data() {
         return {
-            loading:false,
-            resData:{
-                addr:'0x9b3dedee4534fee9dbecd6238df2c6a77804f331',
-                platform:'bsc',
-                tagList:['PancakeSwap','lable1','lable2','lable3']
+            loading: false,
+            // 合约基本信息
+            resData: {
+                contract_address: '',
+                platform: '',
+                label: []
             },
             // 合约余额配置
-            hyYeConfig:[
-                {label:'BNB',val:'tx_num'},
-                {label:'代币1',val:'call_num'},
-                {label:'代币2',val:'time'},
+            hyYeConfig: [
+                {label: 'BNB', val: 'tx_num'},
+                {label: '代币1', val: 'call_num'},
+                {label: '代币2', val: 'time'},
             ],
             // 合约概况配置
-            hyGkConfig:[
-                {label:'总交易数',val:'tx_num'},
-                {label:'总调用数',val:'call_num'},
-                {label:'创建时间',val:'time'},
+            hyGkConfig: [
+                {label: '总交易数', val: 'tx_num'},
+                {label: '总调用数', val: 'call_num'},
+                {label: '创建时间', val: 'time'},
             ],
             // 安全评估配置
-            aqpgConfig:[
-                {label:'静态检测',val:'tx_num'},
-                {label:'交易安全',val:'call_num'},
-                {label:'交易稳定',val:'time'},
+            aqpgConfig: [
+                {label: '静态检测', val: 'tx_num'},
+                {label: '交易安全', val: 'call_num'},
+                {label: '交易稳定', val: 'time'},
             ],
             // 合约余额数据
-            hyYeData:{
-                'tx_num':'123456',
-                'call_num':'12345',
-                'time':'2011.11.11.12:30'
+            hyYeData: {
+                'tx_num': '123456',
+                'call_num': '12345',
+                'time': '2011.11.11.12:30'
             },
             // 合约概况数据
-            hyGkData:{
-                'tx_num':'123456',
-                'call_num':'12345',
-                'time':'2011.11.11.12:30'
+            hyGkData: {
+                'tx_num': '123456',
+                'call_num': '12345',
+                'time': '2011.11.11.12:30'
             },
             // 安全评估数据
-            aqpgData:{
-                'tx_num':'123456',
-                'call_num':'冲冲冲',
-                'time':'2011.11.11.12:30'
+            aqpgData: {
+                'tx_num': '123456',
+                'call_num': '冲冲冲',
+                'time': '2011.11.11.12:30'
             },
             // 幣種字典
-            imgCodeDict:{
+            imgCodeDict: {
                 bsc: require('@/assets/image/pc/bsc.png'),
                 heco: require('@/assets/image/pc/heco.png'),
                 eth: require('@/assets/image/pc/eth.png'),
                 polygon: require('@/assets/image/pc/heco.png'),
             },
-            // 表格數據
-            tableData:[],
+
+            // 饼图数据
+            pieData: [
+                {item: '低危', count: 40, percent: 0.4},
+                {item: '中危', count: 21, percent: 0.21},
+                {item: '高危', count: 17, percent: 0.17},
+            ],
+            // 条形图
+            barData: [
+                {type: '代码规范', value: 34},
+                {type: '函数调用', value: 85},
+                {type: '业务逻辑', value: 103},
+                {type: '溢出检测', value: 142},
+                {type: '异常可达状态', value: 251},
+                {type: 'ERC20规范', value: 367},
+            ],
+            // 饼图数据
+            pieColor: {
+                '低危': '#5D7092',
+                '中危': '#F6BD16',
+                '高危': '#E8684A',
+            },
+
+
+            // 合约地址id
+            contractAddressId: '',
             // 交易安全表格数据
-            tableDataTxSecur:[],
-            // 分页参数
-            pageParams:{
+            tableDataTxSecur: [],
+            // 交易安全表格loading
+            loadingTxS:false,
+            // 交易安全表格分页参数
+            pageParams: {
                 currentPage: 1,
                 pageNum: 1,
                 pageSize: 5,
                 total: 0
             },
-            // 饼图数据
-            pieData:[
-                { item: '低危', count: 40, percent: 0.4 },
-                { item: '中危', count: 21, percent: 0.21 },
-                { item: '高危', count: 17, percent: 0.17 },
-            ],
-            // 条形图
-            barData:[
-                { type: '代码规范', value: 34 },
-                { type: '函数调用', value: 85 },
-                { type: '业务逻辑', value: 103 },
-                { type: '溢出检测', value: 142 },
-                { type: '异常可达状态', value: 251 },
-                { type: 'ERC20规范', value: 367 },
-            ],
-            // 饼图数据
-            pieColor: {
-                '低危':'#5D7092',
-                '中危':'#F6BD16',
-                '高危':'#E8684A',
-            }
+            // 高频调用表格数据
+            tableDataHC:[],
+            // 高频调用loading
+            loadingHC:false,
+
         }
     },
-    computed:{
-        logoType(){
-            return function (platform){
+    computed: {
+        logoType() {
+            return function (platform) {
                 return this.imgCodeDict[platform]
             }
 
         }
     },
     mounted() {
+        this.contractAddressId = this.$route.query.param || this.$route.query.contract_address_id
+        this.getContractSituData()
         // this.$nextTick(()=>{
         //     this.renderStaticPie()
         //     this.renderStaticBar()
@@ -334,7 +357,7 @@ export default {
          * 分页方法
          * @param {Object} item - 分页参数对象
          */
-        pageChange(item){
+        pageChange(item) {
             this.pageParams.pageNum = item.currentPage
             this.pageParams.currentPage = item.currentPage
 
@@ -342,19 +365,19 @@ export default {
         /**
          * 打開交易分析詳情tab
          */
-        openDetail(params){
+        openDetail(params) {
             this.$openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`, 'view_window')
         },
         /**
          * 跳轉到第三方頁面
          */
-        openWeb(){
+        openWeb() {
 
         },
         /**
          * 渲染静态检测饼图
          */
-        renderStaticPie(){
+        renderStaticPie() {
             const chart = new Chart({
                 container: 'static_pie',
                 autoFit: true,
@@ -378,7 +401,7 @@ export default {
             chart
                 .interval()
                 .position('percent')
-                .color('item',(item)=>{
+                .color('item', (item) => {
                     return this.pieColor[item]
                 })
                 .label('percent', {
@@ -395,7 +418,7 @@ export default {
         /**
          * 渲染静态检测条形图
          */
-        renderStaticBar(){
+        renderStaticBar() {
             const chart = new Chart({
                 container: 'static_bar',
                 autoFit: true,
@@ -440,6 +463,56 @@ export default {
             chart.interaction('element-active');
             chart.render();
         },
+        /**
+         * 数据重置
+         */
+        resetData() {
+            this.resData = {
+                contract_address: '',
+                platform: '',
+                label: []
+            }
+
+            this.tableDataHC = []
+            this.loadingHC = false
+        },
+        /**
+         * 获取合约态势详情数据
+         */
+        async getContractSituData() {
+            this.loadingHC = true
+            // 这是在上级路由存储的数据
+            const data = JSON.parse(this.getStore('ContractProjectTs'))
+            if (!data) {
+                this.resetData()
+                return
+            }
+            // 合约基本信息数据
+            this.resData = data.contract_info
+          /*  // 合约余额配置
+            this.hyYeConfig = [
+                {label: 'BNB', val: 'tx_num'},
+                {label: '代币1', val: 'call_num'},
+                {label: '代币2', val: 'time'},
+            ]
+            // 合约概况配置
+            this.hyGkConfig = [
+                {label: '总交易数', val: 'tx_num'},
+                {label: '总调用数', val: 'call_num'},
+                {label: '创建时间', val: 'time'},
+            ]
+            // 安全评估配置
+            this.aqpgConfig = [
+                {label: '静态检测', val: 'tx_num'},
+                {label: '交易安全', val: 'call_num'},
+                {label: '交易稳定', val: 'time'},
+            ]*/
+
+            // 交易安全
+
+            // 高频调用数据
+            this.tableDataHC = data.high_call
+        },
     },
 }
 </script>
@@ -451,48 +524,55 @@ export default {
             display: flex;
             align-items: center;
             margin-bottom: 16px;
+
             h2 {
-                font-family: PingFangSC-Medium, PingFang SC,sans-serif;
+                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
                 color: $textColor3;
                 margin-right: 15px;
             }
 
             span {
-                font-family: PingFangSC-Medium, PingFang SC,sans-serif;
+                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
                 color: $textColor4;
             }
         }
-        .item-res{
+
+        .item-res {
             display: flex;
             align-items: center;
-            font-family: PingFangSC-Medium, PingFang SC,sans-serif;
+            font-family: PingFangSC-Medium, PingFang SC, sans-serif;
             font-size: 20px;
         }
-        .item-res-tag{
+
+        .item-res-tag {
             display: flex;
             align-items: center;
             margin-top: 15px;
         }
-        .platform-logo{
+
+        .platform-logo {
             height: 20px;
             background: $mainColor7;
             line-height: 20px;
             padding: 5px;
-            border:1px solid rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.15);
             font-size: 16px;
             margin-right: 15px;
-            font-family: PingFangSC-Medium, PingFang SC,sans-serif;
-            img{
+            font-family: PingFangSC-Medium, PingFang SC, sans-serif;
+
+            img {
                 height: 15px;
                 width: 15px;
             }
         }
-        .contractjsitu-item-outline{
+
+        .contractjsitu-item-outline {
             display: flex;
             margin-top: 15px;
             justify-content: space-between;
         }
-        .contractjsitu-item-static{
+
+        .contractjsitu-item-static {
             display: flex;
             width: 100%;
             flex-direction: column;
@@ -501,44 +581,54 @@ export default {
             box-sizing: border-box;
             min-height: 300px;
             margin-bottom: 24px;
-            .static-pie{
+
+            .static-pie {
                 flex: 1;
             }
-            .static-bar{
+
+            .static-bar {
                 flex: 1;
             }
-            p{
+
+            p {
                 cursor: pointer;
                 text-align: right;
                 color: $mainColor15;
             }
         }
+
         .contractjsitu-item-tx-secur {
             display: flex;
             justify-content: space-between;
             flex-direction: column;
             margin-bottom: 24px;
             flex-wrap: wrap;
-            .el-table thead{
+
+            .el-table thead {
                 line-height: 34px;
             }
         }
-        .contractjsitu-item-high-call{
+
+        .contractjsitu-item-high-call {
             padding-bottom: 15px;
             box-sizing: border-box;
-            .el-table thead{
+
+            .el-table thead {
                 line-height: 34px;
             }
         }
-        .contractjsitu-item-tx-stable{
+
+        .contractjsitu-item-tx-stable {
             display: flex;
             justify-content: space-between;
             margin-bottom: 24px;
         }
+
         .table-page {
             display: flex;
             justify-content: flex-end;
             align-items: center;
+
             .table-page-info {
                 font-size: 14px;
                 margin-top: 20px;

@@ -7,7 +7,7 @@
 <template>
     <div class="pagination-wrap" :class="customClass">
         <slot name="prev">
-            <span class="pagesize-readonly" v-if="isShowTotalPages">共计{{totals || 0}}条</span>
+            <span class="pagesize-readonly" v-if="isShowgetListPages">共计{{totals || 0}}条</span>
         </slot>
         <el-pagination
                 @prev-click="prePage"

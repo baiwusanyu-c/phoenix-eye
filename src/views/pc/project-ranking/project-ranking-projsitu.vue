@@ -246,7 +246,7 @@ export default {
                             label: val.tag,
                         })
                     })
-                    _this.pageParamsFs.total = res.data.page_total
+                    _this.pageParamsFs.total = res.data.total
                     _this.loadingFs = false
                 }
             }).catch(err => {
@@ -277,7 +277,7 @@ export default {
             getContractSecurity(params).then(res => {
                 if (res) {
                     _this.contractSecurity = res.data.page_infos
-                    _this.pageParamsCs.total = res.data.page_total
+                    _this.pageParamsCs.total = res.data.total
                     _this.loadingCs = false
                 }
             }).catch(err => {

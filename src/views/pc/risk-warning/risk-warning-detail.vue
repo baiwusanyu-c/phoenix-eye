@@ -47,70 +47,103 @@
         <div class="detail-profit">
             <h3>{{ $t('el.riskConfig.profit') }}</h3>
             <div class="detail-profit-body" v-if="profitData.length > 0">
-                <div v-for="(item) in profitData" :key="item.address" class="detail-profit-container">
-                    <div class="detail-profit-grid">
-                        <be-svg-icon disabled-tool-tip icon-class="files"></be-svg-icon>
-                        <be-ellipsis-copy :targetStr="item.address_tag"
-                                          styles="font-weight: bold;color:#409EFF"
-                                          :tooltip-txt="item.address"
-                                          :isEllipsis="false"
-                                          v-if="item.address_tag">
-                        </be-ellipsis-copy>
-                        <be-ellipsis-copy :targetStr="item.address"
-                                          v-if="!item.address_tag"
-                                          styles="font-weight: bold;"
-                                          fontLength="8"
-                                          endLength="8">
-                        </be-ellipsis-copy>
+                <el-table
+                    tooltip-effect="light"
+                    :data="profitData"
+                    v-loading="loading">
+                    <div slot="empty"
+                         class = 'empty-table'>
+                        <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
+                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
                     </div>
-                    <div class="detail-profit-grid" style="width: 30px">
-                            <be-svg-icon v-if="item.profit > 0"  disabled-tool-tip icon-class="-arrow-up"></be-svg-icon>
-                            <be-svg-icon v-if="item.profit < 0" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
-                    </div>
-                    <div class="detail-profit-grid detail-profit-val">
-                            <span  style="font-weight: bold;">{{handleProfit(item.profit)}}</span>
-                    </div>
-                    <div class="profit-grid-list">
-                        <div class="profit-grid-list-addr">
-                            <ul>
-                                <li v-for="(addrItem) in item.addrList" :key="addrItem.itemId">
-                                    <be-ellipsis-copy :targetStr="addrItem.val"
-                                                      :is-ellipsis="isEllipsis"
-                                                      :is-tooltip="isEllipsis"
-                                                      v-if="!addrItem.tag"
-                                                      :fontLength="ellipsis"
-                                                      :endLength="ellipsis">
-                                    </be-ellipsis-copy>
-                                    <be-ellipsis-copy :targetStr="addrItem.tag"
-                                                      styles="font-weight: bold;color:#409EFF"
-                                                      :tooltip-txt="addrItem.val"
-                                                      :isEllipsis="false"
-                                                      v-if="addrItem.tag">
-                                    </be-ellipsis-copy>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <ul>
-                                <li v-for="(valueItem) in item.valueList" :key="valueItem.itemId">
-                                    {{valueItem.val}}
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <ul>
-                                <li v-for="(dollarItem) in item.dollarList" :key="dollarItem.itemId">
-                                    {{dollarItem.val}}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div v-if="profitData.length === 0"
-                 class = 'empty-data'>
-                <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
-                <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                    <el-table-column
+                        prop="platform"
+                        width="280"
+                        :label="$t('el.riskConfig.profitTableHeader.addr')"
+                        align="center">
+                        <template slot-scope="scope">
+                            <div style="display: flex;justify-content: center;align-items: center;">
+                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"></be-svg-icon>
+                                <be-ellipsis-copy :targetStr="scope.row.address_tag"
+                                                  styles="font-weight: bold;color:#409EFF"
+                                                  :tooltip-txt="scope.row.address"
+                                                  :isEllipsis="false"
+                                                  v-if="scope.row.address_tag">
+                                </be-ellipsis-copy>
+                                <be-ellipsis-copy :targetStr="scope.row.address"
+                                                  v-if="!scope.row.address_tag"
+                                                  styles="font-weight: bold;"
+                                                  fontLength="8"
+                                                  endLength="8">
+                                </be-ellipsis-copy>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="tx_hash"
+                        :label="$t('')"
+                        width="40"
+                        align="right">
+                        <template slot-scope="scope">
+                            <div style="display: flex;justify-content: center;align-items: center;">
+                                <be-svg-icon v-if="scope.row.profit > 0"  disabled-tool-tip icon-class="-arrow-up"></be-svg-icon>
+                                <be-svg-icon v-if="scope.row.profit < 0" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="tx_hash"
+                        :label="$t('el.riskConfig.profitTableHeader.profitSum')"
+                        align="left">
+                        <template slot-scope="scope">
+                            {{scope.row.profit}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="addrList"
+                        :label="$t('el.riskConfig.profitTableHeader.tokenName')"
+                        width="400"
+                        align="center">
+                        <template slot-scope="scope">
+                            <div  v-if="scope.row.addrList && scope.row.addrList.length > 0 ">
+                                <p v-for="item in scope.row.addrList"
+                                        style="margin-top: 10px;"
+                                        :key="item.itemId">{{item.val}}</p>
+                            </div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                                {{ $t('el.emptyData') }}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="valueList"
+                        :label="$t('el.riskConfig.profitTableHeader.tokenNum')"
+                        align="left">
+                        <template slot-scope="scope">
+                            <div  v-if="scope.row.valueList && scope.row.valueList.length > 0 ">
+                                <p v-for="item in scope.row.valueList"
+                                      style="margin-top: 10px;"
+                                      :key="item.itemId">{{item.val}}</p>
+                            </div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                                {{ $t('el.emptyData') }}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="dollarList"
+                        :label="$t('el.riskConfig.profitTableHeader.tokenVal')"
+                        align="left">
+                        <template slot-scope="scope">
+                            <div  v-if="scope.row.dollarList && scope.row.dollarList.length > 0 ">
+                                <p v-for="item in scope.row.dollarList"
+                                      style="margin-top: 10px;font-weight: bold"
+                                      :key="item.itemId">{{item.val}}</p>
+                            </div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                                {{ $t('el.emptyData') }}</div>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
             </div>
         </div>
     </div>
@@ -191,7 +224,7 @@ export default {
                     val.valueList = []
                     val.token_profits.forEach(res=>{
                         res.itemId = this.$getUuid
-                        val.addrList.push({val:res.contract_address,itemId:'token_name'+_this.$getUuid(),tag:res.contract_address_tag})
+                        val.addrList.push({val:res.contract_address_token_name,itemId:'token_name'+_this.$getUuid(),tag:res.contract_address_tag})
                         val.valueList.push({val:res.token_profit_no_dollar,itemId:'token_profit_no_dollar'+_this.$getUuid()})
                         val.dollarList.push({val:res.token_profit_dollar,itemId:'token_profit_dollar'+_this.$getUuid()})
                     })
@@ -254,56 +287,33 @@ export default {
         padding: 20px;
         background: $mainColor7;
         min-height: 69.5%;
+        .detail-profit-head{
+            height: 48px;
+            display: flex;
+            align-items: center;
+            span{
+                text-align: center;
+                font-weight: bold;
+            }
+            span:nth-child(1){
+                width: 21%;
+            }
+            span:nth-child(2){
+                width: 18%;
+                text-align: left;
+            }
+            span:nth-child(3){
+                width: 30%;
+                text-align: center;
+            }
+            span:nth-child(4){
+                width: 18%;
+                text-align: center;
+            }
+        }
         .detail-profit-body{
             margin-top: 20px;
             height: calc(100% - 40px);
-            .detail-profit-container{
-                display: flex;
-                align-items: center;
-                flex-direction: row;
-                min-height: 50px;
-                margin-top: 5px;
-                border-radius: 2px;
-                .ellipsis-copy{
-                 width: auto;
-                    margin-left: 24px;
-                }
-                .detail-profit-grid{
-                    display: flex;
-                    align-items: center;
-                    flex-direction: row;
-                    justify-content: center;
-                    width: 20%;
-                }
-                .detail-profit-val{
-                    justify-content: flex-start;
-                }
-                .profit-grid-list{
-                    display: flex;
-                    align-items: center;
-                    flex-direction: row;
-                    justify-content: flex-start;
-                    width: 50%;
-                    .profit-grid-list-addr{
-                        width: 60%;
-                        color: $textColor4;
-                        text-align: right;
-                    }
-                    div:nth-child(2){
-                        width: 30%;
-                        color: $textColor4;
-                        text-align: right;
-                    }
-                    div:nth-child(3){
-                        width: 30%;
-                        font-weight: bold;
-                        text-align: right;
-                    }
-                    li{
-                        margin: 10px 0;
-                    }
-                }
-            }
 
         }
     }
@@ -334,22 +344,6 @@ export default {
             }
             .detail-profit-body{
                 font-size: 12px;
-                .detail-profit-container{
-                    .profit-grid-list{
-                        width: 50%;
-                        .profit-grid-list-addr{
-                            width: 60%;
-
-                        }
-                        div:nth-child(2){
-                            width: 30%;
-
-                        }
-                        div:nth-child(3){
-                            width: 30%;
-                        }
-                    }
-                }
             }
         }
     }
