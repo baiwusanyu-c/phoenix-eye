@@ -28,11 +28,11 @@
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('el.riskConfig.tableHeader.from') }}：</span>
-                    {{ baseInfo.from_address }}
+                    {{ baseInfo.from_address_tag ? baseInfo.from_address_tag :  baseInfo.from_address}}
                 </div>
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('el.riskConfig.tableHeader.to') }}：</span>
-                    {{ baseInfo.to_address }}
+                    {{ baseInfo.to_address_tag ? baseInfo.to_address_tag :  baseInfo.to_address}}
                 </div>
             </div>
             <div class="detail-item">

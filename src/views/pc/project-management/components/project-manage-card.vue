@@ -10,7 +10,12 @@
         <div v-if="type === 'edit'" :class="`card-title card-title-${isPublic ? 'public' : 'private'}`">
             <div style="display: flex;align-items: center;">
                 <h3>
-                    {{ title }}
+                    <be-ellipsis-copy :targetStr="title"
+                                      :isShowCopyBtn="false"
+                                      :isEllipsis="title.length > 12"
+                                      fontLength="5"
+                                      endLength="5">
+                    </be-ellipsis-copy>
                 </h3>
                 <span class="card-title-public-txt">{{isPublic? $t('el.proManageConfig.proPublic') : $t('el.proManageConfig.proPrivate')}}</span>
             </div>
@@ -25,7 +30,7 @@
         </div>
         <!--   非新增时显示 卡片地址列表   -->
         <div v-if="type === 'edit'" class="card-edit">
-            <div>
+            <div style="width: 100%; display: flex; overflow-x: auto;height: 40px" class="scrollDiy">
                 <el-tag v-for="(item) in keywordList" :key="item + _uid">{{ item }}</el-tag>
             </div>
             <div class="card-edit-addr scrollDiy">
@@ -40,7 +45,12 @@
                     </li>
                 </ul>
             </div>
-            <p>{{ $t('el.proManageConfig.createTime') }} : {{ createTime }}</p>
+            <p>{{ $t('el.proManageConfig.createTime') }} :
+                <el-tooltip placement="top" effect="light">
+                    <span slot="content">UTC：{{beijing2utc(createTime)}}</span>
+                    <span class="cursor"> {{ formatDate($createDate(createTime),'Y-m-d H:i:s')}}</span>
+                </el-tooltip>
+            </p>
         </div>
         <!--    新增时显示   -->
         <div v-if="type === 'add'" class="card-add">
@@ -188,7 +198,7 @@ export default {
 
         .card-edit-addr {
             overflow-y: auto;
-            height: 180px;
+            height: 170px;
             margin: 10px 0;
 
             li {
