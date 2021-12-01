@@ -10,7 +10,7 @@
             <h3>
                 {{title}}
             </h3>
-            <div>
+            <div style="min-width: 68px">
                 <be-svg-icon @click = 'emitFunc("edit")' style="cursor: pointer" icon-class="-renwuguanli-xiugai" disabled-tool-tip></be-svg-icon>
                 <be-svg-icon @click = 'emitFunc("delete")' style="cursor: pointer" icon-class="-renwuguanli-shanchu" disabled-tool-tip></be-svg-icon>
             </div>
