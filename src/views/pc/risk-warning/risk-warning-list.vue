@@ -264,7 +264,7 @@ export default {
             getProjWarning(params).then(res=>{
                 if(res){
                     _this.tableData = res.data.page_infos
-                    _this.pageParams.total =  res.data.page_total
+                    _this.pageParams.total =  res.data.total
                     _this.loading = false
                 }
             }).catch(err=>{
