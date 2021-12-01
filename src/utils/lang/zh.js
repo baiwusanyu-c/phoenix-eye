@@ -24,6 +24,8 @@ export const el = {
     searchBtn:'搜 索',
     sevenD:'以上为近七日数据分析结果',
     detail:'查看详情',
+    total:'共计',
+    piece:'条',
     header:{
       me:'我',
       language:'语言',
@@ -225,6 +227,7 @@ export const el = {
         txSumNum:'交易总量',
         userSumNum:'用户总数',
         contractSumNum:'合约总数',
+        txFeatures:'交易特征',
         marketPerformance:{
             headerTitle:'市场表现',
             tradeVolume:'总交易量:',

@@ -73,7 +73,7 @@
                     :total='pageParamsCs.total'
                     @updatePage="pageChangeCs"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">共计{{ pageParamsCs.total }}条</span>
+                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{ pageParamsCs.total }}{{ $t('el.piece') }}</span>
                     <span slot="next"></span>
                 </be-pagination>
                 <div class='empty-data' v-if="contractSecurity.length === 0" style="margin-top: 0">
@@ -121,7 +121,7 @@
                     :total='pageParamsFs.total'
                     @updatePage="pageChangeFs"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">共计{{ pageParamsFs.total }}条</span>
+                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{ pageParamsFs.total }}{{ $t('el.piece') }}</span>
                     <span slot="next"></span>
                 </be-pagination>
                 <div class='empty-data' v-if="safetyData.length === 0" style="margin-top: 0">

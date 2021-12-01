@@ -95,7 +95,7 @@
                 :total='pageParams.total'
                 @updatePage="pageChange"
                 :is-front="false">
-                <span slot="prev" class="table-page-info">共计{{pageParams.total}}条</span>
+                <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{pageParams.total}}{{ $t('el.piece') }}</span>
                 <span slot="next"></span>
             </be-pagination>
         </div>

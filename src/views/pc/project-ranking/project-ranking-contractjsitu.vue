@@ -51,8 +51,7 @@
                 <el-table
                     tooltip-effect="light"
                     :data="tableDataTxSecur"
-                    v-loading="loadingTxS"
-                    ref="riskWarningList">
+                    v-loading="loadingTxS">
                     <div slot="empty"
                          class='empty-table'>
                         <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
@@ -124,7 +123,7 @@
                     </el-table-column>
                     <el-table-column
                         prop="risk_features"
-                        :label="$t('el.riskConfig.features')"
+                        :label="$t('el.projectRinking.txFeatures')"
                         align="center">
                         <template slot-scope="scope">
                             <div
@@ -166,7 +165,7 @@
                     :total='pageParams.total'
                     @updatePage="pageChange"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">共计{{ pageParams.total }}条</span>
+                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{ pageParams.total }}{{ $t('el.piece') }}</span>
                     <span slot="next"></span>
                 </be-pagination>
             </div>
@@ -208,7 +207,7 @@
                     <el-table-column
                         prop="from_address"
                         :label="$t('el.projectRinking.hCAddr')"
-                        align="center">
+                        align="left">
                         <template slot-scope="scope">
                             <be-ellipsis-copy :targetStr="scope.row.from_address"
                                               fontLength="8"
@@ -236,6 +235,7 @@ import ProjectRankingScoreCard from "./components/project-ranking-score-card";
 import ProjectRankingTradeStability from "./components/project-ranking-trade-stability";
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import {Chart} from '@antv/g2';
+import {getProjWarning} from "../../../api/risk-warning";
 
 export default {
     name: "project-ranking-contractjsitu",
@@ -354,22 +354,13 @@ export default {
     },
     methods: {
         /**
-         * 分页方法
-         * @param {Object} item - 分页参数对象
-         */
-        pageChange(item) {
-            this.pageParams.pageNum = item.currentPage
-            this.pageParams.currentPage = item.currentPage
-
-        },
-        /**
          * 打開交易分析詳情tab
          */
         openDetail(params) {
             this.$openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`, 'view_window')
         },
         /**
-         * 跳轉到第三方頁面
+         * 跳轉到頁面
          */
         openWeb() {
 
@@ -472,7 +463,13 @@ export default {
                 platform: '',
                 label: []
             }
-
+            this.tableDataTxSecur = []
+            this.pageParams = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
+                total: 0
+            }
             this.tableDataHC = []
             this.loadingHC = false
         },
@@ -509,9 +506,39 @@ export default {
             ]*/
 
             // 交易安全
-
+            await this.getTxSecurityData()
             // 高频调用数据
             this.tableDataHC = data.high_call
+        },
+        /**
+         * 获取交易安全数据
+         */
+        async getTxSecurityData(){
+            const _this = this
+            let params = {
+                page_num:this.pageParams.pageNum,
+                page_size:this.pageParams.pageSize,
+                platform:this.resData.platform,
+            }
+            getProjWarning(params).then(res=>{
+                if(res){
+                    _this.tableDataTxSecur = res.data.page_infos
+                    _this.pageParams.total =  res.data.total
+                    _this.loadingTxS = false
+                }
+            }).catch(err=>{
+                _this.$message.error(err.message)
+                console.error(err)
+            })
+        },
+        /**
+         * 分页方法
+         * @param {Object} item - 分页参数对象
+         */
+        pageChange(item) {
+            this.pageParams.pageNum = item.currentPage
+            this.pageParams.currentPage = item.currentPage
+            this.getTxSecurityData()
         },
     },
 }
