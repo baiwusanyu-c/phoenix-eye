@@ -2,6 +2,7 @@
     <div>
         <div class="createBox">
             <el-dialog
+                :close-on-click-modal="false"
                 class="createProjectBox"
                 :title="$t('el.addRiskWindow.addRiskWindowTitle')"
                 :visible.sync="addRiskWindowOpen"
