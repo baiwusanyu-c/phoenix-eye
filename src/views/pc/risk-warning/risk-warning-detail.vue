@@ -57,9 +57,9 @@
                     </div>
                     <el-table-column
                         prop="platform"
-                        width="280"
                         :label="$t('el.riskConfig.profitTableHeader.addr')"
-                        align="center">
+                        :width="addrCellWidth"
+                        align="left">
                         <template slot-scope="scope">
                             <div style="display: flex;justify-content: center;align-items: center;">
                                 <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"></be-svg-icon>
@@ -71,6 +71,7 @@
                                 </be-ellipsis-copy>
                                 <be-ellipsis-copy :targetStr="scope.row.address"
                                                   v-if="!scope.row.address_tag"
+                                                  :is-ellipsis="isEllipsis"
                                                   styles="font-weight: bold;"
                                                   fontLength="8"
                                                   endLength="8">
@@ -80,29 +81,25 @@
                     </el-table-column>
                     <el-table-column
                         prop="tx_hash"
-                        :label="$t('')"
-                        width="40"
+                        :label="$t('el.riskConfig.profitTableHeader.profitSum')"
                         align="right">
                         <template slot-scope="scope">
-                            <div style="display: flex;justify-content: center;align-items: center;">
-                                <be-svg-icon v-if="scope.row.profit > 0"  disabled-tool-tip icon-class="-arrow-up"></be-svg-icon>
-                                <be-svg-icon v-if="scope.row.profit < 0" disabled-tool-tip icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="tx_hash"
-                        :label="$t('el.riskConfig.profitTableHeader.profitSum')"
-                        align="left">
-                        <template slot-scope="scope">
-                            {{scope.row.profit}}
+                            ${{scope.row.profit}}
+                            <be-svg-icon v-if="scope.row.profit > 0" content="收益" icon-class="-arrow-up"></be-svg-icon>
+                            <be-svg-icon v-if="scope.row.profit < 0" content="亏损" icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
+                            <!-- 占位 -->
+                            <be-svg-icon v-if="scope.row.profit === 0" disabled-tool-tip icon-class="-arrow-down" style="visibility: hidden"></be-svg-icon>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="addrList"
                         :label="$t('el.riskConfig.profitTableHeader.tokenName')"
-                        width="400"
-                        align="center">
+                        align="right">
+                        <template slot="header">
+                            <div style="text-align: center;width: 100%">
+                               {{ $t('el.riskConfig.profitTableHeader.tokenName') }}
+                            </div>
+                        </template>
                         <template slot-scope="scope">
                             <div  v-if="scope.row.addrList && scope.row.addrList.length > 0 ">
                                 <p v-for="item in scope.row.addrList"
@@ -116,7 +113,7 @@
                     <el-table-column
                         prop="valueList"
                         :label="$t('el.riskConfig.profitTableHeader.tokenNum')"
-                        align="left">
+                        align="right">
                         <template slot-scope="scope">
                             <div  v-if="scope.row.valueList && scope.row.valueList.length > 0 ">
                                 <p v-for="item in scope.row.valueList"
@@ -130,7 +127,7 @@
                     <el-table-column
                         prop="dollarList"
                         :label="$t('el.riskConfig.profitTableHeader.tokenVal')"
-                        align="left">
+                        align="right">
                         <template slot-scope="scope">
                             <div  v-if="scope.row.dollarList && scope.row.dollarList.length > 0 ">
                                 <p v-for="item in scope.row.dollarList"
@@ -169,7 +166,9 @@ export default {
             // 缩略数量
             ellipsis:'8',
             // 链平台转化币种
-            platformToCurrencyInner:platformToCurrency
+            platformToCurrencyInner:platformToCurrency,
+            //
+            addrCellWidth:'430'
         }
     },
     mounted() {
@@ -201,6 +200,7 @@ export default {
             const width = window.screen.availWidth
             const height = window.screen.availHeight
             if(height <= 680 || width <=1280) {
+                this.addrCellWidth = '260'
                 this.isEllipsis = true
                 this.ellipsis = '12'
             }
