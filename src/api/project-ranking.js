@@ -2,30 +2,34 @@
 import request from '@/utils/request'
 import config from '@/config/index' // 路径配置
 // 获取项目排行列表
-export function getProjectRankList() {
+export function getProjectRankList(params) {
     return request({
         url: `${config.baseURL}/ussa/project/rank`,
-        method: 'get'
+        method: 'get',
+        params
     })
 }
 // 獲取合約態勢 或 项目态势 數據
-export function getContractProjectTs() {
+export function getContractProjectTs(params) {
     return request({
         url: `${config.baseURL}/ussa/project/search`,
-        method: 'post'
+        method: 'post',
+        params
     })
 }
 // 獲取合約安全数据
-export function getContractSecurity() {
+export function getContractSecurity(params) {
     return request({
         url: `${config.baseURL}/ussa/project/contract/safety/list`,
-        method: 'post'
+        method: 'post',
+        params
     })
 }
 // 獲取舆情安全数据
-export function getPublicSentimentSecurity() {
+export function getPublicSentimentSecurity(params) {
     return request({
         url: `${config.baseURL}/ussa/project/safety_opinion/list`,
-        method: 'post'
+        method: 'post',
+        params
     })
 }

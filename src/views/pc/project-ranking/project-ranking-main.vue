@@ -46,7 +46,7 @@
                     align="center">
                     <template slot-scope="scope">
                           <span style="color: #1496F2;cursor: pointer"
-                                @click="openDetail(scope.row.project_id)"> {{scope.row.name}}</span>
+                                @click="openDetailProject(scope.row.project_id)"> {{scope.row.name || $t('el.emptyData')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -55,7 +55,7 @@
                     :label="$t('el.projectRinking.contractNum')"
                     align="center">
                     <template slot-scope="scope">
-                        {{scope.row.contract_num}}
+                        {{scope.row.contract_num || $t('el.emptyData')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -64,7 +64,7 @@
                     :label="$t('el.projectRinking.score')"
                     align="center">
                     <template slot-scope="scope">
-                        {{scope.row.safety_score}}
+                        {{scope.row.safety_score || $t('el.emptyData')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -73,7 +73,7 @@
                     :label="$t('el.projectRinking.txScale')"
                     align="center" >
                     <template slot-scope="scope">
-                        {{scope.row.safety_score}}
+                        {{scope.row.safety_score || $t('el.emptyData')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -149,8 +149,6 @@ export default {
                 type:'search',
                 param:this.searchParams
             }
-            this.$router.push({path: `/projectRanking/contract`, query: params})
-            return
             // 从搜索框搜索，前端分不清是项目还是合约，放到param给后端判断
             this.searchDetail(params,'search',(type)=>{
                 this.$router.push({path: `/projectRanking/${type}`, query: params})
@@ -164,7 +162,9 @@ export default {
          */
         searchDetail(params,type,cb=()=>{}){
             const _this = this
-            getContractProjectTs(params).then(res=>{
+            let param = JSON.parse(JSON.stringify(params))
+            delete param.type
+            getContractProjectTs(param).then(res=>{
                 if(res){
                     // 存储数据
                     _this.setStore('ContractProjectTs',JSON.stringify(res.data))
@@ -195,7 +195,7 @@ export default {
             }
             getProjectRankList(params).then(res=>{
                 if(res){
-                    _this.tableData = res.data.page_infos
+                    _this.tableData = res.data.page_info
                     _this.pageParams.total =  res.data.total
                     _this.loading = false
                 }
@@ -228,7 +228,7 @@ export default {
                 type:'search',
                 project_id:params
             }
-            this.searchDetail(param,'click',this.$router.push({path: '/projectRanking/project', query: param}))
+            this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/project', query: param}))
         },
         /**
          * 打開合约态势详情
@@ -238,7 +238,7 @@ export default {
                 type:'search',
                 contract_address_id:params
             }
-            this.searchDetail(param,'click',this.$router.push({path: '/projectRanking/contract', query: param}))
+            this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
         }
     },
 }
