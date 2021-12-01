@@ -15,7 +15,7 @@
         </div>
         <div class="project-ranking-list" v-if="!$route.query.type">
             <el-button-group>
-                <el-button type="primary" @click = "filterClick('all')" :class="activeClass('all')">全部项目</el-button>
+                <el-button type="primary" @click = "filterClick('all')" :class="activeClass('all')">{{ $t('el.projectRinking.allProJ') }}</el-button>
                 <el-button type="primary" @click = "filterClick('eth')" :class="activeClass('eth')">ETH</el-button>
                 <el-button type="primary" @click = "filterClick('bsc')" :class="activeClass('bsc')">BSC</el-button>
                 <el-button type="primary" @click = "filterClick('heco')" :class="activeClass('heco')">HECO</el-button>

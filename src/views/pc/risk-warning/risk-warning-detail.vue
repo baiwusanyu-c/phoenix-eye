@@ -5,7 +5,7 @@
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="risk-warning-detail" v-loading>
+    <div class="risk-warning-detail scrollDiy" v-loading>
         <!--   基本信息     -->
         <div class="detail-body">
             <div class="detail-item">
@@ -46,7 +46,7 @@
         <!--   地址收益     -->
         <div class="detail-profit">
             <h3>{{ $t('el.riskConfig.profit') }}</h3>
-            <div class="detail-profit-body scrollDiy" v-if="profitData.length > 0">
+            <div class="detail-profit-body" v-if="profitData.length > 0">
                 <div v-for="(item) in profitData" :key="item.address" class="detail-profit-container">
                     <div class="detail-profit-grid">
                         <be-svg-icon disabled-tool-tip icon-class="files"></be-svg-icon>
@@ -207,6 +207,7 @@ export default {
          * 跳轉到第三方頁面
          */
         openWeb(){
+            if(!this.baseInfo.platform || !this.baseInfo.tx_hash) return
             const url = `${webURL[this.baseInfo.platform]}${this.baseInfo.tx_hash}`
             this.$openWindow(url, 'view_window')
         }
@@ -252,19 +253,16 @@ export default {
         margin-top: 20px;
         padding: 20px;
         background: $mainColor7;
-        height: 69.5%;
+        min-height: 69.5%;
         .detail-profit-body{
             margin-top: 20px;
             height: calc(100% - 40px);
-            overflow-y: auto;
             .detail-profit-container{
                 display: flex;
                 align-items: center;
                 flex-direction: row;
                 min-height: 50px;
-                margin-top: 16px;
-                background: $mainColor8;
-                padding: 15px 0;
+                margin-top: 5px;
                 border-radius: 2px;
                 .ellipsis-copy{
                  width: auto;

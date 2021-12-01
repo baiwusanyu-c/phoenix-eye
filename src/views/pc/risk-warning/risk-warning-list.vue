@@ -22,7 +22,7 @@
             <div class="search-area search-area-input">
                 <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getList()">{{ $t('el.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getList('reset')">{{ $t('el.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -30,6 +30,7 @@
                 tooltip-effect="light"
                 :data="tableData"
                 v-loading="loading"
+                height="680"
                 ref="riskWarningList">
                 <div slot="empty"
                      class = 'empty-table'>
@@ -243,9 +244,17 @@ export default {
         /**
          * 获取表格数据
          */
-        getList() {
+        getList(type) {
             const _this = this
             _this.loading = true
+            if(type === 'reset'){
+                this.pageParams = {
+                    currentPage: 1,
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                }
+            }
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
@@ -313,6 +322,28 @@ export default {
     }
     .risk-table{
         margin-top: 30px;
+        /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+        .el-table__body-wrapper::-webkit-scrollbar
+        {
+            margin: 5px;
+            width: 8px;
+            height: 8px;
+        }
+
+        /*定义滚动条轨道*/
+        .el-table__body-wrapper::-webkit-scrollbar-track
+        {
+            //   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            //   background-color: #272822;
+        }
+
+        /*定义滑块*/
+        .el-table__body-wrapper::-webkit-scrollbar-thumb
+        {
+            //   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #c1c1c1;
+            border-radius:  5px;
+        }
         .table-page {
             display: flex;
             justify-content: flex-end;

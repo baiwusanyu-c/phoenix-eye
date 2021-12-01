@@ -10,7 +10,8 @@
         <div class="projsitu-item" style="margin-bottom: 20px">
             <div class="item-title">
                 <h2>{{ projectInfo.name }}</h2>
-                <span>{{ $t('el.projectRinking.onlineTime') }}：
+                <span v-if="projectInfo.create_time">
+                    {{ $t('el.projectRinking.onlineTime') }}：
                      <el-tooltip placement="top" effect="light">
                             <span slot="content">UTC：{{ beijing2utc(projectInfo.create_time) }}</span>
                             <span class="cursor">{{ formatDate($createDate(projectInfo.create_time)) }}</span>
@@ -19,9 +20,9 @@
             </div>
             <div class="projsitu-item-outline">
                 <div class="outline-radar" id="outline_radar">
-                    <div  class = 'empty-data' v-if="staticPieData.length === 0" style="margin-top: 0">
-                        <img class="img" src="@/assets/image/pc/empty-data.png" alt=""  style="height: 180px;" >
-                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                    <div class='empty-data' v-if="staticPieData.length === 0" style="margin-top: 0">
+                        <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
+                        <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
                     </div>
                 </div>
                 <div class="outline-info">
@@ -53,11 +54,11 @@
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.contractSecurity') }}</h2>
             </div>
-            <div  :class="{
+            <div :class="{
                         'projsitu-item-contractSecur':true,
                         'projsitu-item-hyaq':contractSecurity.length === 0
                     }"
-                 v-loading = 'loadingCs'>
+                 v-loading='loadingCs'>
                 <project-ranking-radar v-for="(item) in contractSecurity"
                                        :addr="item.contract_address"
                                        :platform="item.platform"
@@ -75,9 +76,9 @@
                     <span slot="prev" class="table-page-info">共计{{ pageParamsCs.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
-                <div  class = 'empty-data' v-if="contractSecurity.length === 0" style="margin-top: 0">
-                    <img class="img" src="@/assets/image/pc/empty-data.png" alt=""  style="height: 180px;" >
-                    <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                <div class='empty-data' v-if="contractSecurity.length === 0" style="margin-top: 0">
+                    <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
+                    <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
                 </div>
             </div>
         </div>
@@ -103,8 +104,15 @@
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.feelingSecurity') }}</h2>
             </div>
-            <div class="projsitu-item-feelingSecurity" v-loading="loadingFs">
-                <project-ranking-safety-opinion></project-ranking-safety-opinion>
+            <div :class="{
+                        'projsitu-item-feelingSecurity':true,
+                        'projsitu-item-hyaq':safetyData.length === 0
+                    }"
+                 v-loading="loadingFs">
+                <project-ranking-safety-opinion
+                    v-if="safetyData.length > 0"
+                    :infoData="safetyData">
+                </project-ranking-safety-opinion>
                 <be-pagination
                     v-if="safetyData.length > 0"
                     custom-class="table-page"
@@ -116,6 +124,10 @@
                     <span slot="prev" class="table-page-info">共计{{ pageParamsFs.total }}条</span>
                     <span slot="next"></span>
                 </be-pagination>
+                <div class='empty-data' v-if="safetyData.length === 0" style="margin-top: 0">
+                    <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
+                    <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -155,9 +167,9 @@ export default {
             // 市场表现 基本数据
             marketPerformance: [],
             // 市場表現 交易量
-            mpTxNum:[],
+            mpTxNum: [],
             // 市場表現 新增用户
-            mpNewUserNum:[],
+            mpNewUserNum: [],
             // 合约安全数据
             contractSecurity: [],
             // 合约安全分页参数
@@ -178,23 +190,23 @@ export default {
             // 项目信息
             projectInfo: {},
             // 合约安全loading
-            loadingCs:false,
+            loadingCs: false,
             // 舆情安全loading
-            loadingFs:false,
+            loadingFs: false,
             // 项目id
-            projectId:'',
+            projectId: '',
             // 舆情安全数据
             safetyData:[]
         }
     },
-    computed:{
-        radarDataCs(){
-            return function (data){
-                if(data){
+    computed: {
+        radarDataCs() {
+            return function (data) {
+                if (data) {
                     return [
-                        {item: '静态检测', a: data.static_testing.score},
-                        {item: '交易安全', a: data.tx_safety.score},
-                        {item: '交易稳定', a: data.tx_stability.score},
+                        {item: this.$t('el.projectRinking.staticDetection'), a: data.static_testing.score},
+                        {item: this.$t('el.projectRinking.txSecurity'), a: data.tx_safety.score},
+                        {item: this.$t('el.projectRinking.txStability'), a: data.tx_stability.score},
                     ]
                 }
                 return []
@@ -212,21 +224,32 @@ export default {
         /**
          * 获取舆情安全数据
          */
-        getPublicSentimentSecurData(){
+        getPublicSentimentSecurData() {
             const _this = this
             _this.loadingFs = true
             let params = {
-                project_id:_this.projectId,
-                page_num:_this.pageParamsFs.pageNum,
-                page_size:_this.pageParamsFs.pageSize,
+                project_id: _this.projectId,
+                page_num: _this.pageParamsFs.pageNum,
+                page_size: _this.pageParamsFs.pageSize,
             }
-            getPublicSentimentSecurity(params).then(res=>{
-                if(res){
-                    _this.safetyData = res.data.page_infos
-                    _this.pageParamsFs.total =  res.data.page_total
+            getPublicSentimentSecurity(params).then(res => {
+                if (res) {
+                    res.data.page_infos.forEach(val => {
+                        _this.safetyData.push({
+                            negative: val.is_negative_news,
+                            negativeMsg: '经自动识别，该资讯为负面信息',
+                            sourceUrl: val.url,
+                            title: val.title,
+                            message: val.source,
+                            from: val.content,
+                            time: val.pub_time,
+                            label: val.tag,
+                        })
+                    })
+                    _this.pageParamsFs.total = res.data.page_total
                     _this.loadingFs = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -243,21 +266,21 @@ export default {
         /**
          * 获取合约安全数据
          */
-        getContractSecurData(){
+        getContractSecurData() {
             const _this = this
             _this.loadingCs = true
             let params = {
-                project_id:_this.projectId,
-                page_num:_this.pageParamsCs.pageNum,
-                page_size:_this.pageParamsCs.pageSize,
+                project_id: _this.projectId,
+                page_num: _this.pageParamsCs.pageNum,
+                page_size: _this.pageParamsCs.pageSize,
             }
-            getContractSecurity(params).then(res=>{
-                if(res){
+            getContractSecurity(params).then(res => {
+                if (res) {
                     _this.contractSecurity = res.data.page_infos
-                    _this.pageParamsCs.total =  res.data.page_total
+                    _this.pageParamsCs.total = res.data.page_total
                     _this.loadingCs = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -275,19 +298,51 @@ export default {
          * 数据重置
          */
         resetData() {
+            // 合约安全数据
+            this.contractSecurity = []
+            // 合约安全分页参数
+            this.pageParamsCs = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
+                total: 0
+            }
+            // 舆情安全分页参数
+            this.pageParamsFs = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
+                total: 0
+            }
+            // 项目信息
+            this.projectInfo = {}
+            // 合约安全loading
+            this.loadingCs = false
+            // 舆情安全loading
+            this.loadingFs = false
+            // 项目id
+            this.projectId = ''
+            // 舆情安全数据
+            this.safetyData = []
+
             this.projectInfo = {}
             this.outlineInfo = {
-                staticDetection: '暂无数据',
-                txSecurity: '暂无数据',
-                txStability: '暂无数据',
-                feeling: '暂无数据'
+                staticDetection: this.$t('el.emptyData'),
+                txSecurity:this.$t('el.emptyData'),
+                txStability: this.$t('el.emptyData'),
+                feeling: this.$t('el.emptyData'),
             }
             this.marketPerformance = [
-                {title: '交易总量', num: '暂无数据'},
-                {title: '用户总数', num: '暂无数据'},
-                {title: '合约总数', num: '暂无数据'},
+                {title: this.$t('el.projectRinking.txSumNum'), num: this.$t('el.emptyData'),},
+                {title: this.$t('el.projectRinking.userSumNum'), num: this.$t('el.emptyData'),},
+                {title: this.$t('el.projectRinking.contractSumNum'), num: this.$t('el.emptyData'),},
             ]
-            this.staticPieData = []
+            this.staticPieData = [
+                { key:'jtjc-staticDetection',        item: '静态检测', a: 70, },
+                { key:'jyaq-txSecurity',             item: '交易安全', a: 60 },
+                { key:'jywd-txStability',            item: '交易稳定', a: 50 },
+                { key:'yqaq-safetyPublicOptionClass',item: '安全舆情', a: 50 },
+            ]
             this.mpTxNum = []
             this.mpNewUserNum = []
         },
@@ -307,16 +362,16 @@ export default {
             this.getOutLineData(this.projectInfo)
             // 项目检测评分雷达图
             this.staticPieData = [
-                {item: '静态检测', a: this.projectInfo.static_testing.score},
-                {item: '交易安全', a: this.projectInfo.tx_safety.score},
-                {item: '交易稳定', a: this.projectInfo.tx_stability.score},
-                {item: '安全舆情', a: this.projectInfo.safety_opinion.score},
+                {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: this.projectInfo.static_testing.score},
+                {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: this.projectInfo.tx_safety.score},
+                {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: this.projectInfo.tx_stability.score},
+                {key:'yqaq-safetyPublicOptionClass',item: this.$t('el.systemConfigScore.safetyPublicOptionClass'), a: this.projectInfo.safety_opinion.score},
             ]
             // 市场表现数据
             this.marketPerformance = [
-                {title: '交易总量', num: data.market_performance.tx_total},
-                {title: '用户总数', num: data.market_performance.user_total},
-                {title: '合约总数', num: data.market_performance.contract_total},
+                {title: this.$t('el.projectRinking.txSumNum'), num: data.market_performance.tx_total},
+                {title: this.$t('el.projectRinking.userSumNum'), num: data.market_performance.user_total},
+                {title: this.$t('el.projectRinking.contractSumNum'), num: data.market_performance.contract_total},
             ]
             // 市场表现图表数据
             this.mpTxNum = data.market_performance.tx_amounts
@@ -363,19 +418,39 @@ export default {
          * 渲染概要雷達圖
          */
         renderOutlineRadar() {
-            if(this.staticPieData.length === 0){
+            if (this.staticPieData.length === 0) {
                 return
             }
             const {DataView} = DataSet;
             const labelCache = []
+
             function limitInShape(items, labels, shapes, region) {
                 labels.forEach((labelGroup, index) => {
+                    console.log(labelGroup)
+                    console.log(labelCache[index].point.y)
                     const labelBBox = labelGroup.getCanvasBBox()
+                    console.log(labelBBox.height)
                     labelGroup.cfg.children[0].cfg.visible = false
+                    let offsetX = labelCache[index].point.x
+                    let offsetY = labelCache[index].point.y
+                    if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
+                        offsetX = offsetX + labelBBox.width/2 + 15
+                        offsetY = offsetY + labelGroup.cfg.children[0].cfg.attrs.y - labelBBox.height * 2
+                    }
+                    if(labelGroup.cfg.data.key === 'jywd-txStability'){
+                        offsetX = offsetX + labelBBox.width/2 + 15
+                        offsetY = offsetY - labelGroup.cfg.children[0].cfg.attrs.y //+ labelBBox.height * 2
+                    }
+                    if(labelGroup.cfg.data.key === 'jyaq-txSecurity'){
+
+                    }
+                    if(labelGroup.cfg.data.key === 'yqaq-safetyPublicOptionClass'){
+
+                    }
                     labelGroup.addShape('text', {
                         attrs: {
-                            x: labelCache[index].point.x + labelBBox.width + 5,
-                            y: labelCache[index].point.y + labelBBox.height / 2,
+                            x: offsetX,
+                            y: offsetY,
                             text: items[index].data.score,
                             textBaseline: 'middle',
                             fill: '#1890FF',
@@ -590,13 +665,15 @@ export default {
             margin-bottom: 24px;
             flex-wrap: wrap;
         }
-        .projsitu-item-hyaq{
+
+        .projsitu-item-hyaq {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 300px;
             background-color: $mainColor7;
         }
+
         .projsitu-item-feelingSecurity {
             padding-bottom: 15px;
             box-sizing: border-box;
