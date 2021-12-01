@@ -123,6 +123,13 @@ export const el = {
             score:'风险评估',
             detail:'分析详情',
         },
+        profitTableHeader:{
+            addr:'地址',
+            profitSum:'总收益',
+            tokenName:'代币',
+            tokenNum:'代币数量',
+            tokenVal:'代币金额',
+        },
         features:'交易特征',
         values:'金额',
         txDetail:'在浏览器查看',
@@ -187,6 +194,7 @@ export const el = {
         checkInput:'参数输入错误，请检查输入信息'
     },
     projectRinking:{
+        contract:'合约',
         proNum:'编号',
         name:'项目名',
         contractNum:'合约数量',

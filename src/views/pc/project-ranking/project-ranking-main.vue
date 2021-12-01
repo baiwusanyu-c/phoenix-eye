@@ -149,7 +149,7 @@ export default {
                 type:'search',
                 param:this.searchParams
             }
-            this.$router.push({path: `/projectRanking/project`, query: params})
+            this.$router.push({path: `/projectRanking/contract`, query: params})
             return
             // 从搜索框搜索，前端分不清是项目还是合约，放到param给后端判断
             this.searchDetail(params,'search',(type)=>{

@@ -59,7 +59,7 @@
                     <el-table-column
                         prop="platform"
                         width="280"
-                        :label="$t('地址')"
+                        :label="$t('el.riskConfig.profitTableHeader.addr')"
                         align="center">
                         <template slot-scope="scope">
                             <div style="display: flex;justify-content: center;align-items: center;">
@@ -93,7 +93,7 @@
                     </el-table-column>
                     <el-table-column
                         prop="tx_hash"
-                        :label="$t('总收益')"
+                        :label="$t('el.riskConfig.profitTableHeader.profitSum')"
                         align="left">
                         <template slot-scope="scope">
                             {{scope.row.profit}}
@@ -101,7 +101,7 @@
                     </el-table-column>
                     <el-table-column
                         prop="addrList"
-                        :label="$t('代币')"
+                        :label="$t('el.riskConfig.profitTableHeader.tokenName')"
                         width="400"
                         align="center">
                         <template slot-scope="scope">
@@ -110,12 +110,13 @@
                                         style="margin-top: 10px;"
                                         :key="item.itemId">{{item.val}}</p>
                             </div>
-                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>暂无</div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                                {{ $t('el.emptyData') }}</div>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="valueList"
-                        :label="$t('代币数量')"
+                        :label="$t('el.riskConfig.profitTableHeader.tokenNum')"
                         align="left">
                         <template slot-scope="scope">
                             <div  v-if="scope.row.valueList && scope.row.valueList.length > 0 ">
@@ -123,12 +124,13 @@
                                       style="margin-top: 10px;"
                                       :key="item.itemId">{{item.val}}</p>
                             </div>
-                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>暂无</div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                                {{ $t('el.emptyData') }}</div>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="dollarList"
-                        :label="$t('代币金额')"
+                        :label="$t('el.riskConfig.profitTableHeader.tokenVal')"
                         align="left">
                         <template slot-scope="scope">
                             <div  v-if="scope.row.dollarList && scope.row.dollarList.length > 0 ">
@@ -136,7 +138,8 @@
                                       style="margin-top: 10px;font-weight: bold"
                                       :key="item.itemId">{{item.val}}</p>
                             </div>
-                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>暂无</div>
+                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                                {{ $t('el.emptyData') }}</div>
                         </template>
                     </el-table-column>
 
@@ -221,7 +224,7 @@ export default {
                     val.valueList = []
                     val.token_profits.forEach(res=>{
                         res.itemId = this.$getUuid
-                        val.addrList.push({val:res.contract_address,itemId:'token_name'+_this.$getUuid(),tag:res.contract_address_tag})
+                        val.addrList.push({val:res.contract_address_token_name,itemId:'token_name'+_this.$getUuid(),tag:res.contract_address_tag})
                         val.valueList.push({val:res.token_profit_no_dollar,itemId:'token_profit_no_dollar'+_this.$getUuid()})
                         val.dollarList.push({val:res.token_profit_dollar,itemId:'token_profit_dollar'+_this.$getUuid()})
                     })

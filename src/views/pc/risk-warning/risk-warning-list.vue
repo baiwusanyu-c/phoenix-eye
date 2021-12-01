@@ -119,7 +119,8 @@
                                     style="margin-top: 10px;width: min-content;"
                                     :key="item">{{item}}</el-tag>
                         </div>
-                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>暂无</div>
+                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                            {{ $t('el.emptyData') }}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -128,7 +129,7 @@
                     align="center"
                     show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span style="font-weight: bold">{{scope.row.risk_score || '暂无'}}</span>
+                        <span style="font-weight: bold">{{scope.row.risk_score || $t('el.emptyData')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
