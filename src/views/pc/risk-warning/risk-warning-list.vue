@@ -228,8 +228,8 @@ export default {
         }
     },
     created() {
-      this.platformList = platformListDict
-       this.platformList.unshift(
+      this.platformList = JSON.parse(JSON.stringify(platformListDict))
+      this.platformList.unshift(
            {
                label: '全部',
                value: 'all',
@@ -350,8 +350,11 @@ export default {
             align-items: center;
             .table-page-info {
                 font-size: 14px;
-                margin-top: 20px;
+                margin-top: 14px;
                 color: $textColor4;
+            }
+            .pagination_c{
+                margin-top: 14px;
             }
         }
     }
