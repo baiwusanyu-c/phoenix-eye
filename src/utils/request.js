@@ -17,19 +17,19 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-    config => {
-        config.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
-        config.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
-        if (config.method === 'post' && config.url!=='/auth/oauth/login') {
-            config.data = config.params
-            config.headers['Content-Type'] = 'application/json;charset=UTF-8'
-            config.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
-            delete config.params
-            if (config.otherParams) {
-                config.data = qs.stringify(config.data)
+    configOption => {
+        configOption.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
+        configOption.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
+        if (configOption.method === 'post' && configOption.url!=='/auth/oauth/login') {
+            configOption.data = configOption.params
+            configOption.headers['Content-Type'] = 'application/json;charset=UTF-8'
+            configOption.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+            delete configOption.params
+            if (configOption.otherParams) {
+                configOption.data = qs.stringify(configOption.data)
             }
         }
-        return config
+        return configOption
     },
     error => {
         console.log(error) // for debug

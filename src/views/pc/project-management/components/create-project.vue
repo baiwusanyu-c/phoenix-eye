@@ -286,6 +286,18 @@ export default {
             return true
         },
         /**
+         * 处理格式化参数
+         */
+        setParams(params){
+            params.map((val)=>{
+                return {
+                    platform:val.platform,
+                    contract_address:val.contract_address,
+                    label:val.label
+                }
+            })
+        },
+        /**
          * 确认增加项目方法
          */
         addProject(){
@@ -300,13 +312,7 @@ export default {
             if(!this.formVerification(params)){
                 return
             }
-            params.contract_infos.map((val)=>{
-                return {
-                    platform:val.platform,
-                    contract_address:val.contract_address,
-                    label:val.label
-                }
-            })
+            this.setParams(params.contract_infos)
             createProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.add')+ _this.$t('el.success')
@@ -339,13 +345,7 @@ export default {
             if(!this.formVerification(params)){
                 return
             }
-            params.contract_infos.map((val)=>{
-                return {
-                    platform:val.platform,
-                    contract_address:val.contract_address,
-                    label:val.label
-                }
-            })
+            this.setParams(params.contract_infos)
             saveEditProject(params,pathParams).then(res=>{
                 if(res){
                     const msg = _this.$t('el.edit')+ _this.$t('el.success')

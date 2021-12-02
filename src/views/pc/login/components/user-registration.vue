@@ -139,8 +139,8 @@ export default {
                                 this.isTip = false;
                             }
                         }, 1000)
-                    }).catch((error) => {
-                        console.error(error)
+                    }).catch((err) => {
+                        console.error(err)
                     });
                 }
             })

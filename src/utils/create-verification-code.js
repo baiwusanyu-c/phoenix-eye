@@ -53,7 +53,7 @@
             this.options.width = con.offsetWidth > 0 ? con.offsetWidth : "120";
             this.options.height = con.offsetHeight > 0 ? con.offsetHeight : "21";
 
-            var canvas = document.getElementById(this.options.canvasId);
+            let canvas = document.getElementById(this.options.canvasId);
             if(canvas.getContext) {
                 var ctx = canvas.getContext('2d');
             }else{

@@ -129,7 +129,7 @@ export default {
                 this.isTip = false;
               }
             }, 1000)
-          }).catch((error)=> {console.log(error)});
+          }).catch((err)=> {console.log(err)});
         }
       })
     },

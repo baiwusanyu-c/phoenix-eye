@@ -265,7 +265,7 @@ export default {
                     // 拿到的数据都为正
                     this.inputValue = res.data
                 }
-            }).catch(err=>{
+            }).catch((err)=>{
                 const msg = _this.$t('el.operation')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)
