@@ -221,11 +221,11 @@ export default {
                     val.addrList = []
                     val.dollarList = []
                     val.valueList = []
-                    val.token_profits.forEach(res=>{
+                    val.token_profits.forEach(valRes=>{
                         res.itemId = this.$getUuid
-                        val.addrList.push({val:res.contract_address_token_name,itemId:'token_name'+_this.$getUuid(),tag:res.contract_address_tag})
-                        val.valueList.push({val:res.token_profit_no_dollar,itemId:'token_profit_no_dollar'+_this.$getUuid()})
-                        val.dollarList.push({val:res.token_profit_dollar,itemId:'token_profit_dollar'+_this.$getUuid()})
+                        val.addrList.push({val:valRes.contract_address_token_name,itemId:'token_name'+_this.$getUuid(),tag:valRes.contract_address_tag})
+                        val.valueList.push({val:valRes.token_profit_no_dollar,itemId:'token_profit_no_dollar'+_this.$getUuid()})
+                        val.dollarList.push({val:valRes.token_profit_dollar,itemId:'token_profit_dollar'+_this.$getUuid()})
                     })
                 })
                 _this.loading = false

@@ -8,10 +8,10 @@
  */
 import elllipsisCopyComponents from './ellipsis-copy.vue';
 
-const BeElllipsisCopy = {
+const beElllipsisCopy = {
     install:function(Vue) {
         Vue.component('be-ellipsis-copy', elllipsisCopyComponents)
     }
 }
 
-export default BeElllipsisCopy;
+export default beElllipsisCopy;

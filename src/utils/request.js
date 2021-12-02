@@ -10,13 +10,13 @@ import {MessageBox, Message} from 'element-ui'
 import config from '../config/index'
 import $vue from '../main.js'
 // create an axios instance
-const Service = axios.create({
+const service = axios.create({
     baseURL: config.baseURL, // url = base url + request url
     timeout: 50000 // request timeout
 })
 
 // request interceptor
-Service.interceptors.request.use(
+service.interceptors.request.use(
     config => {
         config.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
         config.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
@@ -38,7 +38,7 @@ Service.interceptors.request.use(
 )
 
 // response interceptor
-Service.interceptors.response.use(
+service.interceptors.response.use(
     response => {
         const res = response.data
         if (res.code !== 200 && res.code !== '0000') {
@@ -56,7 +56,7 @@ Service.interceptors.response.use(
                 })
             }
             if (res.code === 401 || res.code === 920000003) {
-                 $vue.$router.push({path: "/login"})
+                $vue.$router.push({path: "/login"})
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
             return Promise.reject(new Error(res.msg || res.message ||'Error'))
@@ -75,4 +75,4 @@ Service.interceptors.response.use(
     }
 )
 
-export default Service
+export default service

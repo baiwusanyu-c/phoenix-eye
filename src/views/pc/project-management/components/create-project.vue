@@ -300,7 +300,7 @@ export default {
             if(!this.formVerification(params)){
                 return
             }
-            params.contract_infos.map(val=>{
+            params.contract_infos.map((val)=>{
                 return {
                     platform:val.platform,
                     contract_address:val.contract_address,
@@ -339,7 +339,7 @@ export default {
             if(!this.formVerification(params)){
                 return
             }
-            params.contract_infos.map(val=>{
+            params.contract_infos.map((val)=>{
                 return {
                     platform:val.platform,
                     contract_address:val.contract_address,

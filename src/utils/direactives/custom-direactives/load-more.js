@@ -5,7 +5,7 @@
 * @create (czh 2021/4/29)
 * @update (czh 2021/4/29)
 */
-const LoadMoreDirectives = {
+const loadMoreDirectives = {
     loadmore: {
         // 指令的定义
         bind(el, binding) {
@@ -20,5 +20,5 @@ const LoadMoreDirectives = {
         }
     }
 }
-export default LoadMoreDirectives
+export default loadMoreDirectives
 

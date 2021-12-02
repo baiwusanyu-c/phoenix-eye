@@ -46,13 +46,14 @@ const closeNotify = function (instance,isSelf = false,isAll = false) {
         instance.close()
     }
 }
-const getInstanceObj = (option,instanceObj,instanceMap)=>{
+const getInstanceObj = (option,instanceObj,instanceMapParams)=>{
     // 根据方向，获取缓存实例列表
     if (option.placement === undefined) {
-        instanceObj = instanceMap.topRight
+        instanceObj = instanceMapParams.topRight
     } else {
-        instanceObj = instanceMap[option.placement]
+        instanceObj = instanceMapParams[option.placement]
     }
+    return instanceObj
 }
 const getInstanceObjByKey = (option,instanceObj)=>{
     let isCache = false
@@ -102,7 +103,7 @@ const createNotify = function (options = {}) {
     let option = Object.assign({}, defaultOption, options)
     let instanceObj = null
     // 根据方向，获取缓存实例列表
-    getInstanceObj(option,instanceObj,instanceMap)
+    instanceObj = getInstanceObj(option,instanceObj,instanceMap)
     // 如果传入了key，则遍历实例缓存，拿到对应实例
     let {isCache,instance} = getInstanceObjByKey(option,instanceObj)
     // 如果instance 为null，则是没有传入key 或者没有匹配到实例缓存，就创建新的
@@ -123,7 +124,7 @@ const createNotify = function (options = {}) {
 
     let verticalOffset;
 
-    /^top/.test(option.placement) ? ( verticalOffset = option.offsetTop || 0) :  (verticalOffset = option.offsetBottom || 0);
+    verticalOffset = /^top/.test(option.placement) ? ( option.offsetTop || 0) :  ( option.offsetBottom || 0);
 
     if (!isCache && instanceObj) {
         instanceObj.forEach(item => {

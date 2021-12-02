@@ -218,7 +218,7 @@ export default {
                 // 關鍵詞字符串轉化為數組
                 _this.projectList.forEach(val=>{
                     let keyword = val.keyword.replace('；',';')
-                    val.keywordList =  keyword.split(';').filter(val=>val)
+                    val.keywordList =  keyword.split(';').filter(filterVal=>filterVal)
                 })
                 _this.loading = false
             }).catch(err=>{

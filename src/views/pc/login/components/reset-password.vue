@@ -129,7 +129,7 @@ export default {
                 this.isTip = false;
               }
             }, 1000)
-          }).catch(error => {console.log(error)});
+          }).catch((error)=> {console.log(error)});
         }
       })
     },
@@ -226,5 +226,4 @@ export default {
   align-items: flex-start;
 }
 </style>
-<style lang="scss">
-</style>
+

@@ -24,7 +24,7 @@ function getScriptFile(){
  * 挂载vue指令到 vue对象实例上
  * @param {{Object}} $vue - vue对象实例
  */
-function MountDirective($vue){
+function mountDirective($vue){
   getScriptFile().forEach(vueDrective=>{
     Object.keys(vueDrective).forEach((key)=>{
       $vue.directive(key,vueDrective[key])
@@ -32,4 +32,4 @@ function MountDirective($vue){
   })
 
 }
-export default MountDirective
+export default mountDirective

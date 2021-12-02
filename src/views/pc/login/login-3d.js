@@ -72,8 +72,7 @@ export default function init() {
         vertice.dy = Math.random() - 0.5;
         vertice.randomDelay = Math.random() * 5;
     });
-
-    for (var i = 0; i < geometry.faces.length; i++) {
+    for (let [i] of geometry.faces.entries()) {
         geometry.faces[i].color.setStyle(baseColor);
         geometry.faces[i].baseColor = baseColorRGB;
     }
@@ -123,7 +122,7 @@ function render() {
     timer += 0.01;
     let vertices = plane.geometry.vertices;
 
-    for (let i = 0; i < vertices.length; i++) {
+    for (let [i] of vertices.entries()) {
         // Ease back to original vertice position while still maintaining sine wave
         vertices[i].x -= Math.sin(timer + vertices[i].randomDelay) / 40 * vertices[i].dx;
         vertices[i].y += Math.sin(timer + vertices[i].randomDelay) / 40 * vertices[i].dy;

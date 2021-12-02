@@ -13,7 +13,3 @@ export default {
   name: "BlotuaMain",
 }
 </script>
-
-<style scoped>
-
-</style>

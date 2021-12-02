@@ -5,7 +5,7 @@
 * @create (xuqianqian 2021/4/16)
 * @update (czh 2021/4/16)
 */
-const DragDirective = {
+const dragDirective = {
     drag: {
         bind: (el, binding) => {
             let op = el
@@ -34,10 +34,7 @@ const DragDirective = {
                         if (op.firstChild === e.path[i] || otherEle === e.path[i]) {
                             isTitle = true; break;
                         }
-                        //由其他元素触发拖拽，不会经过firstChild，必然经过op
-                        if (op.firstChild === e.path[i]) {
-                            isTitle = false; break;
-                        }
+
                     }
                 } else {
                     // 兼容下火狐
@@ -66,10 +63,10 @@ const DragDirective = {
                 let eWidth = e.currentTarget.offsetWidth
                 let eHeight = e.currentTarget.offsetHeight
                 let ix = 0
-                document.onmousemove = (e) => {
+                document.onmousemove = (eMove) => {
                     if (ix > 1) {
-                        let left = e.clientX - disX
-                        let top = e.clientY - disY
+                        let left = eMove.clientX - disX
+                        let top = eMove.clientY - disY
                         let maxLeft = offsetWidth - eWidth
                         let maxBottom = offsetHeight - eHeight
 
@@ -103,5 +100,5 @@ const DragDirective = {
         }
     }
 }
-export default DragDirective
+export default dragDirective
 

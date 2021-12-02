@@ -295,9 +295,9 @@ export default {
         warningDialogConfirm(){
             const _this = this
             // 初始化参数
-            resetRiskScore().then(res => {
+            resetRiskScore().then(() => {
                 this.getScore()
-            }).catch(err=>{
+            }).catch((err)=>{
                 const msg = _this.$t('el.operation')+ _this.$t('el.failed')
                 _this.$message.error(msg)
                 console.error(err)

@@ -55,7 +55,7 @@ import {
 } from 'element-ui';
 import { message  } from './resetMessage';
 
-var list = [Input, DatePicker, Select, Option, Button, Dialog, Form, FormItem, Popover, Autocomplete, Loading, Scrollbar, Tooltip, Table, TableColumn, Pagination, Switch,
+let componentsList = [Input, DatePicker, Select, Option, Button, Dialog, Form, FormItem, Popover, Autocomplete, Loading, Scrollbar, Tooltip, Table, TableColumn, Pagination, Switch,
     Dropdown, DropdownMenu, DropdownItem, Icon, Tabs, TabPane, Carousel, CarouselItem, Checkbox, CheckboxGroup, Radio, Drawer, Collapse, CollapseItem, Slider,InputNumber,
     RadioGroup,Badge, Menu, Submenu,MenuItem,MenuItemGroup,ButtonGroup,Tag,Divider,Image
 ]
@@ -65,7 +65,7 @@ function init(list) {
         Vue.use(index)
     })
 }
-init(list);
+init(componentsList);
 
 Vue.prototype.$message = message;
 Vue.prototype.$alert = MessageBox.alert;

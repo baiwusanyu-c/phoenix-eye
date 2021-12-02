@@ -6,7 +6,7 @@
                     <div class="safety-opinion-info-left">
                         <div class="safety-opinion-header">
                             <div class="safety-opinion-header-title">
-<!--                                <el-tooltip class="item" effect="dark" :content="opinion.negativeMsg" placement="top">
+                            <!--<el-tooltip class="item" effect="dark" :content="opinion.negativeMsg" placement="top">
                                     <i class="el-icon-message-solid" style="color: darkorange" v-show="opinion.negative" ></i>
                                 </el-tooltip>-->
                                 <span style="font-size: 16px;font-weight: bold">{{opinion.title}}</span>

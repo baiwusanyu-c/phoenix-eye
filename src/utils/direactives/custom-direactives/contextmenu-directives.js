@@ -6,7 +6,7 @@
 * @create (czh 2021/4/14)
 * @update (czh 2021/4/16)
 */
-const ContextmenuDirectives = {
+const contextmenuDirectives = {
   contextmenu:{
     // 使用 inserted 确保 contentmenu mounted 后才进行 addRef 操作
     inserted (el, binding, vnode) {
@@ -20,4 +20,4 @@ const ContextmenuDirectives = {
     }
   }
 }
-export default ContextmenuDirectives
+export default contextmenuDirectives

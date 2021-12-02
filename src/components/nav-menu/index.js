@@ -6,10 +6,10 @@
 */
 import navMenuComponents from './tsgz-nav-menu.vue';
 
-const HeaderCom = {
+const headerCom = {
     install:function(Vue) {
         Vue.component('navMenu', navMenuComponents)
     }
 }
 
-export default HeaderCom;
+export default headerCom;
