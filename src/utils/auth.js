@@ -878,3 +878,6 @@ export const getUuid = () => {
     return arr.join("")
 }
 Vue.prototype.$getUuid = getUuid
+
+export const isFunction = (val) => Object.prototype.toString.call(val) === '[object Function]'
+Vue.prototype.$isFunction = getUuid

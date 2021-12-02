@@ -170,9 +170,9 @@ export default {
                     _this.setStore('ContractProjectTs',JSON.stringify(res.data))
                     if(type === 'search'){
                         // 后台返回的搜索类型（合约还是项目）
-                        cb(res.type)
+                    _this.$isFunction(cb) && cb(res.type)
                     }else{
-                        cb()
+                    _this.$isFunction(cb) && cb()
                     }
                 }
             }).catch(err=>{

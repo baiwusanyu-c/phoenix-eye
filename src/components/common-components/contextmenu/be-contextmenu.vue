@@ -75,7 +75,11 @@
     computed: {
       //点击空白关闭
       clickOutsideHandler() {
-        return this.visible ? this.hide : () => {}
+        return function (){
+            if(this.visible){
+                return this.hide()
+            }
+        }
       },
       //是否点击
       isClick() {

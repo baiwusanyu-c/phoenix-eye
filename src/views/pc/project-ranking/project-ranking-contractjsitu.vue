@@ -363,7 +363,7 @@ export default {
          * 跳轉到頁面
          */
         openWeb() {
-
+            this.$openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`, 'view_window')
         },
         /**
          * 渲染静态检测饼图

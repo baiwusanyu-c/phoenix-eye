@@ -220,19 +220,16 @@ export default {
         // 监听value变化，触发change
         value(nVal, oVal) {
             // 处理最小长度
-            if (this.minLen && this.minLen !== 0) {
-                let values = this.value
-                let isNum = false
-                // 现将数字转化为字符串判断长度
-                if (Object.prototype.toString.call(this.value) === '[object Number]') {
-                    values = this.value.toString()
-                    isNum = true
-                }
-                if (values.length <= this.minLen) {
-                    if (nVal && !oVal) values = isNum ? Number(nVal) : nVal
-                    if (!nVal && oVal) values = isNum ? Number(oVal) : oVal
-                    this.$emit('input', values)
-                }
+            let values = this.value
+            let isNum = false
+            if (Object.prototype.toString.call(this.value) === '[object Number]') {
+                values = this.value.toString()
+                isNum = true
+            }
+            if (this.minLen && values.length <= this.minLen) {
+              if (nVal && !oVal) values = isNum ? Number(nVal) : nVal
+              if (!nVal && oVal) values = isNum ? Number(oVal) : oVal
+              this.$emit('input', values)
             }
             this.handleChange(nVal, oVal)
         },

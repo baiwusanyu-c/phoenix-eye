@@ -11,12 +11,6 @@
 <script>
 export default {
   name: "BlotuaMain",
-  data() {
-    return {}
-  },
-  mounted() {
-  },
-  methods: {},
 }
 </script>
 
