@@ -3,7 +3,7 @@
 * @deprecated 登录页面中图3D效果，因为版本这里直接引用three，而不是用最新的插件（最新版本会导致该页面报错）
 */
 
-import * as THREE from '../../../../public/three.min'
+import * as THREE from '../../public/three.min'
 
 let camera = undefined,
     scene = undefined,

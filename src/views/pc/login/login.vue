@@ -62,7 +62,7 @@
 <script>
 import userRegistration from "./components/user-registration";
 // import resetPwd from "./components/reset-password";
-import animatedInit, {destroyTHERR} from "./login-3d";
+import animatedInit, {destroyTHERR} from "../../../utils/login-3d";
 import NameLogin from "./components/name-login";
 import ResetPassword from "./components/reset-password";
 

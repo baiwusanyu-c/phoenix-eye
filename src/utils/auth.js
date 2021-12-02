@@ -501,9 +501,10 @@ Vue.prototype.formatDecimal = (num, decimal)=> {
  */
 Vue.prototype.$simulateToFixed = (num, decimal = 6)=> {
     if(num === undefined) {
-        return;}
-    if(num.toString() === '0'){
-        return 0;
+        return;
+    }
+    if(num.toString() === '0' && decimal !== 0){
+        return '0.000000';
     }
     num = Vue.prototype.$transferToNumber(num).toString()
     let index = num.indexOf('.')
@@ -516,7 +517,8 @@ Vue.prototype.$simulateToFixed = (num, decimal = 6)=> {
     }else{
         const minimumStr = '0.';
         const minimum = minimumStr.padEnd( decimal + 2, 0); // 匹配小额资金规则
-        return parseFloat(num).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(num).toFixed(decimal);
+        const res = parseFloat(num).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(num).toFixed(decimal);
+        return res === '-0.000000' ? '0.000000' : res
     }
 }
 /**

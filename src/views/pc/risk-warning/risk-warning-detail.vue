@@ -22,7 +22,15 @@
                 </div>
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('el.riskConfig.values') }}：</span>
-                    {{baseInfo.money}}
+                    <el-tooltip placement="top" effect="light">
+                        <span slot="content">{{ baseInfo.token_num }}</span>
+                        <span> {{$simulateToFixed(baseInfo.token_num,6)}}</span>
+                    </el-tooltip>
+                    <span>&nbsp;&nbsp;{{ baseInfo.token_unit ? baseInfo.token_unit.toUpperCase() : '' }}&nbsp;&nbsp;</span>
+                    <el-tooltip placement="top" effect="light">
+                        <span slot="content">{{ baseInfo.dollar_money }}</span>
+                        <span> ${{$simulateToFixed(baseInfo.dollar_money,0)}}</span>
+                    </el-tooltip>
                 </div>
             </div>
             <div class="detail-item detail-form">
@@ -39,7 +47,8 @@
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('el.riskConfig.features') }}：</span>
                     <el-tag v-for="item in baseInfo.risk_features"
-                            :key="item">{{item}}</el-tag>
+                            :key="item">{{item}}
+                    </el-tag>
                 </div>
             </div>
         </div>
@@ -84,7 +93,10 @@
                         :label="$t('el.riskConfig.profitTableHeader.profitSum')"
                         align="right">
                         <template slot-scope="scope">
-                            {{handleProfit(scope.row.profit)}}
+                            <el-tooltip placement="top" effect="light">
+                                <span slot="content">{{ scope.row.profit }}</span>
+                                <span>{{handleProfit(scope.row.profit,0)}}</span>
+                            </el-tooltip>
                             <be-svg-icon v-if="scope.row.profit > 0" content="收益" icon-class="-arrow-up"></be-svg-icon>
                             <be-svg-icon v-if="scope.row.profit < 0" content="亏损" icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
                             <!-- 占位 -->
@@ -118,7 +130,12 @@
                             <div  v-if="scope.row.valueList && scope.row.valueList.length > 0 ">
                                 <p v-for="item in scope.row.valueList"
                                       style="margin-top: 10px;"
-                                      :key="item.itemId">{{item.val}}</p>
+                                      :key="item.itemId">
+                                    <el-tooltip placement="top" effect="light">
+                                        <span slot="content">{{ item.ordVal }}</span>
+                                        <span>{{item.val}}</span>
+                                    </el-tooltip>
+                                </p>
                             </div>
                             <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
                                 {{ $t('el.emptyData') }}</div>
@@ -132,7 +149,12 @@
                             <div  v-if="scope.row.dollarList && scope.row.dollarList.length > 0 ">
                                 <p v-for="item in scope.row.dollarList"
                                       style="margin-top: 10px;font-weight: bold"
-                                      :key="item.itemId">{{item.val}}</p>
+                                      :key="item.itemId">
+                                    <el-tooltip placement="top" effect="light">
+                                        <span slot="content">{{ item.ordVal }}</span>
+                                        <span>({{handleProfit(item.val,0)}})</span>
+                                    </el-tooltip>
+                                </p>
                             </div>
                             <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
                                 {{ $t('el.emptyData') }}</div>
@@ -181,14 +203,11 @@ export default {
     },
     computed:{
         handleProfit(){
-            return function (val){
-                if(val>0){
-                    return `$${val}`
-                }
+            return function (val,dec){
                 if(val< 0){
-                    return `-$${Math.abs(val)}`
+                    return `-$${this.$simulateToFixed(Math.abs(val),dec)}`
                 }
-                return `$${val}`
+                return `$${this.$simulateToFixed(val,dec)}`
             }
         }
     },
@@ -223,9 +242,15 @@ export default {
                     val.valueList = []
                     val.token_profits.forEach(valRes=>{
                         res.itemId = this.$getUuid
-                        val.addrList.push({val:valRes.contract_address_token_name,itemId:'token_name'+_this.$getUuid(),tag:valRes.contract_address_tag})
-                        val.valueList.push({val:valRes.token_profit_no_dollar,itemId:'token_profit_no_dollar'+_this.$getUuid()})
-                        val.dollarList.push({val:valRes.token_profit_dollar,itemId:'token_profit_dollar'+_this.$getUuid()})
+                        val.addrList.push({val:valRes.token_name,itemId:'token_name'+_this.$getUuid(),tag:valRes.contract_address_tag})
+                        val.valueList.push({
+                            ordVal:valRes.token_num,
+                            val:_this.$simulateToFixed(valRes.token_num,6),
+                            itemId:'token_profit_no_dollar'+_this.$getUuid()})
+                        val.dollarList.push({
+                            ordVal:valRes.dollar_money,
+                            val:_this.$simulateToFixed(valRes.dollar_money,0),
+                            itemId:'token_profit_dollar'+_this.$getUuid()})
                     })
                 })
                 _this.loading = false
