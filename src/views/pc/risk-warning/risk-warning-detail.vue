@@ -84,7 +84,7 @@
                         :label="$t('el.riskConfig.profitTableHeader.profitSum')"
                         align="right">
                         <template slot-scope="scope">
-                            ${{scope.row.profit}}
+                            {{handleProfit(scope.row.profit)}}
                             <be-svg-icon v-if="scope.row.profit > 0" content="收益" icon-class="-arrow-up"></be-svg-icon>
                             <be-svg-icon v-if="scope.row.profit < 0" content="亏损" icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
                             <!-- 占位 -->
