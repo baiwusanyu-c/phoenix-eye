@@ -104,7 +104,7 @@ const createNotify = function (options = {}) {
     // 根据方向，获取缓存实例列表
     getInstanceObj(option,instanceObj,instanceMap)
     // 如果传入了key，则遍历实例缓存，拿到对应实例
-    let {isCache,instance} = getInstanceObjByKey(option,instanceObj,isCache,instance)
+    let {isCache,instance} = getInstanceObjByKey(option,instanceObj)
     // 如果instance 为null，则是没有传入key 或者没有匹配到实例缓存，就创建新的
     if (!instance) {
         instance = new beNotifyConstructor({
@@ -125,7 +125,7 @@ const createNotify = function (options = {}) {
 
     /^top/.test(option.placement) ? ( verticalOffset = option.offsetTop || 0) :  (verticalOffset = option.offsetBottom || 0);
 
-    if (!isCache) {
+    if (!isCache && instanceObj) {
         instanceObj.forEach(item => {
             verticalOffset += item.$el.offsetHeight + 35;
         });

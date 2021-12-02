@@ -160,7 +160,7 @@ export default {
          * @param {String} type - 搜索类型
          * @param {Function} cb - 回调方法
          */
-        searchDetail(params,type,cb=()=>{}){
+        searchDetail(params,type,cb){
             const _this = this
             let param = JSON.parse(JSON.stringify(params))
             delete param.type

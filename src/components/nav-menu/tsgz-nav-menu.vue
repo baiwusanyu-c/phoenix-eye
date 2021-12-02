@@ -317,18 +317,20 @@ export default {
                         }
                     })
                 } catch (e) {
-                    // 激活元素设置聚焦 规避bug 3825
-                    this.$nextTick(() => {
-                        for (let i = 0; i < menuList.length; i++) {
-                            if (menuList[i].className.indexOf('is-active') > -1) {
-                                menuList[i].focus()
-                            }
-                        }
-                    })
-                    return
+                    this.setFocusStyle(menuList)
                 }
             })
         },
+        setFocusStyle(menuList){
+            // 激活元素设置聚焦 规避bug 3825
+            this.$nextTick(() => {
+                for (let i = 0; i < menuList.length; i++) {
+                    if (menuList[i].className.indexOf('is-active') > -1) {
+                        menuList[i].focus()
+                    }
+                }
+            })
+        }
     },
 }
 </script>

@@ -341,7 +341,7 @@ export default {
                 { key:'jtjc-staticDetection',        item: '静态检测', a: 70, },
                 { key:'jyaq-txSecurity',             item: '交易安全', a: 40 },
                 { key:'jywd-txStability',            item: '交易稳定', a: 35 },
-                { key:'yqaq-safetyPublicOptionClass',item: '安全舆情', a: 20 },
+                { key:'yqaq-safetyPublicOptionClass',item: '风险舆情', a: 20 },
             ]
             this.mpTxNum = []
             this.mpNewUserNum = []

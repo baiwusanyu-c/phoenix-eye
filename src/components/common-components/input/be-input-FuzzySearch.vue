@@ -278,30 +278,25 @@ export default {
             this.eventDom = $eventDom
             this.$emit("update:value", val.replace(/\s*/g, ''));
             // 根据输入值处理输入建议
-            if (val === '') {
-                if (this.getHistory != undefined) {
-                    this.getHistory(val).then(() => {
-                        this.getSuggestions(val);
-                        this.isShowSelect = true;
-                        this.computedPositon($eventDom)
-                    });
-                }
-            } else {
-                if (val.length >= 2) {
-                    if (this.platform == '') {
-                        if (val.substring(0, 2) == '0x' || val.substring(0, 2) == '0X') {
+            if (val === '' && this.getHistory !== undefined) {
+                this.getHistory(val).then(() => {
+                    this.getSuggestions(val);
+                    this.isShowSelect = true;
+                    this.computedPositon($eventDom)
+                });
+                return
+            }
+            if (val === '' && val.length >= 2) {
+                    this.platformNow = this.platform;
+                    if (this.platform === '') {
+                        this.platformNow = 'btc';
+                        if (val.substring(0, 2) === '0x' || val.substring(0, 2) === '0X') {
                             this.platformNow = 'eth';
-                        } else if (val.substring(0, 1) == 'T') {
+                        } else if (val.substring(0, 1) === 'T') {
                             this.platformNow = 'usdt_tron';
-                        } else {
-                            this.platformNow = 'btc';
                         }
-                        this.getFuzzyData(val);
-                    } else {
-                        this.platformNow = this.platform;
-                        this.getFuzzyData(val);
                     }
-                }
+                    this.getFuzzyData(val);
             }
         },
         /**
