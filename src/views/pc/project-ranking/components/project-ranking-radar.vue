@@ -23,7 +23,7 @@
 
 <script>
 import DataSet from '@antv/data-set';
-import {Chart} from '@antv/g2';
+import {Chart, registerGeometryLabelLayout} from '@antv/g2';
 export default {
     name: "project-ranking-radar",
     data() {
@@ -54,7 +54,11 @@ export default {
         },
         radarData:{
             type:Array,
-            default:()=>[]
+            default:()=>[
+                { key:'jtjc-staticDetection', item: '静态检测', a: 10, },
+                { key:'jywd-txStability',item: '市场波动', a: 6 },
+                { key:'jyaq-txSecurity',item: '交易安全', a: 5 },
+            ]
         }
     },
     watch:{
@@ -72,13 +76,44 @@ export default {
     },
     methods: {
         renderRadar(isUpdate){
+            // 坐标label缓存
+            const labelCache = []
+            function limitInShape(items, labels) {
+                labels.forEach((labelGroup, index) => {
+                    const labelBBox = labelGroup.getCanvasBBox()
+                    labelGroup.cfg.children[0].cfg.visible = false
+                    let offsetX = labelCache[index].point.x
+                    let offsetY = labelCache[index].point.y
+                    if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
+                        offsetX = offsetX + labelBBox.width/2 + 10
+                        offsetY = labelCache[index + 3].point.y / 2 + 2
+                    }
+                    if(labelGroup.cfg.data.key === 'jywd-txStability'){
+                        offsetY = labelCache[index + 3].point.y + 36
+                        offsetX = offsetX + 10
+                    }
+                    if(labelGroup.cfg.data.key === 'jyaq-txSecurity'){
+                        offsetX = offsetX - labelBBox.width/2 - 8
+                        offsetY = labelCache[index + 3].point.y + 36
+                    }
+                    // 添加分数label
+                    labelGroup.addShape('text', {
+                        attrs: {
+                            x: offsetX,
+                            y: offsetY,
+                            text: items[index].data.score,
+                            textBaseline: 'middle',
+                            fill: '#1890FF',
+                            fontWeight: 'bold',
+                            fontSize: 16
+                        },
+                    })
+                })
+            }
+            // 注册 label 布局函数
+            registerGeometryLabelLayout('limit-in-shape', limitInShape);
             const { DataView } = DataSet;
-            const data = [
-                { item: '静态检测', a: 70, },
-                { item: '市场波动', a: 60 },
-                { item: '交易安全', a: 50 },
-            ];
-            const dv = new DataView().source(data);
+            const dv = new DataView().source(this.radarData);
             dv.transform({
                 type: 'fold',
                 fields: ['a'], // 展开字段集
@@ -117,12 +152,18 @@ export default {
                         },
                     },
                 },
-                label:{
-                    style:{
-                        fontWeight:'bold',
-                        fontSize:16
+                label: {
+                    style: {
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                        fill:'black',
+                        fontFamily:'PingFangSC-Medium, PingFang SC, sans-serif'
+                    },
+                    formatter: (text, item) => {
+                        labelCache.push(JSON.parse(JSON.stringify(item)))
+                        return text
                     }
-                }
+                },
             });
             // 坐标轴 - 刻度
             chart.axis('score', {
@@ -143,6 +184,12 @@ export default {
                 .position('item*score')
                 .color('#1890FF')
                 .size(2)
+                .label('item*score', {
+                    autoRotate:false,
+                    layout: {
+                        type: 'limit-in-shape',
+                    },
+                });
 
             chart
                 .area()

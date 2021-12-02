@@ -204,9 +204,9 @@ export default {
             return function (data) {
                 if (data) {
                     return [
-                        {item: this.$t('el.projectRinking.staticDetection'), a: data.static_testing.score},
-                        {item: this.$t('el.projectRinking.txSecurity'), a: data.tx_safety.score},
-                        {item: this.$t('el.projectRinking.txStability'), a: data.tx_stability.score},
+                        {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: data.static_testing.score},
+                        {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: data.tx_safety.score},
+                        {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: data.tx_stability.score},
                     ]
                 }
                 return []
@@ -339,9 +339,9 @@ export default {
             ]
             this.staticPieData = [
                 { key:'jtjc-staticDetection',        item: '静态检测', a: 70, },
-                { key:'jyaq-txSecurity',             item: '交易安全', a: 60 },
-                { key:'jywd-txStability',            item: '交易稳定', a: 50 },
-                { key:'yqaq-safetyPublicOptionClass',item: '安全舆情', a: 50 },
+                { key:'jyaq-txSecurity',             item: '交易安全', a: 40 },
+                { key:'jywd-txStability',            item: '交易稳定', a: 35 },
+                { key:'yqaq-safetyPublicOptionClass',item: '安全舆情', a: 20 },
             ]
             this.mpTxNum = []
             this.mpNewUserNum = []
@@ -422,31 +422,32 @@ export default {
                 return
             }
             const {DataView} = DataSet;
+            // 坐标label缓存
             const labelCache = []
-
-            function limitInShape(items, labels, shapes, region) {
+            function limitInShape(items, labels) {
                 labels.forEach((labelGroup, index) => {
-                    console.log(labelGroup)
-                    console.log(labelCache[index].point.y)
                     const labelBBox = labelGroup.getCanvasBBox()
-                    console.log(labelBBox.height)
                     labelGroup.cfg.children[0].cfg.visible = false
                     let offsetX = labelCache[index].point.x
                     let offsetY = labelCache[index].point.y
                     if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
-                        offsetX = offsetX + labelBBox.width/2 + 15
-                        offsetY = offsetY + labelGroup.cfg.children[0].cfg.attrs.y - labelBBox.height * 2
+                        offsetX = offsetX + labelBBox.width/2 + 8
+                        offsetY = labelCache[index + 4].point.y / 2 + 8
                     }
                     if(labelGroup.cfg.data.key === 'jywd-txStability'){
-                        offsetX = offsetX + labelBBox.width/2 + 15
-                        offsetY = offsetY - labelGroup.cfg.children[0].cfg.attrs.y //+ labelBBox.height * 2
+                        offsetX = offsetX + labelBBox.width/2 + 8
+                        offsetY = labelCache[index + 4].point.y + 16
                     }
                     if(labelGroup.cfg.data.key === 'jyaq-txSecurity'){
-
+                        offsetY = offsetY + labelBBox.height/2 + 10
+                        offsetX = offsetX - 10
                     }
                     if(labelGroup.cfg.data.key === 'yqaq-safetyPublicOptionClass'){
+                        offsetY = offsetY + labelBBox.height/2 + 10
+                        offsetX = offsetX - 8
 
                     }
+                    // 添加分数label
                     labelGroup.addShape('text', {
                         attrs: {
                             x: offsetX,
@@ -459,10 +460,8 @@ export default {
                         },
                     })
                 })
-                // items[0].y = labelCache[0].point.y
             }
-
-            // Step 2: 注册 label 布局函数
+            // 注册 label 布局函数
             registerGeometryLabelLayout('limit-in-shape', limitInShape);
             const dv = new DataView().source(this.staticPieData);
             dv.transform({
@@ -475,6 +474,8 @@ export default {
                 container: `outline_radar`,
                 autoFit: true,
                 height: 250,
+                width:400,
+               // padding: [20, 0, 20, 0],
                 appendPadding: [20, 0, 20, 0]
             });
             chart.data(dv.rows);
@@ -499,7 +500,9 @@ export default {
                 label: {
                     style: {
                         fontWeight: 'bold',
-                        fontSize: 16
+                        fontSize: 16,
+                        fill:'black',
+                        fontFamily:'PingFangSC-Medium, PingFang SC, sans-serif'
                     },
                     formatter: (text, item) => {
                         labelCache.push(JSON.parse(JSON.stringify(item)))
@@ -527,54 +530,29 @@ export default {
                 .color('#1890FF')
                 .size(2)
                 .label('item*score', {
+                    autoRotate:false,
                     layout: {
                         type: 'limit-in-shape',
                     },
                 });
-
+            chart
+                .point()
+                .position('item*score')
+                .color('white')
+                .shape('circle')
+                .size(4)
+                .style({
+                    stroke: '#1890FF',
+                    lineWidth: 1,
+                    fillOpacity: 1,
+                });
             chart
                 .area()
                 .position('item*score')
                 .color('#1890FF')
 
             chart.legend(false);
-            /*chart.on('afterrender', (data) => {
-                const foregroundGroup = chart.foregroundGroup;
-                let labelGroup = foregroundGroup.findById('customLabels');
-               /!* const elements = interval.elements;
-                const originData = element.getData();*!/
-                const coordinate = chart.getCoordinate();
-                const center = coordinate.getCenter();
-                if (labelGroup) {
-                    labelGroup.clear();
-                } else {
-                    labelGroup = chart.foregroundGroup.addGroup({
-                        capture: false,
-                        id: 'customLabels'
-                    });
-                }
-                const label = labelGroup.addGroup();
-                label.addShape('text', {
-                    attrs: {
-                        x: center.x + 50,
-                        y: center.y,
-                        text: 'originData.type + originData.sold',
-                        textBaseline: 'middle',
-                        fill: 'red',
-                    },
-                });
-                label.addShape('text', {
-                    attrs: {
-                        x: center.x ,
-                        y: center.y,
-                        text: 'originData.type + originData.sold',
-                        textBaseline: 'middle',
-                        fill: 'green',
-                    },
-                });
-            })*/
             chart.render();
-
         },
 
     },

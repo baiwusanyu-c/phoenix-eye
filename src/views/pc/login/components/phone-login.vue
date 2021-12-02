@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {login, loginCode} from '@/api/login.js';
+import {login} from '@/api/login.js';
 import {getInfo} from "../../../../api/login";
 import Vue from 'vue'
 export default {
