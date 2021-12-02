@@ -37,8 +37,6 @@ export default {
         active:1
     }
   },
-  mounted() {
-  },
   methods: {
       /**
        * 切换隐藏显示对应模块

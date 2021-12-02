@@ -11,7 +11,7 @@
             <div class="item-res">
                 {{ $t('el.projectRinking.contract') }}：{{ resData.contract_address || $t('el.emptyData') }}
                 <div class="platform-logo" style="margin-left: 15px;" v-if="resData.platform">
-                    <img :src="logoType(resData.platform)"/>
+                    <img :src="logoType(resData.platform)" alt=""/>
                     {{ resData.platform && resData.platform.toUpperCase() }}
                 </div>
             </div>

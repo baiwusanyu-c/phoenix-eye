@@ -14,8 +14,8 @@ const modeUrlObj = {
     },
     // 开发环境
     'development': {
-        baseURL: 'http://192.168.0.216:9527',
-       // baseURL: 'http://124.71.193.230:9527',
+        //baseURL: 'http://192.168.0.216:9527',
+        baseURL: 'http://124.71.193.230:9527',
 
     },
     // 测试环境

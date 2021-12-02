@@ -7,7 +7,7 @@
 <template>
     <div class="project-ranking-radar">
         <div class="project-ranking-radar-info">
-            <img :src="logoType"/>
+            <img :src="logoType" alt=""/>
             <span class="project-ranking-radar-platform">{{platform.toUpperCase()}}</span>
             <be-ellipsis-copy :targetStr="addr"
                               :is-ellipsis="addr.length > 30"

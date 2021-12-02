@@ -14,12 +14,6 @@
 <script>
 export default {
   name: "RiskWarningMain",
-  data() {
-    return {}
-  },
-  mounted() {
-  },
-  methods: {},
 }
 </script>
 

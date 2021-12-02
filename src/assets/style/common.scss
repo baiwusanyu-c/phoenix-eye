@@ -113,9 +113,9 @@
     border-color: $mainColor3;
     background: $mainColor3;
 }
-.el-radio__input.is-checked+.el-radio__label{
+/*.el-radio__input.is-checked+.el-radio__label{
     color: $mainColor3;
-}
+}*/
 
 //日期选择器样式
 .el-date-table td.end-date span, .el-date-table td.start-date span{
@@ -295,8 +295,6 @@
         margin-right: 20px;
         padding-right: 0;
         height: 21px;
-    }
-    .el-form-item__label {
         text-align: justify;
     }
     .el-form-item__label::after {
@@ -661,6 +659,8 @@
 }
 
 .el-message {
+    top: 72px !important;
+    box-shadow: 0 0 13px rgba(0,0,0,0.16);
     z-index: 10002 !important;
 }
 
@@ -673,13 +673,8 @@
     overflow-x: scroll;
 }
 
-.el-message {
-    top: 72px !important;
-    box-shadow: 0 0 13px rgba(0,0,0,0.16);
-}
-
 // 单选按钮文字样式
-.el-radio__input.is-checked + .el-radio__label{
+.el-radio__input.is-checked+.el-radio__label{
     color: #000;
 }
 // 修改input 卡槽样式

@@ -77,9 +77,7 @@
                 this.setStore('language','zh_CN')
             }
         },
-        mounted() {
 
-        },
         methods: {
             /**
              * 下线弹窗显示方法

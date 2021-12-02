@@ -58,7 +58,7 @@
                                 <span v-show="inputShow === false">
                                 <span  v-show="scope.$index === 1">{{inputValue.static_testing.config.high_risk}}</span>
                                 <span v-if="scope.$index === 4" style="margin: 0 10px">{{inputValue.tx_stability.config.score_coefficient}}</span>
-                                <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16"/>
+                                <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16" alt=""/>
                                 <span v-if="scope.$index ===5">
                                     {{inputValue.safety_opinion.config.each}}/{{$t('el.systemConfigScore.safetyPublicOptionPiece')}}
                                 </span>

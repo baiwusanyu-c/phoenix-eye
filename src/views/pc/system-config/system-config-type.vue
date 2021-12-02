@@ -59,9 +59,6 @@ export default {
     created() {
         this.getList()
     },
-    mounted() {
-
-    },
     methods: {
         /**
          * 表單校驗方法

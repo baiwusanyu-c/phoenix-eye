@@ -24,7 +24,7 @@
         <!--    新增时显示   -->
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click = 'emitFunc("add")'>
-                <img src="@/assets/image/pc/add-type-icon.png"/>
+                <img src="@/assets/image/pc/add-type-icon.png" alt=""/>
                 <p>{{ $t('el.systemConfig.addType') }}</p>
             </div>
         </div>
@@ -51,8 +51,6 @@ export default {
         title:{
           type:String,
         }
-    },
-    mounted() {
     },
     methods: {
         /**
