@@ -5,7 +5,7 @@
 * @create (xuqianqian 2021/4/16)
 * @update (czh 2021/4/16)
 */
-const dragDirective = {
+const DragDirective = {
     drag: {
         bind: (el, binding) => {
             let op = el
@@ -103,5 +103,5 @@ const dragDirective = {
         }
     }
 }
-export default dragDirective
+export default DragDirective
 

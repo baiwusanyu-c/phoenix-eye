@@ -140,7 +140,7 @@ const createNotify = function (options = {}) {
             onClick:option.onClick,
             onClose:option.onClose
         }
-        instanceObj.push(instance)
+        instanceObj && instanceObj.push(instance)
     }
     return {notify: instance, close: closeNotify.bind(this, instance)}
 }

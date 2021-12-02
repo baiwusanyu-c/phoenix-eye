@@ -23,11 +23,7 @@
 
         computed: {
             isVertical() {
-                if (this.direction === 'vertical') {
-                    return true;
-                } else {
-                    return false;
-                }
+                return this.direction === 'vertical' ? true : false
             }
         },
 

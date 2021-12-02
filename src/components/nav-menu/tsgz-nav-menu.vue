@@ -324,7 +324,7 @@ export default {
         setFocusStyle(menuList){
             // 激活元素设置聚焦 规避bug 3825
             this.$nextTick(() => {
-                for (let i = 0; i < menuList.length; i++) {
+                for(let i of menuList){
                     if (menuList[i].className.indexOf('is-active') > -1) {
                         menuList[i].focus()
                     }

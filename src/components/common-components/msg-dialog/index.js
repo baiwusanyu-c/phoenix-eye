@@ -1,9 +1,9 @@
 import msgDialogComponents from './be-msg-dialog.vue';
 
-const beMsgDialog = {
+const BeMsgDialog = {
     install:function(Vue) {
         Vue.component('BeMsgDialog', msgDialogComponents)
     }
 }
 
-export default beMsgDialog;
+export default BeMsgDialog;

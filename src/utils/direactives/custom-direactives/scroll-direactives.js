@@ -6,7 +6,7 @@
 * @update (czh 2021/4/16)
 */
 let isload = true;
-const scrollDirectives = {
+const ScrollDirectives = {
     scroll:{
         bind(el, binding) {
              // 判断是否是select组建中的加载更多，用于获取实际滚动元素
@@ -48,4 +48,4 @@ const scrollDirectives = {
         }
     }
 }
-export default scrollDirectives
+export default ScrollDirectives

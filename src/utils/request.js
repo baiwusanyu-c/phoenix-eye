@@ -10,13 +10,13 @@ import {MessageBox, Message} from 'element-ui'
 import config from '../config/index'
 import $vue from '../main.js'
 // create an axios instance
-const service = axios.create({
+const Service = axios.create({
     baseURL: config.baseURL, // url = base url + request url
     timeout: 50000 // request timeout
 })
 
 // request interceptor
-service.interceptors.request.use(
+Service.interceptors.request.use(
     config => {
         config.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
         config.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
@@ -38,7 +38,7 @@ service.interceptors.request.use(
 )
 
 // response interceptor
-service.interceptors.response.use(
+Service.interceptors.response.use(
     response => {
         const res = response.data
         if (res.code !== 200 && res.code !== '0000') {
@@ -75,4 +75,4 @@ service.interceptors.response.use(
     }
 )
 
-export default service
+export default Service

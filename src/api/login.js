@@ -6,8 +6,8 @@
  */
 
 import request from '@/utils/request'
-import config from '@/config/index' // 路径配置
-// 获取验证码
+import config from '@/config/index' //路径配置
+//获取验证码
 export function getCodeImg() {
     return request({
         url: config.baseURL + '/code',
