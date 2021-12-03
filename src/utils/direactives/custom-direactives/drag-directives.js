@@ -5,6 +5,35 @@
 * @create (xuqianqian 2021/4/16)
 * @update (czh 2021/4/16)
 */
+import {isFunction} from "../../auth";
+
+const setMaxOrMin = (data,limit,type) =>{
+    if (data > limit && type === 'max') {
+        data = limit
+    }
+    if (data < limit && type === 'min') {
+        data = limit
+    }
+    return data
+}
+const isTitleDom = (e,op) =>{
+    let isTitle = false
+    if (e.path) {
+        //遍历，只允许拖拽标题时触发移动
+        for (let i = 0; i < e.path.length; i++) {
+            //由标题触发拖拽，必然经过firstChild
+            if (op.firstChild === e.path[i]) {
+                isTitle = true; break;
+            }
+
+        }
+    } else {
+        // 兼容下火狐
+        isTitle = true;
+    }
+    return isTitle
+}
+
 const dragDirective = {
     drag: {
         bind: (el, binding) => {
@@ -17,34 +46,11 @@ const dragDirective = {
                 op.firstChild.style.cursor = 'move'
             }
             el.onmousedown = (e) => {
-                let isTitle = false
-                if (e.path) {
-                    //遍历，只允许拖拽标题时触发移动
-                    for (let i = 0; i < e.path.length; i++) {
-                        //由标题触发拖拽，必然经过firstChild
-                        if (op.firstChild === e.path[i]) {
-                            isTitle = true; break;
-                        }
-
-                    }
-                } else {
-                    // 兼容下火狐
-                    isTitle = true;
-                }
-                if (!isTitle) {
+                if (!isTitleDom(e,op)) {
                     return
                 }
                 let offsetWidth = document.body.offsetWidth
                 let offsetHeight = document.body.offsetHeight
-                // 修改bug 3288
-                /*if(document.querySelector('#layout-fold')){
-                    offsetWidth = document.body.offsetWidth - 420
-                }*/
-                // 修改bug 3848
-                if(document.querySelector('#xnhb_nav_menu')){
-                    offsetWidth = document.body.offsetWidth - document.querySelector('#xnhb_nav_menu').offsetWidth
-                }
-
                 if (offsetWidth === 0 || offsetHeight === 0) {
                     console.error('Please set the width and height of the body element')
                     return
@@ -60,25 +66,16 @@ const dragDirective = {
                         let top = eMove.clientY - disY
                         let maxLeft = offsetWidth - eWidth
                         let maxBottom = offsetHeight - eHeight
-
-                        if (top < 0) {
-                            top = 0
-                        }
-                        if (left < 0) {
-                            left = 0
-                        }
-                        if (top > maxBottom) {
-                            top = maxBottom
-                        }
-                        if (left > maxLeft) {
-                            left = maxLeft
-                        }
+                        top = setMaxOrMin(top,0,'min')
+                        left = setMaxOrMin(left,0,'min')
+                        top = setMaxOrMin(top,maxBottom,'max')
+                        left = setMaxOrMin(left,maxLeft,'max')
                         op.style.left = left + 'px'
                         op.style.top = top + 'px'
                         op.style.setProperty('right','initial');
                         op.style.setProperty('bottom','initial');
                         //将移动后的top和left回调出去
-                        if (binding.value && Object.prototype.toString.call(binding.value) === "[object Function]") {
+                        if (isFunction(binding.value)) {
                             binding.value({ left, top })
                         }
                     }
