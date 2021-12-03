@@ -268,9 +268,7 @@ function getSectionTime (monthNum,direct = 'pre') {
     const THREE_MONTHS_AGO = `${year}/${ThreeMonths}/${day} ${ThreeMonthsHour}:${ThreeMonthsMinutes}:${ThreeMonthsSeconds}`
 
     // 生成时间戳
-    const THREE_STAMP = new Date(THREE_MONTHS_AGO).getTime()
-
-    return THREE_STAMP
+    return new Date(THREE_MONTHS_AGO).getTime()
 }
 
 Vue.prototype.$getSectionTime = getSectionTime
@@ -281,7 +279,7 @@ Vue.prototype.GetPercent = (num, total) => {
     if (isNaN(num) || isNaN(total)) {
         return "-";
     }
-    return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00);
+    return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + '%';
 }
 
 
@@ -301,8 +299,7 @@ Vue.prototype.beijing2utc = (now, formats) => {
     timestamp = timestamp + (createDate().getTimezoneOffset() * 60);
     // 时间戳转为时间
     // var utc_datetime = new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
-    var utc_datetime = Vue.prototype.formatDate(createDate(parseInt(timestamp) * 1000), formats)
-    return utc_datetime;
+    return Vue.prototype.formatDate(createDate(parseInt(timestamp) * 1000), formats)
 }
 
 //币种转换
@@ -397,7 +394,7 @@ Vue.prototype.downloadFile = (url) => {
             var blob = this.response;
             var a = document.createElement('a');
             // blob.type = "application/octet-stream";
-            var url = window.URL.createObjectURL(blob);
+            let downLoadurl = window.URL.createObjectURL(blob);
             var fileName = decodeURIComponent(xhr.getResponseHeader("content-disposition").split(";")[1].split("filename=")[1]);
             if (window.navigator.msSaveBlob) {
                 try {
@@ -406,13 +403,13 @@ Vue.prototype.downloadFile = (url) => {
                     console.log(e);
                 }
             } else {
-                a.href = url;
+                a.href = downLoadurl;
                 a.download = fileName;
                 document.body.appendChild(a); // 火狐浏览器 必须把元素插入body中
                 a.click();
                 document.body.removeChild(a);
                 //释放之前创建的URL对象
-                window.URL.revokeObjectURL(url);
+                window.URL.revokeObjectURL(downLoadurl);
             }
         }
     }
@@ -534,8 +531,7 @@ Vue.prototype.$transferToNumber = (inputNumber) => {
     inputNumber = parseFloat(inputNumber)
     let eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
     let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
-    let number = inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
-    return number 
+    return inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
 }
 /**
  * 数组拍平方法
@@ -748,7 +744,7 @@ Vue.prototype.$toSwitchMillion = toSwitchMillion
  */
 function currencyUnit (val) {
     let switchUnit = val ? val.toLowerCase() : '';
-    let unitValue = '';
+    let unitValue;
     switch (switchUnit) {
         case 'btc':
             unitValue = 'BTC'

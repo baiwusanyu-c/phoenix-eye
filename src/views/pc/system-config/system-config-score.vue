@@ -266,9 +266,7 @@ export default {
                     this.inputValue = res.data
                 }
             }).catch((err)=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
-                console.error(err)
+              _this.opFailed(err)
             })
         },
         /**
@@ -291,6 +289,11 @@ export default {
                 this.getScore()
             }
         },
+        opFailed(err){
+            const msg = this.$t('el.operation')+ this.$t('el.failed')
+            this.$message.error(msg)
+            console.error(err)
+        },
         // 初始化参数
         warningDialogConfirm(){
             const _this = this
@@ -298,9 +301,7 @@ export default {
             resetRiskScore().then(() => {
                 this.getScore()
             }).catch((err)=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
-                console.error(err)
+                _this.opFailed(err)
             })
             this.changeConfigWarningInput = false
         },

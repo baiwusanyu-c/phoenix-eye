@@ -251,9 +251,9 @@
                 // 前端分页逻辑
                 if (this.isFront) {
                     this.pageParams.currentPage = currentPage
-                    let page = JSON.parse(JSON.stringify(this.pageParams))
-                    this.$emit("update:pageParams", page);
-                    this.$emit("updatePage", {data: this.sliceList.get(page.currentPage)});
+                    let pageFront = JSON.parse(JSON.stringify(this.pageParams))
+                    this.$emit("update:pageParams", pageFront);
+                    this.$emit("updatePage", {data: this.sliceList.get(pageFront.currentPage)});
                     return
                 }
                 // 兼容分页传参为currentPage等分开传的情况
