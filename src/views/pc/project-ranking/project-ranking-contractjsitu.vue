@@ -179,7 +179,10 @@
                 <h2>{{ $t('el.projectRinking.txStability') }}</h2>
             </div>
             <div class="contractjsitu-item-tx-stable" v-loading="loadingTxST">
-                <project-ranking-trade-stability></project-ranking-trade-stability>
+                <project-ranking-trade-stability
+                    :char-data="txStabilityChartData"
+                    :select-data="txStabilitySelect">
+                </project-ranking-trade-stability>
             </div>
         </div>
         <!--高频调用-->
@@ -305,6 +308,11 @@ export default {
             tableDataHC:[],
             // 高频调用loading
             loadingHC:false,
+            // 交易安全图表数据
+            txStabilityChartData: {},
+            //交易安全图表代币选择下拉
+            txStabilitySelect:[]
+
 
         }
     },
@@ -450,6 +458,8 @@ export default {
             this.aqpgConfig = []
             this.loadingTxS = false
             this.loadingTxST = false
+            this.txStabilitySelect = []
+            this.txStabilityChartData = {}
         },
         /**
          * 获取合约态势详情数据
@@ -527,6 +537,8 @@ export default {
             }
             getTxStability(params).then(res=>{
                 if(res){
+                    _this.txStabilitySelect = res.data.token_names
+                    _this.txStabilityChartData = res.data.tx_data
                     _this.loadingTxST = false
                 }
             }).catch(err=>{

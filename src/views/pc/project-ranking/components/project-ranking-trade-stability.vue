@@ -71,6 +71,16 @@
                 selectValue: ''
             }
         },
+        props:{
+            // 代币下拉列表
+            selectData:{
+                type:Array,
+            },
+            // 图标数据集合
+            charData:{
+                type:Object,
+            }
+        },
         mounted() {
             this.selectValue = 'all'
             this.tradeChart()
