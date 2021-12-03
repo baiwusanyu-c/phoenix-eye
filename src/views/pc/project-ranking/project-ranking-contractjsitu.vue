@@ -21,12 +21,15 @@
                 </div>
             </div>
             <div class="contractjsitu-item-outline">
-                <project-ranking-score-card title="安全评估 value" :label-config="aqpgConfig"
-                                            :data="aqpgData"></project-ranking-score-card>
-                <project-ranking-score-card title="合约概况" :label-config="hyGkConfig"
-                                            :data="hyGkData"></project-ranking-score-card>
-                <project-ranking-score-card title="合约余额" :label-config="hyYeConfig"
-                                            :data="hyYeData"></project-ranking-score-card>
+                <project-ranking-score-card :title="$t('el.projectRinking.safetyAssessment') +  safetyEvaluate(resData.scores)"
+                                            :label-config="aqpgConfig"
+                                            :data="resData.scores"></project-ranking-score-card>
+                <project-ranking-score-card :title="$t('el.projectRinking.contractOverview')"
+                                            :label-config="hyGkConfig"
+                                            :data="resData.contract_profile"></project-ranking-score-card>
+                <project-ranking-score-card :title="$t('el.projectRinking.contractBalance')"
+                                            :label-config="hyYeConfig"
+                                            :data="resData.contract_balance"></project-ranking-score-card>
             </div>
         </div>
         <!--静态检测-->
@@ -171,11 +174,11 @@
             </div>
         </div>
         <!--交易稳定-->
-        <div class="contractjsitu-item">
+        <div class="contractjsitu-item" >
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.txStability') }}</h2>
             </div>
-            <div class="contractjsitu-item-tx-stable">
+            <div class="contractjsitu-item-tx-stable" v-loading="loadingTxST">
                 <project-ranking-trade-stability></project-ranking-trade-stability>
             </div>
         </div>
@@ -236,6 +239,7 @@ import ProjectRankingTradeStability from "./components/project-ranking-trade-sta
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import {Chart} from '@antv/g2';
 import {getProjWarning} from "../../../api/risk-warning";
+import {getTxStability} from "../../../api/project-ranking";
 
 export default {
     name: "project-ranking-contractjsitu",
@@ -244,47 +248,13 @@ export default {
         return {
             loading: false,
             // 合约基本信息
-            resData: {
-                contract_address: '',
-                platform: '',
-                label: []
-            },
+            resData: {},
             // 合约余额配置
-            hyYeConfig: [
-                {label: 'BNB', val: 'tx_num'},
-                {label: '代币1', val: 'call_num'},
-                {label: '代币2', val: 'time'},
-            ],
+            hyYeConfig: [],
             // 合约概况配置
-            hyGkConfig: [
-                {label: '总交易数', val: 'tx_num'},
-                {label: '总调用数', val: 'call_num'},
-                {label: '创建时间', val: 'time'},
-            ],
+            hyGkConfig: [],
             // 安全评估配置
-            aqpgConfig: [
-                {label: '静态检测', val: 'tx_num'},
-                {label: '交易安全', val: 'call_num'},
-                {label: '交易稳定', val: 'time'},
-            ],
-            // 合约余额数据
-            hyYeData: {
-                'tx_num': '123456',
-                'call_num': '12345',
-                'time': '2011.11.11.12:30'
-            },
-            // 合约概况数据
-            hyGkData: {
-                'tx_num': '123456',
-                'call_num': '12345',
-                'time': '2011.11.11.12:30'
-            },
-            // 安全评估数据
-            aqpgData: {
-                'tx_num': '123456',
-                'call_num': '冲冲冲',
-                'time': '2011.11.11.12:30'
-            },
+            aqpgConfig: [],
             // 幣種字典
             imgCodeDict: {
                 bsc: require('@/assets/image/pc/bsc.png'),
@@ -322,6 +292,8 @@ export default {
             tableDataTxSecur: [],
             // 交易安全表格loading
             loadingTxS:false,
+            // 交易稳定loading
+            loadingTxST:false,
             // 交易安全表格分页参数
             pageParams: {
                 currentPage: 1,
@@ -341,7 +313,11 @@ export default {
             return function (platform) {
                 return this.imgCodeDict[platform]
             }
-
+        },
+        safetyEvaluate(){
+            return function (data) {
+                return (data && data.safety_evaluate) ? data.safety_evaluate : ''
+            }
         }
     },
     mounted() {
@@ -362,7 +338,7 @@ export default {
         /**
          * 跳轉到頁面
          */
-        openWeb() {
+        openWeb(params) {
             this.$openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`, 'view_window')
         },
         /**
@@ -458,11 +434,7 @@ export default {
          * 数据重置
          */
         resetData() {
-            this.resData = {
-                contract_address: '',
-                platform: '',
-                label: []
-            }
+            this.resData = {}
             this.tableDataTxSecur = []
             this.pageParams = {
                 currentPage: 1,
@@ -472,49 +444,61 @@ export default {
             }
             this.tableDataHC = []
             this.loadingHC = false
+            this.loading = false
+            this.hyYeConfig = []
+            this.hyGkConfig = []
+            this.aqpgConfig = []
+            this.loadingTxS = false
+            this.loadingTxST = false
         },
         /**
          * 获取合约态势详情数据
          */
         async getContractSituData() {
+            // 重置数据
+            this.resetData()
             this.loadingHC = true
+            // 合约概况配置
+            this.hyGkConfig = [
+                {label: this.$t('el.projectRinking.txSumTotal'), val: 'tx_total'},
+                {label: this.$t('el.projectRinking.callSumTotal'), val: 'call_total'},
+                {label: this.$t('el.projectRinking.createTime'), val: 'create_time'},
+            ]
+            // 安全评估配置
+            this.aqpgConfig = [
+                {label: this.$t('el.projectRinking.staticDetection'), val: 'static_testing'},
+                {label: this.$t('el.projectRinking.txSecurity'), val: 'tx_safety'},
+                {label: this.$t('el.projectRinking.txStability'), val: 'tx_stability'},
+            ]
             // 这是在上级路由存储的数据
             const data = JSON.parse(this.getStore('ContractProjectTs'))
             if (!data) {
-                this.resetData()
+                this.loadingHC = false
                 return
             }
             // 合约基本信息数据
             this.resData = data.contract_info
-          /*  // 合约余额配置
-            this.hyYeConfig = [
-                {label: 'BNB', val: 'tx_num'},
-                {label: '代币1', val: 'call_num'},
-                {label: '代币2', val: 'time'},
-            ]
-            // 合约概况配置
-            this.hyGkConfig = [
-                {label: '总交易数', val: 'tx_num'},
-                {label: '总调用数', val: 'call_num'},
-                {label: '创建时间', val: 'time'},
-            ]
-            // 安全评估配置
-            this.aqpgConfig = [
-                {label: '静态检测', val: 'tx_num'},
-                {label: '交易安全', val: 'call_num'},
-                {label: '交易稳定', val: 'time'},
-            ]*/
+            // 合约余额配置
+            if(this.resData.contract_balance){
+                this.resData.contract_balance.forEach((val,index)=>{
+                    this.hyYeConfig.push( {label: val.token_name, val:index,valKey:val.balance})
+                })
+            }
 
             // 交易安全
             await this.getTxSecurityData()
+            // 交易稳定
+            await this.getTxStabilityData()
             // 高频调用数据
             this.tableDataHC = data.high_call
+            this.loadingHC = false
         },
         /**
          * 获取交易安全数据
          */
-        async getTxSecurityData(){
+         getTxSecurityData(){
             const _this = this
+            _this.loadingTxS = true
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
@@ -527,6 +511,26 @@ export default {
                     _this.loadingTxS = false
                 }
             }).catch(err=>{
+                _this.loadingTxS = false
+                _this.$message.error(err.message)
+                console.error(err)
+            })
+        },
+        /**
+         * 获取交易稳定数据
+         */
+        getTxStabilityData(){
+            const _this = this
+            _this.loadingTxST = false
+            let params = {
+                contract_address:this.contractAddressId
+            }
+            getTxStability(params).then(res=>{
+                if(res){
+                    _this.loadingTxST = false
+                }
+            }).catch(err=>{
+                _this.loadingTxST = false
                 _this.$message.error(err.message)
                 console.error(err)
             })

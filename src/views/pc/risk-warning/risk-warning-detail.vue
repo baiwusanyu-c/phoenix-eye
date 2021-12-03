@@ -29,7 +29,7 @@
                     <span>&nbsp;&nbsp;{{ baseInfo.token_unit ? baseInfo.token_unit.toUpperCase() : '' }}&nbsp;&nbsp;</span>
                     <el-tooltip placement="top" effect="light">
                         <span slot="content">{{ baseInfo.dollar_money }}</span>
-                        <span> ${{$simulateToFixed(baseInfo.dollar_money,0)}}</span>
+                        <span> ({{handleProfit(baseInfo.dollar_money,0)}})</span>
                     </el-tooltip>
                 </div>
             </div>
@@ -97,8 +97,8 @@
                                 <span slot="content">{{ scope.row.profit }}</span>
                                 <span>{{handleProfit(scope.row.profit,0)}}</span>
                             </el-tooltip>
-                            <be-svg-icon v-if="scope.row.profit > 0" content="收益" icon-class="-arrow-up"></be-svg-icon>
-                            <be-svg-icon v-if="scope.row.profit < 0" content="亏损" icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
+                            <be-svg-icon v-if="scope.row.profit > 0" :content="$t('el.profit')" icon-class="-arrow-up"></be-svg-icon>
+                            <be-svg-icon v-if="scope.row.profit < 0" :content="$t('el.loss')" icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
                             <!-- 占位 -->
                             <be-svg-icon v-if="scope.row.profit === 0" disabled-tool-tip icon-class="-arrow-down" style="visibility: hidden"></be-svg-icon>
                         </template>

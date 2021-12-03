@@ -33,3 +33,11 @@ export function getPublicSentimentSecurity(params) {
         params
     })
 }
+// 获取交易稳定数据
+export function getTxStability(params) {
+    return request({
+        url: `${config.baseURL}/ussa/project/contract/tx_stability`,
+        method: 'POST',
+        params
+    })
+}
