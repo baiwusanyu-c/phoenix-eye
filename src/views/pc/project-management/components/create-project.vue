@@ -209,25 +209,29 @@ export default {
             return res
         },
         /**
-         * 表單校驗方法
+         * 校驗名稱
          * @param {Object} params - 搜索参数
          */
-        formVerification(params){
-            this.verName = ''
-            this.verKeyword = ''
+        verificationName(params){
             if(!params.name){
                 this.verName = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectName')
                 return false
             }
             if(params.name && !this.ceReg.test(params.name)){
-                this.verName =this.$t('el.createProject.verCE')
+                this.verName = this.$t('el.createProject.verCE')
                 return false
             }
+            return true
+        },
+        /**
+         * 校驗關鍵詞
+         * @param {Object} params - 搜索参数
+         */
+        verificationKeyword(params){
             if(!params.keyword){
                 this.verKeyword = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectKeyWords')
                 return false
             }
-
             // 校驗中英文，分號
             if(params.keyword){
                 let keyword = this.semicolonVerification(params.keyword)
@@ -237,28 +241,45 @@ export default {
                 }
                 params.keyword = keyword
             }
-
-            let contractInfos = []
-            let hasEmpty = false
+            return true
+        },
+        /**
+         * 校验合约地址
+         */
+        verificationContractAddr(val){
             const platformReg = {
                 bsc:(addr)=>this.ETHaddress.test(addr),
                 eth:(addr)=>this.ETHaddress.test(addr),
                 heco:(addr)=>this.ETHaddress.test(addr),
                 polygon:(addr)=>this.ETHaddress.test(addr),
             }
+            // 没有填写合约地址
+            if(!val.contract_address){
+                val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
+                return true
+            }
+            // 校验地址格式
+            if(!platformReg[val.platform](val.contract_address)){
+                val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
+                return true
+            }
+            return false
+        },
+        /**
+         * 表單校驗方法
+         * @param {Object} params - 搜索参数
+         */
+        formVerification(params){
+            this.verName = ''
+            this.verKeyword = ''
+            if(!this.verificationName(params)) return false
+            if(!this.verificationKeyword(params)) return false
+            let contractInfos = []
+            let hasEmpty = false
             params.contract_infos.forEach(val=>{
                 val.verAddr = ''
                 val.verContract = ''
-                // 没有填写合约地址
-                if(!val.contract_address){
-                    val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
-                    hasEmpty = true
-                }
-                // 校验地址格式
-                if(!platformReg[val.platform](val.contract_address)){
-                    val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
-                    hasEmpty = true
-                }
+                hasEmpty = this.verificationContractAddr(val)
                 // 填写了合约标签，则进行校验
                 if(val.label){
                     let label = this.semicolonVerification(val.label)

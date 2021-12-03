@@ -351,20 +351,26 @@ export default {
                     })
                 }
             } else {
-                if (value.length >= 2) {
-                    if (this.platform == '') {
-                        if (value.substring(0, 2) == '0x' || value.substring(0, 2) == '0X') {
-                            this.platformNow = 'eth';
-                        } else if (value.substring(0, 1) == 'T') {
-                            this.platformNow = 'usdt_tron';
-                        } else {
-                            this.platformNow = 'btc';
-                        }
-                        this.getFuzzyData(value);
+               this.setPlatformOnBlur(value)
+            }
+        },
+        /**
+         * 设置币种
+         */
+        setPlatformOnBlur(value){
+            if (value.length >= 2) {
+                if (this.platform == '') {
+                    if (value.substring(0, 2) == '0x' || value.substring(0, 2) == '0X') {
+                        this.platformNow = 'eth';
+                    } else if (value.substring(0, 1) == 'T') {
+                        this.platformNow = 'usdt_tron';
                     } else {
-                        this.platformNow = this.platform;
-                        this.getFuzzyData(value);
+                        this.platformNow = 'btc';
                     }
+                    this.getFuzzyData(value);
+                } else {
+                    this.platformNow = this.platform;
+                    this.getFuzzyData(value);
                 }
             }
         },

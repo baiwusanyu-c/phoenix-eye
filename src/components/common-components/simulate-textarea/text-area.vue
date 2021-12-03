@@ -15,7 +15,7 @@
                 <div>{{ item.value }}</div>
                 <span
                     class="el-icon-close close-btn"
-                    @click="handelRemove(index)"
+                    @click="handleRemove(index)"
                 ></span>
             </li>
             <el-input
@@ -223,7 +223,7 @@ export default {
          * 删除地址
          * @param {Number} index 地址序号
          */
-        handelRemove(index) {
+        handleRemove(index) {
             this.addressList.splice(index, 1);
         },
     },
