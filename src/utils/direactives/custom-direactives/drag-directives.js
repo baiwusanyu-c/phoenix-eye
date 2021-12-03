@@ -33,22 +33,22 @@ const isTitleDom = (e,op) =>{
     }
     return isTitle
 }
-
+const setCursor = (el,type)=>{
+    if (el.firstChild) {
+        el.firstChild.style.cursor = type
+    }
+}
 const dragDirective = {
     drag: {
         bind: (el, binding) => {
             let op = el
             // 设置不拖拽就直接返回
-            if (binding.value && (binding.value.isDrag === false || binding.value.isDrag === 'false')) {
+            if (binding.value && (binding.value.isDrag.toString() === 'false')) {
                 return
             }
-            if (op.firstChild) {
-                op.firstChild.style.cursor = 'move'
-            }
+            setCursor(op,'move')
             el.onmousedown = (e) => {
-                if (!isTitleDom(e,op)) {
-                    return
-                }
+                if (!isTitleDom(e,op)) return
                 let offsetWidth = document.body.offsetWidth
                 let offsetHeight = document.body.offsetHeight
                 if (offsetWidth === 0 || offsetHeight === 0) {
