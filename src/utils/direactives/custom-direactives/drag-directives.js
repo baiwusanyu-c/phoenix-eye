@@ -16,22 +16,13 @@ const dragDirective = {
             if (op.firstChild) {
                 op.firstChild.style.cursor = 'move'
             }
-            // 调证分析- 交易所中的信息区也可拖动
-            let otherEle = '';
-            for (let i = 0; i < op.children.length; i++) {
-                if (op.children[i].className && op.children[i].className.indexOf('info-tag') > -1) {
-                    otherEle = op.children[i];
-                    break;
-                }
-            }
-
             el.onmousedown = (e) => {
                 let isTitle = false
                 if (e.path) {
                     //遍历，只允许拖拽标题时触发移动
                     for (let i = 0; i < e.path.length; i++) {
                         //由标题触发拖拽，必然经过firstChild
-                        if (op.firstChild === e.path[i] || otherEle === e.path[i]) {
+                        if (op.firstChild === e.path[i]) {
                             isTitle = true; break;
                         }
 

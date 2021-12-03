@@ -120,6 +120,12 @@ Array.prototype.remove = function(obj) {
 
 //时间格式化
 Vue.prototype.formatDate = (timestamp, formats) => {
+    let year = null
+    let month = null
+    let day = null
+    let hour = null
+    let minite = null
+    let second = null
     // formats格式包括
     // 1. Y-m-d
     // 2. Y-m-d H:i:s
@@ -136,12 +142,12 @@ Vue.prototype.formatDate = (timestamp, formats) => {
     };
     // 第五中情况处理
     if(formats === 'YMDHMS'){
-        let year = timestamp.getFullYear();
-        let month = zero(timestamp.getMonth() + 1);
-        let day = zero(timestamp.getDate());
-        let hour = zero(timestamp.getHours());
-        let minite = zero(timestamp.getMinutes());
-        let second = zero(timestamp.getSeconds());
+        year = timestamp.getFullYear();
+        month = zero(timestamp.getMonth() + 1);
+        day = zero(timestamp.getDate());
+        hour = zero(timestamp.getHours());
+        minite = zero(timestamp.getMinutes());
+        second = zero(timestamp.getSeconds());
         return year + month + day + hour + minite + second
     }
     // console.log(timestamp)
@@ -153,12 +159,12 @@ Vue.prototype.formatDate = (timestamp, formats) => {
 
     let date = '';
     if (myDate !== '') {
-        var year = myDate.getFullYear();
-        var month = zero(myDate.getMonth() + 1);
-        var day = zero(myDate.getDate());
-        var hour = zero(myDate.getHours());
-        var minite = zero(myDate.getMinutes());
-        var second = zero(myDate.getSeconds());
+        year = myDate.getFullYear();
+        month = zero(myDate.getMonth() + 1);
+        day = zero(myDate.getDate());
+        hour = zero(myDate.getHours());
+        minite = zero(myDate.getMinutes());
+        second = zero(myDate.getSeconds());
         date = formats.replace(/Y|m|d|H|i|s/ig, function(matches) {
             return ({
                 Y: year,
@@ -503,18 +509,18 @@ Vue.prototype.$simulateToFixed = (num, decimal = 6)=> {
     if(num.toString() === '0' && decimal !== 0){
         return '0.000000';
     }
-    num = Vue.prototype.$transferToNumber(num).toString()
-    let index = num.indexOf('.')
+    let numInner = Vue.prototype.$transferToNumber(num).toString()
+    let index = numInner.indexOf('.')
     if (index === -1) {
-        return num;
+        return numInner;
     }
-    let decimalBeforeLenght = num.split('.')[1].length; // 获取小数点后位数
+    let decimalBeforeLenght = numInner.split('.')[1].length; // 获取小数点后位数
     if(decimalBeforeLenght <= decimal){
-        return num
+        return numInner
     }else{
         const minimumStr = '0.';
         const minimum = minimumStr.padEnd( decimal + 2, 0); // 匹配小额资金规则
-        const res = parseFloat(num).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(num).toFixed(decimal);
+        const res = parseFloat(numInner).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(numInner).toFixed(decimal);
         return res === '-0.000000' ? '0.000000' : res
     }
 }
