@@ -519,7 +519,7 @@ Vue.prototype.$simulateToFixed = (num, decimal = 6)=> {
         return numInner
     }else{
         const minimumStr = '0.';
-        const minimum = minimumStr.padEnd( decimal + 2, 0); // 匹配小额资金规则
+        const minimum = minimumStr.padEnd( decimal + 2, '0'); // 匹配小额资金规则
         const res = parseFloat(numInner).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(numInner).toFixed(decimal);
         return res === '-0.000000' ? '0.000000' : res
     }
