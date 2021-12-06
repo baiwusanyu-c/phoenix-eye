@@ -173,15 +173,15 @@
                 </be-pagination>
             </div>
         </div>
-        <!--交易稳定-->
+        <!--交易稳定   :char-data="txStabilityChartData" :select-data="txStabilitySelect"-->
         <div class="contractjsitu-item" >
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.txStability') }}</h2>
             </div>
             <div class="contractjsitu-item-tx-stable" v-loading="loadingTxST">
                 <project-ranking-trade-stability
-                    :char-data="txStabilityChartData"
-                    :select-data="txStabilitySelect">
+                    :char-data="{token_name:'bsc',list:[{date:'2021-12-06',tx_money:10}]}"
+                    :select-data="['bsc','heco']">
                 </project-ranking-trade-stability>
             </div>
         </div>

@@ -2,18 +2,24 @@
     <div class="chart-box">
         <div class="chart-title">
             <template>
-                <el-select style="width: 110px" v-model="selectValue">
+                <el-select style="width: 110px" v-model="selectValue" @change="changeSelect">
                     <el-option
                             v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            :key="item.id"
+                            :label="item.label.toUpperCase()"
+                            :value="item.label">
                     </el-option>
                 </el-select>
             </template>
         </div>
         <div class="chart">
-            <div id="tradeStb"></div>
+            <div id="tradeStb">
+                <div  class = 'empty-data' v-if="charData.list.length === 0" style="margin-top: 0">
+                    <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;" >
+                    <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -26,49 +32,10 @@
         name: "project-ranking-trade-stability",
         data(){
             return{
-                chart:'',
-                tradeStb:[],
-                tradeAllStb:[],
-                label1:[
-                    { time: '01/03', num: -20 },
-                    { time: '01/05', num: 10 },
-                    { time: '01/07', num: 10 },
-                    { time: '01/09', num: -20 },
-                    { time: '01/11', num: 5 },
-                    { time: '01/13', num: 0 },
-                    { time: '01/15', num: 10 },
-                    { time: '01/17', num: -35 },
-                    { time: '01/19', num: 25 },
-                    { time: '01/21', num: -5 },
-                    { time: '01/23', num: 38 },
-                    { time: '01/25', num: -20 },
-                ],
-                label2:[
-                    { time: '01/03', num: -35 },
-                    { time: '01/05', num: -30 },
-                    { time: '01/07', num: 35 },
-                    { time: '01/09', num: 5 },
-                    { time: '01/11', num: 25 },
-                    { time: '01/13', num: -10 },
-                    { time: '01/15', num: 5 },
-                    { time: '01/17', num: 10 },
-                    { time: '01/19', num: 20 },
-                    { time: '01/21', num: 30 },
-                    { time: '01/23', num: 38 },
-                    { time: '01/25', num: -20 },
-                ],
-                options: [{
-                    value: 'all',
-                    label: `${this.$t('el.projectRinking.tradeStb.all')}`
-                }, {
-                    value: 'label1',
-                    label: 'label1'
-                },
-                {
-                    value: 'label2',
-                    label: 'label2'
-                }],
-                selectValue: ''
+                chart:null,
+                charDataInner:[],
+                options: [],
+                selectValue: `${this.$t('el.projectRinking.tradeStb.all')}`
             }
         },
         props:{
@@ -82,102 +49,122 @@
             }
         },
         mounted() {
-            this.selectValue = 'all'
-            this.tradeChart()
+
         },
         methods:{
-            tradeChart(){
-                // 遍历数组，将所有类型数量相加
-                for(let i = 0; i < this.label1.length; i++){
-                    let time = this.label1[i].time
-                    let num = this.label1[i].num + this.label2[i].num
-                    this.tradeAllStb.push({time,num})
-                }
-                // 定义显示图表
-                const dv = new DataSet.DataView().source(this.tradeAllStb);
-                dv.transform({
-                    type: 'fold',
-                    fields: ['num'], // 展开字段集
-                    key: 'type', // key字段
-                    value: 'value', // value字段
-                });
-
-                this.chart = new Chart({
+            /**
+             * 渲染图表
+             */
+            tradeChart(dv,data){
+                const chart = new Chart({
                     container: 'tradeStb',
                     autoFit: true,
                     height: 243,
                 });
-                 const chart = this.chart
+                this.chart = chart
                 chart.data(dv.rows)
-                chart.scale('time', {
+                chart.data(data);
+                chart.scale('date', {
                     range: [0, 1],
+
                 });
-                chart.scale('value', {
+                chart.scale('tx_money', {
                     nice: true,
                 });
                 chart.tooltip({
-                    shared: true,
                     showCrosshairs: true,
+                    shared: true,
                 });
-                chart.axis('time',{
-                    title:{
-                        position:'end',
-                        text:`${this.$t('el.projectRinking.marketPerformance.time')}`
-                    },
-                })
-                chart.axis('value',{
-                    title:{
-                        text:`${this.$t('el.projectRinking.marketPerformance.tradeNum')}`
-                    },
-                    line:{
-                        style:{
-                            stroke:'#bfbfbf'
-                        }
-                    }
-                })
-                chart.legend(false);
-                chart
-                    .area()
-                    .position('time*value')
-                    .color('#1890FF')
-                    .shape('smooth');
-                chart
-                    .line()
-                    .position('time*value')
-                    .color('#1890FF')
-                    .shape('smooth');
+
+                chart.area().adjust('stack').position('date*tx_money').color('platform').shape('smooth');
+                chart.line().adjust('stack').position('date*tx_money').color('platform').shape('smooth');
+
+                chart.interaction('element-highlight');
+                // 复写 图例筛选 交互。1、点击图例名称 进行 unchecked 状态的切换 2、点击图例 marker，进行 checked 状态的切换（进行聚焦）3、双击 重置状态
+                chart.interaction('legend-filter', {
+                    start: [
+                        { trigger: 'legend-item-name:click', action: ['list-unchecked:toggle', 'data-filter:filter'] },
+                        { trigger: 'legend-item-marker:click', action: ['list-checked:checked', 'data-filter:filter'] },
+                    ],
+                    end: [{ trigger: 'legend-item-marker:dblclick', action: ['list-checked:reset', 'data-filter:filter'] }],
+                });
                 chart.render();
             },
-            changeChart(){
-                const dv = new DataSet.DataView().source(this.tradeStb);
+            /**
+             * 生成下拉类别数据
+             */
+            createSelectData(list){
+                this.options = [{id:this.$getUuid(),label:`${this.$t('el.projectRinking.tradeStb.all')}`}]
+                list.forEach(val=>{
+                    this.options.push({
+                        id:this.$getUuid(),
+                        label:val
+                    })
+                })
+            },
+            /**
+             * 下拉變換
+             */
+            changeSelect(){
+                // 根據下拉變換處理數據，並渲染
+                this.handleChartData(this.selectValue)
+            },
+            /**
+             * 處理圖標數據
+             * @param {String} currency - 幣種
+             */
+            handleChartData(currency = '全部'){
+                const _this = this
+                if((_this.charData.list && _this.charData.list.length  === 0) || !_this.charData.list) return;
+                _this.charDataInner = []
+                if(currency === '全部'){
+                    _this.charData.list.forEach(val=>{
+                        _this.charDataInner = _this.charDataInner.concat(val.list)
+                    })
+                    return
+                }
+                _this.charData.list.forEach(val=>{
+                    if(val.token_name === currency){
+                        _this.charDataInner = _this.charDataInner.concat(val.list)
+                    }
+                })
+
+                const dv = new DataSet.DataView().source(_this.charDataInner);
                 dv.transform({
                     type: 'fold',
-                    fields: ['num'], // 展开字段集
+                    fields: ['tx_money'], // 展开字段集
                     key: 'type', // key字段
                     value: 'value', // value字段
                 });
-                this.chart.changeData(dv.rows)
+                if(!_this.chart){
+                    // 渲染圖表
+                    this.tradeChart(dv,_this.charDataInner)
+                }else{
+                    // 更新圖表
+                    this.chart.changeData(dv.rows)
+                }
+
             }
         },
         watch:{
-            'selectValue'(){
-                if(this.selectValue === 'all'){
-                    this.tradeStb = this.tradeAllStb
-                    /*chart.changeData(this.tradeAllStb)*/
-                }else if(this.selectValue === 'label1'){
-                    this.tradeStb = this.label1
-                    /*chart.changeData(this.tradeAllStb)*/
-                }else if(this.selectValue === 'label2'){
-                    this.tradeStb = this.label2
-                    /*chart.changeData(this.tradeAllStb)*/
+            // 监听下拉列表props变化,生產下拉列表數據結構
+            selectData: {
+                deep: true, //深度监听设置为 true
+                handler: function (nVal) {
+                    if(nVal && nVal.length > 0){
+                        this.createSelectData(nVal)
+                    }
                 }
             },
-            'tradeStb'(){
-                this.$nextTick(()=>{
-                    this.changeChart()
-                })
-            }
-
+            // 监听圖表數據props变化
+            charData: {
+                deep: true, //深度监听设置为 true
+                handler: function (nVal) {
+                    if(nVal && nVal.list && nVal.list.length){
+                        this.handleChartData(this.selectValue)
+                    }
+                }
+            },
         }
     }
 </script>
