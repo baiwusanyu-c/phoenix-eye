@@ -61,6 +61,7 @@
                  v-loading='loadingCs'>
                 <project-ranking-radar v-for="(item) in contractSecurity"
                                        :addr="item.contract_address"
+                                       :safetyEvaluate="item.score.safety_evaluate"
                                        :platform="item.platform"
                                        :radar-data="radarDataCs(item.score)"
                                        :key="item.contract_address_id">
@@ -164,6 +165,8 @@ export default {
             },
             // 项目检测评分 雷达图数据
             staticPieData: [],
+            // 项目安全评估
+            safetyEvaluatePieData: 0,
             // 市场表现 基本数据
             marketPerformance: [],
             // 市場表現 交易量
@@ -228,7 +231,8 @@ export default {
             const _this = this
             _this.loadingFs = true
             let params = {
-                project_id: _this.projectId,
+                project_id:3,
+                // project_id: _this.projectId,
                 page_num: _this.pageParamsFs.pageNum,
                 page_size: _this.pageParamsFs.pageSize,
             }
@@ -240,8 +244,8 @@ export default {
                             negativeMsg: '经自动识别，该资讯为负面信息',
                             sourceUrl: val.url,
                             title: val.title,
-                            message: val.source,
-                            from: val.content,
+                            message: val.content,
+                            from: val.source,
                             time: val.pub_time,
                             label: val.tag,
                         })
@@ -343,6 +347,7 @@ export default {
                 { key:'jywd-txStability',            item: '交易稳定', a: 35 },
                 { key:'yqaq-safetyPublicOptionClass',item: '风险舆情', a: 20 },
             ]
+            this.safetyEvaluatePieData = 0
             this.mpTxNum = []
             this.mpNewUserNum = []
         },
@@ -350,6 +355,7 @@ export default {
          * 获取项目态势详情数据
          */
         async getProSituData() {
+            await this.getPublicSentimentSecurData()
             // 这是在上级路由存储的数据
             const data = JSON.parse(this.getStore('ContractProjectTs'))
             if (!data) {
@@ -367,6 +373,7 @@ export default {
                 {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: this.projectInfo.tx_stability.score},
                 {key:'yqaq-safetyPublicOptionClass',item: this.$t('el.systemConfigScore.safetyPublicOptionClass'), a: this.projectInfo.safety_opinion.score},
             ]
+            this.safetyEvaluatePieData = this.projectInfo.safety_evaluate
             // 市场表现数据
             this.marketPerformance = [
                 {title: this.$t('el.projectRinking.txSumNum'), num: data.market_performance.tx_total},
@@ -418,6 +425,7 @@ export default {
          * 渲染概要雷達圖
          */
         renderOutlineRadar() {
+            const _this = this
             if (this.staticPieData.length === 0) {
                 return
             }
@@ -459,6 +467,18 @@ export default {
                             fontSize: 16
                         },
                     })
+                })
+
+                chart.getCanvas().cfg.children[0].addShape('text', {
+                    attrs: {
+                        x: (labelCache[4].point.x + labelCache[6].point.x)/2,
+                        y: (labelCache[4].point.y + labelCache[6].point.y)/2,
+                        text: _this.safetyEvaluatePieData,
+                        textBaseline: 'middle',
+                        fill: '#333333',
+                        fontWeight: 'bold',
+                        fontSize: 30
+                    },
                 })
             }
             // 注册 label 布局函数

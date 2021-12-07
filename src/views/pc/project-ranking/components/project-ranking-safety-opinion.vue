@@ -1,7 +1,7 @@
 <template>
     <div class="project-ranking-safety-opinion">
         <div class="safety-opinion-info">
-            <div v-for="(opinion,index) in infoData" :key="opinion.sourceUrl">
+            <div v-for="(opinion,index) in infoData" :key="createKey(opinion)">
                 <div class="safety-opinion-info-body">
                     <div class="safety-opinion-info-left">
                         <div class="safety-opinion-header">
@@ -14,8 +14,15 @@
                             <el-button type="text" @click="lookTextOriginal(opinion.sourceUrl)">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}>></el-button>
                         </div>
                         <div class="safety-opinion-body">
-                            <!--未限制字数-->
-                            <div class="safety-opinion-body-msg">{{opinion.message}}</div>
+                            <div class="safety-opinion-body-msg">
+                                <be-ellipsis :elpNum="opinion.message.length - 400 > 0 ? opinion.message.length - 400 : 0"
+                                             :expand-trigger="false"
+                                             :line-clamp="0"
+                                             :content="opinion.message"
+                                             :text="opinion.message">
+                                </be-ellipsis>
+
+                            </div>
                         </div>
                         <div class="safety-opinion-footer">
                             <span>
@@ -28,9 +35,13 @@
                                     <span style="display: flex;justify-content: center;align-items: center;height: 20px">{{ item }}</span>
                                 </el-tag>
                             </span>
-                            <div style="width: 240px;display: flex;justify-content: space-between">
+                            <div style="width: 240px;display: flex;justify-content: space-between;align-items: center">
                                 <span class="msg-font">{{opinion.from}}</span>
-                                <span class="msg-font">{{opinion.time}}</span>
+                                <el-tooltip placement="top" effect="light">
+                                    <span slot="content">UTC：{{ beijing2utc(opinion.time) }}</span>
+                                    <span class="msg-font">{{ formatDate($createDate(opinion.time)) }}</span>
+                                </el-tooltip>
+
                             </div>
                         </div>
                     </div>
@@ -51,8 +62,13 @@
 </template>
 
 <script>
+    import {getUuid} from "../../../../utils/auth";
+    import BeEllipsis from "../../../../components/common-components/ellipsis/src/be-ellipsis.vue";
     export default {
         name: "project-ranking-safety-opinion",
+        components:{
+            BeEllipsis
+        },
         data(){
             return{
             }
@@ -62,6 +78,13 @@
                 type:Array,
                 default:()=>[]
             }
+        },
+        computed:{
+            createKey(){
+                return function (){
+                    return getUuid()
+                }
+            },
         },
         methods:{
             // 查看原文按钮

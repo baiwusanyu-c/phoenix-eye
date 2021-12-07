@@ -59,6 +59,10 @@ export default {
                 { key:'jywd-txStability',item: '市场波动', a: 6 },
                 { key:'jyaq-txSecurity',item: '交易安全', a: 5 },
             ]
+        },
+        safetyEvaluate:{
+          type:[Number,String],
+          default:0
         }
     },
     watch:{
@@ -76,6 +80,7 @@ export default {
     },
     methods: {
         renderRadar(isUpdate){
+            const _this = this
             // 坐标label缓存
             const labelCache = []
             function limitInShape(items, labels) {
@@ -108,6 +113,17 @@ export default {
                             fontSize: 16
                         },
                     })
+                })
+                chart.getCanvas().cfg.children[0].addShape('text', {
+                    attrs: {
+                        x: (labelCache[3].point.x + labelCache[5].point.x)/2 + 40,
+                        y: (labelCache[3].point.y + labelCache[5].point.y)/2 + 25,
+                        text: _this.safetyEvaluate,
+                        textBaseline: 'middle',
+                        fill: '#333333',
+                        fontWeight: 'bold',
+                        fontSize: 30
+                    },
                 })
             }
             // 注册 label 布局函数
