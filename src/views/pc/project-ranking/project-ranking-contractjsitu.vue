@@ -105,8 +105,14 @@
                                               fontLength="8"
                                               endLength="8">
                             </be-ellipsis-copy>
-                            <span style="color: #1496F2"
-                                  v-if="scope.row.from_address_tag">{{ scope.row.from_tag }}</span>
+                            <be-ellipsis-copy :targetStr="scope.row.from_tag"
+                                              :tooltipTxt="scope.row.from_address"
+                                              v-if="scope.row.from_address_tag"
+                                              :is-ellipsis="false"
+                                              style="color: #1496F2"
+                                              fontLength="8"
+                                              endLength="8">
+                            </be-ellipsis-copy>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -120,8 +126,15 @@
                                               fontLength="8"
                                               endLength="8">
                             </be-ellipsis-copy>
-                            <span style="color: #1496F2"
-                                  v-if="scope.row.to_address_tag">{{ scope.row.to_address_tag }}</span>
+                            <be-ellipsis-copy :targetStr="scope.row.to_address_tag"
+                                              :tooltipTxt="scope.row.to_address"
+                                              v-if="scope.row.to_address_tag"
+                                              :is-ellipsis="false"
+                                              style="color: #1496F2"
+                                              fontLength="8"
+                                              endLength="8">
+                            </be-ellipsis-copy>
+
                         </template>
                     </el-table-column>
                     <el-table-column
