@@ -48,9 +48,7 @@
                 type:Object,
             }
         },
-        mounted() {
 
-        },
         methods:{
             /**
              * 渲染图表
