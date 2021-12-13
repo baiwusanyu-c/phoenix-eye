@@ -11,8 +11,9 @@
     "build:stage": "cross-env NODE_ENV=staging vue-cli-service build",
     "build:pretest": "cross-env NODE_ENV=pretest vue-cli-service build",
     "build:prod": "vue-cli-service build --mode production",
-    "lint:style": "stylelint src/**/*.scss",
-    "lint:style-fix": "stylelint --fix src/**/*.scss",
+    "stylelint": "stylelint src/**/*.scss",
+    "stylelint:fix": "stylelint --fix src/**/*.scss",
+    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {

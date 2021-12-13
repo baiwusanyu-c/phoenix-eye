@@ -7,7 +7,7 @@
 
 <script type="text/jsx">
 const renderBody = function (h) {
-    return (
+    return h(
         <div class={`be-notification-container be-notification-container__${this.option.placement}`}>
             <div class="be-notification-title">
                 <div class="be-notification-head"
