@@ -10,7 +10,7 @@
             <div>
                 {{ $t('el.riskConfig.platform') }}:
                 <el-select v-model="searchParams.platform"
-                            @change="getList"
+                            @change="getList('reset')"
                            :placeholder="$t('el.riskConfig.platformP')">
                     <el-option v-for="(item) in platformList"
                                :key="item.id"

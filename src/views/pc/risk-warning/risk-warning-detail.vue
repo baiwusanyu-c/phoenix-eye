@@ -108,7 +108,7 @@
                         :label="$t('el.riskConfig.profitTableHeader.tokenName')"
                         align="right">
                         <template slot="header">
-                            <div style="text-align: center;width: 100%">
+                            <div style="text-align: right;width: 100%">
                                {{ $t('el.riskConfig.profitTableHeader.tokenName') }}
                             </div>
                         </template>
