@@ -365,7 +365,7 @@ export default {
         // ，里面包含当前行row、当前列column、当前行号rowIndex、当前列号columnIndex四个属性。
         // 该函数可以返回一个包含两个元素的数组，第一个元素代表rowspan，第二个元素代表colspan。
         // 也可以返回一个键名为rowspan和colspan的对象。
-        arraySpanMethod({ row, column, rowIndex, columnIndex }){
+        arraySpanMethod({ rowIndex, columnIndex }){
             if(rowIndex === 0||rowIndex === 4){
                 if(columnIndex === 2){
                     return [1,4]
@@ -381,7 +381,7 @@ export default {
                 }
             }
         },
-        columnStyle({ row, column, rowIndex, columnIndex }){
+        columnStyle({ rowIndex, columnIndex }){
           if(rowIndex === 0){
               return 'font-weight: 700;text-align: center;'
           }

@@ -126,7 +126,7 @@ export default {
                         code: this.form.code,
                         /*login_type: 'mobile_phone_code',
                         uuid: this.form.uuid,
-                        client_id: 'fraud_system',
+                        client_id: 'beosin-eye',
                         client_secret: '123456',
                         grant_type: 'password',
                         scope: 'server',*/
