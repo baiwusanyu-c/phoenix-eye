@@ -147,7 +147,7 @@ export default {
                         password:Base64.encode(this.form.pwd),
                         code: this.form.code,
                         uuid: this.form.uuid,
-                        client_id: 'IMS_SYSTEM',
+                        client_id: 'beosin-eye',
                         client_secret: '123456',
                         grant_type: 'password',
                         login_type:"password",
