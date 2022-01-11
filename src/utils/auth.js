@@ -14,18 +14,20 @@ Vue.prototype.$win = null
 /**
  * 存储localStorage
  */
-Vue.prototype.setStore = (name, content) => {
+export const setStore = (name, content )=>{
     if (!name) return;
     if (typeof content !== 'string') {
         content = JSON.stringify(content);
     }
     window.localStorage.setItem(name, content);
 }
+Vue.prototype.setStore = setStore
+
 
 /**
  * 获取localStorage
  */
-const getStore = (name )=>{
+export const getStore = (name )=>{
     if (!name) return;
     return window.localStorage.getItem(name);
 }
@@ -34,10 +36,11 @@ Vue.prototype.getStore = getStore
 /**
  * 删除localStorage
  */
-Vue.prototype.removeStore = name => {
+export const removeStore = (name )=>{
     if (!name) return;
     window.localStorage.removeItem(name);
 }
+Vue.prototype.removeStore = removeStore
 
 /**
  * 存储sessionStorage
@@ -882,6 +885,7 @@ export const getUuid = () => {
     return arr.join("")
 }
 Vue.prototype.$getUuid = getUuid
-
+export const isString = (val) => (typeof val == 'string') && val.constructor == String;
+Vue.prototype.$isString= isString
 export const isFunction = (val) => Object.prototype.toString.call(val) === '[object Function]'
-Vue.prototype.$isFunction = getUuid
+Vue.prototype.$isFunction = isFunction

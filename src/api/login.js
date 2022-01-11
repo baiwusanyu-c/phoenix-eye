@@ -86,3 +86,11 @@ export function logout() {
         method: 'delete',
     })
 }
+// 获取路由信息
+export  function getRouterInfo(params){
+    return request({
+        url: config.baseURL + '/beosin-meta/menu/routers',
+        method: 'get',
+        params
+    })
+}

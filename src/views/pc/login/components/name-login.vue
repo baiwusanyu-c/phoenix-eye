@@ -166,6 +166,7 @@ export default {
                         }));
                         this.setCookie('token', res.access_token);
                         this.setStore('token', res.access_token);
+                        this.setStore('userId', res.user_id);
                         this.$root.userInfo = {
                             username: res.username
                         };

@@ -75,16 +75,6 @@ export default {
             foldKey: '',
         }
     },
-    props: {
-        /**
-         * 列表状态，能够起到某些路由控制
-         * @values ANALYSING ARCHIVED
-         */
-        listStatus: {
-            type: String,
-            default: 'ANALYSING'
-        },
-    },
     computed: {
         // 菜单样式 active 方法
         activeStyle() {
@@ -127,9 +117,6 @@ export default {
                 return ''
             }
         },
-        menuDisableConfig() {
-            return this.$store.state.menuDisable
-        }
     },
     watch: {
         '$route.path': {
@@ -143,17 +130,6 @@ export default {
                 }
             }
         },
-        // 菜单禁用设置
-        menuDisableConfig(nVal) {
-            Object.keys(nVal).forEach(key => {
-                if (this.headerConfig[key]) {
-                    this.headerConfig[key].isDisabled = nVal[key]
-                }
-            })
-        },
-        listStatus() {
-            this.setHeaderConfig();
-        }
     },
     mounted() {
         this.setHeaderConfig();
@@ -196,73 +172,26 @@ export default {
          */
         setHeaderConfig() {
             this.initHeaderConfig()
-            Object.keys(this.$store.state.menuDisable).forEach(key => {
-                if (this.headerConfig[key]) {
-                    this.headerConfig[key].isDisabled = this.$store.state.menuDisable[key]
-                }
-            })
-            Object.keys(this.headerConfig).forEach(val => {
-                this.headerConfig[val].show = true
-            })
             this.setActiveNav()
         },
         /**
          * 初始化菜单配置
          */
         initHeaderConfig() {
-            this.headerConfig = {
-                'FRAUD_BS': {
-                    icon: '-renwu',
-                    index: '0',
-                    name: 'el.navTextConfig.navName0',
-                    show: false,
-                    path: '/blockchainSituation',
+            const menuConfig = this.$store.state.routeConfig
+            const iconList = ['-renwu','-liulanqi','-tiaochaquzheng','-jiaoyifenxi','-xitongpeizhi']
+            menuConfig.forEach((val,index)=>{
+                this.headerConfig[val.perms] = {
+                    icon: iconList[index],
+                    index: index.toString(),
+                    name: val.meta.title,
+                    show: !val.hidden,
+                    path: val.path,
                     isPush: true,
                     children: [],
                     isDisabled: false,
-                },
-                'FRAUD_PR': {
-                    icon: '-liulanqi',
-                    name: 'el.navTextConfig.navName1',
-                    show: false,
-                    path: '/projectRanking',
-                    index: '1',
-                    isPush: true,
-                    children: [],
-                    isDisabled: false,
-
-                },
-                'FRAUD_WAR': {
-                    icon: '-tiaochaquzheng',
-                    index: '2',
-                    name: 'el.navTextConfig.navName2',
-                    show: false,
-                    path: '/riskWarning/list',
-                    isPush: true,
-                    children: [],
-                    isDisabled: false,
-                },
-                'FRAUD_PM': {
-                    icon: '-jiaoyifenxi',
-                    index: '3',
-                    name: 'el.navTextConfig.navName3',
-                    show: false,
-                    path: '/projectManagement',
-                    isPush: true,
-                    children: [],
-                    isDisabled: false,
-                },
-                'FRAUD_SC': {
-                    icon: '-xitongpeizhi',
-                    name: 'el.navTextConfig.navName4',
-                    show: false,
-                    index: '4',
-                    path: '/systemConfig',
-                    isPush: true,
-                    children: [],
-                    isDisabled: false,
-                },
-            }
+                }
+            })
         },
         /**
          * 路由跳转方法

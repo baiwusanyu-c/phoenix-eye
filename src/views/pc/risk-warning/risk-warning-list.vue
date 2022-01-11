@@ -40,7 +40,7 @@
                 <el-table-column
                     prop="platform"
                     :label="$t('el.riskConfig.platform')"
-                    width="80"
+                    width="120"
                     align="center">
                     <template slot-scope="scope">
                         {{scope.row.platform.toUpperCase()}}

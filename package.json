@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "serve:dev": "vue-cli-service serve --mode dev",
-    "serve:stage": "vue-cli-service serve --mode stage",
-    "serve:pretest": "vue-cli-service serve --mode pretest",
-    "serve:prod": "vue-cli-service serve --mode prod",
+    "serve:stage": "cross-env NODE_ENV=staging vue-cli-service serve --mode staging",
+    "serve:pretest": "cross-env NODE_ENV=pretest vue-cli-service serve --mode pretest",
     "build:dev": "vue-cli-service build --mode dev",
     "build:stage": "cross-env NODE_ENV=staging vue-cli-service build",
     "build:pretest": "cross-env NODE_ENV=pretest vue-cli-service build",

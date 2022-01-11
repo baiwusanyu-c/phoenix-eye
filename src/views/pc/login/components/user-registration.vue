@@ -11,7 +11,7 @@
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='unit'>
-                <el-input maxlength="15" autocomplete="off" :placeholder="$t('el.loginConfig.uname')" v-model="form.unit">
+                <el-input maxlength="15" autocomplete="off" :placeholder="$t('el.loginConfig.unitName')" v-model="form.unit">
                     <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/unit.png" alt="">

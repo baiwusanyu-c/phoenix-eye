@@ -91,10 +91,11 @@ export const el = {
     subNav:{
         navName0:'链上态势',
         navName1:'项目排行',
-        navName1s1:'合约态势详情',
-        navName1s2:'项目态势详情',
+        navName1s1:'项目排行/合约态势详情',
+        navName1s2:'项目排行/项目态势详情',
         navName2:'风险警告',
         navName3:'项目管理',
+        navName4:'系统配置',
         navName4s1:'风险类型配置',
         navName4s2:'风险评分配置',
     },
