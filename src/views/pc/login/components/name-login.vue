@@ -172,7 +172,7 @@ export default {
                         };
                         this.$root.token = res.access_token;
                         !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
-                        this.$router.push({path: '/riskWarning/list'})
+                        this.$router.push({path: '/blockchainSituation'})
                     }).catch(error => {
                         if (error.code && error.code == 920000001) {
                             this.$parent.delTip = true;

@@ -18,7 +18,7 @@ export const routerOption = {
     routes: [
         {
             path: '/',
-            redirect: '/login'
+            redirect: '/blockchainSituation'
         },
         {
             path: '/',
@@ -34,7 +34,12 @@ export const routerOption = {
                 },
             ]
         },
-
+        {
+            path: '/blockchainSituation',
+            name: 'blockchainSituation',
+            component: () => import('../views/pc/blockchain-situation/blotua-main'),
+            meta: {title: 'el.subNav.navName0'}
+        },
         {
             path: '/login',
             name: 'login',
@@ -85,6 +90,24 @@ export const initRouterConfig = (treeData) => {
  */
 const beforeEachHandle = (router) => {
     router.beforeEach((to, from, next) => {
+        if (to.path === '/login' || getStore('token') === null) {
+            _this.removeCookie('userInfo');
+            _this.removeCookie('token');
+            window.localStorage.removeItem('userInfo')
+            window.localStorage.removeItem('token')
+            window.sessionStorage.clear();
+            // 路由跳转白名单（不需要验证token）
+            const whiteList = ['/login']
+            // 这里必须加这个判断，否则会造成路由跳转死循环，从而无法跳转(用户服务协议 无权限)
+            if(whiteList.includes(to.path)){
+                next()
+            }else{
+                next({
+                    path: '/login',
+                })
+            }
+            return
+        }
         if(store.state.routeConfig.length > 0){
             setTimeout(() => {
                 _this.$i18n.locale = _this.getStore('language')

@@ -5,11 +5,16 @@
 * @update (czh 2021/11/1)
 */
 <template>
-    <div></div>
+    <div>
+
+    </div>
 </template>
 
 <script>
 export default {
   name: "BlotuaMain",
+  mounted() {
+      this.$router.push('/projectRanking')
+  }
 }
 </script>

@@ -256,7 +256,7 @@ export default {
         openDetailContract(params){
             let param = {
                 type:'search',
-                project_contract_id:     55//params
+                project_contract_id:params //55
             }
             this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
         }
