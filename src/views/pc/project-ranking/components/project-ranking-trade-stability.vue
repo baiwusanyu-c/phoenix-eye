@@ -2,7 +2,7 @@
     <div class="chart-box">
         <div class="chart-title">
             <template>
-                <el-select style="width: 110px" v-model="selectValue" @change="changeSelect">
+                <el-select  v-model="selectValue" @change="changeSelect">
                     <el-option
                             v-for="item in options"
                             :key="item.id"
@@ -14,7 +14,7 @@
         </div>
         <div class="chart">
             <div id="tradeStb">
-                <div  class = 'empty-data' v-if="charData.list.length === 0" style="margin-top: 0">
+                <div  class = 'empty-data' v-if="!charData.list || charData.list.length === 0" style="margin-top: 0">
                     <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;" >
                     <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
                 </div>
@@ -62,11 +62,11 @@
                 this.chart = chart
                 chart.data(dv.rows)
                 chart.data(data);
-                chart.scale('date', {
+                chart.scale('create_time', {
                     range: [0, 1],
 
                 });
-                chart.scale('tx_money', {
+                chart.scale('token_balance', {
                     nice: true,
                 });
                 chart.tooltip({
@@ -74,8 +74,8 @@
                     shared: true,
                 });
 
-                chart.area().adjust('stack').position('date*tx_money').color('platform').shape('smooth');
-                chart.line().adjust('stack').position('date*tx_money').color('platform').shape('smooth');
+                chart.area().adjust('stack').position('create_time*token_balance').color('tokenName').shape('smooth');
+                chart.line().adjust('stack').position('create_time*token_balance').color('tokenName').shape('smooth');
 
                 chart.interaction('element-highlight');
                 // 复写 图例筛选 交互。1、点击图例名称 进行 unchecked 状态的切换 2、点击图例 marker，进行 checked 状态的切换（进行聚焦）3、双击 重置状态
@@ -117,20 +117,22 @@
                 _this.charDataInner = []
                 if(currency === '全部'){
                     _this.charData.list.forEach(val=>{
+                        val.list.forEach(re=>re.tokenName = val.token_name)
                         _this.charDataInner = _this.charDataInner.concat(val.list)
                     })
-                    return
+                }else{
+                    _this.charData.list.forEach(val=>{
+                        if(val.token_name === currency){
+                            val.list.forEach(re=>re.tokenName = val.token_name)
+                            _this.charDataInner = _this.charDataInner.concat(val.list)
+                        }
+                    })
                 }
-                _this.charData.list.forEach(val=>{
-                    if(val.token_name === currency){
-                        _this.charDataInner = _this.charDataInner.concat(val.list)
-                    }
-                })
 
                 const dv = new DataSet.DataView().source(_this.charDataInner);
                 dv.transform({
                     type: 'fold',
-                    fields: ['tx_money'], // 展开字段集
+                    fields: ['token_balance'], // 展开字段集
                     key: 'type', // key字段
                     value: 'value', // value字段
                 });
@@ -138,8 +140,8 @@
                     // 渲染圖表
                     this.tradeChart(dv,_this.charDataInner)
                 }else{
-                    // 更新圖表
-                    this.chart.changeData(dv.rows)
+
+                    this.chart.changeData(_this.charDataInner)
                 }
 
             }

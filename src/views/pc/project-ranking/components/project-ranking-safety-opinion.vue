@@ -14,25 +14,26 @@
                             <el-button type="text" @click="lookTextOriginal(opinion.sourceUrl)">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}>></el-button>
                         </div>
                         <div class="safety-opinion-body">
-                            <div class="safety-opinion-body-msg">
-                                <be-ellipsis :elpNum="opinion.message.length - 400 > 0 ? opinion.message.length - 400 : 0"
+                            {{opinion.message.length}}
+                            <div class="safety-opinion-body-msg scrollDiy">
+                                <be-ellipsis :elpNum="opinion.message.length > 400 ? opinion.message.length - 200 : 0"
                                              :expand-trigger="false"
                                              :line-clamp="0"
                                              :content="opinion.message"
                                              :text="opinion.message">
                                 </be-ellipsis>
-
                             </div>
                         </div>
+
                         <div class="safety-opinion-footer">
-                            <span>
+                            <span style="max-width: 80%">
                                 <el-tag
                                         v-for="item in opinion.label"
                                         class="safety-opinion-footer-tag"
                                         :key="item.label"
                                         type="info"
                                         effect="plain">
-                                    <span style="display: flex;justify-content: center;align-items: center;height: 20px">{{ item }}</span>
+                                    <span style="display: flex;justify-content: center;align-items: center;height: 20px;">{{ item }}</span>
                                 </el-tag>
                             </span>
                             <div style="width: 240px;display: flex;justify-content: space-between;align-items: center">
@@ -120,7 +121,8 @@
         justify-content: space-between;
     }
     .safety-opinion-footer-tag{
-        width: 54px;
+        margin-top: 5px;
+        min-width: 54px;
         height: 22px;
         margin-right: 18px;
     }
@@ -156,6 +158,7 @@
         height: 66px;
         width: 100%;
         font-size: 14px;
+        overflow-y: auto;
         color: #5c5c5c;
     }
     .el-divider--horizontal {

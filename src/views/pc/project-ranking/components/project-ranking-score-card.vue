@@ -10,13 +10,16 @@
             <img :src="logoType" alt=""/>
         </div>
         <div class="project-ranking-info">
-            <h3>{{ title }}</h3>
-            <p v-for="(item) in labelConfig" :key="JSON.stringify(item)">
-                {{item.label}}:{{handleData(data,item)}}
-            </p>
-            <p v-if="JSON.stringify(data) === '{}' && this.title === this.$t('el.projectRinking.contractBalance')">
-                {{$t('el.emptyData')}}
-            </p>
+            <h3>{{ title }}  {{platform ? `(` + platform + `)` : ''}}</h3>
+            <div style="max-height: 100px;overflow-y: auto" class="scrollDiy">
+                <p v-for="(item) in labelConfig" :key="JSON.stringify(item)">
+                    {{item.label}}:{{handleData(data,item)}}
+                </p>
+                <p v-if="JSON.stringify(data) === '{}' && this.title === this.$t('el.projectRinking.contractBalance')">
+                    {{$t('el.emptyData')}}
+                </p>
+            </div>
+
         </div>
     </div>
 </template>
@@ -47,13 +50,17 @@ export default {
             return function (data,config){
                 // 对象时
                 if(!Array.isArray(data)){
-                    return data[config.val] ? data[config.val] : this.$t('el.emptyData')
+                    return (data[config.val] || data[config.val] === 0) ? data[config.val] : this.$t('el.emptyData')
                 }
-                return data[config.val][config.valKey] ? data[config.val] : this.$t('el.emptyData')
+                return (data[config.val][config.valKey] || data[config.val][config.valKey] === 0) ? data[config.val] : this.$t('el.emptyData')
             }
         }
     },
     props:{
+        platform:{
+            type:String,
+            default:''
+        },
         title:{
             type:String,
             default:'合约概况'
@@ -81,6 +88,7 @@ export default {
     box-sizing: border-box;
     background: linear-gradient(90deg, #FFFFFF 0%, #E3F2FF 100%);
     border-radius: 4px;
+    margin-right: 20px;
     display: flex;
     align-items: center;
     width: 32.5%;

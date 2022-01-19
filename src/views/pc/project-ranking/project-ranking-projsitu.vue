@@ -84,7 +84,7 @@
             </div>
         </div>
         <!--市场表现-->
-        <div class="projsitu-item">
+        <!--<div class="projsitu-item">
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.marketPerformance.headerTitle') }}</h2>
             </div>
@@ -99,7 +99,7 @@
                 :tx-quantity="mpTxNum"
                 :new-user="mpNewUserNum">
             </project-ranking-market-performance>
-        </div>
+        </div>-->
         <!--舆情安全-->
         <div class="projsitu-item">
             <div class="item-title">
@@ -136,10 +136,10 @@
 
 <script>
 
-import ProjectRankingNumCard from "./components/project-ranking-num-card";
+// import ProjectRankingNumCard from "./components/project-ranking-num-card";
 import ProjectRankingRadar from "./components/project-ranking-radar";
 import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opinion";
-import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance";
+// import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance";
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import DataSet from "@antv/data-set";
 import {Chart, registerGeometryLabelLayout} from "@antv/g2";
@@ -149,10 +149,10 @@ export default {
     name: "project-ranking-projsitu",
     components: {
         BePagination,
-        ProjectRankingNumCard,
+        // ProjectRankingNumCard,
         ProjectRankingRadar,
         ProjectRankingSafetyOpinion,
-        ProjectRankingMarketPerformance,
+       // ProjectRankingMarketPerformance,
     },
     data() {
         return {
@@ -207,9 +207,9 @@ export default {
             return function (data) {
                 if (data) {
                     return [
-                        {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: data.static_testing.score},
-                        {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: data.tx_safety.score},
-                        {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: data.tx_stability.score},
+                        {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: data.static_testing},
+                        {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: data.tx_safety},
+                        {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: data.tx_stability},
                     ]
                 }
                 return []
@@ -228,11 +228,11 @@ export default {
          * 获取舆情安全数据
          */
         getPublicSentimentSecurData() {
+            this.safetyData = []
             const _this = this
             _this.loadingFs = true
             let params = {
-                project_id:3,
-                // project_id: _this.projectId,
+                project_id: _this.projectId -0,
                 page_num: _this.pageParamsFs.pageNum,
                 page_size: _this.pageParamsFs.pageSize,
             }
@@ -355,7 +355,6 @@ export default {
          * 获取项目态势详情数据
          */
         async getProSituData() {
-            await this.getPublicSentimentSecurData()
             // 这是在上级路由存储的数据
             const data = JSON.parse(this.getStore('ContractProjectTs'))
             if (!data) {
@@ -364,6 +363,7 @@ export default {
             }
             // 项目态势基本信息
             this.projectInfo = data.project_info
+
             // 项目检测评分信息
             this.getOutLineData(this.projectInfo)
             // 项目检测评分雷达图
@@ -374,15 +374,16 @@ export default {
                 {key:'yqaq-safetyPublicOptionClass',item: this.$t('el.systemConfigScore.safetyPublicOptionClass'), a: this.projectInfo.safety_opinion.score},
             ]
             this.safetyEvaluatePieData = this.projectInfo.safety_evaluate
+
             // 市场表现数据
-            this.marketPerformance = [
+            /*this.marketPerformance = [
                 {title: this.$t('el.projectRinking.txSumNum'), num: data.market_performance.tx_total},
                 {title: this.$t('el.projectRinking.userSumNum'), num: data.market_performance.user_total},
                 {title: this.$t('el.projectRinking.contractSumNum'), num: data.market_performance.contract_total},
-            ]
+            ]*/
             // 市场表现图表数据
-            this.mpTxNum = data.market_performance.tx_amounts
-            this.mpNewUserNum = data.market_performance.new_user_nums
+            // this.mpTxNum = data.market_performance.tx_amounts
+            // this.mpNewUserNum = data.market_performance.new_user_nums
             // 获取合约安全数据
             await this.getContractSecurData()
             // 获取舆情安全数据
@@ -396,29 +397,6 @@ export default {
             this.outlineInfo.txSecurity = data.tx_safety.text
             this.outlineInfo.txStability = data.tx_stability.text
             this.outlineInfo.feeling = data.safety_opinion.text
-            /*const attackList = `<span class="height-light">闪电贷攻击</span>、<span class="height-light">重入攻击</span>`
-            this.outlineInfo.staticDetection = `
-                ${this.$t('el.projectRinking.outlineSDTxt')}
-                <span class="height-light">10</span>
-                  ${this.$t('el.projectRinking.outlineSDH')} ，
-                 <span class="height-light">10</span>
-                  ${this.$t('el.projectRinking.outlineSDM')} ，
-                 <span class="height-light">10</span>
-                  ${this.$t('el.projectRinking.outlineSDL')}
-            `
-            this.outlineInfo.txSecurity = `
-                 ${this.$t('el.projectRinking.outlineTS')}
-                <span class="height-light">1024笔</span>
-                 ${this.$t('el.projectRinking.outlineTSM')}
-                ${attackList}
-            `
-            this.outlineInfo.txStability = `
-                 ${this.$t('el.projectRinking.outlineTST')}
-                <span class="height-light">20%</span>`
-            this.outlineInfo.feeling = `
-                 ${this.$t('el.projectRinking.outlineTS')}
-                <span class="height-light">20%条</span>
-                 ${this.$t('el.projectRinking.outlineFL')}  `*/
         },
 
         /**
@@ -433,9 +411,10 @@ export default {
             // 坐标label缓存
             const labelCache = []
             function limitInShape(items, labels) {
-                labels.forEach((labelGroup, index) => {
-                    const labelBBox = labelGroup.getCanvasBBox()
+                labels.forEach((labelGroup) => {
                     labelGroup.cfg.children[0].cfg.visible = false
+                    /*
+                      const labelBBox = labelGroup.getCanvasBBox()
                     let offsetX = labelCache[index].point.x
                     let offsetY = labelCache[index].point.y
                     if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
@@ -454,9 +433,9 @@ export default {
                         offsetY = offsetY + labelBBox.height/2 + 10
                         offsetX = offsetX - 8
 
-                    }
+                    }*/
                     // 添加分数label
-                    labelGroup.addShape('text', {
+                    /*labelGroup.addShape('text', {
                         attrs: {
                             x: offsetX,
                             y: offsetY,
@@ -466,7 +445,7 @@ export default {
                             fontWeight: 'bold',
                             fontSize: 16
                         },
-                    })
+                    })*/
                 })
 
                 chart.getCanvas().cfg.children[0].addShape('text', {
@@ -501,7 +480,7 @@ export default {
             chart.data(dv.rows);
             chart.scale('score', {
                 min: 0,
-                max: 80,
+                max: 100,
             });
             chart.coordinate('polar', {
                 radius: 1,

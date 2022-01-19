@@ -52,8 +52,8 @@ export const routerOption = {
 const metaTitleDict = {
     LSTS: 'el.subNav.navName0',
     XMPH: 'el.subNav.navName1',
-    XMPH_XMXQ: "el.subNav.navName1s1",
-    XMPH_HYXQ: "el.subNav.navName1s2",
+    XMPH_XMXQ: "el.subNav.navName1s2",
+    XMPH_HYXQ: "el.subNav.navName1s1",
     FXJG: 'el.subNav.navName2',
     FXJG_XQ: "el.subNav.navName2",
     FXJG_LB: "el.subNav.navName2",

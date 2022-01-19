@@ -85,8 +85,8 @@ export default {
             const labelCache = []
             function limitInShape(items, labels) {
                 labels.forEach((labelGroup, index) => {
-                    const labelBBox = labelGroup.getCanvasBBox()
                     labelGroup.cfg.children[0].cfg.visible = false
+                   /* const labelBBox = labelGroup.getCanvasBBox()
                     let offsetX = labelCache[index].point.x
                     let offsetY = labelCache[index].point.y
                     if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
@@ -112,9 +112,10 @@ export default {
                             fontWeight: 'bold',
                             fontSize: 16
                         },
-                    })
+                    })*/
                 })
-                chart.getCanvas().cfg.children[0].addShape('text', {
+                if(!chart) return
+                chart?.getCanvas().cfg.children[0].addShape('text', {
                     attrs: {
                         x: (labelCache[3].point.x + labelCache[5].point.x)/2 + 40,
                         y: (labelCache[3].point.y + labelCache[5].point.y)/2 + 25,
@@ -152,7 +153,7 @@ export default {
             chart.data(dv.rows);
             chart.scale('score', {
                 min: 0,
-                max: 80,
+                max: 100,
             });
             chart.coordinate('polar', {
                 radius:1,

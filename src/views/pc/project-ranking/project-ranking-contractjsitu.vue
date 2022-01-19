@@ -9,42 +9,55 @@
         <!--态势概要-->
         <div class="contractjsitu-item" style="margin-bottom: 20px">
             <div class="item-res">
-                {{ $t('el.projectRinking.contract') }}：{{ resData.contract_address || $t('el.emptyData') }}
-                <div class="platform-logo" style="margin-left: 15px;" v-if="resData.platform">
-                    <img :src="logoType(resData.platform)" alt=""/>
-                    {{ resData.platform && resData.platform.toUpperCase() }}
+                {{ $t('el.projectRinking.contract') }}：{{ resData.contract_info.contract_info || $t('el.emptyData') }}
+                <div class="platform-logo" style="margin-left: 15px;" v-if="resData.contract_info.platform">
+                    <img :src="logoType(resData.contract_info.platform)" alt=""/>
+                    {{ resData.contract_info.platform && resData.contract_info.platform.toUpperCase() }}
                 </div>
             </div>
-            <div class="item-res-tag">
-                <div class="platform-logo" v-for="(item) in resData.label" :key="item">
+            <div class="item-res-tag" v-if="resData.contract_info.label && resData.contract_info.label.length > 0">
+                <div class="platform-logo" v-for="(item) in resData.contract_info.label" :key="item">
                     {{ item }}
                 </div>
             </div>
             <div class="contractjsitu-item-outline">
-                <project-ranking-score-card :title="$t('el.projectRinking.safetyAssessment') +  safetyEvaluate(resData.scores)"
-                                            :label-config="aqpgConfig"
-                                            :data="resData.scores"></project-ranking-score-card>
-                <project-ranking-score-card :title="$t('el.projectRinking.contractOverview')"
-                                            :label-config="hyGkConfig"
-                                            :data="resData.contract_profile"></project-ranking-score-card>
+                <project-ranking-score-card
+                    :title="$t('el.projectRinking.safetyAssessment') +  safetyEvaluate(resData.scores)"
+                    :label-config="aqpgConfig"
+                    :data="resData.scores"></project-ranking-score-card>
+                <!--                <project-ranking-score-card :title="$t('el.projectRinking.contractOverview')"
+                                                            :label-config="hyGkConfig"
+                                                            :data="resData.contract_profile"></project-ranking-score-card>-->
                 <project-ranking-score-card :title="$t('el.projectRinking.contractBalance')"
                                             :label-config="hyYeConfig"
+                                             :platform="resData.contract_info && resData.contract_info.platform"
                                             :data="resData.contract_balance"></project-ranking-score-card>
             </div>
         </div>
         <!--静态检测-->
-        <!--        <div class="contractjsitu-item">
+        <div class="contractjsitu-item">
             <div class="item-title">
-                <h2>{{ $t('el.projectRinking.staticDetection') }} value</h2>
+                <h2>{{ $t('el.projectRinking.staticDetection') }} </h2>
             </div>
             <div class="contractjsitu-item-static">
-               <p @click="openWeb">{{ $t('el.detail') }} >></p>
+<!--                <p @click="openWeb(resData.contract_info.contract_info)">{{ $t('el.detail') }} >></p>-->
                 <div style="display: flex">
-                    <div class="static-pie" id="static_pie"></div>
-                    <div class="static-bar" id="static_bar"></div>
+                    <div class="static-pie" id="static_pie" style="height: 300px">
+                        <div v-if="pieData.length === 0" style="display: flex;justify-content: center;align-items: center;flex-direction: column">
+                            <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
+                            <p style="line-height: 25px;color: #909399">{{ $t('el.emptyData') }}</p>
+                        </div>
+                    </div>
+                    <div class="static-bar" id="static_bar" >
+                        <div v-if="pieData.length === 0"
+                             style="display: flex;justify-content: center;align-items: center;flex-direction: column;position: absolute;left: 50%;transform: translateX(-50%)">
+                            <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
+                            <p style="line-height: 25px;color: #909399">{{ $t('el.emptyData') }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>-->
+        </div>
         <!--交易安全-->
         <div class="contractjsitu-item">
             <div class="item-title">
@@ -150,7 +163,8 @@
                                         :key="item">{{ item }}
                                 </el-tag>
                             </div>
-                            <div style="display: flex;flex-direction: column;justify-content: center;align-items: center"
+                            <div
+                                style="display: flex;flex-direction: column;justify-content: center;align-items: center"
                                 v-else>{{ $t('el.emptyData') }}
                             </div>
                         </template>
@@ -181,13 +195,15 @@
                     :total='pageParams.total'
                     @updatePage="pageChange"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{ pageParams.total }}{{ $t('el.piece') }}</span>
+                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{
+                            pageParams.total
+                        }}{{ $t('el.piece') }}</span>
                     <span slot="next"></span>
                 </be-pagination>
             </div>
         </div>
         <!--交易稳定-->
-        <div class="contractjsitu-item" >
+        <div class="contractjsitu-item">
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.txStability') }}</h2>
             </div>
@@ -199,7 +215,7 @@
             </div>
         </div>
         <!--高频调用-->
-        <div class="contractjsitu-item">
+        <!--        <div class="contractjsitu-item">
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.highCall') }}</h2>
             </div>
@@ -245,7 +261,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-        </div>
+        </div>-->
     </div>
 </template>
 
@@ -264,7 +280,7 @@ export default {
         return {
             loading: false,
             // 合约基本信息
-            resData: {},
+            resData: {contract_info:{}},
             // 合约余额配置
             hyYeConfig: [],
             // 合约概况配置
@@ -280,20 +296,9 @@ export default {
             },
 
             // 饼图数据
-            pieData: [
-                {item: '低危', count: 40, percent: 0.4},
-                {item: '中危', count: 21, percent: 0.21},
-                {item: '高危', count: 17, percent: 0.17},
-            ],
+            pieData: [],
             // 条形图
-            barData: [
-                {type: '代码规范', value: 34},
-                {type: '函数调用', value: 85},
-                {type: '业务逻辑', value: 103},
-                {type: '溢出检测', value: 142},
-                {type: '异常可达状态', value: 251},
-                {type: 'ERC20规范', value: 367},
-            ],
+            barData: [],
             // 饼图数据
             pieColor: {
                 '低危': '#5D7092',
@@ -307,9 +312,9 @@ export default {
             // 交易安全表格数据
             tableDataTxSecur: [],
             // 交易安全表格loading
-            loadingTxS:false,
+            loadingTxS: false,
             // 交易稳定loading
-            loadingTxST:false,
+            loadingTxST: false,
             // 交易安全表格分页参数
             pageParams: {
                 currentPage: 1,
@@ -318,36 +323,78 @@ export default {
                 total: 0
             },
             // 高频调用表格数据
-            tableDataHC:[],
+            tableDataHC: [],
             // 高频调用loading
-            loadingHC:false,
+            loadingHC: false,
             // 交易安全图表数据
-            txStabilityChartData: {},
+            txStabilityChartData: {list:[]},
             //交易安全图表代币选择下拉
-            txStabilitySelect:[]
+            txStabilitySelect: []
 
 
         }
     },
     computed: {
+        stateSuccess() {
+            return function (val) {
+                const lang = this.getStore('language')
+                if (lang === 'zh_CN') {
+                    if (val !== '成功') {
+                        return {
+                            color: '#FA6400'
+                        }
+                    }
+                    return {
+                        color: '#44D7B6'
+                    }
+                } else {
+                    if (val !== 'success') {
+                        return {
+                            color: '#FA6400'
+                        }
+                    }
+                    return {
+                        color: '#44D7B6'
+                    }
+                }
+
+            }
+        },
+        stateTxt(){
+            return function (val){
+                const lang = this.getStore('language')
+                if(lang === 'zh_CN'){
+                    if(val !== '成功'){
+                        return this.$t('el.riskConfig.stateFailed')
+                    }
+                    return this.$t('el.riskConfig.stateSuccess')
+                }else{
+                    if(val !== 'success'){
+                        return this.$t('el.riskConfig.stateFailed')
+                    }
+                    return this.$t('el.riskConfig.stateSuccess')
+                }
+            }
+        },
         logoType() {
             return function (platform) {
                 return this.imgCodeDict[platform]
             }
         },
-        safetyEvaluate(){
+        safetyEvaluate() {
             return function (data) {
                 return (data && data.safety_evaluate) ? data.safety_evaluate : ''
             }
         }
     },
+
     mounted() {
         this.contractAddressId = this.$route.query.param || this.$route.query.contract_address_id
         this.getContractSituData()
-        // this.$nextTick(()=>{
-        //     this.renderStaticPie()
-        //     this.renderStaticBar()
-        // })
+         this.$nextTick(()=>{
+             this.renderStaticPie()
+             this.renderStaticBar()
+         })
     },
     methods: {
         /**
@@ -360,7 +407,7 @@ export default {
          * 跳轉到頁面
          */
         openWeb(params) {
-            this.$openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`, 'view_window')
+            this.$openWindow(`#/riskWarning/detail?tx_hash=${params}`, 'view_window')
         },
         /**
          * 渲染静态检测饼图
@@ -413,9 +460,10 @@ export default {
                 height: 300,
             });
             chart.data(this.barData);
+            let barD = JSON.parse(JSON.stringify(this.barData))
             chart.scale({
                 value: {
-                    max: 500,
+                    max: barD.sort((a, b) => a.value - b.value).slice().pop().value,
                     min: 0,
                     alias: '问题数量',
                 },
@@ -455,7 +503,7 @@ export default {
          * 数据重置
          */
         resetData() {
-            this.resData = {}
+            this.resData = {contract_info:{}}
             this.tableDataTxSecur = []
             this.pageParams = {
                 currentPage: 1,
@@ -472,7 +520,7 @@ export default {
             this.loadingTxS = false
             this.loadingTxST = false
             this.txStabilitySelect = []
-            this.txStabilityChartData = {}
+            this.txStabilityChartData = {list:[]}
         },
         /**
          * 获取合约态势详情数据
@@ -500,40 +548,56 @@ export default {
                 return
             }
             // 合约基本信息数据
-            this.resData = data.contract_info
+            this.resData = data
             // 合约余额配置
-            if(this.resData.contract_balance){
-                this.resData.contract_balance.forEach((val,index)=>{
-                    this.hyYeConfig.push( {label: val.token_name, val:index,valKey:val.balance})
+            if (this.resData.contract_balance) {
+                Object.keys(this.resData.contract_balance).forEach((val,) => {
+                    this.hyYeConfig.push({label: val, val: val, valKey: this.resData.contract_balance[val] + val + ''})
                 })
             }
-
+            // 静态检测餅圖数据
+            const sum = this.resData.static_testing.high_risk_count + this.resData.static_testing.low_risk_count + this.resData.static_testing.middle_risk_count
+            this.pieData = []
+            if(sum > 0){
+                this.pieData = [
+                    {item: '低危', count: this.resData.static_testing.low_risk_count,percent: (this.resData.static_testing.low_risk_count/sum).toFixed(2) - 0},
+                    {item: '中危', count: this.resData.static_testing.middle_risk_count, percent: (this.resData.static_testing.middle_risk_count/sum).toFixed(2) - 0},
+                    {item: '高危', count: this.resData.static_testing.high_risk_count, percent: (this.resData.static_testing.high_risk_count/sum).toFixed(2) - 0},
+                ]
+            }
+            // 静态检测餅條形圖数据
+            this.barData = []
+            Object.keys(this.resData.static_testing.kind_count_map).forEach(val=>{
+                this.barData.push( {type: val, value: this.resData.static_testing.kind_count_map[val]})
+            })
             // 交易安全
             await this.getTxSecurityData()
             // 交易稳定
+            this.loadingTxST = true
             await this.getTxStabilityData()
             // 高频调用数据
-            this.tableDataHC = data.high_call
+            // this.tableDataHC = data.high_call
             this.loadingHC = false
         },
         /**
          * 获取交易安全数据
          */
-         getTxSecurityData(){
+        getTxSecurityData() {
             const _this = this
             _this.loadingTxS = true
             let params = {
-                page_num:this.pageParams.pageNum,
-                page_size:this.pageParams.pageSize,
-                platform:this.resData.platform,
+                page_num: this.pageParams.pageNum,
+                page_size: this.pageParams.pageSize,
+                platform: this.resData.contract_info.platform,
+                contract_address: this.resData.contract_info.contract_info,
             }
-            getProjWarning(params).then(res=>{
-                if(res){
+            getProjWarning(params).then(res => {
+                if (res) {
                     _this.tableDataTxSecur = res.data.page_infos
-                    _this.pageParams.total =  res.data.total
+                    _this.pageParams.total = res.data.total
                     _this.loadingTxS = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 _this.loadingTxS = false
                 _this.$message.error(err.message)
                 console.error(err)
@@ -542,8 +606,13 @@ export default {
         /**
          * 获取交易稳定数据
          */
-        getTxStabilityData(){
-            const _this = this
+        getTxStabilityData() {
+            this.txStabilitySelect = Object.keys(this.resData.tx_stability)
+            this.txStabilityChartData = {list:this.txStabilitySelect.map(val=>{
+                return {token_name:val,list:this.resData.tx_stability[val]}
+              })}
+            this.loadingTxST = false
+            /*const _this = this
             _this.loadingTxST = false
             let params = {
                 contract_address:this.contractAddressId
@@ -558,7 +627,7 @@ export default {
                 _this.loadingTxST = false
                 _this.$message.error(err.message)
                 console.error(err)
-            })
+            })*/
         },
         /**
          * 分页方法
@@ -625,7 +694,7 @@ export default {
         .contractjsitu-item-outline {
             display: flex;
             margin-top: 15px;
-            justify-content: space-between;
+            justify-content: flex-start;
         }
 
         .contractjsitu-item-static {
@@ -640,10 +709,15 @@ export default {
 
             .static-pie {
                 flex: 1;
+                height: 300px;
             }
 
             .static-bar {
                 flex: 1;
+                height: 300px;
+                position: relative;
+                left: 0;
+                top: 0;
             }
 
             p {

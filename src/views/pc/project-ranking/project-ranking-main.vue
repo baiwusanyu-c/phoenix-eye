@@ -5,7 +5,7 @@
 * @update (czh 2021/11/1)
 */
 <template>
-    <div class="project-ranking-main">
+    <div class="project-ranking-main" v-loading="loadingSearch">
         <div class="project-ranking-search">
             <el-input :placeholder="$t('el.projectRinking.searchP')" v-model="searchParams">
                 <template slot="append">
@@ -55,7 +55,18 @@
                     :label="$t('el.projectRinking.contractNum')"
                     align="center">
                     <template slot-scope="scope">
-                        {{scope.row.contract_num || $t('el.emptyData')}}
+                        <el-popover
+                            placement="top"
+                            trigger="hover"
+                            v-model="scope.row.showContract_num">
+                            <p v-for="item in scope.row.contract_address_list"
+                               style="cursor: pointer"
+                               @click="openDetailContract(item.project_contract_id)"
+                               :key="item.project_contract_id">
+                                {{ item.contract_address}}
+                            </p>
+                            <span slot="reference" style="color: #1496F2;cursor: pointer">{{scope.row.contract_num || $t('el.emptyData')}}</span>
+                        </el-popover>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -73,7 +84,7 @@
                     :label="$t('el.projectRinking.txScale')"
                     align="center" >
                     <template slot-scope="scope">
-                        {{scope.row.safety_score || $t('el.emptyData')}}
+                        $ {{scope.row.safety_score || $t('el.emptyData')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -116,6 +127,7 @@ export default {
             currentCurrency:'all',
             tableData:[],
             loading:false,
+            loadingSearch:false,
             // 分页参数
             pageParams:{
                 currentPage: 1,
@@ -149,8 +161,7 @@ export default {
                 type:'search',
                 param:this.searchParams
             }
-            this.$router.push({path: `/projectRanking/project`, query: params})
-            return
+
             // 从搜索框搜索，前端分不清是项目还是合约，放到param给后端判断
             this.searchDetail(params,'search',(type)=>{
                 this.$router.push({path: `/projectRanking/${type}`, query: params})
@@ -166,18 +177,21 @@ export default {
             const _this = this
             let param = JSON.parse(JSON.stringify(params))
             delete param.type
+            _this.loadingSearch = true
             getContractProjectTs(param).then(res=>{
                 if(res){
                     // 存储数据
                     _this.setStore('ContractProjectTs',JSON.stringify(res.data))
                     if(type === 'search'){
                         // 后台返回的搜索类型（合约还是项目）
-                    _this.$isFunction(cb) && cb(res.type)
+                    _this.$isFunction(cb) && cb(res.data.type)
                     }else{
                     _this.$isFunction(cb) && cb()
                     }
+                    _this.loadingSearch = false
                 }
             }).catch(err=>{
+                _this.loadingSearch = false
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -198,10 +212,14 @@ export default {
             getProjectRankList(params).then(res=>{
                 if(res){
                     _this.tableData = res.data.page_info
+                    _this.tableData.map(val=>{
+                        val.showContract_num = false
+                    })
                     _this.pageParams.total =  res.data.total
                     _this.loading = false
                 }
             }).catch(err=>{
+                _this.loading = false
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -238,7 +256,7 @@ export default {
         openDetailContract(params){
             let param = {
                 type:'search',
-                contract_address_id:params
+                project_contract_id:     55//params
             }
             this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
         }
