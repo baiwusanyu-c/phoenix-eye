@@ -13,7 +13,29 @@
                 </template>
             </el-input>
         </div>
-        <div class="project-ranking-list" v-if="!$route.query.type">
+        <div class="project-ranking-search-complex" v-show="projectOnly === false">
+            <div class="complex-big-title">{{ $t('el.projectRinking.chose') }}</div>
+            <div class="complex-title">{{ $t('el.projectRinking.choseText') }}</div>
+            <div  class="complex-card-class">
+                <div class="complex-card" v-for="(o,index) in projectOrContractInfo" :key="index" @click="projectOrContract(o)">
+                    <div class="complex-card-head">
+                        <div class="complex-card-title" v-if="searchType === 'contract'">{{o.platform}}</div>
+                        <div class="complex-card-contract" v-if="searchType === 'contract'">
+                            {{ $t('el.projectRinking.projectName') }}
+                            <span>{{o.project_name}}</span>
+                        </div>
+                        <div class="complex-card-project" v-if="searchType === 'project'">
+                            <div class="complex-card-project-title">{{ $t('el.projectRinking.projectName') }}</div>
+                            <div>{{o.project_name}}</div>
+                        </div>
+                    </div>
+                    <div class="complex-card-footer">
+                        <div style="padding-left: 23px" v-if="searchType === 'contract'">{{o.contract_address}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="project-ranking-list" v-if="!$route.query.type && searchType === ''">
             <el-button-group>
                 <el-button type="primary" @click = "filterClick('all')" :class="activeClass('all')">{{ $t('el.projectRinking.allProJ') }}</el-button>
                 <el-button type="primary" @click = "filterClick('eth')" :class="activeClass('eth')">ETH</el-button>
@@ -110,7 +132,7 @@
                 <span slot="next"></span>
             </be-pagination>
         </div>
-       <router-view></router-view>
+        <router-view v-show="searching === false"></router-view>
     </div>
 </template>
 
@@ -125,10 +147,19 @@ export default {
     data() {
         return {
             searchParams:'',
+            // 搜索触发
+            searching:false,
+            // 搜索时返回的类型
+            searchType:'',
             currentCurrency:'all',
             tableData:[],
             loading:false,
             loadingSearch:false,
+            // 获取搜索时的数据
+            contractObj: {info:[]},
+            projectObj: {},
+            // 判断搜索到的数据info数组长度是否为1
+            projectOnly:true,
             // 分页参数
             pageParams:{
                 currentPage: 1,
@@ -138,6 +169,15 @@ export default {
             },
         }
     },
+    watch:{
+        searchParams(){
+            if(this.searchParams === '' && this.getParams === ''){
+                this.projectOnly = true
+                this.searchType = ''
+                this.$router.push('/projectRanking')
+            }
+        }
+    },
     computed:{
         activeClass() {
             return function (type){
@@ -145,6 +185,15 @@ export default {
                     return 'primary'
                 }
                 return 'default'
+            }
+        },
+        projectOrContractInfo(){
+            if(this.searchType === 'project'){
+                return this.projectObj.info
+            }else if(this.searchType === 'contract'){
+                return this.contractObj.info
+            }else{
+                return {info:[]}
             }
         }
     },
@@ -163,14 +212,35 @@ export default {
          * 搜索方法
          */
         search(){
+            this.searching = true
             let params = {
                 type:'search',
                 param:this.searchParams
             }
-
             // 从搜索框搜索，前端分不清是项目还是合约，放到param给后端判断
             this.searchDetail(params,'search',(type)=>{
-                this.$router.push({path: `/projectRanking/${type}`, query: params})
+                this.searchType = type
+                if( type === 'contract'){
+
+                    this.contractObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
+                    if(this.contractObj.info.length === 1){
+                        this.projectOnly = true
+                        this.openDetailContract(this.contractObj.info[0].project_contract_id)
+                    }else if(this.contractObj.info.length > 1){
+                        this.projectOnly = false
+                    }
+
+                }else if(type === 'project'){
+
+                    this.projectObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
+                    if(this.projectObj.info.length === 1){
+                        this.projectOnly = true
+                        this.openDetailProject(this.projectObj.info[0].project_id)
+                    }else if(this.projectObj.info.length > 1){
+                        this.projectOnly = false
+                    }
+
+                }
             })
         },
         /**
@@ -254,6 +324,7 @@ export default {
                 type:'search',
                 project_id:params
             }
+            console.log(params)
             this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/project', query: param}))
         },
         /**
@@ -264,7 +335,18 @@ export default {
                 type:'search',
                 project_contract_id:params //55
             }
+            console.log(params)
             this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
+        },
+
+        projectOrContract(o){
+            let type = this.searchType
+            this.$router.push('/projectRanking')
+            if(type === 'contract'){
+                this.openDetailContract(o.project_contract_id)
+            }else if(type === 'project'){
+                this.openDetailProject(o.project_id)
+            }
         }
     },
 }
@@ -303,6 +385,85 @@ export default {
             }
             &:hover{
                 background: $mainColor3;
+            }
+        }
+    }
+    .project-ranking-search-complex{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .complex-big-title{
+            font-size: 24px;
+            font-weight: 500;
+            color: #333333;
+            line-height: 24px;
+        }
+        .complex-title{
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #777777;
+            line-height: 24px;
+        }
+        .complex-card-class{
+            width: 100%;
+            flex-direction: row;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 24px;
+        }
+        .complex-card{
+            cursor: pointer;
+            overflow-x: hidden;
+            width: 100%;
+            height: 100px;
+            background: #FFFFFF;
+            border-radius: 4px;
+            .complex-card-head{
+                margin: 18px 0 10px;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .complex-card-title{
+                    padding-left:23px;
+                    height: 32px;
+                    font-size: 24px;
+                    font-weight: 500;
+                    color: #333333;
+                    line-height: 32px;
+                }
+                .complex-card-project{
+                    padding: 0 23px;
+                    height: 32px;
+                    font-size: 24px;
+                    font-weight: 500;
+                    color: #333333;
+                    line-height: 32px;
+                    .complex-card-project-title{
+                        color: #777777;
+                        font-weight: 400;
+                        font-size: 18px;
+                    }
+                }
+                .complex-card-contract{
+                    padding: 0 23px;
+                    height: 24px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #777777;
+                    line-height: 24px;
+                }
+            }
+            .complex-card-footer{
+                width: 100%;
+                height: 24px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #777777;
+                line-height: 24px;
             }
         }
     }
