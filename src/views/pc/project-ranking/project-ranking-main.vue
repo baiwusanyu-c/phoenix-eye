@@ -146,7 +146,7 @@ export default {
     data() {
         return {
             searchParams:'',
-            // 卡片接收所搜索的地址
+            // 搜索触发
             searching:false,
             // 搜索时返回的类型
             searchType:'',
@@ -170,7 +170,7 @@ export default {
     },
     watch:{
         searchParams(){
-            if(this.searchParams === '' && this.searching){
+            if(this.searchParams === '' && this.getParams === ''){
                 this.projectOnly = true
                 this.searchType = ''
                 this.$router.push('/projectRanking')
@@ -214,7 +214,6 @@ export default {
             // 从搜索框搜索，前端分不清是项目还是合约，放到param给后端判断
             this.searchDetail(params,'search',(type)=>{
                 this.searchType = type
-                let getID = 0
                 if( type === 'contract'){
 
                     this.contractObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
@@ -233,7 +232,6 @@ export default {
                         this.openDetailProject(this.projectObj.info[0].project_id)
                     }else if(this.projectObj.info.length > 1){
                         this.projectOnly = false
-                        console.log(this.projectObj)
                     }
 
                 }
@@ -334,8 +332,10 @@ export default {
             console.log(params)
             this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
         },
+
         projectOrContract(o){
             let type = this.searchType
+            this.$router.push('/projectRanking')
             if(type === 'contract'){
                 this.openDetailContract(o.project_contract_id)
             }else if(type === 'project'){
