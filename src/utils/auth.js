@@ -102,9 +102,10 @@ Vue.prototype.setCookie = (CookieKey, cookie) => {
     /**
      * 删除cookie
      */
-Vue.prototype.removeCookie = CookieKey => {
-    return Cookies.remove(CookieKey)
+export const removeCookie = (CookieKey)=>{
+        return Cookies.remove(CookieKey)
 }
+Vue.prototype.removeCookie = removeCookie
 
 Array.prototype.remove = function(obj) {
     for (var i = 0; i < this.length; i++) {

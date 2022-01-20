@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import _this from '../main.js'
 import {getRouterInfo} from "../api/login";
-import {getStore, isString} from "../utils/auth";
+import {getStore, isString, removeCookie} from "../utils/auth";
 import store from "../store/store";
 
 Vue.use(Router);
@@ -91,8 +91,8 @@ export const initRouterConfig = (treeData) => {
 const beforeEachHandle = (router) => {
     router.beforeEach((to, from, next) => {
         if (to.path === '/login' || getStore('token') === null) {
-            _this.removeCookie('userInfo');
-            _this.removeCookie('token');
+            removeCookie('userInfo');
+            removeCookie('token');
             window.localStorage.removeItem('userInfo')
             window.localStorage.removeItem('token')
             window.sessionStorage.clear();

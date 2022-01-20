@@ -84,7 +84,7 @@
                     :label="$t('el.projectRinking.txScale')"
                     align="center" >
                     <template slot-scope="scope">
-                        $ {{scope.row.safety_score || $t('el.emptyData')}}
+                         {{scope.row.safety_score ? '$' + scope.row.safety_score : $t('el.emptyData')}}
                     </template>
                 </el-table-column>
                 <el-table-column
