@@ -237,6 +237,11 @@ export const el = {
         contractOverview:'合约概况',
         contractBalance:'合约余额',
         safetyAssessment:'安全评估',
+
+        chose:'选择链平台',
+        choseText:'查询到多个链平台包含地址，选择其中一个进行查询',
+        projectName:'所属项目: ',
+
         marketPerformance:{
             headerTitle:'市场表现',
             tradeVolume:'总交易量:',
