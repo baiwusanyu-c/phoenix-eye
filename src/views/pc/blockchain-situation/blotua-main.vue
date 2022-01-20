@@ -97,7 +97,7 @@
                 </div>
                 <!--       风险交易趋势         -->
                 <div class="yxfx-line">
-                     <p>风险交易趋势</p>
+                     <p>{{ $t('el.blotua.jyfxqs') }}</p>
                     <div id="yxfx_line"></div>
                 </div>
             </div>
@@ -111,19 +111,26 @@
                         <tr class="blotua-table-header">
                             <td v-for="item in jxfxHeader" :key="item + 'jyfx'">{{ item }}</td>
                         </tr>
-                        <tr class="blotua-table-col">
-                            <td style="display: flex;justify-content: center">
-                                <div class="index">01</div>
+                        <tr class="blotua-table-col"
+                            style="height: 45px;"
+                            v-for="(item,index) in warningRisk" :key="item.tx_hash">
+                            <td style="display: flex;justify-content: center;line-height: 45px">
+                                <div class="index" >{{ index }}</div>
                                 <be-ellipsis-copy
-                                    targetStr="0x1231230x280x1231230x2800x1231230x280x1231230x280x1231230x280x1231230x280x1231230x280x1231230x28x1231230x28"
+                                    :targetStr="item.tx_hash"
                                     :is-ellipsis="true"
                                     :isShowCopyBtn="false"
                                     fontLength="8"
                                     endLength="8">
                                 </be-ellipsis-copy>
                             </td>
-                            <td>55</td>
-                            <td>3分钟前</td>
+                            <td>{{ item.risk_score }}</td>
+                            <td>
+                                <el-tooltip placement="top" effect="light">
+                                    <span slot="content">UTC：{{beijing2utc(item.tx_time)}}</span>
+                                    <span class="cursor">{{formatDate($createDate(item.tx_time))}}</span>
+                                </el-tooltip>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -351,6 +358,7 @@
 <script>
 import { Chart } from '@antv/g2';
 import {getContractAudit, getTxFxQs, getTxNum} from "../../../api/blotua";
+import {getProjWarning} from "../../../api/risk-warning";
 
 export default {
     name: "BlotuaMain",
@@ -362,46 +370,22 @@ export default {
             scrollConfig: {},
             lineData:[],
             txTotal:0,
-            contractAudit:[]
+            contractAudit:[],
+            warningRisk:[]
         }
     },
     created() {
         this.loginUser = JSON.parse(this.getStore('userInfo')).username
-        this.xmphHeader = ['排行', '项目名称', '安全评分', '项目规模']
-        this.jxfxHeader = ['交易哈希', '安全评分', '时间']
-        this.lineData =  [
-            { month: 'Jan', city: 'Tokyo', temperature: 7 },
-            { month: 'Jan', city: 'London', temperature: 3.9 },
-            { month: 'Feb', city: 'Tokyo', temperature: 6.9 },
-            { month: 'Feb', city: 'London', temperature: 4.2 },
-            { month: 'Mar', city: 'Tokyo', temperature: 9.5 },
-            { month: 'Mar', city: 'London', temperature: 5.7 },
-            { month: 'Apr', city: 'Tokyo', temperature: 14.5 },
-            { month: 'Apr', city: 'London', temperature: 8.5 },
-            { month: 'May', city: 'Tokyo', temperature: 18.4 },
-            { month: 'May', city: 'London', temperature: 11.9 },
-            { month: 'Jun', city: 'Tokyo', temperature: 21.5 },
-            { month: 'Jun', city: 'London', temperature: 15.2 },
-            { month: 'Jul', city: 'Tokyo', temperature: 25.2 },
-            { month: 'Jul', city: 'London', temperature: 17 },
-            { month: 'Aug', city: 'Tokyo', temperature: 26.5 },
-            { month: 'Aug', city: 'London', temperature: 16.6 },
-            { month: 'Sep', city: 'Tokyo', temperature: 23.3 },
-            { month: 'Sep', city: 'London', temperature: 14.2 },
-            { month: 'Oct', city: 'Tokyo', temperature: 18.3 },
-            { month: 'Oct', city: 'London', temperature: 10.3 },
-            { month: 'Nov', city: 'Tokyo', temperature: 13.9 },
-            { month: 'Nov', city: 'London', temperature: 6.6 },
-            { month: 'Dec', city: 'Tokyo', temperature: 9.6 },
-            { month: 'Dec', city: 'London', temperature: 4.8 },
-        ];
-
+        this.xmphHeader = ['排行', '项目名称', this.$t('el.projectRinking.score'), '项目规模']
+        this.jxfxHeader = [this.$t('el.riskConfig.tableHeader.txHash'), this.$t('el.projectRinking.score'), this.$t('el.blotua.time')]
     },
     mounted() {
         this.$nextTick(()=>{
             this.getTxNumToDay()
-            //this.getLineData()
+            this.getLineData()
             this.getContractAuditData()
+            this.getWarningRiskData()
+            this.getFxYqData()
         })
     },
     methods: {
@@ -409,18 +393,19 @@ export default {
          * 渲染折线图
          */
         renderLine(){
+            const _this = this
             const chart = new Chart({
                 container: 'yxfx_line',
                 autoFit: true,
-                height: 300,
+                height: 270,
             });
             this.chart = chart
             chart.data(this.lineData);
             chart.scale({
-                month: {
+                create_time: {
                     range: [0, 1],
                 },
-                temperature: {
+                count: {
                     nice: true,
                 },
             });
@@ -431,24 +416,43 @@ export default {
             });
             chart.legend({
                 position: 'top-right',
-                marker: (name, index) => {
-                    return {
+                marker: (name) => {
+                    const config = {
                         symbol: 'circle',
                         style: {
-                            fill: index === 0 ? 'purple' : 'green',
+                            fill: 'green',
                             lineWidth: 0,
                         },
-                    };
+                    }
+                    if(name === 'eth'){
+                        config.style.fill =  '#E6F7FF'
+                    }
+                    if(name === 'bsc'){
+                        config.style.fill =  '#1496F2'
+
+                    }
+                    if(name === 'heco'){
+                        config.style.fill =  '#44D7B6'
+
+                    }
+                    if(name === 'polygon'){
+                        config.style.fill =  '#FFD788'
+
+                    }
+                    return config
                 },
                 itemName: {
                     style:{
                         fill:'#0468C2',
+                    },
+                    formatter:(text)=>{
+                        return text.toUpperCase()
                     }
                 },
             });
-            chart.axis('month', {
+            chart.axis('create_time', {
                 title:{
-                    text:'日期',
+                    text:_this.$t('el.projectRinking.marketPerformance.time'),
                     position:'end',
                     style:{
                         fill:'#0468C2'
@@ -470,9 +474,9 @@ export default {
                     }
                 },
             });
-            chart.axis('temperature', {
+            chart.axis('count', {
                 title:{
-                    text:'风险交易数',
+                    text:_this.$t('el.blotua.jyfxNum'),
                     position:'end',
                     style:{
                         fill:'#0468C2'
@@ -492,9 +496,20 @@ export default {
             });
             chart
                 .line()
-                .position('month*temperature')
-                .color('city', (val) => {
-                    return '#2194ff';
+                .position('create_time*count')
+                .color('platform', (val) => {
+                    if(val === 'eth'){
+                        return '#E6F7FF'
+                    }
+                    if(val === 'bsc'){
+                        return '#1496F2'
+                    }
+                    if(val === 'heco'){
+                        return '#44D7B6'
+                    }
+                    if(val === 'polygon'){
+                        return '#FFD788'
+                    }
                 })
                 .shape('smooth');
             chart.render();
@@ -536,8 +551,11 @@ export default {
             const _this = this
             getTxFxQs().then(res => {
                 if (res) {
-                    debugger
-                    //this.renderLine()
+                    _this.lineData =  []
+                    Object.keys(res.data).forEach(val=>{
+                        _this.lineData = _this.lineData.concat(res.data[val])
+                    })
+                    _this.renderLine()
                 }
             }).catch(err => {
                 _this.$message.error(err.message)
@@ -557,6 +575,31 @@ export default {
                 _this.$message.error(err.message)
                 console.error(err)
             })
+        },
+        /**
+         * 获取风险警告数据
+         */
+        getWarningRiskData(){
+            const _this = this
+            let params = {
+                page_num:1,
+                page_size:5,
+                platform:'',
+            }
+            getProjWarning(params).then(res=>{
+                if(res){
+                    _this.warningRisk = res.data.page_infos
+                }
+            }).catch(err=>{
+                _this.$message.error(err.message)
+                console.error(err)
+            })
+        },
+        /**
+         * 获取风险舆情新闻数据
+         */
+        getFxYqData(){
+
         }
     },
 }
@@ -643,14 +686,18 @@ export default {
 
         .ellipsis-copy {
             min-width: initial !important;
-            width: auto;
+            width: 124px;
         }
 
         .index {
             background: #0A5292;
             width: 30px;
             height: 30px;
-            margin-right: 10px;
+            float: left;
+            margin: auto 10px auto 0;
+            line-height: 30px;
+            -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)
         }
     }
 
@@ -689,7 +736,8 @@ export default {
     .blotua-table {
         width: 100%;
         margin-top: 30px;
-
+        padding: 18px;
+        box-sizing: border-box;
         .blotua-table-header {
             font-size: 12px;
             font-family: PingFang-SC-Heavy, PingFang-SC sans-serif;

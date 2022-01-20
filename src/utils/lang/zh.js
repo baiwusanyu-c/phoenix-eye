@@ -261,6 +261,9 @@ export const el = {
         xmph:'项目排行',
         jyfx:'交易风险',
         fxyq:'风险舆情',
-        noData:'no data or the data is 0'
+        jyfxqs:'风险交易趋势',
+        jyfxNum:'风险交易风险数',
+        noData:'no data or the data is 0',
+        time:'时间'
     }
 }
