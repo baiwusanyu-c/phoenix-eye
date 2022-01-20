@@ -117,6 +117,7 @@
 <script>
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import {getContractProjectTs, getProjectRankList} from "../../../api/project-ranking";
+import {getUrlkey} from "../../../utils/auth";
 
 export default {
     name: "ProjectRankingMain",
@@ -148,6 +149,11 @@ export default {
         }
     },
     mounted() {
+        const qurey = getUrlkey()
+        if(qurey.project_id && qurey.type === 'outLink'){
+            this.openDetailProject(qurey.project_id)
+            return
+        }
         if(!this.$route.query.type){
             this.getList()
         }

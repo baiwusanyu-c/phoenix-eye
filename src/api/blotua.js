@@ -21,9 +21,10 @@ export function getTxFxQs() {
     })
 }
 // 获取合约审计信息
-export function getContractAudit() {
+export function getContractAudit(params) {
     return request({
         url: `${config.baseURL}/ussa/chain/state/contract/audit`,
-        method: 'get'
+        method: 'get',
+        params
     })
 }

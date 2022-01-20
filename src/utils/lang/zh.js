@@ -264,6 +264,9 @@ export const el = {
         jyfxqs:'风险交易趋势',
         jyfxNum:'风险交易风险数',
         noData:'no data or the data is 0',
-        time:'时间'
+        time:'时间',
+        rank:'排行',
+        xmgm:'项目规模',
+
     }
 }

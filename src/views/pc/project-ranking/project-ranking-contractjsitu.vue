@@ -454,6 +454,7 @@ export default {
          * 渲染静态检测条形图
          */
         renderStaticBar() {
+            if(this.barData.length === 0) return
             const chart = new Chart({
                 container: 'static_bar',
                 autoFit: true,
@@ -609,6 +610,9 @@ export default {
         getTxStabilityData() {
             this.txStabilitySelect = Object.keys(this.resData.tx_stability)
             this.txStabilityChartData = {list:this.txStabilitySelect.map(val=>{
+                    this.resData.tx_stability[val].forEach(listData=>{
+                        listData.create_time = this.formatDate(this.$createDate(listData.create_time))
+                    })
                 return {token_name:val,list:this.resData.tx_stability[val]}
               })}
             this.loadingTxST = false
