@@ -8,10 +8,10 @@
   <div class="system-config-main">
       <div class="system-config-tab">
           <el-button-group>
-              <el-button :class="`${active === 1 ? 'primary' : 'default'}`" type="primary" @click="switchRender(1)">
+              <el-button :class="`${active === 1 ? 'primary' : 'default'}`" type="primary" @click="switchRender(1)" style="width: auto">
                   {{$t('el.subNav.navName4s1')}}
               </el-button>
-              <el-button :class="`${active === 2 ? 'primary' : 'default'}`" type="primary" @click="switchRender(2)">
+              <el-button :class="`${active === 2 ? 'primary' : 'default'}`" type="primary" @click="switchRender(2)" style="width: auto">
                   {{$t('el.subNav.navName4s2')}}
               </el-button>
           </el-button-group>

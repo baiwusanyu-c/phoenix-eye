@@ -72,7 +72,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="100"
+                    width="180"
                     prop="contract_num"
                     :label="$t('el.projectRinking.contractNum')"
                     align="center">
@@ -106,7 +106,7 @@
                     :label="$t('el.projectRinking.txScale')"
                     align="center" >
                     <template slot-scope="scope">
-                         {{scope.row.safety_score ? '$' + scope.row.safety_score : $t('el.emptyData')}}
+                         {{scope.row.trade_size ? '$' + scope.row.trade_size : $t('el.emptyData')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -164,7 +164,7 @@ export default {
             pageParams:{
                 currentPage: 1,
                 pageNum: 1,
-                pageSize: 5,
+                pageSize: 10,
                 total: 0
             },
         }

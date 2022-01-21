@@ -25,7 +25,7 @@
                         <el-table-column
                             prop="weight"
                             label="权重"
-                            width="148px">
+                            width="80px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.weight}}</span>
                                 <span v-show="inputShow === false">
@@ -145,6 +145,7 @@
                 </div>
             </div>
             <!--是否初始化数据警告框-->
+
             <be-msg-dialog @confirm="warningDialogConfirm"
                            :isShow.sync="changeConfigWarning"
                            :title="$t('el.systemConfigScore.formatConfigData')"
@@ -160,7 +161,7 @@ export default {
     name: "system-config-score",
     data() {
         return {
-            widthGird:'170',
+            widthGird:'240',
             changeConfigWarning:false,
             changeConfigWarningInput:false,
             inputShow:false,
@@ -251,6 +252,7 @@ export default {
                     configFth:'',
                 }
             ],
+
         }
     },
     mounted() {

@@ -176,6 +176,9 @@ export default {
             margin-left: 10px;
             padding: 0 5px;
         }
+        .ellipsis-copy{
+            min-width: 170px !important;
+        }
     }
 
     .card-title-public {
@@ -217,6 +220,7 @@ export default {
                     margin-left: 15px;
                     font-size: 14px;
                     color: $textColor4;
+
                 }
             }
         }

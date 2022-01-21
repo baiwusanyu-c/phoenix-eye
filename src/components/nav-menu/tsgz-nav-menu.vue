@@ -11,7 +11,7 @@
             <div class="expend-logo"></div>
         </div>
         <!--    展开时項目名稱    -->
-        <span class="tsgz-name">成都链安态势感知管理平台</span>
+        <span class="tsgz-name">{{$t('el.loginConfig.prodName')}}</span>
         <!--    展开时菜单    -->
         <div class="tsgz-nav-menu-container">
             <el-menu
@@ -396,6 +396,7 @@ export default {
         /* text-align: center; */
         height: 24px;
         display: inline-block;
+        max-width: 168px;
         font-family: "PingFang Medium", sans-serif;
         color: $textColor6;
     }

@@ -8,7 +8,7 @@
                 :visible.sync="addRiskWindowOpen"
                 width="558px">
                 <div>
-                    <el-form label-width="80px" class="addRiskForm">
+                    <el-form label-width="130px" class="addRiskForm">
                         <el-form-item :label="$t('el.addRiskWindow.addRiskWindowClassName')">
                             <span class="reg-start project-star">*</span>
                             <el-input class="projectKeyWordsInput" v-model="addRiskName"
@@ -177,7 +177,7 @@ export default {
 .createBox {
     .project-star {
         position: absolute;
-        left: -92px;
+        left: -140px;
         top: 4px;
     }
 

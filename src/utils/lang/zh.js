@@ -30,9 +30,9 @@ export const el = {
     profit:'收益',
     header:{
       me:'我',
-      language:'语言',
+      language:'language',
       chinese:'中文',
-      english:'英文',
+      english:'English',
       logout:'退出登录'
     },
     warningType: {

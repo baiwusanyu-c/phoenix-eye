@@ -38,8 +38,8 @@
                 <p class="subTitle" v-if="subTitle">{{subTitle}}</p>
             </div>
             <div slot="footer" class="dialog-footer" v-if="isShowBtn">
-                <el-button class="default" type="primary" v-if="isShowCancel" @click="closeMsg">取消</el-button>
-                <el-button class="primary" type="primary" v-if="isShowConfirm" :loading="isLoading" @click="confirm">确认</el-button>
+                <el-button class="default" type="primary" v-if="isShowCancel" @click="closeMsg">{{ $t('el.createProject.createProjectCancel') }}</el-button>
+                <el-button class="primary" type="primary" v-if="isShowConfirm" :loading="isLoading" @click="confirm">{{ $t('el.createProject.createProjectConfirm') }}</el-button>
             </div>
         </be-dialog>
     </div>

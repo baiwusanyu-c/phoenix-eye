@@ -30,8 +30,8 @@ export const el = {
     profit:'profit',
     header:{
         me:'Me',
-        language:'Language',
-        chinese:'Chinese',
+        language:'语言',
+        chinese:'中文',
         english:'English',
         logout:'Logout'
     },
