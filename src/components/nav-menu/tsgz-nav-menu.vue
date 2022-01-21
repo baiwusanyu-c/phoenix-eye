@@ -172,7 +172,8 @@ export default {
          */
         setHeaderConfig() {
             this.initHeaderConfig()
-            this.setActiveNav()
+
+             this.setActiveNav()
         },
         /**
          * 初始化菜单配置
@@ -192,6 +193,7 @@ export default {
                     isDisabled: false,
                 }
             })
+            this.$forceUpdate()
         },
         /**
          * 路由跳转方法

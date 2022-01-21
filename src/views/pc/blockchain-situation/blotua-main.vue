@@ -25,7 +25,7 @@
             <div class="blotua-main-user">
                 <img src="@/assets/image/pc/user2.png" alt="" style="margin-bottom: 10px">
                 <span style="margin: 0 10px 10px 10px;color: white">{{ loginUser }}</span>
-                <el-button class="btn" @click="$router.push('/projectRanking')">{{ $t('el.blotua.enter') }}</el-button>
+                <el-button class="btn" @click="routerPush">{{ $t('el.blotua.enter') }}</el-button>
             </div>
         </div>
         <!--   主体     -->
@@ -577,6 +577,9 @@ export default {
          */
         openProjectRanking(params,name){
             this.$openWindow(`#/projectRanking?${name}=${params}&type=outLink`, 'view_window')
+        },
+        routerPush(){
+            this.$router.push(this.$store.state.routeConfig[0].path)
         }
     },
 }

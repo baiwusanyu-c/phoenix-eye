@@ -119,6 +119,7 @@
                                               endLength="8">
                             </be-ellipsis-copy>
                             <be-ellipsis-copy :targetStr="scope.row.from_tag"
+                                              :copyContent="scope.row.from_address"
                                               :tooltipTxt="scope.row.from_address"
                                               v-if="scope.row.from_address_tag"
                                               :is-ellipsis="false"
@@ -141,6 +142,7 @@
                             </be-ellipsis-copy>
                             <be-ellipsis-copy :targetStr="scope.row.to_address_tag"
                                               :tooltipTxt="scope.row.to_address"
+                                              :copyContent="scope.row.to_address"
                                               v-if="scope.row.to_address_tag"
                                               :is-ellipsis="false"
                                               style="color: #1496F2"

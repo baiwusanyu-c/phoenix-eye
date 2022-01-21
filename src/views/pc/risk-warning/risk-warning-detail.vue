@@ -74,6 +74,7 @@
                                 <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"></be-svg-icon>
                                 <be-ellipsis-copy :targetStr="scope.row.address_tag"
                                                   styles="font-weight: bold;color:#409EFF"
+                                                  :copyContent="scope.row.address"
                                                   :tooltip-txt="scope.row.address"
                                                   :isEllipsis="false"
                                                   v-if="scope.row.address_tag">
