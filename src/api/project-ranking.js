@@ -9,7 +9,7 @@ export function getProjectRankList(params) {
         params
     })
 }
-// 搜索獲取合約態勢 或 项目态势 數據 ？？？？？？？？？
+// 搜索獲取合約態勢 或 项目态势 數據
 export function getContractProjectTs(params) {
     return request({
         url: `${config.baseURL}/ussa/project/search`,

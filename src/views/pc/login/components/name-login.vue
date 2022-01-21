@@ -132,7 +132,7 @@ export default {
             getCodeImg().then(res => {
                 this.form.uuid = res.uuid;
                 this.codeUrl = "data:image/gif;base64," + res.img;
-            });
+            }).catch(err=>this.$message.error(err));
         },
         /**
          * 登录方法

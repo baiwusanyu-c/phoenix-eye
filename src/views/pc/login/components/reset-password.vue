@@ -129,7 +129,10 @@ export default {
                 this.isTip = false;
               }
             }, 1000)
-          }).catch((err)=> {console.log(err)});
+          }).catch((err)=> {
+              this.$message.error(err)
+              console.log(err)
+          });
         }
       })
     },
@@ -147,7 +150,8 @@ export default {
           }).then(() => {
             this.$message.success(this.$t('el.loginConfig.resetPassword') + this.$t('el.success'));
             this.$parent.areaType = 1;
-          }).catch(() => {
+          }).catch((err) => {
+              this.$message.error(err)
             this.isLogin = false;
           });
         } else {

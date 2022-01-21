@@ -59,11 +59,6 @@ service.interceptors.response.use(
                 $vue.$router.push({path: "/login"})
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
-            Message({
-                message: res.msg || res.message ||'Error',
-                type: 'warning',
-                duration: 5 * 1000
-            })
             return Promise.reject(new Error(res.msg || res.message ||'Error'))
         } else {
             return res

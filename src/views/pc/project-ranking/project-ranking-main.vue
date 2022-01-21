@@ -106,7 +106,7 @@
                     :label="$t('el.projectRinking.txScale')"
                     align="center" >
                     <template slot-scope="scope">
-                        $ {{scope.row.safety_score || $t('el.emptyData')}}
+                         {{scope.row.safety_score ? '$' + scope.row.safety_score : $t('el.emptyData')}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -139,6 +139,7 @@
 <script>
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import {getContractProjectTs, getProjectRankList} from "../../../api/project-ranking";
+import {getUrlkey} from "../../../utils/auth";
 
 export default {
     name: "ProjectRankingMain",
@@ -197,6 +198,11 @@ export default {
         }
     },
     mounted() {
+        const qurey = getUrlkey()
+        if(qurey.project_id && qurey.type === 'outLink'){
+            this.openDetailProject(qurey.project_id)
+            return
+        }
         if(!this.$route.query.type){
             this.getList()
         }
@@ -249,7 +255,7 @@ export default {
             delete param.type
             _this.loadingSearch = true
             getContractProjectTs(param).then(res=>{
-                if(res){
+                if(res.data){
                     // 存储数据
                     _this.setStore('ContractProjectTs',JSON.stringify(res.data))
                     if(type === 'search'){
@@ -259,6 +265,9 @@ export default {
                     _this.$isFunction(cb) && cb()
                     }
                     _this.loadingSearch = false
+                }else{
+                    _this.loadingSearch = false
+                    _this.$message.error('option error')
                 }
             }).catch(err=>{
                 _this.loadingSearch = false

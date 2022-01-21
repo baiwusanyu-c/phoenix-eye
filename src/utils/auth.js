@@ -102,9 +102,10 @@ Vue.prototype.setCookie = (CookieKey, cookie) => {
     /**
      * 删除cookie
      */
-Vue.prototype.removeCookie = CookieKey => {
-    return Cookies.remove(CookieKey)
+export const removeCookie = (CookieKey)=>{
+        return Cookies.remove(CookieKey)
 }
+Vue.prototype.removeCookie = removeCookie
 
 Array.prototype.remove = function(obj) {
     for (var i = 0; i < this.length; i++) {
@@ -629,7 +630,7 @@ Vue.prototype.$getBase64Image = getBase64Image
  * 解析url获取参数方法
  * @returns {{}}
  */
-const getUrlkey = function () {
+export const getUrlkey = function () {
     let params = {};
     let url = window.location.href
     if(url.indexOf("?")>-1){//判断如果请求地址中包含参数
@@ -889,3 +890,25 @@ export const isString = (val) => (typeof val == 'string') && val.constructor == 
 Vue.prototype.$isString= isString
 export const isFunction = (val) => Object.prototype.toString.call(val) === '[object Function]'
 Vue.prototype.$isFunction = isFunction
+
+
+export function nFormatter(num, digits) {
+    const si = [
+        { value: 1, symbol: "" },
+        { value: 1E3, symbol: "K" },
+        { value: 1E6, symbol: "M" },
+        { value: 1E9, symbol: "G" },
+        { value: 1E12, symbol: "T" },
+        { value: 1E15, symbol: "P" },
+        { value: 1E18, symbol: "E" }
+    ];
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    let i;
+    for (i = si.length - 1; i > 0; i--) {
+        if (num >= si[i].value) {
+            break;
+        }
+    }
+    return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+}
+Vue.prototype.$nFormatter = isFunction

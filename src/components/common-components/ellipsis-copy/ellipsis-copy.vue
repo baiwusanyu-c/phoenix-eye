@@ -12,7 +12,7 @@
             <span slot="content">{{getTooltipTxt()}}</span>
             <span :style="styles">{{changeEllipsisStr(targetStr)}}</span>
         </el-tooltip>
-        <span class="copy-btn">
+        <span class="copy-btn" v-if="isShowCopyBtn">
             <svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="$copyAddress(targetStr)"></svg-icon>
         </span>
         

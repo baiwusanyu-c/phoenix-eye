@@ -20,6 +20,8 @@ import '@/components/common-components/svg-icon/icons/iconfont/iconfont.js'
 import readDirective from '@/utils/direactives/read-directive'
 import '../node_modules/animate.css/animate.css'
 import store from './store/store.js'
+import { scrollRankingBoard } from '@jiaminghi/data-view'
+Vue.use(scrollRankingBoard)
 //读取动态装在vue自定义指令
 readDirective(Vue)
 let routerInstance = router
