@@ -82,12 +82,12 @@ module.exports = {
         // })
         if (process.env.NODE_ENV === 'production') {
             // 用cdn方式引入
-            config.externals({
+           /* config.externals({
                 'vue': 'Vue',
                 // 'vuex': 'Vuex',
                 // 'vue-router': 'VueRouter',
                 // 'axios': 'axios'
-            })
+            })*/
         }
         const fontsRule = config.module.rule('fonts');
         fontsRule.uses.clear()
