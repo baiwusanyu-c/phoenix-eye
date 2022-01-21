@@ -18,7 +18,8 @@ const store = new Vuex.Store({
             'FRAUD_ISN_INTEL':false,
             'FRAUD_ISN_TX':false,
         },
-        routeConfig:[]
+        routeConfig:[],
+        lang:'',
     },
     mutations: {
         update(state,[key,value]){

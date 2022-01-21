@@ -41,10 +41,10 @@
       </div>
       <div class="footer-box">
         <p class="footer-w">
-            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;
+<!--            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;-->
         </p>
         <p class="footer-w">
-          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}
+<!--          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}-->
         </p>
       </div>
     </div>

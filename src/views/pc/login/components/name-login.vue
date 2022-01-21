@@ -91,7 +91,7 @@ export default {
             rules: {
                 name: [
                     {required: true, message: this.$t('el.loginConfig.loginNameP'), trigger: 'blur'},
-                     { validator: validateUserName, trigger: 'blur' }
+                    // { validator: validateUserName, trigger: 'blur' }
                 ],
                 pwd: [
                     {required: true, message: this.$t('el.loginConfig.loginPwdP'), trigger: 'blur'},

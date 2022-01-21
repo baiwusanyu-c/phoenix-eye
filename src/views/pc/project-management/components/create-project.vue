@@ -4,7 +4,7 @@
             <el-dialog
                 :close-on-click-modal="false"
                 class="createProjectBox"
-                :title="$t('el.createProject.createProjectTitle')"
+                :title="type === 'add' ? $t('el.createProject.createProjectTitle') : $t('el.createProject.editProjectTitle')"
                 :visible.sync="createProjectWindow"
                 width="970px">
                 <div>
@@ -37,13 +37,13 @@
                                 <!--   合约地址    -->
                                 <el-input v-model="contractSite[index].contract_address" class="contractSiteSite"
                                           :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
-                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'120px'}">
+                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'86px '}">
                                     {{contractSite[index].verAddr}}
                                 </span>
                                 <!--   合约标签   -->
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
-                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'62%'}">
+                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'41%'}">
                                     {{contractSite[index].verContract}}
                                 </span>
                                 <div class="btn-border"
@@ -331,6 +331,7 @@ export default {
             }
             // 表单校验
             if(!this.formVerification(params)){
+                this.$forceUpdate()
                 return
             }
             this.setParams(params.contract_infos)
@@ -364,6 +365,7 @@ export default {
             }
             // 表单校验
             if(!this.formVerification(params)){
+                this.$forceUpdate()
                 return
             }
             this.setParams(params.contract_infos)

@@ -58,7 +58,10 @@
                                 <span v-show="inputShow === false">
                                 <span  v-show="scope.$index === 1">{{inputValue.static_testing.config.high_risk}}</span>
                                 <span v-if="scope.$index === 4" style="margin: 0 10px">{{inputValue.tx_stability.config.score_coefficient}}</span>
-                                <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16" alt=""/>
+                                     <el-tooltip placement="top" effect="light">
+                                        <span slot="content">{{$t('el.systemConfigScore.tip')}}</span>
+                                        <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16" alt=""/>
+                                     </el-tooltip>
                                 <span v-if="scope.$index ===5">
                                     {{inputValue.safety_opinion.config.each}}/{{$t('el.systemConfigScore.safetyPublicOptionPiece')}}
                                 </span>
@@ -157,6 +160,7 @@
 
 <script>
 import {getRiskScore,saveRiskScore,resetRiskScore} from '../../../api/system-config'
+import {platformListDict} from "../../../utils/platformDict";
 export default {
     name: "system-config-score",
     data() {
@@ -254,6 +258,68 @@ export default {
             ],
 
         }
+    },
+    watch:{
+        listenLang:function(){
+           this.systemConfigScore = [
+               {
+                   project:this.$t('el.systemConfigScore.configProject'),
+                   weight:this.$t('el.systemConfigScore.weight'),
+                   configFst:this.$t('el.systemConfigScore.detailConfig'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               },
+               {
+                   project:this.$t('el.systemConfigScore.staticDetection'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.dangerHigh'),
+                   configSnd:this.$t('el.systemConfigScore.dangerMiddle'),
+                   configTrd:this.$t('el.systemConfigScore.dangerLow'),
+                   configFth:'',
+               },
+               {
+                   project:this.$t('el.systemConfigScore.tradeSafetyClass'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.flash_load_tx'),
+                   configSnd:this.$t('el.systemConfigScore.large_fee'),
+                   configTrd:this.$t('el.systemConfigScore.huge_transfer'),
+                   configFth:this.$t('el.systemConfigScore.repeat_call'),
+               },
+               {
+                   configFst:this.$t('el.systemConfigScore.token_empty')
+               },
+               {
+                   project: this.$t('el.systemConfigScore.tradeStable'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.tradeScore'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               },
+               {
+                   project: this.$t('el.systemConfigScore.safetyPublicOptionClass'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.safetyPublicOption'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               },
+               {
+                   project: this.$t('el.systemConfigScore.timeRange'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.timeTradeDate'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               }
+           ]
+        }
+    },
+    computed:{
+        listenLang() {
+            return this.$i18n.locale;
+        },
     },
     mounted() {
         this.initData('init')

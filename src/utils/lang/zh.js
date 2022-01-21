@@ -146,6 +146,7 @@ export const el = {
     },
     createProject:{
         createProjectTitle:'创建项目',
+        editProjectTitle:'编辑项目',
         createProjectName:'项目名称',
         createProjectNameInput:'如: PancakeSwap',
         createProjectCancel:'取 消',
@@ -196,6 +197,7 @@ export const el = {
         safetyPublicOptionClass:'风险舆情',
         safetyPublicOption:'风险舆情: ',
         safetyPublicOptionPiece:'条',
+        tip:'如：波动幅度为80%，则-80。扣分=100-波动幅度*100*评分系数',
         timeRange:'时间范围',
         timeTradeDate:'天内交易数据',
         inputEmpty:'输入为空',

@@ -146,6 +146,7 @@ export const el = {
     },
     createProject:{
         createProjectTitle:'Create Project',
+        editProjectTitle:'Edit Project',
         createProjectName:'Project name',
         createProjectNameInput:'e.g. PancakeSwap',
         createProjectCancel:'Cancel',
@@ -195,6 +196,7 @@ export const el = {
         safetyPublicOptionClass:'Threat intelligence',
         safetyPublicOption:'Threat intelligence: ',
         safetyPublicOptionPiece:'Article',
+        tip:'如：波动幅度为80%，则-80。扣分=100-波动幅度*100*评分系数',
         timeRange:'Time Range',
         timeTradeDate:'Transaction data within days',
         inputEmpty:'Input is empty',

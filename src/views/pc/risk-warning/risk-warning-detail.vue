@@ -71,7 +71,9 @@
                         align="left">
                         <template slot-scope="scope">
                             <div style="display: flex;justify-content: center;align-items: center;">
-                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"></be-svg-icon>
+                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"  v-if="scope.row.address_tag"></be-svg-icon>
+                                <!--             占位                   -->
+                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px;visibility: hidden"  v-if="!scope.row.address_tag"></be-svg-icon>
                                 <be-ellipsis-copy :targetStr="scope.row.address_tag"
                                                   styles="font-weight: bold;color:#409EFF"
                                                   :copyContent="scope.row.address"
