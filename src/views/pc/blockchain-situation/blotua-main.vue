@@ -179,7 +179,7 @@
                             <td>
                                 <el-tooltip placement="top" effect="light" >
                                     <span slot="content">{{formatDate($createDate(item.tx_time))}} UTC：{{beijing2utc(item.tx_time) }}</span>
-                                    <span class="cursor">{{$fomateTimeStamp($createDate(item.tx_time).getTime())}}</span>
+                                    <span class="cursor">{{$fomateTimeStamp($createDate(item.tx_time).getTime(),$i18n.locale)}}</span>
                                 </el-tooltip>
                             </td>
                         </tr>

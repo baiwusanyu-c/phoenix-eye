@@ -918,15 +918,27 @@ Vue.prototype.$nFormatter = isFunction
 
 
 // 计算时间差
-export function fomateTimeStamp(dateTimeStamp) {
+export function fomateTimeStamp(dateTimeStamp,lang) {
     let minute = 1000 * 60;
     let hour = minute * 60;
     let day = hour * 24;
     let result = '';
     let now = new Date().getTime();
     let diffValue = now - dateTimeStamp;
+    let gg = '刚刚'
+    let dq = '天前'
+    let sq = '小时前'
+    let fq = '分钟前'
+    let yesterday = '昨天'
+    if(lang === 'en_US'){
+        gg = 'Just happened'
+        dq = 'day ago'
+        sq = 'hour ago'
+        fq = 'minutes ago'
+        yesterday = 'yesterday'
+    }
     if (diffValue < 0) {
-        return result = "刚刚";
+        return result = gg;
     }
     let dayC = diffValue / day;
     let hourC = diffValue / hour;
@@ -934,15 +946,14 @@ export function fomateTimeStamp(dateTimeStamp) {
     if (parseInt(dayC) > 30) {
         result = "" + formatDD(dateTimeStamp,"yyyy-MM-dd");
     }else if(parseInt(dayC) > 1) {
-        result = "" + parseInt(dayC) + "天前";
+        result = "" + parseInt(dayC) + dq;
     }else if (parseInt(dayC) == 1) {
-        result = "昨天";
+        result = yesterday;
     } else if (hourC >= 1) {
-        result = "" + parseInt(hourC) + "小时前";
+        result = "" + parseInt(hourC) + sq;
     } else if (minC >= 5) {
-        result = "" + parseInt(minC) + "分钟前";
-    } else
-        result = "刚刚";
+        result = "" + parseInt(minC) + fq;
+    }
     return result;
 }
 Vue.prototype.$fomateTimeStamp = fomateTimeStamp
