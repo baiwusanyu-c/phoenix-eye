@@ -937,6 +937,7 @@ export function fomateTimeStamp(dateTimeStamp,lang) {
         fq = 'minutes ago'
         yesterday = 'yesterday'
     }
+    result = gg;
     if (diffValue < 0) {
         return result = gg;
     }
@@ -951,7 +952,7 @@ export function fomateTimeStamp(dateTimeStamp,lang) {
         result = yesterday;
     } else if (hourC >= 1) {
         result = "" + parseInt(hourC) + sq;
-    } else if (minC >= 5) {
+    } else if (minC >= 1) {
         result = "" + parseInt(minC) + fq;
     }
     return result;

@@ -48,11 +48,11 @@
                     <div class="titles">
                         <span>{{ $t('el.blotua.xmph') }}</span>
                     </div>
-                    <table class="blotua-table" v-if="rankListTop.length >0 && rankList.length > 0">
+                    <table class="blotua-table" >
                         <thead class="blotua-table-header">
                             <th v-for="item in xmphHeader" :key="item + 'xmph'">{{ item }}</th>
                         </thead>
-                        <tr class="blotua-table-col" @click="openProjectRanking(rankListTop[0].project_id,'project_id')">
+<!--                        <tr class="blotua-table-col" @click="openProjectRanking(rankListTop[0].project_id,'project_id')">
                             <td><img src="@/assets/image/pc/xmph-1.png" alt=""></td>
                             <td>
                                 <be-ellipsis-copy
@@ -93,12 +93,18 @@
                             </td>
                             <td>{{ rankListTop[2].safety_score}}</td>
                             <td>{{formatterSize(rankListTop[2].trade_size,2)}}</td>
-                        </tr>
+                        </tr>-->
+
+
+
                         <tr class="blotua-table-col"
                              v-for="(item,index) in rankList"
                              @click="openProjectRanking(item.project_id,'project_id')"
                             :key="item.project_id">
-                            <td>{{ ((index + 4) >= 10 ) ? index + 4 : '0' + (index + 4) }}</td>
+                            <td v-if="index === 0"><img src="@/assets/image/pc/xmph-1.png" alt=""></td>
+                            <td v-if="index === 1"><img src="@/assets/image/pc/xmph-2.png" alt=""></td>
+                            <td v-if="index === 2"><img src="@/assets/image/pc/xmph-3.png" alt=""></td>
+                            <td v-if="index >3">{{ ((index + 4) >= 10 ) ? index + 4 : '0' + (index + 4) }}</td>
                             <td>
                                 <be-ellipsis-copy
                                     :targetStr="item.name"
@@ -246,7 +252,7 @@ export default {
             txTotal:0,
             contractAudit:[],
             warningRisk:[],
-            rankListTop:[],
+
             rankList:[],
             safetyData:[],
             // 合約審計信息數據分页参数
@@ -571,13 +577,12 @@ export default {
                 page_num:1,
                 page_size:10,
             }
-            this.rankListTop = []
+
             this.rankList = []
             this.loadingProjRank = true
             getProjectRankList(params).then(res=>{
                 if(res){
-                    _this.rankListTop = res.data.page_info.slice(0,3)
-                    _this.rankList = res.data.page_info.slice(3,res.data.page_info.length)
+                    _this.rankList = res.data.page_info
                 }
                 _this.loadingProjRank = false
             }).catch(err=>{

@@ -225,7 +225,7 @@ export default {
                     this.contractObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
                     if(this.contractObj.info.length === 1){
                         this.projectOnly = true
-                        this.openDetailContract(this.contractObj.info[0].project_contract_id)
+                        this.openDetailContract(this.contractObj.info[0].project_contract_id,true)
                     }else if(this.contractObj.info.length > 1){
                         this.projectOnly = false
                     }
@@ -235,7 +235,7 @@ export default {
                     this.projectObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
                     if(this.projectObj.info.length === 1){
                         this.projectOnly = true
-                        this.openDetailProject(this.projectObj.info[0].project_id)
+                        this.openDetailProject(this.projectObj.info[0].project_id,true)
                     }else if(this.projectObj.info.length > 1){
                         this.projectOnly = false
                     }
@@ -322,29 +322,32 @@ export default {
         /**
          * 打開项目态势详情
          */
-        openDetailProject(params){
+        openDetailProject(params,num){
             let param = {
                 type:'search',
                 project_id:params
             }
-            console.log(params)
+            if(num === true){
+                this.$router.push('/projectRanking')
+            }
             this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/project', query: param}))
         },
         /**
          * 打開合约态势详情
          */
-        openDetailContract(params){
+        openDetailContract(params,num){
             let param = {
                 type:'search',
                 project_contract_id:params //55
             }
-            console.log(params)
+            if(num === true){
+                this.$router.push('/projectRanking')
+            }
             this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
         },
 
         projectOrContract(o){
             let type = this.searchType
-            this.$router.push('/projectRanking')
             if(type === 'contract'){
                 this.openDetailContract(o.project_contract_id)
             }else if(type === 'project'){
