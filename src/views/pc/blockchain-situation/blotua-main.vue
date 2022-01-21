@@ -49,9 +49,9 @@
                         <span>{{ $t('el.blotua.xmph') }}</span>
                     </div>
                     <table class="blotua-table" v-if="rankListTop.length >0 && rankList.length > 0">
-                        <tr class="blotua-table-header">
-                            <td v-for="item in xmphHeader" :key="item + 'xmph'">{{ item }}</td>
-                        </tr>
+                        <thead class="blotua-table-header">
+                            <th v-for="item in xmphHeader" :key="item + 'xmph'">{{ item }}</th>
+                        </thead>
                         <tr class="blotua-table-col" @click="openProjectRanking(rankListTop[0].project_id,'project_id')">
                             <td><img src="@/assets/image/pc/xmph-1.png" alt=""></td>
                             <td>{{ rankListTop[0].name}}</td>
@@ -579,7 +579,18 @@ export default {
             this.$openWindow(`#/projectRanking?${name}=${params}&type=outLink`, 'view_window')
         },
         routerPush(){
-            this.$router.push(this.$store.state.routeConfig[0].path)
+            try {
+                this.$store.state.routeConfig.forEach(val=>{
+                    if(val.path  && val.path !== '/blockchainSituation'){
+                        this.$router.push(this.$store.state.routeConfig[0].path)
+                        throw new Error('')
+                    }
+                })
+            } catch (e) {
+                console.log(e);
+            }
+
+
         }
     },
 }

@@ -182,7 +182,7 @@ export default {
         color: rgba(255, 255, 255, 1);
         font-size: 51px;
           font-family: PingFangSC-Medium, PingFang SC,sans-serif;
-        white-space: nowrap;
+
         line-height: 72px;
         background-image: linear-gradient(180deg, $mainColor7 0%, #B6E0FF 100%);
         -webkit-background-clip: text;
