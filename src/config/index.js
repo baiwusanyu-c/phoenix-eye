@@ -10,7 +10,7 @@
 const modeUrlObj = {
     // 生产环境
     'production': {
-         baseURL: 'https://trace.beosin.com',
+         baseURL: 'https://m.beosin.com',
     },
     // 开发环境
     'development': {
