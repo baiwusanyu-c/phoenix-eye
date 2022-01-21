@@ -473,7 +473,7 @@ export default {
 }
 
 .projectOpenTitle {
-    margin-left: 70px;
+    margin-left: 45px;
 }
 
 .projectOpenSecret {
@@ -498,7 +498,7 @@ export default {
 }
 
 .contractSiteLabel {
-    width: 234px;
+    width: 600px;
     margin-left: 8px;
 }
 </style>

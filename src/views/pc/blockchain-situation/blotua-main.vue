@@ -582,7 +582,7 @@ export default {
             try {
                 this.$store.state.routeConfig.forEach(val=>{
                     if(val.path  && val.path !== '/blockchainSituation'){
-                        this.$router.push(this.$store.state.routeConfig[0].path)
+                        this.$router.push(val.path)
                         throw new Error('')
                     }
                 })
