@@ -250,6 +250,7 @@ export default {
         this.jxfxHeader = [this.$t('el.riskConfig.tableHeader.txHash'), this.$t('el.projectRinking.score'), this.$t('el.blotua.time')]
     },
     beforeDestroy() {
+        clearInterval(this.timer)
         clearInterval(this.nowTimer)
     },
     mounted() {
