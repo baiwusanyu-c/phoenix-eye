@@ -54,7 +54,7 @@
                                 <el-input class="table-input" v-show="scope.$index === 6 && inputShow === true" v-model.number="inputValue.time_range"></el-input>
                                 <!--分割线-->
                                 <span>{{scope.row.configFst}}</span>
-                                <span v-if="scope.$index !== 0 && scope.$index !== 6 && scope.$index !== 4 && scope.$index !== 3">-</span>
+                                <span v-if="scope.$index !== 0 && scope.$index !== 6 && scope.$index !== 4">-</span>
                                 <span v-show="inputShow === false">
                                 <span  v-show="scope.$index === 1">{{inputValue.static_testing.config.high_risk}}</span>
                                 <span v-if="scope.$index === 4" style="margin: 0 10px">{{inputValue.tx_stability.config.score_coefficient}}</span>
@@ -64,11 +64,13 @@
                                 </span>
                                     <!--交易安全分数-->
                                 <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.flash_load_tx}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.tx_safety.config.token_empty}}</span>
                             </span>
                                 <!--输入框部分-->
                                 <span v-show="inputShow === true">
                                     <el-input class="table-input" v-show="scope.$index === 1" v-model.number="inputValue.static_testing.config.high_risk"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.flash_load_tx"></el-input>
+                                    <el-input class="table-input" v-show="scope.$index === 3" v-model.number="inputValue.tx_safety.config.token_empty"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 4" v-model.number="inputValue.tx_stability.config.score_coefficient"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 5" v-model.number="inputValue.safety_opinion.config.each"></el-input>
                                 </span>
@@ -102,12 +104,12 @@
                                 <span v-if="scope.$index === 1 || scope.$index === 2">-</span>
                                 <span v-show="inputShow === false">
                                     <span class="table-input" v-show="scope.$index === 1">{{inputValue.static_testing.config.low_risk}}</span>
-                                    <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.huge_profit}}</span>
+                                    <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.huge_transfer}}</span>
                                 </span>
                                 <!--输入框部分-->
                                 <span v-show="inputShow === true">
                                     <el-input class="table-input" v-show="scope.$index === 1" v-model.number="inputValue.static_testing.config.low_risk"></el-input>
-                                    <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.huge_profit"></el-input>
+                                    <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.huge_transfer"></el-input>
                                 </span>
                             </template >
                         </el-table-column>
@@ -177,8 +179,9 @@ export default {
                     config:{
                         flash_load_tx:'',
                         large_fee:'',
-                        huge_profit:'',
-                        repeat_call:''
+                        huge_transfer:'',
+                        repeat_call:'',
+                        token_empty:'',
                     }
                 },
                 tx_stability:{
@@ -217,11 +220,11 @@ export default {
                     weight:'',
                     configFst:this.$t('el.systemConfigScore.flash_load_tx'),
                     configSnd:this.$t('el.systemConfigScore.large_fee'),
-                    configTrd:this.$t('el.systemConfigScore.huge_profit'),
+                    configTrd:this.$t('el.systemConfigScore.huge_transfer'),
                     configFth:this.$t('el.systemConfigScore.repeat_call'),
                 },
                 {
-
+                    configFst:this.$t('el.systemConfigScore.token_empty')
                 },
                 {
                     project: this.$t('el.systemConfigScore.tradeStable'),
