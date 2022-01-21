@@ -897,10 +897,10 @@ export function nFormatter(num, digits) {
         { value: 1, symbol: "" },
         { value: 1E3, symbol: "K" },
         { value: 1E6, symbol: "M" },
-        { value: 1E9, symbol: "G" },
+       /* { value: 1E9, symbol: "G" },
         { value: 1E12, symbol: "T" },
         { value: 1E15, symbol: "P" },
-        { value: 1E18, symbol: "E" }
+        { value: 1E18, symbol: "E" }*/
     ];
     const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
     let i;
@@ -912,3 +912,78 @@ export function nFormatter(num, digits) {
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 }
 Vue.prototype.$nFormatter = isFunction
+
+
+
+
+
+// 计算时间差
+export function fomateTimeStamp(dateTimeStamp) {
+    let minute = 1000 * 60;
+    let hour = minute * 60;
+    let day = hour * 24;
+    let result = '';
+    let now = new Date().getTime();
+    let diffValue = now - dateTimeStamp;
+    if (diffValue < 0) {
+        return result = "刚刚";
+    }
+    let dayC = diffValue / day;
+    let hourC = diffValue / hour;
+    let minC = diffValue / minute;
+    if (parseInt(dayC) > 30) {
+        result = "" + formatDD(dateTimeStamp,"yyyy-MM-dd");
+    }else if(parseInt(dayC) > 1) {
+        result = "" + parseInt(dayC) + "天前";
+    }else if (parseInt(dayC) == 1) {
+        result = "昨天";
+    } else if (hourC >= 1) {
+        result = "" + parseInt(hourC) + "小时前";
+    } else if (minC >= 5) {
+        result = "" + parseInt(minC) + "分钟前";
+    } else
+        result = "刚刚";
+    return result;
+}
+Vue.prototype.$fomateTimeStamp = fomateTimeStamp
+/**
+ * 格式化时间
+ * @param date Date 时间
+ * @param format 格式化 "yyyy-MM-dd hh:mm:ss www"=format
+ * @returns {string} 格式化后字符串
+ */
+
+function formatDD(date, format){
+    if (typeof date == 'string') {
+        if(date.indexOf('T')>=0){
+            date = date.replace('T',' ')
+        }
+        date = new Date(Date.parse(date.replace(/-/g, "/")))
+    }
+    let o = {
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "h+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds(),
+        "q+": Math.floor((date.getMonth() + 3) / 3),
+        "S": date.getMilliseconds()
+    };
+    let w = [
+        ['日', '一', '二', '三', '四', '五', '六'],
+        ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+        ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+    ];
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    if (/(w+)/.test(format)) {
+        format = format.replace(RegExp.$1, w[RegExp.$1.length - 1][date.getDay()]);
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+        }
+    }
+    return format;
+}

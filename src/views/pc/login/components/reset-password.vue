@@ -8,7 +8,7 @@
       </el-form-item>
       <div class="flex">
         <el-form-item class="label" prop='code' style="width: 58%;">
-          <el-input maxlength="6" type="text" autocomplete="off" :placeholder="$t('el.loginConfig.loginVerCodeValid')" v-model="form.code">
+          <el-input maxlength="6" type="text" autocomplete="off" :placeholder="$t('el.loginConfig.loginVerCodeP2')" v-model="form.code">
             <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt=""></template>
           </el-input>
         </el-form-item>
@@ -89,7 +89,7 @@ export default {
           { validator: validatePhonenumber, trigger: 'blur' }
         ],
         code: [
-          { required: true, message: this.$t('el.loginConfig.loginVerCodeValid'), trigger: 'blur' },
+          { required: true, message: this.$t('el.loginConfig.loginVerCodeP2'), trigger: 'blur' },
         ],
         newPwd: [
           { required: true, message: this.$t('el.loginConfig.newPassword'), trigger: 'blur' },

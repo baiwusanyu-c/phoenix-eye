@@ -43,7 +43,7 @@
             <div class="flex">
                 <el-form-item class="label" prop='code' style="width: 58%;">
                     <el-input maxlength="6" @keyup.enter.native="getCode()" type="text" autocomplete="off"
-                              :placeholder="$t('el.loginConfig.loginVerCodeValid')" v-model="form.code">
+                              :placeholder="$t('el.loginConfig.loginVerCodeP2')" v-model="form.code">
                         <template slot="prepend">
                             <img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
                             <span class="reg-start">*</span>

@@ -25,7 +25,7 @@
             <div class="blotua-main-user">
                 <img src="@/assets/image/pc/user2.png" alt="" style="margin-bottom: 10px">
                 <span style="margin: 0 10px 10px 10px;color: white">{{ loginUser }}</span>
-                <el-button class="btn" @click="routerPush">{{ $t('el.blotua.enter') }}</el-button>
+                <el-button class="btn" @click="routerPush" style="width: auto;padding-left: 5px;padding-right: 5px">{{ $t('el.blotua.enter') }}</el-button>
             </div>
         </div>
         <!--   主体     -->
@@ -54,19 +54,43 @@
                         </thead>
                         <tr class="blotua-table-col" @click="openProjectRanking(rankListTop[0].project_id,'project_id')">
                             <td><img src="@/assets/image/pc/xmph-1.png" alt=""></td>
-                            <td>{{ rankListTop[0].name}}</td>
+                            <td>
+                                <be-ellipsis-copy
+                                    :targetStr="rankListTop[0].name"
+                                    :is-ellipsis="rankListTop[0].name.length > 15 ? true : false"
+                                    :isShowCopyBtn="false"
+                                    fontLength="8"
+                                    endLength="8">
+                                </be-ellipsis-copy>
+                            </td>
                             <td>{{ rankListTop[0].safety_score}}</td>
                             <td>{{formatterSize(rankListTop[0].trade_size,2)}}</td>
                         </tr>
                         <tr class="blotua-table-col" @click="openProjectRanking(rankListTop[1].project_id,'project_id')">
                             <td><img src="@/assets/image/pc/xmph-2.png" alt=""></td>
-                            <td>{{ rankListTop[1].name}}</td>
+                            <td>
+                                <be-ellipsis-copy
+                                    :targetStr="rankListTop[1].name"
+                                    :is-ellipsis="rankListTop[1].name.length > 15 ? true : false"
+                                    :isShowCopyBtn="false"
+                                    fontLength="8"
+                                    endLength="8">
+                                </be-ellipsis-copy>
+                            </td>
                             <td>{{ rankListTop[1].safety_score}}</td>
                             <td>{{formatterSize(rankListTop[1].trade_size,2)}}</td>
                         </tr>
                         <tr class="blotua-table-col" @click="openProjectRanking(rankListTop[2].project_id,'project_id')">
                             <td><img src="@/assets/image/pc/xmph-3.png" alt=""></td>
-                            <td>{{ rankListTop[2].name}}</td>
+                            <td>
+                                <be-ellipsis-copy
+                                    :targetStr="rankListTop[2].name"
+                                    :is-ellipsis="rankListTop[2].name.length > 15 ? true : false"
+                                    :isShowCopyBtn="false"
+                                    fontLength="8"
+                                    endLength="8">
+                                </be-ellipsis-copy>
+                            </td>
                             <td>{{ rankListTop[2].safety_score}}</td>
                             <td>{{formatterSize(rankListTop[2].trade_size,2)}}</td>
                         </tr>
@@ -75,7 +99,15 @@
                              @click="openProjectRanking(item.project_id,'project_id')"
                             :key="item.project_id">
                             <td>{{ ((index + 4) >= 10 ) ? index + 4 : '0' + (index + 4) }}</td>
-                            <td>{{ item.name}}</td>
+                            <td>
+                                <be-ellipsis-copy
+                                    :targetStr="item.name"
+                                    :is-ellipsis="item.name.length > 15 ? true : false"
+                                    :isShowCopyBtn="false"
+                                    fontLength="8"
+                                    endLength="8">
+                                </be-ellipsis-copy>
+                            </td>
                             <td>{{ item.safety_score}}</td>
                             <td>{{ formatterSize(item.trade_size, 2)}}</td>
                         </tr>
@@ -145,9 +177,9 @@
                             </td>
                             <td>{{ item.risk_score }}</td>
                             <td>
-                                <el-tooltip placement="top" effect="light">
-                                    <span slot="content">UTC：{{beijing2utc(item.tx_time)}}</span>
-                                    <span class="cursor">{{formatDate($createDate(item.tx_time))}}</span>
+                                <el-tooltip placement="top" effect="light" >
+                                    <span slot="content">{{formatDate($createDate(item.tx_time))}} UTC：{{beijing2utc(item.tx_time) }}</span>
+                                    <span class="cursor">{{$fomateTimeStamp($createDate(item.tx_time).getTime())}}</span>
                                 </el-tooltip>
                             </td>
                         </tr>
@@ -240,7 +272,7 @@ export default {
     computed:{
        formatterSize(){
            return function (val,d){
-               return nFormatter(val,d)
+              return nFormatter(val,d)
            }
        }
     },
@@ -745,9 +777,12 @@ export default {
             color: #84CCFF;
             line-height: 34px;
             text-align: center;
-
             &:hover {
                 background: rgba(0, 0, 0, 0.4);
+            }
+            .ellipsis-copy{
+                min-width: initial !important;
+                justify-content: center;
             }
         }
     }

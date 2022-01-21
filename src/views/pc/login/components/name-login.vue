@@ -6,10 +6,10 @@
 */
 <template>
     <div class="formArea">
-        <el-form :model="form" :rules="rules" ref="form">
+        <el-form :model="form" :rules="rules" ref="form" class="login-form">
             <el-form-item class="label" prop='name'>
                 <el-input maxlength="40" autocomplete="off"
-                          :placeholder="$t('el.loginConfig.loginNameP')" v-model="form.name">
+                          :placeholder="$t('el.loginConfig.loginNameP2')" v-model="form.name">
                     <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
                     </template>
                 </el-input>
@@ -32,7 +32,7 @@
             <div class="flex">
                 <el-form-item class="label" prop='code' style="width: calc(100% - 130px);">
                     <el-input maxlength="4" @keyup.enter.native="login()" type="text" autocomplete="off"
-                              :placeholder="$t('el.loginConfig.loginVerCodeP')" v-model="form.code">
+                              :placeholder="$t('el.loginConfig.loginVerCodeP2')" v-model="form.code">
                         <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
                         </template>
                     </el-input>
@@ -75,7 +75,7 @@ export default {
         };
         var validateUserName = (rule, value, callback) => {
             if (!this.nameReg.test(value)) {
-                callback(new Error(this.$t('el.loginConfig.unameError')));
+                callback(new Error(this.$t('el.loginConfig.unameErr')));
             } else {
                 callback();
             }
@@ -194,10 +194,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
+
 .formArea {
     width: 100%;
     margin: auto;
-
+    .login-form{
+        .el-form-item{
+            margin-bottom: 30px;
+        }
+    }
     .primary {
         width: 100%;
         margin-top: 5px;
