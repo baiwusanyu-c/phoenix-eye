@@ -154,7 +154,6 @@ export default {
                         scope: 'server',
 
                     }).then(res => {
-                        debugger
                         const langCache = this.getStore('language')
                         window.localStorage.clear();
                         this.setStore('language',langCache)
