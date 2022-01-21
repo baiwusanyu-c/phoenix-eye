@@ -32,7 +32,7 @@
         <div class="blotua-main-body">
             <div class="left">
                 <!--       今日交易         -->
-                <div class="jrjyl">
+                <div class="jrjyl" v-loading="loadingTxNum" element-loading-background="rgba(0, 0, 0, 0.8)">
                     <div class="titles">
                         <span>{{ $t('el.blotua.jrjyl') }}</span>
                     </div>
@@ -43,8 +43,8 @@
                         <dv-scroll-ranking-board :config="scrollConfig" v-if="scrollConfig.data" style="width:100%;height:208px"/>
                     </div>
                 </div>
-                <!--       项目排行         -->
-                <div class="xmph">
+                <!--       项目排行        -->
+                <div class="xmph" v-loading="loadingProjRank" element-loading-background="rgba(0, 0, 0, 0.8)">
                     <div class="titles">
                         <span>{{ $t('el.blotua.xmph') }}</span>
                     </div>
@@ -146,14 +146,14 @@
                     </div>
                 </div>
                 <!--       风险交易趋势         -->
-                <div class="yxfx-line">
+                <div class="yxfx-line" v-loading="loadingFxTx" element-loading-background="rgba(0, 0, 0, 0.8)">
                      <p>{{ $t('el.blotua.jyfxqs') }}</p>
                     <div id="yxfx_line"></div>
                 </div>
             </div>
             <div class="right">
                 <!--       交易风险         -->
-                <div class="jyfx">
+                <div class="jyfx" v-loading="loadingTxFx" element-loading-background="rgba(0, 0, 0, 0.8)">
                     <div class="titles">
                         <span>{{ $t('el.blotua.jyfx') }}</span>
                     </div>
@@ -186,7 +186,7 @@
                     </table>
                 </div>
                 <!--       风险舆情         -->
-                <div class="fxyq">
+                <div class="fxyq" v-loading="loadingFxYq" element-loading-background="rgba(0, 0, 0, 0.8)">
                     <div class="titles">
                         <span>{{ $t('el.blotua.fxyq') }}</span>
                     </div>
@@ -267,6 +267,11 @@ export default {
             step:5000,
             nowTimer:null,
             now:null,
+            loadingTxNum:false,
+            loadingTxFx:false,
+            loadingProjRank:false,
+            loadingFxYq:false,
+            loadingFxTx:false,
         }
     },
     computed:{
@@ -430,6 +435,7 @@ export default {
          */
         getTxNumToDay(){
             const _this = this
+            this.loadingTxNum = true
             getTxNum().then(res => {
                 if (res) {
                     _this.txTotal = res.data.tx_total
@@ -448,9 +454,10 @@ export default {
                         }
                         return value +  this.$t('el.piece')
                     }
-
                 }
+                this.loadingTxNum = false
             }).catch(err => {
+                this.loadingTxNum = false
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -461,6 +468,7 @@ export default {
         getLineData(){
             const _this = this
             _this.lineData =  []
+           _this.loadingFxTx = true
             getTxFxQs().then(res => {
                 if (res) {
                     Object.keys(res.data).forEach(val=>{
@@ -468,7 +476,9 @@ export default {
                     })
                     _this.renderLine()
                 }
+                _this.loadingFxTx = false
             }).catch(err => {
+                _this.loadingFxTx = false
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -503,14 +513,16 @@ export default {
                 page_size:_this.pageParamsWR.pageSize,
                 platform:'',
             }
+            _this.loadingTxFx = true
             _this.warningRisk = []
             getProjWarning(params).then(res=>{
                 if(res){
                     _this.warningRisk = res.data.page_infos
                     _this.pageParamsWR.total = res.data.total
                 }
-
+                _this.loadingTxFx = false
             }).catch(err=>{
+                _this.loadingTxFx = false
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -527,6 +539,7 @@ export default {
                 page_num: 1,
                 page_size: 5,
             }
+            _this.loadingFxYq = true
             getPublicSentimentSecurity(params).then(res => {
                 if (res) {
                     res.data.page_infos.forEach(val => {
@@ -542,7 +555,9 @@ export default {
                         })
                     })
                 }
+                _this.loadingFxYq = false
             }).catch(err => {
+                _this.loadingFxYq = false
                 _this.$message.error(err.message)
                 console.error(err)
             })
@@ -558,12 +573,15 @@ export default {
             }
             this.rankListTop = []
             this.rankList = []
+            this.loadingProjRank = true
             getProjectRankList(params).then(res=>{
                 if(res){
-                    this.rankListTop = res.data.page_info.slice(0,3)
-                    this.rankList = res.data.page_info.slice(3,res.data.page_info.length)
+                    _this.rankListTop = res.data.page_info.slice(0,3)
+                    _this.rankList = res.data.page_info.slice(3,res.data.page_info.length)
                 }
+                _this.loadingProjRank = false
             }).catch(err=>{
+                _this.loadingProjRank = false
                 _this.$message.error(err.message)
                 console.error(err)
             })

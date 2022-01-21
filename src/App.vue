@@ -45,6 +45,11 @@
 
 <script>
     import BeDialog from "./components/common-components/dialog/be-dialog";
+    import {getRouterInfo} from "./api/login";
+    import store from "./store/store";
+    import _this from "./main";
+    import {initRouterConfig} from "./router";
+    import {getStore} from "./utils/auth";
     export default {
         name: 'App',
         data() {
@@ -76,6 +81,7 @@
             if(!this.getStore('language')){
                 this.setStore('language','zh_CN')
             }
+
         },
 
         methods: {
@@ -88,9 +94,7 @@
             //关闭当前页面
             closeWebPage() {
                this.$closePage()
-            },
-
-
+            }
         },
     }
 </script>

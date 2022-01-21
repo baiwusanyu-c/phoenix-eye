@@ -63,6 +63,11 @@
 <script>
 import {login, getCodeImg} from '@/api/login.js';
 import {Base64} from 'js-base64';
+import {getStore} from "../../../../utils/auth";
+import {getRouterInfo} from "../../../../api/login";
+import {initRouterConfig} from "../../../../router";
+import store from "../../../../store/store";
+import _this from "../../../../main";
 export default {
     name: "NameLogin",
     data() {
@@ -172,7 +177,8 @@ export default {
                         };
                         this.$root.token = res.access_token;
                         !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
-                        this.$router.push({path: '/blockchainSituation'})
+                        // 登錄先拿路由在跳轉
+                        this.getRouter()
                     }).catch(error => {
                         this.$message.error(error.message)
                         if (error.code && error.code == 920000001) {
@@ -186,7 +192,24 @@ export default {
                 }
             });
         },
-
+        getRouter(){
+            const params = {
+                systemCode: 'beosin-eye',
+                userId: getStore('userId'),
+            }
+            getRouterInfo(params).then(res => {
+                const routerConfig = initRouterConfig(res.data[0].children)
+                store.commit('update', ['routeConfig', routerConfig])
+                routerConfig.map(val => {
+                    this.$router.addRoute('layout', val)
+                })
+                this.$router.addRoute({
+                    path: '*',
+                    redirect: '/404'
+                })
+                this.$router.push({path: '/blockchainSituation'})
+            }).catch(err=>this.$message.error(err))
+        }
 
     },
 };
