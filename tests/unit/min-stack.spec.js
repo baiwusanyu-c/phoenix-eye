@@ -19,6 +19,9 @@ var MinStack = function() {
  * @return {void}
  */
 MinStack.prototype.push = function(x) {
+    if(this.arr.length === 0){
+        this.minVal = x
+    }
     if(x <= this.minVal){
         this.minVal = x
         this.minIndex = this.arr.length
@@ -31,11 +34,15 @@ MinStack.prototype.push = function(x) {
  */
 MinStack.prototype.pop = function() {
     if((this.arr.length - 1) === this.minIndex){
-        let elm = 0
         this.arr.pop()
+        if( this.arr.length === 1){
+            this.minIndex = 0
+        }
+        let elm = this.arr[this.arr.length - 1]
         this.arr.forEach((val,index)=>{
 
             if(val <= elm){
+                this.minVal = val
                 this.minIndex = index
                 elm = val
             }
@@ -62,23 +69,23 @@ MinStack.prototype.min = function() {
 
 
 describe('test-min-stack', () => {
-
-
     test('exp-10', () => {
         const obj = new MinStack()
-        obj.push(2)
-        obj.push(0)
-        obj.push(3)
-        obj.push(0)
+        obj.push(395)
+        expect(obj.min()).toBe(395)
+        expect(obj.top()).toBe(395)
+        expect(obj.min()).toBe(395)
+        obj.push(276)
+        obj.push(29)
+        expect(obj.min()).toBe(29)
+        obj.push(-482)
+        expect(obj.min()).toBe(-482)
+        obj.pop()
+        obj.push(-108)
+        obj.push(-251)
         debugger
-        expect(obj.min()).toBe(0)
-        obj.pop()
-        expect(obj.min()).toBe(0)
-        obj.pop()
-        expect(obj.min()).toBe(0)
-        obj.pop()
-        debugger
-        expect(obj.min()).toBe(2)
+        expect(obj.min()).toBe(-251)
+
     })
 
 })

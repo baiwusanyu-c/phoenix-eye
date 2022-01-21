@@ -104,7 +104,7 @@
                             <td v-if="index === 0"><img src="@/assets/image/pc/xmph-1.png" alt=""></td>
                             <td v-if="index === 1"><img src="@/assets/image/pc/xmph-2.png" alt=""></td>
                             <td v-if="index === 2"><img src="@/assets/image/pc/xmph-3.png" alt=""></td>
-                            <td v-if="index >3">{{ ((index + 4) >= 10 ) ? index + 4 : '0' + (index + 4) }}</td>
+                            <td v-if="index >= 3">{{ ((index + 1) >= 10 ) ? index + 1 : '0' + (index + 1) }}</td>
                             <td>
                                 <be-ellipsis-copy
                                     :targetStr="item.name"
@@ -176,6 +176,7 @@
                                 <be-ellipsis-copy
                                     :targetStr="item.tx_hash"
                                     :is-ellipsis="true"
+                                    :isTooltip="false"
                                     :isShowCopyBtn="false"
                                     fontLength="8"
                                     endLength="8">
@@ -204,6 +205,7 @@
                                 <be-ellipsis-copy :targetStr="item.title"
                                                   :is-ellipsis="true"
                                                   :isShowCopyBtn="false"
+                                                  :isTooltip="false"
                                                   styles="color: #84CCFF;font-weight: 500;font-size: 16px;"
                                                   fontLength="20"
                                                   endLength="0">
@@ -214,6 +216,7 @@
                                     :targetStr="item.message"
                                     :is-ellipsis="true"
                                     :isShowCopyBtn="false"
+                                    :isTooltip="false"
                                     styles="color: #0468C2;font-weight: 400;font-size: 14px;line-height:1.5"
                                     fontLength="35"
                                     endLength="0">
