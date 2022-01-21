@@ -132,7 +132,7 @@ const beforeEachHandle = (router) => {
                     _this.$i18n.locale = _this.getStore('language')
                     to.meta.titleInfo = _this.$t(to.meta.title)
                 }, 100)
-            })
+            }).catch(err=>this.$message.error(err))
         }
         next()
     })

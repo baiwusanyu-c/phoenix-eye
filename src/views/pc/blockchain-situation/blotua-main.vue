@@ -545,10 +545,7 @@ export default {
                 if(this.pageParams.pageNum > Math.ceil(this.pageParams.total/4)){
                     this.pageParams.pageNum = 1
                 }
-                this.pageParamsWR.pageNum = this.pageParamsWR.pageNum + 1
-                if(this.pageParamsWR.pageNum > Math.ceil(this.pageParamsWR.total/5)){
-                    this.pageParamsWR.pageNum = 1
-                }
+
                 this.getContractAuditData()
                 this.getWarningRiskData()
             },this.step)

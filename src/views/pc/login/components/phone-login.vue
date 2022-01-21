@@ -186,6 +186,7 @@ export default {
                 this.setStore('isFromLogin', 'true')
                 this.$router.push({path: '/case'})
             }).catch(err => {
+                this.$message.error(err)
                 console.error(err)
             })
         }

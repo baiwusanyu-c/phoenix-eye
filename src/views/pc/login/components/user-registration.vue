@@ -140,6 +140,7 @@ export default {
                             }
                         }, 1000)
                     }).catch((err) => {
+                        this.$message.error(err)
                         console.error(err)
                     });
                 }
@@ -163,6 +164,7 @@ export default {
                         this.$message.success(this.$t('el.loginConfig.register') + this.$t('el.success'));
                         this.$parent.areaType = 1;
                     }).catch(error => {
+                        this.$message.error(err)
                         console.error(error)
                         this.isLogin = false;
                     });

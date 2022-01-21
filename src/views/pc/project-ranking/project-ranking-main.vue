@@ -255,7 +255,7 @@ export default {
             delete param.type
             _this.loadingSearch = true
             getContractProjectTs(param).then(res=>{
-                if(res){
+                if(res.data){
                     // 存储数据
                     _this.setStore('ContractProjectTs',JSON.stringify(res.data))
                     if(type === 'search'){
@@ -265,6 +265,9 @@ export default {
                     _this.$isFunction(cb) && cb()
                     }
                     _this.loadingSearch = false
+                }else{
+                    _this.loadingSearch = false
+                    _this.$message.error('option error')
                 }
             }).catch(err=>{
                 _this.loadingSearch = false
