@@ -13,7 +13,7 @@
             <span :style="styles">{{changeEllipsisStr(targetStr)}}</span>
         </el-tooltip>
         <span class="copy-btn" v-if="isShowCopyBtn">
-            <svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="$copyAddress(targetStr)"></svg-icon>
+            <svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="$copyAddress(copyContent || targetStr)"></svg-icon>
         </span>
         
     </div>
@@ -61,6 +61,13 @@ export default {
         },
         // tooltip显示内容
         tooltipTxt:{
+            type: String,
+            default: ''
+        },
+        /**
+         * 复制内容
+         */
+        copyContent:{
             type: String,
             default: ''
         },
