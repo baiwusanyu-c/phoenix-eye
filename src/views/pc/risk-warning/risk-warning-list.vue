@@ -248,7 +248,7 @@ export default {
       this.platformList = JSON.parse(JSON.stringify(platformListDict))
       this.platformList.unshift(
            {
-               label: '全部',
+               label: this.$t('el.projectRinking.tradeStb.all'),
                value: 'all',
                id:'jhgadjghzngrgegkdfjallg'
            },

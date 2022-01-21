@@ -6,9 +6,9 @@
                 class="createProjectBox"
                 :title="$t('el.createProject.createProjectTitle')"
                 :visible.sync="createProjectWindow"
-                width="856px">
+                width="970px">
                 <div>
-                    <el-form :label-position="labelPosition" label-width="80px" class="projectForm">
+                    <el-form :label-position="labelPosition" label-width="130px" class="projectForm">
                         <el-form-item :label="$t('el.createProject.createProjectName') + ':'">
                             <span class="reg-start project-star">*</span>
                             <el-input class="projectNameInput" v-model="projectName"
@@ -388,7 +388,7 @@ export default {
 .createBox{
     .project-star{
         position: absolute;
-        left: -92px;
+        left: -142px;
         top: 4px;
     }
     .project-Ver{
