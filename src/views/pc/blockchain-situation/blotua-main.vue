@@ -667,7 +667,7 @@ export default {
             justify-content: center;
 
             .sum {
-                width: 60%;
+                min-width: 60%;
                 font-size: 28px;
                 font-family: PingFang-SC-Heavy, PingFang-SC sans-serif;
                 font-weight: 800;
