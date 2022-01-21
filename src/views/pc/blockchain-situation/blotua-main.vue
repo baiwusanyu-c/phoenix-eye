@@ -134,7 +134,7 @@
                             @click="openDetail(item)"
                             v-for="(item,index) in warningRisk" :key="item.tx_hash">
                             <td style="display: flex;justify-content: center;line-height: 45px">
-                                <div class="index" >{{ index }}</div>
+                                <div class="index" >{{ index + 1 }}</div>
                                 <be-ellipsis-copy
                                     :targetStr="item.tx_hash"
                                     :is-ellipsis="true"
@@ -181,7 +181,7 @@
                                     endLength="0">
                                 </be-ellipsis-copy>
                             </div>
-                            <p style="position: absolute;bottom: 0;right:0;color: #0468C2;font-weight: 400;font-size: 14px;">
+                            <p style="float:right; color: #0468C2;font-weight: 400;font-size: 14px;">
                                 <el-tooltip placement="top" effect="light">
                                     <span slot="content">UTC：{{beijing2utc(item.time)}}</span>
                                     <span class="cursor">{{formatDate($createDate(item.time))}}</span>
@@ -222,6 +222,13 @@ export default {
                 currentPage: 1,
                 pageNum: 1,
                 pageSize: 4,
+                total: 0
+            },
+            // 交易风险参数
+            pageParamsWR: {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
                 total: 0
             },
             timer:null,
@@ -459,15 +466,17 @@ export default {
         getWarningRiskData(){
             const _this = this
             let params = {
-                page_num:1,
-                page_size:5,
+                page_num:_this.pageParamsWR.pageNum,
+                page_size:_this.pageParamsWR.pageSize,
                 platform:'',
             }
             _this.warningRisk = []
             getProjWarning(params).then(res=>{
                 if(res){
                     _this.warningRisk = res.data.page_infos
+                    _this.pageParamsWR.total = res.data.total
                 }
+
             }).catch(err=>{
                 _this.$message.error(err.message)
                 console.error(err)
@@ -483,7 +492,7 @@ export default {
             let params = {
                 project_id: null,
                 page_num: 1,
-                page_size: 6,
+                page_size: 5,
             }
             getPublicSentimentSecurity(params).then(res => {
                 if (res) {
@@ -535,7 +544,12 @@ export default {
                 if(this.pageParams.pageNum > Math.ceil(this.pageParams.total/4)){
                     this.pageParams.pageNum = 1
                 }
+                this.pageParamsWR.pageNum = this.pageParamsWR.pageNum + 1
+                if(this.pageParamsWR.pageNum > Math.ceil(this.pageParamsWR.total/5)){
+                    this.pageParamsWR.pageNum = 1
+                }
                 this.getContractAuditData()
+                this.getWarningRiskData()
             },this.step)
         },
         /**
