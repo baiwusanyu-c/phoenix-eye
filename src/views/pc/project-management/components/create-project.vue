@@ -179,10 +179,10 @@ export default {
                 this.projectName = ''
                 return
             }
-            const pathParams = {
+            const params = {
                 id: this.projectId
             }
-            getProjectInfo(null, pathParams).then(res => {
+            getProjectInfo( params).then(res => {
                 if (res) {
                     _this.projectName = res.data.name
                     _this.openTF = res.data.is_public

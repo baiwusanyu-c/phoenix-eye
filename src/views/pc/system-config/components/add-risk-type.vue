@@ -155,10 +155,10 @@ export default {
                 this.addRiskName = ''
                 return
             }
-            const pathParams = {
+            const params = {
                 id: this.riskId
             }
-            getRiskTypeInfo(null, pathParams).then(res => {
+            getRiskTypeInfo(params).then(res => {
                 if (res) {
                     _this.addRiskName = res.data.risk_type.name
                     _this.abnormalSelectValue = res.data.risk_type.risk_features

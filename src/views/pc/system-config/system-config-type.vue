@@ -154,10 +154,10 @@ export default {
         confirmDelete(){
             this.showDelete = false
             const _this = this
-            const pathParams = {
+            const params = {
                 id:this.curItem.id
             }
-            deleteRiskType(null,pathParams).then(res=>{
+            deleteRiskType(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.delete')+ _this.$t('el.success')
                     _this.$message.success(msg)

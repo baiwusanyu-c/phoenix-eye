@@ -17,7 +17,7 @@
         <div class="area-r">
           <p class="title" :class="{otherTitle: areaType === 4,regTitle: areaType === 3}">
             {{
-              areaType === 3 ? $t('el.loginConfig.titleRegister') : areaType === 4 ? $t('el.loginConfig.titleLogin') : $t('el.loginConfig.titleLogin')
+              areaType === 3 ? $t('el.loginConfig.titleRegister') : areaType === 4 ? $t('el.loginConfig.titleReset') : $t('el.loginConfig.titleLogin')
             }}
           </p>
             <!--          賬號登錄          -->

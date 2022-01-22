@@ -28,7 +28,9 @@
             <el-form-item class="label" prop='email'>
                 <el-input maxlength="15" autocomplete="off" :placeholder="$t('el.loginConfig.email')" v-model="form.email">
                     <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
-                    <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/email.png" alt="">
+                    <template slot="prepend">
+                        <img class="iconImg" src="../../../../assets/image/pc/email.png" alt="">
+                        <span class="reg-start">*</span>
                     </template>
                 </el-input>
             </el-form-item>
@@ -164,7 +166,7 @@ export default {
                         this.$message.success(this.$t('el.loginConfig.register') + this.$t('el.success'));
                         this.$parent.areaType = 1;
                     }).catch(error => {
-                        this.$message.error(err)
+                        this.$message.error(error)
                         console.error(error)
                         this.isLogin = false;
                     });

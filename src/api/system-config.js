@@ -18,11 +18,10 @@ export function createRiskType(params) {
     })
 }
 //风险类型编辑-获取风险类型详情(完成)
-export function getRiskTypeInfo(params,pathParams) {
+export function getRiskTypeInfo(params) {
     return request({
-        url: `${config.baseURL}/ussa/system_config/risk_type/edit/${pathParams.id}`,
+        url: `${config.baseURL}/ussa/system_config/risk_type/edit/${params.id}`,
         method: 'get',
-        params
     })
 }
 //风险类型编辑-风险类型编辑保存详情(完成)
@@ -34,11 +33,10 @@ export function saveEditRiskType(params,pathParams) {
     })
 }
 // 删除 风险类型(完成)
-export function deleteRiskType(params,pathParams) {
+export function deleteRiskType(params) {
     return request({
-        url: `${config.baseURL}/ussa/system_config/risk_type/delete/${pathParams.id}`,
+        url: `${config.baseURL}/ussa/system_config/risk_type/delete/${params.id}`,
         method: 'post',
-        params
     })
 }
 

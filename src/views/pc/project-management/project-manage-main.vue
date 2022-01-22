@@ -159,10 +159,10 @@ export default {
          */
         confirmDelete(){
             const _this = this
-            const pathParams = {
+            const params = {
                 id:this.curItem.id
             }
-            deleteProject(null,pathParams).then(res=>{
+            deleteProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.delete')+ _this.$t('el.success')
                     _this.$message.success(msg)
@@ -189,10 +189,10 @@ export default {
          */
         confirmFresh(){
             const _this = this
-            const pathParams = {
+            const params = {
                 id:this.curItem.id
             }
-            reappraiseProject(null,pathParams).then(res=>{
+            reappraiseProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.operation')+ _this.$t('el.success')
                     _this.$message.success(msg)
