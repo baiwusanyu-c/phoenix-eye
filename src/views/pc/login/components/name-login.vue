@@ -61,13 +61,12 @@
 </template>
 
 <script>
-import {login, getCodeImg} from '@/api/login.js';
+import {loginAccount, getCodeImg} from '@/api/login.js';
 import {Base64} from 'js-base64';
 import {getStore} from "../../../../utils/auth";
 import {getRouterInfo} from "../../../../api/login";
 import {initRouterConfig} from "../../../../router";
 import store from "../../../../store/store";
-import _this from "../../../../main";
 export default {
     name: "NameLogin",
     data() {
@@ -78,13 +77,7 @@ export default {
                 callback();
             }
         };
-        var validateUserName = (rule, value, callback) => {
-            if (!this.nameReg.test(value)) {
-                callback(new Error(this.$t('el.loginConfig.unameErr')));
-            } else {
-                callback();
-            }
-        };
+
         return {
             form: {
                 name: this.name,
@@ -147,13 +140,15 @@ export default {
             this.form.code = this.trim(this.form.code);
             this.$refs['form'].validate((valid) => {
                 if (valid) {
-                    login({
+                    loginAccount({
                         username:this.form.name,
                         password:Base64.encode(this.form.pwd),
                         code: this.form.code,
                         uuid: this.form.uuid,
-                        client_id: 'beosin-eye',
-                        client_secret: '123456',
+                        // client_id: 'beosin-eye',
+                        client_id: 'official_site_sg_system',
+                        client_secret: 'uZtik#Iu8D',
+                        // client_secret: '123456',
                         grant_type: 'password',
                         login_type:"password",
                         scope: 'server',
