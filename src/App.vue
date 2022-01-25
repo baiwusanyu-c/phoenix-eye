@@ -45,11 +45,6 @@
 
 <script>
     import BeDialog from "./components/common-components/dialog/be-dialog";
-    import {getRouterInfo} from "./api/login";
-    import store from "./store/store";
-    import _this from "./main";
-    import {initRouterConfig} from "./router";
-    import {getStore} from "./utils/auth";
     export default {
         name: 'App',
         data() {

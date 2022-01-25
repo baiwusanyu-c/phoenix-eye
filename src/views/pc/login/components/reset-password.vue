@@ -38,7 +38,7 @@
     </el-form>
     <el-button class="primary" type="primary" :loading="isLogin" @click="resetPwd">{{ $t('el.loginConfig.confirmReset') }}</el-button>
     <p class="checkArea">
-      <span class="phone cursor" @click="$parent.areaType = 1;">{{ $t('el.loginConfig.confirmReset') }}</span>
+      <span class="phone cursor" @click="$parent.areaType = 1;">{{ $t('el.loginConfig.login') }}</span>
     </p>
   </div>
 </template>

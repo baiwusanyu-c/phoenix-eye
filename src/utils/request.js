@@ -29,6 +29,12 @@ service.interceptors.request.use(
                 configOption.data = qs.stringify(configOption.data)
             }
         }
+        if (config.method === 'get') {
+            config.params = {
+                _t: Date.parse(new Date()) / 1000,
+                ...config.params
+            }
+        }
         return configOption
     },
     error => {
