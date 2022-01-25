@@ -118,7 +118,7 @@ export default {
             userName: this.form.name
           }).then(res => {
             this.$message.success(this.$t('el.loginConfig.getVerCodeValid') + this.$t('el.success'));
-            this.form.uuid = res;
+            this.form.uuid = res.data;
             this.isTip = true;
             this.number = 60;
             this.codeInerval = setInterval(() => {

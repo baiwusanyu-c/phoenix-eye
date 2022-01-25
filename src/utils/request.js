@@ -20,7 +20,7 @@ service.interceptors.request.use(
     configOption => {
         configOption.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
         configOption.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
-        if (configOption.method === 'post' && configOption.url!=='/auth/oauth/login') {
+        if ((configOption.method === 'post' && configOption.url!=='/auth/oauth/login') || configOption.method === 'put') {
             configOption.data = configOption.params
             configOption.headers['Content-Type'] = 'application/json;charset=UTF-8'
             configOption.headers.post['Content-Type'] = 'application/json;charset=UTF-8'

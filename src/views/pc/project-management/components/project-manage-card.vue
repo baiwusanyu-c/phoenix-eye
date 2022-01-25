@@ -29,7 +29,7 @@
             </div>
         </div>
         <!--   非新增时显示 卡片地址列表   -->
-        <div v-if="type === 'edit'" class="card-edit">
+        <div v-if="type === 'edit'" class="card-edit" @click="openDetailProject(projectId)">
             <div style="width: 100%; display: flex; overflow-x: auto;height: 40px" class="scrollDiy">
                 <el-tag v-for="(item) in keywordList" :key="item + _uid">{{ item }}</el-tag>
             </div>
@@ -64,6 +64,8 @@
 
 <script>
 import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon";
+import {getContractProjectTs} from "../../../../api/project-ranking";
+import {setStore} from "../../../../utils/auth";
 
 export default {
     name: "project-manage-card",
@@ -115,7 +117,13 @@ export default {
         contractList: {
             type: Array,
             default: () => []
-        }
+        },
+        /**
+         * 项目id
+         */
+        projectId: {
+            type: [String,Number],
+        },
     },
     computed:{
       formatePlatform(){
@@ -144,7 +152,46 @@ export default {
          */
         emitFunc(evtName) {
             this.$emit(evtName)
-        }
+        },
+        /**
+         * 搜索接口调用方法
+         * @param {Object} params - 参数对象
+         * @param {String} type - 搜索类型
+         * @param {Function} cb - 回调方法
+         */
+        searchDetail(params,type,cb){
+            const _this = this
+            let param = JSON.parse(JSON.stringify(params))
+            delete param.type
+            getContractProjectTs(param).then(res=>{
+                if(res.data){
+                    // 存储数据
+                    setStore('ProjectTs',JSON.stringify(res.data))
+                    _this.$isFunction(cb) && cb()
+                }else{
+                    _this.$message.error('option error')
+                }
+            }).catch(err=>{
+                _this.loadingSearch = false
+                _this.$message.error(err.message)
+                console.error(err)
+            })
+        },
+        /**
+         * 打開项目态势详情
+         */
+        openDetailProject(params,num){
+            let param = {
+                type:'search',
+                project_id:params
+            }
+            if(num === true){
+                this.$router.push('/projectRanking')
+            }
+            this.searchDetail(param,'click',()=>{
+                this.$router.push({path: '/projectRanking/project', query: param})
+            })
+        },
     },
 }
 </script>

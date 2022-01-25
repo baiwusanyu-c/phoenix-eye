@@ -130,7 +130,7 @@ export default {
                         userName: this.form.phoneNumber
                     }).then(res => {
                         this.$message.success(this.$t('el.loginConfig.getVerCodeValid') + this.$t('el.success'));
-                        this.form.uuid = res;
+                        this.form.uuid = res.data;
                         this.isTip = true;
                         this.number = 60;
                         this.codeInerval = setInterval(() => {
@@ -161,7 +161,7 @@ export default {
                         uuid: this.form.uuid,
                         code: this.form.code,
                         password: this.form.pwd,
-                        sourceCode: 'fraud_system',
+                        sourceCode: 'beosin-eye',
                     }).then(() => {
                         this.$message.success(this.$t('el.loginConfig.register') + this.$t('el.success'));
                         this.$parent.areaType = 1;

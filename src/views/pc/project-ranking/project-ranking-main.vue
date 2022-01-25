@@ -139,7 +139,7 @@
 <script>
 import BePagination from "../../../components/common-components/pagination/be-pagination";
 import {getContractProjectTs, getProjectRankList} from "../../../api/project-ranking";
-import {getUrlkey} from "../../../utils/auth";
+import {getUrlkey, setStore} from "../../../utils/auth";
 
 export default {
     name: "ProjectRankingMain",
@@ -218,11 +218,11 @@ export default {
                 param:this.searchParams
             }
             // 从搜索框搜索，前端分不清是项目还是合约，放到param给后端判断
-            this.searchDetail(params,'search',(type)=>{
+            this.searchDetail(params,'search',({type,data})=>{
                 this.searchType = type
                 if( type === 'contract'){
-
-                    this.contractObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
+                    setStore('ContractTs',JSON.stringify(data))
+                    this.contractObj = data
                     if(this.contractObj.info.length === 1){
                         this.projectOnly = true
                         this.openDetailContract(this.contractObj.info[0].project_contract_id,true)
@@ -231,8 +231,8 @@ export default {
                     }
 
                 }else if(type === 'project'){
-
-                    this.projectObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
+                    setStore('ProjectTs',JSON.stringify(data))
+                    this.projectObj = data
                     if(this.projectObj.info.length === 1){
                         this.projectOnly = true
                         this.openDetailProject(this.projectObj.info[0].project_id,true)
@@ -256,13 +256,11 @@ export default {
             _this.loadingSearch = true
             getContractProjectTs(param).then(res=>{
                 if(res.data){
-                    // 存储数据
-                    _this.setStore('ContractProjectTs',JSON.stringify(res.data))
                     if(type === 'search'){
                         // 后台返回的搜索类型（合约还是项目）
-                    _this.$isFunction(cb) && cb(res.data.type)
+                    _this.$isFunction(cb) && cb({type:res.data.type,data:res.data})
                     }else{
-                    _this.$isFunction(cb) && cb()
+                    _this.$isFunction(cb) && cb({data:res.data})
                     }
                     _this.loadingSearch = false
                 }else{
@@ -330,7 +328,10 @@ export default {
             if(num === true){
                 this.$router.push('/projectRanking')
             }
-            this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/project', query: param}))
+            this.searchDetail(param,'click',({data})=>{
+                setStore('ProjectTs',JSON.stringify(data))
+                this.$router.push({path: '/projectRanking/project', query: param})
+            })
         },
         /**
          * 打開合约态势详情
@@ -343,7 +344,10 @@ export default {
             if(num === true){
                 this.$router.push('/projectRanking')
             }
-            this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
+            this.searchDetail(param,'click',({data})=>{
+                setStore('ContractTs',JSON.stringify(data))
+                this.$router.push({path: '/projectRanking/contract', query: param})
+            })
         },
 
         projectOrContract(o){

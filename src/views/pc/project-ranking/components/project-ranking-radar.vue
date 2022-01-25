@@ -15,7 +15,7 @@
                               :endLength="8">
             </be-ellipsis-copy>
         </div>
-        <div class="project-ranking-radar-chart" :id="`radar_chart${this._uid}`">
+        <div class="project-ranking-radar-chart" :id="`radar_chart${this._uid}`"  @click="openDetailContract(contractId)" >
 
         </div>
     </div>
@@ -24,6 +24,8 @@
 <script>
 import DataSet from '@antv/data-set';
 import {Chart, registerGeometryLabelLayout} from '@antv/g2';
+import {getContractProjectTs} from "../../../../api/project-ranking";
+import {setStore} from "../../../../utils/auth";
 export default {
     name: "project-ranking-radar",
     data() {
@@ -47,6 +49,10 @@ export default {
         platform:{
             type:String,
             default:'bsc'
+        },
+        contractId:{
+            type:String,
+            default:''
         },
         addr:{
             type:String,
@@ -84,7 +90,7 @@ export default {
             // 坐标label缓存
             const labelCache = []
             function limitInShape(items, labels) {
-                labels.forEach((labelGroup, index) => {
+                labels.forEach((labelGroup) => {
                     labelGroup.cfg.children[0].cfg.visible = false
                    /* const labelBBox = labelGroup.getCanvasBBox()
                     let offsetX = labelCache[index].point.x
@@ -215,7 +221,44 @@ export default {
             chart.legend(false);
             chart.render();
 
-        }
+        },
+        /**
+         * 搜索接口调用方法
+         * @param {Object} params - 参数对象
+         * @param {String} type - 搜索类型
+         * @param {Function} cb - 回调方法
+         */
+        searchDetail(params,type,cb){
+            const _this = this
+            let param = JSON.parse(JSON.stringify(params))
+            delete param.type
+            getContractProjectTs(param).then(res=>{
+                if(res.data){
+                    // 存储数据
+                    setStore('ContractTs',JSON.stringify(res.data))
+                    _this.$isFunction(cb) && cb()
+                }else{
+                    _this.$message.error('option error')
+                }
+            }).catch(err=>{
+                _this.loadingSearch = false
+                _this.$message.error(err.message)
+                console.error(err)
+            })
+        },
+        /**
+         * 打開合约态势详情
+         */
+        openDetailContract(params,num){
+            let param = {
+                type:'search',
+                project_contract_id:params //55
+            }
+            if(num === true){
+                this.$router.push('/projectRanking')
+            }
+            this.searchDetail(param,'click',()=>this.$router.push({path: '/projectRanking/contract', query: param}))
+        },
     },
 }
 </script>

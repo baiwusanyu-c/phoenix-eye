@@ -272,7 +272,7 @@ export const el = {
         jyfx:'交易风险',
         fxyq:'风险舆情',
         jyfxqs:'风险交易趋势',
-        jyfxNum:'风险交易风险数',
+        jyfxNum:'风险交易数',
         noData:'no data or the data is 0',
         time:'时间',
         rank:'排行',

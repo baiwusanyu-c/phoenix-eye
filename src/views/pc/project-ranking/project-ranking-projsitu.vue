@@ -28,21 +28,21 @@
                 <div class="outline-info">
                     <h2>{{ $t('el.projectRinking.outlineTitle') }}</h2>
                     <div class="outline-info-txt">
-                        <div>
-                            <span class="label">{{ $t('el.projectRinking.staticDetection') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.staticDetection"></span>
+                        <div style="justify-content: flex-start">
+                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.staticDetection') }}:</span>
+                            <span class='inner-text' v-html="outlineInfo.staticDetection || '暂无数据'"></span>
                         </div>
-                        <div>
-                            <span class="label">{{ $t('el.projectRinking.txSecurity') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.txSecurity"></span>
+                        <div style="justify-content: flex-start">
+                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.txSecurity') }}:</span>
+                            <span class='inner-text' v-html="outlineInfo.txSecurity || '暂无数据'"></span>
                         </div>
-                        <div>
-                            <span class="label">{{ $t('el.projectRinking.txStability') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.txStability"></span>
+                        <div style="justify-content: flex-start">
+                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.txStability') }}:</span>
+                            <span class='inner-text' v-html="outlineInfo.txStability || '暂无数据'"></span>
                         </div>
-                        <div>
-                            <span class="label">{{ $t('el.projectRinking.feeling') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.feeling"></span>
+                        <div style="justify-content: flex-start">
+                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.feeling') }}:</span>
+                            <span class='inner-text' v-html="outlineInfo.feeling || '暂无数据'"></span>
                         </div>
                     </div>
                     <p>*{{ $t('el.sevenD') }}</p>
@@ -61,6 +61,7 @@
                  v-loading='loadingCs'>
                 <project-ranking-radar v-for="(item) in contractSecurity"
                                        :addr="item.contract_address"
+                                       :contractId="item.project_contract_id"
                                        :safetyEvaluate="item.score.safety_evaluate"
                                        :platform="item.platform"
                                        :radar-data="radarDataCs(item.score)"
@@ -356,7 +357,7 @@ export default {
          */
         async getProSituData() {
             // 这是在上级路由存储的数据
-            const data = JSON.parse(this.getStore('ContractProjectTs'))
+            const data = JSON.parse(this.getStore('ProjectTs'))
             if (!data) {
                 this.resetData()
                 return

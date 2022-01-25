@@ -18,6 +18,7 @@
                 :keyword-list="item.keywordList"
                 :create-time="item.create_time"
                 :contract-list="item.contract_infos"
+                :project-id="item.id"
                 @edit="editProject(item)"
                 @fresh="freshProject(item)"
                 @delete="deleteProject(item)"

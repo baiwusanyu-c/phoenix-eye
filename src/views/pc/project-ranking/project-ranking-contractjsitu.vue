@@ -545,7 +545,7 @@ export default {
                 {label: this.$t('el.projectRinking.txStability'), val: 'tx_stability'},
             ]
             // 这是在上级路由存储的数据
-            const data = JSON.parse(this.getStore('ContractProjectTs'))
+            const data = JSON.parse(this.getStore('ContractTs'))
             if (!data) {
                 this.loadingHC = false
                 return
