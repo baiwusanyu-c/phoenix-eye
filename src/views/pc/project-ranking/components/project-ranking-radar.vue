@@ -51,7 +51,7 @@ export default {
             default:'bsc'
         },
         contractId:{
-            type:String,
+            type:[String,Number],
             default:''
         },
         addr:{
