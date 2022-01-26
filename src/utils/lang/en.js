@@ -244,8 +244,7 @@ export const el = {
         contractBalance:'Contract Balance',
         safetyAssessment:'Security Assessment',
 
-        chose:'Choose the blockchain platform',
-        choseText:'Mutiple blockchain platform addresses detected, select one of them to query',
+        projectChose:'Multiple targets were found. Please select one of them.',
         projectName:'Affiliated Projects: ',
 
         marketPerformance:{

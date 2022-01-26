@@ -14,8 +14,7 @@
             </el-input>
         </div>
         <div class="project-ranking-search-complex" v-show="projectOnly === false">
-            <div class="complex-big-title">{{ $t('el.projectRinking.chose') }}</div>
-            <div class="complex-title">{{ $t('el.projectRinking.choseText') }}</div>
+            <div class="complex-title-project" >{{ $t('el.projectRinking.projectChose') }}</div>
             <div  class="complex-card-class">
                 <div class="complex-card" v-for="(o,index) in projectOrContractInfo" :key="index" @click="projectOrContract(o)">
                     <div class="complex-card-head">
@@ -353,8 +352,10 @@ export default {
         projectOrContract(o){
             let type = this.searchType
             if(type === 'contract'){
-                this.openDetailContract(o.project_contract_id)
+                this.openDetailContract(o.project_contract_id,true)
             }else if(type === 'project'){
+                // 这里项目名称搜索暂时只能让用户浏览，不可以点击进入，
+                // 故不传入第二个参数，使得页面跳转
                 this.openDetailProject(o.project_id)
             }
         }
@@ -410,6 +411,15 @@ export default {
         }
         .complex-title{
             margin-top: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #777777;
+            line-height: 24px;
+        }
+        .complex-title-project{
+            margin-top: -24px;
+            margin-bottom: 16px;
             font-size: 14px;
             font-weight: 400;
             color: #777777;
@@ -418,8 +428,6 @@ export default {
         .complex-card-class{
             width: 100%;
             flex-direction: row;
-            margin-top: 16px;
-            margin-bottom: 16px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-column-gap: 24px;
@@ -427,6 +435,8 @@ export default {
         .complex-card{
             cursor: pointer;
             overflow-x: hidden;
+            margin-top: 16px;
+            margin-bottom: 16px;
             width: 100%;
             height: 100px;
             background: #FFFFFF;
