@@ -639,7 +639,7 @@ export default {
 
         .projsitu-item-contractSecur {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             margin-bottom: 24px;
             flex-wrap: wrap;
         }

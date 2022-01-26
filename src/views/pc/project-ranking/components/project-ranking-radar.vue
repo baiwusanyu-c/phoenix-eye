@@ -272,7 +272,8 @@ export default {
     border-radius: 4px;
     align-items: center;
     margin-bottom: 16px;
-    width: 32.5%;
+    width: 32.2%;
+    margin-right: 16px;
     flex-direction: column;
     .project-ranking-radar-info{
         display: flex;
