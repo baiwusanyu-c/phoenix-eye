@@ -65,7 +65,7 @@
                                        :safetyEvaluate="item.score.safety_evaluate"
                                        :platform="item.platform"
                                        :radar-data="radarDataCs(item.score)"
-                                       :key="item.contract_address_id">
+                                       :key="item.contract_address_id + item.platform">
                 </project-ranking-radar>
                 <be-pagination
                     v-if="contractSecurity.length > 0"
@@ -639,7 +639,7 @@ export default {
 
         .projsitu-item-contractSecur {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             margin-bottom: 24px;
             flex-wrap: wrap;
         }
