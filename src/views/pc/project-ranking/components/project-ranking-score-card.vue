@@ -48,11 +48,12 @@ export default {
         },
         handleData(){
             return function (data,config){
+                // 为空或 -1 则显示暂无数据
                 // 对象时
                 if(!Array.isArray(data)){
-                    return (data[config.val] || data[config.val] === 0) ? data[config.val] : this.$t('el.emptyData')
+                    return (data[config.val] || data[config.val] === 0) &&  data[config.val] !== '-1' ? data[config.val] : this.$t('el.emptyData')
                 }
-                return (data[config.val][config.valKey] || data[config.val][config.valKey] === 0) ? data[config.val] : this.$t('el.emptyData')
+                return (data[config.val][config.valKey] || data[config.val][config.valKey] === 0) &&  data[config.val][config.valKey] !== '-1' ? data[config.val] : this.$t('el.emptyData')
             }
         }
     },
