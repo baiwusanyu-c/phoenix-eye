@@ -118,7 +118,7 @@
                                               fontLength="8"
                                               endLength="8">
                             </be-ellipsis-copy>
-                            <be-ellipsis-copy :targetStr="scope.row.from_tag"
+                            <be-ellipsis-copy :targetStr="scope.row.from_address_tag"
                                               :copyContent="scope.row.from_address"
                                               :tooltipTxt="scope.row.from_address"
                                               v-if="scope.row.from_address_tag"
@@ -339,27 +339,14 @@ export default {
     computed: {
         stateSuccess() {
             return function (val) {
-                const lang = this.getStore('language')
-                if (lang === 'zh_CN') {
-                    if (val !== '成功') {
-                        return {
-                            color: '#FA6400'
-                        }
-                    }
+                if(val === 'success' || val === '成功' ){
                     return {
-                        color: '#44D7B6'
-                    }
-                } else {
-                    if (val !== 'success') {
-                        return {
-                            color: '#FA6400'
-                        }
-                    }
-                    return {
-                        color: '#44D7B6'
+                        color:'#44D7B6'
                     }
                 }
-
+                return {
+                    color:'#FA6400'
+                }
             }
         },
         stateTxt(){

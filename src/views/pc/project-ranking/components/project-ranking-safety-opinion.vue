@@ -14,7 +14,6 @@
                             <el-button type="text" @click="lookTextOriginal(opinion.sourceUrl)">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}>></el-button>
                         </div>
                         <div class="safety-opinion-body">
-                            {{opinion.message.length}}
                             <div class="safety-opinion-body-msg scrollDiy">
                                 <be-ellipsis :elpNum="opinion.message.length > 400 ? opinion.message.length - 200 : 0"
                                              :expand-trigger="false"
