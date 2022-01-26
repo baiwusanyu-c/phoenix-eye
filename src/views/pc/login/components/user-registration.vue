@@ -1,32 +1,9 @@
 <template>
     <div class="formArea user-registration">
         <el-form :model="form" :rules="rules" ref="form">
-            <el-form-item class="label" prop='name'>
-                <el-input maxlength="15" autocomplete="off" :placeholder="$t('el.loginConfig.tname')" v-model="form.name">
-                    <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
-                    <template slot="prepend">
-                        <img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
-                        <span class="reg-start">*</span>
-                    </template>
-                </el-input>
-            </el-form-item>
-            <el-form-item class="label" prop='unit'>
-                <el-input maxlength="15" autocomplete="off" :placeholder="$t('el.loginConfig.unitName')" v-model="form.unit">
-                    <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
-                    <template slot="prepend">
-                        <img class="iconImg" src="../../../../assets/image/pc/unit.png" alt="">
-                    </template>
-                </el-input>
-            </el-form-item>
-            <el-form-item class="label" prop='addr'>
-                <el-input maxlength="15" autocomplete="off" :placeholder="$t('el.loginConfig.addr')" v-model="form.addr">
-                    <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
-                    <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/addr.png" alt="">
-                    </template>
-                </el-input>
-            </el-form-item>
+
             <el-form-item class="label" prop='email'>
-                <el-input maxlength="15" autocomplete="off" :placeholder="$t('el.loginConfig.email')" v-model="form.email">
+                <el-input autocomplete="off" :placeholder="$t('el.loginConfig.email')" v-model="form.email">
                     <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/email.png" alt="">
@@ -34,8 +11,8 @@
                     </template>
                 </el-input>
             </el-form-item>
-            <el-form-item class="label" prop='phoneNumber'>
-                <el-input autocomplete="off" :placeholder="$t('el.loginConfig.phone')" v-model="form.phoneNumber">
+            <el-form-item class="label" prop='password'>
+                <el-input autocomplete="off" :placeholder="$t('el.loginConfig.loginPwdP')" v-model="form.password">
                     <template slot="prepend">
                         <img class="iconImg" src="../../../../assets/image/pc/phone.png" alt="">
                         <span class="reg-start">*</span>
@@ -64,21 +41,16 @@
 </template>
 
 <script>
-import {registerUser, getRegCode} from '@/api/login.js';
+
+import {registerAccount, verifyCode} from "../../../../api/login";
+import {Base64} from "js-base64";
 
 export default {
     name: "UserRegistration",
     data() {
-        var validatePhonenumber = (rule, value, callback) => {
-            if (this.phoneReg.test(value)) {
-                callback();
-            } else {
-                callback(new Error(this.$t('el.loginConfig.phoneErr')));
-            }
-        };
-        var validateUserName = (rule, value, callback) => {
-            if (!this.nameReg.test(value)) {
-                callback(new Error(this.$t('el.loginConfig.tnameErr')));
+        var validatePwd = (rule, value, callback) => {
+            if (!this.pwdReg.test(value)) {
+                callback(new Error(this.$t('el.loginConfig.phoneNumErr')));
             } else {
                 callback();
             }
@@ -92,22 +64,18 @@ export default {
         };
         return {
             form: {
-                name: '',
+                email: '',
                 code: '',
-                phoneNumber: '',
+                password: '',
             },
             isLogin: false,
             rules: {
-                name: [
-                    {required: true, message: this.$t('el.loginConfig.tname'), trigger: 'blur'},
-                    {validator: validateUserName, trigger: 'blur'}
-                ],
                 code: [
                     {required: true, message: this.$t('el.loginConfig.loginVerCodeP'), trigger: 'blur'},
                 ],
-                phoneNumber: [
-                    {required: true, message: this.$t('el.loginConfig.phone'), trigger: 'blur'},
-                    {validator: validatePhonenumber, trigger: 'blur'}
+                password: [
+                    {required: true, message: this.$t('el.loginConfig.loginPwdP'), trigger: 'blur'},
+                    {validator: validatePwd, trigger: 'blur'}
                 ],
                 email: [
                     {required: false, message: this.$t('el.loginConfig.email'), trigger: 'blur'},
@@ -123,12 +91,13 @@ export default {
     },
     methods: {
         getCode() {
-            this.form.phoneNumber = this.trim(this.form.phoneNumber);
-            this.$refs['form'].validateField('phoneNumber', (error) => {
+            this.form.password = this.trim(this.form.password);
+            this.$refs['form'].validateField('password', (error) => {
                 if (!error) {
-                    getRegCode({
-                        userName: this.form.phoneNumber
-                    }).then(res => {
+                    const params = {
+                        userName:String(this.form.email)
+                    }
+                    verifyCode(params).then((res)=>{
                         this.$message.success(this.$t('el.loginConfig.getVerCodeValid') + this.$t('el.success'));
                         this.form.uuid = res.data;
                         this.isTip = true;
@@ -141,28 +110,27 @@ export default {
                                 this.isTip = false;
                             }
                         }, 1000)
-                    }).catch((err) => {
+
+                    }).catch(err=>{
                         this.$message.error(err)
                         console.error(err)
-                    });
+                    })
+
                 }
             })
         },
         registerUser() {
-            this.form.name = this.trim(this.form.name);
-            this.form.phoneNumber = this.trim(this.form.phoneNumber);
+            this.form.email = this.trim(this.form.email);
             this.form.code = this.trim(this.form.code);
             this.$refs['form'].validate((valid) => {
                 if (valid) {
                     this.isLogin = true;
-                    registerUser({
-                        userName: this.form.name,
-                        phonenumber: this.form.phoneNumber,
-                        uuid: this.form.uuid,
-                        code: this.form.code,
-                        password: this.form.pwd,
-                        sourceCode: 'beosin-eye',
-                    }).then(() => {
+                    const params = {
+                        account:this.form.email,
+                        password:Base64.encode(this.form.password),
+                        verification_code:this.form.code,
+                    }
+                    registerAccount(params).then(() => {
                         this.$message.success(this.$t('el.loginConfig.register') + this.$t('el.success'));
                         this.$parent.areaType = 1;
                     }).catch(error => {

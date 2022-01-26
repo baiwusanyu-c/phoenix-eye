@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {login} from '@/api/login.js';
+import {loginAccount} from '@/api/login.js';
 import {getInfo} from "../../../../api/login";
 import Vue from 'vue'
 export default {
@@ -121,7 +121,7 @@ export default {
             this.$refs['form'].validate((valid) => {
                 if (valid) {
                     this.isLogin = true;
-                    login({
+                    loginAccount({
                         phoneNum: this.form.phoneNumber,
                         code: this.form.code,
                         /*login_type: 'mobile_phone_code',
