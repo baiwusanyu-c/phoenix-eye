@@ -12,10 +12,17 @@
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='password'>
-                <el-input autocomplete="off" :placeholder="$t('el.loginConfig.loginPwdP')" v-model="form.password">
+                <el-input maxlength="40" :type="visible ? 'text' : 'password'" autocomplete="off"
+                          :placeholder="$t('el.loginConfig.loginPwdP')"
+                          v-model="form.password">
                     <template slot="prepend">
-                        <img class="iconImg" src="../../../../assets/image/pc/phone.png" alt="">
-                        <span class="reg-start">*</span>
+                        <img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
+                    </template>
+                    <template slot="append">
+                        <img class="showIcon" v-if="!visible" @click="visible = !visible"
+                             src="../../../../assets/image/pc/hide.png" alt="">
+                        <img class="showIcon" v-else @click="visible = !visible"
+                             src="../../../../assets/image/pc/show.png" alt="">
                     </template>
                 </el-input>
             </el-form-item>
@@ -86,7 +93,8 @@ export default {
             isTip: false,
             number: 0,
             visible: false,
-            visibleAgain: false
+            visibleAgain: false,
+
         };
     },
     methods: {
@@ -129,6 +137,7 @@ export default {
                         account:this.form.email,
                         password:Base64.encode(this.form.password),
                         verification_code:this.form.code,
+                        from:'ussa_system'
                     }
                     registerAccount(params).then(() => {
                         this.$message.success(this.$t('el.loginConfig.register') + this.$t('el.success'));

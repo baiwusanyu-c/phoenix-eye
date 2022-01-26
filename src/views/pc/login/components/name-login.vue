@@ -145,13 +145,14 @@ export default {
                         password:Base64.encode(this.form.pwd),
                         code: this.form.code,
                         uuid: this.form.uuid,
-                        // client_id: 'beosin-eye',
-                        client_id: 'official_site_sg_system',
-                        client_secret: 'uZtik#Iu8D',
-                        // client_secret: '123456',
+                         client_id: 'beosin-eye',
+                        //client_id: 'official_site_sg_system',
+                        //client_secret: 'uZtik#Iu8D',
+                         client_secret: '123456',
                         grant_type: 'password',
                         login_type:"password",
                         scope: 'server',
+                        product_version:'FREE'
 
                     }).then(res => {
                         const langCache = this.getStore('language')
@@ -175,7 +176,7 @@ export default {
                         // 登錄先拿路由在跳轉
                         this.getRouter()
                     }).catch(error => {
-                        this.$message.error(error.message)
+                        this.$message.error(error)
                         if (error.code && error.code == 920000001) {
                             this.$parent.delTip = true;
                         }
