@@ -22,7 +22,7 @@
             </div>
             <div class="contractjsitu-item-outline">
                 <project-ranking-score-card
-                    :title="$t('el.projectRinking.safetyAssessment') +  safetyEvaluate(resData.scores)"
+                    :title="$t('el.projectRinking.safetyAssessment') + ':  ' +safetyEvaluate(resData.scores)"
                     :label-config="aqpgConfig"
                     :data="resData.scores"></project-ranking-score-card>
                 <!--                <project-ranking-score-card :title="$t('el.projectRinking.contractOverview')"
