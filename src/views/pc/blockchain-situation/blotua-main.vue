@@ -286,6 +286,9 @@ export default {
     computed:{
        formatterSize(){
            return function (val,d){
+               if(val < 0){
+                   return '-'
+               }
               return nFormatter(val,d)
            }
        }
