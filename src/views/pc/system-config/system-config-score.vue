@@ -85,15 +85,17 @@
                             width="204px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.configSnd}}</span>
-                                <span v-if="scope.$index === 1 || scope.$index === 2">-</span>
+                                <span v-if="scope.$index === 1 || scope.$index === 2 || scope.$index === 3">-</span>
                                 <span v-show="inputShow === false">
                                 <span  v-show="scope.$index === 1">{{inputValue.static_testing.config.middle_risk}}</span>
                                 <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.large_fee}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.tx_safety.config.privileged_operation}}</span>
                             </span>
                                 <!--输入框部分-->
                                 <span v-show="inputShow === true">
                                     <el-input class="table-input" v-show="scope.$index === 1" v-model.number="inputValue.static_testing.config.middle_risk"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.large_fee"></el-input>
+                                    <el-input class="table-input" v-show="scope.$index === 3" v-model.number="inputValue.tx_safety.config.privileged_operation"></el-input>
                                 </span>
                             </template>
                         </el-table-column>
@@ -187,6 +189,7 @@ export default {
                         huge_transfer:'',
                         repeat_call:'',
                         token_empty:'',
+                        privileged_operation:'',
                     }
                 },
                 tx_stability:{
@@ -229,7 +232,8 @@ export default {
                     configFth:this.$t('el.systemConfigScore.repeat_call'),
                 },
                 {
-                    configFst:this.$t('el.systemConfigScore.token_empty')
+                    configFst:this.$t('el.systemConfigScore.token_empty'),
+                    configSnd:this.$t('el.systemConfigScore.privileged_operation')
                 },
                 {
                     project: this.$t('el.systemConfigScore.tradeStable'),
@@ -256,7 +260,6 @@ export default {
                     configFth:'',
                 }
             ],
-
         }
     },
     watch:{
@@ -287,7 +290,8 @@ export default {
                    configFth:this.$t('el.systemConfigScore.repeat_call'),
                },
                {
-                   configFst:this.$t('el.systemConfigScore.token_empty')
+                   configFst:this.$t('el.systemConfigScore.token_empty'),
+                   configSnd:this.$t('el.systemConfigScore.privileged_operation')
                },
                {
                    project: this.$t('el.systemConfigScore.tradeStable'),

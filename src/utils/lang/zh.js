@@ -192,6 +192,7 @@ export const el = {
         huge_transfer:'巨额转账: ',
         repeat_call:'重复提交: ',
         token_empty:'代币兑空: ',
+        privileged_operation:'特权操作: ',
         tradeStable:'交易稳定性',
         tradeScore:'评分系数: ',
         safetyPublicOptionClass:'风险舆情',
