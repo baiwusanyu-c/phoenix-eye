@@ -53,7 +53,7 @@
             </div>
         </div>
         <!--合约安全-->
-        <div class="projsitu-item">
+        <div class="projsitu-item" v-loading='loadingCs'>
             <div class="item-title">
                 <h2>{{ $t('el.projectRinking.contractSecurity') }}</h2>
             </div>
@@ -61,7 +61,7 @@
                         'projsitu-item-contractSecur':true,
                         'projsitu-item-hyaq':contractSecurity.length === 0
                     }"
-                 v-loading='loadingCs'>
+                 >
                 <project-ranking-radar v-for="(item) in contractSecurity"
                                        :addr="item.contract_address"
                                        :contractId="item.project_contract_id"
@@ -113,7 +113,7 @@
                         'projsitu-item-feelingSecurity':true,
                         'projsitu-item-hyaq':safetyData.length === 0
                     }"
-                 v-loading="loadingFs">
+                 >
                 <project-ranking-safety-opinion
                     v-if="safetyData.length > 0"
                     :infoData="safetyData">
@@ -198,8 +198,7 @@ export default {
             projectInfo: {},
             // 合约安全loading
             loadingCs: false,
-            // 舆情安全loading
-            loadingFs: false,
+
             // 项目id
             projectId: '',
             // 舆情安全数据
@@ -234,7 +233,7 @@ export default {
         getPublicSentimentSecurData() {
             this.safetyData = []
             const _this = this
-            _this.loadingFs = true
+
             let params = {
                 project_id: _this.projectId -0,
                 page_num: _this.pageParamsFs.pageNum,
@@ -255,9 +254,10 @@ export default {
                         })
                     })
                     _this.pageParamsFs.total = res.data.total
-                    _this.loadingFs = false
+
                 }
             }).catch(err => {
+
                 _this.$message.error(err)
                 console.error(err)
             })
@@ -289,6 +289,7 @@ export default {
                     _this.loadingCs = false
                 }
             }).catch(err => {
+                _this.loadingCs = false
                 _this.$message.error(err)
                 console.error(err)
             })
@@ -326,8 +327,8 @@ export default {
             this.projectInfo = {}
             // 合约安全loading
             this.loadingCs = false
-            // 舆情安全loading
-            this.loadingFs = false
+
+
             // 项目id
             this.projectId = ''
             // 舆情安全数据
