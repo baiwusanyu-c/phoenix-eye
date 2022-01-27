@@ -20,7 +20,6 @@ let copyRandomList = function(head) {
         }
     }
     list = gf(head,list)
-    debugger
     return list
 };
 describe('test-reverce-list', () => {

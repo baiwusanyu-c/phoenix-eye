@@ -83,7 +83,6 @@ describe('test-min-stack', () => {
         obj.pop()
         obj.push(-108)
         obj.push(-251)
-        debugger
         expect(obj.min()).toBe(-251)
 
     })

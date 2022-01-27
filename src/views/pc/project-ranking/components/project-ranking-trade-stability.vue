@@ -115,7 +115,7 @@
                 const _this = this
                 if((_this.charData.list && _this.charData.list.length  === 0) || !_this.charData.list) return;
                 _this.charDataInner = []
-                if(currency === '全部'){
+                if(currency === '全部' || currency === 'All'){
                     _this.charData.list.forEach(val=>{
                         val.list.forEach(re=>re.tokenName = val.token_name)
                         _this.charDataInner = _this.charDataInner.concat(val.list)
