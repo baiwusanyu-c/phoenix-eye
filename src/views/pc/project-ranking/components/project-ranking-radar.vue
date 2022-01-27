@@ -151,6 +151,7 @@ export default {
                 return
             }
             const chart = new Chart({
+                localRefresh: false,
                 container: `radar_chart${this._uid}`,
                 autoFit: true,
                 height: 250,

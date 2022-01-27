@@ -203,9 +203,9 @@
                     :total='pageParams.total'
                     @updatePage="pageChange"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{
+                    <span slot="prev" class="table-page-info">{{ $t('el.total') }} {{
                             pageParams.total
-                        }}{{ $t('el.piece') }}</span>
+                        }} {{ $t('el.piece') }}</span>
                     <span slot="next"></span>
                 </be-pagination>
             </div>
@@ -357,18 +357,10 @@ export default {
         },
         stateTxt(){
             return function (val){
-                const lang = this.getStore('language')
-                if(lang === 'zh_CN'){
-                    if(val !== '成功'){
-                        return this.$t('el.riskConfig.stateFailed')
-                    }
-                    return this.$t('el.riskConfig.stateSuccess')
-                }else{
-                    if(val !== 'success'){
-                        return this.$t('el.riskConfig.stateFailed')
-                    }
+                if(val === 'success' || val === '成功' ){
                     return this.$t('el.riskConfig.stateSuccess')
                 }
+                return this.$t('el.riskConfig.stateFailed')
             }
         },
         logoType() {

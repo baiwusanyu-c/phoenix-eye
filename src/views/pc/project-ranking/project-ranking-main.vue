@@ -136,7 +136,7 @@
                 :total='pageParams.total'
                 @updatePage="pageChange"
                 :is-front="false">
-                <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{ pageParams.total }}{{
+                <span slot="prev" class="table-page-info">{{ $t('el.total') }} {{ pageParams.total }} {{
                         $t('el.piece')
                     }}</span>
                 <span slot="next"></span>
