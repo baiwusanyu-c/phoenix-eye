@@ -71,7 +71,9 @@
                     align="center">
                     <template slot-scope="scope">
                           <span style="color: #1496F2;cursor: pointer"
-                                @click="openDetailProject(scope.row.project_id)"> {{ scope.row.name || $t('el.emptyData') }}</span>
+                                @click="openDetailProject(scope.row.project_id)"> {{
+                                  scope.row.name || $t('el.emptyData')
+                              }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -91,7 +93,9 @@
                                 {{ item.contract_address }}
                             </p>
                             <span slot="reference"
-                                  style="color: #1496F2;cursor: pointer">{{ scope.row.contract_num || $t('el.emptyData') }}</span>
+                                  style="color: #1496F2;cursor: pointer">{{
+                                    scope.row.contract_num || $t('el.emptyData')
+                                }}</span>
                         </el-popover>
                     </template>
                 </el-table-column>
@@ -311,6 +315,12 @@ export default {
          * 按鈕組點擊篩選事件
          */
         filterClick(type) {
+            this.pageParams = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 10,
+                total: 0
+            }
             this.currentCurrency = type
             this.getList()
         },
@@ -533,11 +543,13 @@ export default {
         }
     }
 }
-.top-tip{
+
+.top-tip {
     cursor: pointer;
     margin-bottom: 5px;
     line-height: 25px;
-    &:hover{
+
+    &:hover {
         background-color: #F5F7FA;
     }
 }
