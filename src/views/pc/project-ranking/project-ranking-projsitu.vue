@@ -27,22 +27,25 @@
                 </div>
                 <div class="outline-info">
                     <h2>{{ $t('el.projectRinking.outlineTitle') }}</h2>
-                    <div class="outline-info-txt">
-                        <div style="justify-content: flex-start">
-                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.staticDetection') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.staticDetection || '暂无数据'"></span>
+                    <div class="outline-info-txt scrollDiy">
+                        <div style="justify-content: flex-start;align-items: flex-start">
+                            <span class="label" >
+                                {{ $t('el.projectRinking.staticDetection') }}:
+                            </span>
+                            <!--          style="min-width: 170px; align-items: flex-start;text-align: right"                  -->
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.staticDetection || '暂无数据'"></span>
                         </div>
-                        <div style="justify-content: flex-start">
-                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.txSecurity') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.txSecurity || '暂无数据'"></span>
+                        <div style="justify-content: flex-start;align-items: flex-start">
+                            <span class="label" >{{ $t('el.projectRinking.txSecurity') }}:</span>
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.txSecurity || '暂无数据'"></span>
                         </div>
-                        <div style="justify-content: flex-start">
-                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.txStability') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.txStability || '暂无数据'"></span>
+                        <div style="justify-content: flex-start;align-items: flex-start">
+                            <span class="label" >{{ $t('el.projectRinking.txStability') }}:</span>
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.txStability || '暂无数据'"></span>
                         </div>
-                        <div style="justify-content: flex-start">
-                            <span class="label" style="min-width: 70px; align-items: flex-start;">{{ $t('el.projectRinking.feeling') }}:</span>
-                            <span class='inner-text' v-html="outlineInfo.feeling || '暂无数据'"></span>
+                        <div style="justify-content: flex-start;align-items: flex-start">
+                            <span class="label" >{{ $t('el.projectRinking.feeling') }}:</span>
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.feeling || '暂无数据'"></span>
                         </div>
                     </div>
                     <p>*{{ $t('el.sevenD') }}</p>
@@ -606,7 +609,7 @@ export default {
 
                 .outline-info-txt {
                     height: 80%;
-
+                    overflow-y: auto;
                     div {
                         display: flex;
                         margin-bottom: 15px;
@@ -619,6 +622,7 @@ export default {
                         }
 
                         .inner-text {
+                            line-height: 1.5;
                             color: $textColor4;
                         }
                     }

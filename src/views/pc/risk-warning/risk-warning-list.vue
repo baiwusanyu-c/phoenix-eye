@@ -53,6 +53,7 @@
                     align="center">
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.tx_hash"
+                                          :emptyText="$t('el.emptyData')"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
@@ -88,6 +89,7 @@
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.from_address"
                                           v-if="!scope.row.from_address_tag"
+                                          :emptyText="$t('el.emptyData')"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
@@ -95,6 +97,7 @@
                                           :copyContent="scope.row.from_address"
                                           :tooltipTxt="scope.row.from_address"
                                           v-if="scope.row.from_address_tag"
+                                          :emptyText="$t('el.emptyData')"
                                           :is-ellipsis="false"
                                           style="color: #1496F2"
                                           fontLength="8"
@@ -111,6 +114,7 @@
                         <be-ellipsis-copy :targetStr="scope.row.to_address"
                                           v-if="!scope.row.to_address_tag"
                                           fontLength="8"
+                                          :emptyText="$t('el.emptyData')"
                                           endLength="8">
                         </be-ellipsis-copy>
                         <be-ellipsis-copy :targetStr="scope.row.to_address_tag"
@@ -119,6 +123,7 @@
                                           v-if="scope.row.to_address_tag"
                                           :is-ellipsis="false"
                                           style="color: #1496F2"
+                                          :emptyText="$t('el.emptyData')"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>

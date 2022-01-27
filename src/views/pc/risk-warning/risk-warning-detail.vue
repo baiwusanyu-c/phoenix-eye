@@ -78,11 +78,13 @@
                                                   styles="font-weight: bold;color:#409EFF"
                                                   :copyContent="scope.row.address"
                                                   :tooltip-txt="scope.row.address"
+                                                  :emptyText="$t('el.emptyData')"
                                                   :isEllipsis="false"
                                                   v-if="scope.row.address_tag">
                                 </be-ellipsis-copy>
                                 <be-ellipsis-copy :targetStr="scope.row.address"
                                                   v-if="!scope.row.address_tag"
+                                                  :emptyText="$t('el.emptyData')"
                                                   :is-ellipsis="isEllipsis || scope.row.address.length >=45"
                                                   styles="font-weight: bold;"
                                                   fontLength="8"
