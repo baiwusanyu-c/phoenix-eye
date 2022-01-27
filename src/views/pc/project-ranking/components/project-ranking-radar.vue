@@ -11,6 +11,7 @@
             <span class="project-ranking-radar-platform">{{platform.toUpperCase()}}</span>
             <be-ellipsis-copy :targetStr="addr"
                               :is-ellipsis="addr.length > 30"
+                              :emptyText="$t('el.emptyData')"
                               :fontLength="8"
                               :endLength="8">
             </be-ellipsis-copy>

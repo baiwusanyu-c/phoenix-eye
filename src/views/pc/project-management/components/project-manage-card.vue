@@ -13,6 +13,7 @@
                     <be-ellipsis-copy :targetStr="title"
                                       :isShowCopyBtn="false"
                                       :isEllipsis="title.length > 12"
+                                      :emptyText="$t('el.emptyData')"
                                       fontLength="5"
                                       endLength="5">
                     </be-ellipsis-copy>
@@ -39,6 +40,7 @@
                         <span class="addr-cury">{{ formatePlatform(addrItem.platform) }}</span>
                         <be-ellipsis-copy :targetStr="addrItem.contract_address"
                                           :is-ellipsis="addrItem.contract_address.length > 30"
+                                          :emptyText="$t('el.emptyData')"
                                           :fontLength="showLength"
                                           :endLength="showLength">
                         </be-ellipsis-copy>

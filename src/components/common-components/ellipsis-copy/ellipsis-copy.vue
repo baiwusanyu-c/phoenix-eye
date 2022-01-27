@@ -8,12 +8,17 @@
 -->
 <template>
     <div class="ellipsis-copy" @mouseover="enter"  @mouseout="leave">
-        <el-tooltip placement="top" effect="light" class="address" :disabled="!isTooltip">
+        <el-tooltip placement="top" effect="light" class="address" :disabled="setTooltip">
             <span slot="content">{{getTooltipTxt()}}</span>
             <span :style="styles">{{changeEllipsisStr(targetStr)}}</span>
         </el-tooltip>
-        <span class="copy-btn" v-if="isShowCopyBtn">
-            <svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click.stop="$copyAddress(copyContent || targetStr)"></svg-icon>
+        <span class="copy-btn" v-if="setCopy">
+            <svg-icon iconClass="-fuzhi"
+                      v-if="isShowCopyBtn"
+                      disabled-tool-tip class="icon"  style="color: #1496F2"
+                      content="复制"
+                      v-show="isShowCopy"
+                      @click.stop="$copyAddress(copyContent || targetStr)"></svg-icon>
         </span>
         
     </div>
@@ -29,7 +34,7 @@ export default {
         targetStr:{
             type: String
         },
-        // copy按钮是否一直显示
+        // copy按钮是否一直显示 设置后一直显示复制按钮
         isFixedShowCopy:{
             type: Boolean,
             default: false
@@ -44,7 +49,7 @@ export default {
             type: [Number,String],
             default: 8
         },
-        // 是否显示复制的按钮
+        // 是否显示复制的按钮,设置后将不会显示复制按钮
         isShowCopyBtn:{
             type: Boolean,
             default: true
@@ -76,6 +81,10 @@ export default {
             type: String,
             default: ''
         },
+        emptyText:{
+            type: String,
+            default: ''
+        }
     },
     computed:{
       getTooltipTxt(){
@@ -85,7 +94,18 @@ export default {
               }
               return this.tooltipTxt
           }
-
+      },
+      setTooltip(){
+          if(!this.tooltipTxt && !this.targetStr){
+              return true
+          }
+          return !this.isTooltip
+      },
+      setCopy(){
+          if(!this.tooltipTxt && !this.targetStr){
+              return false
+          }
+          return this.isShowCopyBtn
       }
     },
     data() {
@@ -113,6 +133,9 @@ export default {
         * @param {String} str 当前地址/交易数
          */
         changeEllipsisStr(str) {
+            if(!str) {
+                return this.emptyText
+            }
             if(!this.isEllipsis) return str
             const frontLen = this.fontLength;
             const endLen = this.endLength;

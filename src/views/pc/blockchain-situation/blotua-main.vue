@@ -110,6 +110,7 @@
                                     :targetStr="item.name"
                                     :is-ellipsis="item.name.length > 15 ? true : false"
                                     :isShowCopyBtn="false"
+                                    :emptyText="$t('el.emptyData')"
                                     fontLength="8"
                                     endLength="8">
                                 </be-ellipsis-copy>
@@ -178,6 +179,7 @@
                                     :is-ellipsis="true"
                                     :isTooltip="false"
                                     :isShowCopyBtn="false"
+                                    :emptyText="$t('el.emptyData')"
                                     fontLength="8"
                                     endLength="8">
                                 </be-ellipsis-copy>
@@ -205,6 +207,7 @@
                                 <be-ellipsis-copy :targetStr="item.title"
                                                   :is-ellipsis="true"
                                                   :isShowCopyBtn="false"
+                                                  :emptyText="$t('el.emptyData')"
                                                   :isTooltip="false"
                                                   styles="color: #84CCFF;font-weight: 500;font-size: 16px;"
                                                   fontLength="20"
@@ -217,6 +220,7 @@
                                     :is-ellipsis="true"
                                     :isShowCopyBtn="false"
                                     :isTooltip="false"
+                                    :emptyText="$t('el.emptyData')"
                                     styles="color: #0468C2;font-weight: 400;font-size: 14px;line-height:1.5"
                                     fontLength="35"
                                     endLength="0">
@@ -313,7 +317,7 @@ export default {
             this.getWarningRiskData()
             this.getFxYqData()
             this.getProjRanking()
-            this.startTimer()
+            //this.startTimer()
         })
     },
     methods: {
@@ -788,7 +792,7 @@ export default {
     .blotua-table {
         width: 100%;
         margin-top: 30px;
-        padding: 18px;
+        padding: 14px;
         box-sizing: border-box;
         .blotua-table-header {
             font-size: 12px;
