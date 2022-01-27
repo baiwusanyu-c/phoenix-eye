@@ -9,7 +9,7 @@
         <!--    非新增时显示   -->
         <div v-if="type === 'edit'" :class="`card-title card-title-${isPublic ? 'public' : 'private'}`">
             <div style="display: flex;align-items: center;">
-                <h3>
+                <h3 @click="openDetailProject(projectId)" style="cursor: pointer">
                     <be-ellipsis-copy :targetStr="title"
                                       :isShowCopyBtn="false"
                                       :isEllipsis="title.length > 12"
@@ -30,7 +30,7 @@
             </div>
         </div>
         <!--   非新增时显示 卡片地址列表   -->
-        <div v-if="type === 'edit'" class="card-edit" @click="openDetailProject(projectId)">
+        <div v-if="type === 'edit'" class="card-edit">
             <div style="width: 100%; display: flex; overflow-x: auto;height: 40px" class="scrollDiy">
                 <el-tag v-for="(item) in keywordList" :key="item + _uid">{{ item }}</el-tag>
             </div>
@@ -175,7 +175,7 @@ export default {
                 }
             }).catch(err=>{
                 _this.loadingSearch = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -226,7 +226,7 @@ export default {
             padding: 0 5px;
         }
         .ellipsis-copy{
-            min-width: 170px !important;
+            min-width: initial !important;
         }
     }
 

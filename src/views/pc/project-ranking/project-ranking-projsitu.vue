@@ -258,7 +258,7 @@ export default {
                     _this.loadingFs = false
                 }
             }).catch(err => {
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -289,7 +289,7 @@ export default {
                     _this.loadingCs = false
                 }
             }).catch(err => {
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },

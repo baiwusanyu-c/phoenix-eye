@@ -431,7 +431,7 @@ export default {
                     return
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
             this.inputShow = false

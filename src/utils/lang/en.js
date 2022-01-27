@@ -121,6 +121,7 @@ export const el = {
         searchP:'Please enter the transaction hash, sender and recipient',
         platformP:'Please select the blockchain platform',
         tableHeader:{
+            platform:'platform',
             txHash:'Transaction hash',
             txTime:'Transaction time',
             state:'Transaction status',
@@ -128,7 +129,7 @@ export const el = {
             to:'Recipient',
             warningType:'Suspected risk type',
             score:'Risk evaluation',
-            detail:'Analysis details',
+            detail:'Details',
         },
         profitTableHeader:{
             addr:'Address',

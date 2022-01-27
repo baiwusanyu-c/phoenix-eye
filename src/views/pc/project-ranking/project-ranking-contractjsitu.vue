@@ -98,7 +98,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        width="100"
+                        width="180"
                         prop="tx_status"
                         :label="$t('el.riskConfig.tableHeader.state')"
                         align="center">
@@ -179,6 +179,7 @@
                     <el-table-column
                         prop="risk_score"
                         :label="$t('el.riskConfig.tableHeader.score')"
+
                         align="center"
                         show-overflow-tooltip>
                         <template slot-scope="scope">
@@ -594,7 +595,7 @@ export default {
                 }
             }).catch(err => {
                 _this.loadingTxS = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -623,7 +624,7 @@ export default {
                 }
             }).catch(err=>{
                 _this.loadingTxST = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })*/
         },

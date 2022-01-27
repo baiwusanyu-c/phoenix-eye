@@ -344,7 +344,7 @@ export default {
                     _this.createProjectWindow = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
 
@@ -378,7 +378,7 @@ export default {
                     _this.createProjectWindow = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         }

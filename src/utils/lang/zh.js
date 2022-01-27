@@ -121,6 +121,7 @@ export const el = {
         searchP:'请输入交易哈希、发送方、接收方',
         platformP:'请选择链平台',
         tableHeader:{
+            platform:'链平台',
             txHash:'交易哈希',
             txTime:'交易时间',
             state:'交易状态',

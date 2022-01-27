@@ -268,7 +268,7 @@ export default {
                 }
             }).catch(err=>{
                 _this.loadingSearch = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -296,7 +296,7 @@ export default {
                 }
             }).catch(err=>{
                 _this.loading = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },

@@ -243,7 +243,7 @@ export default {
                 }
             }).catch(err=>{
                 _this.loadingSearch = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -297,6 +297,9 @@ export default {
     .project-ranking-radar-chart{
         width: 100%;
         height: 100%;
+        canvas {
+            cursor: pointer !important;
+        }
     }
 }
 

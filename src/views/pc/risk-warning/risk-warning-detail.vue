@@ -260,7 +260,7 @@ export default {
                 })
                 _this.loading = false
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
                 _this.loading = false
             })

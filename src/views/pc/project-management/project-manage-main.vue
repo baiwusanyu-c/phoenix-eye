@@ -111,7 +111,7 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -142,7 +142,7 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -172,7 +172,7 @@ export default {
                     _this.showDelete = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -202,7 +202,7 @@ export default {
                     _this.showFresh = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -223,7 +223,7 @@ export default {
                 })
                 _this.loading = false
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         }

@@ -39,7 +39,7 @@
                 </div>
                 <el-table-column
                     prop="platform"
-                    :label="$t('el.riskConfig.platform')"
+                    :label="$t('el.riskConfig.tableHeader.platform')"
                     width="120"
                     align="center">
                     <template slot-scope="scope">
@@ -71,7 +71,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="100"
+                    width="180"
                     prop="tx_status"
                     :label="$t('el.riskConfig.tableHeader.state')"
                     align="center">
@@ -146,6 +146,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="risk_score"
+
                     :label="$t('el.riskConfig.tableHeader.score')"
                     align="center"
                     show-overflow-tooltip>
@@ -284,7 +285,7 @@ export default {
                     _this.loading = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },

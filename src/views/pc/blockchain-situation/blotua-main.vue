@@ -105,7 +105,7 @@
                             <td v-if="index === 1"><img src="@/assets/image/pc/xmph-2.png" alt=""></td>
                             <td v-if="index === 2"><img src="@/assets/image/pc/xmph-3.png" alt=""></td>
                             <td v-if="index >= 3">{{ ((index + 1) >= 10 ) ? index + 1 : '0' + (index + 1) }}</td>
-                            <td>
+                            <td  style="cursor: pointer">
                                 <be-ellipsis-copy
                                     :targetStr="item.name"
                                     :is-ellipsis="item.name.length > 15 ? true : false"
@@ -175,6 +175,7 @@
                             <td style="display: flex;justify-content: center;line-height: 45px">
                                 <div class="index" >{{ index + 1 }}</div>
                                 <be-ellipsis-copy
+                                    styles="cursor: pointer"
                                     :targetStr="item.tx_hash"
                                     :is-ellipsis="true"
                                     :isTooltip="false"
@@ -200,7 +201,7 @@
                         <span>{{ $t('el.blotua.fxyq') }}</span>
                     </div>
                     <div class="fxyq-body scrollDiy">
-                        <div style="position: relative" v-for="item in safetyData"
+                        <div style="position: relative;cursor: pointer" v-for="item in safetyData"
                              @click="lookTextOriginal(item.sourceUrl)"
                              :key="item.sourceUrl + item.time">
                             <div style="margin-bottom: 10px">
@@ -474,7 +475,7 @@ export default {
                 this.loadingTxNum = false
             }).catch(err => {
                 this.loadingTxNum = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -495,7 +496,7 @@ export default {
                 _this.loadingFxTx = false
             }).catch(err => {
                 _this.loadingFxTx = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -515,7 +516,7 @@ export default {
                     _this.pageParams.total = res.data.total
                 }
             }).catch(err => {
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -539,7 +540,7 @@ export default {
                 _this.loadingTxFx = false
             }).catch(err=>{
                 _this.loadingTxFx = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -574,7 +575,7 @@ export default {
                 _this.loadingFxYq = false
             }).catch(err => {
                 _this.loadingFxYq = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -597,7 +598,7 @@ export default {
                 _this.loadingProjRank = false
             }).catch(err=>{
                 _this.loadingProjRank = false
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },

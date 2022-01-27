@@ -104,7 +104,7 @@ export default {
                     _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -136,7 +136,7 @@ export default {
                     _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -165,7 +165,7 @@ export default {
                     _this.getList()
                 }
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -182,7 +182,7 @@ export default {
                 _this.featuresList = res.data.system_risk_features
                 _this.loading = false
             }).catch(err=>{
-                _this.$message.error(err.message)
+                _this.$message.error(err)
                 console.error(err)
             })
         }
