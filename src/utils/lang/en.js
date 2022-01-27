@@ -183,9 +183,9 @@ export const el = {
         weight:'Weight',
         detailConfig:'Detailed configuration',
         staticDetection:'Static Detection',
-        dangerHigh:'High risk: ',
-        dangerMiddle:'Medium risk: ',
-        dangerLow:'Low risk: ',
+        dangerHigh:'High risk',
+        dangerMiddle:'Medium risk',
+        dangerLow:'Low risk',
         // Transaction security
         tradeSafetyClass:'Transaction security',
         flash_load_tx:'Flashloan transaction: ',
@@ -206,6 +206,7 @@ export const el = {
         checkInput:'Parameter input error, please check the input information'
     },
     projectRinking:{
+        quesNum:'Number of questions',
         contract:'Contract',
         proNum:'No.',
         name:'Project name',

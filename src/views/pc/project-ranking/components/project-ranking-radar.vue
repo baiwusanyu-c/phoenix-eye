@@ -180,7 +180,7 @@ export default {
                 label: {
                     style: {
                         fontWeight: 'bold',
-                        fontSize: 16,
+                        fontSize: 14,
                         fill:'black',
                         fontFamily:'PingFangSC-Medium, PingFang SC, sans-serif'
                     },

@@ -307,11 +307,14 @@ export default {
             pieData: [],
             // 条形图
             barData: [],
-            // 饼图数据
+            // 饼图颜色字典数据
             pieColor: {
                 '低危': '#5D7092',
                 '中危': '#F6BD16',
                 '高危': '#E8684A',
+                'Low risk': '#5D7092',
+                'Medium risk': '#F6BD16',
+                'High risk': '#E8684A',
             },
 
 
@@ -337,12 +340,39 @@ export default {
             // 交易安全图表数据
             txStabilityChartData: {list:[]},
             //交易安全图表代币选择下拉
-            txStabilitySelect: []
-
+            txStabilitySelect: [],
+            pieChart:null,
+            barChart:null
 
         }
     },
+    watch:{
+        // 语种变换时，有些数据没有变化，这里强刷
+        listenLang:function(){
+            // 合约概况配置
+            this.hyGkConfig = [
+                {label: this.$t('el.projectRinking.txSumTotal'), val: 'tx_total'},
+                {label: this.$t('el.projectRinking.callSumTotal'), val: 'call_total'},
+                {label: this.$t('el.projectRinking.createTime'), val: 'create_time'},
+            ]
+            // 安全评估配置
+            this.aqpgConfig = [
+                {label: this.$t('el.projectRinking.staticDetection'), val: 'static_testing'},
+                {label: this.$t('el.projectRinking.txSecurity'), val: 'tx_safety'},
+                {label: this.$t('el.projectRinking.txStability'), val: 'tx_stability'},
+            ]
+            this.pieData[0].item = this.$t('el.systemConfigScore.dangerHigh')
+            this.pieData[1].item = this.$t('el.systemConfigScore.dangerMiddle')
+            this.pieData[2].item = this.$t('el.systemConfigScore.dangerLow')
+
+            this.renderStaticPie(true)
+            this.renderStaticBar(true)
+        }
+    },
     computed: {
+        listenLang() {
+            return this.$i18n.locale;
+        },
         stateSuccess() {
             return function (val) {
                 if(val === 'success' || val === '成功' ){
@@ -396,15 +426,21 @@ export default {
         openWeb(params) {
             this.$openWindow(`#/riskWarning/detail?tx_hash=${params}`, 'view_window')
         },
-        /**
+           /**
          * 渲染静态检测饼图
          */
-        renderStaticPie() {
+        renderStaticPie(isUpdate) {
+               if(isUpdate){
+                   this.pieChart.data(this.pieData);
+                   this.pieChart.render(isUpdate);
+                   return
+               }
             const chart = new Chart({
                 container: 'static_pie',
                 autoFit: true,
                 height: 300,
             });
+            this.pieChart =chart
             chart.coordinate('theta', {
                 radius: 0.75,
             });
@@ -440,20 +476,34 @@ export default {
         /**
          * 渲染静态检测条形图
          */
-        renderStaticBar() {
+        renderStaticBar(isUpdate) {
+            if(isUpdate){
+                this.barChart.data(this.barData);
+                let barD = JSON.parse(JSON.stringify(this.barData))
+                this.barChart.scale({
+                    value: {
+                        max: barD.sort((a, b) => a.value - b.value).slice().pop().value,
+                        min: 0,
+                        alias: this.$t('el.projectRinking.quesNum'),
+                    },
+                });
+                this.barChart.render(isUpdate);
+                return
+            }
             if(this.barData.length === 0) return
             const chart = new Chart({
                 container: 'static_bar',
                 autoFit: true,
                 height: 300,
             });
+            this.barChart = chart
             chart.data(this.barData);
             let barD = JSON.parse(JSON.stringify(this.barData))
             chart.scale({
                 value: {
                     max: barD.sort((a, b) => a.value - b.value).slice().pop().value,
                     min: 0,
-                    alias: '问题数量',
+                    alias: this.$t('el.projectRinking.quesNum'),
                 },
             });
             chart.axis('type', {
@@ -548,9 +598,9 @@ export default {
             this.pieData = []
             if(sum > 0){
                 this.pieData = [
-                    {item: '低危', count: this.resData.static_testing.low_risk_count,percent: (this.resData.static_testing.low_risk_count/sum).toFixed(2) - 0},
-                    {item: '中危', count: this.resData.static_testing.middle_risk_count, percent: (this.resData.static_testing.middle_risk_count/sum).toFixed(2) - 0},
-                    {item: '高危', count: this.resData.static_testing.high_risk_count, percent: (this.resData.static_testing.high_risk_count/sum).toFixed(2) - 0},
+                    {item: this.$t('el.systemConfigScore.dangerHigh'),  count: this.resData.static_testing.low_risk_count,percent: (this.resData.static_testing.low_risk_count/sum).toFixed(2) - 0},
+                    {item: this.$t('el.systemConfigScore.dangerMiddle') , count: this.resData.static_testing.middle_risk_count, percent: (this.resData.static_testing.middle_risk_count/sum).toFixed(2) - 0},
+                    {item: this.$t('el.systemConfigScore.dangerLow'),  count: this.resData.static_testing.high_risk_count, percent: (this.resData.static_testing.high_risk_count/sum).toFixed(2) - 0},
                 ]
             }
             // 静态检测餅條形圖数据

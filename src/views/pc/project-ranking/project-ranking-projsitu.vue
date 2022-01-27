@@ -33,19 +33,19 @@
                                 {{ $t('el.projectRinking.staticDetection') }}:
                             </span>
                             <!--          style="min-width: 170px; align-items: flex-start;text-align: right"                  -->
-                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.staticDetection || '暂无数据'"></span>
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.staticDetection || $t('el.emptyData')"></span>
                         </div>
                         <div style="justify-content: flex-start;align-items: flex-start">
                             <span class="label" >{{ $t('el.projectRinking.txSecurity') }}:</span>
-                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.txSecurity || '暂无数据'"></span>
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.txSecurity || $t('el.emptyData')"></span>
                         </div>
                         <div style="justify-content: flex-start;align-items: flex-start">
                             <span class="label" >{{ $t('el.projectRinking.txStability') }}:</span>
-                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.txStability || '暂无数据'"></span>
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.txStability || $t('el.emptyData')"></span>
                         </div>
                         <div style="justify-content: flex-start;align-items: flex-start">
                             <span class="label" >{{ $t('el.projectRinking.feeling') }}:</span>
-                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.feeling || '暂无数据'"></span>
+                            <span style="width: 75%;" class='inner-text' v-html="outlineInfo.feeling || $t('el.emptyData')"></span>
                         </div>
                     </div>
                     <p>*{{ $t('el.sevenD') }}</p>
@@ -202,7 +202,8 @@ export default {
             // 项目id
             projectId: '',
             // 舆情安全数据
-            safetyData:[]
+            safetyData:[],
+            radarChart:null,
         }
     },
     computed: {
@@ -223,8 +224,18 @@ export default {
         },
     },
     watch:{
-        listenLang:function(nVal){
-            this.getOutLineData(this.projectInfo,nVal)
+        listenLang:{
+            deep: true, //深度监听设置为 true
+            handler: function (nVal) {
+                this.getOutLineData(this.projectInfo,nVal)
+                this.staticPieData = [
+                    {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: this.projectInfo.static_testing.score},
+                    {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: this.projectInfo.tx_safety.score},
+                    {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: this.projectInfo.tx_stability.score},
+                    {key:'yqaq-safetyPublicOptionClass',item: this.$t('el.systemConfigScore.safetyPublicOptionClass'), a: this.projectInfo.safety_opinion.score},
+                ]
+                this.renderOutlineRadar(true)
+            }
         }
     },
     mounted() {
@@ -422,7 +433,7 @@ export default {
         /**
          * 渲染概要雷達圖
          */
-        renderOutlineRadar() {
+        renderOutlineRadar(isUpdate) {
             const _this = this
             if (this.staticPieData.length === 0) {
                 return
@@ -433,42 +444,9 @@ export default {
             function limitInShape(items, labels) {
                 labels.forEach((labelGroup) => {
                     labelGroup.cfg.children[0].cfg.visible = false
-                    /*
-                      const labelBBox = labelGroup.getCanvasBBox()
-                    let offsetX = labelCache[index].point.x
-                    let offsetY = labelCache[index].point.y
-                    if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
-                        offsetX = offsetX + labelBBox.width/2 + 8
-                        offsetY = labelCache[index + 4].point.y / 2 + 8
-                    }
-                    if(labelGroup.cfg.data.key === 'jywd-txStability'){
-                        offsetX = offsetX + labelBBox.width/2 + 8
-                        offsetY = labelCache[index + 4].point.y + 16
-                    }
-                    if(labelGroup.cfg.data.key === 'jyaq-txSecurity'){
-                        offsetY = offsetY + labelBBox.height/2 + 10
-                        offsetX = offsetX - 10
-                    }
-                    if(labelGroup.cfg.data.key === 'yqaq-safetyPublicOptionClass'){
-                        offsetY = offsetY + labelBBox.height/2 + 10
-                        offsetX = offsetX - 8
-
-                    }*/
-                    // 添加分数label
-                    /*labelGroup.addShape('text', {
-                        attrs: {
-                            x: offsetX,
-                            y: offsetY,
-                            text: items[index].data.score,
-                            textBaseline: 'middle',
-                            fill: '#1890FF',
-                            fontWeight: 'bold',
-                            fontSize: 16
-                        },
-                    })*/
                 })
-
-                chart.getCanvas().cfg.children[0].addShape('text', {
+                if(!chart) return
+                chart?.getCanvas().cfg.children[0].addShape('text', {
                     attrs: {
                         x: (labelCache[4].point.x + labelCache[6].point.x)/2,
                         y: (labelCache[4].point.y + labelCache[6].point.y)/2,
@@ -489,7 +467,14 @@ export default {
                 key: 'user', // 设置数据key对应展开字段-》 user:'a'
                 value: 'score', // 设置数据value字段 对应展开字段-》 a:70 => score:70
             });
+            // 更新
+            if(isUpdate){
+                this.radarChart.data(dv.rows);
+                this.radarChart.render(isUpdate);
+                return
+            }
             const chart = new Chart({
+                localRefresh: false,
                 container: `outline_radar`,
                 autoFit: true,
                 height: 250,
@@ -497,6 +482,7 @@ export default {
                // padding: [20, 0, 20, 0],
                 appendPadding: [20, 0, 20, 0]
             });
+            this.radarChart = chart
             chart.data(dv.rows);
             chart.scale('score', {
                 min: 0,

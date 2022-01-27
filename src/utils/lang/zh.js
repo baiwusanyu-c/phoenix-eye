@@ -183,9 +183,9 @@ export const el = {
         weight:'权重',
         detailConfig:'详细配置',
         staticDetection:'静态检测',
-        dangerHigh:'高危: ',
-        dangerMiddle:'中危: ',
-        dangerLow:'低危: ',
+        dangerHigh:'高危',
+        dangerMiddle:'中危',
+        dangerLow:'低危',
         // 交易安全
         tradeSafetyClass:'交易安全',
         flash_load_tx:'闪电贷交易: ',
@@ -206,6 +206,7 @@ export const el = {
         checkInput:'参数输入错误，请检查输入信息'
     },
     projectRinking:{
+        quesNum:'问题数量',
         contract:'合约',
         proNum:'编号',
         name:'项目名',
