@@ -146,7 +146,18 @@
 
             }
         },
+        computed: {
+            listenLang() {
+                return this.$i18n.locale;
+            },
+        },
         watch:{
+            listenLang:function(){
+                if(this.selectValue === 'All' || this.selectValue === '全部'){
+                     this.selectValue = `${this.$t('el.projectRinking.tradeStb.all')}`
+                }
+                this.createSelectData(this.selectData)
+            },
             // 监听下拉列表props变化,生產下拉列表數據結構
             selectData: {
                 deep: true, //深度监听设置为 true
