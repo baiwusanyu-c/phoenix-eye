@@ -217,6 +217,14 @@ export default {
                 }
                 return []
             }
+        },
+        listenLang() {
+            return this.$i18n.locale;
+        },
+    },
+    watch:{
+        listenLang:function(nVal){
+            this.getOutLineData(this.projectInfo,nVal)
         }
     },
     mounted() {
@@ -370,7 +378,7 @@ export default {
             this.projectInfo = data.project_info
 
             // 项目检测评分信息
-            this.getOutLineData(this.projectInfo)
+            this.getOutLineData(this.projectInfo,this.$i18n.locale)
             // 项目检测评分雷达图
             this.staticPieData = [
                 {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: this.projectInfo.static_testing.score},
@@ -397,7 +405,14 @@ export default {
         /**
          * 获取概要数据
          */
-        getOutLineData(data) {
+        getOutLineData(data,lang) {
+            if(lang === 'en_US'){
+                this.outlineInfo.staticDetection = data.static_testing.text_en
+                this.outlineInfo.txSecurity = data.tx_safety.text_en
+                this.outlineInfo.txStability = data.tx_stability.text_en
+                this.outlineInfo.feeling = data.safety_opinion.text_en
+                return
+            }
             this.outlineInfo.staticDetection = data.static_testing.text
             this.outlineInfo.txSecurity = data.tx_safety.text
             this.outlineInfo.txStability = data.tx_stability.text
