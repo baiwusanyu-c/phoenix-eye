@@ -19,12 +19,32 @@
                     <el-option :value="10000" label="10s"> </el-option>
                     <el-option :value="60000" label="1min"> </el-option>
                 </el-select>
+                <el-dropdown @command="changeLanguage" style="margin-left: 5px">
+                            <span class="el-dropdown-link">
+                              {{$t('el.header.language')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="zh_CN"
+                                          :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''}`">
+                            {{$t('el.header.chinese')}}
+                        </el-dropdown-item>
+                        <el-dropdown-item command="en_US"
+                                          :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''}`">
+                            {{$t('el.header.english')}}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
 
             <h1 class="project-name">{{ $t('el.blotua.projectName') }}</h1>
             <div class="blotua-main-user">
                 <img src="@/assets/image/pc/user2.png" alt="" style="margin-bottom: 10px">
-                <span style="margin: 0 10px 10px 10px;color: white">{{ loginUser }}</span>
+                <el-dropdown @command="changeLanguage" style="margin: 0 10px 10px 10px;color: white;font-size: 16px">
+                    <span >{{ loginUser }}</span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="logout">{{$t('el.header.logout')}}</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
                 <el-button class="btn" @click="routerPush" style="width: auto;padding-left: 5px;padding-right: 5px">{{ $t('el.blotua.enter') }}</el-button>
             </div>
         </div>
@@ -111,8 +131,8 @@
                                     :is-ellipsis="item.name.length > 15 ? true : false"
                                     :isShowCopyBtn="false"
                                     :emptyText="$t('el.emptyData')"
-                                    fontLength="8"
-                                    endLength="8">
+                                    fontLength="4"
+                                    endLength="4">
                                 </be-ellipsis-copy>
                             </td>
                             <td>{{ item.safety_score}}</td>
@@ -155,7 +175,7 @@
                 <!--       风险交易趋势         -->
                 <div class="yxfx-line" v-loading="loadingFxTx" element-loading-background="rgba(0, 0, 0, 0.8)">
                      <p>{{ $t('el.blotua.jyfxqs') }}</p>
-                    <div id="yxfx_line"></div>
+                    <div id="yxfx_line" style="height: 100%"></div>
                 </div>
             </div>
             <div class="right">
@@ -296,7 +316,17 @@ export default {
                }
               return nFormatter(val,d)
            }
-       }
+       },
+        listenLang() {
+            return this.$i18n.locale;
+        },
+    },
+    watch:{
+        listenLang:function(){
+            this.xmphHeader = [this.$t('el.blotua.rank'), this.$t('el.createProject.createProjectName'), this.$t('el.projectRinking.score'), this.$t('el.blotua.xmgm')]
+            this.jxfxHeader = [this.$t('el.riskConfig.tableHeader.txHash'), this.$t('el.projectRinking.score'), this.$t('el.blotua.time')]
+            this.renderLine(true)
+        },
     },
     created() {
         this.loginUser = JSON.parse(this.getStore('userInfo')).username
@@ -318,19 +348,36 @@ export default {
             this.getWarningRiskData()
             this.getFxYqData()
             this.getProjRanking()
-            //this.startTimer()
+            this.startTimer()
         })
     },
     methods: {
+        changeLanguage(data){
+            if(data === 'logout'){
+                this.$router.push('/login')
+                return
+            }
+            this.setStore('language', data)
+            this.$i18n.locale = data
+            this.$route.meta.titleInfo = this.$t(this.$route.meta.title)
+        },
         /**
          * 渲染折线图
          */
-        renderLine(){
+        renderLine(isUpdate){
             const _this = this
+            // 更新
+            if(isUpdate){
+                this.chart.data(this.lineData);
+                this.chart.options.axes.count.title.text = _this.$t('el.blotua.jyfxNum')
+                this.chart.options.axes.create_time.title.text = _this.$t('el.projectRinking.marketPerformance.time')
+                this.chart.render(isUpdate);
+                return
+            }
             const chart = new Chart({
                 container: 'yxfx_line',
                 autoFit: true,
-                height: 270,
+                height: 'auto',
             });
             this.chart = chart
             chart.data(this.lineData);
@@ -970,7 +1017,7 @@ export default {
         }
 
         .yxfx-line {
-            height: 328px;
+            height: 36%;
             padding: 18px;
             box-sizing: border-box;
             width: 100%;
