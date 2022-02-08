@@ -110,13 +110,13 @@ export default {
          * 开始时间
          */
         startTime: {
-            type: String | Number,
+            type: [String , Number],
         },
         /**
          * 结束时间
          */
         endTime: {
-            type: String | Number,
+            type: [String , Number],
         },
         /**
          * 绑定的日期格式

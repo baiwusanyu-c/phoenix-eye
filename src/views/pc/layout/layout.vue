@@ -3,7 +3,7 @@
         <!--   左侧菜单     -->
         <tsgz-nav-menu ref="headerCom" :listStatus="listStatus"></tsgz-nav-menu>
         <div class="layout-right">
-            <!--     右上标题、任务下拉   -->
+
             <transition name="fade" mode="out-in">
                 <div class="tsgz-menu-info">
                     <div class="mission-select">
@@ -116,7 +116,7 @@ export default {
         background: #FFFFFF;
         display: flex;
         align-items: center;
-
+        filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.16));
         .mission-select {
             flex: 3;
             padding: 0 24px;

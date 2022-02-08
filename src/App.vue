@@ -76,10 +76,9 @@
             if(!this.getStore('language')){
                 this.setStore('language','zh_CN')
             }
-        },
-        mounted() {
 
         },
+
         methods: {
             /**
              * 下线弹窗显示方法
@@ -90,9 +89,7 @@
             //关闭当前页面
             closeWebPage() {
                this.$closePage()
-            },
-
-
+            }
         },
     }
 </script>

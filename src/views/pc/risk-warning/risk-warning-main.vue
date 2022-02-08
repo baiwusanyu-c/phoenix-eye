@@ -14,18 +14,11 @@
 <script>
 export default {
   name: "RiskWarningMain",
-  data() {
-    return {}
-  },
-  mounted() {
-  },
-  methods: {},
 }
 </script>
 
 <style scoped lang="scss">
 .risk-warning-main{
-    height: 100%;
-    width: 100%;
+    min-height: 100%;
 }
 </style>

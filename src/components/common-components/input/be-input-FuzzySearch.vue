@@ -220,19 +220,16 @@ export default {
         // 监听value变化，触发change
         value(nVal, oVal) {
             // 处理最小长度
-            if (this.minLen && this.minLen !== 0) {
-                let values = this.value
-                let isNum = false
-                // 现将数字转化为字符串判断长度
-                if (Object.prototype.toString.call(this.value) === '[object Number]') {
-                    values = this.value.toString()
-                    isNum = true
-                }
-                if (values.length <= this.minLen) {
-                    if (nVal && !oVal) values = isNum ? Number(nVal) : nVal
-                    if (!nVal && oVal) values = isNum ? Number(oVal) : oVal
-                    this.$emit('input', values)
-                }
+            let values = this.value
+            let isNum = false
+            if (Object.prototype.toString.call(this.value) === '[object Number]') {
+                values = this.value.toString()
+                isNum = true
+            }
+            if (this.minLen && values.length <= this.minLen) {
+              if (nVal && !oVal) values = isNum ? Number(nVal) : nVal
+              if (!nVal && oVal) values = isNum ? Number(oVal) : oVal
+              this.$emit('input', values)
             }
             this.handleChange(nVal, oVal)
         },
@@ -281,30 +278,25 @@ export default {
             this.eventDom = $eventDom
             this.$emit("update:value", val.replace(/\s*/g, ''));
             // 根据输入值处理输入建议
-            if (val === '') {
-                if (this.getHistory != undefined) {
-                    this.getHistory(val).then(() => {
-                        this.getSuggestions(val);
-                        this.isShowSelect = true;
-                        this.computedPositon($eventDom)
-                    });
-                }
-            } else {
-                if (val.length >= 2) {
-                    if (this.platform == '') {
-                        if (val.substring(0, 2) == '0x' || val.substring(0, 2) == '0X') {
+            if (val === '' && this.getHistory !== undefined) {
+                this.getHistory(val).then(() => {
+                    this.getSuggestions(val);
+                    this.isShowSelect = true;
+                    this.computedPositon($eventDom)
+                });
+                return
+            }
+            if (val === '' && val.length >= 2) {
+                    this.platformNow = this.platform;
+                    if (this.platform === '') {
+                        this.platformNow = 'btc';
+                        if (val.substring(0, 2) === '0x' || val.substring(0, 2) === '0X') {
                             this.platformNow = 'eth';
-                        } else if (val.substring(0, 1) == 'T') {
+                        } else if (val.substring(0, 1) === 'T') {
                             this.platformNow = 'usdt_tron';
-                        } else {
-                            this.platformNow = 'btc';
                         }
-                        this.getFuzzyData(val);
-                    } else {
-                        this.platformNow = this.platform;
-                        this.getFuzzyData(val);
                     }
-                }
+                    this.getFuzzyData(val);
             }
         },
         /**
@@ -359,20 +351,26 @@ export default {
                     })
                 }
             } else {
-                if (value.length >= 2) {
-                    if (this.platform == '') {
-                        if (value.substring(0, 2) == '0x' || value.substring(0, 2) == '0X') {
-                            this.platformNow = 'eth';
-                        } else if (value.substring(0, 1) == 'T') {
-                            this.platformNow = 'usdt_tron';
-                        } else {
-                            this.platformNow = 'btc';
-                        }
-                        this.getFuzzyData(value);
+               this.setPlatformOnBlur(value)
+            }
+        },
+        /**
+         * 设置币种
+         */
+        setPlatformOnBlur(value){
+            if (value.length >= 2) {
+                if (this.platform == '') {
+                    if (value.substring(0, 2) == '0x' || value.substring(0, 2) == '0X') {
+                        this.platformNow = 'eth';
+                    } else if (value.substring(0, 1) == 'T') {
+                        this.platformNow = 'usdt_tron';
                     } else {
-                        this.platformNow = this.platform;
-                        this.getFuzzyData(value);
+                        this.platformNow = 'btc';
                     }
+                    this.getFuzzyData(value);
+                } else {
+                    this.platformNow = this.platform;
+                    this.getFuzzyData(value);
                 }
             }
         },

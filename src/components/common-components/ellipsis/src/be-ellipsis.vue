@@ -112,6 +112,9 @@ export default {
      * 处理字符串数据
      */
     handleText(){
+      if(this.elpNumCache === 0 || this.elpNumCache === '0'){
+          return
+      }
       if(this.placement === 'left'){
         this.textInner = this.text.slice(0, this.text.length - this.elpNumCache) + '...'
       }
@@ -134,7 +137,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

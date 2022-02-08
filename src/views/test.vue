@@ -9,6 +9,7 @@
                 width="100%"
                 height="100%">
     </ace-editor>
+
   </div>
 
 </template>
@@ -64,7 +65,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -8,7 +8,7 @@
     function setFontSize() {
         // 获取window 宽度
         var winWidth;
-        window.innerWidth != 0 ? winWidth = window.innerWidth : winWidth = screen.width;
+        winWidth = window.innerWidth != 0 ? window.innerWidth : screen.width;
         winWidth > 640 && (winWidth = 640);
         window.winWidth = winWidth;
         doc.documentElement.style.fontSize = (winWidth / 375) * 100 + 'px' ;

@@ -7,7 +7,7 @@
 <template>
     <div class="project-ranking-num-card">
         <div class="project-ranking-logo">
-            <img :src="logoType"/>
+            <img :src="logoType" alt=""/>
         </div>
         <div class="project-ranking-info">
             <p>{{ title }}</p>
@@ -45,13 +45,10 @@ export default {
             default:'合约总数'
         },
         num:{
-            type:Number,
+            type:[Number,String],
             default:0
         }
     },
-    mounted() {
-    },
-    methods: {},
 }
 </script>
 

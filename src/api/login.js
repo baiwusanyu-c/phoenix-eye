@@ -6,8 +6,8 @@
  */
 
 import request from '@/utils/request'
-import config from '@/config/index' // 路径配置
-// 获取验证码
+import config from '@/config/index' //路径配置
+//获取验证码
 export function getCodeImg() {
     return request({
         url: config.baseURL + '/code',
@@ -15,7 +15,7 @@ export function getCodeImg() {
     })
 }
 //登录用户名密码
-export function login(params) {
+export function loginAccount(params) {
     return request({
         url: '/auth/oauth/login',
         method: 'post',
@@ -84,5 +84,50 @@ export function logout() {
     return request({
         url: config.baseURL + '/auth/token/logout',
         method: 'delete',
+    })
+}
+// 获取路由信息
+export  function getRouterInfo(params){
+    return request({
+        url: config.baseURL + '/beosin-meta/menu/routers',
+        method: 'get',
+        params
+    })
+}
+
+
+
+
+// 郵箱修改密碼驗證碼獲取
+export function verifyCodePassword(params){
+    return request({
+        url: '/system/user/official_site_sg_system/verify_code/reset',
+        method: 'get',
+        params,
+    })
+}
+// 忘记密码
+// 郵箱修改密碼 提交
+export function forgetPasswordApi(params){
+    return request({
+        url: '/system/user/official_site_sg_system/email/password/forget',
+        method: 'post',
+        params,
+    })
+}
+// 注册 -获取邮箱验证码
+export function verifyCode(params){
+    return request({
+        url: '/system/user/official_site_sg_system/verify_code/register',
+        method: 'get',
+        params,
+    })
+}
+// 郵箱注冊
+export function registerAccount(params){
+    return request({
+        url: '/system/user/official_site_sg_system/email/register',
+        method: 'post',
+        params,
     })
 }

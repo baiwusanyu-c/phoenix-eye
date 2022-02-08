@@ -17,7 +17,7 @@
         <div class="area-r">
           <p class="title" :class="{otherTitle: areaType === 4,regTitle: areaType === 3}">
             {{
-              areaType === 3 ? $t('el.loginConfig.titleRegister') : areaType === 4 ? $t('el.loginConfig.titleLogin') : $t('el.loginConfig.titleLogin')
+              areaType === 3 ? $t('el.loginConfig.titleRegister') : areaType === 4 ? $t('el.loginConfig.titleReset') : $t('el.loginConfig.titleLogin')
             }}
           </p>
             <!--          賬號登錄          -->
@@ -41,10 +41,10 @@
       </div>
       <div class="footer-box">
         <p class="footer-w">
-            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;
+<!--            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;-->
         </p>
         <p class="footer-w">
-          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}
+<!--          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}-->
         </p>
       </div>
     </div>
@@ -62,7 +62,7 @@
 <script>
 import userRegistration from "./components/user-registration";
 // import resetPwd from "./components/reset-password";
-import animatedInit, {destroyTHERR} from "./login-3d";
+import animatedInit, {destroyTHERR} from "../../../utils/login-3d";
 import NameLogin from "./components/name-login";
 import ResetPassword from "./components/reset-password";
 
@@ -182,7 +182,7 @@ export default {
         color: rgba(255, 255, 255, 1);
         font-size: 51px;
           font-family: PingFangSC-Medium, PingFang SC,sans-serif;
-        white-space: nowrap;
+
         line-height: 72px;
         background-image: linear-gradient(180deg, $mainColor7 0%, #B6E0FF 100%);
         -webkit-background-clip: text;

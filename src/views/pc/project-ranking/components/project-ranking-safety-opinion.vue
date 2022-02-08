@@ -1,44 +1,59 @@
 <template>
     <div class="project-ranking-safety-opinion">
         <div class="safety-opinion-info">
-            <div v-for="(opinion,index) in safetyOpinion" :key="index">
+            <div v-for="(opinion,index) in infoData" :key="createKey(opinion)">
                 <div class="safety-opinion-info-body">
                     <div class="safety-opinion-info-left">
                         <div class="safety-opinion-header">
                             <div class="safety-opinion-header-title">
-                                <el-tooltip class="item" effect="dark" :content="opinion.negativeMsg" placement="top">
+                            <!--<el-tooltip class="item" effect="dark" :content="opinion.negativeMsg" placement="top">
                                     <i class="el-icon-message-solid" style="color: darkorange" v-show="opinion.negative" ></i>
-                                </el-tooltip>
+                                </el-tooltip>-->
                                 <span style="font-size: 16px;font-weight: bold">{{opinion.title}}</span>
                             </div>
-                            <el-button type="text" @click="lookTextOriginal">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}</el-button>
+                            <el-button type="text" @click="lookTextOriginal(opinion.sourceUrl)">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}>></el-button>
                         </div>
                         <div class="safety-opinion-body">
-                            <!--未限制字数-->
-                            <div class="safety-opinion-body-msg">{{opinion.message}}</div>
+                            <div class="safety-opinion-body-msg scrollDiy">
+                                <be-ellipsis :elpNum="opinion.message.length > 400 ? opinion.message.length - 200 : 0"
+                                             :expand-trigger="false"
+                                             :line-clamp="0"
+                                             :content="opinion.message"
+                                             :text="opinion.message">
+                                </be-ellipsis>
+                            </div>
                         </div>
+
                         <div class="safety-opinion-footer">
-                            <span>
+                            <span style="max-width: 80%">
                                 <el-tag
                                         v-for="item in opinion.label"
                                         class="safety-opinion-footer-tag"
                                         :key="item.label"
                                         type="info"
                                         effect="plain">
-                                    <span style="display: flex;justify-content: center;align-items: center;height: 20px">{{ item }}</span>
+                                    <span style="display: flex;justify-content: center;align-items: center;height: 20px;">{{ item }}</span>
                                 </el-tag>
                             </span>
-                            <div style="width: 240px;display: flex;justify-content: space-between">
+                            <div style="width: 240px;display: flex;justify-content: space-between;align-items: center">
                                 <span class="msg-font">{{opinion.from}}</span>
-                                <span class="msg-font">{{opinion.time}}</span>
+                                <el-tooltip placement="top" effect="light">
+                                    <span slot="content">UTC：{{ beijing2utc(opinion.time) }}</span>
+                                    <span class="msg-font">{{ formatDate($createDate(opinion.time)) }}</span>
+                                </el-tooltip>
+
                             </div>
                         </div>
                     </div>
                     <div class="safety-opinion-info-right">
-                        <span>{{opinion.img}}</span>
+                        <el-image
+                            style="width: 100%; height:100%"
+                            :src="require('@/assets/image/pc/news@2x.jpg')"
+                            fit="scale-down">
+                        </el-image>
                     </div>
                 </div>
-                <div v-show="index < safetyOpinion.length-1">
+                <div v-show="index < infoData.length-1">
                     <el-divider style="margin: 0 0;"></el-divider>
                 </div>
             </div>
@@ -47,72 +62,36 @@
 </template>
 
 <script>
+    import {getUuid} from "../../../../utils/auth";
+    import BeEllipsis from "../../../../components/common-components/ellipsis/src/be-ellipsis.vue";
     export default {
         name: "project-ranking-safety-opinion",
+        components:{
+            BeEllipsis
+        },
         data(){
             return{
-                safetyOpinion: [{
-                    // 是否为负面信息
-                    negative:true,
-                    negativeMsg:'负面消息，负面消息',
-                    title:'这是一个标题，这是一个标题',
-                    message:'这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                        '这是一段很长的内容，',
-                    from:'来源：真不戳',
-                    time:'1小时前',
-                    label:[
-                        'label1',
-                        'label2',
-                        'label3',
-                    ],
-                    img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
-                },
-                    {
-                        negative:false,
-                        negativeMsg:'负面消息，负面消息',
-                        title:'这是一个标题，这是一个标题',
-                        message:'这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，',
-                        from:'来源：真不戳',
-                        time:'1小时前',
-                        label:[
-                            'label1',
-                            'label2',
-                            'label3',
-                        ],
-                        img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
-                    },
-                    {
-                        negative:false,
-                        negativeMsg:'负面消息，负面消息',
-                        title:'这是一个标题，这是一个标题',
-                        message:'这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，这是一段很长的内容，这是一段很长的内容，' +
-                            '这是一段很长的内容，',
-                        from:'来源：真不戳',
-                        time:'2小时前',
-                        label:[
-                            'label1',
-                            'label2',
-                            'label3',
-                        ],
-                        img:'这是一个图片，这是一个图片，这是一个图片，这是一个图片，这是一个图片，'
-                    },
-                ],
             }
+        },
+        props:{
+            infoData:{
+                type:Array,
+                default:()=>[]
+            }
+        },
+        computed:{
+            createKey(){
+                return function (){
+                    return getUuid()
+                }
+            },
         },
         methods:{
             // 查看原文按钮
-            lookTextOriginal(){
-                console.log('lookTextOriginal')
+            lookTextOriginal(url){
+                if(url){
+                    this.$openWindow(url, 'view_window')
+                }
             }
         }
     }
@@ -141,7 +120,8 @@
         justify-content: space-between;
     }
     .safety-opinion-footer-tag{
-        width: 54px;
+        margin-top: 5px;
+        min-width: 54px;
         height: 22px;
         margin-right: 18px;
     }
@@ -177,6 +157,7 @@
         height: 66px;
         width: 100%;
         font-size: 14px;
+        overflow-y: auto;
         color: #5c5c5c;
     }
     .el-divider--horizontal {

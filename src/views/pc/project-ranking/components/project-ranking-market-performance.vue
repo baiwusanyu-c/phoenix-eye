@@ -5,7 +5,12 @@
                 <span>{{$t('el.projectRinking.marketPerformance.tradeNum')}}</span>
             </div>
             <div class="chart">
-                <div id="quantity"></div>
+                <div id="quantity" >
+                    <div  class = 'empty-data' v-if="txQuantity.length === 0" style="margin-top: 0">
+                        <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;" >
+                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="chart-box">
@@ -13,7 +18,12 @@
                 <span>{{$t('el.projectRinking.marketPerformance.newUserNum')}}</span>
             </div>
             <div class="chart">
-                <div id="newUser"></div>
+                <div id="newUser" >
+                    <div  class = 'empty-data' v-if="newUser.length === 0" style="margin-top: 0">
+                        <img class="img" src="@/assets/image/pc/empty-data.png" alt=""  style="height: 180px;" >
+                        <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -27,37 +37,37 @@
         name: "project-ranking-market-performance",
         data(){
             return{
-
-                // 图表内容
-                quantity:[
-                    { time: '01/03', num: -35 },
-                    { time: '01/05', num: -30 },
-                    { time: '01/07', num: 35 },
-                    { time: '01/09', num: 5 },
-                    { time: '01/11', num: 25 },
-                    { time: '01/13', num: -10 },
-                    { time: '01/15', num: 5 },
-                    { time: '01/17', num: 10 },
-                    { time: '01/19', num: 20 },
-                    { time: '01/21', num: 30 },
-                    { time: '01/23', num: 38 },
-                    { time: '01/25', num: -20 },
-                ],
-                newUser:[
-                    { time: '01/03', num: -35 },
-                    { time: '01/05', num: -30 },
-                    { time: '01/07', num: 35 },
-                    { time: '01/09', num: 5 },
-                    { time: '01/11', num: 25 },
-                    { time: '01/13', num: -10 },
-                    { time: '01/15', num: 5 },
-                    { time: '01/17', num: 10 },
-                    { time: '01/19', num: 20 },
-                    { time: '01/21', num: 30 },
-                    { time: '01/23', num: 38 },
-                    { time: '01/25', num: -20 },
-                ],
+                // 新增用户图表对象
+                userChart:null,
+                // 交易量图表对象
+                txQuantityChart:null,
             }
+        },
+        props:{
+            // 交易量
+            txQuantity:{
+                type:Array,
+                default:()=>[]
+            },
+            // 新增用戶
+            newUser:{
+                type:Array,
+                default:()=>[]
+            }
+        },
+        watch:{
+            txQuantity: {
+                deep: true, //深度监听设置为 true
+                handler: function () {
+                   this.quantityChart(true)
+                }
+            },
+            newUser: {
+                deep: true, //深度监听设置为 true
+                handler: function () {
+                    this.newUserChart(true)
+                }
+            },
         },
         mounted() {
             this.$nextTick(()=>{
@@ -66,23 +76,29 @@
             })
         },
         methods:{
-            quantityChart(){
-                const dv = new DataSet.DataView().source(this.quantity);
+            quantityChart(isUpdate){
+                if(this.txQuantity.length === 0) return;
+                const dv = new DataSet.DataView().source(this.txQuantity);
                 dv.transform({
                     type: 'fold',
-                    fields: ['num'], // 展开字段集
+                    fields: ['tx_amount'], // 展开字段集
                     key: 'type', // key字段
                     value: 'value', // value字段
                 });
-
+                // 更新
+                if(isUpdate){
+                    this.txQuantityChart.data(dv.rows);
+                    this.txQuantityChart.render(isUpdate);
+                    return
+                }
                 const chart = new Chart({
                     container: 'quantity',
                     autoFit: true,
                     height: 243,
                 });
-
+                this.txQuantityChart = chart
                 chart.data(dv.rows);
-                chart.scale('time', {
+                chart.scale('date', {
                     range: [0, 1],
                 });
                 chart.scale('value', {
@@ -92,7 +108,7 @@
                     shared: true,
                     showCrosshairs: true,
                 });
-                chart.axis('time',{
+                chart.axis('date',{
                     title:{
                         text:`${this.$t('el.projectRinking.marketPerformance.time')}`
                     },
@@ -110,32 +126,38 @@
                 chart.legend(false);
                 chart
                     .area()
-                    .position('time*value')
+                    .position('date*value')
                     .color('#1890FF')
                     .shape('smooth');
                 chart
                     .line()
-                    .position('time*value')
+                    .position('date*value')
                     .color('#1890FF')
                     .shape('smooth');
                 chart.render();
             },
-            newUserChart(){
-                const dv = new DataSet.DataView().source(this.quantity);
+            newUserChart(isUpdate){
+                if(this.newUser.length === 0) return;
+                const dv = new DataSet.DataView().source(this.newUser);
                 dv.transform({
                     type: 'fold',
-                    fields: ['num'], // 展开字段集
+                    fields: ['user_num'], // 展开字段集
                     key: 'type', // key字段
                     value: 'value', // value字段
                 });
-
+                if(isUpdate){
+                    this.userChart.data(dv.rows);
+                    this.userChart.render(isUpdate);
+                    return
+                }
                 const chart = new Chart({
                     container: 'newUser',
                     autoFit: true,
                     height: 243,
                 });
+                this.userChart = chart
                 chart.data(dv.rows);
-                chart.scale('time', {
+                chart.scale('date', {
                     range: [0, 1],
                 });
                 chart.scale('value', {
@@ -145,7 +167,7 @@
                     shared: true,
                     showCrosshairs: true,
                 });
-                chart.axis('time',{
+                chart.axis('date',{
                     title:{
                         text:`${this.$t('el.projectRinking.marketPerformance.time')}`
                     }
@@ -163,12 +185,12 @@
                 chart.legend(false);
                 chart
                     .area()
-                    .position('time*value')
+                    .position('date*value')
                     .color('#1890FF')
                     .shape('smooth');
                 chart
                     .line()
-                    .position('time*value')
+                    .position('date*value')
                     .color('#1890FF')
                     .shape('smooth');
                 chart.render();

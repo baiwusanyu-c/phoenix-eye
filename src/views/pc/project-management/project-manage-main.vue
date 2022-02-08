@@ -18,6 +18,7 @@
                 :keyword-list="item.keywordList"
                 :create-time="item.create_time"
                 :contract-list="item.contract_infos"
+                :project-id="item.id"
                 @edit="editProject(item)"
                 @fresh="freshProject(item)"
                 @delete="deleteProject(item)"
@@ -110,8 +111,7 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.add')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -142,8 +142,7 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -161,10 +160,10 @@ export default {
          */
         confirmDelete(){
             const _this = this
-            const pathParams = {
+            const params = {
                 id:this.curItem.id
             }
-            deleteProject(null,pathParams).then(res=>{
+            deleteProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.delete')+ _this.$t('el.success')
                     _this.$message.success(msg)
@@ -173,8 +172,7 @@ export default {
                     _this.showDelete = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.delete')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -192,10 +190,10 @@ export default {
          */
         confirmFresh(){
             const _this = this
-            const pathParams = {
+            const params = {
                 id:this.curItem.id
             }
-            reappraiseProject(null,pathParams).then(res=>{
+            reappraiseProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.operation')+ _this.$t('el.success')
                     _this.$message.success(msg)
@@ -204,8 +202,7 @@ export default {
                     _this.showFresh = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -222,12 +219,11 @@ export default {
                 // 關鍵詞字符串轉化為數組
                 _this.projectList.forEach(val=>{
                     let keyword = val.keyword.replace('；',';')
-                    val.keywordList =  keyword.split(';').filter(val=>val)
+                    val.keywordList =  keyword.split(';').filter(filterVal=>filterVal)
                 })
                 _this.loading = false
             }).catch(err=>{
-                const msg = _this.$t('el.search')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         }

@@ -102,9 +102,6 @@ export default {
             default: '',
         }
     },
-    mounted(){ 
-
-    },
     methods: { 
         valideValue(){
             if (!this.fileName) {

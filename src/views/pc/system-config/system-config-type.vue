@@ -59,9 +59,6 @@ export default {
     created() {
         this.getList()
     },
-    mounted() {
-
-    },
     methods: {
         /**
          * 表單校驗方法
@@ -107,8 +104,7 @@ export default {
                     _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.add')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -140,8 +136,7 @@ export default {
                     _this.$refs.addRiskType.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -159,10 +154,10 @@ export default {
         confirmDelete(){
             this.showDelete = false
             const _this = this
-            const pathParams = {
+            const params = {
                 id:this.curItem.id
             }
-            deleteRiskType(null,pathParams).then(res=>{
+            deleteRiskType(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.delete')+ _this.$t('el.success')
                     _this.$message.success(msg)
@@ -170,8 +165,7 @@ export default {
                     _this.getList()
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.delete')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -188,8 +182,7 @@ export default {
                 _this.featuresList = res.data.system_risk_features
                 _this.loading = false
             }).catch(err=>{
-                const msg = _this.$t('el.search')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         }

@@ -17,19 +17,25 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-    config => {
-        config.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
-        config.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
-        if (config.method === 'post' && config.url!=='/auth/oauth/login') {
-            config.data = config.params
-            config.headers['Content-Type'] = 'application/json;charset=UTF-8'
-            config.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
-            delete config.params
-            if (config.otherParams) {
-                config.data = qs.stringify(config.data)
+    configOption => {
+        configOption.headers['Authorization'] = $vue.getStore('token') === null ? '' : 'Bearer ' + $vue.getStore('token');
+        configOption.headers['Accept-Language'] = $vue.getStore('language') === null ? 'zh_CN' : $vue.getStore('language')
+        if ((configOption.method === 'post' && configOption.url!=='/auth/oauth/login') || configOption.method === 'put') {
+            configOption.data = configOption.params
+            configOption.headers['Content-Type'] = 'application/json;charset=UTF-8'
+            configOption.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+            delete configOption.params
+            if (configOption.otherParams) {
+                configOption.data = qs.stringify(configOption.data)
             }
         }
-        return config
+        if (config.method === 'get') {
+            config.params = {
+                _t: Date.parse(new Date()) / 1000,
+                ...config.params
+            }
+        }
+        return configOption
     },
     error => {
         console.log(error) // for debug
@@ -42,11 +48,6 @@ service.interceptors.response.use(
     response => {
         const res = response.data
         if (res.code !== 200 && res.code !== '0000') {
-            Message({
-                message: res.msg || 'Error',
-                type: 'error',
-                duration: 5 * 1000
-            })
             // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
             if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
                 // to re-login
@@ -61,10 +62,10 @@ service.interceptors.response.use(
                 })
             }
             if (res.code === 401 || res.code === 920000003) {
-                 $vue.$router.push({path: "/login"})
+                $vue.$router.push({path: "/login"})
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
-            return Promise.reject(new Error(res.msg || 'Error'))
+            return Promise.reject(res.msg || res.message ||'Error')
         } else {
             return res
         }

@@ -131,9 +131,3 @@ export default {
     display: inline-block;
 }
 </style>
-<docs>
-## 事例
-```jsx
-<svg-icon iconClass='Addresstracking_search' class="custom-class"></svg-icon>
-```
-</docs>

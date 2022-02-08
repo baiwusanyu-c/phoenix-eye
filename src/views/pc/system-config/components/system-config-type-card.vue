@@ -10,7 +10,7 @@
             <h3>
                 {{title}}
             </h3>
-            <div>
+            <div style="min-width: 68px">
                 <be-svg-icon @click = 'emitFunc("edit")' style="cursor: pointer" icon-class="-renwuguanli-xiugai" disabled-tool-tip></be-svg-icon>
                 <be-svg-icon @click = 'emitFunc("delete")' style="cursor: pointer" icon-class="-renwuguanli-shanchu" disabled-tool-tip></be-svg-icon>
             </div>
@@ -24,7 +24,7 @@
         <!--    新增时显示   -->
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click = 'emitFunc("add")'>
-                <img src="@/assets/image/pc/add-type-icon.png"/>
+                <img src="@/assets/image/pc/add-type-icon.png" alt=""/>
                 <p>{{ $t('el.systemConfig.addType') }}</p>
             </div>
         </div>
@@ -52,8 +52,6 @@ export default {
           type:String,
         }
     },
-    mounted() {
-    },
     methods: {
         /**
          * 触发事件方法
@@ -69,7 +67,7 @@ export default {
 <style  lang="scss">
 .system-config-type-card{
     background-color: $mainColor7;
-    width: 400px;
+    width: 398px;
     height: 310px;
     margin: 6px 8px;
     box-shadow: 0 1px 4px 0 $mainColor8;

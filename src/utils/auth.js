@@ -14,18 +14,20 @@ Vue.prototype.$win = null
 /**
  * 存储localStorage
  */
-Vue.prototype.setStore = (name, content) => {
+export const setStore = (name, content )=>{
     if (!name) return;
     if (typeof content !== 'string') {
         content = JSON.stringify(content);
     }
     window.localStorage.setItem(name, content);
 }
+Vue.prototype.setStore = setStore
+
 
 /**
  * 获取localStorage
  */
-const getStore = (name )=>{
+export const getStore = (name )=>{
     if (!name) return;
     return window.localStorage.getItem(name);
 }
@@ -34,10 +36,11 @@ Vue.prototype.getStore = getStore
 /**
  * 删除localStorage
  */
-Vue.prototype.removeStore = name => {
+export const removeStore = (name )=>{
     if (!name) return;
     window.localStorage.removeItem(name);
 }
+Vue.prototype.removeStore = removeStore
 
 /**
  * 存储sessionStorage
@@ -99,9 +102,10 @@ Vue.prototype.setCookie = (CookieKey, cookie) => {
     /**
      * 删除cookie
      */
-Vue.prototype.removeCookie = CookieKey => {
-    return Cookies.remove(CookieKey)
+export const removeCookie = (CookieKey)=>{
+        return Cookies.remove(CookieKey)
 }
+Vue.prototype.removeCookie = removeCookie
 
 Array.prototype.remove = function(obj) {
     for (var i = 0; i < this.length; i++) {
@@ -120,6 +124,12 @@ Array.prototype.remove = function(obj) {
 
 //时间格式化
 Vue.prototype.formatDate = (timestamp, formats) => {
+    let year = null
+    let month = null
+    let day = null
+    let hour = null
+    let minite = null
+    let second = null
     // formats格式包括
     // 1. Y-m-d
     // 2. Y-m-d H:i:s
@@ -136,12 +146,12 @@ Vue.prototype.formatDate = (timestamp, formats) => {
     };
     // 第五中情况处理
     if(formats === 'YMDHMS'){
-        let year = timestamp.getFullYear();
-        let month = zero(timestamp.getMonth() + 1);
-        let day = zero(timestamp.getDate());
-        let hour = zero(timestamp.getHours());
-        let minite = zero(timestamp.getMinutes());
-        let second = zero(timestamp.getSeconds());
+        year = timestamp.getFullYear();
+        month = zero(timestamp.getMonth() + 1);
+        day = zero(timestamp.getDate());
+        hour = zero(timestamp.getHours());
+        minite = zero(timestamp.getMinutes());
+        second = zero(timestamp.getSeconds());
         return year + month + day + hour + minite + second
     }
     // console.log(timestamp)
@@ -153,12 +163,12 @@ Vue.prototype.formatDate = (timestamp, formats) => {
 
     let date = '';
     if (myDate !== '') {
-        var year = myDate.getFullYear();
-        var month = zero(myDate.getMonth() + 1);
-        var day = zero(myDate.getDate());
-        var hour = zero(myDate.getHours());
-        var minite = zero(myDate.getMinutes());
-        var second = zero(myDate.getSeconds());
+        year = myDate.getFullYear();
+        month = zero(myDate.getMonth() + 1);
+        day = zero(myDate.getDate());
+        hour = zero(myDate.getHours());
+        minite = zero(myDate.getMinutes());
+        second = zero(myDate.getSeconds());
         date = formats.replace(/Y|m|d|H|i|s/ig, function(matches) {
             return ({
                 Y: year,
@@ -268,9 +278,7 @@ function getSectionTime (monthNum,direct = 'pre') {
     const THREE_MONTHS_AGO = `${year}/${ThreeMonths}/${day} ${ThreeMonthsHour}:${ThreeMonthsMinutes}:${ThreeMonthsSeconds}`
 
     // 生成时间戳
-    const THREE_STAMP = new Date(THREE_MONTHS_AGO).getTime()
-
-    return THREE_STAMP
+    return new Date(THREE_MONTHS_AGO).getTime()
 }
 
 Vue.prototype.$getSectionTime = getSectionTime
@@ -281,7 +289,7 @@ Vue.prototype.GetPercent = (num, total) => {
     if (isNaN(num) || isNaN(total)) {
         return "-";
     }
-    return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00);
+    return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00) + '%';
 }
 
 
@@ -301,8 +309,7 @@ Vue.prototype.beijing2utc = (now, formats) => {
     timestamp = timestamp + (createDate().getTimezoneOffset() * 60);
     // 时间戳转为时间
     // var utc_datetime = new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
-    var utc_datetime = Vue.prototype.formatDate(createDate(parseInt(timestamp) * 1000), formats)
-    return utc_datetime;
+    return Vue.prototype.formatDate(createDate(parseInt(timestamp) * 1000), formats)
 }
 
 //币种转换
@@ -397,7 +404,7 @@ Vue.prototype.downloadFile = (url) => {
             var blob = this.response;
             var a = document.createElement('a');
             // blob.type = "application/octet-stream";
-            var url = window.URL.createObjectURL(blob);
+            let downLoadurl = window.URL.createObjectURL(blob);
             var fileName = decodeURIComponent(xhr.getResponseHeader("content-disposition").split(";")[1].split("filename=")[1]);
             if (window.navigator.msSaveBlob) {
                 try {
@@ -406,13 +413,13 @@ Vue.prototype.downloadFile = (url) => {
                     console.log(e);
                 }
             } else {
-                a.href = url;
+                a.href = downLoadurl;
                 a.download = fileName;
                 document.body.appendChild(a); // 火狐浏览器 必须把元素插入body中
                 a.click();
                 document.body.removeChild(a);
                 //释放之前创建的URL对象
-                window.URL.revokeObjectURL(url);
+                window.URL.revokeObjectURL(downLoadurl);
             }
         }
     }
@@ -501,22 +508,24 @@ Vue.prototype.formatDecimal = (num, decimal)=> {
  */
 Vue.prototype.$simulateToFixed = (num, decimal = 6)=> {
     if(num === undefined) {
-        return;}
-    if(num.toString() === '0'){
-        return 0;
+        return;
     }
-    num = Vue.prototype.$transferToNumber(num).toString()
-    let index = num.indexOf('.')
+    if(num.toString() === '0' && decimal !== 0){
+        return '0.000000';
+    }
+    let numInner = Vue.prototype.$transferToNumber(num).toString()
+    let index = numInner.indexOf('.')
     if (index === -1) {
-        return num;
+        return numInner;
     }
-    let decimalBeforeLenght = num.split('.')[1].length; // 获取小数点后位数
+    let decimalBeforeLenght = numInner.split('.')[1].length; // 获取小数点后位数
     if(decimalBeforeLenght <= decimal){
-        return num
+        return numInner
     }else{
         const minimumStr = '0.';
-        const minimum = minimumStr.padEnd( decimal + 2, 0); // 匹配小额资金规则
-        return parseFloat(num).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(num).toFixed(decimal);
+        const minimum = minimumStr.padEnd( decimal + 2, '0'); // 匹配小额资金规则
+        const res = parseFloat(numInner).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(numInner).toFixed(decimal);
+        return res === '-0.000000' ? '0.000000' : res
     }
 }
 /**
@@ -532,8 +541,7 @@ Vue.prototype.$transferToNumber = (inputNumber) => {
     inputNumber = parseFloat(inputNumber)
     let eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
     let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
-    let number = inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
-    return number 
+    return inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
 }
 /**
  * 数组拍平方法
@@ -622,7 +630,7 @@ Vue.prototype.$getBase64Image = getBase64Image
  * 解析url获取参数方法
  * @returns {{}}
  */
-const getUrlkey = function () {
+export const getUrlkey = function () {
     let params = {};
     let url = window.location.href
     if(url.indexOf("?")>-1){//判断如果请求地址中包含参数
@@ -746,7 +754,7 @@ Vue.prototype.$toSwitchMillion = toSwitchMillion
  */
 function currencyUnit (val) {
     let switchUnit = val ? val.toLowerCase() : '';
-    let unitValue = '';
+    let unitValue;
     switch (switchUnit) {
         case 'btc':
             unitValue = 'BTC'
@@ -878,3 +886,116 @@ export const getUuid = () => {
     return arr.join("")
 }
 Vue.prototype.$getUuid = getUuid
+export const isString = (val) => (typeof val == 'string') && val.constructor == String;
+Vue.prototype.$isString= isString
+export const isFunction = (val) => Object.prototype.toString.call(val) === '[object Function]'
+Vue.prototype.$isFunction = isFunction
+
+
+export function nFormatter(num, digits) {
+    const si = [
+        { value: 1, symbol: "" },
+        { value: 1E3, symbol: "K" },
+        { value: 1E6, symbol: "M" },
+       /* { value: 1E9, symbol: "G" },
+        { value: 1E12, symbol: "T" },
+        { value: 1E15, symbol: "P" },
+        { value: 1E18, symbol: "E" }*/
+    ];
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    let i;
+    for (i = si.length - 1; i > 0; i--) {
+        if (num >= si[i].value) {
+            break;
+        }
+    }
+    return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+}
+Vue.prototype.$nFormatter = isFunction
+
+
+
+
+
+// 计算时间差
+export function fomateTimeStamp(dateTimeStamp,lang) {
+    let minute = 1000 * 60;
+    let hour = minute * 60;
+    let day = hour * 24;
+    let result = '';
+    let now = new Date().getTime();
+    let diffValue = now - dateTimeStamp;
+    let gg = '刚刚'
+    let dq = '天前'
+    let sq = '小时前'
+    let fq = '分钟前'
+    let yesterday = '昨天'
+    if(lang === 'en_US'){
+        gg = 'Just happened'
+        dq = 'day ago'
+        sq = 'hour ago'
+        fq = 'minutes ago'
+        yesterday = 'yesterday'
+    }
+    result = gg;
+    if (diffValue < 0) {
+        return result = gg;
+    }
+    let dayC = diffValue / day;
+    let hourC = diffValue / hour;
+    let minC = diffValue / minute;
+    if (parseInt(dayC) > 30) {
+        result = "" + formatDD(dateTimeStamp,"yyyy-MM-dd");
+    }else if(parseInt(dayC) > 1) {
+        result = "" + parseInt(dayC) + dq;
+    }else if (parseInt(dayC) == 1) {
+        result = yesterday;
+    } else if (hourC >= 1) {
+        result = "" + parseInt(hourC) + sq;
+    } else if (minC >= 1) {
+        result = "" + parseInt(minC) + fq;
+    }
+    return result;
+}
+Vue.prototype.$fomateTimeStamp = fomateTimeStamp
+/**
+ * 格式化时间
+ * @param date Date 时间
+ * @param format 格式化 "yyyy-MM-dd hh:mm:ss www"=format
+ * @returns {string} 格式化后字符串
+ */
+
+function formatDD(date, format){
+    if (typeof date == 'string') {
+        if(date.indexOf('T')>=0){
+            date = date.replace('T',' ')
+        }
+        date = new Date(Date.parse(date.replace(/-/g, "/")))
+    }
+    let o = {
+        "M+": date.getMonth() + 1,
+        "d+": date.getDate(),
+        "h+": date.getHours(),
+        "m+": date.getMinutes(),
+        "s+": date.getSeconds(),
+        "q+": Math.floor((date.getMonth() + 3) / 3),
+        "S": date.getMilliseconds()
+    };
+    let w = [
+        ['日', '一', '二', '三', '四', '五', '六'],
+        ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+        ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+    ];
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    if (/(w+)/.test(format)) {
+        format = format.replace(RegExp.$1, w[RegExp.$1.length - 1][date.getDay()]);
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+        }
+    }
+    return format;
+}

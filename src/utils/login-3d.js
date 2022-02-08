@@ -3,7 +3,7 @@
 * @deprecated 登录页面中图3D效果，因为版本这里直接引用three，而不是用最新的插件（最新版本会导致该页面报错）
 */
 
-import * as THREE from '../../../../public/three.min'
+import * as THREE from '../../public/three.min'
 
 let camera = undefined,
     scene = undefined,
@@ -72,8 +72,7 @@ export default function init() {
         vertice.dy = Math.random() - 0.5;
         vertice.randomDelay = Math.random() * 5;
     });
-
-    for (var i = 0; i < geometry.faces.length; i++) {
+    for (let [i] of geometry.faces.entries()) {
         geometry.faces[i].color.setStyle(baseColor);
         geometry.faces[i].baseColor = baseColorRGB;
     }
@@ -123,7 +122,7 @@ function render() {
     timer += 0.01;
     let vertices = plane.geometry.vertices;
 
-    for (let i = 0; i < vertices.length; i++) {
+    for (let [i] of vertices.entries()) {
         // Ease back to original vertice position while still maintaining sine wave
         vertices[i].x -= Math.sin(timer + vertices[i].randomDelay) / 40 * vertices[i].dx;
         vertices[i].y += Math.sin(timer + vertices[i].randomDelay) / 40 * vertices[i].dy;

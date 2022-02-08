@@ -9,7 +9,7 @@ export function getProjWarning(params) {
         params
     })
 }
-// 获取项目風險詳情 （等数据）
+// 获取项目風險詳情
 export function getProjWarningDetail(params) {
     return request({
         url: `${config.baseURL}/ussa/risk_warning/tx_detail`,

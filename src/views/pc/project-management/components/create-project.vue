@@ -2,12 +2,13 @@
     <div>
         <div class="createBox">
             <el-dialog
+                :close-on-click-modal="false"
                 class="createProjectBox"
-                :title="$t('el.createProject.createProjectTitle')"
+                :title="type === 'add' ? $t('el.createProject.createProjectTitle') : $t('el.createProject.editProjectTitle')"
                 :visible.sync="createProjectWindow"
-                width="856px">
+                width="970px">
                 <div>
-                    <el-form :label-position="labelPosition" label-width="80px" class="projectForm">
+                    <el-form :label-position="labelPosition" label-width="130px" class="projectForm">
                         <el-form-item :label="$t('el.createProject.createProjectName') + ':'">
                             <span class="reg-start project-star">*</span>
                             <el-input class="projectNameInput" v-model="projectName"
@@ -15,7 +16,7 @@
                             <span class="reg-start project-Ver">{{ verName }}</span>
                             <span class="projectOpenTitle">{{ $t('el.createProject.createProjectOpenTitle') }}</span>
                             <el-switch v-model="openTF"></el-switch>
-                            <span class="projectOpenSecret">{{ $t('el.createProject.createProjectOpenSecret') }}</span>
+                            <span class="projectOpenSecret">{{ isPublic }}</span>
                         </el-form-item>
                         <el-form-item :label="$t('el.createProject.createProjectKeyWords') + ':'">
                             <span class="reg-start project-star">*</span>
@@ -36,13 +37,13 @@
                                 <!--   合约地址    -->
                                 <el-input v-model="contractSite[index].contract_address" class="contractSiteSite"
                                           :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
-                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'120px'}">
+                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'86px '}">
                                     {{contractSite[index].verAddr}}
                                 </span>
                                 <!--   合约标签   -->
                                 <el-input v-model="contractSite[index].label" class="contractSiteLabel"
                                           :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
-                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'62%'}">
+                                <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'41%'}">
                                     {{contractSite[index].verContract}}
                                 </span>
                                 <div class="btn-border"
@@ -83,7 +84,7 @@ export default {
             createProjectWindow: false,
             projectName: '',
             projectKeyWords: '',
-            openTF: false,
+            openTF: true,
             labelPosition: 'right',
             addContract: 0,
             contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}],
@@ -103,9 +104,18 @@ export default {
         },
         // 项目id
         projectId: {
-            type: String,
+            type: [String,Number],
             default: ''
         }
+    },
+    computed:{
+      isPublic(){
+          if(this.openTF){
+              return this.$t('el.createProject.createProjectUnSecret')
+          }else{
+              return this.$t('el.createProject.createProjectOpenSecret')
+          }
+      }
     },
     watch: {
         createProjectWindow(nVal) {
@@ -154,7 +164,7 @@ export default {
             this.projectKeyWords = ''
             this.verKeyword = ''
             this.verName = ''
-            this.openTF = false
+            this.openTF = true
             this.labelPosition='right'
             this.addContract= 0
             this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
@@ -169,10 +179,10 @@ export default {
                 this.projectName = ''
                 return
             }
-            const pathParams = {
+            const params = {
                 id: this.projectId
             }
-            getProjectInfo(null, pathParams).then(res => {
+            getProjectInfo( params).then(res => {
                 if (res) {
                     _this.projectName = res.data.name
                     _this.openTF = res.data.is_public
@@ -199,25 +209,29 @@ export default {
             return res
         },
         /**
-         * 表單校驗方法
+         * 校驗名稱
          * @param {Object} params - 搜索参数
          */
-        formVerification(params){
-            this.verName = ''
-            this.verKeyword = ''
+        verificationName(params){
             if(!params.name){
                 this.verName = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectName')
                 return false
             }
             if(params.name && !this.ceReg.test(params.name)){
-                this.verName =this.$t('el.createProject.verCE')
+                this.verName = this.$t('el.createProject.verCE')
                 return false
             }
+            return true
+        },
+        /**
+         * 校驗關鍵詞
+         * @param {Object} params - 搜索参数
+         */
+        verificationKeyword(params){
             if(!params.keyword){
                 this.verKeyword = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectKeyWords')
                 return false
             }
-
             // 校驗中英文，分號
             if(params.keyword){
                 let keyword = this.semicolonVerification(params.keyword)
@@ -227,28 +241,45 @@ export default {
                 }
                 params.keyword = keyword
             }
-
-            let contractInfos = []
-            let hasEmpty = false
+            return true
+        },
+        /**
+         * 校验合约地址
+         */
+        verificationContractAddr(val){
             const platformReg = {
                 bsc:(addr)=>this.ETHaddress.test(addr),
                 eth:(addr)=>this.ETHaddress.test(addr),
                 heco:(addr)=>this.ETHaddress.test(addr),
                 polygon:(addr)=>this.ETHaddress.test(addr),
             }
+            // 没有填写合约地址
+            if(!val.contract_address){
+                val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
+                return true
+            }
+            // 校验地址格式
+            if(!platformReg[val.platform](val.contract_address)){
+                val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
+                return true
+            }
+            return false
+        },
+        /**
+         * 表單校驗方法
+         * @param {Object} params - 搜索参数
+         */
+        formVerification(params){
+            this.verName = ''
+            this.verKeyword = ''
+            if(!this.verificationName(params)) return false
+            if(!this.verificationKeyword(params)) return false
+            let contractInfos = []
+            let hasEmpty = false
             params.contract_infos.forEach(val=>{
                 val.verAddr = ''
                 val.verContract = ''
-                // 没有填写合约地址
-                if(!val.contract_address){
-                    val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
-                    hasEmpty = true
-                }
-                // 校验地址格式
-                if(!platformReg[val.platform](val.contract_address)){
-                    val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
-                    hasEmpty = true
-                }
+                hasEmpty = this.verificationContractAddr(val)
                 // 填写了合约标签，则进行校验
                 if(val.label){
                     let label = this.semicolonVerification(val.label)
@@ -276,6 +307,18 @@ export default {
             return true
         },
         /**
+         * 处理格式化参数
+         */
+        setParams(params){
+            params.map((val)=>{
+                return {
+                    platform:val.platform,
+                    contract_address:val.contract_address,
+                    label:val.label
+                }
+            })
+        },
+        /**
          * 确认增加项目方法
          */
         addProject(){
@@ -288,15 +331,10 @@ export default {
             }
             // 表单校验
             if(!this.formVerification(params)){
+                this.$forceUpdate()
                 return
             }
-            params.contract_infos.map(val=>{
-                return {
-                    platform:val.platform,
-                    contract_address:val.contract_address,
-                    label:val.label
-                }
-            })
+            this.setParams(params.contract_infos)
             createProject(params).then(res=>{
                 if(res){
                     const msg = _this.$t('el.add')+ _this.$t('el.success')
@@ -306,8 +344,7 @@ export default {
                     _this.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.add')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
 
@@ -328,15 +365,10 @@ export default {
             }
             // 表单校验
             if(!this.formVerification(params)){
+                this.$forceUpdate()
                 return
             }
-            params.contract_infos.map(val=>{
-                return {
-                    platform:val.platform,
-                    contract_address:val.contract_address,
-                    label:val.label
-                }
-            })
+            this.setParams(params.contract_infos)
             saveEditProject(params,pathParams).then(res=>{
                 if(res){
                     const msg = _this.$t('el.edit')+ _this.$t('el.success')
@@ -346,8 +378,7 @@ export default {
                     _this.createProjectWindow = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.edit')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         }
@@ -359,7 +390,7 @@ export default {
 .createBox{
     .project-star{
         position: absolute;
-        left: -92px;
+        left: -142px;
         top: 4px;
     }
     .project-Ver{
@@ -444,7 +475,7 @@ export default {
 }
 
 .projectOpenTitle {
-    margin-left: 70px;
+    margin-left: 45px;
 }
 
 .projectOpenSecret {
@@ -469,7 +500,7 @@ export default {
 }
 
 .contractSiteLabel {
-    width: 234px;
+    width: 600px;
     margin-left: 8px;
 }
 </style>

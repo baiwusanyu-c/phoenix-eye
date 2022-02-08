@@ -38,8 +38,8 @@
                 <p class="subTitle" v-if="subTitle">{{subTitle}}</p>
             </div>
             <div slot="footer" class="dialog-footer" v-if="isShowBtn">
-                <el-button class="default" type="primary" v-if="isShowCancel" @click="closeMsg">取消</el-button>
-                <el-button class="primary" type="primary" v-if="isShowConfirm" :loading="isLoading" @click="confirm">确认</el-button>
+                <el-button class="default" type="primary" v-if="isShowCancel" @click="closeMsg">{{ $t('el.createProject.createProjectCancel') }}</el-button>
+                <el-button class="primary" type="primary" v-if="isShowConfirm" :loading="isLoading" @click="confirm">{{ $t('el.createProject.createProjectConfirm') }}</el-button>
             </div>
         </be-dialog>
     </div>
@@ -209,18 +209,3 @@
     }
 </style>
 
-<docs>
-    ## 事例:
-    ```jsx
-    <be-context-menu ref="contextmenu" :theme="'blues'">
-        <be-contextmenu-item @click='copy' >复制</be-contextmenu-item>
-        <be-contextmenu-submenu  title="发送" v-show="menuConfig.send">
-            <be-contextmenu-item @click="jumpToOther('/browser','browser')" >浏览器</be-contextmenu-item>
-            <be-contextmenu-item @click="jumpToOther('/analysis','analysis')">案件分析 </be-contextmenu-item>
-            <be-contextmenu-item @click="openTrack" >地址监控</be-contextmenu-item>
-            <be-contextmenu-item @click="jumpToOther('/investigation','investigation')" >调证分析</be-contextmenu-item>
-            <be-contextmenu-item @click="jumpToOther('/debug/createDebug','createDebug')" >一键调证</be-contextmenu-item>
-        </be-contextmenu-submenu>
-    </be-context-menu>
-    ```
-</docs>

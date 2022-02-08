@@ -9,7 +9,9 @@
         <div class="search-area">
             <div>
                 {{ $t('el.riskConfig.platform') }}:
-                <el-select v-model="searchParams.platform" :placeholder="$t('el.riskConfig.platformP')">
+                <el-select v-model="searchParams.platform"
+                            @change="getList('reset')"
+                           :placeholder="$t('el.riskConfig.platformP')">
                     <el-option v-for="(item) in platformList"
                                :key="item.id"
                                :value="item.value"
@@ -20,7 +22,7 @@
             <div class="search-area search-area-input">
                 <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getData()">{{ $t('el.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getList('reset')">{{ $t('el.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -28,6 +30,7 @@
                 tooltip-effect="light"
                 :data="tableData"
                 v-loading="loading"
+                height="680"
                 ref="riskWarningList">
                 <div slot="empty"
                      class = 'empty-table'>
@@ -36,11 +39,11 @@
                 </div>
                 <el-table-column
                     prop="platform"
-                    :label="$t('el.riskConfig.platform')"
-                    width="80"
+                    :label="$t('el.riskConfig.tableHeader.platform')"
+                    width="120"
                     align="center">
                     <template slot-scope="scope">
-                        {{scope.row.platform}}
+                        {{scope.row.platform.toUpperCase()}}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -50,6 +53,7 @@
                     align="center">
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.tx_hash"
+                                          :emptyText="$t('el.emptyData')"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
@@ -67,7 +71,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="100"
+                    width="180"
                     prop="tx_status"
                     :label="$t('el.riskConfig.tableHeader.state')"
                     align="center">
@@ -85,10 +89,20 @@
                     <template slot-scope="scope">
                         <be-ellipsis-copy :targetStr="scope.row.from_address"
                                           v-if="!scope.row.from_address_tag"
+                                          :emptyText="$t('el.emptyData')"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
-                        <span style="color: #1496F2" v-if="scope.row.from_address_tag">{{scope.row.from_tag}}</span>
+                        <be-ellipsis-copy :targetStr="scope.row.from_address_tag"
+                                          :copyContent="scope.row.from_address"
+                                          :tooltipTxt="scope.row.from_address"
+                                          v-if="scope.row.from_address_tag"
+                                          :emptyText="$t('el.emptyData')"
+                                          :is-ellipsis="false"
+                                          style="color: #1496F2"
+                                          fontLength="8"
+                                          endLength="8">
+                        </be-ellipsis-copy>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -100,9 +114,19 @@
                         <be-ellipsis-copy :targetStr="scope.row.to_address"
                                           v-if="!scope.row.to_address_tag"
                                           fontLength="8"
+                                          :emptyText="$t('el.emptyData')"
                                           endLength="8">
                         </be-ellipsis-copy>
-                        <span style="color: #1496F2" v-if="scope.row.to_address_tag">{{scope.row.to_address_tag}}</span>
+                        <be-ellipsis-copy :targetStr="scope.row.to_address_tag"
+                                          :tooltipTxt="scope.row.to_address"
+                                          :copyContent="scope.row.to_address"
+                                          v-if="scope.row.to_address_tag"
+                                          :is-ellipsis="false"
+                                          style="color: #1496F2"
+                                          :emptyText="$t('el.emptyData')"
+                                          fontLength="8"
+                                          endLength="8">
+                        </be-ellipsis-copy>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -116,16 +140,18 @@
                                     style="margin-top: 10px;width: min-content;"
                                     :key="item">{{item}}</el-tag>
                         </div>
-                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>暂无</div>
+                        <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-else>
+                            {{ $t('el.emptyData') }}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="risk_score"
+
                     :label="$t('el.riskConfig.tableHeader.score')"
                     align="center"
                     show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span style="font-weight: bold">{{scope.row.risk_score || '暂无'}}</span>
+                        <span style="font-weight: bold">{{scope.row.risk_score || $t('el.emptyData')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -145,7 +171,7 @@
                 :total='pageParams.total'
                  @updatePage="pageChange"
                 :is-front="false">
-                <span slot="prev" class="table-page-info">共计{{pageParams.total}}条</span>
+                <span slot="prev" class="table-page-info">{{ $t('el.total') }} {{pageParams.total}} {{ $t('el.piece') }}</span>
                 <span slot="next"></span>
             </be-pagination>
         </div>
@@ -163,14 +189,14 @@ export default {
         return {
             // 搜索参数
             searchParams: {
-                platform: 'eth',
+                platform: 'all',
                 addr: ''
             },
             // 分页参数
             pageParams:{
                 currentPage: 1,
                 pageNum: 1,
-                pageSize: 5,
+                pageSize: 10,
                 total: 0
             },
             // 下拉列表币种
@@ -181,77 +207,85 @@ export default {
             loading:false,
         }
     },
+    watch:{
+        listenLang:function(){
+            this.platformList = JSON.parse(JSON.stringify(platformListDict))
+            this.platformList.unshift(
+                {
+                    label: this.$t('el.projectRinking.tradeStb.all'),
+                    value: 'all',
+                    id:'jhgadjghzngrgegkdfjallg'
+                },
+            )
+        }
+    },
     computed:{
+        listenLang() {
+            return this.$i18n.locale;
+        },
         stateSuccess(){
             return function (val){
-                const lang = this.getStore('language')
-                if(lang === 'zh_CN'){
-                    if(val !== '成功'){
-                        return {
-                            color:'#FA6400'
-                        }
-                    }
-                    return {
-                        color:'#44D7B6'
-                    }
-                }else{
-                    if(val !== 'success'){
-                        return {
-                            color:'#FA6400'
-                        }
-                    }
+                if(val === 'success' || val === '成功' ){
                     return {
                         color:'#44D7B6'
                     }
                 }
-
+                return {
+                    color:'#FA6400'
+                }
             }
         },
         stateTxt(){
             return function (val){
-                const lang = this.getStore('language')
-                if(lang === 'zh_CN'){
-                    if(val !== '成功'){
-                        return this.$t('el.riskConfig.stateFailed')
-                    }
-                    return this.$t('el.riskConfig.stateSuccess')
-                }else{
-                    if(val !== 'success'){
-                        return this.$t('el.riskConfig.stateFailed')
-                    }
+                if(val === 'success' || val === '成功' ){
                     return this.$t('el.riskConfig.stateSuccess')
                 }
+                return this.$t('el.riskConfig.stateFailed')
             }
         }
     },
     created() {
-      this.platformList = platformListDict
+      this.platformList = JSON.parse(JSON.stringify(platformListDict))
+      this.platformList.unshift(
+           {
+               label: this.$t('el.projectRinking.tradeStb.all'),
+               value: 'all',
+               id:'jhgadjghzngrgegkdfjallg'
+           },
+       )
     },
     mounted() {
-        this.getData()
+        this.getList()
     },
     methods: {
         /**
          * 获取表格数据
          */
-        getData() {
+        getList(type) {
             const _this = this
             _this.loading = true
+            if(type === 'reset'){
+                this.pageParams = {
+                    currentPage: 1,
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                }
+            }
             let params = {
                 page_num:this.pageParams.pageNum,
                 page_size:this.pageParams.pageSize,
-                platform:this.searchParams.platform,
+                platform:this.searchParams.platform === 'all' ? '' : this.searchParams.platform,
                 param:this.searchParams.addr
             }
             getProjWarning(params).then(res=>{
                 if(res){
                     _this.tableData = res.data.page_infos
-                    _this.pageParams.total =  res.data.page_total
+                    _this.pageParams.total =  res.data.total
                     _this.loading = false
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
         },
@@ -262,7 +296,7 @@ export default {
         pageChange(item){
             this.pageParams.pageNum = item.currentPage
             this.pageParams.currentPage = item.currentPage
-            this.getData()
+            this.getList()
         },
         /**
          * 打開交易分析詳情tab
@@ -305,14 +339,39 @@ export default {
     }
     .risk-table{
         margin-top: 30px;
+        /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+        .el-table__body-wrapper::-webkit-scrollbar
+        {
+            margin: 5px;
+            width: 8px;
+            height: 8px;
+        }
+
+        /*定义滚动条轨道*/
+        .el-table__body-wrapper::-webkit-scrollbar-track
+        {
+            //   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            //   background-color: #272822;
+        }
+
+        /*定义滑块*/
+        .el-table__body-wrapper::-webkit-scrollbar-thumb
+        {
+            //   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #c1c1c1;
+            border-radius:  5px;
+        }
         .table-page {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             .table-page-info {
                 font-size: 14px;
-                margin-top: 20px;
+                margin-top: 14px;
                 color: $textColor4;
+            }
+            .pagination_c{
+                margin-top: 14px;
             }
         }
     }

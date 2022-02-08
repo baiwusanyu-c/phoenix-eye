@@ -7,13 +7,19 @@
 <template>
     <div class="project-ranking-score-card">
         <div class="project-ranking-logo">
-            <img :src="logoType"/>
+            <img :src="logoType" alt=""/>
         </div>
         <div class="project-ranking-info">
-            <h3>{{ title }}</h3>
-            <p v-for="(item) in labelConfig" :key="JSON.stringify(item)">
-                {{item.label}}:{{data[item.val]}}
-            </p>
+            <h3>{{ title }}  {{platform ? `(` + platform + `)` : ''}}</h3>
+            <div style="max-height: 100px;overflow-y: auto" class="scrollDiy">
+                <p v-for="(item) in labelConfig" :key="JSON.stringify(item)">
+                    {{item.label}}:{{handleData(data,item)}}
+                </p>
+                <p v-if="JSON.stringify(data) === '{}' && this.title === this.$t('el.projectRinking.contractBalance')">
+                    {{$t('el.emptyData')}}
+                </p>
+            </div>
+
         </div>
     </div>
 </template>
@@ -32,16 +38,30 @@ export default {
     },
     computed:{
         logoType(){
-            if(this.title === '合约概况'){
+            if(this.title === this.$t('el.projectRinking.contractOverview')){
                 return this.imgCodeDict.hygk
             }
-            if(this.title === '合约余额'){
+            if(this.title === this.$t('el.projectRinking.contractBalance')){
                 return this.imgCodeDict.hyye
             }
             return this.imgCodeDict.aqpg
+        },
+        handleData(){
+            return function (data,config){
+                // 为空或 -1 则显示暂无数据
+                // 对象时
+                if(!Array.isArray(data)){
+                    return (data[config.val] || data[config.val] === 0) &&  data[config.val] !== '-1' ? data[config.val] : this.$t('el.emptyData')
+                }
+                return (data[config.val][config.valKey] || data[config.val][config.valKey] === 0) &&  data[config.val][config.valKey] !== '-1' ? data[config.val] : this.$t('el.emptyData')
+            }
         }
     },
     props:{
+        platform:{
+            type:String,
+            default:''
+        },
         title:{
             type:String,
             default:'合约概况'
@@ -56,17 +76,10 @@ export default {
             ]}
         },
         data:{
-            type:Object,
-            default: ()=>{return {
-                'tx_num':'123456',
-                'call_num':'12345',
-                'time':'2011.11.11.12:30'
-            }}
+            type:[Object,Array],
+            default: ()=>{return {}}
         }
     },
-    mounted() {
-    },
-    methods: {},
 }
 </script>
 
@@ -76,6 +89,7 @@ export default {
     box-sizing: border-box;
     background: linear-gradient(90deg, #FFFFFF 0%, #E3F2FF 100%);
     border-radius: 4px;
+    margin-right: 20px;
     display: flex;
     align-items: center;
     width: 32.5%;

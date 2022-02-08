@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import _this from '../main.js'
+import {getRouterInfo} from "../api/login";
+import {getStore, isString, removeCookie} from "../utils/auth";
+import store from "../store/store";
 
 Vue.use(Router);
 //获取原型对象上的push函数
@@ -15,7 +18,7 @@ export const routerOption = {
     routes: [
         {
             path: '/',
-            redirect: '/login'
+            redirect: '/blockchainSituation'
         },
         {
             path: '/',
@@ -24,62 +27,19 @@ export const routerOption = {
             name: 'layout',
             children: [
                 {
-                    path: '/blockchainSituation',
-                    name: 'BlockchainSituation',
-                    component: () => import('../views/pc/blockchain-situation/blotua-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName0'},
-                    children: []
-                },
-                {
-                    path: '/projectRanking',
-                    name: 'ProjectRanking',
-                    component: () => import('../views/pc/project-ranking/project-ranking-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName1'},
-                    children: []
-                },
-                {
-                    path: '/riskWarning',
-                    name: 'RiskWarning',
-                    component: () => import('../views/pc/risk-warning/risk-warning-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName2'},
-                    children: [
-                        {
-                            path: '/riskWarning/list',
-                            name: 'RiskWarningList',
-                            component: () => import('../views/pc/risk-warning/risk-warning-list.vue'),
-                            meta: {title: 'el.navTextConfig.navName2'},
-                        },
-                        {
-                            path: '/riskWarning/detail',
-                            name: 'RiskWarningDetail',
-                            component: () => import('../views/pc/risk-warning/risk-warning-detail.vue'),
-                            meta: {title: 'el.navTextConfig.navName2',subTitle: 'el.navTextConfig.navName2'},
-                        }
-                    ]
-                },
-                {
-                    path: '/projectManagement',
-                    name: 'ProjectManagement',
-                    component: () => import('../views/pc/project-management/project-manage-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName3'},
-                    children: []
-                },
-                {
-                    path: '/systemConfig',
-                    name: 'SystemConfig',
-                    component: () => import('../views/pc/system-config/system-config-main.vue'),
-                    meta: {title: 'el.navTextConfig.navName4'},
-                },
-                {
                     path: '/404',
                     name: '404',
                     component: () => import('../views/pc/empty-page/404.vue'),
                     meta: {title: '404'}
                 },
-
             ]
         },
-
+        {
+            path: '/blockchainSituation',
+            name: 'blockchainSituation',
+            component: () => import('../views/pc/blockchain-situation/blotua-main'),
+            meta: {title: 'el.subNav.navName0'}
+        },
         {
             path: '/login',
             name: 'login',
@@ -91,11 +51,38 @@ export const routerOption = {
             name: 'test',
             component: () => import('../views/test.vue')
         },
-        {
-            path: '*',
-            redirect: '/404'
-        }
+
     ]
+}
+const metaTitleDict = {
+    LSTS: 'el.subNav.navName0',
+    XMPH: 'el.subNav.navName1',
+    XMPH_XMXQ: "el.subNav.navName1s2",
+    XMPH_HYXQ: "el.subNav.navName1s1",
+    FXJG: 'el.subNav.navName2',
+    FXJG_XQ: "el.subNav.navName2",
+    FXJG_LB: "el.subNav.navName2",
+    XMGL: 'el.subNav.navName3',
+    XTPZ: 'el.subNav.navName4',
+}
+
+// 递归路由配置对象
+export const initRouterConfig = (treeData) => {
+    treeData.forEach(val => {
+        // 删除bms默认的redirect配置
+        if (val.redirect === "noRedirect") {
+            Reflect.deleteProperty(val, 'redirect')
+        }
+        // 将meta.title 配置成国家化变量
+        val.meta.title = metaTitleDict[val.perms]
+        // 配置组件引入
+        val.componentPath = isString(val.component) && val.component
+        val.component = () => import(`../views/${val.componentPath}`)
+        if (val.children && val.children.length > 0) {
+            initRouterConfig(val.children)
+        }
+    })
+    return treeData
 }
 /**
  * 路由守卫方法
@@ -103,11 +90,51 @@ export const routerOption = {
  */
 const beforeEachHandle = (router) => {
     router.beforeEach((to, from, next) => {
-        setTimeout(() => {
-            _this.$i18n.locale = _this.getStore('language')
-            to.meta.titleInfo = _this.$t(to.meta.title)
-            next()
-        }, 100)
+        if (to.path === '/login' || getStore('token') === null) {
+            removeCookie('userInfo');
+            removeCookie('token');
+            window.localStorage.removeItem('userInfo')
+            window.localStorage.removeItem('token')
+            window.sessionStorage.clear();
+            // 路由跳转白名单（不需要验证token）
+            const whiteList = ['/login']
+            // 这里必须加这个判断，否则会造成路由跳转死循环，从而无法跳转(用户服务协议 无权限)
+            if(whiteList.includes(to.path)){
+                next()
+            }else{
+                next({
+                    path: '/login',
+                })
+            }
+            return
+        }
+        if(store.state.routeConfig.length > 0){
+            setTimeout(() => {
+                _this.$i18n.locale = _this.getStore('language')
+                to.meta.titleInfo = _this.$t(to.meta.title)
+            }, 100)
+        }else{
+            const params = {
+                systemCode: 'beosin-eye',
+                userId: getStore('userId'),
+            }
+            getRouterInfo(params).then(res => {
+                const routerConfig = initRouterConfig(res.data[0].children)
+                store.commit('update', ['routeConfig', routerConfig])
+                routerConfig.map(val => {
+                    router.addRoute('layout', val)
+                })
+                router.addRoute({
+                    path: '*',
+                    redirect: '/404'
+                })
+                setTimeout(() => {
+                    _this.$i18n.locale = _this.getStore('language')
+                    to.meta.titleInfo = _this.$t(to.meta.title)
+                }, 100)
+            }).catch(err=>this.$message.error(err))
+        }
+        next()
     })
 }
 /**

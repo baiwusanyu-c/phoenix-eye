@@ -26,7 +26,7 @@ export const platformListDict =  [
         id:'jhgadjghzngrdfggegkdfjg'
     },
     {
-        label: 'Polygon',
+        label: 'POLYGON',
         value: 'polygon',
         id:'jhgadjghzngrgefdghhgkdfjg'
     },

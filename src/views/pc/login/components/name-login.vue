@@ -6,10 +6,10 @@
 */
 <template>
     <div class="formArea">
-        <el-form :model="form" :rules="rules" ref="form">
+        <el-form :model="form" :rules="rules" ref="form" class="login-form">
             <el-form-item class="label" prop='name'>
                 <el-input maxlength="40" autocomplete="off"
-                          :placeholder="$t('el.loginConfig.loginNameP')" v-model="form.name">
+                          :placeholder="$t('el.loginConfig.loginNameP2')" v-model="form.name">
                     <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
                     </template>
                 </el-input>
@@ -32,7 +32,7 @@
             <div class="flex">
                 <el-form-item class="label" prop='code' style="width: calc(100% - 130px);">
                     <el-input maxlength="4" @keyup.enter.native="login()" type="text" autocomplete="off"
-                              :placeholder="$t('el.loginConfig.loginVerCodeP')" v-model="form.code">
+                              :placeholder="$t('el.loginConfig.loginVerCodeP2')" v-model="form.code">
                         <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
                         </template>
                     </el-input>
@@ -61,8 +61,12 @@
 </template>
 
 <script>
-import {login, getCodeImg} from '@/api/login.js';
+import {loginAccount, getCodeImg} from '@/api/login.js';
 import {Base64} from 'js-base64';
+import {getStore} from "../../../../utils/auth";
+import {getRouterInfo} from "../../../../api/login";
+import {initRouterConfig} from "../../../../router";
+import store from "../../../../store/store";
 export default {
     name: "NameLogin",
     data() {
@@ -73,13 +77,7 @@ export default {
                 callback();
             }
         };
-        var validateUserName = (rule, value, callback) => {
-            if (!this.nameReg.test(value)) {
-                callback(new Error(this.$t('el.loginConfig.unameError')));
-            } else {
-                callback();
-            }
-        };
+
         return {
             form: {
                 name: this.name,
@@ -91,7 +89,7 @@ export default {
             rules: {
                 name: [
                     {required: true, message: this.$t('el.loginConfig.loginNameP'), trigger: 'blur'},
-                     { validator: validateUserName, trigger: 'blur' }
+                    // { validator: validateUserName, trigger: 'blur' }
                 ],
                 pwd: [
                     {required: true, message: this.$t('el.loginConfig.loginPwdP'), trigger: 'blur'},
@@ -132,7 +130,7 @@ export default {
             getCodeImg().then(res => {
                 this.form.uuid = res.uuid;
                 this.codeUrl = "data:image/gif;base64," + res.img;
-            });
+            }).catch(err=>this.$message.error(err));
         },
         /**
          * 登录方法
@@ -142,16 +140,19 @@ export default {
             this.form.code = this.trim(this.form.code);
             this.$refs['form'].validate((valid) => {
                 if (valid) {
-                    login({
+                    loginAccount({
                         username:this.form.name,
                         password:Base64.encode(this.form.pwd),
                         code: this.form.code,
                         uuid: this.form.uuid,
-                        client_id: 'IMS_SYSTEM',
-                        client_secret: '123456',
+                         client_id: 'beosin-eye',
+                        //client_id: 'official_site_sg_system',
+                        //client_secret: 'uZtik#Iu8D',
+                         client_secret: '123456',
                         grant_type: 'password',
                         login_type:"password",
                         scope: 'server',
+                        product_version:'FREE'
 
                     }).then(res => {
                         const langCache = this.getStore('language')
@@ -166,13 +167,16 @@ export default {
                         }));
                         this.setCookie('token', res.access_token);
                         this.setStore('token', res.access_token);
+                        this.setStore('userId', res.user_id);
                         this.$root.userInfo = {
                             username: res.username
                         };
                         this.$root.token = res.access_token;
                         !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
-                        this.$router.push({path: '/riskWarning/list'})
+                        // 登錄先拿路由在跳轉
+                        this.getRouter()
                     }).catch(error => {
+                        this.$message.error(error)
                         if (error.code && error.code == 920000001) {
                             this.$parent.delTip = true;
                         }
@@ -184,7 +188,24 @@ export default {
                 }
             });
         },
-
+        getRouter(){
+            const params = {
+                systemCode: 'beosin-eye',
+                userId: getStore('userId'),
+            }
+            getRouterInfo(params).then(res => {
+                const routerConfig = initRouterConfig(res.data[0].children)
+                store.commit('update', ['routeConfig', routerConfig])
+                routerConfig.map(val => {
+                    this.$router.addRoute('layout', val)
+                })
+                this.$router.addRoute({
+                    path: '*',
+                    redirect: '/404'
+                })
+                this.$router.push({path: '/blockchainSituation'})
+            }).catch(err=>this.$message.error(err))
+        }
 
     },
 };
@@ -192,10 +213,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
+
 .formArea {
     width: 100%;
     margin: auto;
-
+    .login-form{
+        .el-form-item{
+            margin-bottom: 30px;
+        }
+    }
     .primary {
         width: 100%;
         margin-top: 5px;

@@ -15,7 +15,7 @@
                 <div>{{ item.value }}</div>
                 <span
                     class="el-icon-close close-btn"
-                    @click="handelRemove(index)"
+                    @click="handleRemove(index)"
                 ></span>
             </li>
             <el-input
@@ -179,40 +179,40 @@ export default {
         },
         /**
          * 校验地址/交易
-         * @param {String} targerData 目标地址
+         * @param {String} targetData 目标地址
          * @param {String} platform 链平台
          * @param {String} valueType 类型
          */
-        verifyTxOrAddress(targerData, platform, valueType = "addr") {
+        verifyTxOrAddress(targetData, platform, valueType = "addr") {
             let noInput = false;
             let type = "";
-            if (platform === "btc" || platform === "usdt_btc") {
-                if (this.BTChash.test(targerData)) {
+            const testRegFunc = (testAddr,testTx,addr)=>{
+                if (testAddr(addr)) {
                     type = "tx";
-                } else if (this.BTCaddress.test(targerData)) {
+                } else if (testTx(addr)) {
                     type = "addr";
                 } else {
                     noInput = true;
                 }
-            } else if (platform === "eth" || platform === "usdt_eth") {
-                if (targerData.substr(0, 2) !== "0x") {
-                    targerData = "0x" + targerData;
+                return {type,noInput}
+            }
+            if(/^btc/.test(platform)){
+                let res = testRegFunc(this.BTChash.test,this.BTCaddress.test,targetData)
+                noInput = res.noInput
+                type = res.type
+            }
+            if(/^eth/.test(platform)){
+                if (targetData.substr(0, 2) !== "0x") {
+                    targetData = "0x" + targetData;
                 }
-                if (this.ETHhash.test(targerData)) {
-                    type = "tx";
-                } else if (this.ETHaddress.test(targerData)) {
-                    type = "addr";
-                } else {
-                    noInput = true;
-                }
-            } else if (platform === "tron") {
-                if (this.TRONhash.test(targerData)) {
-                    type = "tx";
-                } else if (this.TRONaddress.test(targerData)) {
-                    type = "addr";
-                } else {
-                    noInput = true;
-                }
+                let res = testRegFunc(this.ETHhash.test,this.ETHaddress.test,targetData)
+                noInput = res.noInput
+                type = res.type
+            }
+            if(/^tron/.test(platform)){
+                let res = testRegFunc(this.TRONhash.test,this.TRONaddress.test,targetData)
+                noInput = res.noInput
+                type = res.type
             }
             if (valueType !== type) {
                 noInput = true;
@@ -223,7 +223,7 @@ export default {
          * 删除地址
          * @param {Number} index 地址序号
          */
-        handelRemove(index) {
+        handleRemove(index) {
             this.addressList.splice(index, 1);
         },
     },

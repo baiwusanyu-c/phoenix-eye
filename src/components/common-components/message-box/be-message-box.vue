@@ -7,7 +7,7 @@
 
 <script type="text/jsx">
 const renderBox = function (h) {
-    return (
+    return h(
             <div class={this.containerstyle}
                  id={`be_message_box_container${this._uid}`}
                  v-drag={{isDrag: this.isDrag}}>
@@ -201,7 +201,9 @@ export default {
                 }
             </div>
             )
-        }
+        }else {
+             return ''
+         }
 
     }
 }

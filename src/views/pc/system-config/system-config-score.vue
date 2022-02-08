@@ -25,7 +25,7 @@
                         <el-table-column
                             prop="weight"
                             label="权重"
-                            width="148px">
+                            width="80px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.weight}}</span>
                                 <span v-show="inputShow === false">
@@ -51,24 +51,29 @@
                             <template slot-scope="scope">
                                 <!--事件范围数字显示在前面-->
                                 <span v-if="scope.$index === 6 && inputShow === false">{{inputValue.time_range}}</span>
-                                <el-input class="table-input" v-show="scope.$index === 6 && inputShow === true" v-model="inputValue.time_range"></el-input>
+                                <el-input class="table-input" v-show="scope.$index === 6 && inputShow === true" v-model.number="inputValue.time_range"></el-input>
                                 <!--分割线-->
                                 <span>{{scope.row.configFst}}</span>
-                                <span v-if="scope.$index !== 0 && scope.$index !== 6 && scope.$index !== 4 && scope.$index !== 3">-</span>
+                                <span v-if="scope.$index !== 0 && scope.$index !== 6 && scope.$index !== 4">-</span>
                                 <span v-show="inputShow === false">
                                 <span  v-show="scope.$index === 1">{{inputValue.static_testing.config.high_risk}}</span>
                                 <span v-if="scope.$index === 4" style="margin: 0 10px">{{inputValue.tx_stability.config.score_coefficient}}</span>
-                                <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16"/>
+                                     <el-tooltip placement="top" effect="light">
+                                        <span slot="content">{{$t('el.systemConfigScore.tip')}}</span>
+                                        <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16" alt=""/>
+                                     </el-tooltip>
                                 <span v-if="scope.$index ===5">
                                     {{inputValue.safety_opinion.config.each}}/{{$t('el.systemConfigScore.safetyPublicOptionPiece')}}
                                 </span>
                                     <!--交易安全分数-->
                                 <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.flash_load_tx}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.tx_safety.config.token_empty}}</span>
                             </span>
                                 <!--输入框部分-->
                                 <span v-show="inputShow === true">
                                     <el-input class="table-input" v-show="scope.$index === 1" v-model.number="inputValue.static_testing.config.high_risk"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.flash_load_tx"></el-input>
+                                    <el-input class="table-input" v-show="scope.$index === 3" v-model.number="inputValue.tx_safety.config.token_empty"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 4" v-model.number="inputValue.tx_stability.config.score_coefficient"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 5" v-model.number="inputValue.safety_opinion.config.each"></el-input>
                                 </span>
@@ -80,15 +85,17 @@
                             width="204px">
                             <template slot-scope="scope">
                                 <span>{{scope.row.configSnd}}</span>
-                                <span v-if="scope.$index === 1 || scope.$index === 2">-</span>
+                                <span v-if="scope.$index === 1 || scope.$index === 2 || scope.$index === 3">-</span>
                                 <span v-show="inputShow === false">
                                 <span  v-show="scope.$index === 1">{{inputValue.static_testing.config.middle_risk}}</span>
                                 <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.large_fee}}</span>
+                                <span v-if="scope.$index === 3">{{inputValue.tx_safety.config.privileged_operation}}</span>
                             </span>
                                 <!--输入框部分-->
                                 <span v-show="inputShow === true">
                                     <el-input class="table-input" v-show="scope.$index === 1" v-model.number="inputValue.static_testing.config.middle_risk"></el-input>
                                     <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.large_fee"></el-input>
+                                    <el-input class="table-input" v-show="scope.$index === 3" v-model.number="inputValue.tx_safety.config.privileged_operation"></el-input>
                                 </span>
                             </template>
                         </el-table-column>
@@ -102,12 +109,12 @@
                                 <span v-if="scope.$index === 1 || scope.$index === 2">-</span>
                                 <span v-show="inputShow === false">
                                     <span class="table-input" v-show="scope.$index === 1">{{inputValue.static_testing.config.low_risk}}</span>
-                                    <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.huge_profit}}</span>
+                                    <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.huge_transfer}}</span>
                                 </span>
                                 <!--输入框部分-->
                                 <span v-show="inputShow === true">
                                     <el-input class="table-input" v-show="scope.$index === 1" v-model.number="inputValue.static_testing.config.low_risk"></el-input>
-                                    <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.huge_profit"></el-input>
+                                    <el-input class="table-input" v-show="scope.$index === 2" v-model.number="inputValue.tx_safety.config.huge_transfer"></el-input>
                                 </span>
                             </template >
                         </el-table-column>
@@ -143,6 +150,7 @@
                 </div>
             </div>
             <!--是否初始化数据警告框-->
+
             <be-msg-dialog @confirm="warningDialogConfirm"
                            :isShow.sync="changeConfigWarning"
                            :title="$t('el.systemConfigScore.formatConfigData')"
@@ -154,11 +162,12 @@
 
 <script>
 import {getRiskScore,saveRiskScore,resetRiskScore} from '../../../api/system-config'
+import {platformListDict} from "../../../utils/platformDict";
 export default {
     name: "system-config-score",
     data() {
         return {
-            widthGird:'170',
+            widthGird:'240',
             changeConfigWarning:false,
             changeConfigWarningInput:false,
             inputShow:false,
@@ -177,8 +186,10 @@ export default {
                     config:{
                         flash_load_tx:'',
                         large_fee:'',
-                        huge_profit:'',
-                        repeat_call:''
+                        huge_transfer:'',
+                        repeat_call:'',
+                        token_empty:'',
+                        privileged_operation:'',
                     }
                 },
                 tx_stability:{
@@ -217,11 +228,12 @@ export default {
                     weight:'',
                     configFst:this.$t('el.systemConfigScore.flash_load_tx'),
                     configSnd:this.$t('el.systemConfigScore.large_fee'),
-                    configTrd:this.$t('el.systemConfigScore.huge_profit'),
+                    configTrd:this.$t('el.systemConfigScore.huge_transfer'),
                     configFth:this.$t('el.systemConfigScore.repeat_call'),
                 },
                 {
-
+                    configFst:this.$t('el.systemConfigScore.token_empty'),
+                    configSnd:this.$t('el.systemConfigScore.privileged_operation')
                 },
                 {
                     project: this.$t('el.systemConfigScore.tradeStable'),
@@ -250,6 +262,69 @@ export default {
             ],
         }
     },
+    watch:{
+        listenLang:function(){
+           this.systemConfigScore = [
+               {
+                   project:this.$t('el.systemConfigScore.configProject'),
+                   weight:this.$t('el.systemConfigScore.weight'),
+                   configFst:this.$t('el.systemConfigScore.detailConfig'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               },
+               {
+                   project:this.$t('el.systemConfigScore.staticDetection'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.dangerHigh'),
+                   configSnd:this.$t('el.systemConfigScore.dangerMiddle'),
+                   configTrd:this.$t('el.systemConfigScore.dangerLow'),
+                   configFth:'',
+               },
+               {
+                   project:this.$t('el.systemConfigScore.tradeSafetyClass'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.flash_load_tx'),
+                   configSnd:this.$t('el.systemConfigScore.large_fee'),
+                   configTrd:this.$t('el.systemConfigScore.huge_transfer'),
+                   configFth:this.$t('el.systemConfigScore.repeat_call'),
+               },
+               {
+                   configFst:this.$t('el.systemConfigScore.token_empty'),
+                   configSnd:this.$t('el.systemConfigScore.privileged_operation')
+               },
+               {
+                   project: this.$t('el.systemConfigScore.tradeStable'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.tradeScore'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               },
+               {
+                   project: this.$t('el.systemConfigScore.safetyPublicOptionClass'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.safetyPublicOption'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               },
+               {
+                   project: this.$t('el.systemConfigScore.timeRange'),
+                   weight:'',
+                   configFst:this.$t('el.systemConfigScore.timeTradeDate'),
+                   configSnd:'',
+                   configTrd:'',
+                   configFth:'',
+               }
+           ]
+        }
+    },
+    computed:{
+        listenLang() {
+            return this.$i18n.locale;
+        },
+    },
     mounted() {
         this.initData('init')
         this.initView()
@@ -265,10 +340,8 @@ export default {
                     // 拿到的数据都为正
                     this.inputValue = res.data
                 }
-            }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
-                console.error(err)
+            }).catch((err)=>{
+              _this.opFailed(err)
             })
         },
         /**
@@ -291,16 +364,19 @@ export default {
                 this.getScore()
             }
         },
+        opFailed(err){
+            const msg = this.$t('el.operation')+ this.$t('el.failed')
+            this.$message.error(msg)
+            console.error(err)
+        },
         // 初始化参数
         warningDialogConfirm(){
             const _this = this
             // 初始化参数
-            resetRiskScore().then(res => {
+            resetRiskScore().then(() => {
                 this.getScore()
-            }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
-                console.error(err)
+            }).catch((err)=>{
+                _this.opFailed(err)
             })
             this.changeConfigWarningInput = false
         },
@@ -317,15 +393,37 @@ export default {
         // 修改风险评分配置信息
         changeConfigConfirm(){
             const _this = this
+
+            // 开始表单校验
+            let sum = 0
             let valArr = Object.values(this.inputValue)
-            let valArrEmpty = valArr.filter((t)=>{
-                return t === ''
-            })
+            let valArrEmpty = []
+            for(let i = 0;i < valArr.length - 1;i++){
+                let valArrCfg = Object.values(valArr[i].config)
+                let ArrEmpty = valArrCfg.filter((t)=>{
+                    return t === ''||typeof t !== 'number'||t < 0||t > 100
+                })
+                if(valArr[i].weight < 0){
+                    valArrEmpty.push(1)
+                    break
+                }
+                if(ArrEmpty.length > 0){
+                    valArrEmpty.push(1)
+                    break
+                }
+                sum += valArr[i].weight
+                console.log(sum)
+            }
+            if(sum != 100){
+                valArrEmpty.push(1)
+            }
+            let time_range = valArr[valArr.length - 1]
             // 大于0 说明有不合格的参数 直接返回
-            if(valArrEmpty.length > 0){
-                this.$message.warning('参数输入错误')
+            if(valArrEmpty.length > 0||typeof time_range !== "number" ||time_range < 0||time_range > 100){
+                this.$message.warning(_this.$t('el.systemConfigScore.checkInput'))
                 return
             }
+
             let params = this.inputValue
             // 调用后端接口，存储表单数据
             saveRiskScore(params).then(res => {
@@ -333,8 +431,7 @@ export default {
                     return
                 }
             }).catch(err=>{
-                const msg = _this.$t('el.operation')+ _this.$t('el.failed')
-                _this.$message.error(msg)
+                _this.$message.error(err)
                 console.error(err)
             })
             this.inputShow = false
@@ -343,7 +440,7 @@ export default {
         // ，里面包含当前行row、当前列column、当前行号rowIndex、当前列号columnIndex四个属性。
         // 该函数可以返回一个包含两个元素的数组，第一个元素代表rowspan，第二个元素代表colspan。
         // 也可以返回一个键名为rowspan和colspan的对象。
-        arraySpanMethod({ row, column, rowIndex, columnIndex }){
+        arraySpanMethod({ rowIndex, columnIndex }){
             if(rowIndex === 0||rowIndex === 4){
                 if(columnIndex === 2){
                     return [1,4]
@@ -359,7 +456,7 @@ export default {
                 }
             }
         },
-        columnStyle({ row, column, rowIndex, columnIndex }){
+        columnStyle({ rowIndex, columnIndex }){
           if(rowIndex === 0){
               return 'font-weight: 700;text-align: center;'
           }

@@ -46,6 +46,37 @@ const closeNotify = function (instance,isSelf = false,isAll = false) {
         instance.close()
     }
 }
+const getInstanceObj = (option,instanceObj,instanceMapParams)=>{
+    // 根据方向，获取缓存实例列表
+    if (option.placement === undefined) {
+        instanceObj = instanceMapParams.topRight
+    } else {
+        instanceObj = instanceMapParams[option.placement]
+    }
+    return instanceObj
+}
+const getInstanceObjByKey = (option,instanceObj)=>{
+    let isCache = false
+    let instance = null
+    if (option.key) {
+        instanceObj.forEach(val => {
+            if (val.key === option.key) {
+                isCache = true
+                instance = val
+            }
+        })
+    }
+    return {isCache,instance}
+}
+const appendToBody = (instance) =>{
+    // 挂载元素
+    const bodyElement = document.querySelector('body')
+    if (bodyElement.append) {
+        bodyElement.append(instance)
+    } else {
+        bodyElement.appendChild(instance)
+    }
+}
 // 挂在原型上，共组件内部调用
 beNotifyConstructor.prototype.$closeNotify = closeNotify
 const createNotify = function (options = {}) {
@@ -72,22 +103,9 @@ const createNotify = function (options = {}) {
     let option = Object.assign({}, defaultOption, options)
     let instanceObj = null
     // 根据方向，获取缓存实例列表
-    if (option.placement === undefined) {
-        instanceObj = instanceMap.topRight
-    } else {
-        instanceObj = instanceMap[option.placement]
-    }
-    let isCache = false
-    let instance = null
+    instanceObj = getInstanceObj(option,instanceObj,instanceMap)
     // 如果传入了key，则遍历实例缓存，拿到对应实例
-    if (option.key) {
-        instanceObj.forEach(val => {
-            if (val.key === option.key) {
-                isCache = true
-                instance = val
-            }
-        })
-    }
+    let {isCache,instance} = getInstanceObjByKey(option,instanceObj)
     // 如果instance 为null，则是没有传入key 或者没有匹配到实例缓存，就创建新的
     if (!instance) {
         instance = new beNotifyConstructor({
@@ -95,12 +113,7 @@ const createNotify = function (options = {}) {
         }).$mount()
         instance.key = option.key || ''
         // 挂载元素
-        const bodyElement = document.querySelector('body')
-        if (bodyElement.append) {
-            bodyElement.append(instance.$el)
-        } else {
-            bodyElement.appendChild(instance.$el)
-        }
+        appendToBody(instance.$el)
     } else {
         // instance
         instance.option = option
@@ -110,25 +123,17 @@ const createNotify = function (options = {}) {
     })
 
     let verticalOffset;
-    if (option.placement === 'topLeft' || option.placement === 'topRight') {
-        verticalOffset = option.offsetTop || 0
-    }
-    if (option.placement === 'bottomLeft' || option.placement === 'bottomRight') {
-        verticalOffset = option.offsetBottom || 0
-    }
-    if (!isCache) {
+
+    verticalOffset = /^top/.test(option.placement) ? ( option.offsetTop || 0) :  ( option.offsetBottom || 0);
+
+    if (!isCache && instanceObj) {
         instanceObj.forEach(item => {
             verticalOffset += item.$el.offsetHeight + 35;
         });
     }
     verticalOffset += 35;
     // 第一个的时候不需要处理，直接使用传入的偏移
-    if (option.placement === 'topLeft' || option.placement === 'topRight') {
-        instance.option.offsetTop = verticalOffset
-    }
-    if (option.placement === 'bottomLeft' || option.placement === 'bottomRight') {
-        instance.option.offsetBottom = verticalOffset
-    }
+    /^top/.test(option.placement) ? (  instance.option.offsetTop = verticalOffset) :  ( instance.option.offsetBottom = verticalOffset);
     if (!isCache) {
         // 绑定事件
         instance.$selfEvent = {
@@ -136,7 +141,7 @@ const createNotify = function (options = {}) {
             onClick:option.onClick,
             onClose:option.onClose
         }
-        instanceObj.push(instance)
+        instanceObj && instanceObj.push(instance)
     }
     return {notify: instance, close: closeNotify.bind(this, instance)}
 }

@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {login, loginCode} from '@/api/login.js';
+import {loginAccount} from '@/api/login.js';
 import {getInfo} from "../../../../api/login";
 import Vue from 'vue'
 export default {
@@ -121,12 +121,12 @@ export default {
             this.$refs['form'].validate((valid) => {
                 if (valid) {
                     this.isLogin = true;
-                    login({
+                    loginAccount({
                         phoneNum: this.form.phoneNumber,
                         code: this.form.code,
                         /*login_type: 'mobile_phone_code',
                         uuid: this.form.uuid,
-                        client_id: 'fraud_system',
+                        client_id: 'beosin-eye',
                         client_secret: '123456',
                         grant_type: 'password',
                         scope: 'server',*/
@@ -186,6 +186,7 @@ export default {
                 this.setStore('isFromLogin', 'true')
                 this.$router.push({path: '/case'})
             }).catch(err => {
+                this.$message.error(err)
                 console.error(err)
             })
         }
@@ -270,6 +271,4 @@ export default {
     justify-content: center;
 }
 </style>
-<style lang="scss">
 
-</style>

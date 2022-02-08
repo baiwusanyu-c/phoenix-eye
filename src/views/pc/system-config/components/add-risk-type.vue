@@ -2,12 +2,13 @@
     <div>
         <div class="createBox">
             <el-dialog
+                :close-on-click-modal="false"
                 class="createProjectBox"
                 :title="$t('el.addRiskWindow.addRiskWindowTitle')"
                 :visible.sync="addRiskWindowOpen"
                 width="558px">
                 <div>
-                    <el-form label-width="80px" class="addRiskForm">
+                    <el-form label-width="130px" class="addRiskForm">
                         <el-form-item :label="$t('el.addRiskWindow.addRiskWindowClassName')">
                             <span class="reg-start project-star">*</span>
                             <el-input class="projectKeyWordsInput" v-model="addRiskName"
@@ -154,10 +155,10 @@ export default {
                 this.addRiskName = ''
                 return
             }
-            const pathParams = {
+            const params = {
                 id: this.riskId
             }
-            getRiskTypeInfo(null, pathParams).then(res => {
+            getRiskTypeInfo(params).then(res => {
                 if (res) {
                     _this.addRiskName = res.data.risk_type.name
                     _this.abnormalSelectValue = res.data.risk_type.risk_features
@@ -176,7 +177,7 @@ export default {
 .createBox {
     .project-star {
         position: absolute;
-        left: -92px;
+        left: -140px;
         top: 4px;
     }
 
