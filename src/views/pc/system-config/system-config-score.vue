@@ -161,7 +161,7 @@
 
 <script>
 import {getRiskScore,saveRiskScore,resetRiskScore} from '../../../api/system-config'
-import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
+import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 import {defineComponent} from "vue";
 export default defineComponent({
     name: "system-config-score",

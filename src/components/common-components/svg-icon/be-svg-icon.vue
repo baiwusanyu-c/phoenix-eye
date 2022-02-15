@@ -128,6 +128,7 @@ export default defineComponent({
   font-size: 1.2em;
   vertical-align: -.3em;
   fill: currentColor;
+  display: inline;
 }
 
 .svg-external-icon {

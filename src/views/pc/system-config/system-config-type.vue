@@ -41,7 +41,7 @@ import SystemConfigTypeCard from "./components/system-config-type-card.vue";
 import AddRiskType from "./components/add-risk-type.vue";
 import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType} from "../../../api/system-config";
 import {defineComponent} from "vue";
-import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
+import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 export default defineComponent({
     name: "system-config-type",
     components: {AddRiskType, SystemConfigTypeCard,MsgDialog},

@@ -81,7 +81,7 @@ export const initRouterConfig = (treeData:any) => {
  */
 
 const beforeEachHandle = (router:Router) => {
-    router.beforeEach((to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
+    router.beforeEach( (to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
         if (to.path === '/login' || getStore('token') === null) {
             removeStore('userInfo')
             removeStore('token')
@@ -103,28 +103,35 @@ const beforeEachHandle = (router:Router) => {
                 i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
                 to.meta.titleInfo = i18n.global.t(to.meta.title as string)
             }, 100)
+            next()
+            return;
         }else{
             const params = {
                 systemCode: 'beosin-eye',
                 userId: getStore('userId'),
             }
-            getRouterInfo(params).then(res => {
+             getRouterInfo(params).then(res => {
                 const routerConfig = initRouterConfig(res.data[0].children)
                 store.commit('update', ['routeConfig', routerConfig])
+                let title:string = ''
                 routerConfig.map((val:RouteRecordRaw) => {
-                    router.addRoute('layout', val)
+                     if(val.path === to.path ){
+                         title = val?.meta?.title as string
+                     }
+                     router.addRoute('layout', val)
                 })
-                router.addRoute({
+                 router.addRoute({
                     path: '/:w+',
                     redirect: '/404'
                 })
                 setTimeout(() => {
-                    i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
-                    to.meta.titleInfo = i18n.global.t(to.meta.title as string)
+                   i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
+                   to.meta.titleInfo = i18n.global.t(title)
                 }, 100)
+                next({path:to.path})
             }).catch(err=>console.log(err))
+
         }
-        next()
     })
 }
 
