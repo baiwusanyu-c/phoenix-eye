@@ -1,6 +1,6 @@
 ## 迁移日志
 ### 2022年2月8日
-√ login 登录模块迁移完成  
+√ login.vue 登录模块迁移完成  
 √ layout.vue 迁移完成
 √ tsgz-nav-menu.vue 迁移完成
 ### 2022年2月15日
