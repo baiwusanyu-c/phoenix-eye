@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="交易分析详情" transform="translate(-536.000000, -391.000000)" fill-rule="nonzero">
+            <g id="编组-5" transform="translate(256.000000, 348.000000)">
+                <g id="箭头_向上" transform="translate(280.000000, 43.000000)">
+                    <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                    <polygon id="路径" fill="#1496F2" points="8.66666667 4.2 8.66666667 13.6 7.33333333 13.6 7.33333333 4.2 5.26666667 6.26666667 4.33333333 5.33333333 8 1.66666667 11.6666667 5.33333333 10.7333333 6.26666667"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
