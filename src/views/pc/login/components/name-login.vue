@@ -74,6 +74,7 @@ import {nameReg, pwdReg} from "../../../../utils/reg";
 import {useI18n} from "vue-i18n";
 import type {ElForm} from 'element-plus'
 type FormInstance = InstanceType<typeof ElForm>
+import {BeButton} from "../../../../../public/be-ui/be-ui.es.js";
 declare type loginType = {
     name: string
     pwd: string
@@ -84,6 +85,7 @@ export default defineComponent({
     emits: [
         'changeShow',
     ],
+    components:{BeButton},
     setup(props, ctx) {
         const {t} = useI18n()
         const {message, codeUrl, uuid, getCode, router, routerPush} = composition(props, ctx)

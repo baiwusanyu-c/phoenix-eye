@@ -42,13 +42,13 @@
             </el-menu>
         </div>
         <!--退出弹窗-->
-        <be-msg-dialog
+        <MsgDialog
             @confirm="() => (isLogout = false)"
             @close="() => (isLogout = false)"
             :isShow.sync="isLogout"
             :isShowCancel="false"
             :title="$t('lang.loginConfig.confirmLogout')">
-        </be-msg-dialog>
+        </MsgDialog>
     </div>
 
 </template>
@@ -59,12 +59,15 @@ import {onBeforeRouteUpdate} from "vue-router";
 import {clearSession, clearStore} from "../../utils/common";
 import composition from "../../utils/mixin/common-func";
 import {useStore} from "vuex";
-
+import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
 /**
  * 头部菜单导航
  */
 export default defineComponent({
     name: "TsgzNavMenu",
+    components:{
+        MsgDialog
+    },
     setup(props, ctx) {
         const {routerPush,route} = composition(props, ctx)
         //是否登出

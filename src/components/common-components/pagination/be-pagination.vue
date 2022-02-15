@@ -32,17 +32,11 @@
 
 </template>
 
-<script>
-    export default {
+<script lang="ts">
+import {computed, defineComponent, onMounted, ref, watch, watchEffect} from "vue";
+import {setStore} from '../../../utils/common'
+    export default defineComponent({
         name: 'BePagination',
-        data() {
-            return {
-                sliceList: new Map(),
-                totals: 0,
-                pageSizes: 0,
-                currentPages: 0
-            }
-        },
         props: {
             /**
              * 总数
@@ -71,6 +65,10 @@
             initFunc: {
                 type: Function,
                 default: Function
+            },
+            isShowgetListPages: {
+                type: Boolean,
+                default: false
             },
             /**
              * 是否可以跳转到某页
@@ -133,149 +131,152 @@
                 default: false,
             },
         },
-        computed: {},
-        watch: {
-
-            pageParams: {
-                deep: true, //深度监听设置为 true
-                handler: function (nVal) {
-                    this.totals = nVal.total
-                    this.pageSizes = nVal.pageSize
-                    this.currentPages = nVal.currentPage
-                }
-            },
-            total() {
-                this.initPageParams()
-            },
-            pageSize() {
-                this.initPageParams()
-            },
-            currentPage() {
-                this.initPageParams()
-            }
-        },
-        created() {
-            this.initPageParams()
-        },
-        methods: {
+        setup(props,ctx){
+            const totals = ref<number>(0)
+            const currentPages = ref<number>(0)
+            const pageSizes = ref<number>(0)
+            const sliceList = ref<any>(new Map())
             /**
              * 分页参数初始化
              */
-            initPageParams() {
-                if (!this.isFront) {
-                    this.totals = this.total || this.pageParams.total
-                    this.pageSizes = this.pageSize || this.pageParams.pageSize
-                    this.currentPages = this.currentPage || this.pageParams.currentPage
+            const initPageParams = ():void => {
+                if (!props.isFront) {
+                    totals.value = props.total || props.pageParams.total
+                    pageSizes.value = props.pageSize || props.pageParams.pageSize
+                    currentPages.value = props.currentPage || props.pageParams.currentPage
                 } else {
-                    this.totals = this.pageParams.total
-                    this.pageSizes = this.pageParams.pageSize
-                    this.currentPages = this.pageParams.currentPage
+                    totals.value = props.pageParams.total
+                    pageSizes.value = props.pageParams.pageSize
+                    currentPages.value = props.pageParams.currentPage
                 }
-                this.$forceUpdate()
-            },
+
+            }
             /**
              * 每页显示条数方法
              * @param {Number} pageSize - 显示的每页条数
              * @public
              */
-            handleSizeChange(pageSize) {
+            const handleSizeChange = (pageSize:number):void => {
                 // 前端分页逻辑
-                if (this.isFront) {
+                if (props.isFront) {
                     return
                 }
-                this.$emit("update:currentPage", 1);
-                this.$emit("update:pageSize", pageSize);
-                if (this.$listeners.initFunc) {
-                    /**
-                     * 翻页方法（获取列表数据方法）
-                     * @event initFunc
-                     * @param {Object} - 翻页获取列表参数(可选)
-                     */
-                    this.$emit('initFunc', this.params ? this.params : '')
-                }
-                this.params ? this.initFunc(this.params) : this.initFunc();
-                this.setStore('pageSize', pageSize)
-            },
+                ctx.emit("update:currentPage", 1);
+                ctx.emit("update:pageSize", pageSize);
+                props.params ? props.initFunc(props.params) : props.initFunc();
+                setStore('pageSize', pageSize.toString())
+            }
 
             /********************** 前端分页方法 **********************/
             /**
              * 前台表格分页切片,一次性把数据切割分片缓存
              * @param {Object} tableData - 表格数据
              */
-            sliceTableData(tableData) {
-                let maxPageNum = Math.ceil(tableData.length / this.pageParams.pageSize)
-                this.pageParams.pageCount = maxPageNum
+            const sliceTableData = (tableData:any):void => {
+                let maxPageNum = Math.ceil(tableData.length / props.pageParams.pageSize)
+                props.pageParams.pageCount = maxPageNum
 
                 /*   this.totals = this.pageParams.total
                    this.pageSizes = this.pageParams.pageSize
                    this.currentPages = this.pageParams.currentPage
                 */
                 if (tableData.length === 0) {
-                    this.sliceList.set(1, []);
-                    this.pageParams.pageCount = 1;
+                    sliceList.value.set(1, []);
+                    props.pageParams.pageCount = 1;
                 }
                 for (let i = 1; i <= maxPageNum; i++) {
-                    let slice = tableData.slice((i - 1) * this.pageParams.pageSize, i * this.pageParams.pageSize);
-                    this.sliceList.set(i, slice)
+                    let slice = tableData.slice((i - 1) * props.pageParams.pageSize, i * props.pageParams.pageSize);
+                    sliceList.value.set(i, slice)
                 }
-                this.initPageParams()
-                return this.sliceList.get(1)
-            },
+                initPageParams()
+                return sliceList.value.get(1)
+            }
             /**
              *上一页
              */
-            prePage() {
-                if (this.pageParams.currentPage !== 1 && this.pageParams.currentPage > 0 && this.isFront) {
-                    let page = {...this.pageParams}
+            const prePage = ():void => {
+                if (props.pageParams.currentPage !== 1 && props.pageParams.currentPage > 0 && props.isFront) {
+                    let page = {...props.pageParams}
                     // 将翻页后的页码参数、切片表格数据传递到父组件
-                    this.$emit("updatePage", {data: this.sliceList.get(--page.currentPage)});
-                    this.$emit("update:pageParams", page);
+                    ctx.emit("updatePage", {data: sliceList.value.get(--page.currentPage)});
+                    ctx.emit("update:pageParams", page);
                 }
-            },
+            }
             /**
              *下一页
              */
-            nextPage() {
-                if (this.pageParams.currentPage !== this.pageParams.pageCount && this.isFront) {
-                    let page = JSON.parse(JSON.stringify(this.pageParams))
+            const nextPage = ():void => {
+
+                if (props.pageParams.currentPage !== props.pageParams.pageCount && props.isFront) {
+                    let page = JSON.parse(JSON.stringify(props.pageParams))
                     // 将翻页后的页码参数、切片表格数据传递到父组件
-                    this.$emit("updatePage", {data: this.sliceList.get(++page.currentPage)});
-                    this.$emit("update:pageParams", page);
+                    ctx.emit("updatePage", {data: sliceList.value.get(++page.currentPage)});
+                    ctx.emit("update:pageParams", page);
                 }
-            },
+            }
             /**
              * 点击跳转页
              * @param {object} currentPage 当前点击页
              */
-            handleChangePage(currentPage) {
+            const handleChangePage = (currentPage:any):void => {
                 // 前端分页逻辑
-                if (this.isFront) {
-                    this.pageParams.currentPage = currentPage
-                    let pageFront = JSON.parse(JSON.stringify(this.pageParams))
-                    this.$emit("update:pageParams", pageFront);
-                    this.$emit("updatePage", {data: this.sliceList.get(pageFront.currentPage)});
+                if (props.isFront) {
+                    props.pageParams.currentPage = currentPage
+                    let pageFront = JSON.parse(JSON.stringify(props.pageParams))
+                    ctx.emit("update:pageParams", pageFront);
+                    ctx.emit("updatePage", {data: sliceList.value.get(pageFront.currentPage)});
                     return
                 }
                 // 兼容分页传参为currentPage等分开传的情况
-                this.$emit("update:isDisabled", true);
-                this.$emit("update:currentPage_h", this.currentPage);
-                this.$emit("update:currentPage", currentPage);
+                ctx.emit("update:isDisabled", true);
+                ctx.emit("update:currentPage_h", props.currentPage);
+                ctx.emit("update:currentPage", currentPage);
                 // 兼容分页传参为pageParams对象情况
-                this.pageParams.currentPage = currentPage
-                let page = JSON.parse(JSON.stringify(this.pageParams))
-                this.$emit("update:pageParams", page);
-                this.$emit("updatePage", page);
-                if (this.$listeners.initFunc) {
-                    /**
-                     * 翻页方法（获取列表数据方法）
-                     * @event initFunc
-                     * @param {Object} - 翻页获取列表参数(可选)
-                     */
-                    this.$emit('initFunc', this.params ? this.params : '')
-                }
-            },
+                props.pageParams.currentPage = currentPage
+                let page = JSON.parse(JSON.stringify(props.pageParams))
+                ctx.emit("update:pageParams", page);
+                ctx.emit("updatePage", page);
+                ctx.emit('initFunc', props.params ? props.params : '')
+            }
+            const pageParamsComp = computed(()=>{
+                return props.pageParams
+            })
+            watch(pageParamsComp,(nVal)=>{
+                totals.value = nVal.total
+                pageSizes.value = nVal.pageSize
+                currentPages.value = nVal.currentPage
+            })
+            const totalComp = computed(()=>{
+                return props.total
+            })
+            watch(totalComp,(nVal)=>{
+                initPageParams()
+            })
+            const pageSizeComp = computed(()=>{
+                return props.pageSize
+            })
+            watch(pageSizeComp,(nVal)=>{
+                initPageParams()
+            })
+            const currentPageComp = computed(()=>{
+                return props.currentPage
+            })
+            watch(currentPageComp,(nVal)=>{
+                initPageParams()
+            })
+            onMounted(()=>{
+                initPageParams()
+            })
+            return{
+                totals,
+                sliceList,
+                pageSizes,
+                currentPages,
+                handleChangePage,
+                handleSizeChange,
+            }
         }
-    }
+    })
 </script>
 
 <style scoped lang='scss'>

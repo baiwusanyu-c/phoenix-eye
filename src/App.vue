@@ -47,7 +47,7 @@
 <script setup lang="tsx">
 import {getStore, browserInfo, setStore} from "./utils/common";
 import {ref,defineComponent} from "vue";
-import {BeMsg,BeButton} from "../public/be-ui/be-ui.es.js";
+import {BeDialog,BeButton} from "../public/be-ui/be-ui.es.js";
 import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
 // 設置是否手機訪問變量
 const ua = navigator.userAgent

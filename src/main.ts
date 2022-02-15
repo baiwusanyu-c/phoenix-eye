@@ -3,13 +3,13 @@ import router from './router/is-mobile' //判断访问设备并引入对应路�
 import App from './App.vue'
 import 'virtual:windi.css'
 // @ts-ignore
-import BeUI from '../public/be-ui/be-ui.es.js'
+//import BeUI from '../public/be-ui/be-ui.es.js'
 import '../public/be-ui/style.css'
 import {i18n} from "./utils/i18n";
 import '../node_modules/animate.css/animate.css'
 import store from "./store/store";
 const app = createApp(App)
-app.use(BeUI)
+//app.use(BeUI)
 app.use(router)
 app.use(store)
 app.use(i18n)

@@ -149,21 +149,23 @@
             </div>
             <!--是否初始化数据警告框-->
 
-            <be-msg-dialog @confirm="warningDialogConfirm"
-                           :isShow.sync="changeConfigWarning"
+            <MsgDialog @confirm="warningDialogConfirm"
+                       @close="()=>changeConfigWarningInput = false"
+                           :isShow="changeConfigWarning"
                            :title="$t('lang.systemConfigScore.formatConfigData')"
                            :sub-title="$t('lang.systemConfigScore.changeConfigWarning')">
-            </be-msg-dialog>
+            </MsgDialog>
         </div>
     </div>
 </template>
 
 <script>
 import {getRiskScore,saveRiskScore,resetRiskScore} from '../../../api/system-config'
-
+import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
 import {defineComponent} from "vue";
 export default defineComponent({
     name: "system-config-score",
+    components:{MsgDialog},
     data() {
         return {
             widthGird:'240',

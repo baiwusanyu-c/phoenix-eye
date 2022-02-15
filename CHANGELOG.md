@@ -9,5 +9,6 @@
 √ msg-dialog.vue 迁移完成
 √ risk-warning-main.vue 迁移完成
 √ system-config-mai.vue 迁移完成
+√ be-pagination.vue 迁移完成 （注，这里是项目内的组件，不是be-ui的）
 
 

@@ -3,6 +3,8 @@ import {
     isObject,
     toRawType,
 } from '@vue/shared'
+// @ts-ignore
+import {BeMessage} from "../../public/be-ui/be-ui.es";
 /**
  * id生成方法
  * @return {string}
@@ -451,4 +453,24 @@ export const beijing2utc = (now:number, formats:string) => {
     // var utc_datetime = new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
     const tempTime = (parseInt(timestamp.toString()) * 1000).toString()
     return formatDate((createDate((tempTime)).toString()), formats)
+}
+const message = (type:string,info:string,className?:string):void =>{
+    BeMessage.service({
+        customClass:className,
+        titles: info,
+        msgType: type,
+        duration: 2500,
+        offsetTop:80,
+        close: true,
+    })
+}
+export const copyAddress = function copyAddress(currentAdd:string){
+    let oInput = document.createElement('input')
+    oInput.value = currentAdd;
+    document.body.appendChild(oInput)
+    oInput.select()
+    document.execCommand("Copy")
+    oInput.style.display = 'none'
+    document.body.removeChild(oInput)
+    message('error', '已复制到粘贴板')
 }

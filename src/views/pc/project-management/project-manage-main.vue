@@ -32,17 +32,19 @@
             ref="createProjectDialog">
         </create-project>
         <!--    删除项目弹窗    -->
-        <be-msg-dialog @confirm="confirmDelete"
+        <MsgDialog @confirm="confirmDelete"
+                   @close="()=>showDelete = false"
                        :headerTitle="$t('el.delete')"
-                       :isShow.sync="showDelete"
+                       :isShow="showDelete"
                        :title="deleteText">
-        </be-msg-dialog>
+        </MsgDialog>
         <!--    重新评估彈窗   -->
-        <be-msg-dialog @confirm="confirmFresh"
+        <MsgDialog @confirm="confirmFresh"
+                   @close="()=>showFresh = false"
                        :headerTitle="$t('el.systemConfig.reassess')"
-                       :isShow.sync="showFresh"
+                       :isShow="showFresh"
                        :title="freshText">
-        </be-msg-dialog>
+        </MsgDialog>
     </div>
 </template>
 
@@ -56,12 +58,12 @@ import {
     reappraiseProject,
     saveEditProject
 } from "../../../api/project-management";
-
+import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
 
 
 export default {
     name: "ProjectManageMain",
-    components: {CreateProject, ProjectManageCard},
+    components: {CreateProject, ProjectManageCard,MsgDialog},
     data() {
         return {
             // 当前操作的项目对象

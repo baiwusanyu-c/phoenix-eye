@@ -39,16 +39,16 @@ export default (props: any, ctx: any) => {
             codeUrl.value = "data:image/gif;base64," + res.img;
         });
     }
-    const message = (type:string,info:string,className?:string):void =>{
-        BeMessage.service({
-            customClass:className,
-            titles: info,
-            msgType: type,
-            duration: 2500,
-            offsetTop:80,
-            close: true,
-        })
-    }
+        const message = (type:string,info:string,className?:string):void =>{
+            BeMessage.service({
+                customClass:className,
+                titles: info,
+                msgType: type,
+                duration: 2500,
+                offsetTop:80,
+                close: true,
+            })
+        }
     /**
      * 開啓定時器，進行數字滾動
      * @param initVal

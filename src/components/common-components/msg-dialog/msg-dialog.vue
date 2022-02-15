@@ -20,7 +20,6 @@
                 <img class="img" src="@/assets/image/pc/caveat.png" alt="">
                 <p class="title" v-if="title">{{title}}</p>
                 <p class="subTitle" v-if="subTitle">{{subTitle}}</p>
-
             </div>
             <template #footer>
             <div class="dialog-footer" v-if="isShowBtn">
@@ -33,6 +32,7 @@
 </template>
 
 <script lang="ts">
+    import {BeDialog,BeButton} from "../../../../public/be-ui/be-ui.es.js";
     import {ref,defineComponent,computed} from "vue";
     export default defineComponent({
         /**
@@ -43,6 +43,7 @@
             'confirm',
             'close'
         ],
+        components:{BeButton,BeDialog},
         props: {
             /**
              * 自定义主题

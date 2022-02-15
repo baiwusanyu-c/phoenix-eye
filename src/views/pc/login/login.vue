@@ -42,14 +42,14 @@
             </div>
         </div>
         <!--到期弹窗-->
-        <be-msg-dialog
-            :headerTitle="$t('el.loginConfig.titleDeadline')"
+        <MsgDialog
+            :headerTitle="$t('lang.loginConfig.titleDeadline')"
             @confirm="() => (delTip = false)"
             @close="() => (delTip = false)"
             :isShow.sync="delTip"
             :isShowCancel="false"
-            :title="$t('el.loginConfig.infoDeadLine')">
-        </be-msg-dialog>
+            :title="$t('lang.loginConfig.infoDeadLine')">
+        </MsgDialog>
     </div>
 </template>
 
@@ -59,6 +59,7 @@ import userRegistration from "./components/user-registration.vue";
 import animatedInit, {destroyTHERR} from "../../../../public/login-3d.js";
 import NameLogin from "./components/name-login.vue";
 import ResetPassword from "./components/reset-password.vue";
+import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 
 
 const areaType = ref<number>(1)
