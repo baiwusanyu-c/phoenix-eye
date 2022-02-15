@@ -37,6 +37,16 @@ import {computed, defineComponent, onMounted, ref, watch, watchEffect} from "vue
 import {setStore} from '../../../utils/common'
     export default defineComponent({
         name: 'BePagination',
+        emits:[
+            'update:currentPage',
+            'update:pageSize',
+            'update:pageParams',
+            'updatePage',
+            'update:isDisabled',
+            'update:currentPage_h',
+            'initFunc',
+
+        ],
         props: {
             /**
              * 总数
@@ -236,7 +246,7 @@ import {setStore} from '../../../utils/common'
                 let page = JSON.parse(JSON.stringify(props.pageParams))
                 ctx.emit("update:pageParams", page);
                 ctx.emit("updatePage", page);
-                ctx.emit('initFunc', props.params ? props.params : '')
+                props.params ? props.initFunc(props.params) : props.initFunc();
             }
             const pageParamsComp = computed(()=>{
                 return props.pageParams

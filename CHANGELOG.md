@@ -9,6 +9,7 @@
 √ msg-dialog.vue 迁移完成
 √ risk-warning-main.vue 迁移完成
 √ system-config-mai.vue 迁移完成
-√ be-pagination.vue 迁移完成 （注，这里是项目内的组件，不是be-ui的）
+√ be-pagination.vue 迁移完成 （注，这里是项目内的组件，不是be-ui的,后期重构可以使用be-ui的）
+√ be-svg-icon.vue 迁移完成 （注，这里是项目内的组件，不是be-ui的,后期重构可以使用be-ui的）
 
 
