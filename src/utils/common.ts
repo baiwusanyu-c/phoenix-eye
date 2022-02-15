@@ -426,7 +426,8 @@ function formatDD(date:string | Date, format:string){
     }
     for (let k in o) {
         if (new RegExp("(" + k + ")").test(format)) {
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+            let oVal = o[(k as ("M+" | "d+" | "h+" |"m+" |"s+"|"q+" | "S"))]
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? (oVal.toString()) : ("00" + oVal.toString()).substr((oVal.toString()).length));
         }
     }
     return format;
