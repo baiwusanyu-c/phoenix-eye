@@ -386,9 +386,12 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .createBox{
-
+    .el-input__inner {
+        height: 40px;
+        border-radius: 2px;
+    }
   .project-star{
     position: absolute;
     top: 4px;
@@ -471,10 +474,7 @@ export default {
 }
 
 
-/deep/ .el-input__inner {
-  height: 40px;
-  border-radius: 2px;
-}
+
 
 .el-form-item__content::after, .el-form-item__content::before {
   display: none;

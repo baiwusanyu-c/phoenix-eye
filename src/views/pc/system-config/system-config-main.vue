@@ -9,10 +9,10 @@
       <div class="system-config-tab">
           <el-button-group>
               <el-button :class="`${active === 1 ? 'primary' : 'default'}`" type="primary" @click="switchRender(1)" style="width: auto;padding-right: 5px;padding-left: 5px">
-                  {{$t('el.subNav.navName4s1')}}
+                  {{$t('lang.subNav.navName4s1')}}
               </el-button>
               <el-button :class="`${active === 2 ? 'primary' : 'default'}`" type="primary" @click="switchRender(2)" style="width: auto;padding-right: 5px;padding-left: 5px">
-                  {{$t('el.subNav.navName4s2')}}
+                  {{$t('lang.subNav.navName4s2')}}
               </el-button>
           </el-button-group>
       </div>
@@ -25,28 +25,30 @@
   </div>
 </template>
 
-<script>
-import SystemConfigScore from "./system-config-score";
-import SystemConfigType from "./system-config-type";
+<script lang="ts">
+import SystemConfigScore from "./system-config-score.vue";
+import SystemConfigType from "./system-config-type.vue";
+import {defineComponent, ref} from "vue";
 //测试新增风险类型弹窗
-export default {
-  name: "SystemConfigMain",
+export default defineComponent({
+    name: "SystemConfigMain",
     components: {SystemConfigType, SystemConfigScore},
-    data() {
-    return {
-        active:1
+    setup(){
+        const active = ref<number>(1)
+        /**
+         * 切换隐藏显示对应模块
+         * @param {Number} index - 模块显示标识
+         */
+        const switchRender = (index:number):void=>{
+            active.value = index
+        }
+        return {
+            active,
+            switchRender
+        }
     }
-  },
-  methods: {
-      /**
-       * 切换隐藏显示对应模块
-       * @param {Number} index - 模块显示标识
-       */
-      switchRender(index){
-        this.active = index
-      }
-  },
-}
+})
+
 </script>
 
 <style scoped lang="scss">

@@ -7,5 +7,7 @@
 √ ellipsis-copy.vue 迁移完成
 √ blotua-main.vue 迁移完成
 √ msg-dialog.vue 迁移完成
-√ risk-warning-main 迁移完成
+√ risk-warning-main.vue 迁移完成
+√ system-config-mai.vue 迁移完成
+
 

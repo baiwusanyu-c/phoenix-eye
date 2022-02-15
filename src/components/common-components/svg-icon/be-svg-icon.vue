@@ -36,7 +36,8 @@
 /**
  * Svg图表组件
  */
-export default {
+import {defineComponent} from "vue";
+export default defineComponent({
     name: "BeSvgIcon",
     props: {
         /**
@@ -112,7 +113,7 @@ export default {
             return /^(https?:|mailto:|tel:)/.test(path)
         }
     }
-};
+})
 </script>
 
 <style scoped>

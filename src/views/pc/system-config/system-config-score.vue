@@ -59,11 +59,11 @@
                                 <span  v-show="scope.$index === 1">{{inputValue.static_testing.config.high_risk}}</span>
                                 <span v-if="scope.$index === 4" style="margin: 0 10px">{{inputValue.tx_stability.config.score_coefficient}}</span>
                                      <el-tooltip placement="top" effect="light">
-                                        <span slot="content">{{$t('el.systemConfigScore.tip')}}</span>
+                                        <span slot="content">{{$t('lang.systemConfigScore.tip')}}</span>
                                         <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16" alt=""/>
                                      </el-tooltip>
                                 <span v-if="scope.$index ===5">
-                                    {{inputValue.safety_opinion.config.each}}/{{$t('el.systemConfigScore.safetyPublicOptionPiece')}}
+                                    {{inputValue.safety_opinion.config.each}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}
                                 </span>
                                     <!--交易安全分数-->
                                 <span v-if="scope.$index === 2">{{inputValue.tx_safety.config.flash_load_tx}}</span>
@@ -138,21 +138,21 @@
             </div>
             <div class="btn-class">
                 <div class="change-config" v-show="inputShow === false">
-                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">{{$t('el.systemConfigScore.formatConfigData')}}</el-button>
-                    <el-button class="primary hbjbh" type="primary" @click="changeConfig">{{$t('el.systemConfigScore.changeConfig')}}</el-button>
+                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning= true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
+                    <el-button class="primary hbjbh" type="primary" @click="changeConfig">{{$t('lang.systemConfigScore.changeConfig')}}</el-button>
                 </div>
                 <div class="cancel-confirm" v-show="inputShow === true">
-                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning = true">{{$t('el.systemConfigScore.formatConfigData')}}</el-button>
-                    <el-button class="default" type="primary" @click="changeConfigCancel">{{$t('el.createProject.createProjectCancel')}}</el-button>
-                    <el-button class="primary hbjbh" type="primary"  @click="changeConfigConfirm">{{$t('el.createProject.createProjectConfirm')}}</el-button>
+                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarning = true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
+                    <el-button class="default" type="primary" @click="changeConfigCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
+                    <el-button class="primary hbjbh" type="primary"  @click="changeConfigConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
                 </div>
             </div>
             <!--是否初始化数据警告框-->
 
             <be-msg-dialog @confirm="warningDialogConfirm"
                            :isShow.sync="changeConfigWarning"
-                           :title="$t('el.systemConfigScore.formatConfigData')"
-                           :sub-title="$t('el.systemConfigScore.changeConfigWarning')">
+                           :title="$t('lang.systemConfigScore.formatConfigData')"
+                           :sub-title="$t('lang.systemConfigScore.changeConfigWarning')">
             </be-msg-dialog>
         </div>
     </div>
@@ -160,8 +160,9 @@
 
 <script>
 import {getRiskScore,saveRiskScore,resetRiskScore} from '../../../api/system-config'
-import {platformListDict} from "../../../utils/platformDict";
-export default {
+
+import {defineComponent} from "vue";
+export default defineComponent({
     name: "system-config-score",
     data() {
         return {
@@ -205,52 +206,52 @@ export default {
             },
             systemConfigScore:[
                 {
-                    project:this.$t('el.systemConfigScore.configProject'),
-                    weight:this.$t('el.systemConfigScore.weight'),
-                    configFst:this.$t('el.systemConfigScore.detailConfig'),
+                    project:this.$t('lang.systemConfigScore.configProject'),
+                    weight:this.$t('lang.systemConfigScore.weight'),
+                    configFst:this.$t('lang.systemConfigScore.detailConfig'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',
                 },
                 {
-                    project:this.$t('el.systemConfigScore.staticDetection'),
+                    project:this.$t('lang.systemConfigScore.staticDetection'),
                     weight:'',
-                    configFst:this.$t('el.systemConfigScore.dangerHigh'),
-                    configSnd:this.$t('el.systemConfigScore.dangerMiddle'),
-                    configTrd:this.$t('el.systemConfigScore.dangerLow'),
+                    configFst:this.$t('lang.systemConfigScore.dangerHigh'),
+                    configSnd:this.$t('lang.systemConfigScore.dangerMiddle'),
+                    configTrd:this.$t('lang.systemConfigScore.dangerLow'),
                     configFth:'',
                 },
                 {
-                    project:this.$t('el.systemConfigScore.tradeSafetyClass'),
+                    project:this.$t('lang.systemConfigScore.tradeSafetyClass'),
                     weight:'',
-                    configFst:this.$t('el.systemConfigScore.flash_load_tx'),
-                    configSnd:this.$t('el.systemConfigScore.large_fee'),
-                    configTrd:this.$t('el.systemConfigScore.huge_transfer'),
-                    configFth:this.$t('el.systemConfigScore.repeat_call'),
+                    configFst:this.$t('lang.systemConfigScore.flash_load_tx'),
+                    configSnd:this.$t('lang.systemConfigScore.large_fee'),
+                    configTrd:this.$t('lang.systemConfigScore.huge_transfer'),
+                    configFth:this.$t('lang.systemConfigScore.repeat_call'),
                 },
                 {
-                    configFst:this.$t('el.systemConfigScore.token_empty')
+                    configFst:this.$t('lang.systemConfigScore.token_empty')
                 },
                 {
-                    project: this.$t('el.systemConfigScore.tradeStable'),
+                    project: this.$t('lang.systemConfigScore.tradeStable'),
                     weight:'',
-                    configFst:this.$t('el.systemConfigScore.tradeScore'),
+                    configFst:this.$t('lang.systemConfigScore.tradeScore'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',
                 },
                 {
-                    project: this.$t('el.systemConfigScore.safetyPublicOptionClass'),
+                    project: this.$t('lang.systemConfigScore.safetyPublicOptionClass'),
                     weight:'',
-                    configFst:this.$t('el.systemConfigScore.safetyPublicOption'),
+                    configFst:this.$t('lang.systemConfigScore.safetyPublicOption'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',
                 },
                 {
-                    project: this.$t('el.systemConfigScore.timeRange'),
+                    project: this.$t('lang.systemConfigScore.timeRange'),
                     weight:'',
-                    configFst:this.$t('el.systemConfigScore.timeTradeDate'),
+                    configFst:this.$t('lang.systemConfigScore.timeTradeDate'),
                     configSnd:'',
                     configTrd:'',
                     configFth:'',
@@ -261,59 +262,59 @@ export default {
     },
     watch:{
         listenLang:function(){
-           this.systemConfigScore = [
-               {
-                   project:this.$t('el.systemConfigScore.configProject'),
-                   weight:this.$t('el.systemConfigScore.weight'),
-                   configFst:this.$t('el.systemConfigScore.detailConfig'),
-                   configSnd:'',
-                   configTrd:'',
-                   configFth:'',
-               },
-               {
-                   project:this.$t('el.systemConfigScore.staticDetection'),
-                   weight:'',
-                   configFst:this.$t('el.systemConfigScore.dangerHigh'),
-                   configSnd:this.$t('el.systemConfigScore.dangerMiddle'),
-                   configTrd:this.$t('el.systemConfigScore.dangerLow'),
-                   configFth:'',
-               },
-               {
-                   project:this.$t('el.systemConfigScore.tradeSafetyClass'),
-                   weight:'',
-                   configFst:this.$t('el.systemConfigScore.flash_load_tx'),
-                   configSnd:this.$t('el.systemConfigScore.large_fee'),
-                   configTrd:this.$t('el.systemConfigScore.huge_transfer'),
-                   configFth:this.$t('el.systemConfigScore.repeat_call'),
-               },
-               {
-                   configFst:this.$t('el.systemConfigScore.token_empty')
-               },
-               {
-                   project: this.$t('el.systemConfigScore.tradeStable'),
-                   weight:'',
-                   configFst:this.$t('el.systemConfigScore.tradeScore'),
-                   configSnd:'',
-                   configTrd:'',
-                   configFth:'',
-               },
-               {
-                   project: this.$t('el.systemConfigScore.safetyPublicOptionClass'),
-                   weight:'',
-                   configFst:this.$t('el.systemConfigScore.safetyPublicOption'),
-                   configSnd:'',
-                   configTrd:'',
-                   configFth:'',
-               },
-               {
-                   project: this.$t('el.systemConfigScore.timeRange'),
-                   weight:'',
-                   configFst:this.$t('el.systemConfigScore.timeTradeDate'),
-                   configSnd:'',
-                   configTrd:'',
-                   configFth:'',
-               }
-           ]
+            this.systemConfigScore = [
+                {
+                    project:this.$t('lang.systemConfigScore.configProject'),
+                    weight:this.$t('lang.systemConfigScore.weight'),
+                    configFst:this.$t('lang.systemConfigScore.detailConfig'),
+                    configSnd:'',
+                    configTrd:'',
+                    configFth:'',
+                },
+                {
+                    project:this.$t('lang.systemConfigScore.staticDetection'),
+                    weight:'',
+                    configFst:this.$t('lang.systemConfigScore.dangerHigh'),
+                    configSnd:this.$t('lang.systemConfigScore.dangerMiddle'),
+                    configTrd:this.$t('lang.systemConfigScore.dangerLow'),
+                    configFth:'',
+                },
+                {
+                    project:this.$t('lang.systemConfigScore.tradeSafetyClass'),
+                    weight:'',
+                    configFst:this.$t('lang.systemConfigScore.flash_load_tx'),
+                    configSnd:this.$t('lang.systemConfigScore.large_fee'),
+                    configTrd:this.$t('lang.systemConfigScore.huge_transfer'),
+                    configFth:this.$t('lang.systemConfigScore.repeat_call'),
+                },
+                {
+                    configFst:this.$t('lang.systemConfigScore.token_empty')
+                },
+                {
+                    project: this.$t('lang.systemConfigScore.tradeStable'),
+                    weight:'',
+                    configFst:this.$t('lang.systemConfigScore.tradeScore'),
+                    configSnd:'',
+                    configTrd:'',
+                    configFth:'',
+                },
+                {
+                    project: this.$t('lang.systemConfigScore.safetyPublicOptionClass'),
+                    weight:'',
+                    configFst:this.$t('lang.systemConfigScore.safetyPublicOption'),
+                    configSnd:'',
+                    configTrd:'',
+                    configFth:'',
+                },
+                {
+                    project: this.$t('lang.systemConfigScore.timeRange'),
+                    weight:'',
+                    configFst:this.$t('lang.systemConfigScore.timeTradeDate'),
+                    configSnd:'',
+                    configTrd:'',
+                    configFth:'',
+                }
+            ]
         }
     },
     computed:{
@@ -337,7 +338,7 @@ export default {
                     this.inputValue = res.data
                 }
             }).catch((err)=>{
-              _this.opFailed(err)
+                _this.opFailed(err)
             })
         },
         /**
@@ -361,7 +362,7 @@ export default {
             }
         },
         opFailed(err){
-            const msg = this.$t('el.operation')+ this.$t('el.failed')
+            const msg = this.$t('lang.operation')+ this.$t('lang.failed')
             this.$message.error(msg)
             console.error(err)
         },
@@ -416,7 +417,7 @@ export default {
             let time_range = valArr[valArr.length - 1]
             // 大于0 说明有不合格的参数 直接返回
             if(valArrEmpty.length > 0||typeof time_range !== "number" ||time_range < 0||time_range > 100){
-                this.$message.warning(_this.$t('el.systemConfigScore.checkInput'))
+                this.$message.warning(_this.$t('lang.systemConfigScore.checkInput'))
                 return
             }
 
@@ -453,15 +454,16 @@ export default {
             }
         },
         columnStyle({ rowIndex, columnIndex }){
-          if(rowIndex === 0){
-              return 'font-weight: 700;text-align: center;'
-          }
-          if(rowIndex === 0 || columnIndex === 0){
-              return 'font-weight: 700;text-align: center'
-          }
+            if(rowIndex === 0){
+                return 'font-weight: 700;text-align: center;'
+            }
+            if(rowIndex === 0 || columnIndex === 0){
+                return 'font-weight: 700;text-align: center'
+            }
         },
     },
-}
+})
+
 </script>
 
 <style lang="scss">

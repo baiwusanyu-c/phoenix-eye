@@ -59,8 +59,8 @@
 
 <script>
 import {getRiskTypeInfo} from "../../../../api/system-config";
-
-export default {
+import {defineComponent} from "vue";
+export default defineComponent({
     name: "addRiskType",
     data() {
         return {
@@ -170,12 +170,16 @@ export default {
             })
         }
     }
-}
+})
+
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .createBox {
-
+    .el-input__inner {
+        height: 40px;
+        border-radius: 2px;
+    }
   .project-star {
     position: absolute;
     top: 4px;
@@ -193,11 +197,6 @@ export default {
     top: 34px;
     left: -52%;
   }
-}
-
-/deep/ .el-input__inner {
-  height: 40px;
-  border-radius: 2px;
 }
 
 .checkboxSelectAll {

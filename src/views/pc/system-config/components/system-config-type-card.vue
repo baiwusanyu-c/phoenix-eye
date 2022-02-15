@@ -32,8 +32,9 @@
 </template>
 
 <script>
-import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon";
-export default {
+import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
+import {defineComponent} from "vue";
+export default defineComponent({
     name: "system-config-type-card",
     components: {BeSvgIcon},
     data() {
@@ -49,7 +50,7 @@ export default {
             default: () => []
         },
         title:{
-          type:String,
+            type:String,
         }
     },
     methods: {
@@ -61,7 +62,8 @@ export default {
             this.$emit(evtName)
         }
     },
-}
+})
+
 </script>
 
 <style  lang="scss">

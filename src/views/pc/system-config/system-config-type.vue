@@ -36,10 +36,11 @@
 </template>
 
 <script>
-import SystemConfigTypeCard from "./components/system-config-type-card";
-import AddRiskType from "./components/add-risk-type";
+import SystemConfigTypeCard from "./components/system-config-type-card.vue";
+import AddRiskType from "./components/add-risk-type.vue";
 import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType} from "../../../api/system-config";
-export default {
+import {defineComponent} from "vue";
+export default defineComponent({
     name: "system-config-type",
     components: {AddRiskType, SystemConfigTypeCard},
     data() {
@@ -187,7 +188,8 @@ export default {
             })
         }
     },
-}
+})
+
 </script>
 
 <style scoped lang="scss">
