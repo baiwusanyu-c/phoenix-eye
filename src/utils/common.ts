@@ -245,7 +245,7 @@ export const formatDate = (timestamp:string, formats:string) => {
 
     return date;
 };
-export const createDate =  function createDate(dateStr?:string | Date) {
+export const createDate =  function createDate(dateStr?:string | Date | number) {
     if(dateStr instanceof Date){
         return  dateStr
     }
@@ -440,9 +440,9 @@ export const beijing2utc = (now:number, formats:string) => {
     let timestamp
     // 处理成为时间戳
     if (typeof(now) == 'number') {
-        timestamp =createDate(now.toString());
+        timestamp =createDate(now);
     } else {
-        timestamp = createDate(Date.parse(now).toString());
+        timestamp = createDate(Date.parse(now));
     }
     timestamp = timestamp.getTime();
     timestamp = timestamp / 1000;
@@ -451,8 +451,8 @@ export const beijing2utc = (now:number, formats:string) => {
     timestamp = timestamp + (createDate().getTimezoneOffset() * 60);
     // 时间戳转为时间
     // var utc_datetime = new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
-    const tempTime = (parseInt(timestamp.toString()) * 1000).toString()
-    return formatDate((createDate((tempTime)).toString()), formats)
+    const tempTime = (parseInt(timestamp.toString()) * 1000)
+    return formatDate((createDate(tempTime).toString()), formats)
 }
 const message = (type:string,info:string,className?:string):void =>{
     BeMessage.service({
