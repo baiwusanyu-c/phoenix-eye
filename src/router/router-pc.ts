@@ -128,7 +128,7 @@ const beforeEachHandle = (router:Router) => {
                    i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
                    to.meta.titleInfo = i18n.global.t(title)
                 }, 100)
-                next({path:to.path})
+                next({path:to.path,query:to.query})
             }).catch(err=>console.log(err))
 
         }
