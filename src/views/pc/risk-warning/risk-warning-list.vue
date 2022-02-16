@@ -8,10 +8,10 @@
     <div class="risk-warning-list">
         <div class="search-area">
             <div>
-                {{ $t('el.riskConfig.platform') }}:
+                {{ $t('lang.riskConfig.platform') }}:
                 <el-select v-model="searchParams.platform"
                             @change="getList('reset')"
-                           :placeholder="$t('el.riskConfig.platformP')">
+                           :placeholder="$t('lang.riskConfig.platformP')">
                     <el-option v-for="(item) in platformList"
                                :key="item.id"
                                :value="item.value"
@@ -20,9 +20,9 @@
                 </el-select>
             </div>
             <div class="search-area search-area-input">
-                <el-input autocomplete="off" :placeholder="$t('el.riskConfig.searchP')" v-model="searchParams.addr">
+                <el-input autocomplete="off" :placeholder="$t('lang.riskConfig.searchP')" v-model="searchParams.addr">
                 </el-input>
-                <el-button class="primary" type="primary" @click="getList('reset')">{{ $t('el.searchBtn') }}</el-button>
+                <el-button class="primary" type="primary" @click="getList('reset')">{{ $t('lang.searchBtn') }}</el-button>
             </div>
         </div>
         <div class="risk-table">
@@ -35,23 +35,23 @@
                 <div slot="empty"
                      class = 'empty-table'>
                     <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
-                    <p style="line-height: 25px">{{$t('el.emptyData')}}</p>
+                    <p style="line-height: 25px">{{$t('lang.emptyData')}}</p>
                 </div>
                 <el-table-column
                     prop="platform"
-                    :label="$t('el.riskConfig.platform')"
+                    :label="$t('lang.riskConfig.platform')"
                     width="120"
                     align="center">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         {{scope.row.platform.toUpperCase()}}
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="tx_hash"
-                    :label="$t('el.riskConfig.tableHeader.txHash')"
+                    :label="$t('lang.riskConfig.tableHeader.txHash')"
                     width="170"
                     align="center">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <be-ellipsis-copy :targetStr="scope.row.tx_hash"
                                           fontLength="8"
                                           endLength="8">
@@ -60,21 +60,21 @@
                 </el-table-column>
                 <el-table-column
                     prop="tx_time"
-                    :label="$t('el.riskConfig.tableHeader.txTime')"
+                    :label="$t('lang.riskConfig.tableHeader.txTime')"
                     align="center">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <el-tooltip placement="top" effect="light">
                             <span slot="content">UTC：{{beijing2utc(scope.row.tx_time)}}</span>
-                            <span class="cursor">{{formatDate($createDate(scope.row.tx_time))}}</span>
+                            <span class="cursor">{{formatDate(createDate(scope.row.tx_time))}}</span>
                         </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column
                     width="100"
                     prop="tx_status"
-                    :label="$t('el.riskConfig.tableHeader.state')"
+                    :label="$t('lang.riskConfig.tableHeader.state')"
                     align="center">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <span :style="stateSuccess(scope.row.tx_status)">
                             {{stateTxt(scope.row.tx_status)}}
                         </span>
@@ -83,9 +83,9 @@
                 <el-table-column
                     prop="from_address"
                     width="170"
-                    :label="$t('el.riskConfig.tableHeader.from')"
+                    :label="$t('lang.riskConfig.tableHeader.from')"
                     align="center">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <be-ellipsis-copy :targetStr="scope.row.from_address"
                                           v-if="!scope.row.from_address_tag"
                                           fontLength="8"
@@ -105,9 +105,9 @@
                 <el-table-column
                     prop="to_address"
                     width="170"
-                    :label="$t('el.riskConfig.tableHeader.to')"
+                    :label="$t('lang.riskConfig.tableHeader.to')"
                     align="center" >
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <be-ellipsis-copy :targetStr="scope.row.to_address"
                                           v-if="!scope.row.to_address_tag"
                                           fontLength="8"
@@ -126,9 +126,9 @@
                 </el-table-column>
                 <el-table-column
                     prop="risk_features"
-                    :label="$t('el.riskConfig.tableHeader.warningType')"
+                    :label="$t('lang.riskConfig.tableHeader.warningType')"
                     align="center">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <div style="display: flex;flex-direction: column;align-items: center;justify-content: center"
                              v-if="scope.row.risk_features && scope.row.risk_features.length > 0 ">
                             <el-tag v-for="item in scope.row.risk_features"
@@ -136,51 +136,176 @@
                                     :key="item">{{item}}</el-tag>
                         </div>
                         <div style="display: flex;flex-direction: column;align-items: center;justify-content: center" v-else>
-                            {{ $t('el.emptyData') }}</div>
+                            {{ $t('lang.emptyData') }}</div>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="risk_score"
-                    :label="$t('el.riskConfig.tableHeader.score')"
+                    :label="$t('lang.riskConfig.tableHeader.score')"
                     align="center"
                     show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <span style="font-weight: bold">{{scope.row.risk_score || $t('el.emptyData')}}</span>
+                    <template #default="scope">
+                        <span style="font-weight: bold">{{scope.row.risk_score || $t('lang.emptyData')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
                     width="100"
-                    :label="$t('el.riskConfig.tableHeader.detail')"
+                    :label="$t('lang.riskConfig.tableHeader.detail')"
                     align="center">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <span style="color: #1496F2;cursor: pointer"
-                              @click="openDetail(scope.row)">{{ $t('el.scan') }} >></span>
+                              @click="openDetail(scope.row)">{{ $t('lang.scan') }} >></span>
                     </template>
                 </el-table-column>
             </el-table>
             <be-pagination
                 custom-class="table-page"
-                :pageSize='pageParams.pageSize'
-                :currentPage='pageParams.currentPage'
-                :total='pageParams.total'
+                :pageSize='pageParams.data.pageSize'
+                :currentPage='pageParams.data.currentPage'
+                :total='pageParams.data.total'
                  @updatePage="pageChange"
                 :is-front="false">
-                <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{pageParams.total}}{{ $t('el.piece') }}</span>
+                <span slot="prev" class="table-page-info">{{ $t('lang.total') }}{{pageParams.data.total}}{{ $t('lang.piece') }}</span>
                 <span slot="next"></span>
             </be-pagination>
         </div>
     </div>
 </template>
 
-<script>
-import BePagination from "../../../components/common-components/pagination/be-pagination";
+<script lang="ts">
+import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import {platformListDict} from "../../../utils/platformDict";
 import {getProjWarning} from "../../../api/risk-warning";
-import {defineComponent} from "vue";
+import {defineComponent, ref, reactive, onMounted, watch, computed} from "vue";
+import {useI18n} from "vue-i18n";
+import {ElMessage} from "element-plus/es";
+import {openWindow,beijing2utc,createDate,formatDate} from "../../../utils/common";
+
 export default defineComponent({
     name: "risk-warning-list",
     components: {BePagination},
-    data() {
+    setup(){
+        const {t} = useI18n()
+        const searchParams = reactive({
+            platform: 'all',
+            addr: ''
+        })
+        const platformList = ref<Array<object>>([])
+
+        const setPlatformList = ():void => {
+            platformList.value = JSON.parse(JSON.stringify(platformListDict))
+            platformList.value.unshift(
+                {
+                    label: t('lang.projectRinking.tradeStb.all'),
+                    value: 'all',
+                    id:'jhgadjghzngrgegkdfjallg'
+                },
+            )
+        }
+        onMounted(()=>{
+            setPlatformList()
+            getList()
+        })
+        const pageParams = reactive({data:{
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 10,
+                total: 0
+            }
+        })
+        const tableData = ref<object>([])
+        const loading = ref<boolean>(false)
+        const listenLang = computed(()=>{
+            return t
+        })
+        watch(()=>listenLang,()=>{
+            setPlatformList()
+        })
+        const stateSuccess = computed(()=>{
+            return function (val){
+                if(val === 'success' || val === '成功' ){
+                    return {
+                        color:'#44D7B6'
+                    }
+                }
+                return {
+                    color:'#FA6400'
+                }
+            }
+        })
+        const stateTxt = computed(()=>{
+            return function (val){
+                if(val === 'success' || val === '成功' ){
+                    return this.$t('lang.riskConfig.stateSuccess')
+                }
+                return this.$t('lang.riskConfig.stateFailed')
+            }
+        })
+        /**
+         * 获取表格数据
+         */
+        const getList = (type?:string) => {
+            loading.value = true
+            if(type === 'reset'){
+                pageParams.data = {
+                    currentPage: 1,
+                    pageNum: 1,
+                    pageSize: 10,
+                    total: 0
+                }
+            }
+            let params = {
+                page_num:pageParams.data.pageNum,
+                page_size:pageParams.data.pageSize,
+                platform:searchParams.platform === 'all' ? '' : searchParams.platform,
+                param:searchParams.addr
+            }
+            getProjWarning(params).then(res=>{
+                if(res){
+                    tableData.value = res.data.page_infos
+                    console.log(tableData.value)
+                    pageParams.data.total =  res.data.total
+                    loading.value = false
+                }
+            }).catch(err=>{
+                ElMessage.error(err.message)
+                console.error(err)
+            })
+        }
+        /**
+         * 分页方法
+         * @param {Object} item - 分页参数对象
+         */
+        const pageChange = (item:any):void => {
+            pageParams.data.pageNum = item.currentPage
+            pageParams.data.currentPage = item.currentPage
+            getList()
+        }
+
+        /**
+         * 打開交易分析詳情tab
+         */
+        const openDetail = (params:any)=>{
+            openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`)
+        }
+
+        return{
+            searchParams,
+            pageParams,
+            platformList,
+            tableData,
+            loading,
+            stateTxt,
+            stateSuccess,
+            getList,
+            openDetail,
+            pageChange,
+            beijing2utc,
+            formatDate,
+            createDate,
+        }
+    },
+    /*data() {
         return {
             // 搜索参数
             searchParams: {
@@ -253,9 +378,9 @@ export default defineComponent({
         this.getList()
     },
     methods: {
-        /**
+        /!**
          * 获取表格数据
-         */
+         *!/
         getList(type) {
             const _this = this
             _this.loading = true
@@ -284,22 +409,22 @@ export default defineComponent({
                 console.error(err)
             })
         },
-        /**
+        /!**
          * 分页方法
          * @param {Object} item - 分页参数对象
-         */
+         *!/
         pageChange(item){
             this.pageParams.pageNum = item.currentPage
             this.pageParams.currentPage = item.currentPage
             this.getList()
         },
-        /**
+        /!**
          * 打開交易分析詳情tab
-         */
+         *!/
         openDetail(params){
             this.$openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`, 'view_window')
         }
-    },
+    },*/
 })
 </script>
 

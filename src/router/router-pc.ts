@@ -92,9 +92,9 @@ const beforeEachHandle = (router:Router) => {
             if(whiteList.includes(to.path)){
                 next()
             }else{
-                next({
+                /*next({
                     path: '/login',
-                })
+                })*/
             }
             return
         }
