@@ -16,7 +16,7 @@
             </div>
         </div>
         <div v-if="type === 'edit'" class="card-edit">
-            <p>{{ $t('el.systemConfig.features') }}：</p>
+            <p>{{ $t('lang.systemConfig.features') }}：</p>
             <div>
                 <el-tag v-for="(item) in features" :key="item.code">{{ item.label }}</el-tag>
             </div>
@@ -25,21 +25,18 @@
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click = 'emitFunc("add")'>
                 <img src="@/assets/image/pc/add-type-icon.png" alt=""/>
-                <p>{{ $t('el.systemConfig.addType') }}</p>
+                <p>{{ $t('lang.systemConfig.addType') }}</p>
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
 import {defineComponent} from "vue";
 export default defineComponent({
     name: "system-config-type-card",
     components: {BeSvgIcon},
-    data() {
-        return {}
-    },
     props: {
         type: {
             type: String,
@@ -53,15 +50,30 @@ export default defineComponent({
             type:String,
         }
     },
-    methods: {
+    setup(props,ctx){
         /**
          * 触发事件方法
          * @param {String} evtName - 事件名称
          */
+        const emitFunc = (evtName:string) => {
+            ctx.emit(evtName)
+        }
+        return{
+            emitFunc
+        }
+    },
+    /*data() {
+        return {}
+    },
+    methods: {
+        /!**
+         * 触发事件方法
+         * @param {String} evtName - 事件名称
+         *!/
         emitFunc(evtName){
             this.$emit(evtName)
         }
-    },
+    },*/
 })
 
 </script>

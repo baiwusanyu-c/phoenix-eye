@@ -237,9 +237,9 @@ export default defineComponent({
         const stateTxt = computed(()=>{
             return function (val){
                 if(val === 'success' || val === '成功' ){
-                    return this.$t('lang.riskConfig.stateSuccess')
+                    return t('lang.riskConfig.stateSuccess')
                 }
-                return this.$t('lang.riskConfig.stateFailed')
+                return t('lang.riskConfig.stateFailed')
             }
         })
         /**
