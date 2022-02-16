@@ -69,7 +69,7 @@
                         :label="$t('lang.riskConfig.profitTableHeader.addr')"
                         :width="addrCellWidth"
                         align="left">
-                        <template slot-scope="scope">
+                        <template #default="scope">
                             <div style="display: flex;align-items: center;justify-content: center;">
                                 <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"  v-if="scope.row.address_tag"></be-svg-icon>
                                 <!--             占位                   -->
@@ -95,7 +95,7 @@
                         prop="tx_hash"
                         :label="$t('lang.riskConfig.profitTableHeader.profitSum')"
                         align="right">
-                        <template slot-scope="scope">
+                        <template #default="scope">
                             <el-tooltip placement="top" effect="light">
                                 <span slot="content">{{ scope.row.profit }}</span>
                                 <span>{{handleProfit(scope.row.profit,0)}}</span>
@@ -110,12 +110,12 @@
                         prop="addrList"
                         :label="$t('lang.riskConfig.profitTableHeader.tokenName')"
                         align="right">
-                        <template slot="header">
+                        <template #header>
                             <div style="width: 100%;text-align: right">
                                {{ $t('lang.riskConfig.profitTableHeader.tokenName') }}
                             </div>
                         </template>
-                        <template slot-scope="scope">
+                        <template #default="scope">
                             <div  v-if="scope.row.addrList && scope.row.addrList.length > 0 ">
                                 <p v-for="item in scope.row.addrList"
                                         style="margin-top: 10px;"
@@ -129,7 +129,7 @@
                         prop="valueList"
                         :label="$t('lang.riskConfig.profitTableHeader.tokenNum')"
                         align="right">
-                        <template slot-scope="scope">
+                        <template #default="scope">
                             <div  v-if="scope.row.valueList && scope.row.valueList.length > 0 ">
                                 <p v-for="item in scope.row.valueList"
                                       style="margin-top: 10px;"
@@ -148,7 +148,7 @@
                         prop="dollarList"
                         :label="$t('lang.riskConfig.profitTableHeader.tokenVal')"
                         align="right">
-                        <template slot-scope="scope">
+                        <template #default="scope">
                             <div  v-if="scope.row.dollarList && scope.row.dollarList.length > 0 ">
                                 <p v-for="item in scope.row.dollarList"
                                       style="margin-top: 10px;font-weight: bold"
@@ -176,13 +176,13 @@ import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/
 import {getProjWarningDetail} from "../../../api/risk-warning";
 import {webURL} from "../../../enums/link";
 import {platformToCurrency} from "../../../utils/platformDict";
-import {reactive, ref, onMounted, computed, onUnmounted} from 'vue'
+import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from 'vue'
 import composition from "../../../utils/mixin/common-func"
 import {getUuid,simulateToFixed,openWindow} from "../../../utils/common";
 import {use} from "marked";
 import {ElMessage} from "element-plus/es";
 
-export default {
+export default defineComponent({
     name: "risk-warning-detail",
     components: {BeSvgIcon,BeEllipsisCopy},
     setup(props:any,ctx:any){
@@ -236,7 +236,6 @@ export default {
          * 獲得基本信息
          */
         const getInfoData = ():void =>{
-            console.log('123456',route.query.tx_hash)
             const params = {
                 tx_hash: route.query.tx_hash
             }
@@ -272,8 +271,11 @@ export default {
          * 跳轉到第三方頁面
          */
         const openWeb = ():void => {
-            if(baseInfo.value.platform || baseInfo.value.tx_hash) return
-            console.log()
+            console.log(baseInfo.value)
+            console.log(baseInfo.value.platform,baseInfo.value.tx_hash)
+            console.log(baseInfo.value.platform || baseInfo.value.tx_hash)
+            if(!baseInfo.value.platform || !baseInfo.value.tx_hash) return
+            console.log(`${webURL[baseInfo.value.platform]}${baseInfo.value.tx_hash}`)
             const url = `${webURL[baseInfo.value.platform]}${baseInfo.value.tx_hash}`
             openWindow(url)
         }
@@ -292,102 +294,102 @@ export default {
             handleProfit,
         }
     },
-  /*  data() {
-        return {
-            // 基础信息
-            baseInfo:{},
-            // 收益信息
-            profitData:[],
-            // loading
-            loading:false,
-            // 是否缩略
-            isEllipsis:false,
-            // 缩略数量
-            ellipsis:'8',
-            // 链平台转化币种
-            platformToCurrencyInner:platformToCurrency,
-            //
-            addrCellWidth:'430'
-        }
-    },
-    mounted() {
-        this.getInfoData()
-        this.initView()
-        window.onresize = this.initView
-    },
-    beforeDestroy() {
-        window.onresize = null
-    },
-    computed:{
-        handleProfit(){
-            return function (val,dec){
-                if(val< 0){
-                    return `-$${this.$simulateToFixed(Math.abs(val),dec)}`
-                }
-                return `$${this.$simulateToFixed(val,dec)}`
-            }
-        }
-    },
-    methods: {
-        /!**
-         * 根据屏幕分辨率调整
-         *!/
-        initView(){
-            const width = window.screen.availWidth
-            const height = window.screen.availHeight
-            if(height <= 680 || width <=1280) {
-                this.addrCellWidth = '260'
-                this.isEllipsis = true
-                this.ellipsis = '12'
-            }
-        },
-        /!**
-         * 獲得基本信息
-         *!/
-        getInfoData(){
-            const _this = this
-            const params = {
-                tx_hash:_this.$route.query.tx_hash
-            }
-            _this.loading = true
-            getProjWarningDetail(params).then(res=>{
-                _this.baseInfo = res.data
-                _this.profitData = res.data.address_profits
-                _this.profitData.forEach(val=>{
-                    val.addrList = []
-                    val.dollarList = []
-                    val.valueList = []
-                    val.token_profits.forEach(valRes=>{
-                        res.itemId = this.$getUuid
-                        val.addrList.push({val:valRes.token_name,itemId:'token_name'+_this.$getUuid(),tag:valRes.contract_address_tag})
-                        val.valueList.push({
-                            ordVal:valRes.token_num,
-                            val:_this.$simulateToFixed(valRes.token_num,6),
-                            itemId:'token_profit_no_dollar'+_this.$getUuid()})
-                        val.dollarList.push({
-                            ordVal:valRes.dollar_money,
-                            val:_this.$simulateToFixed(valRes.dollar_money,0),
-                            itemId:'token_profit_dollar'+_this.$getUuid()})
-                    })
-                })
-                _this.loading = false
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-                _this.loading = false
-            })
-        },
-        /!**
-         * 跳轉到第三方頁面
-         *!/
-        openWeb(){
-            if(!this.baseInfo.platform || !this.baseInfo.tx_hash) return
-            const url = `${webURL[this.baseInfo.platform]}${this.baseInfo.tx_hash}`
-            this.$openWindow(url, 'view_window')
-        }
+    /*  data() {
+          return {
+              // 基础信息
+              baseInfo:{},
+              // 收益信息
+              profitData:[],
+              // loading
+              loading:false,
+              // 是否缩略
+              isEllipsis:false,
+              // 缩略数量
+              ellipsis:'8',
+              // 链平台转化币种
+              platformToCurrencyInner:platformToCurrency,
+              //
+              addrCellWidth:'430'
+          }
+      },
+      mounted() {
+          this.getInfoData()
+          this.initView()
+          window.onresize = this.initView
+      },
+      beforeDestroy() {
+          window.onresize = null
+      },
+      computed:{
+          handleProfit(){
+              return function (val,dec){
+                  if(val< 0){
+                      return `-$${this.$simulateToFixed(Math.abs(val),dec)}`
+                  }
+                  return `$${this.$simulateToFixed(val,dec)}`
+              }
+          }
+      },
+      methods: {
+          /!**
+           * 根据屏幕分辨率调整
+           *!/
+          initView(){
+              const width = window.screen.availWidth
+              const height = window.screen.availHeight
+              if(height <= 680 || width <=1280) {
+                  this.addrCellWidth = '260'
+                  this.isEllipsis = true
+                  this.ellipsis = '12'
+              }
+          },
+          /!**
+           * 獲得基本信息
+           *!/
+          getInfoData(){
+              const _this = this
+              const params = {
+                  tx_hash:_this.$route.query.tx_hash
+              }
+              _this.loading = true
+              getProjWarningDetail(params).then(res=>{
+                  _this.baseInfo = res.data
+                  _this.profitData = res.data.address_profits
+                  _this.profitData.forEach(val=>{
+                      val.addrList = []
+                      val.dollarList = []
+                      val.valueList = []
+                      val.token_profits.forEach(valRes=>{
+                          res.itemId = this.$getUuid
+                          val.addrList.push({val:valRes.token_name,itemId:'token_name'+_this.$getUuid(),tag:valRes.contract_address_tag})
+                          val.valueList.push({
+                              ordVal:valRes.token_num,
+                              val:_this.$simulateToFixed(valRes.token_num,6),
+                              itemId:'token_profit_no_dollar'+_this.$getUuid()})
+                          val.dollarList.push({
+                              ordVal:valRes.dollar_money,
+                              val:_this.$simulateToFixed(valRes.dollar_money,0),
+                              itemId:'token_profit_dollar'+_this.$getUuid()})
+                      })
+                  })
+                  _this.loading = false
+              }).catch(err=>{
+                  _this.$message.error(err.message)
+                  console.error(err)
+                  _this.loading = false
+              })
+          },
+          /!**
+           * 跳轉到第三方頁面
+           *!/
+          openWeb(){
+              if(!this.baseInfo.platform || !this.baseInfo.tx_hash) return
+              const url = `${webURL[this.baseInfo.platform]}${this.baseInfo.tx_hash}`
+              this.$openWindow(url, 'view_window')
+          }
 
-    },*/
-}
+      },*/
+})
 </script>
 
 <style lang="scss">
