@@ -6,21 +6,24 @@
                     <div class="safety-opinion-info-left">
                         <div class="safety-opinion-header">
                             <div class="safety-opinion-header-title">
-                            <!--<el-tooltip class="item" effect="dark" :content="opinion.negativeMsg" placement="top">
-                                    <i class="el-icon-message-solid" style="color: darkorange" v-show="opinion.negative" ></i>
-                                </el-tooltip>-->
-                                <span style="font-size: 16px;font-weight: bold">{{opinion.title}}</span>
+                                <!--<el-tooltip class="item" effect="dark" :content="opinion.negativeMsg" placement="top">
+                                        <i class="el-icon-message-solid" style="color: darkorange" v-show="opinion.negative" ></i>
+                                    </el-tooltip>-->
+                                <span style="font-size: 16px;font-weight: bold">{{ opinion.title }}</span>
                             </div>
-                            <el-button type="text" @click="lookTextOriginal(opinion.sourceUrl)">{{$t('el.projectRinking.safetyOpinion.textOriginal')}}>></el-button>
+                            <el-button type="text" @click="lookTextOriginal(opinion.sourceUrl)">
+                                {{ $t('lang.projectRinking.safetyOpinion.textOriginal') }}>>
+                            </el-button>
                         </div>
                         <div class="safety-opinion-body">
-                            {{opinion.message.length}}
+                            {{ opinion.message.length }}
                             <div class="safety-opinion-body-msg scrollDiy">
-                                <be-ellipsis-copy :elpNum="opinion.message.length > 400 ? opinion.message.length - 200 : 0"
-                                             :expand-trigger="false"
-                                             :line-clamp="0"
-                                             :content="opinion.message"
-                                             :text="opinion.message">
+                                <be-ellipsis-copy
+                                    :elpNum="opinion.message.length > 400 ? opinion.message.length - 200 : 0"
+                                    :expand-trigger="false"
+                                    :line-clamp="0"
+                                    :content="opinion.message"
+                                    :text="opinion.message">
                                 </be-ellipsis-copy>
                             </div>
                         </div>
@@ -28,19 +31,25 @@
                         <div class="safety-opinion-footer">
                             <span style="max-width: 80%">
                                 <el-tag
-                                        v-for="item in opinion.label"
-                                        class="safety-opinion-footer-tag"
-                                        :key="item.label"
-                                        type="info"
-                                        effect="plain">
-                                    <span style="display: flex;align-items: center;justify-content: center;height: 20px;">{{ item }}</span>
+                                    v-for="item in opinion.label"
+                                    class="safety-opinion-footer-tag"
+                                    :key="item.label"
+                                    type="info"
+                                    effect="plain">
+                                    <span
+                                        style="display: flex;align-items: center;justify-content: center;height: 20px;">{{
+                                            item
+                                        }}</span>
                                 </el-tag>
                             </span>
                             <div style="display: flex;align-items: center;justify-content: space-between;width: 240px">
-                                <span class="msg-font">{{opinion.from}}</span>
+                                <span class="msg-font">{{ opinion.from }}</span>
                                 <el-tooltip placement="top" effect="light">
-                                    <span slot="content">UTC：{{ beijing2utc(opinion.time) }}</span>
-                                    <span class="msg-font">{{ formatDate($createDate(opinion.time)) }}</span>
+                                    <template #content>
+                                        <span>UTC：{{ beijing2utc(opinion.time) }}</span>
+                                    </template>
+
+                                    <span class="msg-font">{{ formatDate(createDate(opinion.time)) }}</span>
                                 </el-tooltip>
 
                             </div>
@@ -49,7 +58,7 @@
                     <div class="safety-opinion-info-right">
                         <el-image
                             style="width: 100%; height:100%"
-                            :src="require('@/assets/image/pc/news@2x.jpg')"
+                            :src="imgUrl"
                             fit="scale-down">
                         </el-image>
                     </div>
@@ -62,87 +71,93 @@
     </div>
 </template>
 
-<script>
-    import {getUuid} from "../../../../utils/auth";
-    import BeEllipsis from "../../../../components/common-components/ellipsis/src/be-ellipsis.vue";
-    export default {
-        name: "project-ranking-safety-opinion",
-        components:{
-            BeEllipsis
-        },
-        data(){
-            return{
+<script lang="ts">
+import {getUuid, openWindow,beijing2utc,formatDate,createDate} from "../../../../utils/common";
+import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
+import {computed, defineComponent} from "vue";
+
+export default defineComponent({
+    name: "project-ranking-safety-opinion",
+    components: {
+        BeEllipsisCopy
+    },
+    props: {
+        infoData: {
+            type: Array,
+            default: () => []
+        }
+    },
+    setup() {
+        const createKey = computed(()=> {
+            return function () {
+                return getUuid()
             }
-        },
-        props:{
-            infoData:{
-                type:Array,
-                default:()=>[]
-            }
-        },
-        computed:{
-            createKey(){
-                return function (){
-                    return getUuid()
-                }
-            },
-        },
-        methods:{
-            // 查看原文按钮
-            lookTextOriginal(url){
-                if(url){
-                    this.$openWindow(url, 'view_window')
-                }
+        })
+        // 查看原文按钮
+        const lookTextOriginal = (url: string): void => {
+            if (url) {
+                openWindow(url)
             }
         }
+        const imgUrl = import.meta.globEager("../../../../assets/image/pc/news@2x.jpg")[0];
+        return {
+            imgUrl,
+            createKey,
+            beijing2utc,
+            formatDate,
+            createDate,
+            lookTextOriginal
+        }
     }
+})
+
 </script>
 
 <style scoped lang="scss">
-  .project-ranking-safety-opinion{
+.project-ranking-safety-opinion {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: auto;
     background-color: white;
-  }
+}
 
-  .safety-opinion-info{
+.safety-opinion-info {
     width: 100%;
     padding: 0 24px;
-  }
+}
 
-  .safety-opinion-header{
+.safety-opinion-header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
+}
 
-  .safety-opinion-footer{
+.safety-opinion-footer {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
+}
 
-  .safety-opinion-footer-tag{
+.safety-opinion-footer-tag {
     min-width: 54px;
     height: 22px;
     margin-top: 5px;
     margin-right: 18px;
-  }
+}
 
-  .safety-opinion-header-title{
+.safety-opinion-header-title {
     display: flex;
     align-items: center;
-  }
+}
 
-  .safety-opinion-info-body{
+.safety-opinion-info-body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
+}
 
-  .safety-opinion-info-left{
+.safety-opinion-info-left {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -152,30 +167,30 @@
     height: 144px;
     padding-top: 24px;
     padding-bottom: 24px;
-  }
+}
 
-  .safety-opinion-info-right{
+.safety-opinion-info-right {
     width: 296px;
     min-width: 296px;
     height: 148px;
     margin-left: 160px;
     background-color: lightslategray;
-  }
+}
 
-  .safety-opinion-body-msg{
+.safety-opinion-body-msg {
     width: 100%;
     height: 66px;
     overflow-y: auto;
     font-size: 14px;
     color: #5c5c5c;
-  }
+}
 
-  .el-divider--horizontal {
+.el-divider--horizontal {
     margin: 0 0;
-  }
+}
 
-  .msg-font{
+.msg-font {
     font-size: 14px;
     color: #5c5c5c;
-  }
+}
 </style>

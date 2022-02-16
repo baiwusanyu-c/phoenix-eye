@@ -15,8 +15,8 @@
                 <p v-for="(item) in labelConfig" :key="JSON.stringify(item)">
                     {{item.label}}:{{handleData(data,item)}}
                 </p>
-                <p v-if="JSON.stringify(data) === '{}' && this.title === this.$t('el.projectRinking.contractBalance')">
-                    {{$t('el.emptyData')}}
+                <p v-if="JSON.stringify(data) === '{}' && title === $t('lang.projectRinking.contractBalance')">
+                    {{$t('lang.emptyData')}}
                 </p>
             </div>
 
@@ -24,38 +24,11 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {computed, defineComponent} from "vue";
+import {useI18n} from "vue-i18n";
+export default defineComponent({
     name: "project-ranking-score-card",
-    data() {
-        return {
-            imgCodeDict:{
-                hygk: require('@/assets/image/pc/hygk@2x.png'),
-                hyye: require('@/assets/image/pc/hyye@2x.png'),
-                aqpg: require('@/assets/image/pc/aqpg@2x.png'),
-            }
-        }
-    },
-    computed:{
-        logoType(){
-            if(this.title === this.$t('el.projectRinking.contractOverview')){
-                return this.imgCodeDict.hygk
-            }
-            if(this.title === this.$t('el.projectRinking.contractBalance')){
-                return this.imgCodeDict.hyye
-            }
-            return this.imgCodeDict.aqpg
-        },
-        handleData(){
-            return function (data,config){
-                // 对象时
-                if(!Array.isArray(data)){
-                    return (data[config.val] || data[config.val] === 0) ? data[config.val] : this.$t('el.emptyData')
-                }
-                return (data[config.val][config.valKey] || data[config.val][config.valKey] === 0) ? data[config.val] : this.$t('el.emptyData')
-            }
-        }
-    },
     props:{
         platform:{
             type:String,
@@ -79,7 +52,38 @@ export default {
             default: ()=>{return {}}
         }
     },
-}
+    setup(props){
+        const {t} = useI18n()
+        const imgCodeDict = {
+            hygk: import.meta.globEager("../../../../assets/image/pc/hygk@2x.jpg")[0],
+            hyye: import.meta.globEager("../../../../assets/image/pc/hyye@2x.jpg")[0],
+            aqpg: import.meta.globEager("../../../../assets/image/pc/aqpg@2x.jpg")[0],
+        }
+        const handleData = computed(()=>{
+            return function (data:any,config:{val:number,valKey:string}){
+                // 对象时
+                if(!Array.isArray(data)){
+                    return (data[config.val] || data[config.val] === 0) ? data[config.val] : t('lang.emptyData')
+                }
+                return (data[config.val][config.valKey] || data[config.val][config.valKey] === 0) ? data[config.val] : t('lang.emptyData')
+            }
+        })
+        const logoType = computed(()=>{
+            if(props.title === t('lang.projectRinking.contractOverview')){
+                return imgCodeDict.hygk
+            }
+            if(props.title === t('lang.projectRinking.contractBalance')){
+                return imgCodeDict.hyye
+            }
+            return imgCodeDict.aqpg
+        })
+        return {
+            handleData,
+            logoType
+        }
+    }
+})
+
 </script>
 
 <style scoped lang="scss">

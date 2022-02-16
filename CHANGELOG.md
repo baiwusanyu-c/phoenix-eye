@@ -11,5 +11,13 @@
 √ system-config-mai.vue 迁移完成
 √ be-pagination.vue 迁移完成 （注，这里是项目内的组件，不是be-ui的,后期重构可以使用be-ui的）
 √ be-svg-icon.vue 迁移完成 （注，这里是项目内的组件，不是be-ui的,后期重构可以使用be-ui的）
+### 2022年2月16日
+√ project-ranking-num-card.vue 迁移完成
+√ project-ranking-radar.vue 迁移完成
+√ project-ranking-safety-opinion.vue 迁移完成
+√ project-ranking-score-card.vue 迁移完成
+√ project-ranking-trade-stability.vue 迁移完成
+
+
 
 

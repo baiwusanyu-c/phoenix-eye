@@ -15,45 +15,44 @@
                               :endLength="8">
             </be-ellipsis-copy>
         </div>
-        <div class="project-ranking-radar-chart" :id="`radar_chart${this._uid}`">
+        <div class="project-ranking-radar-chart" :id="`radar_chart${uid}`">
 
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import DataSet from '@antv/data-set';
 import {Chart, registerGeometryLabelLayout} from '@antv/g2';
-export default {
+import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
+import {computed, defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch,PropType} from "vue";
+import {LabelItem} from "@antv/g2/src/geometry/label/interface";
+import {IGroup} from "@antv/g2/src/dependents";
+interface IImgCodeDict{
+    [key:string]:any
+}
+interface IInstance{
+    uid:number
+}
+interface IRadarData {
+    key: string
+    item: string
+    a: number
+}
+export default defineComponent({
     name: "project-ranking-radar",
-    data() {
-        return {
-            imgCodeDict:{
-                bsc: require('@/assets/image/pc/bsc.png'),
-                heco: require('@/assets/image/pc/heco.png'),
-                eth: require('@/assets/image/pc/eth.png'),
-                polygon: require('@/assets/image/pc/heco.png'),
-            },
-            // 雷达图实例对象
-            radarChart:null
-        }
-    },
-    computed:{
-        logoType(){
-            return this.imgCodeDict[this.platform]
-        }
-    },
+    components:{BeEllipsisCopy},
     props:{
         platform:{
             type:String,
-            default:'bsc'
+            default:'bsc',
         },
         addr:{
             type:String,
             default:'8acef67c2719fb0fdd1a22c78fb7746f13e824c66b55c0f3dd0e17f50226f029'
         },
         radarData:{
-            type:Array,
+            type:Array as PropType<Array<IRadarData>>,
             default:()=>[
                 { key:'jtjc-staticDetection', item: '静态检测', a: 10, },
                 { key:'jywd-txStability',item: '市场波动', a: 6 },
@@ -61,65 +60,58 @@ export default {
             ]
         },
         safetyEvaluate:{
-          type:[Number,String],
-          default:0
+            type:[Number,String],
+            default:0
         }
     },
-    watch:{
-        radarData: {
-            deep: true, //深度监听设置为 true
-            handler: function () {
-                this.renderRadar(true)
-            }
-        },
-    },
-    mounted() {
-        this.$nextTick(()=>{
-            this.renderRadar()
+    setup(props){
+        const {uid} = (getCurrentInstance()) as IInstance
+        // 雷达图实例对象
+        const radarChart = ref<any>()
+        watch(radarChart.value,()=>{
+            renderRadar(true)
         })
-    },
-    methods: {
-        renderRadar(isUpdate){
-            const _this = this
+        // 圖片字典
+        const imgImport = import.meta.globEager("../../../../assets/image/pc/*-logo-bz.png");
+        const imgCodeDict = ref<IImgCodeDict>({
+            'bsc': '',
+            'heco': '',
+            'eth': '',
+            'polygon': '',
+        })
+        Object.keys(imgImport).forEach(val=>{
+            if(/bsc/.test(val)){
+                imgCodeDict.value.bsc = imgImport[val]
+            }
+            if(/heco/.test(val)){
+                imgCodeDict.value.heco = imgImport[val]
+            }
+            if(/eth/.test(val)){
+                imgCodeDict.value.eth = imgImport[val]
+                imgCodeDict.value.polygon = imgImport[val]
+            }
+        })
+        const logoType = computed(()=>{
+            return imgCodeDict.value[props.platform]
+        })
+        onMounted(()=>{
+            nextTick(()=>{
+               renderRadar()
+            })
+        })
+        const renderRadar = (isUpdate?:boolean) => {
             // 坐标label缓存
-            const labelCache = []
-            function limitInShape(items, labels) {
-                labels.forEach((labelGroup, index) => {
+            const labelCache:any = []
+            function limitInShape(items:LabelItem[], labels:IGroup[]) {
+                labels.forEach((labelGroup) => {
                     labelGroup.cfg.children[0].cfg.visible = false
-                   /* const labelBBox = labelGroup.getCanvasBBox()
-                    let offsetX = labelCache[index].point.x
-                    let offsetY = labelCache[index].point.y
-                    if(labelGroup.cfg.data.key === 'jtjc-staticDetection'){
-                        offsetX = offsetX + labelBBox.width/2 + 10
-                        offsetY = labelCache[index + 3].point.y / 2 + 2
-                    }
-                    if(labelGroup.cfg.data.key === 'jywd-txStability'){
-                        offsetY = labelCache[index + 3].point.y + 36
-                        offsetX = offsetX + 10
-                    }
-                    if(labelGroup.cfg.data.key === 'jyaq-txSecurity'){
-                        offsetX = offsetX - labelBBox.width/2 - 8
-                        offsetY = labelCache[index + 3].point.y + 36
-                    }
-                    // 添加分数label
-                    labelGroup.addShape('text', {
-                        attrs: {
-                            x: offsetX,
-                            y: offsetY,
-                            text: items[index].data.score,
-                            textBaseline: 'middle',
-                            fill: '#1890FF',
-                            fontWeight: 'bold',
-                            fontSize: 16
-                        },
-                    })*/
                 })
                 if(!chart) return
                 chart?.getCanvas().cfg.children[0].addShape('text', {
                     attrs: {
                         x: (labelCache[3].point.x + labelCache[5].point.x)/2 + 40,
                         y: (labelCache[3].point.y + labelCache[5].point.y)/2 + 25,
-                        text: _this.safetyEvaluate,
+                        text: props.safetyEvaluate,
                         textBaseline: 'middle',
                         fill: '#333333',
                         fontWeight: 'bold',
@@ -130,7 +122,7 @@ export default {
             // 注册 label 布局函数
             registerGeometryLabelLayout('limit-in-shape', limitInShape);
             const { DataView } = DataSet;
-            const dv = new DataView().source(this.radarData);
+            const dv = new DataView().source(props.radarData);
             dv.transform({
                 type: 'fold',
                 fields: ['a'], // 展开字段集
@@ -139,17 +131,17 @@ export default {
             });
             // 更新
             if(isUpdate){
-                this.radarChart.data(dv.rows);
-                this.radarChart.render(isUpdate);
+                radarChart.value.data(dv.rows);
+                radarChart.value.render(isUpdate);
                 return
             }
             const chart = new Chart({
-                container: `radar_chart${this._uid}`,
+                container: `radar_chart${uid}`,
                 autoFit: true,
                 height: 250,
                 appendPadding:[10]
             });
-            this.radarChart = chart
+            radarChart.value = chart
             chart.data(dv.rows);
             chart.scale('score', {
                 min: 0,
@@ -216,8 +208,13 @@ export default {
             chart.render();
 
         }
-    },
-}
+        return {
+            uid,
+            logoType
+        }
+    }
+})
+
 </script>
 
 <style lang="scss">

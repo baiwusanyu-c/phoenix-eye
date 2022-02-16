@@ -10,6 +10,7 @@ import Vue from "vue";
  * id生成方法
  * @return {string}
  */
+
 export const getUuid = (): string => {
     let s: Array<any> = [];
     let hexDigits: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -20,6 +21,9 @@ export const getUuid = (): string => {
     s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
     s[8] = s[13] = s[18] = s[23] = "-"
     return s.join("")
+}
+export function createKey(){
+    return Math.random().toString(36).substr(2)
 }
 // 判空
 export function isEmpty(val: unknown) {

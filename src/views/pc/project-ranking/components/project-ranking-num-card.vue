@@ -1,5 +1,5 @@
 /*
-* @project-ranking-num-cardvue
+* @project-ranking-num-card.vue
 * @deprecated 项目排行 - 项目态势 - 市场表现数字卡片
 * @author czh
 * @update (czh 2021/11/23)
@@ -16,29 +16,13 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {computed, defineComponent, ref} from "vue";
+interface IImgCodeDict{
+    [key:string]:any
+}
+export default defineComponent({
     name: "project-ranking-num-card",
-    data() {
-        return {
-            imgCodeDict:{
-                txNum: require('@/assets/image/pc/tx-num@2x.png'),
-                userNum: require('@/assets/image/pc/user-num@2x.png'),
-                contractNum: require('@/assets/image/pc/contract-num@2x.png'),
-            }
-        }
-    },
-    computed:{
-        logoType(){
-            if(this.title === '交易总量'){
-                return this.imgCodeDict.txNum
-            }
-            if(this.title === '用户总数'){
-                return this.imgCodeDict.userNum
-            }
-            return this.imgCodeDict.contractNum
-        }
-    },
     props:{
         title:{
             type:String,
@@ -49,7 +33,39 @@ export default {
             default:0
         }
     },
-}
+    setup(props){
+        const imgImport = import.meta.globEager("../../../../assets/image/pc/*-num@2x.png");
+        const imgCodeDict = ref<IImgCodeDict>({
+            txNum: '',
+            userNum: '',
+            contractNum: '',
+        })
+        Object.keys(imgImport).forEach(val=>{
+            if(/tx-num/.test(val)){
+                imgCodeDict.value.txNum = imgImport[val]
+            }
+            if(/user-num/.test(val)){
+                imgCodeDict.value.userNum = imgImport[val]
+            }
+            if(/contract-num/.test(val)){
+                imgCodeDict.value.contractNum = imgImport[val]
+            }
+        })
+        const logoType = computed(()=>{
+            if(props.title === '交易总量'){
+                return imgCodeDict.value.txNum
+            }
+            if(props.title === '用户总数'){
+                return imgCodeDict.value.txNum
+            }
+            return imgCodeDict.value.contractNum
+        })
+        return {
+            logoType
+        }
+    }
+})
+
 </script>
 
 <style scoped lang="scss">
