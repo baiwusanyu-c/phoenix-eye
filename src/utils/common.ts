@@ -5,6 +5,7 @@ import {
 } from '@vue/shared'
 // @ts-ignore
 import {BeMessage} from "../../public/be-ui/be-ui.es";
+import Vue from "vue";
 /**
  * id生成方法
  * @return {string}
@@ -473,4 +474,48 @@ export const copyAddress = function copyAddress(currentAdd:string){
     oInput.style.display = 'none'
     document.body.removeChild(oInput)
     message('error', '已复制到粘贴板')
+}
+/**
+ * 模拟tofixed 实现保留小数点功能
+ * @param num 数值
+ * @param decimal 保留的位置
+ * @returns {*}
+ */
+export const simulateToFixed = (num:number, decimal = 6)=> {
+    if(num === undefined) {
+        return;
+    }
+    if(num.toString() === '0' && decimal !== 0){
+        return '0.000000';
+    }
+    let numInner = transferToNumber(num).toString()
+    let index = numInner.indexOf('.')
+    if (index === -1) {
+        return numInner;
+    }
+    let decimalBeforeLenght = numInner.split('.')[1].length; // 获取小数点后位数
+    if(decimalBeforeLenght <= decimal){
+        return numInner
+    }else{
+        const minimumStr = '0.';
+        const minimum = minimumStr.padEnd( decimal + 2, '0'); // 匹配小额资金规则
+        const res = parseFloat(numInner).toFixed(decimal) === minimum ? minimum.toString() : parseFloat(numInner).toFixed(decimal);
+        return res === '-0.000000' ? '0.000000' : res
+    }
+}
+
+/**
+ * 科学计数法转化成小数点
+ * @param num 数值
+ * @returns Number
+ */
+export const transferToNumber = (inputNumber:any) => {
+    if (isNaN(inputNumber)) {
+        return inputNumber
+    }
+    inputNumber = '' + inputNumber
+    inputNumber = parseFloat(inputNumber)
+    let eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
+    let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
+    return inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
 }

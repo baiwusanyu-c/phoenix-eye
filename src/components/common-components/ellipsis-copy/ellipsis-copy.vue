@@ -8,11 +8,11 @@
 -->
 <template>
     <div class="ellipsis-copy" @mouseover="enter"  @mouseout="leave">
-        <el-tooltip placement="top" effect="light" class="address" :disabled="!isTooltip">
+        <el-tooltip placement="top" effect="light" class="address" :disabled="(!isTooltip) || !targetStr">
             <template #content>
                 <span >{{getTooltipTxt()}}</span>
             </template>
-            <span :style="styles">{{changeEllipsisStr(targetStr)}}</span>
+            <span :style="styles">{{changeEllipsisStr(targetStr)}} </span>
         </el-tooltip>
         <span class="copy-btn" v-if="isShowCopyBtn">
             <svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="copyAddress(copyContent || targetStr)"></svg-icon>
@@ -109,6 +109,7 @@ export default defineComponent({
          * @param {String} str 当前地址/交易数
          */
         const changeEllipsisStr = (str:string):string =>{
+            if(!str) return '-'
             if(!props.isEllipsis) return str
             const frontLen:number = Number(props.fontLength);
             const endLen:number = Number(props.endLength)

@@ -174,6 +174,7 @@
 
 <script lang="ts">
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
+import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {platformListDict} from "../../../utils/platformDict";
 import {getProjWarning} from "../../../api/risk-warning";
 import {defineComponent, ref, reactive, onMounted, watch, computed} from "vue";
@@ -183,7 +184,7 @@ import {openWindow,beijing2utc,createDate,formatDate} from "../../../utils/commo
 
 export default defineComponent({
     name: "risk-warning-list",
-    components: {BePagination},
+    components: {BePagination,BeEllipsisCopy},
     setup(){
         const {t} = useI18n()
         const searchParams = reactive({
