@@ -113,8 +113,8 @@ export default defineComponent({
                             }
                         }, 1000)
                     }).catch((err) => {
-                        message('error', err || err.message)
-                        console.log(err)
+                        message('error', err.message || err)
+                        console.error(err)
                     });
                 }
             })
@@ -136,7 +136,8 @@ export default defineComponent({
                         message('success', t('lang.loginConfig.resetPassword') + t('lang.success'))
                         changeShow(1)
                     }).catch((err) => {
-                        message('error', err || err.message)
+                        message('error', err.message || err)
+                        console.error(err)
                         isLogin.value = false;
                     });
                 } else {

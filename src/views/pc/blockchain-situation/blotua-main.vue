@@ -453,7 +453,7 @@ export default defineComponent({
                 loadingTxNum.value = false
             }).catch(err => {
                 loadingTxNum.value = false
-                message('error', err || err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -475,7 +475,7 @@ export default defineComponent({
                 loadingFxTx.value = false
             }).catch(err => {
                 loadingFxTx.value = false
-                message('error', err || err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -501,7 +501,7 @@ export default defineComponent({
                     pageParams.value.total = res.data.total
                 }
             }).catch(err => {
-                message('error', err || err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -532,7 +532,7 @@ export default defineComponent({
                 loadingTxFx.value = false
             }).catch(err=>{
                 loadingTxFx.value = false
-                message('error', err || err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -567,7 +567,7 @@ export default defineComponent({
                 loadingFxYq.value = false
             }).catch(err => {
                 loadingFxYq.value = false
-                message('error', err || err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -591,7 +591,7 @@ export default defineComponent({
                 loadingProjRank.value = false
             }).catch(err=>{
                 loadingProjRank.value = false
-                message('error', err || err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
