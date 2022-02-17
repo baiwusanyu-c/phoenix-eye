@@ -165,9 +165,9 @@ export default defineComponent({
                                 isTip.value = false;
                             }
                         }, 1000)
-                    }).catch((error) => {
-                        message('error', error || error.message)
-                        console.error(error)
+                    }).catch((err) => {
+                        message('error', err.message || err)
+                        console.error(err)
                     });
                 }
             })
@@ -190,9 +190,9 @@ export default defineComponent({
                     }).then(() => {
                         message('success',t('lang.loginConfig.register') + t('lang.success'));
                         changeShow(1)
-                    }).catch(error => {
-                        message('error', error || error.message)
-                        console.error(error)
+                    }).catch(err => {
+                        message('error', err.message || err)
+                        console.error(err)
                         isLogin.value = false;
                     });
                 } else {

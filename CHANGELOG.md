@@ -20,8 +20,13 @@
 √ risk-warning-list.vue 迁移完成 （问题：选择框里的’全部‘不能根据语言切换做出响应）
 √ risk-warning-detail.vue 迁移完成
 ### 2022年2月17日
+√ project-ranking-market-performance.vue 迁移完成
 √ add-risk-type.vue 迁移完成
 √ system-config-score.vue 迁移完成（问题：表格里的数据不能根据语言切换做出响应，问号有样式问题）
 √ system-config-type.vue 迁移完成
+
+
+
+
 
 

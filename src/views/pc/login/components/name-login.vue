@@ -149,7 +149,7 @@ export default defineComponent({
                         // 登錄先拿路由在跳轉
                         getRouter()
                     }).catch(err => {
-                        message('error', err)
+                        message('error', err.message || err)
                         getCode();
                         isLogin.value = false;
                     });
@@ -179,7 +179,7 @@ export default defineComponent({
                 routerPush('/blockchainSituation')
             }).catch(err => {
                 console.error(err)
-                message('error', err || err.message)})
+                message('error', err.message || err)})
         }
         /**
          * 修改显示类型
