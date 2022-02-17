@@ -25,8 +25,8 @@ export default (props: any, ctx: any) => {
      */
     const router: Router = useRouter()
     const route: RouteLocationNormalizedLoaded = useRoute()
-    const routerPush = (path: string): void => {
-        router.push(path)
+    const routerPush = (path: string,query?:any): void => {
+        router.push({path,query})
     }
     /**
      * 获取登录验证码

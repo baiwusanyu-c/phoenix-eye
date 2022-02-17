@@ -78,7 +78,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="180"
+                    width="190"
                     prop="contract_num"
                     :label="$t('lang.projectRinking.contractNum')"
                     align="center">
@@ -153,229 +153,253 @@
 <script lang="ts">
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import {getContractProjectTs, getProjectRankList} from "../../../api/project-ranking";
-import {getUrlkey,beijing2utc,formatDate,createDate} from "../../../utils/common";
-import {defineComponent} from "vue";
-
+import {getUrlkey, beijing2utc, formatDate, createDate, isFunction, setStore, getStore} from "../../../utils/common";
+import {computed, defineComponent, onMounted, ref, watch} from "vue";
+import composition from "../../../utils/mixin/common-func";
+import {IPageParam} from "../../../utils/types";
+interface IProjectObj{
+    info?:Array<any>
+}
+interface IPageParamInner extends IPageParam{
+    platform?:string
+}
+interface IProjectOrContract{
+    project_contract_id:string
+    project_id:string
+}
 export default defineComponent({
     name: "ProjectRankingMain",
     components: {BePagination},
-    setup(){
-        return {
-            beijing2utc,
-            formatDate,
-            createDate,
-        }
-    },
-    data() {
-        return {
-            searchParams: '',
-            // 搜索触发
-            searching: false,
-            // 搜索时返回的类型
-            searchType: '',
-            currentCurrency: 'all',
-            tableData: [],
-            loading: false,
-            loadingSearch: false,
-            // 获取搜索时的数据
-            contractObj: {info: []},
-            projectObj: {},
-            // 判断搜索到的数据info数组长度是否为1
-            projectOnly: true,
-            // 分页参数
-            pageParams: {
-                currentPage: 1,
-                pageNum: 1,
-                pageSize: 10,
-                total: 0
-            },
-        }
-    },
-    watch: {
-        searchParams() {
-            if (this.searchParams === '' && this.getParams === '') {
-                this.projectOnly = true
-                this.searchType = ''
-                this.$router.push('/projectRanking')
+    setup(props,ctx){
+        const {route, routerPush,message} = composition(props, ctx)
+        // 搜索参数
+        const searchParams = ref<string>('')
+        // 判断搜索到的数据info数组长度是否为1
+        const projectOnly = ref<boolean>(true)
+        // 搜索时返回的类型
+        const searchType = ref<string>('')
+        // 搜索触发
+        const searching = ref<boolean>(false)
+        watch(searchParams,(nVal)=>{
+            if (nVal === '' && searching.value) {
+                projectOnly.value = true
+                searchType.value = ''
+                routerPush('/projectRanking')
             }
-        }
-    },
-    computed: {
-        activeClass() {
-            return function (type) {
-                if (this.currentCurrency === type) {
+        })
+        // 当前币种
+        const currentCurrency = ref<string>('all')
+        const activeClass = computed(()=>{
+            return function (type:string) {
+                if (currentCurrency.value === type) {
                     return 'primary'
                 }
                 return 'default'
             }
-        },
-        projectOrContractInfo() {
-            if (this.searchType === 'project') {
-                return this.projectObj.info
-            } else if (this.searchType === 'contract') {
-                return this.contractObj.info
+        })
+        const projectObj = ref<IProjectObj>({})
+        const projectOrContractInfo = computed(()=>{
+            if (searchType.value === 'project') {
+                return projectObj.value.info
+            } else if (searchType.value === 'contract') {
+                return projectObj.value.info
             } else {
                 return {info: []}
             }
-        }
-    },
-    mounted() {
-        const qurey = getUrlkey()
-        if (qurey.project_id && qurey.type === 'outLink') {
-            this.openDetailProject(qurey.project_id)
-            return
-        }
-        if (!this.$route.query.type) {
-            this.getList()
-        }
-    },
-    methods: {
+        })
         /**
          * 搜索方法
          */
-        search() {
-            this.searching = true
+        // 获取搜索时的数据
+        const contractObj = ref<IProjectObj>({})
+        const search = ():void=> {
+            searching.value = true
             let params = {
                 type: 'search',
-                param: this.searchParams
+                param: searchParams.value
             }
             // 从搜索框搜索，前端分不清是项目还是合约，放到param给后端判断
-            this.searchDetail(params, 'search', (type) => {
-                this.searchType = type
+            searchDetail(params, 'search', (type:string) => {
+                searchType.value = type
+                let len:number | undefined = 0
                 if (type === 'contract') {
-                    this.contractObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
-                    if (this.contractObj.info.length === 1) {
-                        this.projectOnly = true
-                        this.openDetailContract(this.contractObj.info[0].project_contract_id, true)
-                    } else if (this.contractObj.info.length > 1) {
-                        this.projectOnly = false
+                    contractObj.value = JSON.parse(getStore('ContractProjectTs') as string)
+                    len = contractObj.value.info?.length
+                    if (len === 1) {
+                        projectOnly.value = true
+                        contractObj.value.info && openDetailContract(contractObj.value.info[0].project_contract_id, true)
+                    } else if (len && len > 1) {
+                        projectOnly.value = false
                     }
 
                 } else if (type === 'project') {
-
-                    this.projectObj = JSON.parse(localStorage.getItem('ContractProjectTs'))
-                    if (this.projectObj.info.length === 1) {
-                        this.projectOnly = true
-                        this.openDetailProject(this.projectObj.info[0].project_id, true)
-                    } else if (this.projectObj.info.length > 1) {
-                        this.projectOnly = false
+                    projectObj.value = JSON.parse(getStore('ContractProjectTs') as string)
+                    len = projectObj.value.info?.length
+                    if (len === 1) {
+                        projectOnly.value = true
+                        projectObj.value.info && openDetailProject(projectObj.value.info[0].project_id, true)
+                    } else if (len && len > 1) {
+                        projectOnly.value = false
                     }
 
                 }
             })
-        },
+        }
         /**
          * 搜索接口调用方法
          * @param {Object} params - 参数对象
          * @param {String} type - 搜索类型
          * @param {Function} cb - 回调方法
          */
-        searchDetail(params, type, cb) {
-            const _this = this
+        const loadingSearch = ref<boolean>(false)
+        const searchDetail = (params:{type:string}, type:string, cb:Function):void =>{
             let param = JSON.parse(JSON.stringify(params))
             delete param.type
-            _this.loadingSearch = true
+            loadingSearch.value = true
             getContractProjectTs(param).then(res => {
                 if (res.data) {
                     // 存储数据
-                    _this.setStore('ContractProjectTs', JSON.stringify(res.data))
+                    setStore('ContractProjectTs', JSON.stringify(res.data))
                     if (type === 'search') {
                         // 后台返回的搜索类型（合约还是项目）
-                        _this.$isFunction(cb) && cb(res.data.type)
+                        isFunction(cb) && cb(res.data.type)
                     } else {
-                        _this.$isFunction(cb) && cb()
+                        isFunction(cb) && cb()
                     }
-                    _this.loadingSearch = false
+                    loadingSearch.value = false
                 } else {
-                    _this.loadingSearch = false
-                    _this.$message.error('option error')
+                    loadingSearch.value = false
+                    message('error', 'option error')
                 }
             }).catch(err => {
-                _this.loadingSearch = false
-                _this.$message.error(err.message)
+                loadingSearch.value = false
+                message('error', err.message || err)
                 console.error(err)
             })
-        },
+        }
         /**
          * 獲取列表數據方法
          */
-        getList() {
-            const _this = this
-            _this.loading = true
-            let params = {
-                page_num: this.pageParams.pageNum,
-                page_size: this.pageParams.pageSize,
+        const loading = ref<boolean>(false)
+        const tableData = ref<Array<any>>([])
+        const getList = ():void =>{
+            loading.value = true
+            let params:IPageParamInner = {
+                page_num: pageParams.value.pageNum,
+                page_size: pageParams.value.pageSize,
             }
-            if (this.currentCurrency !== 'all') {
-                params.platform = this.currentCurrency
+            if (currentCurrency.value !== 'all') {
+                params.platform = currentCurrency.value
             }
             getProjectRankList(params).then(res => {
                 if (res) {
-                    _this.tableData = res.data.page_info
-                    _this.tableData.map(val => {
+                    tableData.value = res.data.page_info
+                    tableData.value.map(val => {
                         val.showContract_num = false
                     })
-                    _this.pageParams.total = res.data.total
-                    _this.loading = false
+                   pageParams.value.total = res.data.total
+                    loading.value = false
                 }
             }).catch(err => {
-                _this.loading = false
-                _this.$message.error(err.message)
+                loading.value = false
+                message('error', err.message || err)
                 console.error(err)
             })
-        },
+        }
         /**
          * 按鈕組點擊篩選事件
          */
-        filterClick(type) {
-            this.currentCurrency = type
-            this.getList()
-        },
+        const filterClick = (type:string):void =>{
+            currentCurrency.value = type
+            getList()
+        }
         /**
          * 分页方法
          * @param {Object} item - 分页参数对象
          */
-        pageChange(item) {
-            this.pageParams.pageNum = item.currentPage
-            this.pageParams.currentPage = item.currentPage
-            this.getList()
-        },
+        const pageParams = ref<IPageParam>({
+            currentPage: 1,
+            pageNum: 1,
+            pageSize: 10,
+            total: 0
+        })
+        const pageChange = (item:IPageParam) :void =>{
+            pageParams.value.pageNum = item.currentPage
+            pageParams.value.currentPage = item.currentPage
+            getList()
+        }
         /**
          * 打開项目态势详情
          */
-        openDetailProject(params, num) {
+        const openDetailProject = (params:string, num?:boolean) :void =>{
             let param = {
                 type: 'search',
                 project_id: params
             }
             if (num === true) {
-                this.$router.push('/projectRanking')
+                routerPush('/projectRanking')
             }
-            this.searchDetail(param, 'click', () => this.$router.push({path: '/projectRanking/project', query: param}))
-        },
+            searchDetail(param, 'click', () => routerPush('/projectRanking/project',param))
+        }
         /**
          * 打開合约态势详情
          */
-        openDetailContract(params, num) {
+        const openDetailContract = (params:string, num?:boolean):void =>{
             let param = {
                 type: 'search',
                 project_contract_id: params //55
             }
             if (num === true) {
-                this.$router.push('/projectRanking')
+                routerPush('/projectRanking')
             }
-            this.searchDetail(param, 'click', () => this.$router.push({path: '/projectRanking/contract', query: param}))
-        },
+            searchDetail(param, 'click', () => routerPush('/projectRanking/contract', param))
+        }
 
-        projectOrContract(o) {
-            let type = this.searchType
+        const projectOrContract = (o:IProjectOrContract):void =>{
+            let type = searchType.value
             if (type === 'contract') {
-                this.openDetailContract(o.project_contract_id)
+                openDetailContract(o.project_contract_id)
             } else if (type === 'project') {
-                this.openDetailProject(o.project_id)
+                openDetailProject(o.project_id)
             }
         }
-    },
+
+        onMounted(()=>{
+            const qurey = getUrlkey()
+            if (qurey.project_id && qurey.type === 'outLink') {
+                openDetailProject(qurey.project_id)
+                return
+            }
+            if (!route.query.type) {
+               getList()
+            }
+        })
+        return {
+            search,
+            searchDetail,
+            getList,
+            filterClick,
+            pageChange,
+            openDetailProject,
+            openDetailContract,
+            projectOrContract,
+            pageParams,
+            activeClass,
+            loading,
+            loadingSearch,
+            projectOrContractInfo,
+            currentCurrency,
+            projectObj,
+            searchParams,
+            searching,
+            projectOnly,
+            searchType,
+            tableData,
+            beijing2utc,
+            formatDate,
+            createDate,
+        }
+    }
 })
 
 </script>
