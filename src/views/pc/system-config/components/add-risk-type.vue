@@ -31,17 +31,17 @@
                                         :value="item">
                                     </el-option>
                                 </el-select>-->
-                                <el-select v-model="abnormalSelectValue" multiple
-                                           value-key="code"
-                                           :placeholder="$t('lang.addRiskWindow.abnormalSelectInput')">
-                                    <el-option
+                            </template>
+                            <el-select v-model="abnormalSelectValue.data" multiple
+                                       value-key="code"
+                                       :placeholder="$t('lang.addRiskWindow.abnormalSelectInput')">
+                                <el-option
                                         v-for="(item) in featuresList"
                                         :label="item.label"
                                         :key="item.code"
                                         :value="item">
-                                    </el-option>
-                                </el-select>
-                            </template>
+                                </el-option>
+                            </el-select>
                             <span class="reg-start project-features">{{ verFeatures }}</span>
                         </el-form-item>
                     </el-form>
@@ -57,9 +57,9 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import {getRiskTypeInfo} from "../../../../api/system-config";
-import {defineComponent, ref, watch} from "vue";
+import {defineComponent, ref, watch, reactive, toRaw, shallowReactive} from "vue";
 import {ElMessage} from "element-plus/es";
 import {useI18n} from "vue-i18n";
 
@@ -84,16 +84,16 @@ export default defineComponent({
     },
     setup(props,ctx){
         const {t} = useI18n()
-        const checkAll = ref(false)
-        const checked = ref(true)
-        const addRiskWindowOpen = ref(false)
-        const addRiskName = ref('')
-        const abnormalSelectValue = ref([])
+        const checkAll = ref<boolean>(false)
+        const checked = ref<boolean>(true)
+        const addRiskWindowOpen = ref<boolean>(false)
+        const addRiskName = ref<string>('')
+        const abnormalSelectValue = shallowReactive({data:[]})
         const selectNameLength = ref([])
         // 风险类型名称校验信息
-        const verName = ref('')
+        const verName = ref<string>('')
         // 风险类型特征校验信息
-        const verFeatures = ref('')
+        const verFeatures = ref<string>('')
 
         watch(()=>addRiskWindowOpen,(nVal)=>{
             if (nVal) {
@@ -104,13 +104,15 @@ export default defineComponent({
                 resetVar()
             }
         })
+
         /**
          * 彈窗確認方法
          */
         const addRiskConfirm = () => {
+            let selectVal = toRaw(abnormalSelectValue.data)
             let data = {
                 name: addRiskName.value,
-                risk_features: abnormalSelectValue.value
+                risk_features: selectVal
             }
             // 確認編輯 、 保存
             ctx.emit('confirm', data)
@@ -139,7 +141,7 @@ export default defineComponent({
             checked.value = true
             addRiskWindowOpen.value = false
             addRiskName.value = ''
-            abnormalSelectValue.value = []
+            abnormalSelectValue.data = []
             selectNameLength.value = []
             verName.value = ''
             verFeatures.value = ''
@@ -149,18 +151,17 @@ export default defineComponent({
          * 获取风险类型详情数据
          */
         const getDetailData = () => {
-            const _this = this
-            if (this.type === 'add') {
-                this.addRiskName = ''
+            if (props.type === 'add') {
+                addRiskName.value = ''
                 return
             }
             const params = {
-                id: this.riskId
+                id: props.riskId
             }
             getRiskTypeInfo(params).then(res => {
                 if (res) {
-                    _this.addRiskName = res.data.risk_type.name
-                    _this.abnormalSelectValue = res.data.risk_type.risk_features
+                    addRiskName.value = res.data.risk_type.name
+                    abnormalSelectValue.data = res.data.risk_type.risk_features
                 }
             }).catch(err => {
                 const msg = t('lang.search') + t('lang.failed')
@@ -213,7 +214,7 @@ export default defineComponent({
                 risk_features: this.abnormalSelectValue
             }
             // 確認編輯 、 保存
-            ctx.emit('confirm', data)
+            this.$emit('confirm', data)
         },
         /!**
          * 關閉彈窗

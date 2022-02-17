@@ -22,8 +22,8 @@
         <add-risk-type
             :type="opType"
             :riskId = 'curItem.id'
-             @confirm = "(params)=>{return this.opType === 'add' ? this.confirmAdd(params) : this.confirmEdit(params)}"
-            :featuresList="featuresList"
+             @confirm = "(params)=>{return opType === 'add' ? confirmAdd(params) : confirmEdit(params)}"
+            :featuresList="featuresList.data"
             ref="addRiskType">
         </add-risk-type>
         <!--    删除风险类型弹窗    -->
@@ -40,7 +40,7 @@
 import SystemConfigTypeCard from "./components/system-config-type-card.vue";
 import AddRiskType from "./components/add-risk-type.vue";
 import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType} from "../../../api/system-config";
-import {defineComponent, ref, reactive, onMounted} from "vue";
+import {defineComponent, ref, shallowReactive, onMounted} from "vue";
 import {useI18n} from "vue-i18n";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 import {ElMessage} from "element-plus/es";
@@ -53,9 +53,9 @@ export default defineComponent({
         const {t} = useI18n()
         const showDelete = ref<boolean>(false)
         // 当前编辑、删除的项目数据对象
-        const curItem=ref<object>({})
+        const curItem=ref<any>({})
         // 系统的异常特征列表
-        const featuresList=ref<Array<object>>([])
+        const featuresList=shallowReactive({data:[]})
         // 彈窗狀態 編輯 或 新增
         const opType=ref<string>('add')
         const configList=ref<Array<object>>([])
@@ -71,20 +71,24 @@ export default defineComponent({
          * @param {Object} params - 搜索参数
          */
         const formVerification = (params:object):boolean=>{
-            addRiskType.verName = ''
-            addRiskType.verFeatures = ''
+            addRiskType.value.verName = ''
+            addRiskType.value.verFeatures = ''
             if(!params.name){
-                addRiskType.verName = t('lang.pleaseInput') + t('lang.addRiskWindow.addRiskWindowClassName')
+                addRiskType.value.verName = t('lang.pleaseInput') + t('lang.addRiskWindow.addRiskWindowClassName')
+                console.log(1)
                 return false
             }
             if(params.name && !ceReg.test(params.name)){
-                addRiskType.verName = t('lang.createProject.verCE')
+                addRiskType.value.verName = t('lang.createProject.verCE')
+                console.log(2)
                 return false
             }
             if(params.risk_features.length  === 0){
-                addRiskType.verFeatures = t('lang.pleaseInput') + t('lang.addRiskWindow.abnormalSelect')
+                addRiskType.value.verFeatures = t('lang.pleaseInput') + t('lang.addRiskWindow.abnormalSelect')
+                console.log(3)
                 return false
             }
+            console.log(4)
             return true
         }
         /**
@@ -92,22 +96,21 @@ export default defineComponent({
          */
         const addType = ():void => {
             opType.value = 'add'
-            addRiskType.addRiskWindowOpen = true
-            console.log(addRiskType.addRiskWindowOpen)
+            addRiskType.value.addRiskWindowOpen = true
         }
         /**
          * 確認新增方法
          * @param {Object} param - 表单参数
          */
         const confirmAdd = (param:object)=>{
-            if(formVerification(param)) return
+            if(!formVerification(param)) return
             createRiskType(param).then(res=>{
                 if(res){
                     const msg = t('lang.add')+ t('lang.success')
                     ElMessage.success(msg)
                     // 更新列表
                     getList()
-                    addRiskType.addRiskWindowOpen = false
+                    addRiskType.value.addRiskWindowOpen = false
                 }
             }).catch(err=>{
                 ElMessage.error(err.message)
@@ -121,14 +124,13 @@ export default defineComponent({
         const editType = (item:object):void => {
             opType.value = 'edit'
             curItem.value = item
-            addRiskType.addRiskWindowOpen = true
+            addRiskType.value.addRiskWindowOpen = true
         }
         /**
          * 確認編輯方法
          * @param {Object} param - 表单参数
          */
         const confirmEdit = (param:object) :void=> {
-            const _this = this
             const pathParams = {
                 id:curItem.value.id
             }
@@ -139,7 +141,7 @@ export default defineComponent({
                     ElMessage.success(msg)
                     // 更新列表
                     getList()
-                    ctx.ref.addRiskType.addRiskWindowOpen = false
+                    addRiskType.value.addRiskWindowOpen = false
                 }
             }).catch(err=>{
                 ElMessage.error(err.message)
@@ -159,7 +161,6 @@ export default defineComponent({
          */
         const confirmDelete = ():void => {
             showDelete.value = false
-            const _this = this
             const params = {
                 id:curItem.value.id
             }
@@ -184,7 +185,7 @@ export default defineComponent({
                 // 風險類型列表
                 configList.value =  res.data.risk_types
                 // 交易特徵列表
-                featuresList.value = res.data.system_risk_features
+                featuresList.data = res.data.system_risk_features
                 loading.value = false
             }).catch(err=>{
                 ElMessage.error(err.message)
