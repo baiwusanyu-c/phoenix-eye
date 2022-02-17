@@ -65,7 +65,7 @@ export default defineComponent({
             newUserChart()
         })
          // 交易量图表对象
-        const txQuantityChart = ref(null)
+        const txQuantityChart = ref<any>(null)
         const quantityChart = (isUpdate?:boolean):void => {
             if (props.txQuantity.length === 0) return;
             const dv = new DataSet.DataView().source(props.txQuantity);
@@ -127,7 +127,7 @@ export default defineComponent({
             chart.render();
         }
         // 新增用户图表对象
-        const userChart = ref(null)
+        const userChart = ref<any>(null)
         const newUserChart = (isUpdate?:boolean):void => {
             if (props.newUser.length === 0) return;
             const dv = new DataSet.DataView().source(props.newUser);

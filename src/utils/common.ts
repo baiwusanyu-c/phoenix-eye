@@ -6,6 +6,7 @@ import {
 // @ts-ignore
 import {BeMessage} from "../../public/be-ui/be-ui.es";
 import Vue from "vue";
+import {IOption} from "./types";
 /**
  * id生成方法
  * @return {string}
@@ -21,6 +22,19 @@ export const getUuid = (): string => {
     s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
     s[8] = s[13] = s[18] = s[23] = "-"
     return s.join("")
+}
+export const getUrlkey = function () {
+    let params:IOption = {};
+    let url = window.location.href
+    if(url.indexOf("?")>-1){//判断如果请求地址中包含参数
+        var urls = url.split("?");
+        var arr = urls[1].split("&");
+        for (var i = 0, l = arr.length; i < l; i++) {
+            var a = arr[i].split("=");
+            params[a[0]] = a[1];
+        }
+    }
+    return params;
 }
 export function createKey(){
     return Math.random().toString(36).substr(2)
