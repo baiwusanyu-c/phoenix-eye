@@ -17,7 +17,7 @@
                                       endLength="5">
                     </be-ellipsis-copy>
                 </h3>
-                <span class="card-title-public-txt">{{isPublic? $t('el.proManageConfig.proPublic') : $t('el.proManageConfig.proPrivate')}}</span>
+                <span class="card-title-public-txt">{{isPublic? $t('lang.proManageConfig.proPublic') : $t('lang.proManageConfig.proPrivate')}}</span>
             </div>
             <div>
             <!-- <be-svg-icon @click='emitFunc("fresh")' style="cursor: pointer" icon-class="-shuaxin"
@@ -45,7 +45,7 @@
                     </li>
                 </ul>
             </div>
-            <p>{{ $t('el.proManageConfig.createTime') }} :
+            <p>{{ $t('lang.proManageConfig.createTime') }} :
                 <el-tooltip placement="top" effect="light">
                     <span slot="content">UTC：{{beijing2utc(createTime)}}</span>
                     <span class="cursor"> {{ formatDate($createDate(createTime),'Y-m-d H:i:s')}}</span>
@@ -56,23 +56,20 @@
         <div v-if="type === 'add'" class="card-add">
             <div class="card-add-body" @click='emitFunc("add")'>
                 <img src="@/assets/image/pc/add-type-icon.png" alt=""/>
-                <p>{{ $t('el.proManageConfig.addPro') }}</p>
+                <p>{{ $t('lang.proManageConfig.addPro') }}</p>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon";
+<script lang="ts">
+import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
+import {defineComponent, ref, computed, onMounted} from 'vue'
+import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 
 export default {
     name: "project-manage-card",
-    components: {BeSvgIcon},
-    data() {
-        return {
-            showLength:'14'
-        }
-    },
+    components: {BeSvgIcon,BeEllipsisCopy},
     props: {
         /**
          * 类型
@@ -117,20 +114,102 @@ export default {
             default: () => []
         }
     },
+    setup(props:any,ctx:any){
+        const showLength = ref<string>('14')
+
+        onMounted(()=>{
+            initView()
+        })
+
+        const formatePlatform = computed(()=>{
+            return function (val){
+                return val.toUpperCase()
+            }
+        })
+        /**
+         * 根据屏幕分辨率调整
+         */
+        const initView = () =>{
+            const width = window.screen.availWidth
+            const height = window.screen.availHeight
+            if(height >= 680 || width >=1280) {
+                showLength.value = '12'
+            }
+        }
+        /**
+         * 触发事件方法
+         * @param {String} evtName - 事件名称
+         */
+        const emitFunc = (evtName:string) => {
+            ctx.emit(evtName)
+        }
+        return{
+            showLength,
+            formatePlatform,
+            emitFunc
+        }
+    },
+    /*data() {
+        return {
+            showLength:'14'
+        }
+    },
+    props: {
+        /!**
+         * 类型
+         * @value add/edit
+         *!/
+        type: {
+            type: String,
+            default: 'add'
+        },
+        /!**
+         * 关键词列表
+         *!/
+        keywordList: {
+            type: Array,
+            default: () => []
+        },
+        /!**
+         * 卡片标题
+         *!/
+        title: {
+            type: String,
+        },
+        /!**
+         * 是否公共项目
+         * @value public/private
+         *!/
+        isPublic: {
+            type: Boolean,
+            default: true
+        },
+        /!**
+         * 创建时间
+         *!/
+        createTime: {
+            type: String,
+        },
+        /!**
+         * 项目合约地址列表
+         *!/
+        contractList: {
+            type: Array,
+            default: () => []
+        }
+    },
     computed:{
       formatePlatform(){
-          return function (val){
-              return val.toUpperCase()
-          }
+
       }
     },
     mounted() {
         this.initView()
     },
     methods: {
-        /**
+        /!**
          * 根据屏幕分辨率调整
-         */
+         *!/
         initView(){
             const width = window.screen.availWidth
             const height = window.screen.availHeight
@@ -138,14 +217,14 @@ export default {
                 this.showLength = '12'
             }
         },
-        /**
+        /!**
          * 触发事件方法
          * @param {String} evtName - 事件名称
-         */
+         *!/
         emitFunc(evtName) {
             this.$emit(evtName)
         }
-    },
+    },*/
 }
 </script>
 

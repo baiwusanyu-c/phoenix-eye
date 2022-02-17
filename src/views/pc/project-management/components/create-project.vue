@@ -73,13 +73,318 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import {createProject, getProjectInfo, saveEditProject} from "../../../../api/project-management";
-import {platformListDict} from "../../../../utils/platform-dict";
+import {platformListDict} from "../../../../utils/platformDict";
+import {defineComponent, ref, reactive, computed, watch, onMounted, toRaw, inject} from "vue"
+import {useI18n} from "vue-i18n";
+import {ElMessage} from "element-plus/es";
+import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
 
-export default {
+export default defineComponent({
     name: "CreateProject",
-    data() {
+    props: {
+        // 操作類型
+        type: {
+            type: String,
+            default: 'add'
+        },
+        // 项目id
+        projectId: {
+            type: [String,Number],
+            default: ''
+        }
+    },
+    setup(props,ctx){
+        const {t} = useI18n()
+        const createProjectWindow = ref<boolean>(false)
+        const projectName= ref<string>('')
+        const projectKeyWords= ref<string>('')
+        const openTF= ref<boolean>(true)
+        const labelPosition= ref<string>('right')
+        const addContract= ref<number>(0)
+        const contractSite=reactive({data: [{platform: 'eth', contract_address: '', label: '', verAddr: '', verContract: ''}]})
+        // 下拉平台字典
+        const platformListDict=reactive({data:[]})
+        // 名称校验信息
+        const verName= ref<string>('')
+        // 关键词校验信息
+        const verKeyword= ref<string>('')
+        const getList = inject('getList')
+        console.log(getList)
+
+        onMounted(()=>{
+            platformListDict.data = platformListDict
+        })
+        const isPublic = computed(()=>{
+            if(openTF.value){
+                return t('el.createProject.createProjectUnSecret')
+            }else{
+                return t('el.createProject.createProjectOpenSecret')
+            }
+        })
+        watch(()=>createProjectWindow,(nVal)=>{
+            if (nVal) {
+                // 獲取詳情信息
+                getDetailData()
+            } else {
+                // 重置表單
+                resetVar()
+            }
+        })
+
+        /**
+         * 弹窗确认方法
+         */
+        const createProjectConfirm =  async function() {
+            if(props.type === 'add'){
+                await addProject()
+            }
+            if(props.type === 'edit'){
+                await editProject()
+            }
+        }
+        /**
+         * 弹窗取消方法
+         */
+        const createProjectCancel = () => {
+            createProjectWindow.value = false
+        }
+        const addContractSite = () => {
+            contractSite.data.push({platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''})
+        }
+        const deleteContractSite = (i) => {
+            contractSite.data.splice(i, 1)
+        }
+        /**
+         * 重置參數變量
+         */
+        const resetVar = () => {
+            createProjectWindow.value = false
+            projectName.value = ''
+            projectKeyWords.value = ''
+            verKeyword.value = ''
+            verName.value = ''
+            openTF.value = true
+            labelPosition.value='right'
+            addContract.value= 0
+            contractSite.data = [{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
+
+        }
+        /**
+         * 获取风险类型详情数据
+         */
+        const getDetailData = () => {
+            if (props.type === 'add') {
+                projectName.value = ''
+                return
+            }
+            const params = {
+                id: props.projectId
+            }
+            getProjectInfo( params).then(res => {
+                if (res) {
+                    projectName.value = res.data.name
+                    openTF.value = res.data.is_public
+                    projectKeyWords.value = res.data.keyword
+                    contractSite.value = res.data.contract_infos
+                }
+            }).catch(err => {
+                const msg = t('el.search') + t('el.failed')
+                ElMessage.error(msg)
+                console.error(err)
+            })
+        }
+        /**
+         * 分号处理方法
+         * @param {String} params - 处理字符串
+         */
+        const semicolonVerification = (params) => {
+            // 那中文分号处理成英文
+            let res = params.replace('；',';')
+            // 如果最后一个字符是分号，去除末尾的符号
+            if(res.charAt(res.length-1) === '；' || res.charAt(res.length-1) === ';'){
+                res = res.substring(0,res.length -1)
+            }
+            return res
+        }
+        /**
+         * 校驗名稱
+         * @param {Object} params - 搜索参数
+         */
+        const verificationName = (params) => {
+            if(!params.name){
+                verName.value = t('el.pleaseInput') + t('el.createProject.createProjectName')
+                return false
+            }
+            if(params.name && !ceReg.test(params.name)){
+                verName.value = t('el.createProject.verCE')
+                return false
+            }
+            return true
+        }
+        /**
+         * 校驗關鍵詞
+         * @param {Object} params - 搜索参数
+         */
+        const verificationKeyword = (params) => {
+            if(!params.keyword){
+                verKeyword.value = t('el.pleaseInput') + t('el.createProject.createProjectKeyWords')
+                return false
+            }
+            // 校驗中英文，分號
+            if(params.keyword){
+                let keyword = semicolonVerification(params.keyword)
+                if(!ceSemicolonReg.test(keyword)){
+                    verKeyword.value = t('el.createProject.verCeSemicolonReg')
+                    return false
+                }
+                params.keyword = keyword
+            }
+            return true
+        }
+        /**
+         * 校验合约地址
+         */
+        const verificationContractAddr = (val) => {
+            const platformReg = {
+                bsc:(addr)=>ETHaddress.test(addr),
+                eth:(addr)=>ETHaddress.test(addr),
+                heco:(addr)=>ETHaddress.test(addr),
+                polygon:(addr)=>ETHaddress.test(addr),
+            }
+            // 没有填写合约地址
+            if(!val.contract_address){
+                val.verAddr = t('el.pleaseInput')+ t('el.createProject.contractSite')
+                return true
+            }
+            // 校验地址格式
+            if(!platformReg[val.platform](val.contract_address)){
+                val.verAddr = t('el.createProject.contractSite')+ t('el.formatError')
+                return true
+            }
+            return false
+        }
+        /**
+         * 表單校驗方法
+         * @param {Object} params - 搜索参数
+         */
+        const formVerification = (params) =>{
+            verName.value = ''
+            verKeyword.value = ''
+            if(!verificationName(params)) return false
+            if(!verificationKeyword(params)) return false
+            let contractInfos:Array<any> = []
+            let hasEmpty = false
+            params.contract_infos.forEach(val=>{
+                val.verAddr = ''
+                val.verContract = ''
+                hasEmpty = verificationContractAddr(val)
+                // 填写了合约标签，则进行校验
+                if(val.label){
+                    let label = semicolonVerification(val.label)
+                    if(!ceSemicolonReg.test(label)){
+                        val.verContract = t('el.createProject.verCeSemicolonTag')
+                        hasEmpty = true
+                    }else{
+                        val.label = label
+                    }
+
+                }
+                if(val.contract_address){
+                    contractInfos.push(val)
+                }
+            })
+            if(hasEmpty) {
+                return false
+            }
+            if(contractInfos.length === 0) {
+                const msg = t('el.createProject.verInfo')
+                ElMessage.warning(msg)
+                return false
+            }
+            params.contract_infos = contractInfos
+            return true
+        }
+        /**
+         * 处理格式化参数
+         */
+        const setParams = (params) => {
+            params.map((val)=>{
+                return {
+                    platform:val.platform,
+                    contract_address:val.contract_address,
+                    label:val.label
+                }
+            })
+        }
+        /**
+         * 确认增加项目方法
+         */
+        const addProject = () => {
+            let params = {
+                name:projectName.value,
+                is_public:openTF.value,
+                keyword:projectKeyWords.value,
+                contract_infos:toRaw(contractSite.data)
+            }
+            // 表单校验
+            if(!formVerification(params)){
+                /*this.$forceUpdate()*/
+                return
+            }
+            setParams(params.contract_infos)
+            createProject(params).then(res=>{
+                if(res){
+                    const msg = t('el.add')+ t('el.success')
+                    ElMessage.success(msg)
+                    // 更新列表
+                    createProjectWindow.value = false
+                }
+            }).catch(err=>{
+                ElMessage.error(err.message)
+                console.error(err)
+            })
+
+        }
+        /**
+         * 确认编辑项目方法
+         */
+        const editProject = () => {
+            let params = {
+                name:projectName.value,
+                is_public:openTF.value,
+                keyword:projectKeyWords.value,
+                contract_infos:contractSite.data
+            }
+            const pathParams = {
+                id: props.projectId
+            }
+            // 表单校验
+            if(!formVerification(params)){
+                /*this.$forceUpdate()*/
+                return
+            }
+            setParams(params.contract_infos)
+            saveEditProject(params,pathParams).then(res=>{
+                if(res){
+                    const msg = t('el.edit')+ t('el.success')
+                    ElMessage.success(msg)
+                    // 更新列表
+                    _this.$parent.getList()
+                    createProjectWindow.value = false
+                }
+            }).catch(err=>{
+                ElMessage.error(err.message)
+                console.error(err)
+            })
+        }
+
+        return{
+
+        }
+    },
+    /*data() {
         return {
             createProjectWindow: false,
             projectName: '',
@@ -132,9 +437,9 @@ export default {
         this.platformListDict = platformListDict
     },
     methods: {
-        /**
+        /!**
          * 弹窗确认方法
-         */
+         *!/
         async createProjectConfirm() {
             if(this.type === 'add'){
                 await this.addProject()
@@ -143,9 +448,9 @@ export default {
                 await this.editProject()
             }
         },
-        /**
+        /!**
          * 弹窗取消方法
-         */
+         *!/
         createProjectCancel() {
             this.createProjectWindow = false
         },
@@ -155,9 +460,9 @@ export default {
         deleteContractSite(i) {
             this.contractSite.splice(i, 1)
         },
-        /**
+        /!**
          * 重置參數變量
-         */
+         *!/
         resetVar() {
             this.createProjectWindow = false
             this.projectName = ''
@@ -170,9 +475,9 @@ export default {
             this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
 
         },
-        /**
+        /!**
          * 获取风险类型详情数据
-         */
+         *!/
         getDetailData() {
             const _this = this
             if (this.type === 'add') {
@@ -195,10 +500,10 @@ export default {
                 console.error(err)
             })
         },
-        /**
+        /!**
          * 分号处理方法
          * @param {String} params - 处理字符串
-         */
+         *!/
         semicolonVerification(params){
             // 那中文分号处理成英文
             let res = params.replace('；',';')
@@ -208,10 +513,10 @@ export default {
             }
             return res
         },
-        /**
+        /!**
          * 校驗名稱
          * @param {Object} params - 搜索参数
-         */
+         *!/
         verificationName(params){
             if(!params.name){
                 this.verName = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectName')
@@ -223,10 +528,10 @@ export default {
             }
             return true
         },
-        /**
+        /!**
          * 校驗關鍵詞
          * @param {Object} params - 搜索参数
-         */
+         *!/
         verificationKeyword(params){
             if(!params.keyword){
                 this.verKeyword = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectKeyWords')
@@ -243,9 +548,9 @@ export default {
             }
             return true
         },
-        /**
+        /!**
          * 校验合约地址
-         */
+         *!/
         verificationContractAddr(val){
             const platformReg = {
                 bsc:(addr)=>this.ETHaddress.test(addr),
@@ -265,10 +570,10 @@ export default {
             }
             return false
         },
-        /**
+        /!**
          * 表單校驗方法
          * @param {Object} params - 搜索参数
-         */
+         *!/
         formVerification(params){
             this.verName = ''
             this.verKeyword = ''
@@ -306,9 +611,9 @@ export default {
             params.contract_infos = contractInfos
             return true
         },
-        /**
+        /!**
          * 处理格式化参数
-         */
+         *!/
         setParams(params){
             params.map((val)=>{
                 return {
@@ -318,9 +623,9 @@ export default {
                 }
             })
         },
-        /**
+        /!**
          * 确认增加项目方法
-         */
+         *!/
         addProject(){
             const _this = this
             let params = {
@@ -349,9 +654,9 @@ export default {
             })
 
         },
-        /**
+        /!**
          * 确认编辑项目方法
-         */
+         *!/
         editProject(){
             const _this = this
             let params = {
@@ -382,8 +687,8 @@ export default {
                 console.error(err)
             })
         }
-    }
-}
+    }*/
+})
 </script>
 
 <style lang="scss">
