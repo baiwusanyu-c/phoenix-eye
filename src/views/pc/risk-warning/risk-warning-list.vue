@@ -175,10 +175,10 @@
 <script lang="ts">
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-import {platformListDict} from "../../../utils/platformDict";
+import {platformListDict} from "../../../utils/platform-dict";
 import {getProjWarning} from "../../../api/risk-warning";
-import {defineComponent, ref, reactive, onMounted, watch, computed} from "vue";
-import {useI18n} from "vue-i18n";
+import {defineComponent, ref, reactive, onMounted, watch, computed,WritableComputedRef } from "vue";
+import {useI18n,Locale} from "vue-i18n";
 import {ElMessage} from "element-plus/es";
 import {openWindow,beijing2utc,createDate,formatDate} from "../../../utils/common";
 
@@ -192,8 +192,8 @@ export default defineComponent({
             addr: ''
         })
         const platformList = ref<Array<object>>([])
-
         const setPlatformList = ():void => {
+            platformList.value = []
             platformList.value = JSON.parse(JSON.stringify(platformListDict))
             platformList.value.unshift(
                 {
@@ -216,14 +216,14 @@ export default defineComponent({
         })
         const tableData = ref<object>([])
         const loading = ref<boolean>(false)
-        const listenLang = computed(()=>{
-            return locale
-        })
-        watch(()=>listenLang,()=>{
+
+        const localeInner = ref<WritableComputedRef<Locale>>(locale)
+        watch(localeInner,()=>{
             setPlatformList()
         })
+
         const stateSuccess = computed(()=>{
-            return function (val){
+            return function (val:string){
                 if(val === 'success' || val === '成功' ){
                     return {
                         color:'#44D7B6'
@@ -235,7 +235,7 @@ export default defineComponent({
             }
         })
         const stateTxt = computed(()=>{
-            return function (val){
+            return function (val:string){
                 if(val === 'success' || val === '成功' ){
                     return t('lang.riskConfig.stateSuccess')
                 }

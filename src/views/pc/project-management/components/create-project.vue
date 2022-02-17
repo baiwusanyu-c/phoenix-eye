@@ -75,7 +75,7 @@
 
 <script>
 import {createProject, getProjectInfo, saveEditProject} from "../../../../api/project-management";
-import {platformListDict} from "../../../../utils/platformDict";
+import {platformListDict} from "../../../../utils/platform-dict";
 
 export default {
     name: "CreateProject",

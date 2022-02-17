@@ -175,7 +175,7 @@ import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-ico
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
 import {getProjWarningDetail} from "../../../api/risk-warning";
 import {webURL} from "../../../enums/link";
-import {platformToCurrency} from "../../../utils/platformDict";
+import {platformToCurrency,IPlatformToCurrency} from "../../../utils/platform-dict";
 import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from 'vue'
 import composition from "../../../utils/mixin/common-func"
 import {getUuid,simulateToFixed,openWindow} from "../../../utils/common";
@@ -198,7 +198,7 @@ export default defineComponent({
         // 缩略数量
         const ellipsis = ref<string>('8')
         // 链平台转化币种
-        const platformToCurrencyInner = ref<Array<object>>(platformToCurrency)
+        const platformToCurrencyInner = ref<IPlatformToCurrency>(platformToCurrency)
         //
         const addrCellWidth= ref<string>('430')
 
@@ -274,11 +274,7 @@ export default defineComponent({
          * 跳轉到第三方頁面
          */
         const openWeb = ():void => {
-            console.log(baseInfo.value)
-            console.log(baseInfo.value.platform,baseInfo.value.tx_hash)
-            console.log(baseInfo.value.platform || baseInfo.value.tx_hash)
             if(!baseInfo.value.platform || !baseInfo.value.tx_hash) return
-            console.log(`${webURL[baseInfo.value.platform]}${baseInfo.value.tx_hash}`)
             const url = `${webURL[baseInfo.value.platform]}${baseInfo.value.tx_hash}`
             openWindow(url)
         }

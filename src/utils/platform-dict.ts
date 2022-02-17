@@ -1,17 +1,27 @@
 /*
-* @platformDict.js
+* @platform-dict.ts
 * @deprecated 
 * @author czh
 * @update (czh 2021/11/19)
 */
-
-export const platformDict = {
+export interface IPlatformDict {
+    ETH:string
+    BSC:string
+    HECO:string
+    Polygon:string
+}
+export const platformDict:IPlatformDict = {
     ETH:'eth',
     BSC:'bsc',
     HECO:'heco',
     Polygon:'polygon'
 }
-export const platformListDict =  [
+export interface IPlatformListItem {
+    label:string
+    id:string
+    value:string
+}
+export const platformListDict:Array<IPlatformListItem> =  [
     {
         label: 'ETH',
         value: 'eth',
@@ -31,7 +41,13 @@ export const platformListDict =  [
         id:'jhgadjghzngrgefdghhgkdfjg'
     },
 ]
-export const platformToCurrency = {
+export interface IPlatformToCurrency {
+    eth:string
+    bsc:string
+    heco:string
+    Polygon:string
+}
+export const platformToCurrency:IPlatformToCurrency = {
     eth:'ETH',
     bsc:'BNB',
     heco:'HT',

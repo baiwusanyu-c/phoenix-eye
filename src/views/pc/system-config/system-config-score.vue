@@ -163,20 +163,38 @@
 </template>
 
 <script lang="ts">
-import {getRiskScore,saveRiskScore,resetRiskScore} from '../../../api/system-config'
+import {getRiskScore, saveRiskScore, resetRiskScore, IRiskScore} from '../../../api/system-config'
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-import {defineComponent, ref, reactive, shallowReactive, toRaw, watch, computed, onMounted} from "vue";
-import {useI18n} from "vue-i18n";
+import {
+    defineComponent,
+    ref,
+    reactive,
+    shallowReactive,
+    toRaw,
+    watch,
+    computed,
+    onMounted,
+    WritableComputedRef
+} from "vue";
+import {Locale, useI18n} from "vue-i18n";
 import {ElMessage} from "element-plus/es";
+interface ISystemConfigScore {
+    project?:string
+    weight?:string
+    configFst?:string
+    configSnd?:string
+    configTrd?:string
+    configFth?:string
+}
 
 export default defineComponent({
     name: "system-config-score",
     components:{MsgDialog},
     setup(){
         const {t,locale} = useI18n()
-        const widthGird=ref('240')
+        const widthGird=ref<string>('240')
         const changeConfigWarningInput=ref<boolean>(false)
-        const inputShow=ref(false)
+        const inputShow=ref<boolean>(false)
         // 输入框绑定以及显示的数据
         const inputValue= reactive({
             data: {
@@ -213,7 +231,7 @@ export default defineComponent({
                 time_range: ''
             }
         })
-        const systemConfigScore=ref([
+        const systemConfigScore= ref<Array<ISystemConfigScore>>([
             {
                 project:t('lang.systemConfigScore.configProject'),
                 weight:t('lang.systemConfigScore.weight'),
@@ -271,10 +289,8 @@ export default defineComponent({
             initData('init')
             initView()
         })
-        const listenLang = computed(()=>{
-            return locale
-        })
-        watch(()=>listenLang,()=>{
+        const localeInner = ref<WritableComputedRef<Locale>>(locale)
+        watch(localeInner,()=>{
             systemConfigScore.value = [
                 {
                     project:t('lang.systemConfigScore.configProject'),
@@ -333,7 +349,7 @@ export default defineComponent({
         /**
          * 拉取数据
          */
-        const getScore = () => {
+        const getScore = ():void => {
             getRiskScore().then(res => {
                 if(res){
                     // 拿到的数据都为正
@@ -346,7 +362,7 @@ export default defineComponent({
         /**
          * 根据屏幕分辨率调整表格宽度
          */
-        const initView = () =>{
+        const initView = ():void =>{
             const width = window.screen.availWidth
             const height = window.screen.availHeight
             if(height >= 680 || width >=1280) {
@@ -357,19 +373,19 @@ export default defineComponent({
          * 初始化\参数
          * @param type
          */
-        const initData = (type = 'init') => {
+        const initData = (type:string = 'init'):void => {
             if(type === 'init'){
                 // 这里应该调接口拿数据
                 getScore()
             }
         }
-        const opFailed = (err) => {
+        const opFailed = (err:Error):void => {
             const msg = t('lang.operation')+ t('lang.failed')
             ElMessage.error(msg)
             console.error(err)
         }
         // 初始化参数
-        const warningDialogConfirm = () => {
+        const warningDialogConfirm = ():void => {
             resetRiskScore().then(() => {
                 getScore()
                 changeConfigWarningInput.value = false
@@ -378,20 +394,20 @@ export default defineComponent({
             })
         }
         // 修改，显示input框
-        const changeConfig = () => {
+        const changeConfig = ():void => {
             inputShow.value = true
         }
         // 取消修改
-        const changeConfigCancel = () => {
+        const changeConfigCancel = ():void => {
             inputShow.value = false
             // 再调取一次接口，拿到上次修改的数据
             getScore()
         }
         // 修改风险评分配置信息
-        const changeConfigConfirm = () => {
+        const changeConfigConfirm = ():void => {
             // 开始表单校验
-            let sum = 0
-            let valArr = Object.values(toRaw(inputValue.data))
+            let sum:number = 0
+            let valArr:Array<any> = Object.values(toRaw(inputValue.data))
             let valArrEmpty = []
             for(let i = 0;i < valArr.length - 1;i++){
                 let valArrCfg = Object.values(valArr[i].config)
@@ -419,7 +435,7 @@ export default defineComponent({
                 return
             }
 
-            let params = toRaw(inputValue.data)
+            let params:IRiskScore = toRaw(inputValue.data)
             // 调用后端接口，存储表单数据
             saveRiskScore(params).then(res => {
                 if(res){
@@ -432,7 +448,7 @@ export default defineComponent({
             inputShow.value = false
         }
         // 表格行列合并
-        const arraySpanMethod = ({ rowIndex, columnIndex }) => {
+        const arraySpanMethod = ({ rowIndex, columnIndex }:{rowIndex:number,columnIndex:number}) => {
             if(rowIndex === 0||rowIndex === 4){
                 if(columnIndex === 2){
                     return [1,4]
@@ -448,7 +464,7 @@ export default defineComponent({
                 }
             }
         }
-        const columnStyle = ({ rowIndex, columnIndex }) => {
+        const columnStyle = ({ rowIndex, columnIndex }:{rowIndex:number,columnIndex:number}) => {
             if(rowIndex === 0){
                 return {"font-weight":'700',"text-align": "center"}
             }

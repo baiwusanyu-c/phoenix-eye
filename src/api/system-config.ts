@@ -57,22 +57,22 @@ export function getRiskScore() {
     })
 }
 // 设置风险评分保存
-interface IRiskScore {
+export interface IRiskScore {
     static_testing:any
     tx_safety:any
     tx_stability: {
-        weight: number
+        weight: number | string
         config: {
-            score_coefficient: number
+            score_coefficient: number | string
         }
     }
     safety_opinion: {
-        weight:number
+        weight:number | string
         config:{
-            each:number
+            each:number | string
         }
     }
-    time_range:number
+    time_range:number | string,
 }
 export function saveRiskScore(params:IRiskScore) {
     return request({

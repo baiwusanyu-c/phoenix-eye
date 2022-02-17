@@ -192,7 +192,8 @@
 
       .dialog-footer{
         display: flex;
-        justify-content: center;
+          justify-content: space-around;
+          width: 56%;
       }
     }
   }

@@ -46,12 +46,14 @@
                         </el-form-item>
                     </el-form>
                 </div>
-                <span slot="footer" class="dialog-footer">
+                <template #footer>
+                    <span class="dialog-footer">
                     <el-button class="default" type="primary"
                                @click="addRiskCancel">{{ $t('lang.createProject.createProjectCancel') }}</el-button>
                     <el-button class="primary hbjbh" type="primary"
                                @click="addRiskConfirm">{{ $t('lang.createProject.createProjectConfirm') }}</el-button>
                 </span>
+                </template>
             </el-dialog>
         </div>
     </div>
