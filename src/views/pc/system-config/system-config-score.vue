@@ -174,9 +174,9 @@ export default defineComponent({
     components:{MsgDialog},
     setup(){
         const {t,locale} = useI18n()
-        const widthGird=ref('240')
+        const widthGird=ref<string>('240')
         const changeConfigWarningInput=ref<boolean>(false)
-        const inputShow=ref(false)
+        const inputShow=ref<boolean>(false)
         // 输入框绑定以及显示的数据
         const inputValue= reactive({
             data: {
