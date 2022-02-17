@@ -249,6 +249,9 @@ export default defineComponent({
                     val.valueList = []
                     val.token_profits.forEach(valRes=>{
                         res.itemId = getUuid()
+                        if(valRes.token_name === null){
+                            valRes.token_name = valRes.contract_address
+                        }
                         val.addrList.push({val:valRes.token_name,itemId:'token_name'+getUuid(),tag:valRes.contract_address_tag})
                         val.valueList.push({
                             ordVal:valRes.token_num,

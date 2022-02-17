@@ -186,7 +186,7 @@ export default defineComponent({
     name: "risk-warning-list",
     components: {BePagination,BeEllipsisCopy},
     setup(){
-        const {t} = useI18n()
+        const {t,locale} = useI18n()
         const searchParams = reactive({
             platform: 'all',
             addr: ''
@@ -217,7 +217,7 @@ export default defineComponent({
         const tableData = ref<object>([])
         const loading = ref<boolean>(false)
         const listenLang = computed(()=>{
-            return t
+            return locale
         })
         watch(()=>listenLang,()=>{
             setPlatformList()
