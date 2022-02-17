@@ -17,6 +17,9 @@
 √ project-ranking-safety-opinion.vue 迁移完成
 √ project-ranking-score-card.vue 迁移完成
 √ project-ranking-trade-stability.vue 迁移完成
+### 2022年2月17日
+√ project-ranking-market-performance.vue 迁移完成
+
 
 
 
