@@ -40,7 +40,7 @@
 import SystemConfigTypeCard from "./components/system-config-type-card.vue";
 import AddRiskType from "./components/add-risk-type.vue";
 import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType} from "../../../api/system-config";
-import {defineComponent, ref, shallowReactive, onMounted} from "vue";
+import {defineComponent, ref, shallowReactive, onMounted, nextTick} from "vue";
 import {useI18n} from "vue-i18n";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 import {ElMessage} from "element-plus/es";
@@ -124,7 +124,10 @@ export default defineComponent({
         const editType = (item:object):void => {
             opType.value = 'edit'
             curItem.value = item
-            addRiskType.value.addRiskWindowOpen = true
+            nextTick(()=>{
+                addRiskType.value.addRiskWindowOpen = true
+            })
+
         }
         /**
          * 確認編輯方法
