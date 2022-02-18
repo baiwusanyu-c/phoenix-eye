@@ -24,12 +24,13 @@
                 v-for="(item) in projectList.data" :key="item.id">
             </project-manage-card>
         </div>
-        <!--    新增、编辑项目弹窗    -->
+        <!--    新增、编辑项目弹窗   ref="createProjectDialog" -->
         <create-project
             :type="opType"
             :projectId = 'curItem.data.id'
+            :getList="getList"
             @confirm = "()=>{return opType === 'add' ? confirmAdd() : confirmEdit()}"
-            ref="createProjectDialog">
+             ref="createProjectDialog">
         </create-project>
         <!--    删除项目弹窗    -->
         <MsgDialog @confirm="confirmDelete"
@@ -59,7 +60,7 @@ import {
     saveEditProject
 } from "../../../api/project-management";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-import {defineComponent, ref, reactive, onMounted ,provide} from 'vue'
+import {defineComponent, ref, reactive, onMounted ,provide,getCurrentInstance} from 'vue'
 import {ElMessage} from "element-plus/es";
 import {useI18n} from "vue-i18n";
 
@@ -86,15 +87,18 @@ export default defineComponent({
         const addrList=reactive({data:[]})
         // loading
         const loading=ref<boolean>(false)
-        const createProjectDialog = ref({})
+        const createProjectDialog = ref<any>({})
         onMounted(()=>{
             getList()
         })
+
+        //const instanceInner = getCurrentInstance()
         /**
          * 新增类型方法
          */
         const addProject = () => {
             opType.value = 'add'
+            //instanceInner.refs.createProjectDialogXXX.createProjectWindow = true
             createProjectDialog.value.createProjectWindow = true
         }
         /**
@@ -222,7 +226,6 @@ export default defineComponent({
                 console.error(err)
             })
         }
-        provide('getList',getList())
 
         return {
             curItem,
@@ -233,6 +236,8 @@ export default defineComponent({
             deleteText,
             projectList,
             loading,
+            addrList,
+            createProjectDialog,
             confirmFresh,
             freshProject,
             confirmDelete,
@@ -240,7 +245,8 @@ export default defineComponent({
             confirmEdit,
             editProject,
             addProject,
-            confirmAdd
+            confirmAdd,
+            getList
         }
     },
     /*data() {

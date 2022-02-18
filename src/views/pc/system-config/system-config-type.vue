@@ -201,12 +201,14 @@ export default defineComponent({
             configList,
             loading,
             addRiskType,
+            formVerification,
             addType,
             confirmAdd,
             editType,
             confirmEdit,
             deleteType,
             confirmDelete,
+            getList,
         }
     },
     /*data() {

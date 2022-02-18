@@ -158,12 +158,14 @@ export default defineComponent({
                     Object.keys(headerConfig.value).forEach(val => {
                         if (route.path.indexOf(headerConfig.value[val].path) > -1 || route.meta.title === headerConfig.value[val].name
                         ) {
-                            active.value = headerConfig.value[val].index
+                            active.value = `${parseInt(headerConfig.value[val].index)}`
+                            console.log('1',active.value)
                             throw new Error('')
                         }
                         if (!headerConfig.value[val].path) {
                             headerConfig.value[val].children.forEach((res:any) => {
                                 if (route.path.indexOf(res.path) > -1) {
+                                    console.log('2',active.value)
                                     active.value = res.index
                                     throw new Error('')
                                 }

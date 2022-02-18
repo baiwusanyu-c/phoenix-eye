@@ -4,68 +4,70 @@
             <el-dialog
                 :close-on-click-modal="false"
                 class="createProjectBox"
-                :title="type === 'add' ? $t('el.createProject.createProjectTitle') : $t('el.createProject.editProjectTitle')"
-                :visible.sync="createProjectWindow"
+                :title="type === 'add' ? $t('lang.createProject.createProjectTitle') : $t('lang.createProject.editProjectTitle')"
+                v-model="createProjectWindow"
                 width="970px">
                 <div>
                     <el-form :label-position="labelPosition" label-width="130px" class="projectForm">
-                        <el-form-item :label="$t('el.createProject.createProjectName') + ':'">
+                        <el-form-item :label="$t('lang.createProject.createProjectName') + ':'">
                             <span class="reg-start project-star">*</span>
                             <el-input class="projectNameInput" v-model="projectName"
-                                      :placeholder="$t('el.createProject.createProjectNameInput')"></el-input>
+                                      :placeholder="$t('lang.createProject.createProjectNameInput')"></el-input>
                             <span class="reg-start project-Ver">{{ verName }}</span>
-                            <span class="projectOpenTitle">{{ $t('el.createProject.createProjectOpenTitle') }}</span>
+                            <span class="projectOpenTitle">{{ $t('lang.createProject.createProjectOpenTitle') }}</span>
                             <el-switch v-model="openTF"></el-switch>
                             <span class="projectOpenSecret">{{ isPublic }}</span>
                         </el-form-item>
-                        <el-form-item :label="$t('el.createProject.createProjectKeyWords') + ':'">
+                        <el-form-item :label="$t('lang.createProject.createProjectKeyWords') + ':'">
                             <span class="reg-start project-star">*</span>
                             <el-input class="projectKeyWordsInput" v-model="projectKeyWords"
-                                      :placeholder="$t('el.createProject.createProjectKeyWordsInput')"></el-input>
+                                      :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"></el-input>
                             <span class="reg-start project-Ver">{{ verKeyword }}</span>
                         </el-form-item>
                         <!--        合约地址    -->
-                        <el-form-item :label="$t('el.createProject.contractSite') + ':'">
+                        <el-form-item :label="$t('lang.createProject.contractSite') + ':'">
                             <span class="reg-start project-star">*</span>
-                            <div :class="`contractSiteBox ${index > 0 ? 'contract-site-box-item' : ''}`" v-for="(o,index) in contractSite"
+                            <div :class="`contractSiteBox ${index > 0 ? 'contract-site-box-item' : ''}`" v-for="(o,index) in contractSite.data"
                                  :key="index" :offset="index > 0 ? addContract.n : 0">
                                 <!--   币种平台    -->
-                                <el-select v-model="contractSite[index].platform" class="contractSiteClass"
-                                           :placeholder="$t('el.createProject.selectContractClass')">
-                                    <el-option :label="item.label" :value="item.value" v-for="(item) in platformListDict" :key="item.id"></el-option>
+                                <el-select v-model="contractSite.data[index].platform" class="contractSiteClass"
+                                           :placeholder="$t('lang.createProject.selectContractClass')">
+                                    <el-option :label="item.label" :value="item.value" v-for="(item) in takePlatformListDict" :key="item.id"></el-option>
                                 </el-select>
                                 <!--   合约地址    -->
-                                <el-input v-model="contractSite[index].contract_address" class="contractSiteSite"
-                                          :placeholder="$t('el.createProject.contractSiteInput')"></el-input>
+                                <el-input v-model="contractSite.data[index].contract_address" class="contractSiteSite"
+                                          :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
                                 <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'86px '}">
-                                    {{contractSite[index].verAddr}}
+                                    {{contractSite.data[index].verAddr}}
                                 </span>
                                 <!--   合约标签   -->
-                                <el-input v-model="contractSite[index].label" class="contractSiteLabel"
-                                          :placeholder="$t('el.createProject.contractSiteLabel')"></el-input>
+                                <el-input v-model="contractSite.data[index].label" class="contractSiteLabel"
+                                          :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
                                 <span class="reg-start contract-ver" :style="{top:38 + 56 * index + 'px',left:'41%'}">
-                                    {{contractSite[index].verContract}}
+                                    {{contractSite.data[index].verContract}}
                                 </span>
                                 <div class="btn-border"
-                                     v-show="index < contractSite.length && index > 0"
+                                     v-show="index < contractSite.data.length && index > 0"
                                      @click="deleteContractSite(index)">
                                     <span class="subtract-create"></span>
                                 </div>
                                 <div class="btn-border"
                                      v-show="index === 0"
                                      @click="addContractSite">
-                                    <svg-icon icon-class="add" class="add-create" disabled-tool-tip></svg-icon>
+                                    <div class="plus-create">+</div>
                                 </div>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button class="default" type="primary"
-                               @click="createProjectCancel">{{ $t('el.createProject.createProjectCancel') }}</el-button>
-                    <el-button class="primary hbjbh" type="primary"
-                               @click="createProjectConfirm">{{ $t('el.createProject.createProjectConfirm') }}</el-button>
-                </span>
+                <template #footer>
+                    <span class="dialog-footer">
+                        <el-button class="default" type="primary"
+                                   @click="createProjectCancel">{{ $t('lang.createProject.createProjectCancel') }}</el-button>
+                        <el-button class="primary hbjbh" type="primary"
+                                   @click="createProjectConfirm">{{ $t('lang.createProject.createProjectConfirm') }}</el-button>
+                    </span>
+                </template>
             </el-dialog>
         </div>
     </div>
@@ -75,7 +77,7 @@
 
 <script lang="ts">
 import {createProject, getProjectInfo, saveEditProject} from "../../../../api/project-management";
-import {platformListDict} from "../../../../utils/platformDict";
+import {platformListDict,IPlatformListItem} from "../../../../utils/platform-dict";
 import {defineComponent, ref, reactive, computed, watch, onMounted, toRaw, inject} from "vue"
 import {useI18n} from "vue-i18n";
 import {ElMessage} from "element-plus/es";
@@ -93,6 +95,12 @@ export default defineComponent({
         projectId: {
             type: [String,Number],
             default: ''
+        },
+        getList: {
+            type: Function,
+            default: ()=>{
+                return Function
+            }
         }
     },
     setup(props,ctx){
@@ -105,25 +113,23 @@ export default defineComponent({
         const addContract= ref<number>(0)
         const contractSite=reactive({data: [{platform: 'eth', contract_address: '', label: '', verAddr: '', verContract: ''}]})
         // 下拉平台字典
-        const platformListDict=reactive({data:[]})
+        const takePlatformListDict=ref<Array<IPlatformListItem>>([])
         // 名称校验信息
         const verName= ref<string>('')
         // 关键词校验信息
         const verKeyword= ref<string>('')
-        const getList = inject('getList')
-        console.log(getList)
 
         onMounted(()=>{
-            platformListDict.data = platformListDict
+            takePlatformListDict.value = platformListDict
         })
         const isPublic = computed(()=>{
             if(openTF.value){
-                return t('el.createProject.createProjectUnSecret')
+                return t('lang.createProject.createProjectUnSecret')
             }else{
-                return t('el.createProject.createProjectOpenSecret')
+                return t('lang.createProject.createProjectOpenSecret')
             }
         })
-        watch(()=>createProjectWindow,(nVal)=>{
+        watch(createProjectWindow,(nVal)=>{
             if (nVal) {
                 // 獲取詳情信息
                 getDetailData()
@@ -187,10 +193,10 @@ export default defineComponent({
                     projectName.value = res.data.name
                     openTF.value = res.data.is_public
                     projectKeyWords.value = res.data.keyword
-                    contractSite.value = res.data.contract_infos
+                    contractSite.data = res.data.contract_infos
                 }
             }).catch(err => {
-                const msg = t('el.search') + t('el.failed')
+                const msg = t('lang.search') + t('lang.failed')
                 ElMessage.error(msg)
                 console.error(err)
             })
@@ -199,7 +205,7 @@ export default defineComponent({
          * 分号处理方法
          * @param {String} params - 处理字符串
          */
-        const semicolonVerification = (params) => {
+        const semicolonVerification = (params:string) => {
             // 那中文分号处理成英文
             let res = params.replace('；',';')
             // 如果最后一个字符是分号，去除末尾的符号
@@ -212,13 +218,13 @@ export default defineComponent({
          * 校驗名稱
          * @param {Object} params - 搜索参数
          */
-        const verificationName = (params) => {
+        const verificationName = (params:object) => {
             if(!params.name){
-                verName.value = t('el.pleaseInput') + t('el.createProject.createProjectName')
+                verName.value = t('lang.pleaseInput') + t('lang.createProject.createProjectName')
                 return false
             }
             if(params.name && !ceReg.test(params.name)){
-                verName.value = t('el.createProject.verCE')
+                verName.value = t('lang.createProject.verCE')
                 return false
             }
             return true
@@ -227,16 +233,16 @@ export default defineComponent({
          * 校驗關鍵詞
          * @param {Object} params - 搜索参数
          */
-        const verificationKeyword = (params) => {
+        const verificationKeyword = (params:object) => {
             if(!params.keyword){
-                verKeyword.value = t('el.pleaseInput') + t('el.createProject.createProjectKeyWords')
+                verKeyword.value = t('lang.pleaseInput') + t('lang.createProject.createProjectKeyWords')
                 return false
             }
             // 校驗中英文，分號
             if(params.keyword){
                 let keyword = semicolonVerification(params.keyword)
                 if(!ceSemicolonReg.test(keyword)){
-                    verKeyword.value = t('el.createProject.verCeSemicolonReg')
+                    verKeyword.value = t('lang.createProject.verCeSemicolonReg')
                     return false
                 }
                 params.keyword = keyword
@@ -255,12 +261,12 @@ export default defineComponent({
             }
             // 没有填写合约地址
             if(!val.contract_address){
-                val.verAddr = t('el.pleaseInput')+ t('el.createProject.contractSite')
+                val.verAddr = t('lang.pleaseInput')+ t('lang.createProject.contractSite')
                 return true
             }
             // 校验地址格式
             if(!platformReg[val.platform](val.contract_address)){
-                val.verAddr = t('el.createProject.contractSite')+ t('el.formatError')
+                val.verAddr = t('lang.createProject.contractSite')+ t('lang.formatError')
                 return true
             }
             return false
@@ -269,7 +275,7 @@ export default defineComponent({
          * 表單校驗方法
          * @param {Object} params - 搜索参数
          */
-        const formVerification = (params) =>{
+        const formVerification = (params:object) =>{
             verName.value = ''
             verKeyword.value = ''
             if(!verificationName(params)) return false
@@ -284,7 +290,7 @@ export default defineComponent({
                 if(val.label){
                     let label = semicolonVerification(val.label)
                     if(!ceSemicolonReg.test(label)){
-                        val.verContract = t('el.createProject.verCeSemicolonTag')
+                        val.verContract = t('lang.createProject.verCeSemicolonTag')
                         hasEmpty = true
                     }else{
                         val.label = label
@@ -299,7 +305,7 @@ export default defineComponent({
                 return false
             }
             if(contractInfos.length === 0) {
-                const msg = t('el.createProject.verInfo')
+                const msg = t('lang.createProject.verInfo')
                 ElMessage.warning(msg)
                 return false
             }
@@ -336,9 +342,10 @@ export default defineComponent({
             setParams(params.contract_infos)
             createProject(params).then(res=>{
                 if(res){
-                    const msg = t('el.add')+ t('el.success')
+                    const msg = t('lang.add')+ t('lang.success')
                     ElMessage.success(msg)
                     // 更新列表
+                    props.getList()
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
@@ -368,10 +375,10 @@ export default defineComponent({
             setParams(params.contract_infos)
             saveEditProject(params,pathParams).then(res=>{
                 if(res){
-                    const msg = t('el.edit')+ t('el.success')
+                    const msg = t('lang.edit')+ t('lang.success')
                     ElMessage.success(msg)
                     // 更新列表
-                    _this.$parent.getList()
+                    props.getList()
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
@@ -381,7 +388,31 @@ export default defineComponent({
         }
 
         return{
-
+            createProjectWindow,
+            projectName,
+            projectKeyWords,
+            openTF,
+            labelPosition,
+            addContract,
+            contractSite,
+            takePlatformListDict,
+            verName,
+            verKeyword,
+            isPublic,
+            resetVar,
+            getDetailData,
+            semicolonVerification,
+            verificationName,
+            verificationKeyword,
+            verificationContractAddr,
+            formVerification,
+            setParams,
+            addProject,
+            editProject,
+            createProjectConfirm,
+            createProjectCancel,
+            addContractSite,
+            deleteContractSite
         }
     },
     /*data() {
@@ -693,7 +724,7 @@ export default defineComponent({
 
 <style lang="scss">
 .createBox{
-    .el-input__inner {
+  .el-input__inner {
         height: 40px;
         border-radius: 2px;
     }
@@ -755,17 +786,30 @@ export default defineComponent({
 .btn-border:hover{
   border-color: #0468C2;
 
-  .svg-icon.add-create{
+  /*.svg-icon.add-create{
     fill:#0468C2
+  }*/
+  .plus-create{
+      color: #81b3e0;
   }
 
   .subtract-create{
     border: solid 1px #81b3e0;
   }
 }
-
+.plus-create{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    cursor: default;
+    font-size: 27px;
+    color: darkgray;
+}
 .subtract-create{
-  width: 12px;
+  width: 14px;
   border: solid 1px darkgray;
 }
 
@@ -797,6 +841,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   margin-top: 8px;
+    width: 800px;
 }
 
 .contract-site-box-item {

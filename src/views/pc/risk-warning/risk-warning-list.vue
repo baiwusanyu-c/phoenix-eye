@@ -264,7 +264,6 @@ export default defineComponent({
             getProjWarning(params).then(res=>{
                 if(res){
                     tableData.value = res.data.page_infos
-                    console.log(tableData.value)
                     pageParams.data.total =  res.data.total
                     loading.value = false
                 }
@@ -282,7 +281,6 @@ export default defineComponent({
             pageParams.data.currentPage = item.currentPage
             getList()
         }
-
         /**
          * 打開交易分析詳情tab
          */
@@ -298,12 +296,15 @@ export default defineComponent({
             loading,
             stateTxt,
             stateSuccess,
+            localeInner,
+            setPlatformList,
             getList,
             openDetail,
             pageChange,
             beijing2utc,
             formatDate,
             createDate,
+            openWindow,
         }
     },
     /*data() {
