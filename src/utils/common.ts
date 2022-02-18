@@ -219,7 +219,7 @@ export const verEmail = (val:string) => {
     return /^(\w)+((\.\w+)|(\-\w+))*@(\w|\-)+((\.\w+)+)$/.test(val)
 }
 // 时间格式化
-export const formatDate = (timestamp:string, formats:string) => {
+export const formatDate = (timestamp:string, formats?:string) => {
     // formats格式包括
     // 1. Y-m-d
     // 2. Y-m-d H:i:s
