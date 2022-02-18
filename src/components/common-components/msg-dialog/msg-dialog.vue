@@ -161,7 +161,7 @@
       top: 26vh;
       left: calc(50% - 218px);
       width: 436px;
-      height: 240px;
+      height: 280px;
       background: white;
 
       .be-dialog-title{

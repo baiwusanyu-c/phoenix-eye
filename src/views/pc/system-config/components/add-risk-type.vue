@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import {getRiskTypeInfo} from "../../../../api/system-config";
-import {defineComponent, ref, watch, reactive, toRaw, shallowReactive} from "vue";
+import {defineComponent, ref, watch, toRaw, shallowReactive} from "vue";
 import {ElMessage} from "element-plus/es";
 import {useI18n} from "vue-i18n";
 
@@ -97,7 +97,7 @@ export default defineComponent({
         // 风险类型特征校验信息
         const verFeatures = ref<string>('')
 
-        watch(()=>addRiskWindowOpen,(nVal)=>{
+        watch(addRiskWindowOpen,(nVal)=>{
             if (nVal) {
                 // 獲取詳情信息，包含當前風險類型已經有的風險類型特徵
                 getDetailData()
@@ -172,13 +172,18 @@ export default defineComponent({
             })
         }
         return{
+            checkAll,
+            checked,
             addRiskWindowOpen,
             addRiskName,
+            selectNameLength,
             abnormalSelectValue,
             verFeatures,
             verName,
             addRiskConfirm,
             addRiskCancel,
+            resetVar,
+            getDetailData,
         }
     },
     /*data() {

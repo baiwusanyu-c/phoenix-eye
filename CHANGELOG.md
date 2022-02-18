@@ -25,6 +25,9 @@
 √ add-risk-type.vue 迁移完成
 √ system-config-score.vue 迁移完成
 √ system-config-type.vue 迁移完成
+√ risk-manage-card.vue 迁移完成
+√ risk-manage-main.vue 迁移完成
+√ create-project.vue 迁移完成
 ### 2022年2月18日
 √ project-ranking-projsitu.vue 迁移完成
 √ project-ranking-contractjsitu 迁移完成

@@ -199,9 +199,7 @@ export default defineComponent({
         const ellipsis = ref<string>('8')
         // 链平台转化币种
         const platformToCurrencyInner = ref<IPlatformToCurrency>(platformToCurrency)
-        //
         const addrCellWidth= ref<string>('430')
-
         const handleProfit = computed(()=>{
             return function (val:number,dec:number){
                 if(val< 0){
@@ -287,10 +285,13 @@ export default defineComponent({
             ellipsis,
             platformToCurrencyInner,
             addrCellWidth,
+            handleProfit,
             getInfoData,
             simulateToFixed,
             openWeb,
-            handleProfit,
+            getUuid,
+            openWindow,
+
         }
     },
     /*  data() {

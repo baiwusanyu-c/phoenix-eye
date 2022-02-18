@@ -156,7 +156,9 @@
                        @close="()=>changeConfigWarningInput = false"
                            :isShow="changeConfigWarningInput"
                            :title="$t('lang.systemConfigScore.formatConfigData')"
-                           :sub-title="$t('lang.systemConfigScore.changeConfigWarning')">
+                           :sub-title="$t('lang.systemConfigScore.changeConfigWarning')"
+                            style="width: 600px"
+            >
             </MsgDialog>
         </div>
     </div>
@@ -479,6 +481,10 @@ export default defineComponent({
           inputShow,
           inputValue,
           systemConfigScore,
+          localeInner,
+          getScore,
+          initData,
+          opFailed,
           warningDialogConfirm,
           changeConfig,
           changeConfigCancel,

@@ -47,8 +47,11 @@
             </div>
             <p>{{ $t('lang.proManageConfig.createTime') }} :
                 <el-tooltip placement="top" effect="light">
-                    <span slot="content">UTC：{{beijing2utc(createTime)}}</span>
-                    <span class="cursor"> {{ formatDate($createDate(createTime),'Y-m-d H:i:s')}}</span>
+                    <template #content>
+                        <span>UTC：{{beijing2utc(createTime)}}</span>
+                        <span class="cursor"> {{ formatDate($createDate(createTime),'Y-m-d H:i:s')}}</span>
+                    </template>
+
                 </el-tooltip>
             </p>
         </div>
@@ -67,7 +70,7 @@ import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-
 import {defineComponent, ref, computed, onMounted} from 'vue'
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 
-export default {
+export default defineComponent({
     name: "project-manage-card",
     components: {BeSvgIcon,BeEllipsisCopy},
     props: {
@@ -146,7 +149,8 @@ export default {
         return{
             showLength,
             formatePlatform,
-            emitFunc
+            emitFunc,
+            initView
         }
     },
     /*data() {
@@ -225,7 +229,7 @@ export default {
             this.$emit(evtName)
         }
     },*/
-}
+})
 </script>
 
 <style lang="scss">
