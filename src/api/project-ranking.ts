@@ -37,7 +37,7 @@ export function getContractSecurity(params:ISentimentSecurity) {
 }
 // 獲取舆情安全数据 √
 export interface ISentimentSecurity extends IPageParam{
-    project_id?:string | null
+    project_id?:number | null
 }
 export function getPublicSentimentSecurity(params:ISentimentSecurity) {
     return request({

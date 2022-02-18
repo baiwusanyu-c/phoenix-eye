@@ -33,7 +33,7 @@
                 height="680"
                 ref="riskWarningList">
                 <div slot="empty"
-                     class = 'empty-table'>
+                     class = 'empty-data'>
                     <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
                     <p style="line-height: 25px">{{$t('lang.emptyData')}}</p>
                 </div>

@@ -21,7 +21,7 @@ service.interceptors.request.use(
         if(tokenCache){
             config.headers['Authorization'] = 'Bearer ' + getStore('token');
         }
-        config.headers['Accept-Language'] = getStore('lang') ? getStore('lang') : 'en_US';
+        config.headers['Accept-Language'] = getStore('language') ? getStore('language') : 'en_US';
         if (config.method === 'post' && config.url!=='/auth/oauth/login') {
             config.data = config.params
             config.headers['Content-Type'] = 'application/json;charset=UTF-8'
@@ -57,7 +57,7 @@ service.interceptors.response.use(
                 //$vue.$router.push({path: "/login"})
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
-            return Promise.reject(new Error(res.msg || 'Error'))
+            return Promise.reject(new Error(res.msg || res.message ||'Error'))
         } else {
             return res
         }

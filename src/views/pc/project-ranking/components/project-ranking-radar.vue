@@ -53,11 +53,13 @@ export default defineComponent({
         },
         radarData:{
             type:Array as PropType<Array<IRadarData>>,
-            default:()=>[
-                { key:'jtjc-staticDetection', item: '静态检测', a: 10, },
-                { key:'jywd-txStability',item: '市场波动', a: 6 },
-                { key:'jyaq-txSecurity',item: '交易安全', a: 5 },
-            ]
+            default() {
+                return [
+                    { key:'jtjc-staticDetection', item: '静态检测', a: 10, },
+                    { key:'jywd-txStability',item: '市场波动', a: 6 },
+                    { key:'jyaq-txSecurity',item: '交易安全', a: 5 },
+                ]
+            }
         },
         safetyEvaluate:{
             type:[Number,String],
@@ -92,7 +94,7 @@ export default defineComponent({
             }
         })
         const logoType = computed(()=>{
-            return imgCodeDict.value[props.platform]
+            return imgCodeDict.value[props.platform].default
         })
         onMounted(()=>{
             nextTick(()=>{
@@ -225,7 +227,7 @@ export default defineComponent({
   align-items: center;
   width: 32.5%;
   padding: 20px;
-  margin-bottom: 16px;
+  margin: 0 5px 16px 5px;
   background: $mainColor7;
   border-radius: 4px;
 

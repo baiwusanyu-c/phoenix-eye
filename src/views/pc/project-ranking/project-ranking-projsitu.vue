@@ -11,48 +11,50 @@
             <div class="item-title">
                 <h2>{{ projectInfo.name }}</h2>
                 <span v-if="projectInfo.create_time">
-                    {{ $t('el.projectRinking.onlineTime') }}：
+                    {{ $t('lang.projectRinking.onlineTime') }}：
                      <el-tooltip placement="top" effect="light">
-                            <span slot="content">UTC：{{ beijing2utc(projectInfo.create_time) }}</span>
-                            <span class="cursor">{{ formatDate($createDate(projectInfo.create_time)) }}</span>
-                        </el-tooltip>
+                             <template #content>
+                                  <span slot="content">UTC：{{ beijing2utc(projectInfo.create_time) }}</span>
+                             </template>
+                            <span class="cursor">{{ formatDate(createDate(projectInfo.create_time)) }}</span>
+                     </el-tooltip>
                 </span>
             </div>
             <div class="projsitu-item-outline">
                 <div class="outline-radar" id="outline_radar">
                     <div class='empty-data' v-if="staticPieData.length === 0" style="margin-top: 0">
                         <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
-                        <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
+                        <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
                     </div>
                 </div>
                 <div class="outline-info">
-                    <h2>{{ $t('el.projectRinking.outlineTitle') }}</h2>
+                    <h2>{{ $t('lang.projectRinking.outlineTitle') }}</h2>
                     <div class="outline-info-txt">
                         <div>
-                            <span class="label">{{ $t('el.projectRinking.staticDetection') }}:</span>
+                            <span class="label">{{ $t('lang.projectRinking.staticDetection') }}:</span>
                             <span class='inner-text' v-html="outlineInfo.staticDetection"></span>
                         </div>
                         <div>
-                            <span class="label">{{ $t('el.projectRinking.txSecurity') }}:</span>
+                            <span class="label">{{ $t('lang.projectRinking.txSecurity') }}:</span>
                             <span class='inner-text' v-html="outlineInfo.txSecurity"></span>
                         </div>
                         <div>
-                            <span class="label">{{ $t('el.projectRinking.txStability') }}:</span>
+                            <span class="label">{{ $t('lang.projectRinking.txStability') }}:</span>
                             <span class='inner-text' v-html="outlineInfo.txStability"></span>
                         </div>
                         <div>
-                            <span class="label">{{ $t('el.projectRinking.feeling') }}:</span>
+                            <span class="label">{{ $t('lang.projectRinking.feeling') }}:</span>
                             <span class='inner-text' v-html="outlineInfo.feeling"></span>
                         </div>
                     </div>
-                    <p>*{{ $t('el.sevenD') }}</p>
+                    <p>*{{ $t('lang.sevenD') }}</p>
                 </div>
             </div>
         </div>
         <!--合约安全-->
         <div class="projsitu-item">
             <div class="item-title">
-                <h2>{{ $t('el.projectRinking.contractSecurity') }}</h2>
+                <h2>{{ $t('lang.projectRinking.contractSecurity') }}</h2>
             </div>
             <div :class="{
                         'projsitu-item-contractSecur':true,
@@ -74,19 +76,21 @@
                     :total='pageParamsCs.total'
                     @updatePage="pageChangeCs"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{ pageParamsCs.total }}{{ $t('el.piece') }}</span>
-                    <span slot="next"></span>
+                    <template #prev>
+                        <span class="table-page-info">{{ $t('lang.total') }}{{ pageParamsCs.total }}{{ $t('lang.piece') }}</span>
+                    </template>
+                    <template #next><span ></span></template>
                 </be-pagination>
                 <div class='empty-data' v-if="contractSecurity.length === 0" style="margin-top: 0">
                     <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
-                    <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
+                    <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
                 </div>
             </div>
         </div>
         <!--市场表现-->
         <!--<div class="projsitu-item">
             <div class="item-title">
-                <h2>{{ $t('el.projectRinking.marketPerformance.headerTitle') }}</h2>
+                <h2>{{ $t('lang.projectRinking.marketPerformance.headerTitle') }}</h2>
             </div>
             <div class="projsitu-item-market">
                 <project-ranking-num-card v-for="(item) in marketPerformance"
@@ -103,7 +107,7 @@
         <!--舆情安全-->
         <div class="projsitu-item">
             <div class="item-title">
-                <h2>{{ $t('el.projectRinking.feelingSecurity') }}</h2>
+                <h2>{{ $t('lang.projectRinking.feelingSecurity') }}</h2>
             </div>
             <div :class="{
                         'projsitu-item-feelingSecurity':true,
@@ -122,124 +126,102 @@
                     :total='pageParamsFs.total'
                     @updatePage="pageChangeFs"
                     :is-front="false">
-                    <span slot="prev" class="table-page-info">{{ $t('el.total') }}{{ pageParamsFs.total }}{{ $t('el.piece') }}</span>
-                    <span slot="next"></span>
+                    <template #prev>
+                        <span class="table-page-info">{{ $t('lang.total') }}{{ pageParamsFs.total }}{{ $t('lang.piece') }}</span>
+                    </template>
+                    
+                    <template #next><span ></span></template>
                 </be-pagination>
                 <div class='empty-data' v-if="safetyData.length === 0" style="margin-top: 0">
                     <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px;">
-                    <p style="line-height: 25px">{{ $t('el.emptyData') }}</p>
+                    <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 
 // import ProjectRankingNumCard from "./components/project-ranking-num-card";
-import ProjectRankingRadar from "./components/project-ranking-radar";
-import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opinion";
+import ProjectRankingRadar from "./components/project-ranking-radar.vue";
+import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opinion.vue";
 // import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance";
-import BePagination from "../../../components/common-components/pagination/be-pagination";
+import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import DataSet from "@antv/data-set";
 import {Chart, registerGeometryLabelLayout} from "@antv/g2";
-import {getContractSecurity, getPublicSentimentSecurity} from "../../../api/project-ranking";
+import {getContractSecurity, getPublicSentimentSecurity, ISentimentSecurity} from "../../../api/project-ranking";
+import {computed, defineComponent, nextTick, onMounted, ref} from "vue";
+import {IOption, IPageParam} from "../../../utils/types";
+import composition from "../../../utils/mixin/common-func";
+import {getStore,beijing2utc,createDate,formatDate} from '../../../utils/common'
+import {useI18n} from "vue-i18n";
+import {LabelItem} from "@antv/g2/src/geometry/label/interface";
+import {IGroup} from "@antv/g2/src/dependents";
+interface ISafetyData {
+    negative?: string
+    negativeMsg?: string
+    sourceUrl?: string
+    title?: string
+    message?: string
+    from?: string
+    time?: string
+    label?: string
+}
+interface IProjectInfo {
+    static_testing?:{score:number,text:string}
+    tx_safety?:{score:number,text:string}
+    tx_stability?:{score:number,text:string}
+    safety_opinion?:{score:number,text:string}
+    safety_evaluate?:number
+}
+interface IOutlineInfo {
+    staticDetection?: string
+    txSecurity?: string
+    txStability?: string
+    feeling?: string
+}
 
-export default {
+export default defineComponent({
     name: "project-ranking-projsitu",
     components: {
         BePagination,
         // ProjectRankingNumCard,
         ProjectRankingRadar,
         ProjectRankingSafetyOpinion,
-       // ProjectRankingMarketPerformance,
+        // ProjectRankingMarketPerformance,
     },
-    data() {
-        return {
-            // 项目检测评分信息
-            outlineInfo: {
-                staticDetection: '',
-                txSecurity: '',
-                txStability: '',
-                feeling: ''
-            },
-            // 项目检测评分 雷达图数据
-            staticPieData: [],
-            // 项目安全评估
-            safetyEvaluatePieData: 0,
-            // 市场表现 基本数据
-            marketPerformance: [],
-            // 市場表現 交易量
-            mpTxNum: [],
-            // 市場表現 新增用户
-            mpNewUserNum: [],
-            // 合约安全数据
-            contractSecurity: [],
-            // 合约安全分页参数
-            pageParamsCs: {
-                currentPage: 1,
-                pageNum: 1,
-                pageSize: 5,
-                total: 0
-            },
-            // 舆情安全分页参数
-            pageParamsFs: {
-                currentPage: 1,
-                pageNum: 1,
-                pageSize: 5,
-                total: 0
-            },
-
-            // 项目信息
-            projectInfo: {},
-            // 合约安全loading
-            loadingCs: false,
-            // 舆情安全loading
-            loadingFs: false,
-            // 项目id
-            projectId: '',
-            // 舆情安全数据
-            safetyData:[]
-        }
-    },
-    computed: {
-        radarDataCs() {
-            return function (data) {
-                if (data) {
-                    return [
-                        {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: data.static_testing},
-                        {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: data.tx_safety},
-                        {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: data.tx_stability},
-                    ]
-                }
-                return []
-            }
-        }
-    },
-    mounted() {
-        this.projectId = this.$route.query.param || this.$route.query.project_id
-        this.getProSituData()
-        this.$nextTick(() => {
-            this.renderOutlineRadar()
-        })
-    },
-    methods: {
+    setup(props,ctx){
+        const {message,route} = composition(props, ctx)
+        const {t} = useI18n()
+        // 项目id
+        const projectId = ref<string>('')
         /**
          * 获取舆情安全数据
          */
-        getPublicSentimentSecurData() {
-            this.safetyData = []
-            const _this = this
-            _this.loadingFs = true
-            let params = {
-                project_id: _this.projectId -0,
-                page_num: _this.pageParamsFs.pageNum,
-                page_size: _this.pageParamsFs.pageSize,
+         // 舆情安全数据
+        const safetyData = ref<Array<ISafetyData>>([])
+        // 舆情安全loading
+        const loadingFs = ref<boolean>(false)
+        // 舆情安全分页参数
+        const pageParamsFs = ref<IPageParam>({
+            currentPage: 1,
+            pageNum: 1,
+            pageSize: 5,
+            total: 0
+        })
+        const getPublicSentimentSecurData = ():void=> {
+            safetyData.value = []
+            loadingFs.value = true
+            let params:ISentimentSecurity = {
+                project_id: parseInt(projectId.value),
+                page_num: pageParamsFs.value.pageNum,
+                page_size: pageParamsFs.value.pageSize,
             }
             getPublicSentimentSecurity(params).then(res => {
                 if (res) {
-                    res.data.page_infos.forEach(val => {
-                        _this.safetyData.push({
+                    res.data.page_infos.forEach((val:any) => {
+                        safetyData.value.push({
                             negative: val.is_negative_news,
                             negativeMsg: '经自动识别，该资讯为负面信息',
                             sourceUrl: val.url,
@@ -250,167 +232,143 @@ export default {
                             label: val.tag,
                         })
                     })
-                    _this.pageParamsFs.total = res.data.total
-                    _this.loadingFs = false
+                    pageParamsFs.value.total = res.data.total
+                    loadingFs.value = false
                 }
             }).catch(err => {
-                _this.$message.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
-        },
+        }
         /**
          * 舆情安全分页方法
-         * @param {Object} item - 分页参数对象
+         * @param {IPageParam} item - 分页参数对象
          */
-        pageChangeFs(item) {
-            this.pageParamsFs.pageNum = item.currentPage
-            this.pageParamsFs.currentPage = item.currentPage
-            this.getPublicSentimentSecurData()
-        },
+        const pageChangeFs = (item:IPageParam):void =>{
+            pageParamsFs.value.pageNum = item.currentPage
+            pageParamsFs.value.currentPage = item.currentPage
+            getPublicSentimentSecurData()
+        }
         /**
          * 获取合约安全数据
          */
-        getContractSecurData() {
-            const _this = this
-            _this.loadingCs = true
+        // 合约安全数据
+        const contractSecurity = ref<any>([])
+        // 合约安全分页参数
+        const pageParamsCs = ref<IPageParam>({
+            currentPage: 1,
+            pageNum: 1,
+            pageSize: 5,
+            total: 0
+        })
+        // 合约安全loading
+        const loadingCs = ref<boolean>(false)
+        const getContractSecurData = ():void=> {
+            loadingCs.value = true
             let params = {
-                project_id: _this.projectId,
-                page_num: _this.pageParamsCs.pageNum,
-                page_size: _this.pageParamsCs.pageSize,
+                project_id: parseInt(projectId.value),
+                page_num: pageParamsCs.value.pageNum,
+                page_size: pageParamsCs.value.pageSize,
             }
             getContractSecurity(params).then(res => {
                 if (res) {
-                    _this.contractSecurity = res.data.page_infos
-                    _this.pageParamsCs.total = res.data.total
-                    _this.loadingCs = false
+                    contractSecurity.value = res.data.page_infos
+                    pageParamsCs.value.total = res.data.total
+                    loadingCs.value = false
                 }
             }).catch(err => {
-                _this.$message.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
-        },
+        }
         /**
          * 合约安全分页方法
-         * @param {Object} item - 分页参数对象
+         * @param {IPageParam} item - 分页参数对象
          */
-        pageChangeCs(item) {
-            this.pageParamsCs.pageNum = item.currentPage
-            this.pageParamsCs.currentPage = item.currentPage
-            this.getContractSecurData()
-        },
-        /**
-         * 数据重置
-         */
-        resetData() {
-            // 合约安全数据
-            this.contractSecurity = []
-            // 合约安全分页参数
-            this.pageParamsCs = {
-                currentPage: 1,
-                pageNum: 1,
-                pageSize: 5,
-                total: 0
-            }
-            // 舆情安全分页参数
-            this.pageParamsFs = {
-                currentPage: 1,
-                pageNum: 1,
-                pageSize: 5,
-                total: 0
-            }
-            // 项目信息
-            this.projectInfo = {}
-            // 合约安全loading
-            this.loadingCs = false
-            // 舆情安全loading
-            this.loadingFs = false
-            // 项目id
-            this.projectId = ''
-            // 舆情安全数据
-            this.safetyData = []
-
-            this.projectInfo = {}
-            this.outlineInfo = {
-                staticDetection: this.$t('el.emptyData'),
-                txSecurity:this.$t('el.emptyData'),
-                txStability: this.$t('el.emptyData'),
-                feeling: this.$t('el.emptyData'),
-            }
-            this.marketPerformance = [
-                {title: this.$t('el.projectRinking.txSumNum'), num: this.$t('el.emptyData'),},
-                {title: this.$t('el.projectRinking.userSumNum'), num: this.$t('el.emptyData'),},
-                {title: this.$t('el.projectRinking.contractSumNum'), num: this.$t('el.emptyData'),},
-            ]
-            this.staticPieData = [
-                { key:'jtjc-staticDetection',        item: '静态检测', a: 70, },
-                { key:'jyaq-txSecurity',             item: '交易安全', a: 40 },
-                { key:'jywd-txStability',            item: '交易稳定', a: 35 },
-                { key:'yqaq-safetyPublicOptionClass',item: '风险舆情', a: 20 },
-            ]
-            this.safetyEvaluatePieData = 0
-            this.mpTxNum = []
-            this.mpNewUserNum = []
-        },
+        const pageChangeCs = (item:IPageParam):void=> {
+            pageParamsCs.value.pageNum = item.currentPage
+            pageParamsCs.value.currentPage = item.currentPage
+            getContractSecurData()
+        }
         /**
          * 获取项目态势详情数据
          */
-        async getProSituData() {
+        // 项目信息
+        const projectInfo = ref<IProjectInfo>({})
+        // 项目检测评分 雷达图数据
+        const staticPieData = ref<Array<IOption>>([])
+        // 项目安全评估
+        const safetyEvaluatePieData = ref<number | undefined>(0)
+        // 市场表现 基本数据
+        const marketPerformance = ref<Array<IOption>>([])
+        // 市場表現 交易量
+        const mpTxNum = ref<Array<IOption>>([])
+        // 市場表現 新增用户
+        const mpNewUserNum = ref<Array<IOption>>([])
+        const getProSituData  = async () => {
             // 这是在上级路由存储的数据
-            const data = JSON.parse(this.getStore('ContractProjectTs'))
+            const data = JSON.parse(getStore('ContractProjectTs') as string)
             if (!data) {
-                this.resetData()
+                resetData()
                 return
             }
             // 项目态势基本信息
-            this.projectInfo = data.project_info
+            projectInfo.value = data.project_info
 
             // 项目检测评分信息
-            this.getOutLineData(this.projectInfo)
+            getOutLineData(projectInfo.value)
             // 项目检测评分雷达图
-            this.staticPieData = [
-                {key:'jtjc-staticDetection',item: this.$t('el.projectRinking.staticDetection'), a: this.projectInfo.static_testing.score},
-                {key:'jyaq-txSecurity',item: this.$t('el.projectRinking.txSecurity'), a: this.projectInfo.tx_safety.score},
-                {key:'jywd-txStability',item: this.$t('el.projectRinking.txStability'), a: this.projectInfo.tx_stability.score},
-                {key:'yqaq-safetyPublicOptionClass',item: this.$t('el.systemConfigScore.safetyPublicOptionClass'), a: this.projectInfo.safety_opinion.score},
+            staticPieData.value = [
+                {key:'jtjc-staticDetection',item: t('lang.projectRinking.staticDetection'), a: projectInfo.value?.static_testing?.score},
+                {key:'jyaq-txSecurity',item: t('lang.projectRinking.txSecurity'), a: projectInfo.value?.tx_safety?.score},
+                {key:'jywd-txStability',item: t('lang.projectRinking.txStability'), a: projectInfo.value?.tx_stability?.score},
+                {key:'yqaq-safetyPublicOptionClass',item: t('lang.systemConfigScore.safetyPublicOptionClass'), a: projectInfo.value?.safety_opinion?.score},
             ]
-            this.safetyEvaluatePieData = this.projectInfo.safety_evaluate
+            safetyEvaluatePieData.value = projectInfo.value.safety_evaluate
+
 
             // 市场表现数据
             /*this.marketPerformance = [
-                {title: this.$t('el.projectRinking.txSumNum'), num: data.market_performance.tx_total},
-                {title: this.$t('el.projectRinking.userSumNum'), num: data.market_performance.user_total},
-                {title: this.$t('el.projectRinking.contractSumNum'), num: data.market_performance.contract_total},
+                {title: this.$t('lang.projectRinking.txSumNum'), num: data.market_performance.tx_total},
+                {title: this.$t('lang.projectRinking.userSumNum'), num: data.market_performance.user_total},
+                {title: this.$t('lang.projectRinking.contractSumNum'), num: data.market_performance.contract_total},
             ]*/
             // 市场表现图表数据
             // this.mpTxNum = data.market_performance.tx_amounts
             // this.mpNewUserNum = data.market_performance.new_user_nums
             // 获取合约安全数据
-            await this.getContractSecurData()
+            await getContractSecurData()
             // 获取舆情安全数据
-            await this.getPublicSentimentSecurData()
-        },
+            await getPublicSentimentSecurData()
+        }
         /**
          * 获取概要数据
          */
-        getOutLineData(data) {
-            this.outlineInfo.staticDetection = data.static_testing.text
-            this.outlineInfo.txSecurity = data.tx_safety.text
-            this.outlineInfo.txStability = data.tx_stability.text
-            this.outlineInfo.feeling = data.safety_opinion.text
-        },
+        // 项目检测评分信息
+        const outlineInfo = ref<IOutlineInfo>({
+                staticDetection: '',
+                txSecurity: '',
+                txStability: '',
+                feeling: ''
+            })
+        const getOutLineData = (data:IProjectInfo):void =>{
+            outlineInfo.value.staticDetection = data?.static_testing?.text
+            outlineInfo.value.txSecurity = data?.tx_safety?.text
+            outlineInfo.value.txStability = data?.tx_stability?.text
+            outlineInfo.value.feeling = data?.safety_opinion?.text
+        }
 
         /**
          * 渲染概要雷達圖
          */
-        renderOutlineRadar() {
-            const _this = this
-            if (this.staticPieData.length === 0) {
+        const renderOutlineRadar = ():void=> {
+            if (staticPieData.value.length === 0) {
                 return
             }
             const {DataView} = DataSet;
             // 坐标label缓存
-            const labelCache = []
-            function limitInShape(items, labels) {
+            const labelCache:any = []
+            function limitInShape(items:LabelItem[], labels:IGroup[]) {
                 labels.forEach((labelGroup) => {
                     labelGroup.cfg.children[0].cfg.visible = false
                     /*
@@ -452,7 +410,7 @@ export default {
                     attrs: {
                         x: (labelCache[4].point.x + labelCache[6].point.x)/2,
                         y: (labelCache[4].point.y + labelCache[6].point.y)/2,
-                        text: _this.safetyEvaluatePieData,
+                        text: safetyEvaluatePieData.value,
                         textBaseline: 'middle',
                         fill: '#333333',
                         fontWeight: 'bold',
@@ -462,7 +420,7 @@ export default {
             }
             // 注册 label 布局函数
             registerGeometryLabelLayout('limit-in-shape', limitInShape);
-            const dv = new DataView().source(this.staticPieData);
+            const dv = new DataView().source(staticPieData.value);
             dv.transform({
                 type: 'fold',
                 fields: ['a'], // 展开字段集
@@ -474,7 +432,7 @@ export default {
                 autoFit: true,
                 height: 250,
                 width:400,
-               // padding: [20, 0, 20, 0],
+                // padding: [20, 0, 20, 0],
                 appendPadding: [20, 0, 20, 0]
             });
             chart.data(dv.rows);
@@ -552,10 +510,124 @@ export default {
 
             chart.legend(false);
             chart.render();
-        },
+        }
+        /**
+         * 数据重置
+         */
+        const resetData = ():void=> {
+            // 合约安全数据
+            contractSecurity.value = []
+            // 合约安全分页参数
+            pageParamsCs.value = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
+                total: 0
+            }
+            // 舆情安全分页参数
+            pageParamsFs.value = {
+                currentPage: 1,
+                pageNum: 1,
+                pageSize: 5,
+                total: 0
+            }
+            // 项目信息
+            projectInfo.value = {}
+            // 合约安全loading
+            loadingCs.value = false
+            // 舆情安全loading
+            loadingFs.value = false
+            // 项目id
+            projectId.value = ''
+            // 舆情安全数据
+            safetyData.value = []
 
+            projectInfo.value = {}
+            outlineInfo.value = {
+                staticDetection: t('lang.emptyData'),
+                txSecurity:t('lang.emptyData'),
+                txStability: t('lang.emptyData'),
+                feeling: t('lang.emptyData'),
+            }
+            marketPerformance.value = [
+                {title: t('lang.projectRinking.txSumNum'), num: t('lang.emptyData'),},
+                {title: t('lang.projectRinking.userSumNum'), num: t('lang.emptyData'),},
+                {title: t('lang.projectRinking.contractSumNum'), num: t('lang.emptyData'),},
+            ]
+            staticPieData.value = [
+                { key:'jtjc-staticDetection',        item: '静态检测', a: 70, },
+                { key:'jyaq-txSecurity',             item: '交易安全', a: 40 },
+                { key:'jywd-txStability',            item: '交易稳定', a: 35 },
+                { key:'yqaq-safetyPublicOptionClass',item: '风险舆情', a: 20 },
+            ]
+            safetyEvaluatePieData.value = 0
+            mpTxNum.value = []
+            mpNewUserNum.value = []
+        }
+        const radarDataCs = computed(()=>{
+            return function (data:IProjectInfo){
+                if (data) {
+                    return [
+                        {key:'jtjc-staticDetection',item: t('lang.projectRinking.staticDetection'), a: data.static_testing},
+                        {key:'jyaq-txSecurity',item: t('lang.projectRinking.txSecurity'), a: data.tx_safety},
+                        {key:'jywd-txStability',item: t('lang.projectRinking.txStability'), a: data.tx_stability},
+                    ]
+                }
+                return []
+            }
+        })
+        onMounted(()=>{
+            const {param,project_id} = route.query
+            projectId.value = (param || project_id) as string
+            getProSituData()
+            nextTick(() => {
+                renderOutlineRadar()
+            })
+        })
+        return {
+            beijing2utc,
+            createDate,
+            formatDate,
+            radarDataCs,
+            getPublicSentimentSecurData,
+            renderOutlineRadar,
+            getProSituData,
+            resetData,
+            pageChangeCs,
+            getContractSecurData,
+            pageChangeFs,
+            // 项目检测评分信息
+            outlineInfo,
+            // 项目检测评分 雷达图数据
+            staticPieData,
+            // 项目安全评估
+            safetyEvaluatePieData,
+            // 市场表现 基本数据
+            marketPerformance,
+            // 市場表現 交易量
+            mpTxNum,
+            // 市場表現 新增用户
+            mpNewUserNum,
+            // 合约安全数据
+            contractSecurity,
+            // 合约安全分页参数
+            pageParamsCs,
+            // 舆情安全分页参数
+            pageParamsFs,
+            // 项目信息
+            projectInfo,
+            // 合约安全loading
+            loadingCs,
+            // 舆情安全loading
+            loadingFs,
+            // 项目id
+            projectId,
+            // 舆情安全数据
+            safetyData,
+        }
     },
-}
+})
+
 </script>
 
 <style lang="scss">
@@ -641,7 +713,7 @@ export default {
     .projsitu-item-contractSecur {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: start;
       margin-bottom: 24px;
     }
 

@@ -14,8 +14,8 @@
             </el-input>
         </div>
         <div class="project-ranking-search-complex" v-show="projectOnly === false">
-            <div class="complex-big-title">{{ $t('lang.projectRinking.chose') }}</div>
-            <div class="complex-title">{{ $t('lang.projectRinking.choseText') }}</div>
+            <div class="complex-big-title">{{ $t('lang.projectRinking.projectChose') }}</div>
+            <!-- <div class="complex-title">{{ $t('lang.projectRinking.choseText') }}</div>-->
             <div class="complex-card-class">
                 <div class="complex-card" v-for="(o,index) in projectOrContractInfo" :key="index"
                      @click="projectOrContract(o)">
@@ -86,9 +86,10 @@
                         <el-popover
                             placement="top"
                             trigger="hover"
+                            width="300"
                             v-model="scope.row.showContract_num">
                             <p v-for="item in scope.row.contract_address_list"
-                               style="cursor: pointer"
+                               class="top-tip"
                                @click="openDetailContract(item.project_contract_id)"
                                :key="item.project_contract_id">
                                 {{ item.contract_address }}
@@ -146,7 +147,7 @@
                 <template #next><span></span></template>
             </be-pagination>
         </div>
-        <!--        <router-view v-show="searching === false"></router-view>-->
+        <router-view v-show="searching === false"></router-view>
     </div>
 </template>
 
@@ -199,10 +200,11 @@ export default defineComponent({
         })
         const projectObj = ref<IProjectObj>({})
         const projectOrContractInfo = computed(()=>{
+
             if (searchType.value === 'project') {
                 return projectObj.value.info
             } else if (searchType.value === 'contract') {
-                return projectObj.value.info
+                return contractObj.value.info
             } else {
                 return {info: []}
             }
@@ -358,9 +360,9 @@ export default defineComponent({
         const projectOrContract = (o:IProjectOrContract):void =>{
             let type = searchType.value
             if (type === 'contract') {
-                openDetailContract(o.project_contract_id)
+                openDetailContract(o.project_contract_id,true)
             } else if (type === 'project') {
-                openDetailProject(o.project_id)
+                openDetailProject(o.project_id,true)
             }
         }
 
@@ -484,7 +486,8 @@ export default defineComponent({
             cursor: pointer;
             background: #FFF;
             border-radius: 4px;
-
+            margin-top: 16px;
+            margin-bottom: 16px;
             .complex-card-head {
                 display: flex;
                 flex-direction: row;
@@ -553,6 +556,15 @@ export default defineComponent({
                 color: $textColor4;
             }
         }
+    }
+}
+.top-tip {
+    cursor: pointer;
+    margin-bottom: 5px;
+    line-height: 25px;
+
+    &:hover {
+        background-color: #F5F7FA;
     }
 }
 </style>
