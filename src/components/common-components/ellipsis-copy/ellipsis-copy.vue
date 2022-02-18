@@ -14,8 +14,12 @@
             </template>
             <span :style="styles">{{changeEllipsisStr(targetStr)}} </span>
         </el-tooltip>
-        <span class="copy-btn" v-if="isShowCopyBtn">
-            <be-svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="copyAddress(copyContent || targetStr)"></be-svg-icon>
+        <span class="copy-btn" v-if="isShowCopyBtn && (copyContent || targetStr)">
+            <be-svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn"
+                         disabled-tool-tip class="icon"
+                         style="color: #1496F2" content="复制"
+                         v-show="isShowCopy" @click="copyAddress(copyContent || targetStr)">
+            </be-svg-icon>
         </span>
         
     </div>
@@ -111,7 +115,9 @@ export default defineComponent({
          * @param {String} str 当前地址/交易数
          */
         const changeEllipsisStr = (str:string):string =>{
-            if(!str) return '-'
+            if(!str) {
+                return '-'
+            }
             if(!props.isEllipsis) return str
             const frontLen:number = Number(props.fontLength);
             const endLen:number = Number(props.endLength)

@@ -180,11 +180,6 @@
         }
       }
 
-      .el-icon-close{
-        font-size: 25px;
-        color: $textColor3;
-      }
-
       .msg-dialog-body{
         box-sizing: border-box;
         padding: 0 22px;

@@ -23,13 +23,14 @@
                     <el-menu-item :index="value.index" v-if='value.show && value.children.length === 0'
                                   :disabled="value.isDisabled"
                                   @click="routerSwitch(value,value.isPush)">
-                        <svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></svg-icon>
+                        <be-svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></be-svg-icon>
                         <span style="margin-left: 10px">{{ $t(value.name) }}</span>
                     </el-menu-item>
+
                     <el-sub-menu v-if='value.show && value.children.length > 0' :index="value.index"
                                 :disabled="value.isDisabled">
                         <template #title>
-                            <svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></svg-icon>
+                            <be-svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></be-svg-icon>
                             <span style="margin-left: 10px">{{ $t(value.name) }}}</span>
                         </template>
                         <div v-for="item in value.children" :key="item.key">
@@ -60,13 +61,15 @@ import {clearSession, clearStore} from "../../utils/common";
 import composition from "../../utils/mixin/common-func";
 import {useStore} from "vuex";
 import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
+import BeSvgIcon from "../../components/common-components/svg-icon/be-svg-icon.vue";
 /**
  * 头部菜单导航
  */
 export default defineComponent({
     name: "TsgzNavMenu",
     components:{
-        MsgDialog
+        MsgDialog,
+        BeSvgIcon
     },
     setup(props, ctx) {
         const {routerPush,route} = composition(props, ctx)
@@ -155,7 +158,9 @@ export default defineComponent({
             const menuList:HTMLCollectionOf<Element> = document.getElementsByClassName('el-menu-item')
             nextTick(() => {
                 try {
+
                     Object.keys(headerConfig.value).forEach(val => {
+                        //debugger
                         if (route.path.indexOf(headerConfig.value[val].path) > -1 || route.meta.title === headerConfig.value[val].name
                         ) {
                             active.value = `${parseInt(headerConfig.value[val].index)}`

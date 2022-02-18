@@ -5,7 +5,7 @@
 * @update (czh 2021/11/1)
 */
 <template>
-    <div class="project-manage-main" >
+    <div class="project-manage-main">
         <div class="project-manage-list scrollDiy" v-loading="loading">
             <project-manage-card
                 type="add"
@@ -27,24 +27,24 @@
         <!--    新增、编辑项目弹窗   ref="createProjectDialog" -->
         <create-project
             :type="opType"
-            :projectId = 'curItem.data.id'
+            :projectId='curItem.data.id'
             :getList="getList"
-            @confirm = "()=>{return opType === 'add' ? confirmAdd() : confirmEdit()}"
-             ref="createProjectDialog">
+            @confirm="()=>{return opType === 'add' ? confirmAdd() : confirmEdit()}"
+            ref="createProjectDialog">
         </create-project>
         <!--    删除项目弹窗    -->
         <MsgDialog @confirm="confirmDelete"
                    @close="()=>showDelete = false"
-                       :headerTitle="$t('lang.delete')"
-                       :isShow="showDelete"
-                       :title="deleteText">
+                   :headerTitle="$t('lang.delete')"
+                   :isShow="showDelete"
+                   :title="deleteText">
         </MsgDialog>
         <!--    重新评估彈窗   -->
         <MsgDialog @confirm="confirmFresh"
                    @close="()=>showFresh = false"
-                       :headerTitle="$t('lang.systemConfig.reassess')"
-                       :isShow="showFresh"
-                       :title="freshText">
+                   :headerTitle="$t('lang.systemConfig.reassess')"
+                   :isShow="showFresh"
+                   :title="freshText">
         </MsgDialog>
     </div>
 </template>
@@ -60,35 +60,35 @@ import {
     saveEditProject
 } from "../../../api/project-management";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-import {defineComponent, ref, reactive, onMounted ,provide,getCurrentInstance} from 'vue'
+import {defineComponent, ref, reactive, onMounted, provide, getCurrentInstance, nextTick} from 'vue'
 import {ElMessage} from "element-plus/es";
 import {useI18n} from "vue-i18n";
 
 export default defineComponent({
     name: "ProjectManageMain",
-    components: {CreateProject, ProjectManageCard,MsgDialog},
-    setup(){
-        const {t,locale} = useI18n()
+    components: {CreateProject, ProjectManageCard, MsgDialog},
+    setup() {
+        const {t, locale} = useI18n()
         // 当前操作的项目对象
-        const curItem=reactive({data:{}})
+        const curItem = reactive({data: {}})
         // 当前操作类型
-        const opType=ref<string>('add')
+        const opType = ref<string>('add')
         // 重新评估弹窗显示
-        const showFresh=ref<boolean>(false)
+        const showFresh = ref<boolean>(false)
         // 重新评估弹窗显示内容
-        const freshText=ref<string>('')
+        const freshText = ref<string>('')
         // 删除弹窗显示
-        const showDelete=ref<boolean>(false)
+        const showDelete = ref<boolean>(false)
         // 删除弹窗显示内容
-        const deleteText=ref<string>('')
+        const deleteText = ref<string>('')
         // 项目列表示例
-        const projectList=reactive({data:[]})
+        const projectList = reactive({data: []})
         // 项目列表的地址列表示例
-        const addrList=reactive({data:[]})
+        const addrList = reactive({data: []})
         // loading
-        const loading=ref<boolean>(false)
+        const loading = ref<boolean>(false)
         const createProjectDialog = ref<any>({})
-        onMounted(()=>{
+        onMounted(() => {
             getList()
         })
 
@@ -99,22 +99,24 @@ export default defineComponent({
         const addProject = () => {
             opType.value = 'add'
             //instanceInner.refs.createProjectDialogXXX.createProjectWindow = true
-            createProjectDialog.value.createProjectWindow = true
+            nextTick(() => {
+                createProjectDialog.value.createProjectWindow = true
+            })
         }
         /**
          * 確認新增方法
          * @param {Object} param - 表单参数
          */
         const confirmAdd = (param) => {
-            createProject(param).then(res=>{
-                if(res){
-                    const msg = t('lang.add')+ t('lang.success')
+            createProject(param).then(res => {
+                if (res) {
+                    const msg = t('lang.add') + t('lang.success')
                     ElMessage.success(msg)
                     // 更新列表
                     getList()
                     createProjectDialog.value.createProjectWindow = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 ElMessage.error(err.message)
                 console.error(err)
             })
@@ -125,26 +127,28 @@ export default defineComponent({
         const editProject = (item) => {
             opType.value = 'edit'
             curItem.data = item
-            createProjectDialog.value.createProjectWindow = true
+            nextTick(() => {
+                createProjectDialog.value.createProjectWindow = true
+            })
 
         }
         /**
          * 確認編輯方法
          * @param {Object} param - 表单参数
          */
-        const confirmEdit = (param:object) => {
+        const confirmEdit = (param: object) => {
             const pathParams = {
-                id:curItem.data.id
+                id: curItem.data.id
             }
-            saveEditProject(param,pathParams).then(res=>{
-                if(res){
-                    const msg = t('lang.edit')+ t('lang.success')
+            saveEditProject(param, pathParams).then(res => {
+                if (res) {
+                    const msg = t('lang.edit') + t('lang.success')
                     ElMessage.success(msg)
                     // 更新列表
                     getList()
                     createProjectDialog.value.createProjectWindow = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 ElMessage.error(err.message)
                 console.error(err)
             })
@@ -153,7 +157,7 @@ export default defineComponent({
          * 删除类型方法
          * @param {Object} item - 项目数据对象
          */
-        const deleteProjects = (item:object) => {
+        const deleteProjects = (item: object) => {
             curItem.data = item
             deleteText.value = `${t('lang.systemConfig.delete')}${item.name}？`
             showDelete.value = true
@@ -163,17 +167,17 @@ export default defineComponent({
          */
         const confirmDelete = () => {
             const params = {
-                id:curItem.data.id
+                id: curItem.data.id
             }
-            deleteProject(params).then(res=>{
-                if(res){
-                    const msg = t('lang.delete')+ t('lang.success')
+            deleteProject(params).then(res => {
+                if (res) {
+                    const msg = t('lang.delete') + t('lang.success')
                     ElMessage.success(msg)
                     // 更新列表
                     getList()
                     showDelete.value = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 ElMessage.error(err.message)
                 console.error(err)
             })
@@ -182,7 +186,7 @@ export default defineComponent({
          * 重新评估项目
          * @param {Object} item - 项目数据对象
          */
-        const freshProject = (item:object) => {
+        const freshProject = (item: object) => {
             curItem.data = item
             freshText.value = `${t('lang.systemConfig.isConfirm')}${item.name}${t('lang.systemConfig.reassessInfo')}？`
             showFresh.value = true
@@ -192,17 +196,17 @@ export default defineComponent({
          */
         const confirmFresh = () => {
             const params = {
-                id:curItem.data.id
+                id: curItem.data.id
             }
-            reappraiseProject(params).then(res=>{
-                if(res){
-                    const msg = t('lang.operation')+ t('lang.success')
+            reappraiseProject(params).then(res => {
+                if (res) {
+                    const msg = t('lang.operation') + t('lang.success')
                     ElMessage.success(msg)
                     // 更新列表
                     getList()
                     showFresh.value = false
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 ElMessage.error(err.message)
                 console.error(err)
             })
@@ -214,14 +218,14 @@ export default defineComponent({
             loading.value = true
             getProjectList().then(res => {
                 // 项目列表
-                projectList.data =  res.data
+                projectList.data = res.data
                 // 關鍵詞字符串轉化為數組
-                projectList.data.forEach(val=>{
-                    let keyword = val.keyword.replace('；',';')
-                    val.keywordList =  keyword.split(';').filter(filterVal=>filterVal)
+                projectList.data.forEach(val => {
+                    let keyword = val.keyword.replace('；', ';')
+                    val.keywordList = keyword.split(';').filter(filterVal => filterVal)
                 })
                 loading.value = false
-            }).catch(err=>{
+            }).catch(err => {
                 ElMessage.error(err.message)
                 console.error(err)
             })
@@ -419,18 +423,18 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .project-manage-main {
-  width: 100%;
-  height: 100%;
-
-  .project-manage-list {
     width: 100%;
     height: 100%;
-    overflow-y: auto;
 
-    /* display: flex;
-         justify-content: flex-start;
-         flex-wrap: wrap; */
+    .project-manage-list {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
 
-  }
+        /* display: flex;
+             justify-content: flex-start;
+             flex-wrap: wrap; */
+
+    }
 }
 </style>

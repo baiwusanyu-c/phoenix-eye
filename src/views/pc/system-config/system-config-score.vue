@@ -141,11 +141,17 @@
             </div>
             <div class="btn-class">
                 <div class="change-config" v-show="inputShow === false">
-                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarningInput= true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
+                    <div @click="changeConfigWarningInput= true" role="button" style="display: flex;align-items: center;margin-right: 10px">
+                        <be-icon icon="refresh" color="#409EFF"></be-icon>
+                        <span style="color: #409EFF;font-size: 14px;margin-left: 5px">{{$t('lang.systemConfigScore.formatConfigData')}}</span>
+                    </div>
                     <el-button class="primary hbjbh" type="primary" @click="changeConfig">{{$t('lang.systemConfigScore.changeConfig')}}</el-button>
                 </div>
                 <div class="cancel-confirm" v-show="inputShow === true">
-                    <el-button icon="el-icon-refresh-right" type="text" @click="changeConfigWarningInput = true">{{$t('lang.systemConfigScore.formatConfigData')}}</el-button>
+                    <div @click="changeConfigWarningInput= true" role="button" style="display: flex;align-items: center;margin-right: 10px">
+                        <be-icon icon="refresh" color="#409EFF"></be-icon>
+                        <span style="color: #409EFF;font-size: 14px;margin-left: 5px">{{$t('lang.systemConfigScore.formatConfigData')}}</span>
+                    </div>
                     <el-button class="default" type="primary" @click="changeConfigCancel">{{$t('lang.createProject.createProjectCancel')}}</el-button>
                     <el-button class="primary hbjbh" type="primary"  @click="changeConfigConfirm">{{$t('lang.createProject.createProjectConfirm')}}</el-button>
                 </div>
@@ -166,6 +172,7 @@
 
 <script lang="ts">
 import {getRiskScore, saveRiskScore, resetRiskScore, IRiskScore} from '../../../api/system-config'
+import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 import {
     defineComponent,
@@ -191,7 +198,7 @@ interface ISystemConfigScore {
 
 export default defineComponent({
     name: "system-config-score",
-    components:{MsgDialog},
+    components:{MsgDialog,BeIcon},
     setup(){
         const {t,locale} = useI18n()
         const widthGird=ref<string>('240')
@@ -824,7 +831,7 @@ export default defineComponent({
 
     .change-config{
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: center;
     }
 

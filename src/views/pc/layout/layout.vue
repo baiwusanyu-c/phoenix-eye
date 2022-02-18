@@ -24,8 +24,9 @@
                             </template>
                         </el-dropdown>
                         <el-dropdown @command="changeLanguage">
-                            <span class="el-dropdown-link">
-                              {{ $t('lang.header.language') }}<i class="el-icon-arrow-down el-icon--right"></i>
+                            <span class="el-dropdown-link" style="display: flex;align-items: center">
+                              {{ $t('lang.header.language') }}
+                              <be-icon icon="under" style="margin-left: 5px" color="#777"></be-icon>
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
@@ -60,10 +61,10 @@ import {computed, defineComponent, onMounted, ref} from "vue";
 import composition from "../../../utils/mixin/common-func";
 import {getStore, setStore} from "../../../utils/common";
 import {useI18n} from "vue-i18n";
-
+import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
 export default defineComponent({
     name: 'layout',
-    components: {TsgzNavMenu},
+    components: {TsgzNavMenu,BeIcon},
     setup(props, ctx) {
         const loginUser = ref<string>('')
         const {route, routerPush} = composition(props, ctx)

@@ -20,8 +20,9 @@
                     <el-option :value="60000" label="1min"> </el-option>
                 </el-select>
                 <el-dropdown @command="changeLanguage" style="margin-left: 5px">
-                            <span class="el-dropdown-link">
-                              {{$t('lang.header.language')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            <span class="el-dropdown-link" style="display: flex;align-items: center">
+                              {{ $t('lang.header.language') }}
+                              <be-icon icon="under" style="margin-left: 5px" color="#777"></be-icon>
                             </span>
                     <template #dropdown>
                         <el-dropdown-menu >
@@ -272,14 +273,14 @@ import composition from "../../../utils/mixin/common-func";
 import {IPageParam} from "../../../utils/types";
 import {useStore} from "vuex";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-
+import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
 interface IScrollConfigData{
     name:string,
     value:string | number
 }
 export default defineComponent({
     name: "BlotuaMain",
-    components:{BeEllipsisCopy},
+    components:{BeEllipsisCopy,BeIcon},
     setup(props, ctx){
         const {t,locale} = useI18n()
         const {message,routerPush,route} = composition(props, ctx)

@@ -73,6 +73,7 @@ import BeEllipsisCopy from "../../../../components/common-components/ellipsis-co
 export default defineComponent({
     name: "project-manage-card",
     components: {BeSvgIcon,BeEllipsisCopy},
+    emits:['add','edit','delete'],
     props: {
         /**
          * 类型
@@ -250,7 +251,6 @@ export default defineComponent({
     line-height: 20px;
     color: white;
     border-radius: 4px 4px 0 0;
-
     .svg-icon {
       margin: 0 5px;
     }
@@ -262,7 +262,7 @@ export default defineComponent({
     }
 
     .ellipsis-copy{
-      min-width: 170px !important;
+        min-width: 0!important;
     }
   }
 
