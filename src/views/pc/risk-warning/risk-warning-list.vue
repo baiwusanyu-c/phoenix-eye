@@ -64,7 +64,9 @@
                     align="center">
                     <template #default="scope">
                         <el-tooltip placement="top" effect="light">
-                            <span slot="content">UTC：{{beijing2utc(scope.row.tx_time)}}</span>
+                            <template #content>
+                                <span slot="content">UTC：{{beijing2utc(scope.row.tx_time)}}</span>
+                            </template>
                             <span class="cursor">{{formatDate(createDate(scope.row.tx_time))}}</span>
                         </el-tooltip>
                     </template>

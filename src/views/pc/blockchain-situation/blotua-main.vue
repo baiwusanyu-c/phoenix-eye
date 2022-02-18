@@ -59,6 +59,7 @@
                         <div class="sum">{{ txTotal }} {{ $t('lang.piece') }}</div>
                     </div>
                     <div class="scroll-ranking">
+                        <blotua-progeress :config="scrollConfig" v-if="scrollConfig.data"></blotua-progeress>
                         <dv-scroll-ranking-board :config="scrollConfig" v-if="scrollConfig.data" style="width:100%;height:208px"/>
                     </div>
                 </div>
@@ -267,12 +268,15 @@ import {getContractAudit, getTxFxQs, getTxNum} from "../../../api/blotua";
 import {getProjWarning} from "../../../api/risk-warning";
 import {getProjectRankList, getPublicSentimentSecurity,ISentimentSecurity} from "../../../api/project-ranking";
 import {nFormatter, getStore, setStore,openWindow,formatDate,createDate,fomateTimeStamp,beijing2utc} from "../../../utils/common";
-import {computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref} from "vue";
+import {computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref, defineAsyncComponent} from "vue";
 import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func";
 import {IPageParam} from "../../../utils/types";
 import {useStore} from "vuex";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
+const BlotuaProgeress = defineAsyncComponent(()=>
+    import  ("./components/blotua-progeress.vue")
+)
 import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
 interface IScrollConfigData{
     name:string,
@@ -280,7 +284,7 @@ interface IScrollConfigData{
 }
 export default defineComponent({
     name: "BlotuaMain",
-    components:{BeEllipsisCopy,BeIcon},
+    components:{BeEllipsisCopy,BlotuaProgeress,BeIcon},
     setup(props, ctx){
         const {t,locale} = useI18n()
         const {message,routerPush,route} = composition(props, ctx)
