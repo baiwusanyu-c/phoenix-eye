@@ -27,6 +27,9 @@
 <script lang="ts">
 import {computed, defineComponent} from "vue";
 import {useI18n} from "vue-i18n";
+interface IImgCodeDict{
+    [key:string]:any
+}
 export default defineComponent({
     name: "project-ranking-score-card",
     props:{
@@ -54,11 +57,23 @@ export default defineComponent({
     },
     setup(props){
         const {t} = useI18n()
-        const imgCodeDict = {
-            hygk: import.meta.globEager("../../../../assets/image/pc/hygk@2x.jpg")[0].default,
-            hyye: import.meta.globEager("../../../../assets/image/pc/hyye@2x.jpg")[0].default,
-            aqpg: import.meta.globEager("../../../../assets/image/pc/aqpg@2x.jpg")[0].default,
+        const imgImport = import.meta.globEager("../../../../assets/image/pc/*-sc@2x.png");
+        const imgCodeDict:IImgCodeDict = {
+            hygk: '',
+            hyye: '',
+            aqpg: '',
         }
+        Object.keys(imgImport).forEach(val=>{
+            if(/aqpg/.test(val)){
+                imgCodeDict.aqpg = imgImport[val]
+            }
+            if(/hygk/.test(val)){
+                imgCodeDict.hygk = imgImport[val]
+            }
+            if(/hyye/.test(val)){
+                imgCodeDict.hyye = imgImport[val]
+            }
+        })
         const handleData = computed(()=>{
             return function (data:any,config:{val:number,valKey:string}){
                 // 对象时
@@ -70,12 +85,12 @@ export default defineComponent({
         })
         const logoType = computed(()=>{
             if(props.title === t('lang.projectRinking.contractOverview')){
-                return imgCodeDict.hygk
+                return imgCodeDict.hygk.default
             }
             if(props.title === t('lang.projectRinking.contractBalance')){
-                return imgCodeDict.hyye
+                return imgCodeDict.hyye.default
             }
-            return imgCodeDict.aqpg
+            return imgCodeDict.aqpg.default
         })
         return {
             handleData,

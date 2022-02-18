@@ -713,7 +713,7 @@ export default defineComponent({
     .projsitu-item-contractSecur {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: start;
       margin-bottom: 24px;
     }
 

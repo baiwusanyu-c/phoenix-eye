@@ -9,7 +9,7 @@
         <!--   头部     -->
         <div class="blotua-main-header">
             <div class="timer">
-                <span style="margin-bottom: 10px;color: #84CCFF">{{formatDate(createDate(now))}}</span>
+                <span style="color: #84CCFF">{{formatDate(createDate(now))}}</span>
                 <el-select v-model="step"
                            style="width:80px;margin-left: 10px"
                            @change="resetTimer()">
@@ -19,6 +19,24 @@
                     <el-option :value="10000" label="10s"> </el-option>
                     <el-option :value="60000" label="1min"> </el-option>
                 </el-select>
+                <el-dropdown @command="changeLanguage" style="margin-left: 5px">
+                            <span class="el-dropdown-link">
+                              {{$t('lang.header.language')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                    <template #dropdown>
+                        <el-dropdown-menu >
+                            <el-dropdown-item command="zh_CN"
+                                              :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''}`">
+                                {{$t('lang.header.chinese')}}
+                            </el-dropdown-item>
+                            <el-dropdown-item command="en_US"
+                                              :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''}`">
+                                {{$t('lang.header.english')}}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+
+                </el-dropdown>
             </div>
 
             <h1 class="project-name">{{ $t('lang.blotua.projectName') }}</h1>
@@ -247,7 +265,7 @@ import {ShapeAttrs} from "@antv/g2/src/dependents";
 import {getContractAudit, getTxFxQs, getTxNum} from "../../../api/blotua";
 import {getProjWarning} from "../../../api/risk-warning";
 import {getProjectRankList, getPublicSentimentSecurity,ISentimentSecurity} from "../../../api/project-ranking";
-import {nFormatter, getStore, openWindow,formatDate,createDate,fomateTimeStamp,beijing2utc} from "../../../utils/common";
+import {nFormatter, getStore, setStore,openWindow,formatDate,createDate,fomateTimeStamp,beijing2utc} from "../../../utils/common";
 import {computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref} from "vue";
 import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func";
@@ -263,8 +281,8 @@ export default defineComponent({
     name: "BlotuaMain",
     components:{BeEllipsisCopy},
     setup(props, ctx){
-        const {t} = useI18n()
-        const {message,routerPush} = composition(props, ctx)
+        const {t,locale} = useI18n()
+        const {message,routerPush,route} = composition(props, ctx)
         // 用户名
         const loginUser = ref<string>('')
         // 表头
@@ -666,7 +684,20 @@ export default defineComponent({
                 return nFormatter(val,d)
             }
         })
+
+        const changeLanguage = (data:string):void =>{
+            if(data === 'logout'){
+                routerPush('/login')
+                return
+            }
+            setStore('language', data)
+            locale.value = data
+            route.meta.titleInfo = t(route.meta.title)
+        }
         return {
+            changeLanguage,
+            getStore,
+            loginUser,
             loadingTxNum ,
             loadingTxFx ,
             loadingProjRank,
@@ -871,7 +902,9 @@ export default defineComponent({
   padding: 0 20px;
 
   .timer{
-
+    display: flex;
+    align-items: center;
+      margin-bottom: 10px;
     .el-input__inner{
       height: 24px;
       line-height: 24px;

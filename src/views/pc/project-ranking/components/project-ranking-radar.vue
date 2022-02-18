@@ -227,7 +227,7 @@ export default defineComponent({
   align-items: center;
   width: 32.5%;
   padding: 20px;
-  margin-bottom: 16px;
+  margin: 0 5px 16px 5px;
   background: $mainColor7;
   border-radius: 4px;
 

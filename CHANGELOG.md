@@ -28,6 +28,9 @@
 ### 2022年2月18日
 √ project-ranking-projsitu.vue 迁移完成
 √ project-ranking-contractjsitu 迁移完成
+## 迁移功能细化
+### 2022年2月18日
+项目排行模块 -- 表格合約地址顯示問題
 
 
 

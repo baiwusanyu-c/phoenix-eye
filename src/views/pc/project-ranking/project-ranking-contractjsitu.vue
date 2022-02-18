@@ -22,7 +22,7 @@
             </div>
             <div class="contractjsitu-item-outline">
                 <project-ranking-score-card
-                    :title="$t('lang.projectRinking.safetyAssessment') +  safetyEvaluate(resData.scores)"
+                    :title="$t('lang.projectRinking.safetyAssessment') + ':  ' +safetyEvaluate(resData.scores)"
                     :label-config="aqpgConfig"
                     :data="resData.scores">
                 </project-ranking-score-card>
@@ -94,10 +94,10 @@
                         align="center">
                         <template #default="scope">
                             <el-tooltip placement="top" effect="light">
-                                <template slot="content">
-                                    <span slot="content">UTC：{{ beijing2utc(scope.row.tx_time) }}</span>
+                                <template #content>
+                                    <span>UTC：{{ beijing2utc(scope.row.tx_time) }}</span>
                                 </template>
-                                <span class="cursor">{{ formatDate($createDate(scope.row.tx_time)) }}</span>
+                                <span class="cursor">{{ formatDate(createDate(scope.row.tx_time)) }}</span>
                             </el-tooltip>
                         </template>
                     </el-table-column>
@@ -123,7 +123,7 @@
                                               fontLength="8"
                                               endLength="8">
                             </be-ellipsis-copy>
-                            <be-ellipsis-copy :targetStr="scope.row.from_tag"
+                            <be-ellipsis-copy :targetStr="scope.row.from_address_tag"
                                               :copyContent="scope.row.from_address"
                                               :tooltipTxt="scope.row.from_address"
                                               v-if="scope.row.from_address_tag"
@@ -283,7 +283,7 @@ import {Chart} from '@antv/g2';
 import {getProjWarning} from "../../../api/risk-warning";
 import {getTxStability} from "../../../api/project-ranking";
 import {computed, defineComponent, nextTick, onMounted, ref} from "vue";
-import {getStore,openWindow,formatDate,createDate} from '../../../utils/common'
+import {getStore,openWindow,formatDate,createDate,beijing2utc} from '../../../utils/common'
 import {IOption, IPageParam} from "../../../utils/types";
 import composition from "../../../utils/mixin/common-func";
 import {useI18n} from "vue-i18n";
@@ -338,7 +338,7 @@ export default defineComponent({
             }
         })
         // 圖片字典
-        const imgImport = import.meta.globEager("../../../../assets/image/pc/*-logo-bz.png");
+        const imgImport = import.meta.globEager("../../../assets/image/pc/*-logo-bz.png");
         const imgCodeDict:IImgCodeDict = {
             'bsc': '',
             'heco': '',
@@ -359,7 +359,7 @@ export default defineComponent({
         })
         const logoType = computed(()=>{
             return function (platform:string) {
-                return imgCodeDict[platform]
+                return imgCodeDict[platform].default
             }
         })
         const safetyEvaluate = computed(()=>{
@@ -655,6 +655,9 @@ export default defineComponent({
             })
         })
         return {
+            formatDate,
+            createDate,
+            beijing2utc,
             stateSuccess,
             safetyEvaluate,
             stateTxt,
@@ -745,7 +748,7 @@ export default defineComponent({
     }
 
     .platform-logo {
-      height: 20px;
+      height: 30px;
       padding: 5px;
       margin-right: 15px;
       font-family: PingFangSC-Medium, PingFang SC, sans-serif;
@@ -753,10 +756,13 @@ export default defineComponent({
       line-height: 20px;
       background: $mainColor7;
       border: 1px solid rgba(0, 0, 0, .15);
-
+      display: flex;
+      align-items: center;
       img {
         width: 15px;
         height: 15px;
+        margin-right: 5px;
+        display: inline-block;
       }
     }
 

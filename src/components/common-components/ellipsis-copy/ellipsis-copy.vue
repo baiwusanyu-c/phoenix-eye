@@ -15,7 +15,7 @@
             <span :style="styles">{{changeEllipsisStr(targetStr)}} </span>
         </el-tooltip>
         <span class="copy-btn" v-if="isShowCopyBtn">
-            <svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="copyAddress(copyContent || targetStr)"></svg-icon>
+            <be-svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn" disabled-tool-tip class="icon"  style="color: #1496F2" content="复制" v-show="isShowCopy" @click="copyAddress(copyContent || targetStr)"></be-svg-icon>
         </span>
         
     </div>
@@ -24,9 +24,11 @@
 <script lang="ts">
 // 地址/交易 中间省略显示，鼠标移入显示复制按钮
 import {computed, defineComponent, ref} from "vue";
+import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon.vue";
 import {copyAddress} from '../../../utils/common'
 export default defineComponent({
     name: "BeEllipsisCopy",
+    components:{BeSvgIcon},
     props: {
         // 目标地址/交易
         targetStr:{

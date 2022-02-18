@@ -210,6 +210,7 @@ export default defineComponent({
             ctx.emit('changeShow', type)
         }
         return {
+            changeShow,
             rules,
             form,
             visible,

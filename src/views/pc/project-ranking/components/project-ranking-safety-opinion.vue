@@ -16,14 +16,15 @@
                             </el-button>
                         </div>
                         <div class="safety-opinion-body">
-                            {{ opinion.message.length }}
                             <div class="safety-opinion-body-msg scrollDiy">
                                 <be-ellipsis-copy
-                                    :elpNum="opinion.message.length > 400 ? opinion.message.length - 200 : 0"
-                                    :expand-trigger="false"
-                                    :line-clamp="0"
-                                    :content="opinion.message"
-                                    :text="opinion.message">
+                                    :targetStr="opinion.message"
+                                    :is-ellipsis="opinion.message.length > 400 ? true : false"
+                                    :isShowCopyBtn="false"
+                                    :isTooltip="true"
+                                    styles="font-weight: 400;font-size: 14px;line-height:1.5"
+                                    fontLength="0"
+                                    :endLength="opinion.message.length - 200">
                                 </be-ellipsis-copy>
                             </div>
                         </div>
@@ -48,10 +49,8 @@
                                     <template #content>
                                         <span>UTC：{{ beijing2utc(opinion.time) }}</span>
                                     </template>
-
                                     <span class="msg-font">{{ formatDate(createDate(opinion.time)) }}</span>
                                 </el-tooltip>
-
                             </div>
                         </div>
                     </div>
@@ -169,7 +168,7 @@ export default defineComponent({
     min-width: 528px;
     max-width: 1136px;
     height: 144px;
-    padding-top: 24px;
+    padding-top: 10px;
     padding-bottom: 24px;
 }
 
@@ -178,7 +177,8 @@ export default defineComponent({
     min-width: 296px;
     height: 148px;
     margin-left: 160px;
-    background-color: lightslategray;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .safety-opinion-body-msg {
