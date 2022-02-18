@@ -146,7 +146,7 @@
                 <template #next><span></span></template>
             </be-pagination>
         </div>
-        <!--        <router-view v-show="searching === false"></router-view>-->
+        <router-view v-show="searching === false"></router-view>
     </div>
 </template>
 

@@ -99,7 +99,11 @@ export default defineComponent({
                 openWindow(url)
             }
         }
-        const imgUrl = import.meta.globEager("../../../../assets/image/pc/news@2x.jpg")[0];
+        const imgImport = import.meta.globEager("../../../../assets/image/pc/news@2x.jpg");
+        let imgUrl = null
+        Object.keys(imgImport).forEach(val=>{
+            imgUrl = imgImport[val].default
+        })
         return {
             imgUrl,
             createKey,

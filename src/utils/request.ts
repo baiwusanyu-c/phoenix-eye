@@ -21,7 +21,7 @@ service.interceptors.request.use(
         if(tokenCache){
             config.headers['Authorization'] = 'Bearer ' + getStore('token');
         }
-        config.headers['Accept-Language'] = getStore('lang') ? getStore('lang') : 'en_US';
+        config.headers['Accept-Language'] = getStore('language') ? getStore('language') : 'en_US';
         if (config.method === 'post' && config.url!=='/auth/oauth/login') {
             config.data = config.params
             config.headers['Content-Type'] = 'application/json;charset=UTF-8'

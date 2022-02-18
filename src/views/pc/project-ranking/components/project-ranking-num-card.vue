@@ -53,12 +53,12 @@ export default defineComponent({
         })
         const logoType = computed(()=>{
             if(props.title === '交易总量'){
-                return imgCodeDict.value.txNum
+                return imgCodeDict.value.txNum.default
             }
             if(props.title === '用户总数'){
-                return imgCodeDict.value.txNum
+                return imgCodeDict.value.txNum.default
             }
-            return imgCodeDict.value.contractNum
+            return imgCodeDict.value.contractNum.default
         })
         return {
             logoType

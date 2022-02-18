@@ -55,9 +55,9 @@ export default defineComponent({
     setup(props){
         const {t} = useI18n()
         const imgCodeDict = {
-            hygk: import.meta.globEager("../../../../assets/image/pc/hygk@2x.jpg")[0],
-            hyye: import.meta.globEager("../../../../assets/image/pc/hyye@2x.jpg")[0],
-            aqpg: import.meta.globEager("../../../../assets/image/pc/aqpg@2x.jpg")[0],
+            hygk: import.meta.globEager("../../../../assets/image/pc/hygk@2x.jpg")[0].default,
+            hyye: import.meta.globEager("../../../../assets/image/pc/hyye@2x.jpg")[0].default,
+            aqpg: import.meta.globEager("../../../../assets/image/pc/aqpg@2x.jpg")[0].default,
         }
         const handleData = computed(()=>{
             return function (data:any,config:{val:number,valKey:string}){
