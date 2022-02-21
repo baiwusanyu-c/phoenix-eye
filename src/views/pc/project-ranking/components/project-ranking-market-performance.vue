@@ -197,30 +197,30 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .market-performance {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: auto;
 }
 
 .chart-box {
-    box-sizing: border-box;
-    width: 100%;
-    height: 284px;
-    padding: 0 24px;
-    margin: 24px auto;
-    background-color: white;
+  box-sizing: border-box;
+  width: 100%;
+  height: 284px;
+  padding: 0 24px;
+  margin: 24px auto;
+  background-color: white;
 }
 
 .chart {
-    width: 100%;
-    height: 243px;
+  width: 100%;
+  height: 243px;
 }
 
 .chart-title {
-    padding-top: 17px;
-    font-size: 18px;
-    font-weight: bold;
+  padding-top: 17px;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>

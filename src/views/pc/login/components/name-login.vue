@@ -209,121 +209,121 @@ export default defineComponent({
 <style lang='scss' scoped>
 
 .formArea {
+  width: 100%;
+  margin: auto;
+
+  .login-form {
+
+    .el-form-item {
+      margin-bottom: 30px;
+    }
+  }
+
+  .primary {
     width: 100%;
-    margin: auto;
+    height: 38px;
+    margin-top: 5px
+  }
 
-    .login-form {
+  .showIcon {
+    position: relative;
+    top: -2px;
+    display: inline-block;
+    height: 16px;
+    cursor: pointer;
+  }
 
-        .el-form-item {
-            margin-bottom: 30px;
-        }
+  .errBtn {
+    cursor: not-allowed;
+  }
+
+  .checkArea {
+    margin-top: 26px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+
+    .cursor {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
-    .primary {
-        width: 100%;
-        height: 38px;
-        margin-top: 5px
+    .phone {
+      color: $lessColor3;
     }
 
-    .showIcon {
-        position: relative;
-        top: -2px;
-        display: inline-block;
-        height: 16px;
-        cursor: pointer;
+    .reg {
+      color: $lessColor3;
+
+      span:first-child {
+        margin-right: 10px;
+      }
     }
-
-    .errBtn {
-        cursor: not-allowed;
-    }
-
-    .checkArea {
-        margin-top: 26px;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 21px;
-
-        .cursor {
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        .phone {
-            color: $lessColor3;
-        }
-
-        .reg {
-            color: $lessColor3;
-
-            span:first-child {
-                margin-right: 10px;
-            }
-        }
-    }
+  }
 }
 
 .flex {
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .flex-center {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .flex-end {
-    display: flex;
+  display: flex;
 
-    /*   justify-content: flex-end; */
-    justify-content: space-between;
+  /*   justify-content: flex-end; */
+  justify-content: space-between;
 }
 
 .codeArea {
-    top: 6px;
-    width: 120px;
-    margin-left: 10px;
-    text-align: left;
+  top: 6px;
+  width: 120px;
+  margin-left: 10px;
+  text-align: left;
 
-    .codeBtn {
-        width: 95px;
-        height: 38px;
-        cursor: pointer;
-    }
+  .codeBtn {
+    width: 95px;
+    height: 38px;
+    cursor: pointer;
+  }
 
-    .codeBtnText {
-        width: 18px;
-        height: 18px;
-        margin-left: 5px;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 43px;
-        color: #C1CCEC;
-        cursor: pointer;
-    }
+  .codeBtnText {
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 43px;
+    color: #C1CCEC;
+    cursor: pointer;
+  }
 }
 </style>
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-    .flex-center {
-        justify-content: center;
-    }
+  .flex-center {
+    justify-content: center;
+  }
 
-    .flex-end {
-        justify-content: flex-end;
-    }
+  .flex-end {
+    justify-content: flex-end;
+  }
 
-    .formArea {
+  .formArea {
 
-        .checkArea {
-            margin-top: 20px;
-        }
+    .checkArea {
+      margin-top: 20px;
     }
+  }
 
 }
 </style>

@@ -122,13 +122,13 @@ export default defineComponent({
 
 <style scoped>
 .svg-icon {
+  display: inline;
   width: 1.2em;
   height: 1.2em;
   overflow: hidden;
   font-size: 1.2em;
   vertical-align: -.3em;
   fill: currentColor;
-  display: inline;
 }
 
 .svg-external-icon {

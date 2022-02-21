@@ -253,6 +253,7 @@ export default defineComponent({
     line-height: 20px;
     color: white;
     border-radius: 4px 4px 0 0;
+
     .svg-icon {
       margin: 0 5px;
     }
@@ -264,7 +265,7 @@ export default defineComponent({
     }
 
     .ellipsis-copy{
-        min-width: 0!important;
+      min-width: 0!important;
     }
   }
 

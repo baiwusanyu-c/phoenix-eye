@@ -118,83 +118,83 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .project-ranking-safety-opinion {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  background-color: white;
 }
 
 .safety-opinion-info {
-    width: 100%;
-    padding: 0 24px;
+  width: 100%;
+  padding: 0 24px;
 }
 
 .safety-opinion-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .safety-opinion-footer {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .safety-opinion-footer-tag {
-    min-width: 54px;
-    height: 22px;
-    margin-top: 5px;
-    margin-right: 18px;
+  min-width: 54px;
+  height: 22px;
+  margin-top: 5px;
+  margin-right: 18px;
 }
 
 .safety-opinion-header-title {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .safety-opinion-info-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .safety-opinion-info-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    min-width: 528px;
-    max-width: 1136px;
-    height: 144px;
-    padding-top: 10px;
-    padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 528px;
+  max-width: 1136px;
+  height: 144px;
+  padding-top: 10px;
+  padding-bottom: 24px;
 }
 
 .safety-opinion-info-right {
-    width: 296px;
-    min-width: 296px;
-    height: 148px;
-    margin-left: 160px;
-    padding: 10px;
-    box-sizing: border-box;
+  box-sizing: border-box;
+  width: 296px;
+  min-width: 296px;
+  height: 148px;
+  padding: 10px;
+  margin-left: 160px;
 }
 
 .safety-opinion-body-msg {
-    width: 100%;
-    height: 66px;
-    overflow-y: auto;
-    font-size: 14px;
-    color: #5c5c5c;
+  width: 100%;
+  height: 66px;
+  overflow-y: auto;
+  font-size: 14px;
+  color: #5c5c5c;
 }
 
 .el-divider--horizontal {
-    margin: 0 0;
+  margin: 0 0;
 }
 
 .msg-font {
-    font-size: 14px;
-    color: #5c5c5c;
+  font-size: 14px;
+  color: #5c5c5c;
 }
 </style>

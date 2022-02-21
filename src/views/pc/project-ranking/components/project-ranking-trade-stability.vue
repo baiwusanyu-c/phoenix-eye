@@ -175,22 +175,22 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .chart-box {
-    width: 100%;
-    height: 296px;
-    padding: 0 24px;
-    background-color: white;
+  width: 100%;
+  height: 296px;
+  padding: 0 24px;
+  background-color: white;
 }
 
 .chart {
-    width: 100%;
-    height: 243px;
+  width: 100%;
+  height: 243px;
 }
 
 .chart-title {
-    display: flex;
-    flex-direction: row-reverse;
-    padding-top: 17px;
-    font-size: 18px;
-    font-weight: bold;
+  display: flex;
+  flex-direction: row-reverse;
+  padding-top: 17px;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>

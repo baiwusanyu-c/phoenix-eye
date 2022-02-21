@@ -748,6 +748,8 @@ export default defineComponent({
     }
 
     .platform-logo {
+      display: flex;
+      align-items: center;
       height: 30px;
       padding: 5px;
       margin-right: 15px;
@@ -756,13 +758,12 @@ export default defineComponent({
       line-height: 20px;
       background: $mainColor7;
       border: 1px solid rgba(0, 0, 0, .15);
-      display: flex;
-      align-items: center;
+
       img {
+        display: inline-block;
         width: 15px;
         height: 15px;
         margin-right: 5px;
-        display: inline-block;
       }
     }
 

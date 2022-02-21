@@ -868,11 +868,12 @@ export default defineComponent({
   }
 
   .blotua-table {
-      width: 100%;
-      margin-top: 30px;
-      padding: 14px;
-      box-sizing: border-box;
-      border-collapse: initial;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px;
+    margin-top: 30px;
+    border-collapse: initial;
+
     .blotua-table-header {
       font-family: PingFang-SC-Heavy, PingFang-SC sans-serif;
       font-size: 12px;
@@ -912,7 +913,8 @@ export default defineComponent({
   .timer{
     display: flex;
     align-items: center;
-      margin-bottom: 10px;
+    margin-bottom: 10px;
+
     .el-input__inner{
       height: 24px;
       line-height: 24px;

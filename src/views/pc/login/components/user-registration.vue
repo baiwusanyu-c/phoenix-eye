@@ -229,78 +229,78 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
 .formArea {
+  width: 100%;
+
+  .primary {
     width: 100%;
+    margin-top: 20px;
+  }
 
-    .primary {
-        width: 100%;
-        margin-top: 20px;
+  .showIcon {
+    position: relative;
+    top: -2px;
+    display: inline-block;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .errBtn {
+    cursor: not-allowed;
+  }
+
+  .codeBtn {
+    width: 34%;
+    height: 38px;
+    font-size: 14px;
+    line-height: 38px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    background-color: $mainColor3;
+    border-radius: 5px;
+    opacity: .8;
+  }
+
+  .tips {
+    width: 110px;
+    height: 37px;
+    font-size: 14px;
+    line-height: 37px;
+    color: #76838F;
+    text-align: center;
+    background-color: #F2F4F5;
+    border-radius: 5px;
+  }
+
+  .checkArea {
+    height: 54px;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    text-align: right;
+
+    .cursor {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
-    .showIcon {
-        position: relative;
-        top: -2px;
-        display: inline-block;
-        height: 16px;
-        cursor: pointer;
+    .phone {
+      color: $textColor3;
     }
-
-    .errBtn {
-        cursor: not-allowed;
-    }
-
-    .codeBtn {
-        width: 34%;
-        height: 38px;
-        font-size: 14px;
-        line-height: 38px;
-        color: #fff;
-        text-align: center;
-        cursor: pointer;
-        background-color: $mainColor3;
-        border-radius: 5px;
-        opacity: .8;
-    }
-
-    .tips {
-        width: 110px;
-        height: 37px;
-        font-size: 14px;
-        line-height: 37px;
-        color: #76838F;
-        text-align: center;
-        background-color: #F2F4F5;
-        border-radius: 5px;
-    }
-
-    .checkArea {
-        height: 54px;
-        margin-top: 20px;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 21px;
-        text-align: right;
-
-        .cursor {
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        .phone {
-            color: $textColor3;
-        }
-    }
+  }
 }
 
 .flex {
-    align-items: flex-start;
-    justify-content: space-between;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .flex-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 </style>
@@ -308,19 +308,19 @@ export default defineComponent({
 <style lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-    .formArea.user-registration {
+  .formArea.user-registration {
 
-        .el-form-item {
-            margin-bottom: 20px;
+    .el-form-item {
+      margin-bottom: 20px;
 
-            .el-form-item__content {
-                padding: 4px;
-            }
-        }
-
-        .primary {
-            margin-top: 0;
-        }
+      .el-form-item__content {
+        padding: 4px;
+      }
     }
+
+    .primary {
+      margin-top: 0;
+    }
+  }
 }
 </style>

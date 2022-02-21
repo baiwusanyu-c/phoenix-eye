@@ -187,8 +187,8 @@
 
       .dialog-footer{
         display: flex;
-          justify-content: space-around;
-          width: 56%;
+        justify-content: space-around;
+        width: 56%;
       }
     }
   }

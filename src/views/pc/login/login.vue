@@ -91,179 +91,180 @@ onBeforeUnmount(() => {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
 .login {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  min-width: 1280px;
+  height: 100vh;
+  //   background: url('../../../assets/image/pc/loginBg.png') no-repeat;
+  background: linear-gradient(
+    180deg,#000 0%,rgba(0, 0, 0, .9) 40%,rgba(5, 29, 41, 0) 100%
+  );
+  background-size: 100% 100%;
+
+  .content-area {
     display: flex;
-    align-items: center;
-    width: 100vw;
-    min-width: 1280px;
-    height: 100vh;
-    //   background: url('../../../assets/image/pc/loginBg.png') no-repeat;
-    background: linear-gradient(
-            180deg, #000 0%, rgba(0, 0, 0, .9) 40%, rgba(5, 29, 41, 0) 100%
-    );
-    background-size: 100% 100%;
+    flex-wrap: wrap;
+    width: 1140px;
+    height: 100%;
+    margin: auto;
 
-    .content-area {
-        display: flex;
-        flex-wrap: wrap;
-        width: 1140px;
-        height: 100%;
-        margin: auto;
-
-        .logo-box {
-            height: 10%;
-            margin-top: 60px;
-        }
-
-        .inner {
-            display: flex;
-            align-items: flex-start;
-            align-self: center;
-            justify-content: center;
-            width: 100%;
-            height: 460px;
-        }
-
-        .footer-box {
-            align-self: flex-end;
-            width: 100%;
-            margin-bottom: 32px;
-
-            p {
-                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
-                font-size: 14px;
-                line-height: 24px;
-                color: #9BC8DF;
-                overflow-wrap: break-word;
-                white-space: nowrap;
-            }
-
-        }
-
-        .area_l {
-            width: calc(100% - 440px);
-            height: 100%;
-
-            p {
-                width: 100%;
-            }
-
-            .text-w {
-                align-self: flex-start;
-                margin-top: 64px;
-                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
-                font-size: 40px;
-                line-height: 56px;
-                color: $mainColor13;
-                white-space: nowrap;
-            }
-
-            .text-t {
-                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
-                font-size: 51px;
-                line-height: 72px;
-                color: rgba(255, 255, 255, 1);
-                background-image: linear-gradient(180deg, $mainColor7 0%, #B6E0FF 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-            .text-w-e {
-                font-family: Helvetica, sans-serif;
-                font-size: 40px;
-                line-height: 53px;
-                color: rgba(155, 200, 223, 1);
-                white-space: nowrap;
-            }
-        }
-
-        .area-r {
-            box-sizing: border-box;
-            width: 440px;
-            min-height: 100%;
-            padding: 0 70px;
-            background-image: url(../../../assets/image/pc/bg-logo.png);
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-
-            .title {
-                @include text(24px, rgba(0, 0, 0, .85), 31px);
-                margin-top: 46px;
-                margin-bottom: 24px;
-            }
-
-            .otherTitle {
-                margin-top: 46px;
-                margin-bottom: 24px;
-            }
-
-            .regTitle {
-                margin-top: 46px;
-                margin-bottom: 24px;
-            }
-        }
+    .logo-box {
+      height: 10%;
+      margin-top: 60px;
     }
+
+    .inner {
+      display: flex;
+      align-items: flex-start;
+      align-self: center;
+      justify-content: center;
+      width: 100%;
+      height: 460px;
+    }
+
+    .footer-box {
+      align-self: flex-end;
+      width: 100%;
+      margin-bottom: 32px;
+
+      p {
+        font-family: PingFangSC-Medium, PingFang SC, sans-serif;
+        font-size: 14px;
+        line-height: 24px;
+        color: #9BC8DF;
+        overflow-wrap: break-word;
+        white-space: nowrap;
+      }
+
+    }
+
+    .area_l {
+      width: calc(100% - 440px);
+      height: 100%;
+
+      p {
+        width: 100%;
+      }
+
+      .text-w {
+        align-self: flex-start;
+        margin-top: 64px;
+        font-family: PingFangSC-Medium, PingFang SC, sans-serif;
+        font-size: 40px;
+        line-height: 56px;
+        color: $mainColor13;
+        white-space: nowrap;
+      }
+
+      .text-t {
+        font-family: PingFangSC-Medium, PingFang SC, sans-serif;
+        font-size: 51px;
+        line-height: 72px;
+        color: rgba(255, 255, 255, 1);
+        background-image: linear-gradient(180deg, $mainColor7 0%, #B6E0FF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .text-w-e {
+        font-family: Helvetica, sans-serif;
+        font-size: 40px;
+        line-height: 53px;
+        color: rgba(155, 200, 223, 1);
+        white-space: nowrap;
+      }
+    }
+
+    .area-r {
+      box-sizing: border-box;
+      width: 440px;
+      min-height: 100%;
+      padding: 0 70px;
+      background-image: url(../../../assets/image/pc/bg-logo.png);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+
+      .title {
+        @include text(24px, rgba(0, 0, 0, .85), 31px);
+        margin-top: 46px;
+        margin-bottom: 24px;
+      }
+
+      .otherTitle {
+        margin-top: 46px;
+        margin-bottom: 24px;
+      }
+
+      .regTitle {
+        margin-top: 46px;
+        margin-bottom: 24px;
+      }
+    }
+  }
 }
 </style>
 <style lang="scss">
 .login {
-    .el-input-group__append {
-        padding: 0;
-        width: 20px;
+
+  .el-input-group__append {
+    width: 20px;
+    padding: 0;
+  }
+
+  .el-carousel__container {
+    height: 100%;
+  }
+
+  .el-carousel__item.is-animating {
+    text-align: center;
+  }
+
+  .focus {
+
+    .el-form-item__content {
+      border-bottom: 1px solid #8194cc !important;
+    }
+  }
+
+  .label {
+
+    .iconImg {
+      position: relative;
+      top: -2px;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
     }
 
-    .el-carousel__container {
-        height: 100%;
+    .el-form-item__content {
+      width: 100%;
+      padding: 8px;
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, .15);
+      border-radius: 2px;
     }
 
-    .el-carousel__item.is-animating {
-        text-align: center;
+    .el-input__inner {
+      border-bottom: none;
     }
 
-    .focus {
-
-        .el-form-item__content {
-            border-bottom: 1px solid #8194cc !important;
-        }
+    .el-input-group__prepend {
+      width: 24px;
+      padding: 0 3px;
+      text-align: center;
     }
 
-    .label {
-
-        .iconImg {
-            position: relative;
-            top: -2px;
-            display: inline-block;
-            height: 16px;
-            width: 16px;
-        }
-
-        .el-form-item__content {
-            width: 100%;
-            padding: 8px;
-            background-color: #fff;
-            border: 1px solid rgba(0, 0, 0, .15);
-            border-radius: 2px;
-        }
-
-        .el-input__inner {
-            border-bottom: none;
-        }
-
-        .el-input-group__prepend {
-            width: 24px;
-            padding: 0 3px;
-            text-align: center;
-        }
-
-        .el-form-item__error {
-            top: 101%;
-            left: 32px;
-        }
+    .el-form-item__error {
+      top: 101%;
+      left: 32px;
     }
+  }
 }
 </style>
 
@@ -271,26 +272,26 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-    .login {
+  .login {
 
-        .content-area {
+    .content-area {
 
-            .area-r {
+      .area-r {
 
-                .regTitle {
-                    margin-top: 20px;
-                    margin-bottom: 15px;
-                }
-            }
-
-            .logo-box {
-                margin-top: 10px;
-            }
-
-            .inner {
-                height: 442px;
-            }
+        .regTitle {
+          margin-top: 20px;
+          margin-bottom: 15px;
         }
+      }
+
+      .logo-box {
+        margin-top: 10px;
+      }
+
+      .inner {
+        height: 442px;
+      }
     }
+  }
 }
 </style>

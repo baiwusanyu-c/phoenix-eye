@@ -285,10 +285,12 @@ export default defineComponent({
 
 <style lang="scss">
 .createBox {
-    .el-input__inner {
-        height: 40px;
-        border-radius: 2px;
-    }
+
+  .el-input__inner {
+    height: 40px;
+    border-radius: 2px;
+  }
+
   .project-star {
     position: absolute;
     top: 4px;

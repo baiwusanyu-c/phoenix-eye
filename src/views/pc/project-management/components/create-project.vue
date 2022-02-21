@@ -738,10 +738,12 @@ export default defineComponent({
 
 <style lang="scss">
 .createBox{
+
   .el-input__inner {
-        height: 40px;
-        border-radius: 2px;
-    }
+    height: 40px;
+    border-radius: 2px;
+  }
+
   .project-star{
     position: absolute;
     top: 4px;
@@ -803,25 +805,28 @@ export default defineComponent({
   .svg-icon.add-create{
     fill:#0468C2
   }
+
   .plus-create{
-      color: #81b3e0;
+    color: #81b3e0;
   }
 
   .subtract-create{
     border: solid 1px #81b3e0;
   }
 }
+
 .plus-create{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    cursor: default;
-    font-size: 27px;
-    color: darkgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 27px;
+  color: darkgray;
+  cursor: default;
+  user-select: none;
 }
+
 .subtract-create{
   width: 14px;
   border: solid 1px darkgray;
@@ -854,8 +859,8 @@ export default defineComponent({
 .contractSiteBox {
   display: flex;
   align-items: center;
+  width: 800px;
   margin-top: 8px;
-    width: 800px;
 }
 
 .contract-site-box-item {

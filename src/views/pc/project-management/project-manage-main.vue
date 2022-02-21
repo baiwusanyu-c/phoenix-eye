@@ -425,18 +425,18 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .project-manage-main {
+  width: 100%;
+  height: 100%;
+
+  .project-manage-list {
     width: 100%;
     height: 100%;
+    overflow-y: auto;
 
-    .project-manage-list {
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-
-        /* display: flex;
+    /* display: flex;
              justify-content: flex-start;
              flex-wrap: wrap; */
 
-    }
+  }
 }
 </style>

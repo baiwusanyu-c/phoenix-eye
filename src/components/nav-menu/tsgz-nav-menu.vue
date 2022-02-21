@@ -7,40 +7,58 @@
 <template>
     <div class="tsgz-nav-menu" id="xnhb_nav_menu">
         <!--    展开时logo    -->
-        <div>
+        <div style="display: flex">
             <div class="expend-logo"></div>
-        </div>
-        <!--    展开时項目名稱    -->
-        <span class="tsgz-name">{{ $t('lang.loginConfig.prodName') }}</span>
-        <!--    展开时菜单    -->
-        <div class="tsgz-nav-menu-container">
-            <el-menu
-                unique-opened
-                ref="menuPart1"
-                :default-active="active"
-                class="el-menu-vertical-demo menu-part1">
-                <div v-for="(value,key) in headerConfig" :key="key">
-                    <el-menu-item :index="value.index" v-if='value.show && value.children.length === 0'
-                                  :disabled="value.isDisabled"
-                                  @click="routerSwitch(value,value.isPush)">
-                        <be-svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></be-svg-icon>
-                        <span style="margin-left: 10px">{{ $t(value.name) }}</span>
-                    </el-menu-item>
+            <!--    展开时菜单    -->
+            <div class="tsgz-nav-menu-container">
+                <el-menu
+                    unique-opened
+                    ref="menuPart1"
+                    mode="horizontal"
+                    :ellipsis="false"
+                    :default-active="active"
+                    class="el-menu-demo menu-part1">
 
-                    <el-sub-menu v-if='value.show && value.children.length > 0' :index="value.index"
-                                :disabled="value.isDisabled">
-                        <template #title>
-                            <be-svg-icon disabled-tool-tip :iconClass="value.icon" class-name="nav-menu-icon"></be-svg-icon>
-                            <span style="margin-left: 10px">{{ $t(value.name) }}}</span>
-                        </template>
-                        <div v-for="item in value.children" :key="item.key">
-                            <el-menu-item :index="item.index" @click.self="routerSwitch(item,value.isPush)">
-                                <span>{{ item.name }}</span>
-                            </el-menu-item>
-                        </div>
-                    </el-sub-menu>
-                </div>
-            </el-menu>
+                    <div v-for="(value,key) in headerConfig" :key="key">
+                        <el-menu-item  :key="key" :index="value.index"
+                                       v-if='value !== undefined && value.show && value?.children.length === 0'
+                                       :disabled="value.isDisabled"
+                                       @click="routerSwitch(value,value.isPush)">
+                            <span style="margin-left: 10px">{{ $t(value.name) }}</span>
+                        </el-menu-item>
+                    </div>
+                </el-menu>
+            </div>
+        </div>
+        <div class="tsgz-slogan">
+            <el-dropdown @command="changeLanguage">
+                            <span class="el-dropdown-link" style="display: flex;align-items: center;margin:0 30px">
+                              {{ computeLang }}
+                              <be-icon icon="under" style="margin-left: 5px" color="#777"></be-icon>
+                            </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item command="zh_CN"
+                                          :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''}`">
+                            {{ $t('lang.header.chinese') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item command="en_US"
+                                          :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''}`">
+                            {{ $t('lang.header.english') }}
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <el-dropdown @command="changeLanguage">
+                            <span class="el-dropdown-link">
+                              <div class="tsgz-user">{{ $t('lang.header.me') }}</div>
+                            </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item command="logout">{{ $t('lang.header.logout') }}</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
         </div>
         <!--退出弹窗-->
         <MsgDialog
@@ -55,13 +73,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, nextTick, onMounted, ref, watch} from "vue";
+import {computed, defineComponent, nextTick, onMounted, ref, watch} from "vue";
 import {onBeforeRouteUpdate} from "vue-router";
-import {clearSession, clearStore} from "../../utils/common";
+import {clearSession, clearStore, getStore, setStore} from "../../utils/common";
 import composition from "../../utils/mixin/common-func";
 import {useStore} from "vuex";
 import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
 import BeSvgIcon from "../../components/common-components/svg-icon/be-svg-icon.vue";
+import {BeIcon} from '../../../public/be-ui/be-ui.es.js'
+import {useI18n} from "vue-i18n";
 /**
  * 头部菜单导航
  */
@@ -69,7 +89,8 @@ export default defineComponent({
     name: "TsgzNavMenu",
     components:{
         MsgDialog,
-        BeSvgIcon
+        BeSvgIcon,
+        BeIcon
     },
     setup(props, ctx) {
         const {routerPush,route} = composition(props, ctx)
@@ -116,7 +137,11 @@ export default defineComponent({
             })
         })
         onMounted(() => {
-            setHeaderConfig()
+            nextTick(()=>{
+                loginUser.value = JSON.parse(getStore('userInfo') as string).username
+                setHeaderConfig()
+            })
+
         })
         /**
          * 配置头部菜单方法
@@ -191,8 +216,25 @@ export default defineComponent({
                 }
             })
         }
+        const loginUser = ref<string>('')
+        // 语种切换
+        const {t, locale} = useI18n()
+        const changeLanguage = (data: string): void => {
+            if (data === 'logout') {
+                routerPush('/login')
+                return
+            }
+            setStore('language', data)
+            locale.value = data
+            computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH'
+            route.meta.titleInfo = t(route.meta.title)
+        }
+        const computeLang = ref<string>('EN')
         return {
+            computeLang,
             active,
+            changeLanguage,
+            getStore,
             headerConfig,
             routerSwitch,
         }
@@ -202,215 +244,140 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.no-active {
 
-    .el-menu-item.is-active {
-        color: $textColor8 !important;
-        background-color: transparent !important;
-    }
-
-    .el-menu-item.is-active:hover {
-        background-color: $mainColor3 !important;
-    }
-}
 
 .el-dropdown-menu__item_on {
-    color: $mainColor3;
-    background-color: $mainColor10;
+  color: $mainColor3;
+  background-color: $mainColor10;
 }
 
-.tsgz-nav-menu-container,
-.tsgz-nav-menu-p2 {
-    text-align: left;
+.tsgz-nav-menu-container, {
+  text-align: left;
 
-    .nav-menu-icon {
-        fill: $textColor8 !important;
-    }
+  .nav-menu-icon {
+    fill: $textColor8 !important;
+  }
 
 }
 
 .tsgz-nav-menu-container {
-    height: 76%;
-    overflow-x: hidden;
-    overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  height: 60px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .tsgz-nav-menu-container-free {
-    height: calc(68% - 16px);
+  height: calc(68% - 16px);
 }
 
 .tsgz-nav-menu {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+  background-color: $mainColor7;
+  box-shadow: 2px 0 6px 0 rgba(0, 21, 41, .12);
+    .tsgz-slogan {
+        display: flex;
+        flex: 4;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+        margin-right: 30px;
+        background-repeat: no-repeat;
+        background-position: right;
+        background-size: 100% 100%;
 
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-align: center;
-    background: #0A5292 linear-gradient(180deg, #002E57 0%, #0A5292 100%);
-    background-image: url("../../assets/image/pc/menu-textrue.png");
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-size: 100%;
-    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, .12);
+        .tsgz-user {
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            color: $textColor6;
+            text-align: center;
+            background-color: $mainColor3;
+            border-radius: 30px;
+        }
 
-    .expend-logo {
-        width: 168px !important;
-        height: 94px !important;
-        margin: 32px 20px 0 20px !important;
-        -webkit-clip-path: polygon(22% 0, 84% 0, 62% 100%, 29% 100%);
-        clip-path: polygon(22% 0, 84% 0, 62% 100%, 29% 100%);
-        font-size: 20px !important;
-        color: white !important;
-        vertical-align: middle !important;
-        background-image: url("../../assets/image/pc/logo-white.png");
-        background-repeat: repeat;
-        background-position-x: -38%
-    }
-
-    .logo-fold {
-        width: 44px;
-        height: 44px;
-        margin: 12px 6px;
-        font-size: 35px;
-        color: white;
-        vertical-align: middle;
-    }
-
-    .nav-menu-icon-fold {
-        width: 32px;
-        height: 60px;
-        margin: 0 auto;
-        font-size: 30px;
-        line-height: 50px;
-        vertical-align: middle;
-        cursor: pointer;
-
-        .svg-icon {
-            width: .9em;
-            height: .9em;
+        h3 {
+            margin: 0 10px;
+            font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: $textColor4;
         }
     }
 
+    .expend-logo {
+        background-image: url("../../assets/image/pc/logo-white.png");
+        background-repeat: no-repeat;
+        width: 164px;
+        margin-left: 30px;
+        background-position-y: center;
+    }
+
+    .el-menu-item{
+        margin-bottom: 0!important;
+    }
     .menu-disable {
         cursor: not-allowed;
     }
 
-    .nav-menu-icon-fold-150 {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 60px;
-        margin: 0 auto;
-        font-size: 30px;
-        line-height: 50px;
-        vertical-align: middle;
-        cursor: pointer;
+  .nav-menu-icon {
 
-        .svg-icon {
-            width: .9em;
-            height: .9em;
-        }
+    /* margin-right: 10px; */
+    fill: $textColor8 !important;
+  }
+
+  .el-menu {
+
+    /* width: 100% !important; */
+    background-color: transparent;
+    border:0;
+
+    .el-menu-item, .el-submenu__title {
+      position: relative;
+      height: 40px;
+      margin-bottom: 10px;
+      line-height: 40px;
+      color: $textColor8;
+      white-space: nowrap;
+      list-style: none;
     }
 
-    .nav-menu-icon-last {
-        height: 60px;
-        margin-top: 0;
-        margin-bottom: 0;
-        line-height: 50px;
-    }
-
-    .nav-menu-icon {
-
-        /* margin-right: 10px; */
-        fill: $textColor8 !important;
-    }
-
-    .tsgz-name {
-        display: inline-block;
-        max-width: 168px;
-
-        /* text-align: center; */
-        height: 24px;
-        margin-top: 12px;
-        margin-bottom: 25px;
-        font-family: "PingFang Medium", sans-serif;
-        font-size: 14px;
-        color: $textColor6;
-    }
-
-    .el-menu {
-        width: 100% !important;
-        height: 70%;
+    .el-submenu__title:hover,
+    .el-menu-item:hover {
+        color: $mainColor3;
         background-color: transparent;
-        border-right: 0;
-
-        .el-menu-item, .el-submenu__title {
-            position: relative;
-            height: 40px;
-            margin-bottom: 10px;
-            line-height: 40px;
-            color: $textColor8;
-            white-space: nowrap;
-            list-style: none;
-        }
-
-        .el-submenu__title:hover,
-        .el-menu-item:hover {
-            background-color: $mainColor3;
-        }
-
+        font-weight: bold;
     }
 
-    .menu-part1 {
+  }
 
-        .el-menu-item.is-active,
-        .el-menu-item:focus {
-            color: #fff;
-            background-color: $mainColor3;
-
-            .nav-menu-icon {
-                fill: #fff !important;
-            }
-        }
+  .menu-part1 {
+    .el-menu-item.is-active,
+    .el-menu-item:focus {
+      color: $mainColor3;
+      font-weight: bold;
+      background-color: transparent;
+      .nav-menu-icon {
+        fill: #fff !important;
+      }
     }
+  }
 
-    .menu-part2 {
+  .menu-fold-item {
 
-        .el-menu-item.is-active {
-            color: $textColor8;
-            background-color: transparent;
-        }
+    &:hover {
+      background-color: $mainColor3;
     }
-
-    .tsgz-nav-menu-textrue {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .tsgz-nav-menu-p2 {
-        width: 208px;
-
-    }
-
-    .menu-container-fold {
-        width: 60px;
-        height: 84%;
-
-        .menu-fold-item-active {
-            background-color: $mainColor3;
-        }
-    }
-
-    .menu-container-fold2 {
-        width: 60px;
-    }
-
-    .menu-fold-item {
-
-        &:hover {
-            background-color: $mainColor3;
-        }
-    }
+  }
 }
 </style>
 
@@ -418,127 +385,29 @@ export default defineComponent({
 <style scoped lang="scss">
 @media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
 
-    .tsgz-nav-menu {
+  .tsgz-nav-menu {
 
-        .expend-logo {
-            width: 146px !important;
-            margin: 10px 10px 0 10px !important;
-
-        }
-
-        .tsgz-nav-menu-container {
-            height: 73%;
-        }
-
-        .menu-container-fold {
-            height: 78%;
-        }
-
-        .nav-menu-icon-fold {
-            width: 24px;
-            height: 45px;
-            line-height: 38px;
-
-            .svg-icon {
-                width: 1.2em;
-                height: 1.2em;
-                font-size: 20px !important;
-            }
-        }
-
-        .tsgz-nav-menu-p2 {
-            width: 178px;
-        }
-
-        .menu-container-fold2 {
-            width: 60px;
-        }
-
-        .nav-menu-icon-fold-150 {
-            height: 45px;
-            line-height: 38px;
-
-            .svg-icon {
-                width: 1.2em;
-                height: 1.2em;
-                font-size: 20px !important;
-            }
-        }
-    }
+  }
 }
 </style>
 <style lang="scss">
 @media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
 
-    .tsgz-nav-menu .el-menu .el-menu-item {
-        min-width: 160px;
-    }
 }
 </style>
 <!--1080p的130% - 140%放大-->
 <style scoped lang="scss">
 @media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
 
-    .tsgz-nav-menu {
+  .tsgz-nav-menu {
 
-        .expend-logo {
-            width: 146px !important;
-            margin: 10px 10px 0 10px !important;
-
-        }
-
-        .tsgz-nav-menu-container {
-            height: 72%;
-        }
-
-        .menu-container-fold {
-            height: 78%;
-        }
-
-        .nav-menu-icon-fold {
-            width: 24px;
-            height: 45px;
-            line-height: 38px;
-
-            .svg-icon {
-                width: 1.2em;
-                height: 1.2em;
-                font-size: 20px !important;
-            }
-        }
-
-        .tsgz-nav-menu-p2 {
-            width: 178px;
-        }
-
-        .menu-container-fold2 {
-            width: 60px;
-        }
-
-        .nav-menu-icon-fold-150 {
-            height: 45px;
-            line-height: 38px;
-
-            .svg-icon {
-                width: 1.2em;
-                height: 1.2em;
-                font-size: 20px !important;
-            }
-        }
-    }
+  }
 }
 </style>
 <style lang="scss">
 @media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
 
-    .tsgz-nav-menu .el-menu .el-menu-item, .tsgz-nav-menu .el-menu .el-submenu__title {
-        height: 28px;
-        line-height: 28px;
-    }
 
-    .tsgz-nav-menu .el-menu .el-menu-item {
-        min-width: 160px;
-    }
 
 }
 </style>
@@ -546,75 +415,14 @@ export default defineComponent({
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-    .tsgz-nav-menu {
 
-        .tsgz-name {
-            font-size: 12px;
-        }
-
-        .expend-logo {
-            width: 146px !important;
-            margin: 10px 10px 0 10px !important;
-            -webkit-clip-path: polygon(22% 0%, 100% -15%, 63% 107%, 30% 100%);
-            clip-path: polygon(22% 0%, 100% -15%, 63% 107%, 30% 100%);
-            background-image: url("../../assets/image/pc/logo-white.png");
-            background-repeat: repeat;
-            background-position-x: -28%
-        }
-
-        .tsgz-nav-menu-container {
-            height: 69%;
-        }
-
-        .menu-container-fold {
-            height: 78%;
-        }
-
-        .nav-menu-icon-fold {
-            width: 24px;
-            height: 45px;
-            line-height: 38px;
-
-            .svg-icon {
-                width: 1.2em;
-                height: 1.2em;
-                font-size: 20px !important;
-            }
-        }
-
-        .tsgz-nav-menu-p2 {
-            width: 160px;
-        }
-
-        .menu-container-fold2 {
-            width: 60px;
-        }
-
-        .nav-menu-icon-fold-150 {
-            height: 45px;
-            line-height: 38px;
-
-            .svg-icon {
-                width: 1.2em;
-                height: 1.2em;
-                font-size: 20px !important;
-            }
-        }
-    }
 
 }
 </style>
 <style lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-    .tsgz-nav-menu .el-menu .el-menu-item, .tsgz-nav-menu .el-menu .el-submenu__title {
-        height: 28px;
-        line-height: 28px;
-    }
 
-    .tsgz-nav-menu .el-menu .el-menu-item {
-        min-width: 160px;
-    }
 
 }
 </style>

@@ -34,8 +34,8 @@ export default {
     header:{
         me:'我',
         language:'language',
-        chinese:'中文',
-        english:'English',
+        chinese:'zh',
+        english:'en',
         logout:'退出登录'
     },
     warningType: {

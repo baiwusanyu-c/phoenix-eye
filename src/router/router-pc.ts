@@ -83,10 +83,10 @@ export const initRouterConfig = (treeData:any) => {
 
 const beforeEachHandle = (router:Router) => {
     router.beforeEach( (to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
-        if (to.path === '/login' || getStore('token') === null) {
-            removeStore('userInfo')
-            removeStore('token')
-            clearSession();
+        if (to.path === '/login' ) {
+            // removeStore('userInfo')
+            // removeStore('token')
+            // clearSession();
             // 路由跳转白名单（不需要验证token）
             const whiteList = ['/login']
             // 这里必须加这个判断，否则会造成路由跳转死循环，从而无法跳转(用户服务协议 无权限)
@@ -100,9 +100,10 @@ const beforeEachHandle = (router:Router) => {
                     offsetTop:80,
                     close: true,
                 })
-                next({
+               /* next({
                     path: '/login',
-                })
+                })*/
+                next()
             }
             return
         }

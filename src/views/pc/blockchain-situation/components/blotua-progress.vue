@@ -44,27 +44,29 @@
 </script>
 
 <style scoped lang="scss">
-    .progress-main{
-        height:208px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .progress-text{
-        color:#84ccff;
-        display: flex;
-        justify-content: space-between;
-    }
+  .progress-main{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height:208px;
+  }
+
+  .progress-text{
+    display: flex;
+    justify-content: space-between;
+    color:#84ccff;
+  }
 </style>
 
 <style lang="scss">
-    .progress-outer .el-progress-bar__outer{
-        border-radius: 0;
-        background-color: #052e64;
-    }
-    .progress-outer .el-progress-bar__inner{
-        border-radius: 0;
-        background-color: #0066cf;
-    }
+  .progress-outer .el-progress-bar__outer{
+    background-color: #052e64;
+    border-radius: 0;
+  }
+
+  .progress-outer .el-progress-bar__inner{
+    background-color: #0066cf;
+    border-radius: 0;
+  }
 </style>

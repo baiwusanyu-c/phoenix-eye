@@ -408,163 +408,165 @@ export default defineComponent({
 
 <style lang="scss">
 .project-ranking-main {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    .project-ranking-search {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+  .project-ranking-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        /* height: 20%; */
-        height: 15%;
+    /* height: 20%; */
+    height: 15%;
 
-        .el-input-group {
-            width: 70%;
-            margin-bottom: 30px;
-        }
-
-        .el-input__inner {
-            height: 45px;
-            line-height: 45px;
-        }
-
-        .el-input-group__append {
-            width: 120px;
-            height: 45px;
-            padding: 0;
-            color: $mainColor7;
-            text-align: center;
-            background: $mainColor3-08;
-            opacity: .8;
-
-            button {
-                width: 100%;
-                height: 100%;
-            }
-
-            &:hover {
-                background: $mainColor3;
-            }
-        }
+    .el-input-group {
+      width: 70%;
+      margin-bottom: 30px;
     }
 
-    .project-ranking-search-complex {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .el-input__inner {
+      height: 45px;
+      line-height: 45px;
+    }
 
-        .complex-big-title {
-            font-size: 24px;
-            font-weight: 500;
-            line-height: 24px;
-            color: #333;
+    .el-input-group__append {
+      width: 120px;
+      height: 45px;
+      padding: 0;
+      color: $mainColor7;
+      text-align: center;
+      background: $mainColor3-08;
+      opacity: .8;
+
+      button {
+        width: 100%;
+        height: 100%;
+      }
+
+      &:hover {
+        background: $mainColor3;
+      }
+    }
+  }
+
+  .project-ranking-search-complex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .complex-big-title {
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 24px;
+      color: #333;
+    }
+
+    .complex-title {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #777;
+    }
+
+    .complex-card-class {
+      display: grid;
+      flex-direction: row;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 24px;
+      width: 100%;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+
+    .complex-card {
+      width: 100%;
+      height: 100px;
+      margin-top: 16px;
+      margin-bottom: 16px;
+      overflow-x: hidden;
+      cursor: pointer;
+      background: #FFF;
+      border-radius: 4px;
+
+      .complex-card-head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin: 18px 0 10px;
+
+        .complex-card-title {
+          height: 32px;
+          padding-left: 23px;
+          font-size: 24px;
+          font-weight: 500;
+          line-height: 32px;
+          color: #333;
         }
 
-        .complex-title {
-            margin-top: 8px;
-            font-size: 14px;
+        .complex-card-project {
+          height: 32px;
+          padding: 0 23px;
+          font-size: 24px;
+          font-weight: 500;
+          line-height: 32px;
+          color: #333;
+
+          .complex-card-project-title {
+            font-size: 18px;
             font-weight: 400;
-            line-height: 24px;
             color: #777;
+          }
         }
 
-        .complex-card-class {
-            display: grid;
-            flex-direction: row;
-            grid-template-columns: 1fr 1fr;
-            grid-column-gap: 24px;
-            width: 100%;
-            margin-top: 16px;
-            margin-bottom: 16px;
+        .complex-card-contract {
+          height: 24px;
+          padding: 0 23px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 24px;
+          color: #777;
         }
+      }
 
-        .complex-card {
-            width: 100%;
-            height: 100px;
-            overflow-x: hidden;
-            cursor: pointer;
-            background: #FFF;
-            border-radius: 4px;
-            margin-top: 16px;
-            margin-bottom: 16px;
-            .complex-card-head {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                width: 100%;
-                margin: 18px 0 10px;
-
-                .complex-card-title {
-                    height: 32px;
-                    padding-left: 23px;
-                    font-size: 24px;
-                    font-weight: 500;
-                    line-height: 32px;
-                    color: #333;
-                }
-
-                .complex-card-project {
-                    height: 32px;
-                    padding: 0 23px;
-                    font-size: 24px;
-                    font-weight: 500;
-                    line-height: 32px;
-                    color: #333;
-
-                    .complex-card-project-title {
-                        font-size: 18px;
-                        font-weight: 400;
-                        color: #777;
-                    }
-                }
-
-                .complex-card-contract {
-                    height: 24px;
-                    padding: 0 23px;
-                    font-size: 14px;
-                    font-weight: 400;
-                    line-height: 24px;
-                    color: #777;
-                }
-            }
-
-            .complex-card-footer {
-                width: 100%;
-                height: 24px;
-                font-size: 14px;
-                font-weight: 400;
-                line-height: 24px;
-                color: #777;
-            }
-        }
+      .complex-card-footer {
+        width: 100%;
+        height: 24px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #777;
+      }
     }
+  }
 
-    .project-ranking-list {
-        box-sizing: border-box;
-        padding: 20px;
-        background-color: $mainColor7;
+  .project-ranking-list {
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: $mainColor7;
 
-        .table-page {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
+    .table-page {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
 
-            .table-page-info {
-                margin-top: 20px;
-                font-size: 14px;
-                color: $textColor4;
-            }
-        }
+      .table-page-info {
+        margin-top: 20px;
+        font-size: 14px;
+        color: $textColor4;
+      }
     }
+  }
 }
-.top-tip {
-    cursor: pointer;
-    margin-bottom: 5px;
-    line-height: 25px;
 
-    &:hover {
-        background-color: #F5F7FA;
-    }
+.top-tip {
+  margin-bottom: 5px;
+  line-height: 25px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #F5F7FA;
+  }
 }
 </style>
