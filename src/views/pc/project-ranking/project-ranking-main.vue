@@ -181,7 +181,7 @@ export default {
     },
     watch: {
         searchParams() {
-            if (this.searchParams === '' && this.getParams === '') {
+            if (this.searchParams === '' && this.searching) {
                 this.projectOnly = true
                 this.searchType = ''
                 this.$router.push('/projectRanking')

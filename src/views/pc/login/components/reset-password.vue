@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import {updatePwd, getResetCode} from '@/api/login.js';
 import {forgetPasswordApi, verifyCodePassword} from "../../../../api/login";
 import {Base64} from "js-base64";
 
