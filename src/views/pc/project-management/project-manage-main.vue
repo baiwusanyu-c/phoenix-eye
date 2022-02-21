@@ -55,7 +55,7 @@ import CreateProject from "./components/create-project.vue";
 import {
     createProject,
     deleteProject,
-    getProjectList,
+    getProjectList, ICreateProj, IReappraise,
     reappraiseProject,
     saveEditProject
 } from "../../../api/project-management";
@@ -109,7 +109,7 @@ export default defineComponent({
          * 確認新增方法
          * @param {Object} param - 表单参数
          */
-        const confirmAdd = (param) => {
+        const confirmAdd = (param:ICreateProj) => {
             createProject(param).then(res => {
                 if (res) {
                     const msg = t('lang.add') + t('lang.success')
@@ -126,7 +126,7 @@ export default defineComponent({
         /**
          * 编辑类型方法
          */
-        const editProject = (item) => {
+        const editProject = (item:ICreateProj) => {
             opType.value = 'edit'
             curItem.data = item
             nextTick(() => {
@@ -138,9 +138,9 @@ export default defineComponent({
          * 確認編輯方法
          * @param {Object} param - 表单参数
          */
-        const confirmEdit = (param: object) => {
+        const confirmEdit = (param: ICreateProj) => {
             const pathParams = {
-                id: curItem.data.id
+                id: (curItem.data as IReappraise).id
             }
             saveEditProject(param, pathParams).then(res => {
                 if (res) {
@@ -159,7 +159,7 @@ export default defineComponent({
          * 删除类型方法
          * @param {Object} item - 项目数据对象
          */
-        const deleteProjects = (item: object) => {
+        const deleteProjects = (item: ICreateProj) => {
             curItem.data = item
             deleteText.value = `${t('lang.systemConfig.delete')}${item.name}？`
             showDelete.value = true
@@ -169,7 +169,7 @@ export default defineComponent({
          */
         const confirmDelete = () => {
             const params = {
-                id: curItem.data.id
+                id: (curItem.data as IReappraise).id
             }
             deleteProject(params).then(res => {
                 if (res) {
@@ -188,7 +188,7 @@ export default defineComponent({
          * 重新评估项目
          * @param {Object} item - 项目数据对象
          */
-        const freshProject = (item: object) => {
+        const freshProject = (item: ICreateProj) => {
             curItem.data = item
             freshText.value = `${t('lang.systemConfig.isConfirm')}${item.name}${t('lang.systemConfig.reassessInfo')}？`
             showFresh.value = true
@@ -198,7 +198,7 @@ export default defineComponent({
          */
         const confirmFresh = () => {
             const params = {
-                id: curItem.data.id
+                id: (curItem.data as IReappraise).id
             }
             reappraiseProject(params).then(res => {
                 if (res) {
@@ -222,9 +222,9 @@ export default defineComponent({
                 // 项目列表
                 projectList.data = res.data
                 // 關鍵詞字符串轉化為數組
-                projectList.data.forEach(val => {
+                projectList.data.forEach((val:any) => {
                     let keyword = val.keyword.replace('；', ';')
-                    val.keywordList = keyword.split(';').filter(filterVal => filterVal)
+                    val.keywordList = keyword.split(';').filter((filterVal:any) => filterVal)
                 })
                 loading.value = false
             }).catch(err => {

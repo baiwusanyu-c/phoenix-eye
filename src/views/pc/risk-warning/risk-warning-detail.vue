@@ -193,7 +193,10 @@ import {platformToCurrency,IPlatformToCurrency} from "../../../utils/platform-di
 import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from 'vue'
 import composition from "../../../utils/mixin/common-func"
 import {getUuid,simulateToFixed,openWindow} from "../../../utils/common";
-import {use} from "marked";
+interface IBaseInfo {
+    platform?:string
+    tx_hash?:string
+}
 
 
 export default defineComponent({
@@ -202,7 +205,7 @@ export default defineComponent({
     setup(props:any,ctx:any){
         const {message,route} = composition(props, ctx)
         // 基础信息
-        const baseInfo = ref({})
+        const baseInfo = ref<IBaseInfo>({})
         // 收益信息
         const profitData = ref<Array<any>>([])
         // loading
@@ -249,7 +252,7 @@ export default defineComponent({
          */
         const getInfoData = ():void =>{
             const params:IProjDetail = {
-                tx_hash: route.query.tx_hash
+                tx_hash: route.query.tx_hash as string
             }
             loading.value = true
             getProjWarningDetail(params).then((res:any)=>{
@@ -287,7 +290,8 @@ export default defineComponent({
          */
         const openWeb = ():void => {
             if(!baseInfo.value.platform || !baseInfo.value.tx_hash) return
-            const url = `${webURL[baseInfo.value.platform]}${baseInfo.value.tx_hash}`
+            let mainUrl:string = (webURL as any)[baseInfo.value.platform] as string
+            const url = `${mainUrl}${baseInfo.value.tx_hash}`
             openWindow(url)
         }
 
