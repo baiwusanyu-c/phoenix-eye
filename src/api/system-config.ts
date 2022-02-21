@@ -11,7 +11,7 @@ export function getRiskTypeList() {
 }
 
 //新增 风险类型(完成)
-interface IRiskType {
+export interface IRiskType {
     name:string
     risk_features:Array<string>
 }

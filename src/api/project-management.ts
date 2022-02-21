@@ -9,15 +9,18 @@ export function getProjectList() {
     })
 }
 //创建项目 （完成）
-interface ICreateProj {
+export interface IContractInfos{
+    verAddr? :string
+    verContract?  :string
+    contract_address?:string
+    platform?:string
+    label?:string
+}
+export interface ICreateProj {
     name:string
     is_public:boolean,
     keyword:string,
-    contract_infos:{
-        platform:string
-        contract_address:string
-        label:string
-    }
+    contract_infos?:Array<IContractInfos>
 }
 export function createProject(params:ICreateProj) {
     return request({

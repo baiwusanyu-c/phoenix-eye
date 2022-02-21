@@ -62,8 +62,9 @@
 <script lang="ts">
 import {getRiskTypeInfo} from "../../../../api/system-config";
 import {defineComponent, ref, watch, toRaw, shallowReactive} from "vue";
-import {ElMessage} from "element-plus/es";
+
 import {useI18n} from "vue-i18n";
+import composition from "../../../../utils/mixin/common-func";
 
 export default defineComponent({
     name: "addRiskType",
@@ -86,6 +87,7 @@ export default defineComponent({
     },
     setup(props,ctx){
         const {t} = useI18n()
+        const {message} = composition(props, ctx)
         const checkAll = ref<boolean>(false)
         const checked = ref<boolean>(true)
         const addRiskWindowOpen = ref<boolean>(false)
@@ -167,7 +169,7 @@ export default defineComponent({
                 }
             }).catch(err => {
                 const msg = t('lang.search') + t('lang.failed')
-                ElMessage.error(msg)
+                message('error', err.message || err)
                 console.error(err)
             })
         }

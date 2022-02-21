@@ -54,7 +54,7 @@
                                 <div class="btn-border"
                                      v-show="index === 0"
                                      @click="addContractSite">
-                                    <div class="plus-create">+</div>
+                                    <be-svg-icon icon-class="add" class="add-create" disabled-tool-tip></be-svg-icon>
                                 </div>
                             </div>
                         </el-form-item>
@@ -76,15 +76,19 @@
 </template>
 
 <script lang="ts">
-import {createProject, getProjectInfo, saveEditProject} from "../../../../api/project-management";
+import {createProject, getProjectInfo, ICreateProj, saveEditProject,IContractInfos} from "../../../../api/project-management";
 import {platformListDict,IPlatformListItem} from "../../../../utils/platform-dict";
 import {defineComponent, ref, reactive, computed, watch, onMounted, toRaw, inject} from "vue"
 import {useI18n} from "vue-i18n";
-import {ElMessage} from "element-plus/es";
+
 import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
+import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
+import composition from "../../../../utils/mixin/common-func";
+import {IOption} from "../../../../utils/types";
 
 export default defineComponent({
     name: "CreateProject",
+    components:{BeSvgIcon},
     props: {
         // 操作類型
         type: {
@@ -105,6 +109,7 @@ export default defineComponent({
     },
     setup(props,ctx){
         const {t} = useI18n()
+        const {message} = composition(props, ctx)
         const createProjectWindow = ref<boolean>(false)
         const projectName= ref<string>('')
         const projectKeyWords= ref<string>('')
@@ -159,7 +164,7 @@ export default defineComponent({
         const addContractSite = () => {
             contractSite.data.push({platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''})
         }
-        const deleteContractSite = (i) => {
+        const deleteContractSite = (i:number) => {
             contractSite.data.splice(i, 1)
         }
         /**
@@ -197,7 +202,7 @@ export default defineComponent({
                 }
             }).catch(err => {
                 const msg = t('lang.search') + t('lang.failed')
-                ElMessage.error(msg)
+                message('error', msg)
                 console.error(err)
             })
         }
@@ -218,7 +223,7 @@ export default defineComponent({
          * 校驗名稱
          * @param {Object} params - 搜索参数
          */
-        const verificationName = (params:object) => {
+        const verificationName = (params:ICreateProj) => {
             if(!params.name){
                 verName.value = t('lang.pleaseInput') + t('lang.createProject.createProjectName')
                 return false
@@ -233,7 +238,7 @@ export default defineComponent({
          * 校驗關鍵詞
          * @param {Object} params - 搜索参数
          */
-        const verificationKeyword = (params:object) => {
+        const verificationKeyword = (params:ICreateProj) => {
             if(!params.keyword){
                 verKeyword.value = t('lang.pleaseInput') + t('lang.createProject.createProjectKeyWords')
                 return false
@@ -252,12 +257,12 @@ export default defineComponent({
         /**
          * 校验合约地址
          */
-        const verificationContractAddr = (val) => {
-            const platformReg = {
-                bsc:(addr)=>ETHaddress.test(addr),
-                eth:(addr)=>ETHaddress.test(addr),
-                heco:(addr)=>ETHaddress.test(addr),
-                polygon:(addr)=>ETHaddress.test(addr),
+        const verificationContractAddr = (val:any) => {
+            const platformReg:IOption = {
+                bsc:(addr:string)=>ETHaddress.test(addr),
+                eth:(addr:string)=>ETHaddress.test(addr),
+                heco:(addr:string)=>ETHaddress.test(addr),
+                polygon:(addr:string)=>ETHaddress.test(addr),
             }
             // 没有填写合约地址
             if(!val.contract_address){
@@ -275,17 +280,18 @@ export default defineComponent({
          * 表單校驗方法
          * @param {Object} params - 搜索参数
          */
-        const formVerification = (params:object) =>{
+        const formVerification = (params:ICreateProj) =>{
             verName.value = ''
             verKeyword.value = ''
             if(!verificationName(params)) return false
             if(!verificationKeyword(params)) return false
-            let contractInfos:Array<any> = []
+            let contractInfos:Array<IContractInfos> = []
             let hasEmpty = false
-            params.contract_infos.forEach(val=>{
+            const contract_infos:Array<IContractInfos> | undefined = params.contract_infos
+            contract_infos && contract_infos.forEach(val=>{
                 val.verAddr = ''
                 val.verContract = ''
-                hasEmpty = verificationContractAddr(val)
+                hasEmpty = verificationContractAddr(val as IContractInfos)
                 // 填写了合约标签，则进行校验
                 if(val.label){
                     let label = semicolonVerification(val.label)
@@ -306,17 +312,17 @@ export default defineComponent({
             }
             if(contractInfos.length === 0) {
                 const msg = t('lang.createProject.verInfo')
-                ElMessage.warning(msg)
+                message('warning', msg)
                 return false
             }
-            params.contract_infos = contractInfos
+            contractInfos && (params.contract_infos = contractInfos)
             return true
         }
         /**
          * 处理格式化参数
          */
-        const setParams = (params) => {
-            params.map((val)=>{
+        const setParams = (params:Array<IContractInfos> | undefined) => {
+            params && params.map((val)=>{
                 return {
                     platform:val.platform,
                     contract_address:val.contract_address,
@@ -328,7 +334,7 @@ export default defineComponent({
          * 确认增加项目方法
          */
         const addProject = () => {
-            let params = {
+            let params:ICreateProj = {
                 name:projectName.value,
                 is_public:openTF.value,
                 keyword:projectKeyWords.value,
@@ -343,13 +349,13 @@ export default defineComponent({
             createProject(params).then(res=>{
                 if(res){
                     const msg = t('lang.add')+ t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     props.getList()
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
 
@@ -358,7 +364,7 @@ export default defineComponent({
          * 确认编辑项目方法
          */
         const editProject = () => {
-            let params = {
+            let params:ICreateProj = {
                 name:projectName.value,
                 is_public:openTF.value,
                 keyword:projectKeyWords.value,
@@ -376,13 +382,13 @@ export default defineComponent({
             saveEditProject(params,pathParams).then(res=>{
                 if(res){
                     const msg = t('lang.edit')+ t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     props.getList()
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -786,9 +792,9 @@ export default defineComponent({
 .btn-border:hover{
   border-color: #0468C2;
 
-  /*.svg-icon.add-create{
+  .svg-icon.add-create{
     fill:#0468C2
-  }*/
+  }
   .plus-create{
       color: #81b3e0;
   }

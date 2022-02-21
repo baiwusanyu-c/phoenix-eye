@@ -23,12 +23,16 @@
                 <div class="detail-item-txt">
                     <span class="label">{{ $t('lang.riskConfig.values') }}：</span>
                     <el-tooltip placement="top" effect="light">
-                        <span slot="content">{{ baseInfo.token_num }}</span>
+                        <template #content>
+                            <span>{{ baseInfo.token_num }}</span>
+                        </template>
                         <span> {{simulateToFixed(baseInfo.token_num,6)}}</span>
                     </el-tooltip>
                     <span>&nbsp;&nbsp;{{ baseInfo.token_unit ? baseInfo.token_unit.toUpperCase() : '' }}&nbsp;&nbsp;</span>
                     <el-tooltip placement="top" effect="light">
-                        <span slot="content">{{ baseInfo.dollar_money }}</span>
+                        <template #content>
+                            <span>{{ baseInfo.dollar_money }}</span>
+                        </template>
                         <span> ({{handleProfit(baseInfo.dollar_money,0)}})</span>
                     </el-tooltip>
                 </div>
@@ -59,11 +63,13 @@
                 <el-table
                     tooltip-effect="light"
                     :data="profitData">
-                    <div slot="empty"
+                    <template #empty>
+                    <div
                          class = 'empty-data'>
                         <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
                         <p style="line-height: 25px">{{$t('lang.emptyData')}}</p>
                     </div>
+                    </template>
                     <el-table-column
                         prop="platform"
                         :label="$t('lang.riskConfig.profitTableHeader.addr')"
@@ -73,16 +79,18 @@
                             <div style="display: flex;align-items: center;justify-content: center;">
                                 <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"  v-if="scope.row.address_tag"></be-svg-icon>
                                 <!--             占位                   -->
-                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px;visibility: hidden"  v-if="!scope.row.address_tag"></be-svg-icon>
+                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px;visibility: hidden" v-if="!scope.row.address_tag"></be-svg-icon>
                                 <be-ellipsis-copy :targetStr="scope.row.address_tag"
                                                   styles="font-weight: bold;color:#409EFF"
                                                   :copyContent="scope.row.address"
                                                   :tooltip-txt="scope.row.address"
+                                                  :emptyText="$t('lang.emptyData')"
                                                   :isEllipsis="false"
                                                   v-if="scope.row.address_tag">
                                 </be-ellipsis-copy>
                                 <be-ellipsis-copy :targetStr="scope.row.address"
                                                   v-if="!scope.row.address_tag"
+                                                  :emptyText="$t('lang.emptyData')"
                                                   :is-ellipsis="isEllipsis || scope.row.address.length >=45"
                                                   styles="font-weight: bold;"
                                                   fontLength="8"
@@ -97,13 +105,15 @@
                         align="right">
                         <template #default="scope">
                             <el-tooltip placement="top" effect="light">
-                                <span slot="content">{{ scope.row.profit }}</span>
+                                <template #content>
+                                    <span>{{ scope.row.profit }}</span>
+                                </template>
                                 <span>{{handleProfit(scope.row.profit,0)}}</span>
                             </el-tooltip>
-                            <be-svg-icon v-if="scope.row.profit > 0" :content="$t('lang.profit')" icon-class="-arrow-up"></be-svg-icon>
-                            <be-svg-icon v-if="scope.row.profit < 0" :content="$t('lang.loss')" icon-class="-arrow-down" style="margin-right: 4px;"></be-svg-icon>
+                            <be-svg-icon v-if="scope.row.profit > 0" :content="$t('lang.profit')" icon-class="ArrowUp"></be-svg-icon>
+                            <be-svg-icon v-if="scope.row.profit < 0" :content="$t('lang.loss')" icon-class="ArrowDown" style="margin-right: 4px;"></be-svg-icon>
                             <!-- 占位 -->
-                            <be-svg-icon v-if="scope.row.profit === 0" disabled-tool-tip icon-class="-arrow-down" style="visibility: hidden"></be-svg-icon>
+                            <be-svg-icon v-if="scope.row.profit === 0" disabled-tool-tip icon-class="ArrowDown" style="visibility: hidden"></be-svg-icon>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -135,7 +145,9 @@
                                       style="margin-top: 10px;"
                                       :key="item.itemId">
                                     <el-tooltip placement="top" effect="light">
-                                        <span slot="content">{{ item.ordVal }}</span>
+                                        <template #content>
+                                            <span>{{ item.ordVal }}</span>
+                                        </template>
                                         <span>{{item.val}}</span>
                                     </el-tooltip>
                                 </p>
@@ -154,7 +166,9 @@
                                       style="margin-top: 10px;font-weight: bold"
                                       :key="item.itemId">
                                     <el-tooltip placement="top" effect="light">
-                                        <span slot="content">{{ item.ordVal }}</span>
+                                        <template #content>
+                                            <span>{{ item.ordVal }}</span>
+                                        </template>
                                         <span>({{handleProfit(item.val,0)}})</span>
                                     </el-tooltip>
                                 </p>
@@ -173,22 +187,25 @@
 <script lang="ts">
 import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
-import {getProjWarningDetail} from "../../../api/risk-warning";
+import {getProjWarningDetail,IProjDetail} from "../../../api/risk-warning";
 import {webURL} from "../../../enums/link";
 import {platformToCurrency,IPlatformToCurrency} from "../../../utils/platform-dict";
 import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from 'vue'
 import composition from "../../../utils/mixin/common-func"
 import {getUuid,simulateToFixed,openWindow} from "../../../utils/common";
-import {use} from "marked";
-import {ElMessage} from "element-plus/es";
+interface IBaseInfo {
+    platform?:string
+    tx_hash?:string
+}
+
 
 export default defineComponent({
     name: "risk-warning-detail",
     components: {BeSvgIcon,BeEllipsisCopy},
     setup(props:any,ctx:any){
-        const {message,routerPush,route} = composition(props, ctx)
+        const {message,route} = composition(props, ctx)
         // 基础信息
-        const baseInfo = ref({})
+        const baseInfo = ref<IBaseInfo>({})
         // 收益信息
         const profitData = ref<Array<any>>([])
         // loading
@@ -234,18 +251,18 @@ export default defineComponent({
          * 獲得基本信息
          */
         const getInfoData = ():void =>{
-            const params = {
-                tx_hash: route.query.tx_hash
+            const params:IProjDetail = {
+                tx_hash: route.query.tx_hash as string
             }
             loading.value = true
-            getProjWarningDetail(params).then(res=>{
+            getProjWarningDetail(params).then((res:any)=>{
                 baseInfo.value = res.data
                 profitData.value = res.data.address_profits
                 profitData.value.forEach(val=>{
                     val.addrList = []
                     val.dollarList = []
                     val.valueList = []
-                    val.token_profits.forEach(valRes=>{
+                    val.token_profits.forEach((valRes:any)=>{
                         res.itemId = getUuid()
                         if(valRes.token_name === null){
                             valRes.token_name = valRes.contract_address
@@ -263,7 +280,7 @@ export default defineComponent({
                 })
                 loading.value = false
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
                 loading.value = false
             })
@@ -273,7 +290,8 @@ export default defineComponent({
          */
         const openWeb = ():void => {
             if(!baseInfo.value.platform || !baseInfo.value.tx_hash) return
-            const url = `${webURL[baseInfo.value.platform]}${baseInfo.value.tx_hash}`
+            let mainUrl:string = (webURL as any)[baseInfo.value.platform] as string
+            const url = `${mainUrl}${baseInfo.value.tx_hash}`
             openWindow(url)
         }
 

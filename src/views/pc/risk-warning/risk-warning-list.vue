@@ -39,7 +39,7 @@
                 </div>
                 <el-table-column
                     prop="platform"
-                    :label="$t('lang.riskConfig.platform')"
+                    :label="$t('lang.riskConfig.tableHeader.platform')"
                     width="120"
                     align="center">
                     <template #default="scope">
@@ -72,7 +72,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="100"
+                    width="180"
                     prop="tx_status"
                     :label="$t('lang.riskConfig.tableHeader.state')"
                     align="center">
@@ -181,14 +181,16 @@ import {platformListDict} from "../../../utils/platform-dict";
 import {getProjWarning} from "../../../api/risk-warning";
 import {defineComponent, ref, reactive, onMounted, watch, computed,WritableComputedRef } from "vue";
 import {useI18n,Locale} from "vue-i18n";
-import {ElMessage} from "element-plus/es";
+
 import {openWindow,beijing2utc,createDate,formatDate} from "../../../utils/common";
+import composition from "../../../utils/mixin/common-func";
 
 export default defineComponent({
     name: "risk-warning-list",
     components: {BePagination,BeEllipsisCopy},
-    setup(){
+    setup(props, ctx){
         const {t,locale} = useI18n()
+        const {message} = composition(props, ctx)
         const searchParams = reactive({
             platform: 'all',
             addr: ''
@@ -270,7 +272,7 @@ export default defineComponent({
                     loading.value = false
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }

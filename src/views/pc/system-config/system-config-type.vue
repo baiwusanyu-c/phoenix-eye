@@ -39,17 +39,18 @@
 <script lang="ts">
 import SystemConfigTypeCard from "./components/system-config-type-card.vue";
 import AddRiskType from "./components/add-risk-type.vue";
-import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType} from "../../../api/system-config";
+import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType,IRiskType} from "../../../api/system-config";
 import {defineComponent, ref, shallowReactive, onMounted, nextTick} from "vue";
 import {useI18n} from "vue-i18n";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-import {ElMessage} from "element-plus/es";
 import {ceReg} from "../../../utils/reg";
+import composition from "../../../utils/mixin/common-func";
 
 export default defineComponent({
     name: "system-config-type",
     components: {AddRiskType, SystemConfigTypeCard,MsgDialog},
-    setup(){
+    setup(props, ctx){
+        const {message} = composition(props, ctx)
         const {t} = useI18n()
         const showDelete = ref<boolean>(false)
         // 当前编辑、删除的项目数据对象
@@ -70,25 +71,21 @@ export default defineComponent({
          * 表單校驗方法
          * @param {Object} params - 搜索参数
          */
-        const formVerification = (params:object):boolean=>{
+        const formVerification = (params:IRiskType):boolean=>{
             addRiskType.value.verName = ''
             addRiskType.value.verFeatures = ''
             if(!params.name){
                 addRiskType.value.verName = t('lang.pleaseInput') + t('lang.addRiskWindow.addRiskWindowClassName')
-                console.log(1)
                 return false
             }
             if(params.name && !ceReg.test(params.name)){
                 addRiskType.value.verName = t('lang.createProject.verCE')
-                console.log(2)
                 return false
             }
             if(params.risk_features.length  === 0){
                 addRiskType.value.verFeatures = t('lang.pleaseInput') + t('lang.addRiskWindow.abnormalSelect')
-                console.log(3)
                 return false
             }
-            console.log(4)
             return true
         }
         /**
@@ -102,18 +99,18 @@ export default defineComponent({
          * 確認新增方法
          * @param {Object} param - 表单参数
          */
-        const confirmAdd = (param:object)=>{
+        const confirmAdd = (param:IRiskType)=>{
             if(!formVerification(param)) return
             createRiskType(param).then(res=>{
                 if(res){
                     const msg = t('lang.add')+ t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     getList()
                     addRiskType.value.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -133,7 +130,7 @@ export default defineComponent({
          * 確認編輯方法
          * @param {Object} param - 表单参数
          */
-        const confirmEdit = (param:object) :void=> {
+        const confirmEdit = (param:IRiskType) :void=> {
             const pathParams = {
                 id:curItem.value.id
             }
@@ -141,13 +138,13 @@ export default defineComponent({
             saveEditRiskType(param,pathParams).then(res=>{
                 if(res){
                     const msg = t('lang.edit')+ t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     getList()
                     addRiskType.value.addRiskWindowOpen = false
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -170,12 +167,12 @@ export default defineComponent({
             deleteRiskType(params).then(res=>{
                 if(res){
                     const msg = t('lang.delete')+ t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     getList()
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -191,7 +188,7 @@ export default defineComponent({
                 featuresList.data = res.data.system_risk_features
                 loading.value = false
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }

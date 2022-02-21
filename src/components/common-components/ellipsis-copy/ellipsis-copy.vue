@@ -85,6 +85,10 @@ export default defineComponent({
             type: String,
             default: ''
         },
+        emptyText:{
+            type: String,
+            default: ''
+        }
     },
     setup(props){
         const getTooltipTxt = computed(()=>{

@@ -491,7 +491,7 @@ export const copyAddress = function copyAddress(currentAdd:string){
     document.execCommand("Copy")
     oInput.style.display = 'none'
     document.body.removeChild(oInput)
-    message('success', '已复制到粘贴板')
+    message('success', getStore('language') === 'en_US' ? 'copy success!':'已复制到粘贴板')
 }
 /**
  * 模拟tofixed 实现保留小数点功能
