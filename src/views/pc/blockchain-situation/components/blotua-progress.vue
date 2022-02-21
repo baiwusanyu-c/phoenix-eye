@@ -20,13 +20,18 @@
 <script lang="ts">
     import {defineComponent, ref, toRaw, computed} from 'vue'
 
+    interface IScrollConfigData{
+        name:string,
+        value:string | number
+    }
+
     export default defineComponent({
         name: "blotua-progress",
         setup(){
             const progressData = ref<any>([])
             // 排序方法
             const sortProgress = computed(()=>{
-                return toRaw(progressData.value).sort((a:object,b:object)=>{
+                return toRaw(progressData.value).sort((a:any,b:any)=>{
                     return b.value - a.value
                 })
             })
