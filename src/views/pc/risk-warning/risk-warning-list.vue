@@ -39,7 +39,7 @@
                 </div>
                 <el-table-column
                     prop="platform"
-                    :label="$t('lang.riskConfig.platform')"
+                    :label="$t('lang.riskConfig.tableHeader.platform')"
                     width="120"
                     align="center">
                     <template #default="scope">
@@ -72,7 +72,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    width="100"
+                    width="180"
                     prop="tx_status"
                     :label="$t('lang.riskConfig.tableHeader.state')"
                     align="center">

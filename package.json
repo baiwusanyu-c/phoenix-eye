@@ -1,5 +1,5 @@
 {
-  "name": "hermit-front",
+  "name": "eagle-eye",
   "version": "1.0.0",
   "scripts": {
     "serve:dev": "vite --host --mode development",

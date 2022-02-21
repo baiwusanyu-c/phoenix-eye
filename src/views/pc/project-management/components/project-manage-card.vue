@@ -49,9 +49,8 @@
                 <el-tooltip placement="top" effect="light">
                     <template #content>
                         <span>UTC：{{beijing2utc(createTime)}}</span>
-                        <span class="cursor"> {{ formatDate($createDate(createTime),'Y-m-d H:i:s')}}</span>
                     </template>
-
+                    <span class="cursor"> {{ formatDate(createDate(createTime),'Y-m-d H:i:s')}}</span>
                 </el-tooltip>
             </p>
         </div>
@@ -69,7 +68,7 @@
 import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
 import {defineComponent, ref, computed, onMounted} from 'vue'
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-
+import {beijing2utc,formatDate,createDate} from '../../../../utils/common'
 export default defineComponent({
     name: "project-manage-card",
     components: {BeSvgIcon,BeEllipsisCopy},
@@ -126,7 +125,7 @@ export default defineComponent({
         })
 
         const formatePlatform = computed(()=>{
-            return function (val){
+            return function (val:string){
                 return val.toUpperCase()
             }
         })
@@ -148,6 +147,9 @@ export default defineComponent({
             ctx.emit(evtName)
         }
         return{
+            beijing2utc,
+            formatDate,
+            createDate,
             showLength,
             formatePlatform,
             emitFunc,

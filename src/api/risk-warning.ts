@@ -16,7 +16,7 @@ export function getProjWarning(params:IProjWarning) {
     })
 }
 // 获取项目風險詳情
-interface IProjDetail{
+export interface IProjDetail{
     tx_hash?:string
 }
 export function getProjWarningDetail(params:IProjDetail) {

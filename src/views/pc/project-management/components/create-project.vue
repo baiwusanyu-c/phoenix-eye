@@ -54,7 +54,7 @@
                                 <div class="btn-border"
                                      v-show="index === 0"
                                      @click="addContractSite">
-                                    <div class="plus-create">+</div>
+                                    <be-svg-icon icon-class="add" class="add-create" disabled-tool-tip></be-svg-icon>
                                 </div>
                             </div>
                         </el-form-item>
@@ -82,9 +82,10 @@ import {defineComponent, ref, reactive, computed, watch, onMounted, toRaw, injec
 import {useI18n} from "vue-i18n";
 import {ElMessage} from "element-plus/es";
 import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
-
+import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
 export default defineComponent({
     name: "CreateProject",
+    components:{BeSvgIcon},
     props: {
         // 操作類型
         type: {
@@ -786,9 +787,9 @@ export default defineComponent({
 .btn-border:hover{
   border-color: #0468C2;
 
-  /*.svg-icon.add-create{
+  .svg-icon.add-create{
     fill:#0468C2
-  }*/
+  }
   .plus-create{
       color: #81b3e0;
   }
