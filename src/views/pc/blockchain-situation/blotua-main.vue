@@ -474,7 +474,6 @@ export default defineComponent({
                         }
                         return (value as string) +  t('lang.piece')
                     }
-                    console.log('main',scrollConfig.value.data)
                     instanceInner.refs.progress.progressData = scrollConfig.value.data
                 }
                 loadingTxNum.value = false
