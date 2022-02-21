@@ -59,8 +59,9 @@
                         <div class="sum">{{ txTotal }} {{ $t('lang.piece') }}</div>
                     </div>
                     <div class="scroll-ranking">
-                        <blotua-progeress :config="scrollConfig" v-if="scrollConfig.data"></blotua-progeress>
-                        <dv-scroll-ranking-board :config="scrollConfig" v-if="scrollConfig.data" style="width:100%;height:208px"/>
+                        <blotua-progress ref="progress" v-if="scrollConfig.data"></blotua-progress>
+                        <!--<dv-scroll-ranking-board :config="scrollConfig" v-if="scrollConfig.data" style="width:100%;height:208px"/>
+                    -->
                     </div>
                 </div>
                 <!--       项目排行        -->
@@ -268,15 +269,14 @@ import {getContractAudit, getTxFxQs, getTxNum} from "../../../api/blotua";
 import {getProjWarning} from "../../../api/risk-warning";
 import {getProjectRankList, getPublicSentimentSecurity,ISentimentSecurity} from "../../../api/project-ranking";
 import {nFormatter, getStore, setStore,openWindow,formatDate,createDate,fomateTimeStamp,beijing2utc} from "../../../utils/common";
-import {computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref, defineAsyncComponent} from "vue";
+import {computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref, getCurrentInstance} from "vue";
 import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func";
 import {IPageParam} from "../../../utils/types";
 import {useStore} from "vuex";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-const BlotuaProgeress = defineAsyncComponent(()=>
-    import  ("./components/blotua-progeress.vue")
-)
+import BlotuaProgress from "./components/blotua-progress.vue"
+
 import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
 interface IScrollConfigData{
     name:string,
@@ -284,7 +284,7 @@ interface IScrollConfigData{
 }
 export default defineComponent({
     name: "BlotuaMain",
-    components:{BeEllipsisCopy,BlotuaProgeress,BeIcon},
+    components:{BeEllipsisCopy,BlotuaProgress,BeIcon},
     setup(props, ctx){
         const {t,locale} = useI18n()
         const {message,routerPush,route} = composition(props, ctx)
@@ -447,6 +447,8 @@ export default defineComponent({
          */
         const loadingTxNum = ref<boolean>(false)
         const txTotal = ref<number>(0)
+        const progress = ref<any>([])
+        const instanceInner = getCurrentInstance()
         const scrollConfig = ref<{
             data?:Array<IScrollConfigData>
             unit?:string
@@ -472,6 +474,8 @@ export default defineComponent({
                         }
                         return (value as string) +  t('lang.piece')
                     }
+                    console.log('main',scrollConfig.value.data)
+                    instanceInner.refs.progress.progressData = scrollConfig.value.data
                 }
                 loadingTxNum.value = false
             }).catch(err => {
@@ -728,7 +732,7 @@ export default defineComponent({
             xmphHeader,
             jxfxHeader,
             warningRisk,
-
+            progress,
         }
     }
 
