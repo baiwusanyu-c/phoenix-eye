@@ -10,7 +10,7 @@
 const modeUrlObj = {
     // 生产环境
     'production': {
-         baseURL: 'https://m.beosin.com/eagle-eye-ussa/',
+         baseURL: 'https://eagle.beosin.com/eagle-eye-ussa/',
     },
     // 开发环境
     'development': {
