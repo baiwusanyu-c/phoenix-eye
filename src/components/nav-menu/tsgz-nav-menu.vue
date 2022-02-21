@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, nextTick, onMounted, ref} from "vue";
+import {defineComponent, nextTick, onMounted, ref, watch} from "vue";
 import {onBeforeRouteUpdate} from "vue-router";
 import {clearSession, clearStore} from "../../utils/common";
 import composition from "../../utils/mixin/common-func";
@@ -110,7 +110,7 @@ export default defineComponent({
             routerPush(router.path)
 
         }
-        onBeforeRouteUpdate(() => {
+        watch(route,()=>{
             nextTick(() => {
                 setActiveNav()
             })
@@ -160,17 +160,15 @@ export default defineComponent({
                 try {
 
                     Object.keys(headerConfig.value).forEach(val => {
-                        //debugger
                         if (route.path.indexOf(headerConfig.value[val].path) > -1 || route.meta.title === headerConfig.value[val].name
                         ) {
                             active.value = `${parseInt(headerConfig.value[val].index)}`
-                            console.log('1',active.value)
                             throw new Error('')
                         }
                         if (!headerConfig.value[val].path) {
                             headerConfig.value[val].children.forEach((res:any) => {
                                 if (route.path.indexOf(res.path) > -1) {
-                                    console.log('2',active.value)
+                                    debugger
                                     active.value = res.index
                                     throw new Error('')
                                 }
