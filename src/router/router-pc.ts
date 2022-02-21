@@ -10,6 +10,8 @@ import {isString, getStore, removeStore, clearSession} from "../utils/common";
 import {i18n} from "../utils/i18n";
 import {getRouterInfo} from "../api/login";
 import store from "../store/store";
+// @ts-ignore
+import {BeMessage} from "../../public/be-ui/be-ui.es.js";
 const routes =
     [
         {
@@ -60,7 +62,6 @@ const metaTitleDict:any = {
 export const initRouterConfig = (treeData:any) => {
     treeData.forEach((val:any) => {
         // 删除bms默认的redirect配置
-
         if (val.redirect === "noRedirect") {
             Reflect.deleteProperty(val, 'redirect')
         }
@@ -92,9 +93,16 @@ const beforeEachHandle = (router:Router) => {
             if(whiteList.includes(to.path)){
                 next()
             }else{
-                /*next({
+                BeMessage.service({
+                    titles: getStore('language') === 'en_US' ? 'Login Expired' : '登录过期',
+                    msgType: 'error',
+                    duration: 2500,
+                    offsetTop:80,
+                    close: true,
+                })
+                next({
                     path: '/login',
-                })*/
+                })
             }
             return
         }

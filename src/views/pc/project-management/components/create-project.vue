@@ -257,12 +257,20 @@ export default defineComponent({
         /**
          * 校验合约地址
          */
-        const verificationContractAddr = (val:any) => {
+        const verificationContractAddr = (val:any):boolean => {
             const platformReg:IOption = {
-                bsc:(addr:string)=>ETHaddress.test(addr),
-                eth:(addr:string)=>ETHaddress.test(addr),
-                heco:(addr:string)=>ETHaddress.test(addr),
-                polygon:(addr:string)=>ETHaddress.test(addr),
+                bsc:function (addr:string) {
+                    return ETHaddress.test(addr)
+                },
+                eth:function (addr:string) {
+                    return ETHaddress.test(addr)
+                },
+                heco:function (addr:string) {
+                    return ETHaddress.test(addr)
+                },
+                polygon:function (addr:string) {
+                    return ETHaddress.test(addr)
+                },
             }
             // 没有填写合约地址
             if(!val.contract_address){

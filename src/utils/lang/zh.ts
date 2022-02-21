@@ -55,6 +55,7 @@ export default {
         infoDeadLine:'您的账号权益已到期，请及时续费。在此期间可通过免费版用户登录入口使用产品免费版!',
         confirmLogout:'确认退出？',
         loginInfo:'登录成功!',
+        loginExpire:'登录过期!',
         register:'注册',
         rember:'忘记密码',
         login:'登 录',

@@ -59,6 +59,7 @@ export default {
         rember:'Forgot password',
         login:'Login',
         loging:'Logging in...',
+        loginExpire:'Login Expired!',
         loginNameP:'Please enter your email address',
         loginNameP2:' email',
         loginPwdP:'Please enter your password',
