@@ -186,7 +186,8 @@ import {
     WritableComputedRef
 } from "vue";
 import {Locale, useI18n} from "vue-i18n";
-import {ElMessage} from "element-plus/es";
+import composition from "../../../utils/mixin/common-func";
+
 interface ISystemConfigScore {
     project?:string
     weight?:string
@@ -199,8 +200,9 @@ interface ISystemConfigScore {
 export default defineComponent({
     name: "system-config-score",
     components:{MsgDialog,BeIcon},
-    setup(){
+    setup(props, ctx){
         const {t,locale} = useI18n()
+        const {message} = composition(props, ctx)
         const widthGird=ref<string>('240')
         const changeConfigWarningInput=ref<boolean>(false)
         const inputShow=ref<boolean>(false)
@@ -390,7 +392,7 @@ export default defineComponent({
         }
         const opFailed = (err:Error):void => {
             const msg = t('lang.operation')+ t('lang.failed')
-            ElMessage.error(msg)
+            message('error', msg)
             console.error(err)
         }
         // 初始化参数
@@ -440,7 +442,7 @@ export default defineComponent({
             let time_range = valArr[valArr.length - 1]
             // 大于0 说明有不合格的参数 直接返回
             if(valArrEmpty.length > 0||typeof time_range !== "number" ||time_range < 0||time_range > 100){
-                ElMessage.warning(t('lang.systemConfigScore.checkInput'))
+                message('warning', 'lang.systemConfigScore.checkInput')
                 return
             }
 
@@ -451,7 +453,7 @@ export default defineComponent({
                     return
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
             inputShow.value = false
@@ -500,304 +502,6 @@ export default defineComponent({
           columnStyle,
       }
     },
-    /*data() {
-        return {
-            widthGird:'240',
-            changeConfigWarning:false,
-            changeConfigWarningInput:false,
-            inputShow:false,
-            // 输入框绑定以及显示的数据
-            inputValue: {
-                static_testing:{
-                    weight:'',
-                    config:{
-                        high_risk:'',
-                        middle_risk:'',
-                        low_risk:''
-                    }
-                },
-                tx_safety:{
-                    weight:'',
-                    config:{
-                        flash_load_tx:'',
-                        large_fee:'',
-                        huge_transfer:'',
-                        repeat_call:'',
-                        token_empty:'',
-                    }
-                },
-                tx_stability:{
-                    weight:'',
-                    config:{
-                        score_coefficient:''
-                    }
-                },
-                safety_opinion:{
-                    weight:'',
-                    config:{
-                        each:''
-                    }
-                },
-                time_range:''
-            },
-            systemConfigScore:[
-                {
-                    project:this.$t('lang.systemConfigScore.configProject'),
-                    weight:this.$t('lang.systemConfigScore.weight'),
-                    configFst:this.$t('lang.systemConfigScore.detailConfig'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                },
-                {
-                    project:this.$t('lang.systemConfigScore.staticDetection'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.dangerHigh'),
-                    configSnd:this.$t('lang.systemConfigScore.dangerMiddle'),
-                    configTrd:this.$t('lang.systemConfigScore.dangerLow'),
-                    configFth:'',
-                },
-                {
-                    project:this.$t('lang.systemConfigScore.tradeSafetyClass'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.flash_load_tx'),
-                    configSnd:this.$t('lang.systemConfigScore.large_fee'),
-                    configTrd:this.$t('lang.systemConfigScore.huge_transfer'),
-                    configFth:this.$t('lang.systemConfigScore.repeat_call'),
-                },
-                {
-                    configFst:this.$t('lang.systemConfigScore.token_empty')
-                },
-                {
-                    project: this.$t('lang.systemConfigScore.tradeStable'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.tradeScore'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                },
-                {
-                    project: this.$t('lang.systemConfigScore.safetyPublicOptionClass'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.safetyPublicOption'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                },
-                {
-                    project: this.$t('lang.systemConfigScore.timeRange'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.timeTradeDate'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                }
-            ],
-
-        }
-    },
-    watch:{
-        listenLang:function(){
-            this.systemConfigScore = [
-                {
-                    project:this.$t('lang.systemConfigScore.configProject'),
-                    weight:this.$t('lang.systemConfigScore.weight'),
-                    configFst:this.$t('lang.systemConfigScore.detailConfig'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                },
-                {
-                    project:this.$t('lang.systemConfigScore.staticDetection'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.dangerHigh'),
-                    configSnd:this.$t('lang.systemConfigScore.dangerMiddle'),
-                    configTrd:this.$t('lang.systemConfigScore.dangerLow'),
-                    configFth:'',
-                },
-                {
-                    project:this.$t('lang.systemConfigScore.tradeSafetyClass'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.flash_load_tx'),
-                    configSnd:this.$t('lang.systemConfigScore.large_fee'),
-                    configTrd:this.$t('lang.systemConfigScore.huge_transfer'),
-                    configFth:this.$t('lang.systemConfigScore.repeat_call'),
-                },
-                {
-                    configFst:this.$t('lang.systemConfigScore.token_empty')
-                },
-                {
-                    project: this.$t('lang.systemConfigScore.tradeStable'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.tradeScore'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                },
-                {
-                    project: this.$t('lang.systemConfigScore.safetyPublicOptionClass'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.safetyPublicOption'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                },
-                {
-                    project: this.$t('lang.systemConfigScore.timeRange'),
-                    weight:'',
-                    configFst:this.$t('lang.systemConfigScore.timeTradeDate'),
-                    configSnd:'',
-                    configTrd:'',
-                    configFth:'',
-                }
-            ]
-        }
-    },
-    computed:{
-        listenLang() {
-            return this.$i18n.locale;
-        },
-    },
-    mounted() {
-        this.initData('init')
-        this.initView()
-    },
-    methods: {
-        /!**
-         * 拉取数据
-         *!/
-        getScore(){
-            const _this = this
-            getRiskScore().then(res => {
-                if(res){
-                    // 拿到的数据都为正
-                    this.inputValue = res.data
-                }
-            }).catch((err)=>{
-                _this.opFailed(err)
-            })
-        },
-        /!**
-         * 根据屏幕分辨率调整表格宽度
-         *!/
-        initView(){
-            const width = window.screen.availWidth
-            const height = window.screen.availHeight
-            if(height >= 680 || width >=1280) {
-                this.widthGird = '100'
-            }
-        },
-        /!**
-         * 初始化\参数
-         * @param type
-         *!/
-        initData(type = 'init'){
-            if(type === 'init'){
-                // 这里应该调接口拿数据
-                this.getScore()
-            }
-        },
-        opFailed(err){
-            const msg = this.$t('lang.operation')+ this.$t('lang.failed')
-            ElMessage.error(msg)
-            console.error(err)
-        },
-        // 初始化参数
-        warningDialogConfirm(){
-            const _this = this
-            // 初始化参数
-            resetRiskScore().then(() => {
-                this.getScore()
-            }).catch((err)=>{
-                _this.opFailed(err)
-            })
-            this.changeConfigWarningInput = false
-        },
-        // 修改，显示input框
-        changeConfig(){
-            this.inputShow = true
-        },
-        // 取消修改
-        changeConfigCancel(){
-            this.inputShow = false
-            // 再调取一次接口，拿到上次修改的数据
-            this.getScore()
-        },
-        // 修改风险评分配置信息
-        changeConfigConfirm(){
-            const _this = this
-
-            // 开始表单校验
-            let sum = 0
-            let valArr = Object.values(this.inputValue)
-            let valArrEmpty = []
-            for(let i = 0;i < valArr.length - 1;i++){
-                let valArrCfg = Object.values(valArr[i].config)
-                let ArrEmpty = valArrCfg.filter((t)=>{
-                    return t === ''||typeof t !== 'number'||t < 0||t > 100
-                })
-                if(valArr[i].weight < 0){
-                    valArrEmpty.push(1)
-                    break
-                }
-                if(ArrEmpty.length > 0){
-                    valArrEmpty.push(1)
-                    break
-                }
-                sum += valArr[i].weight
-                console.log(sum)
-            }
-            if(sum != 100){
-                valArrEmpty.push(1)
-            }
-            let time_range = valArr[valArr.length - 1]
-            // 大于0 说明有不合格的参数 直接返回
-            if(valArrEmpty.length > 0||typeof time_range !== "number" ||time_range < 0||time_range > 100){
-                ElMessage.warning(_this.$t('lang.systemConfigScore.checkInput'))
-                return
-            }
-
-            let params = this.inputValue
-            // 调用后端接口，存储表单数据
-            saveRiskScore(params).then(res => {
-                if(res){
-                    return
-                }
-            }).catch(err=>{
-                ElMessage.error(err.message)
-                console.error(err)
-            })
-            this.inputShow = false
-        },
-        // 通过给table传入span-method方法可以实现合并行或列，方法的参数是一个对象
-        // ，里面包含当前行row、当前列column、当前行号rowIndex、当前列号columnIndex四个属性。
-        // 该函数可以返回一个包含两个元素的数组，第一个元素代表rowspan，第二个元素代表colspan。
-        // 也可以返回一个键名为rowspan和colspan的对象。
-        arraySpanMethod({ rowIndex, columnIndex }){
-            if(rowIndex === 0||rowIndex === 4){
-                if(columnIndex === 2){
-                    return [1,4]
-                }else if(columnIndex === 3||columnIndex === 4||columnIndex === 5){
-                    return [0,0]
-                }
-            }
-            if(columnIndex === 1||columnIndex === 0){
-                if(rowIndex === 2){
-                    return [2,1]
-                }else if(rowIndex === 3){
-                    return [0,0]
-                }
-            }
-        },
-        columnStyle({ rowIndex, columnIndex }){
-            if(rowIndex === 0){
-                return 'font-weight: 700;text-align: center;'
-            }
-            if(rowIndex === 0 || columnIndex === 0){
-                return 'font-weight: 700;text-align: center'
-            }
-        },
-    },*/
 })
 
 </script>

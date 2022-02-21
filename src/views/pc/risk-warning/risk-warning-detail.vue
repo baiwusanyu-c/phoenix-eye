@@ -194,13 +194,13 @@ import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from '
 import composition from "../../../utils/mixin/common-func"
 import {getUuid,simulateToFixed,openWindow} from "../../../utils/common";
 import {use} from "marked";
-import {ElMessage} from "element-plus/es";
+
 
 export default defineComponent({
     name: "risk-warning-detail",
     components: {BeSvgIcon,BeEllipsisCopy},
     setup(props:any,ctx:any){
-        const {message,routerPush,route} = composition(props, ctx)
+        const {message,route} = composition(props, ctx)
         // 基础信息
         const baseInfo = ref({})
         // 收益信息
@@ -277,7 +277,7 @@ export default defineComponent({
                 })
                 loading.value = false
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
                 loading.value = false
             })

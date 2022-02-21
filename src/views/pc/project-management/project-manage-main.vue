@@ -61,14 +61,16 @@ import {
 } from "../../../api/project-management";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 import {defineComponent, ref, reactive, onMounted, provide, getCurrentInstance, nextTick} from 'vue'
-import {ElMessage} from "element-plus/es";
+
 import {useI18n} from "vue-i18n";
+import composition from "../../../utils/mixin/common-func";
 
 export default defineComponent({
     name: "ProjectManageMain",
     components: {CreateProject, ProjectManageCard, MsgDialog},
-    setup() {
+    setup(props, ctx) {
         const {t, locale} = useI18n()
+        const {message} = composition(props, ctx)
         // 当前操作的项目对象
         const curItem = reactive({data: {}})
         // 当前操作类型
@@ -111,13 +113,13 @@ export default defineComponent({
             createProject(param).then(res => {
                 if (res) {
                     const msg = t('lang.add') + t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     getList()
                     createProjectDialog.value.createProjectWindow = false
                 }
             }).catch(err => {
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -143,13 +145,13 @@ export default defineComponent({
             saveEditProject(param, pathParams).then(res => {
                 if (res) {
                     const msg = t('lang.edit') + t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     getList()
                     createProjectDialog.value.createProjectWindow = false
                 }
             }).catch(err => {
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -172,13 +174,13 @@ export default defineComponent({
             deleteProject(params).then(res => {
                 if (res) {
                     const msg = t('lang.delete') + t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     getList()
                     showDelete.value = false
                 }
             }).catch(err => {
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -201,13 +203,13 @@ export default defineComponent({
             reappraiseProject(params).then(res => {
                 if (res) {
                     const msg = t('lang.operation') + t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     getList()
                     showFresh.value = false
                 }
             }).catch(err => {
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
@@ -226,7 +228,7 @@ export default defineComponent({
                 })
                 loading.value = false
             }).catch(err => {
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }

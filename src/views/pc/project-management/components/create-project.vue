@@ -80,9 +80,10 @@ import {createProject, getProjectInfo, saveEditProject} from "../../../../api/pr
 import {platformListDict,IPlatformListItem} from "../../../../utils/platform-dict";
 import {defineComponent, ref, reactive, computed, watch, onMounted, toRaw, inject} from "vue"
 import {useI18n} from "vue-i18n";
-import {ElMessage} from "element-plus/es";
+
 import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
 import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
+import composition from "../../../../utils/mixin/common-func";
 export default defineComponent({
     name: "CreateProject",
     components:{BeSvgIcon},
@@ -106,6 +107,7 @@ export default defineComponent({
     },
     setup(props,ctx){
         const {t} = useI18n()
+        const {message} = composition(props, ctx)
         const createProjectWindow = ref<boolean>(false)
         const projectName= ref<string>('')
         const projectKeyWords= ref<string>('')
@@ -198,7 +200,7 @@ export default defineComponent({
                 }
             }).catch(err => {
                 const msg = t('lang.search') + t('lang.failed')
-                ElMessage.error(msg)
+                message('error', msg)
                 console.error(err)
             })
         }
@@ -307,7 +309,7 @@ export default defineComponent({
             }
             if(contractInfos.length === 0) {
                 const msg = t('lang.createProject.verInfo')
-                ElMessage.warning(msg)
+                message('warning', msg)
                 return false
             }
             params.contract_infos = contractInfos
@@ -344,13 +346,13 @@ export default defineComponent({
             createProject(params).then(res=>{
                 if(res){
                     const msg = t('lang.add')+ t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     props.getList()
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
 
@@ -377,13 +379,13 @@ export default defineComponent({
             saveEditProject(params,pathParams).then(res=>{
                 if(res){
                     const msg = t('lang.edit')+ t('lang.success')
-                    ElMessage.success(msg)
+                    message('success', msg)
                     // 更新列表
                     props.getList()
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
-                ElMessage.error(err.message)
+                message('error', err.message || err)
                 console.error(err)
             })
         }
