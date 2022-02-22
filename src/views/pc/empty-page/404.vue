@@ -16,6 +16,7 @@
 
 <style scoped lang='scss'>
 .notfound{
+
   .content-area{
     width: calc(100vw - 210px);
     height: calc(100vh - 200px);

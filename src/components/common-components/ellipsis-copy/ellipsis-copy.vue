@@ -8,33 +8,37 @@
 -->
 <template>
     <div class="ellipsis-copy" @mouseover="enter"  @mouseout="leave">
-        <el-tooltip placement="top" effect="light" class="address" :disabled="setTooltip">
-            <span slot="content">{{getTooltipTxt()}}</span>
-            <span :style="styles">{{changeEllipsisStr(targetStr)}}</span>
+        <el-tooltip placement="top" effect="light" class="address" :disabled="(!isTooltip) || !targetStr">
+            <template #content>
+                <span >{{getTooltipTxt()}}</span>
+            </template>
+            <span :style="styles">{{changeEllipsisStr(targetStr)}} </span>
         </el-tooltip>
-        <span class="copy-btn" v-if="setCopy">
-            <svg-icon iconClass="-fuzhi"
-                      v-if="isShowCopyBtn"
-                      disabled-tool-tip class="icon"  style="color: #1496F2"
-                      content="复制"
-                      v-show="isShowCopy"
-                      @click.stop="$copyAddress(copyContent || targetStr)"></svg-icon>
+        <span class="copy-btn" v-if="isShowCopyBtn && (copyContent || targetStr)">
+            <be-svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn"
+                         disabled-tool-tip class="icon"
+                         style="color: #1496F2" content="复制"
+                         v-show="isShowCopy" @click="copyAddress(copyContent || targetStr)">
+            </be-svg-icon>
         </span>
         
     </div>
 </template>
 
-<script>
+<script lang="ts">
 // 地址/交易 中间省略显示，鼠标移入显示复制按钮
-export default {
+import {computed, defineComponent, ref} from "vue";
+import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon.vue";
+import {copyAddress} from '../../../utils/common'
+export default defineComponent({
     name: "BeEllipsisCopy",
-    components: {},
+    components:{BeSvgIcon},
     props: {
         // 目标地址/交易
         targetStr:{
             type: String
         },
-        // copy按钮是否一直显示 设置后一直显示复制按钮
+        // copy按钮是否一直显示
         isFixedShowCopy:{
             type: Boolean,
             default: false
@@ -49,7 +53,7 @@ export default {
             type: [Number,String],
             default: 8
         },
-        // 是否显示复制的按钮,设置后将不会显示复制按钮
+        // 是否显示复制的按钮
         isShowCopyBtn:{
             type: Boolean,
             default: true
@@ -86,86 +90,80 @@ export default {
             default: ''
         }
     },
-    computed:{
-      getTooltipTxt(){
-          return function (){
-              if(!this.tooltipTxt){
-                  return this.targetStr
-              }
-              return this.tooltipTxt
-          }
-      },
-      setTooltip(){
-          if(!this.tooltipTxt && !this.targetStr){
-              return true
-          }
-          return !this.isTooltip
-      },
-      setCopy(){
-          if(!this.tooltipTxt && !this.targetStr){
-              return false
-          }
-          return this.isShowCopyBtn
-      }
-    },
-    data() {
-        return {
-            isShowCopy: this.isFixedShowCopy
-        };
-    },
-    methods: {
+    setup(props){
+        const getTooltipTxt = computed(()=>{
+            return function (){
+                if(!props.tooltipTxt){
+                    return props.targetStr
+                }
+                return props.tooltipTxt
+            }
+        })
+        const isShowCopy = ref(props.isFixedShowCopy)
         /**
          * 鼠标移入显示复制按钮
          */
-        enter(){
-            if(this.isFixedShowCopy) return;
-            this.isShowCopy = true;
-        },
+        const enter = ():void =>{
+            if(props.isFixedShowCopy) return;
+            isShowCopy.value = true;
+        }
         /**
          * 鼠标移出隐藏复制按钮
          */
-        leave(){
-            if(this.isFixedShowCopy) return;
-            this.isShowCopy = false;
-        },
+        const leave = ():void =>{
+            if(props.isFixedShowCopy) return;
+            isShowCopy.value = false;
+        }
         /**
-        * 省略中间的文字
-        * @param {String} str 当前地址/交易数
+         * 省略中间的文字
+         * @param {String} str 当前地址/交易数
          */
-        changeEllipsisStr(str) {
+        const changeEllipsisStr = (str:string):string =>{
             if(!str) {
-                return this.emptyText
+                return '-'
             }
-            if(!this.isEllipsis) return str
-            const frontLen = this.fontLength;
-            const endLen = this.endLength;
+            if(!props.isEllipsis) return str
+            const frontLen:number = Number(props.fontLength);
+            const endLen:number = Number(props.endLength)
             return str.substring(0, frontLen) + '...' + str.substring(str.length - endLen);
         }
-    },
-};
+        return {
+            enter,
+            leave,
+            getTooltipTxt,
+            changeEllipsisStr,
+            isShowCopy,
+            copyAddress,
+        }
+    }
+})
+
 </script>
 <style lang="scss">
 .ellipsis-copy{
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 200px !important;
+  overflow: hidden;
+
+  .icon{
+    flex-shrink: 0;
+    width: 16px;
+    margin-right: 0 !important;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+
+  .address{
+    flex-shrink: 1;
     overflow: hidden;
-    min-width: 200px !important;
-    width: 100%;
-    .icon{
-        flex-shrink: 0;
-        margin-left: 8px;
-        margin-right: 0 !important;
-        width: 16px;
-        cursor: pointer;
-    }
-    .address{
-        flex-shrink: 1;
-        overflow: hidden;
-    }
-    .copy-btn{
-        width: 24px;
-        height: 24px;
-    }
+  }
+
+  .copy-btn{
+    width: 24px;
+    height: 24px;
+  }
 
 }
 

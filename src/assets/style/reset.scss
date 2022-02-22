@@ -38,12 +38,28 @@ menu {
   padding: 0;
   margin: 0;
 }
-
+h2{
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+h3 {
+  display: block;
+  font-size: 1.17em;
+  font-weight: bold;
+}
 html,
 body {
   height: 100%;
 }
-
+.be-message {
+  z-index: 9999 !important;
+  .be-message-head{
+    span {
+      margin-right: 5px;
+    }
+  }
+}
 html {
   font-family: Arial, "PingFang SC", "Microsoft YaHei", '微软雅黑', 'Avenir', Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;

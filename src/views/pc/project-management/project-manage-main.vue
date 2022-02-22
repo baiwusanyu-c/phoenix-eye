@@ -5,7 +5,7 @@
 * @update (czh 2021/11/1)
 */
 <template>
-    <div class="project-manage-main" >
+    <div class="project-manage-main">
         <div class="project-manage-list scrollDiy" v-loading="loading">
             <project-manage-card
                 type="add"
@@ -18,52 +18,244 @@
                 :keyword-list="item.keywordList"
                 :create-time="item.create_time"
                 :contract-list="item.contract_infos"
-                :project-id="item.id"
                 @edit="editProject(item)"
                 @fresh="freshProject(item)"
-                @delete="deleteProject(item)"
-                v-for="(item) in projectList" :key="item.id">
+                @delete="deleteProjects(item)"
+                v-for="(item) in projectList.data" :key="item.id">
             </project-manage-card>
         </div>
-        <!--    新增、编辑项目弹窗    -->
+        <!--    新增、编辑项目弹窗   ref="createProjectDialog" -->
         <create-project
             :type="opType"
-            :projectId = 'curItem.id'
-            @confirm = "()=>{return this.opType === 'add' ? this.confirmAdd() : this.confirmEdit()}"
+            :projectId='curItem.data.id'
+            :getList="getList"
+            @confirm="()=>{return opType === 'add' ? confirmAdd() : confirmEdit()}"
             ref="createProjectDialog">
         </create-project>
         <!--    删除项目弹窗    -->
-        <be-msg-dialog @confirm="confirmDelete"
-                       :headerTitle="$t('el.delete')"
-                       :isShow.sync="showDelete"
-                       :title="deleteText">
-        </be-msg-dialog>
+        <MsgDialog @confirm="confirmDelete"
+                   @close="()=>showDelete = false"
+                   :headerTitle="$t('lang.delete')"
+                   :isShow="showDelete"
+                   :title="deleteText">
+        </MsgDialog>
         <!--    重新评估彈窗   -->
-        <be-msg-dialog @confirm="confirmFresh"
-                       :headerTitle="$t('el.systemConfig.reassess')"
-                       :isShow.sync="showFresh"
-                       :title="freshText">
-        </be-msg-dialog>
+        <MsgDialog @confirm="confirmFresh"
+                   @close="()=>showFresh = false"
+                   :headerTitle="$t('lang.systemConfig.reassess')"
+                   :isShow="showFresh"
+                   :title="freshText">
+        </MsgDialog>
     </div>
 </template>
 
-<script>
-import ProjectManageCard from "./components/project-manage-card";
-import CreateProject from "./components/create-project";
+<script lang="ts">
+import ProjectManageCard from "./components/project-manage-card.vue";
+import CreateProject from "./components/create-project.vue";
 import {
     createProject,
     deleteProject,
-    getProjectList,
+    getProjectList, ICreateProj, IReappraise,
     reappraiseProject,
     saveEditProject
 } from "../../../api/project-management";
+import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
+import {defineComponent, ref, reactive, onMounted, provide, getCurrentInstance, nextTick} from 'vue'
 
+import {useI18n} from "vue-i18n";
+import composition from "../../../utils/mixin/common-func";
 
-
-export default {
+export default defineComponent({
     name: "ProjectManageMain",
-    components: {CreateProject, ProjectManageCard},
-    data() {
+    components: {CreateProject, ProjectManageCard, MsgDialog},
+    setup(props, ctx) {
+        const {t, locale} = useI18n()
+        const {message} = composition(props, ctx)
+        // 当前操作的项目对象
+        const curItem = reactive({data: {}})
+        // 当前操作类型
+        const opType = ref<string>('add')
+        // 重新评估弹窗显示
+        const showFresh = ref<boolean>(false)
+        // 重新评估弹窗显示内容
+        const freshText = ref<string>('')
+        // 删除弹窗显示
+        const showDelete = ref<boolean>(false)
+        // 删除弹窗显示内容
+        const deleteText = ref<string>('')
+        // 项目列表示例
+        const projectList = reactive({data: []})
+        // 项目列表的地址列表示例
+        const addrList = reactive({data: []})
+        // loading
+        const loading = ref<boolean>(false)
+        const createProjectDialog = ref<any>({})
+        onMounted(() => {
+            getList()
+        })
+
+        //const instanceInner = getCurrentInstance()
+        /**
+         * 新增类型方法
+         */
+        const addProject = () => {
+            opType.value = 'add'
+            //instanceInner.refs.createProjectDialogXXX.createProjectWindow = true
+            nextTick(() => {
+                createProjectDialog.value.createProjectWindow = true
+            })
+        }
+        /**
+         * 確認新增方法
+         * @param {Object} param - 表单参数
+         */
+        const confirmAdd = (param:ICreateProj) => {
+            createProject(param).then(res => {
+                if (res) {
+                    const msg = t('lang.add') + t('lang.success')
+                    message('success', msg)
+                    // 更新列表
+                    getList()
+                    createProjectDialog.value.createProjectWindow = false
+                }
+            }).catch(err => {
+                message('error', err.message || err)
+                console.error(err)
+            })
+        }
+        /**
+         * 编辑类型方法
+         */
+        const editProject = (item:ICreateProj) => {
+            opType.value = 'edit'
+            curItem.data = item
+            nextTick(() => {
+                createProjectDialog.value.createProjectWindow = true
+            })
+
+        }
+        /**
+         * 確認編輯方法
+         * @param {Object} param - 表单参数
+         */
+        const confirmEdit = (param: ICreateProj) => {
+            const pathParams = {
+                id: (curItem.data as IReappraise).id
+            }
+            saveEditProject(param, pathParams).then(res => {
+                if (res) {
+                    const msg = t('lang.edit') + t('lang.success')
+                    message('success', msg)
+                    // 更新列表
+                    getList()
+                    createProjectDialog.value.createProjectWindow = false
+                }
+            }).catch(err => {
+                message('error', err.message || err)
+                console.error(err)
+            })
+        }
+        /**
+         * 删除类型方法
+         * @param {Object} item - 项目数据对象
+         */
+        const deleteProjects = (item: ICreateProj) => {
+            curItem.data = item
+            deleteText.value = `${t('lang.systemConfig.delete')}${item.name}？`
+            showDelete.value = true
+        }
+        /**
+         * 确认删除项目信息
+         */
+        const confirmDelete = () => {
+            const params = {
+                id: (curItem.data as IReappraise).id
+            }
+            deleteProject(params).then(res => {
+                if (res) {
+                    const msg = t('lang.delete') + t('lang.success')
+                    message('success', msg)
+                    // 更新列表
+                    getList()
+                    showDelete.value = false
+                }
+            }).catch(err => {
+                message('error', err.message || err)
+                console.error(err)
+            })
+        }
+        /**
+         * 重新评估项目
+         * @param {Object} item - 项目数据对象
+         */
+        const freshProject = (item: ICreateProj) => {
+            curItem.data = item
+            freshText.value = `${t('lang.systemConfig.isConfirm')}${item.name}${t('lang.systemConfig.reassessInfo')}？`
+            showFresh.value = true
+        }
+        /**
+         * 确认重新评估项目
+         */
+        const confirmFresh = () => {
+            const params = {
+                id: (curItem.data as IReappraise).id
+            }
+            reappraiseProject(params).then(res => {
+                if (res) {
+                    const msg = t('lang.operation') + t('lang.success')
+                    message('success', msg)
+                    // 更新列表
+                    getList()
+                    showFresh.value = false
+                }
+            }).catch(err => {
+                message('error', err.message || err)
+                console.error(err)
+            })
+        }
+        /**
+         * 获取项目列表
+         */
+        const getList = () => {
+            loading.value = true
+            getProjectList().then(res => {
+                // 项目列表
+                projectList.data = res.data
+                // 關鍵詞字符串轉化為數組
+                projectList.data.forEach((val:any) => {
+                    let keyword = val.keyword.replace('；', ';')
+                    val.keywordList = keyword.split(';').filter((filterVal:any) => filterVal)
+                })
+                loading.value = false
+            }).catch(err => {
+                message('error', err.message || err)
+                console.error(err)
+            })
+        }
+
+        return {
+            curItem,
+            opType,
+            showFresh,
+            freshText,
+            showDelete,
+            deleteText,
+            projectList,
+            loading,
+            addrList,
+            createProjectDialog,
+            confirmFresh,
+            freshProject,
+            confirmDelete,
+            deleteProjects,
+            confirmEdit,
+            editProject,
+            addProject,
+            confirmAdd,
+            getList
+        }
+    },
+    /*data() {
         return {
             // 当前操作的项目对象
             curItem:{},
@@ -89,17 +281,17 @@ export default {
         this.getList()
     },
     methods: {
-        /**
+        /!**
          * 新增类型方法
-         */
+         *!/
         addProject(){
             this.opType = 'add'
             this.$refs.createProjectDialog.createProjectWindow = true
         },
-        /**
+        /!**
          * 確認新增方法
          * @param {Object} param - 表单参数
-         */
+         *!/
         confirmAdd(param){
             const _this = this
             createProject(param).then(res=>{
@@ -111,23 +303,23 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                _this.$message.error(err)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
-        /**
+        /!**
          * 编辑类型方法
-         */
+         *!/
         editProject(item){
             this.opType = 'edit'
             this.curItem = item
             this.$refs.createProjectDialog.createProjectWindow = true
 
         },
-        /**
+        /!**
          * 確認編輯方法
          * @param {Object} param - 表单参数
-         */
+         *!/
         confirmEdit(param){
             const _this = this
             const pathParams = {
@@ -142,22 +334,22 @@ export default {
                     _this.$refs.createProjectDialog.createProjectWindow = false
                 }
             }).catch(err=>{
-                _this.$message.error(err)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
-        /**
+        /!**
          * 删除类型方法
          * @param {Object} item - 项目数据对象
-         */
+         *!/
         deleteProject(item){
             this.curItem = item
             this.deleteText = `${this.$t('el.systemConfig.delete')}${item.name}？`
             this.showDelete = true
         },
-        /**
+        /!**
          * 确认删除项目信息
-         */
+         *!/
         confirmDelete(){
             const _this = this
             const params = {
@@ -172,22 +364,22 @@ export default {
                     _this.showDelete = false
                 }
             }).catch(err=>{
-                _this.$message.error(err)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
-        /**
+        /!**
          * 重新评估项目
          * @param {Object} item - 项目数据对象
-         */
+         *!/
         freshProject(item){
             this.curItem = item
             this.freshText = `${this.$t('el.systemConfig.isConfirm')}${item.name}${this.$t('el.systemConfig.reassessInfo')}？`
             this.showFresh = true
         },
-        /**
+        /!**
          * 确认重新评估项目
-         */
+         *!/
         confirmFresh(){
             const _this = this
             const params = {
@@ -202,14 +394,14 @@ export default {
                     _this.showFresh = false
                 }
             }).catch(err=>{
-                _this.$message.error(err)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         },
 
-        /**
+        /!**
          * 获取项目列表
-         */
+         *!/
         getList(){
             const _this = this
             _this.loading = true
@@ -223,26 +415,28 @@ export default {
                 })
                 _this.loading = false
             }).catch(err=>{
-                _this.$message.error(err)
+                _this.$message.error(err.message)
                 console.error(err)
             })
         }
-    },
-}
+    },*/
+})
 </script>
 
 <style scoped lang="scss">
 .project-manage-main {
-    height: 100%;
-    width: 100%;
-    .project-manage-list {
-        overflow-y: auto;
-        width: 100%;
-        height: 100%;
-        /* display: flex;
-         justify-content: flex-start;
-         flex-wrap: wrap;*/
+  width: 100%;
+  height: 100%;
 
-    }
+  .project-manage-list {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    /* display: flex;
+             justify-content: flex-start;
+             flex-wrap: wrap; */
+
+  }
 }
 </style>

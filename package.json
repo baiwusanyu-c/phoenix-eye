@@ -1,101 +1,69 @@
 {
-  "name": "Beosin-Eagle-Eye",
+  "name": "eagle-eye",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
-    "serve:dev": "vue-cli-service serve --mode dev",
-    "serve:stage": "cross-env NODE_ENV=staging vue-cli-service serve --mode staging",
-    "serve:pretest": "cross-env NODE_ENV=pretest vue-cli-service serve --mode pretest",
-    "build:dev": "vue-cli-service build --mode dev",
-    "build:stage": "cross-env NODE_ENV=staging vue-cli-service build",
-    "build:pretest": "cross-env NODE_ENV=pretest vue-cli-service build",
-    "build:prod": "cross-env NODE_ENV=production vue-cli-service build",
-    "stylelint": "stylelint src/**/*.scss",
-    "stylelint:fix": "stylelint --fix src/**/*.scss",
-    "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
-    "test:unit": "vue-cli-service test:unit"
+    "serve:dev": "vite --host --mode development",
+    "serve:stage": "vite --host --mode staging",
+    "serve:pretest": "vite --host --mode pretest",
+    "serve:prod": "vite --host --mode production",
+    "build:dev": "vite build --mode development",
+    "build:stage": "vite build --mode staging",
+    "build:prod": "vite build --mode production",
+    "build:pretest": "vite build --mode pretest",
+    "lint:style": "stylelint src/**/*.{html,vue,css}",
+    "lint:style-fix": "stylelint --fix src/**/*.{html,vue,css}"
   },
   "dependencies": {
     "@antv/data-set": "^0.11.8",
     "@antv/g2": "^4.1.32",
-    "@jiaminghi/data-view": "^2.10.0",
+    "@types/qs": "^6.9.7",
+    "@vueuse/core": "^7.3.0",
     "animate.css": "^4.1.1",
-    "axios": "^0.19.2",
-    "babel-polyfill": "^6.26.0",
-    "compression-webpack-plugin": "^4.0.0",
-    "core-js": "^3.6.5",
-    "element-ui": "^2.13.2",
-    "file-loader": "^6.2.0",
-    "js-base64": "^2.6.2",
-    "js-cookie": "^2.2.1",
+    "axios": "^0.24.0",
+    "element-plus": "^1.3.0-beta.9",
+    "html2canvas": "^1.3.3",
+    "js-base64": "^3.7.2",
     "node-sass": "^4.14.1",
     "qs": "^6.10.1",
     "sass-loader": "^9.0.2",
-    "svg-sprite-loader": "^6.0.7",
-    "terser-webpack-plugin": "^3.0.6",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "vue": "^2.6.11",
-    "vue-i18n": "^8.18.2",
-    "vue-infinite-loading": "^2.4.5",
-    "vue-router": "^3.3.4",
-    "vue2-ace-editor": "^0.0.15",
-    "vuex": "^3.6.2",
-    "webpack-cli": "^3.3.12"
+    "swiper": "^7.3.2",
+    "three": "^0.137.0",
+    "vue": "^3.2.23",
+    "vue-i18n": "9",
+    "vue-router": "4",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
-    "@vue/babel-preset-jsx": "^1.2.4",
-    "@vue/cli-plugin-babel": "~4.4.0",
-    "@vue/cli-plugin-eslint": "~4.4.0",
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
-    "@vue/cli-service": "~4.4.0",
-    "@vue/test-utils": "^1.0.3",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-component": "^1.1.1",
-    "babel-plugin-transform-regenerator": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@types/jest": "^27.0.2",
+    "@types/marked": "^2.0.2",
+    "@types/node": "^16.11.13",
+    "@vitejs/plugin-vue": "^1.2.2",
+    "@vitejs/plugin-vue-jsx": "^1.0.2",
+    "@vue/babel-plugin-jsx": "^1.1.1",
+    "@vue/compiler-sfc": "^3.0.5",
+    "@vue/test-utils": "^2.0.0-rc.16",
+    "babel-jest": "26.0.0",
+    "jest": "26.0.0",
+    "sass": "^1.49.0",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-recess-order": "^3.0.0",
+    "stylelint-config-recess-order": "^2.6.0",
     "stylelint-config-standard": "^22.0.0",
-    "stylelint-scss": "^3.19.0",
-    "vue-template-compiler": "^2.6.11",
-    "vue2-ace-editor": "^0.0.15"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {},
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "jest": true
-        }
-      }
-    ]
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "svg-sprite-loader": "^6.0.9",
+    "ts-jest": "26.4.4",
+    "typescript": "^4.1.3",
+    "unplugin-auto-import": "^0.5.11",
+    "unplugin-vue-components": "^0.17.15",
+    "vite": "^2.2.3",
+    "vite-plugin-style-import": "^0.10.0",
+    "vite-plugin-windicss": "^1.6.3",
+    "vue-jest": "^5.0.0-alpha.10",
+    "vue-tsc": "^0.0.24",
+    "windicss": "^3.4.3"
+  }
 }

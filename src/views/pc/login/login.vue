@@ -5,123 +5,107 @@
 * @update (czh 2021/09/9)
 */
 <template>
-  <div class="login" id="login">
-    <div class="content-area">
-      <img class="logo-box" src="@/assets/image/pc/logo.png" alt=""/>
-      <div class="inner">
-        <div class="area_l">
-          <p class="text-w">{{ $t('el.loginConfig.prodWelcome') }}</p>
-          <p class="text-t">{{ $t('el.loginConfig.prodName') }}</p>
-          <p class="text-w-e">Welcome to Beosin-Secure</p>
+    <div class="login" id="login">
+        <div class="content-area">
+            <img class="logo-box" src="@/assets/image/pc/logo.png" alt=""/>
+            <div class="inner">
+                <div class="area_l">
+                    <p class="text-w">{{ $t('lang.loginConfig.prodWelcome') }}</p>
+                    <p class="text-t">{{ $t('lang.loginConfig.prodName') }}</p>
+                    <p class="text-w-e">Welcome to Beosin-Secure</p>
+                </div>
+                <div class="area-r">
+                    <p class="title" :class="{otherTitle: areaType === 4,regTitle: areaType === 3}">
+                        {{
+                            areaType === 3 ? $t('lang.loginConfig.titleRegister') : areaType === 4 ? $t('lang.loginConfig.titleReset') : $t('lang.loginConfig.titleLogin')
+                        }}
+                    </p>
+                    <!--          賬號登錄          -->
+                    <name-login
+                        ref="nameLogin"
+                        @changeShow='changeAreaType'
+                        v-if="areaType === 1">
+                    </name-login>
+                    <!--          注冊賬號          -->
+                    <userRegistration v-if="areaType === 3" @changeShow='changeAreaType'></userRegistration>
+                    <!--     忘记密码       -->
+                    <reset-password v-if="areaType === 4" @changeShow='changeAreaType'></reset-password>
+                </div>
+            </div>
+            <div class="footer-box">
+                <p class="footer-w">
+                    <!--            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;-->
+                </p>
+                <p class="footer-w">
+                    <!--          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}-->
+                </p>
+            </div>
         </div>
-        <div class="area-r">
-          <p class="title" :class="{otherTitle: areaType === 4,regTitle: areaType === 3}">
-            {{
-              areaType === 3 ? $t('el.loginConfig.titleRegister') : areaType === 4 ? $t('el.loginConfig.titleReset') : $t('el.loginConfig.titleLogin')
-            }}
-          </p>
-            <!--          賬號登錄          -->
-            <name-login
-                ref="nameLogin"
-                v-if="areaType === 1"
-                :isSignatured="isSignatured"
-                :chipId="form.chipId"
-                :name="this.form.name">
-            </name-login>
-<!--          <phoneLogin
-              v-if="areaType === 2"
-              :isSignatured="isSignatured"
-              :chipId="form.chipId">
-          </phoneLogin>-->
-          <!--          注冊賬號          -->
-          <userRegistration v-if="areaType === 3"></userRegistration>
-            <!--     忘记密码       -->
-            <reset-password v-if="areaType === 4"></reset-password>
-        </div>
-      </div>
-      <div class="footer-box">
-        <p class="footer-w">
-<!--            {{$t('el.companyName')}}&nbsp;{{$t('el.copyright')}}&nbsp;&nbsp;｜&nbsp;&nbsp; {{$t('el.companyRecord')}}&nbsp;&nbsp;&nbsp;&nbsp;-->
-        </p>
-        <p class="footer-w">
-<!--          {{$t('el.companyAddr')}}&nbsp;&nbsp;&nbsp;&nbsp;{{$t('el.companyTel')}}-->
-        </p>
-      </div>
+        <!--到期弹窗-->
+        <MsgDialog
+            :headerTitle="$t('lang.loginConfig.titleDeadline')"
+            @confirm="() => (delTip = false)"
+            @close="() => (delTip = false)"
+            :isShow="delTip"
+            :isShowCancel="false"
+            :title="$t('lang.loginConfig.infoDeadLine')">
+        </MsgDialog>
     </div>
-    <!--到期弹窗-->
-    <be-msg-dialog
-        :headerTitle="$t('el.loginConfig.titleDeadline')"
-        @confirm="() => (this.delTip = false)"
-        :isShow.sync="delTip"
-        :isShowCancel="false"
-        :title="$t('el.loginConfig.infoDeadLine')">
-    </be-msg-dialog>
-  </div>
 </template>
 
-<script>
-import userRegistration from "./components/user-registration";
-// import resetPwd from "./components/reset-password";
-import animatedInit, {destroyTHERR} from "../../../utils/login-3d";
-import NameLogin from "./components/name-login";
-import ResetPassword from "./components/reset-password";
+<script setup lang="ts">
+import {nextTick, onBeforeUnmount, onMounted, ref} from 'vue'
+import userRegistration from "./components/user-registration.vue";
+import animatedInit, {destroyTHERR} from "../../../../public/login-3d.js";
+import NameLogin from "./components/name-login.vue";
+import ResetPassword from "./components/reset-password.vue";
+import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 
-export default {
-  name: "Login",
-  componentName: "AntiFraudLogin",
-  data() {
-    return {
-      form: {
-        name: this.$root.userName,
-        chipId: this.$root.chipId,
-      },
-      isSignatured: false,
-      areaType: 1,
-      delTip: false,
-    };
-  },
-  components: {
-      ResetPassword,
-      NameLogin,
-    userRegistration,
-  },
-  mounted() {
 
-    document.getElementById("login").oncontextmenu = () => {
-      return false;
-    };
-    // 初始化背景动画
-    animatedInit();
-  },
-  beforeDestroy() {
+const areaType = ref<number>(1)
+const delTip = ref<boolean>(false)
+/**
+ * 修改显示类型
+ * @param type 显示类型
+ */
+const changeAreaType = (type: number): void => {
+    areaType.value = type
+}
+onMounted(() => {
+    nextTick(() => {
+        animatedInit();
+        const loginDom = document.getElementById("login") as HTMLElement
+        loginDom.oncontextmenu = () => {
+            return false;
+        };
+    })
+})
+onBeforeUnmount(() => {
     // 销毁背景动画
     destroyTHERR()
-  },
-  methods: {},
-};
+})
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
 .login {
   position: absolute;
-  left: 0;
   top: 0;
-  bottom: 0;
   right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
   width: 100vw;
   min-width: 1280px;
   height: 100vh;
   //   background: url('../../../assets/image/pc/loginBg.png') no-repeat;
   background: linear-gradient(
-          180deg,
-          #000000 0%,
-          rgba(0, 0, 0, 0.9) 40%,
-          rgba(5, 29, 41, 0) 100%
+    180deg,#000 0%,rgba(0, 0, 0, .9) 40%,rgba(5, 29, 41, 0) 100%
   );
   background-size: 100% 100%;
-  display: flex;
-  align-items: center;
 
   .content-area {
     display: flex;
@@ -131,31 +115,31 @@ export default {
     margin: auto;
 
     .logo-box {
-      margin-top: 60px;
       height: 10%;
+      margin-top: 60px;
     }
 
     .inner {
-      width: 100%;
-      height: 460px;
       display: flex;
       align-items: flex-start;
-      justify-content: center;
       align-self: center;
+      justify-content: center;
+      width: 100%;
+      height: 460px;
     }
 
     .footer-box {
+      align-self: flex-end;
       width: 100%;
       margin-bottom: 32px;
-      align-self: flex-end;
 
       p {
-        overflow-wrap: break-word;
-        color: #9BC8DF;
+        font-family: PingFangSC-Medium, PingFang SC, sans-serif;
         font-size: 14px;
-          font-family: PingFangSC-Medium, PingFang SC,sans-serif;
-        white-space: nowrap;
         line-height: 24px;
+        color: #9BC8DF;
+        overflow-wrap: break-word;
+        white-space: nowrap;
       }
 
     }
@@ -169,46 +153,45 @@ export default {
       }
 
       .text-w {
-        margin-top: 64px;
-        color: $mainColor13;
-        font-size: 40px;
-          font-family: PingFangSC-Medium, PingFang SC,sans-serif;
-        white-space: nowrap;
-        line-height: 56px;
         align-self: flex-start;
+        margin-top: 64px;
+        font-family: PingFangSC-Medium, PingFang SC, sans-serif;
+        font-size: 40px;
+        line-height: 56px;
+        color: $mainColor13;
+        white-space: nowrap;
       }
 
       .text-t {
-        color: rgba(255, 255, 255, 1);
+        font-family: PingFangSC-Medium, PingFang SC, sans-serif;
         font-size: 51px;
-          font-family: PingFangSC-Medium, PingFang SC,sans-serif;
-
         line-height: 72px;
+        color: rgba(255, 255, 255, 1);
         background-image: linear-gradient(180deg, $mainColor7 0%, #B6E0FF 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
       .text-w-e {
-        color: rgba(155, 200, 223, 1);
-        font-size: 40px;
         font-family: Helvetica, sans-serif;
-        white-space: nowrap;
+        font-size: 40px;
         line-height: 53px;
+        color: rgba(155, 200, 223, 1);
+        white-space: nowrap;
       }
     }
 
     .area-r {
+      box-sizing: border-box;
       width: 440px;
       min-height: 100%;
       padding: 0 70px;
-      box-sizing: border-box;
       background-image: url(../../../assets/image/pc/bg-logo.png);
       background-repeat: no-repeat;
       background-size: 100% 100%;
 
       .title {
-        @include text(24px, rgba(0, 0, 0, 0.85), 31px);
+        @include text(24px, rgba(0, 0, 0, .85), 31px);
         margin-top: 46px;
         margin-bottom: 24px;
       }
@@ -228,6 +211,12 @@ export default {
 </style>
 <style lang="scss">
 .login {
+
+  .el-input-group__append {
+    width: 20px;
+    padding: 0;
+  }
+
   .el-carousel__container {
     height: 100%;
   }
@@ -237,25 +226,28 @@ export default {
   }
 
   .focus {
+
     .el-form-item__content {
       border-bottom: 1px solid #8194cc !important;
     }
   }
 
   .label {
+
     .iconImg {
-      height: 16px;
       position: relative;
       top: -2px;
       display: inline-block;
+      width: 16px;
+      height: 16px;
     }
 
     .el-form-item__content {
       width: 100%;
-      border: 1px solid rgba(0, 0, 0, 0.15);
       padding: 8px;
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, .15);
       border-radius: 2px;
-      background-color: #ffffff;
     }
 
     .el-input__inner {
@@ -263,14 +255,14 @@ export default {
     }
 
     .el-input-group__prepend {
-      width: 16px;
+      width: 24px;
       padding: 0 3px;
       text-align: center;
     }
 
     .el-form-item__error {
-      left: 32px;
       top: 101%;
+      left: 32px;
     }
   }
 }
@@ -279,14 +271,19 @@ export default {
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+
   .login {
+
     .content-area {
-        .area-r{
-            .regTitle{
-                margin-top: 20px;
-                margin-bottom: 15px;
-            }
+
+      .area-r {
+
+        .regTitle {
+          margin-top: 20px;
+          margin-bottom: 15px;
         }
+      }
+
       .logo-box {
         margin-top: 10px;
       }
