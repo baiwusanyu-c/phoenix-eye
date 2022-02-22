@@ -2,7 +2,7 @@
 import {IOption} from "../utils/types";
 
 enum productionUrl {
-    baseURL = 'https://m.beosin.com/eagle-eye-ussa/',
+    baseURL = 'https://eagle.beosin.com/eagle-eye-ussa/',
 }
 // 开发环境
 enum developmentUrl {
