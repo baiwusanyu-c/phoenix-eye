@@ -32,6 +32,7 @@
         <!--    语种、设置菜单等    -->
         <div class="tsgz-slogan">
             <be-popover placement="bottom"
+                        v-if="isLogin"
                         ref="popoverRouter"
                         trigger="click"
                         customClass="popover-router">
@@ -166,10 +167,10 @@ export default defineComponent({
         })
         const loginUser = ref<string>('')
         onMounted(() => {
+            isLogin.value = getStore('token') ? true : false
+            const userInfo = JSON.parse(getStore('userInfo') as string)
+            loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
             nextTick(()=>{
-                isLogin.value = getStore('token') ? true : false
-                const userInfo = JSON.parse(getStore('userInfo') as string)
-                loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
                 setHeaderConfig()
             })
 
@@ -279,7 +280,6 @@ export default defineComponent({
             locale.value = data
             computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH';
             (instanceInner?.refs.popoverLang as IPopover).close()
-            route.meta.titleInfo = t(route.meta.title)
         }
         const computeLang = ref<string>('EN')
         return {
@@ -303,7 +303,9 @@ export default defineComponent({
 
 <style lang="scss">
 .popover-logout,.popover-lang,.popover-router{
-
+    .be-popover{
+        z-index: 10;
+    }
   .be-popover-body{
     padding:0 ;
 

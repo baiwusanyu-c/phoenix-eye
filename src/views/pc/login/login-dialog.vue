@@ -16,7 +16,15 @@
             @close="handleClose"
             custom-class="login-dialog">
             <div>
-
+                <el-select v-model="val" class="m-2" placeholder="Select" size="large">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    >
+                    </el-option>
+                </el-select>
             </div>
             <template #footer>
                 <be-button customClass="eagle-btn" type="primary">
@@ -38,6 +46,30 @@ export default defineComponent({
     },
     setup(){
         const showDialog = ref<boolean>(false)
+        const val = ref<string>('')
+        const options = [
+            {
+                value: 'Option1',
+                label: 'Option1',
+            },
+            {
+                value: 'Option2',
+                label: 'Option2',
+            },
+            {
+                value: 'Option3',
+                label: 'Option3',
+            },
+            {
+                value: 'Option4',
+                label: 'Option4',
+            },
+            {
+                value: 'Option5',
+                label: 'Option5',
+            },
+        ]
+
         const handleClose = ():void =>{
             // 重置表单
 
@@ -45,6 +77,8 @@ export default defineComponent({
             showDialog.value = false
         }
         return {
+            options,
+            val,
             showDialog,
             handleClose,
         }
@@ -64,11 +98,10 @@ export default defineComponent({
     background-size: 100%;
     border: 4px;
 
-      .be-dialog-title{
+    .be-dialog-title{
+      background-color: transparent;
 
-          background-color: transparent;
-
-      }
+    }
 
   }
 }

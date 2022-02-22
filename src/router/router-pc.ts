@@ -76,10 +76,6 @@ export const initRouterConfig = (treeData:any) => {
 const beforeEachHandle = (router:Router) => {
     router.beforeEach( (to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
         if(store.state.routeConfig.length > 0 || !getStore('token')){
-            setTimeout(() => {
-                i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
-                to.meta.titleInfo = i18n.global.t(to.meta.title as string)
-            }, 100)
             next()
             return;
         }else{
