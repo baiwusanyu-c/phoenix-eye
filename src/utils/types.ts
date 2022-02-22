@@ -34,3 +34,6 @@ export interface IPageParam {
 export interface IPopover{
     close:Function
 }
+export interface ILoginDialog{
+    showDialog:boolean
+}

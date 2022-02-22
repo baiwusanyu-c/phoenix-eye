@@ -35,33 +35,36 @@ export default {
 
 <style scoped lang="scss">
 .tsgz-footer{
-    width: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background-color: $mainColor7;
+
+  .copy-rights{
     display: flex;
-    background-color: $mainColor7;
-    align-items: center;
-    height: 60px;
-    .copy-rights{
-        flex: 1;
-        display: flex;
-        line-height: 60px;
-        justify-content: center;
-        font-size: 14px;
-        font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
-        font-weight: 400;
-        color: $textColor12;
+    flex: 1;
+    justify-content: center;
+    font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 60px;
+    color: $textColor12;
+  }
+
+  .contact{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+
+    .contact-logo{
+      display: flex;
+      align-items: center;
+      font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: $textColor12;
     }
-    .contact{
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        .contact-logo{
-            align-items: center;
-            display: flex;
-            font-size: 14px;
-            font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
-            font-weight: 400;
-            color: $textColor12;
-        }
-    }
+  }
 }
 </style>

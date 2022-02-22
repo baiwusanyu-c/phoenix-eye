@@ -72,7 +72,7 @@
                 </template>
                 <div @click="routerSwitch('/logout')" class="popover-item">{{ $t('lang.header.logout') }}</div>
             </be-popover>
-            <be-button v-if="!isLogin" customClass="eagle-btn" round="4">{{ $t('lang.signUp') }}</be-button>
+            <be-button v-if="!isLogin" customClass="eagle-btn" round="4" @click="openLogin">{{ $t('lang.signUp') }}</be-button>
         </div>
         <!--退出弹窗-->
         <MsgDialog
@@ -82,6 +82,7 @@
             :isShowCancel="false"
             :title="$t('lang.loginConfig.confirmLogout')">
         </MsgDialog>
+        <login-dialog ref="loginDialog"></login-dialog>
     </div>
 
 </template>
@@ -95,13 +96,15 @@ import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
 import BeSvgIcon from "./common-components/svg-icon/be-svg-icon.vue";
 import {BeIcon,BePopover,BeButton} from '../../public/be-ui/be-ui.es.js'
 import {useI18n} from "vue-i18n";
-import {IPopover} from "../utils/types";
+import {ILoginDialog, IPopover} from "../utils/types";
+import LoginDialog from "../views/pc/login/login-dialog.vue";
 /**
  * 头部菜单导航
  */
 export default defineComponent({
     name: "TsgzNavMenu",
     components:{
+        LoginDialog,
         MsgDialog,
         BeSvgIcon,
         BeIcon,
@@ -134,6 +137,10 @@ export default defineComponent({
                 isLogin.value = false
             }
             isLogout.value = false;
+        }
+
+        const openLogin = ():void=>{
+            (instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
         }
         /**
          * 路由跳转方法
@@ -287,6 +294,7 @@ export default defineComponent({
             routerSwitch,
             confirm,
             isLogout,
+            openLogin,
         }
     }
 })
@@ -295,23 +303,28 @@ export default defineComponent({
 
 <style lang="scss">
 .popover-logout,.popover-lang,.popover-router{
-    .be-popover-body{
-        padding:0 ;
-        .popover-item{
-            min-width: 60px;
-            height: 35px;
-            line-height: 35px;
-            cursor: pointer;
-            &:hover{
-                background-color: $mainColor16;
-            }
-        }
+
+  .be-popover-body{
+    padding:0 ;
+
+    .popover-item{
+      min-width: 60px;
+      height: 35px;
+      line-height: 35px;
+      cursor: pointer;
+
+      &:hover{
+        background-color: $mainColor16;
+      }
     }
-    .popover-router-item{
-        span{
-            margin: 0 10px;
-        }
+  }
+
+  .popover-router-item{
+
+    span{
+      margin: 0 10px;
     }
+  }
 }
 
 .el-dropdown-menu__item_on {
@@ -351,78 +364,88 @@ export default defineComponent({
   text-align: center;
   background-color: $mainColor7;
   box-shadow: 2px 0 6px 0 rgba(0, 21, 41, .12);
-    .tsgz-slogan {
-        display: flex;
-        flex: 4;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        height: 100%;
-        margin-right: 30px;
-        background-repeat: no-repeat;
-        background-position: right;
-        background-size: 100% 100%;
-        .setting{
-            vertical-align: middle;
-            cursor: pointer;
-            .be-icon{
-                fill:$textColor4;
-                &:hover{
-                    fill:$mainColor3
-                }
-            }
-        }
-        .dropdown-lang{
-            background-color: $mainColor17;
-            height: 32px;
-            width: 60px;
-            display: flex;
-            justify-content: center;
-        }
-        .dropdown-link{
-            font-size: 14px;
-            color: $textColor4;
-            cursor: pointer;
-            .lang-under{
-                .be-icon{
-                    width: 14px;
-                    height: 14px;
-                }
-            }
-        }
-        .tsgz-user {
-            width: 28px;
-            height: 28px;
-            line-height: 28px;
-            color: $textColor6;
-            text-align: center;
-            background-color: $textColor4;
-            border-radius: 30px;
-        }
 
-        h3 {
-            margin: 0 10px;
-            font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
-            font-size: 20px;
-            font-weight: 500;
-            color: $textColor4;
+  .tsgz-slogan {
+    display: flex;
+    flex: 4;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    margin-right: 30px;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 100% 100%;
+
+    .setting{
+      vertical-align: middle;
+      cursor: pointer;
+
+      .be-icon{
+        fill:$textColor4;
+
+        &:hover{
+          fill:$mainColor3
         }
+      }
     }
 
-    .expend-logo {
-        background-image: url("../assets/image/pc/logo-white.png");
-        background-repeat: no-repeat;
-        width: 164px;
-        margin-left: 30px;
-        background-position-y: center;
+    .dropdown-lang{
+      display: flex;
+      justify-content: center;
+      width: 60px;
+      height: 32px;
+      background-color: $mainColor17;
     }
 
-    .el-menu-item{
-        margin-bottom: 0!important;
+    .dropdown-link{
+      font-size: 14px;
+      color: $textColor4;
+      cursor: pointer;
+
+      .lang-under{
+
+        .be-icon{
+          width: 14px;
+          height: 14px;
+        }
+      }
     }
-    .menu-disable {
-        cursor: not-allowed;
+
+    .tsgz-user {
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      color: $textColor6;
+      text-align: center;
+      background-color: $textColor4;
+      border-radius: 30px;
     }
+
+    h3 {
+      margin: 0 10px;
+      font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: $textColor4;
+    }
+  }
+
+  .expend-logo {
+    width: 164px;
+    margin-left: 30px;
+    background-image: url("../assets/image/pc/logo-white.png");
+    background-repeat: no-repeat;
+    background-position-y: center;
+  }
+
+  .el-menu-item{
+    margin-bottom: 0!important;
+  }
+
+  .menu-disable {
+    cursor: not-allowed;
+  }
 
   .nav-menu-icon {
 
@@ -448,19 +471,21 @@ export default defineComponent({
 
     .el-submenu__title:hover,
     .el-menu-item:hover {
-        color: $mainColor3;
-        background-color: transparent;
-        font-weight: bold;
+      font-weight: bold;
+      color: $mainColor3;
+      background-color: transparent;
     }
 
   }
 
   .menu-part1 {
+
     .el-menu-item.is-active,
     .el-menu-item:focus {
-      color: $mainColor3;
       font-weight: bold;
+      color: $mainColor3;
       background-color: transparent;
+
       .nav-menu-icon {
         fill: #fff !important;
       }

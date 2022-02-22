@@ -36,25 +36,27 @@ export default defineComponent({
 
 </script>
 <style lang="scss">
-    .layout{
-        transition: all .3s;
-        .main{
-            position: relative;
-            left: 0;
-            top: 0;
-            height: calc(100vh - 60px);
-            background-color: $mainColor18;
-            overflow-y: auto;
-            .bg{
-                width: 100%;
-                height: 400px;
-                position: absolute;
-                top: 0;
-                left: 0;
-                background-repeat: round;
-                background-image: url("../../../assets/image/pc/bg.png");
-            }
-        }
+  .layout{
+    transition: all .3s;
+
+    .main{
+      position: relative;
+      top: 0;
+      left: 0;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      background-color: $mainColor18;
+
+      .bg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 400px;
+        background-image: url("../../../assets/image/pc/bg.png");
+        background-repeat: round;
+      }
     }
+  }
 </style>
 
