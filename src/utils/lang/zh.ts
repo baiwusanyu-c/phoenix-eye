@@ -31,6 +31,7 @@ export default {
     piece:'条',
     loss:'亏损',
     profit:'收益',
+    signUp:'sign up',
     header:{
         me:'我',
         language:'language',
@@ -91,16 +92,17 @@ export default {
     navTextConfig:{
         navName0:'链上态势',
         navName1:'项目排行',
-        navName2:'风险警告',
+        navName2:'风险交易',
         navName3:'项目管理',
         navName4:'系统配置',
+        navName5:'项目浏览器',
     },
     subNav:{
         navName0:'链上态势',
         navName1:'项目排行',
         navName1s1:'项目排行/合约态势详情',
         navName1s2:'项目排行/项目态势详情',
-        navName2:'风险警告',
+        navName2:'风险交易',
         navName3:'项目管理',
         navName4:'系统配置',
         navName4s1:'风险类型配置',

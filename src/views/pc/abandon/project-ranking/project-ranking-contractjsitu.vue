@@ -275,17 +275,17 @@
 </template>
 
 <script lang="ts">
-import ProjectRankingScoreCard from "./components/project-ranking-score-card.vue";
-import ProjectRankingTradeStability from "./components/project-ranking-trade-stability.vue";
-import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
-import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
+import ProjectRankingScoreCard from "./project-ranking-score-card.vue";
+import ProjectRankingTradeStability from "./project-ranking-trade-stability.vue";
+import BePagination from "../../../../components/common-components/pagination/be-pagination.vue";
+import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {Chart} from '@antv/g2';
-import {getProjWarning} from "../../../api/risk-warning";
-import {getTxStability} from "../../../api/project-ranking";
+import {getProjWarning} from "../../../../api/risk-trx";
+import {getTxStability} from "../../../../api/project-ranking";
 import {computed, defineComponent, nextTick, onMounted, ref} from "vue";
-import {getStore,openWindow,formatDate,createDate,beijing2utc} from '../../../utils/common'
-import {IOption, IPageParam} from "../../../utils/types";
-import composition from "../../../utils/mixin/common-func";
+import {getStore,openWindow,formatDate,createDate,beijing2utc} from '../../../../utils/common'
+import {IOption, IPageParam} from "../../../../utils/types";
+import composition from "../../../../utils/mixin/common-func";
 import {useI18n} from "vue-i18n";
 interface IImgCodeDict{
     [key:string]:any
@@ -371,13 +371,13 @@ export default defineComponent({
          * 打開交易分析詳情tab
          */
         const openDetail = (params: { tx_hash:string }) =>{
-            openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`)
+            openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
         }
         /**
          * 跳轉到頁面
          */
         const openWeb = (params:string) =>{
-            openWindow(`#/riskWarning/detail?tx_hash=${params}`)
+            openWindow(`#/riskTrx/detail?tx_hash=${params}`)
         }
         /**
          * 渲染静态检测饼图

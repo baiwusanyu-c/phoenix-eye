@@ -1,11 +1,11 @@
 /*
-* @risk-warning-list.vue
+* @risk-trx-list.vue
 * @deprecated
 * @author czh
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="risk-warning-list">
+    <div class="risk-trx-list">
         <div class="search-area">
             <div>
                 {{ $t('lang.riskConfig.platform') }}:
@@ -31,7 +31,7 @@
                 :data="tableData"
                 v-loading="loading"
                 height="680"
-                ref="riskWarningList">
+                ref="riskTrxList">
                 <div slot="empty"
                      class = 'empty-data'>
                     <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
@@ -178,7 +178,7 @@
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {platformListDict} from "../../../utils/platform-dict";
-import {getProjWarning} from "../../../api/risk-warning";
+import {getProjWarning} from "../../../api/risk-trx";
 import {defineComponent, ref, reactive, onMounted, watch, computed,WritableComputedRef } from "vue";
 import {useI18n,Locale} from "vue-i18n";
 
@@ -186,7 +186,7 @@ import {openWindow,beijing2utc,createDate,formatDate} from "../../../utils/commo
 import composition from "../../../utils/mixin/common-func";
 
 export default defineComponent({
-    name: "risk-warning-list",
+    name: "RiskTrxList",
     components: {BePagination,BeEllipsisCopy},
     setup(props, ctx){
         const {t,locale} = useI18n()
@@ -289,7 +289,7 @@ export default defineComponent({
          * 打開交易分析詳情tab
          */
         const openDetail = (params:any)=>{
-            openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`)
+            openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
         }
 
         return{
@@ -435,7 +435,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.risk-warning-list {
+.risk-trx-list {
   box-sizing: border-box;
   width: 100%;
   height: 100%;

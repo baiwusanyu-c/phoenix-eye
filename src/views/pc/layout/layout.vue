@@ -3,46 +3,6 @@
         <div class="layout-center">
             <!--   上侧菜单     -->
             <tsgz-nav-menu ref="headerCom"></tsgz-nav-menu>
-<!--            <transition name="fade" mode="out-in">
-                <div class="tsgz-menu-info">
-                    <div class="mission-select">
-                        <h3>
-                            {{ $route.meta.titleInfo }}
-                        </h3>
-                    </div>
-                    <div class="tsgz-slogan">
-                        <div class="tsgz-user">{{ $t('lang.header.me') }}</div>
-                        <el-dropdown @command="changeLanguage">
-                            <span class="el-dropdown-link">
-                              <h3>{{ loginUser }}</h3>
-                            </span>
-                            <template #dropdown>
-                                <el-dropdown-menu>
-                                    <el-dropdown-item command="logout">{{ $t('lang.header.logout') }}</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </template>
-                        </el-dropdown>
-                        <el-dropdown @command="changeLanguage">
-                            <span class="el-dropdown-link" style="display: flex;align-items: center">
-                              {{ $t('lang.header.language') }}
-                              <be-icon icon="under" style="margin-left: 5px" color="#777"></be-icon>
-                            </span>
-                            <template #dropdown>
-                                <el-dropdown-menu>
-                                    <el-dropdown-item command="zh_CN"
-                                                      :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''}`">
-                                        {{ $t('lang.header.chinese') }}
-                                    </el-dropdown-item>
-                                    <el-dropdown-item command="en_US"
-                                                      :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''}`">
-                                        {{ $t('lang.header.english') }}
-                                    </el-dropdown-item>
-                                </el-dropdown-menu>
-                            </template>
-                        </el-dropdown>
-                    </div>
-                </div>
-            </transition>-->
             <!--      主体内容      -->
             <div class="scrollDiy"
                  :class="{'viewArea': true}">
@@ -55,50 +15,21 @@
 </template>
 
 <script lang="ts">
-import TsgzNavMenu from "../../../components/nav-menu/tsgz-nav-menu.vue";
+import TsgzNavMenu from "../../../components/tsgz-nav-menu.vue";
 import {computed, defineComponent, onMounted, ref} from "vue";
 import composition from "../../../utils/mixin/common-func";
-import {getStore, setStore} from "../../../utils/common";
-import {useI18n} from "vue-i18n";
 import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
 export default defineComponent({
     name: 'layout',
     components: {TsgzNavMenu,BeIcon},
     setup(props, ctx) {
-        const loginUser = ref<string>('')
-        const {route, routerPush} = composition(props, ctx)
+        const {route} = composition(props, ctx)
         const key = computed(() => {
             return route.path
         })
-        const navMenu = computed(() => {
-            return function (val:string) {
-                if (!val) {
-                    return ``
-                }
-                return `width: calc(100% - 60px); transition: all .3s`
-            }
-        })
-        // 读取登录用户名
-        onMounted(() => {
-            loginUser.value = JSON.parse(getStore('userInfo') as string).username
-        })
-        // 语种切换
-        const {t, locale} = useI18n()
-        const changeLanguage = (data: string): void => {
-            if (data === 'logout') {
-                routerPush('/login')
-                return
-            }
-            setStore('language', data)
-            locale.value = data
-            route.meta.titleInfo = t(route.meta.title)
-        }
+
         return {
-            loginUser,
-            key,
-            navMenu,
-            changeLanguage,
-            getStore,
+            key
         }
     }
 })

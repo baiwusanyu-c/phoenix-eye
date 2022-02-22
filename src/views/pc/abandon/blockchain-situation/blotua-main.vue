@@ -265,19 +265,19 @@
 import { Chart} from '@antv/g2';
 import {MarkerCfg} from '@antv/g2/lib/interface';
 import {ShapeAttrs} from "@antv/g2/src/dependents";
-import {getContractAudit, getTxFxQs, getTxNum} from "../../../api/blotua";
-import {getProjWarning} from "../../../api/risk-warning";
-import {getProjectRankList, getPublicSentimentSecurity,ISentimentSecurity} from "../../../api/project-ranking";
-import {nFormatter, getStore, setStore,openWindow,formatDate,createDate,fomateTimeStamp,beijing2utc} from "../../../utils/common";
+import {getContractAudit, getTxFxQs, getTxNum} from "../../../../api/blotua";
+import {getProjWarning} from "../../../../api/risk-trx";
+import {getProjectRankList, getPublicSentimentSecurity,ISentimentSecurity} from "../../../../api/project-ranking";
+import {nFormatter, getStore, setStore,openWindow,formatDate,createDate,fomateTimeStamp,beijing2utc} from "../../../../utils/common";
 import {computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref, getCurrentInstance} from "vue";
 import {useI18n} from "vue-i18n";
-import composition from "../../../utils/mixin/common-func";
-import {IPageParam} from "../../../utils/types";
+import composition from "../../../../utils/mixin/common-func";
+import {IPageParam} from "../../../../utils/types";
 import {useStore} from "vuex";
-import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-import BlotuaProgress from "./components/blotua-progress.vue"
+import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
+import BlotuaProgress from "./blotua-progress.vue"
 
-import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
+import {BeIcon} from '../../../../../public/be-ui/be-ui.es.js'
 interface IScrollConfigData{
     name:string,
     value:string | number
@@ -660,7 +660,7 @@ export default defineComponent({
          * 打開交易分析詳情tab
          */
         const openDetail = (params: { tx_hash:string }):void =>{
-            openWindow(`#/riskWarning/detail?tx_hash=${params.tx_hash}`)
+            openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
         }
         /**
          * 打開到项目态势详情
@@ -742,7 +742,7 @@ export default defineComponent({
 .blotua-main {
   width: 100vw;
   height: 100vh;
-  background-image: url("../../../assets/image/pc/lsts-bg.png");
+  background-image: url("../../../../assets/image/pc/lsts-bg.png");
   background-repeat: round;
   background-size: 100%;
 
@@ -751,7 +751,7 @@ export default defineComponent({
     height: 40%;
     padding-bottom: 10px;
     margin-bottom: 18px;
-    background-image: url("../../../assets/image/pc/box-1.png");
+    background-image: url("../../../../assets/image/pc/box-1.png");
     background-repeat: round;
     background-size: 100%;
 
@@ -768,7 +768,7 @@ export default defineComponent({
         line-height: 36px;
         color: #84CCFF;
         text-align: center;
-        background-image: url("../../../assets/image/pc/sum.png");
+        background-image: url("../../../../assets/image/pc/sum.png");
         background-repeat: round;
         background-size: 100%;
       }
@@ -804,7 +804,7 @@ export default defineComponent({
     box-sizing: border-box;
     height: 56%;
     padding-bottom: 10px;
-    background-image: url("../../../assets/image/pc/box-3.png");
+    background-image: url("../../../../assets/image/pc/box-3.png");
     background-repeat: round;
     background-size: 100%;
   }
@@ -814,7 +814,7 @@ export default defineComponent({
     height: 40%;
     padding-bottom: 10px;
     margin-bottom: 18px;
-    background-image: url("../../../assets/image/pc/box-2.png");
+    background-image: url("../../../../assets/image/pc/box-2.png");
     background-repeat: round;
     background-size: 100%;
 
@@ -839,7 +839,7 @@ export default defineComponent({
     box-sizing: border-box;
     height: 56%;
     padding-bottom: 10px;
-    background-image: url("../../../assets/image/pc/box-4.png");
+    background-image: url("../../../../assets/image/pc/box-4.png");
     background-repeat: round;
     background-size: 100%;
 
@@ -985,7 +985,7 @@ export default defineComponent({
         width: 40%;
         height: 40%;
         padding: 30px 18px;
-        background-image: url("../../../assets/image/pc/card1.png");
+        background-image: url("../../../../assets/image/pc/card1.png");
         background-repeat: round;
         background-size: 100%;
       }
@@ -998,7 +998,7 @@ export default defineComponent({
         width: 40%;
         height: 40%;
         padding: 30px 18px;
-        background-image: url("../../../assets/image/pc/card2.png");
+        background-image: url("../../../../assets/image/pc/card2.png");
         background-repeat: round;
         background-size: 100%;
       }
@@ -1011,7 +1011,7 @@ export default defineComponent({
         width: 40%;
         height: 40%;
         padding: 30px 18px;
-        background-image: url("../../../assets/image/pc/card3.png");
+        background-image: url("../../../../assets/image/pc/card3.png");
         background-repeat: round;
         background-size: 100%;
       }
@@ -1024,7 +1024,7 @@ export default defineComponent({
         width: 40%;
         height: 40%;
         padding: 30px 18px;
-        background-image: url("../../../assets/image/pc/card4.png");
+        background-image: url("../../../../assets/image/pc/card4.png");
         background-repeat: round;
         background-size: 100%;
       }

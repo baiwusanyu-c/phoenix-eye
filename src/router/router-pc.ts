@@ -16,8 +16,7 @@ const routes =
     [
         {
             path: '/',
-            //redirect: '/blockchainSituation'
-            redirect: '/login'
+            redirect: '/riskTrx/list'
         },
         {
             path: '/',
@@ -31,13 +30,13 @@ const routes =
                     component: () => import('../views/pc/empty-page/404.vue'),
                     meta: {title: '404'}
                 },
+                {
+                    path: '/riskTrx/list',
+                    name: 'riskTrx',
+                    component: () => import('../views/pc/risk-trx/risk-trx-list.vue'),
+                    meta: {title: 'lang.subNav.navName2'}
+                },
             ]
-        },
-        {
-            path: '/blockchainSituation',
-            name: 'blockchainSituation',
-            component: () => import('../views/pc/blockchain-situation/blotua-main.vue'),
-            meta: {title: 'lang.subNav.navName0'}
         },
         {
             path: '/login',
@@ -48,15 +47,8 @@ const routes =
     ]
 // 路由的metaTitle字典
 const metaTitleDict:any = {
-    LSTS: 'lang.subNav.navName0',
-    XMPH: 'lang.subNav.navName1',
-    XMPH_XMXQ: "lang.subNav.navName1s2",
-    XMPH_HYXQ: "lang.subNav.navName1s1",
-    FXJG: 'lang.subNav.navName2',
-    FXJG_XQ: "lang.subNav.navName2",
-    FXJG_LB: "lang.subNav.navName2",
+    XMSS:'lang.subNav.navName5',
     XMGL: 'lang.subNav.navName3',
-    XTPZ: 'lang.subNav.navName4',
 }
 // 递归路由配置对象
 export const initRouterConfig = (treeData:any) => {
@@ -83,31 +75,7 @@ export const initRouterConfig = (treeData:any) => {
 
 const beforeEachHandle = (router:Router) => {
     router.beforeEach( (to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
-        if (to.path === '/login' ) {
-            // removeStore('userInfo')
-            // removeStore('token')
-            // clearSession();
-            // 路由跳转白名单（不需要验证token）
-            const whiteList = ['/login']
-            // 这里必须加这个判断，否则会造成路由跳转死循环，从而无法跳转(用户服务协议 无权限)
-            if(whiteList.includes(to.path)){
-                next()
-            }else{
-                BeMessage.service({
-                    titles: getStore('language') === 'en_US' ? 'Login Expired' : '登录过期',
-                    msgType: 'error',
-                    duration: 2500,
-                    offsetTop:80,
-                    close: true,
-                })
-               /* next({
-                    path: '/login',
-                })*/
-                next()
-            }
-            return
-        }
-        if(store.state.routeConfig.length > 0){
+        if(store.state.routeConfig.length > 0 || !getStore('token')){
             setTimeout(() => {
                 i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
                 to.meta.titleInfo = i18n.global.t(to.meta.title as string)

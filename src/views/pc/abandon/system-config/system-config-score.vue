@@ -63,7 +63,7 @@
                                         <template #content>
                                             {{$t('lang.systemConfigScore.tip')}}
                                         </template>
-                                        <img v-if="scope.$index ===4" src="../../../assets/image/pc/query.png" height="16" width="16" alt=""/>
+                                        <img v-if="scope.$index ===4" src="../../../../assets/image/pc/query.png" height="16" width="16" alt=""/>
                                     </el-tooltip>
                                     <span v-if="scope.$index ===5">
                                         {{inputValue.data.safety_opinion.config.each}}/{{$t('lang.systemConfigScore.safetyPublicOptionPiece')}}
@@ -171,9 +171,9 @@
 </template>
 
 <script lang="ts">
-import {getRiskScore, saveRiskScore, resetRiskScore, IRiskScore} from '../../../api/system-config'
-import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
-import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
+import {getRiskScore, saveRiskScore, resetRiskScore, IRiskScore} from '../../../../api/system-config'
+import {BeIcon} from '../../../../../public/be-ui/be-ui.es.js'
+import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
 import {
     defineComponent,
     ref,
@@ -186,7 +186,7 @@ import {
     WritableComputedRef
 } from "vue";
 import {Locale, useI18n} from "vue-i18n";
-import composition from "../../../utils/mixin/common-func";
+import composition from "../../../../utils/mixin/common-func";
 
 interface ISystemConfigScore {
     project?:string

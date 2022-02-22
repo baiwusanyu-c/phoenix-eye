@@ -54,7 +54,7 @@
                                 <div class="btn-border"
                                      v-show="index === 0"
                                      @click="addContractSite">
-                                    <be-svg-icon icon-class="add" class="add-create" disabled-tool-tip></be-svg-icon>
+                                    <be-svg-icon icon-class="Add" class="add-create" disabled-tool-tip></be-svg-icon>
                                 </div>
                             </div>
                         </el-form-item>

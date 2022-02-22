@@ -1,11 +1,11 @@
 /*
-* @risk-warning-detail.vue
+* @risk-trx-detail.vue
 * @deprecated 风险警告交易详情分析页面
 * @author czh
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="risk-warning-detail scrollDiy" v-loading="loading">
+    <div class="risk-trx-detail scrollDiy" v-loading="loading">
         <!--   基本信息     -->
         <div class="detail-body">
             <div class="detail-item">
@@ -77,9 +77,9 @@
                         align="left">
                         <template #default="scope">
                             <div style="display: flex;align-items: center;justify-content: center;">
-                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px"  v-if="scope.row.address_tag"></be-svg-icon>
+                                <be-svg-icon disabled-tool-tip icon-class="Files" style="margin-right: 15px"  v-if="scope.row.address_tag"></be-svg-icon>
                                 <!--             占位                   -->
-                                <be-svg-icon disabled-tool-tip icon-class="files" style="margin-right: 15px;visibility: hidden" v-if="!scope.row.address_tag"></be-svg-icon>
+                                <be-svg-icon disabled-tool-tip icon-class="Files" style="margin-right: 15px;visibility: hidden" v-if="!scope.row.address_tag"></be-svg-icon>
                                 <be-ellipsis-copy :targetStr="scope.row.address_tag"
                                                   styles="font-weight: bold;color:#409EFF"
                                                   :copyContent="scope.row.address"
@@ -187,7 +187,7 @@
 <script lang="ts">
 import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
-import {getProjWarningDetail,IProjDetail} from "../../../api/risk-warning";
+import {getProjWarningDetail,IProjDetail} from "../../../api/risk-trx";
 import {webURL} from "../../../enums/link";
 import {platformToCurrency,IPlatformToCurrency} from "../../../utils/platform-dict";
 import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from 'vue'
@@ -200,7 +200,7 @@ interface IBaseInfo {
 
 
 export default defineComponent({
-    name: "risk-warning-detail",
+    name: "RiskTrxDetail",
     components: {BeSvgIcon,BeEllipsisCopy},
     setup(props:any,ctx:any){
         const {message,route} = composition(props, ctx)
@@ -411,7 +411,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.risk-warning-detail{
+.risk-trx-detail{
   height: 100%;
 
   .detail-body{
@@ -468,7 +468,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-  .risk-warning-detail {
+  .risk-trx-detail {
 
     .detail-body{
       padding: 10px;

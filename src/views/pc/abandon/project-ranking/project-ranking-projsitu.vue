@@ -144,17 +144,17 @@
 <script lang="ts">
 
 // import ProjectRankingNumCard from "./components/project-ranking-num-card";
-import ProjectRankingRadar from "./components/project-ranking-radar.vue";
-import ProjectRankingSafetyOpinion from "./components/project-ranking-safety-opinion.vue";
+import ProjectRankingRadar from "./project-ranking-radar.vue";
+import ProjectRankingSafetyOpinion from "./project-ranking-safety-opinion.vue";
 // import ProjectRankingMarketPerformance from "./components/project-ranking-market-performance";
-import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
+import BePagination from "../../../../components/common-components/pagination/be-pagination.vue";
 import DataSet from "@antv/data-set";
 import {Chart, registerGeometryLabelLayout} from "@antv/g2";
-import {getContractSecurity, getPublicSentimentSecurity, ISentimentSecurity} from "../../../api/project-ranking";
+import {getContractSecurity, getPublicSentimentSecurity, ISentimentSecurity} from "../../../../api/project-ranking";
 import {computed, defineComponent, nextTick, onMounted, ref} from "vue";
-import {IOption, IPageParam} from "../../../utils/types";
-import composition from "../../../utils/mixin/common-func";
-import {getStore,beijing2utc,createDate,formatDate} from '../../../utils/common'
+import {IOption, IPageParam} from "../../../../utils/types";
+import composition from "../../../../utils/mixin/common-func";
+import {getStore,beijing2utc,createDate,formatDate} from '../../../../utils/common'
 import {useI18n} from "vue-i18n";
 import {LabelItem} from "@antv/g2/src/geometry/label/interface";
 import {IGroup} from "@antv/g2/src/dependents";

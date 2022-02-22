@@ -6,10 +6,10 @@
 */
 <template>
     <div class="tsgz-nav-menu" id="xnhb_nav_menu">
-        <!--    展开时logo    -->
+        <!--    logo    -->
         <div style="display: flex">
             <div class="expend-logo"></div>
-            <!--    展开时菜单    -->
+            <!--    菜单    -->
             <div class="tsgz-nav-menu-container">
                 <el-menu
                     unique-opened
@@ -18,7 +18,6 @@
                     :ellipsis="false"
                     :default-active="active"
                     class="el-menu-demo menu-part1">
-
                     <div v-for="(value,key) in headerConfig" :key="key">
                         <el-menu-item  :key="key" :index="value.index"
                                        v-if='value !== undefined && value.show && value?.children.length === 0'
@@ -30,35 +29,50 @@
                 </el-menu>
             </div>
         </div>
+        <!--    语种、设置菜单等    -->
         <div class="tsgz-slogan">
-            <el-dropdown @command="changeLanguage">
-                            <span class="el-dropdown-link" style="display: flex;align-items: center;margin:0 30px">
+            <be-popover placement="bottom"
+                        ref="popoverRouter"
+                        trigger="click"
+                        customClass="popover-router">
+                <template #trigger>
+                    <be-icon icon="iconSetting" customClass="setting"></be-icon>
+                </template>
+                <div
+                     v-for="(item) in headerConfigMore"
+                     :key="item.path + 'router'"
+                     @click="routerSwitch(item,item.isPush)"
+                     class="popover-item popover-router-item">
+                    <span>{{ $t(item.name) }}</span>
+                </div>
+            </be-popover>
+            <be-popover placement="bottom"
+                        trigger="click"
+                        ref="popoverLang"
+                        customClass="popover-lang">
+                <template #trigger>
+                       <div class="dropdown-link dropdown-lang" style="display: flex;align-items: center;margin:0 18px">
                               {{ computeLang }}
-                              <be-icon icon="under" style="margin-left: 5px" color="#777"></be-icon>
-                            </span>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item command="zh_CN"
-                                          :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''}`">
-                            {{ $t('lang.header.chinese') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item command="en_US"
-                                          :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''}`">
-                            {{ $t('lang.header.english') }}
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
+                              <be-icon icon="under" style="margin-left: 5px" color="#777" customClass="lang-under"></be-icon>
+                       </div>
                 </template>
-            </el-dropdown>
-            <el-dropdown @command="changeLanguage">
-                            <span class="el-dropdown-link">
-                              <div class="tsgz-user">{{ $t('lang.header.me') }}</div>
-                            </span>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item command="logout">{{ $t('lang.header.logout') }}</el-dropdown-item>
-                    </el-dropdown-menu>
+                <div :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''} popover-item`"
+                     @click="changeLanguage('zh_CN')">中文</div>
+                <div :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''} popover-item`"
+                     @click="changeLanguage('en_US')">EN</div>
+            </be-popover>
+            <be-popover placement="bottom"
+                        v-if="computeIsLogin"
+                        trigger="click"
+                        customClass="popover-logout">
+                <template #trigger>
+                      <span class="dropdown-link">
+                              <div class="tsgz-user">{{ loginUser }}</div>
+                      </span>
                 </template>
-            </el-dropdown>
+                <div @click="changeLanguage('logout')" class="popover-item">{{ $t('lang.header.logout') }}</div>
+            </be-popover>
+            <be-button v-if="!computeIsLogin" customClass="eagle-btn" round="4">{{ $t('lang.signUp') }}</be-button>
         </div>
         <!--退出弹窗-->
         <MsgDialog
@@ -73,15 +87,15 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, nextTick, onMounted, ref, watch} from "vue";
-import {onBeforeRouteUpdate} from "vue-router";
-import {clearSession, clearStore, getStore, setStore} from "../../utils/common";
-import composition from "../../utils/mixin/common-func";
+import {computed, defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch} from "vue";
+import {clearSession, clearStore, getStore, setStore} from "../utils/common";
+import composition from "../utils/mixin/common-func";
 import {useStore} from "vuex";
-import MsgDialog from '../../components/common-components/msg-dialog/msg-dialog.vue'
-import BeSvgIcon from "../../components/common-components/svg-icon/be-svg-icon.vue";
-import {BeIcon} from '../../../public/be-ui/be-ui.es.js'
+import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
+import BeSvgIcon from "./common-components/svg-icon/be-svg-icon.vue";
+import {BeIcon,BePopover,BeButton} from '../../public/be-ui/be-ui.es.js'
 import {useI18n} from "vue-i18n";
+import {IPopover} from "../utils/types";
 /**
  * 头部菜单导航
  */
@@ -90,7 +104,9 @@ export default defineComponent({
     components:{
         MsgDialog,
         BeSvgIcon,
-        BeIcon
+        BeIcon,
+        BePopover,
+        BeButton
     },
     setup(props, ctx) {
         const {routerPush,route} = composition(props, ctx)
@@ -121,6 +137,7 @@ export default defineComponent({
          * @param {Boolean} isPush
          */
         const routerSwitch = (router: any, isPush: boolean): void => {
+            (instanceInner?.refs.popoverRouter as IPopover).close()
             if (router.path === '/logout') {
                 loginOut()
                 return;
@@ -136,9 +153,11 @@ export default defineComponent({
                 setActiveNav()
             })
         })
+        const loginUser = ref<string>('')
         onMounted(() => {
             nextTick(()=>{
-                loginUser.value = JSON.parse(getStore('userInfo') as string).username
+                const userInfo = JSON.parse(getStore('userInfo') as string)
+                loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
                 setHeaderConfig()
             })
 
@@ -155,15 +174,39 @@ export default defineComponent({
         /**
          * 初始化菜单配置
          */
-        const headerConfig = ref<any>({})
+        const headerConfig = ref<any>({
+            JYFX:{
+                icon: '',
+                index: 0,
+                name: 'lang.subNav.navName2',
+                show: true,
+                path: '/riskTrx/list',
+                isPush: true,
+                children: [],
+                isDisabled: false,
+            }
+        })
+        const headerConfigMore = ref<any>([])
         const store = useStore()
         const initHeaderConfig = (): void => {
             const menuConfig = store.state.routeConfig
             const iconList: Array<string> = ['-renwu', '-liulanqi', '-tiaochaquzheng', '-jiaoyifenxi', '-xitongpeizhi']
             menuConfig.forEach((val: any, index: number) => {
+                if(val.perms === 'XMGL'){
+                    headerConfigMore.value.push({
+                        index: (index + 1).toString(),
+                        name: val.meta.title,
+                        show: !val.hidden,
+                        path: val.path,
+                        isPush: true,
+                        children: [],
+                        isDisabled: false,
+                    })
+                    return
+                }
                 headerConfig.value[val.perms as string] = {
                     icon: iconList[index],
-                    index: index.toString(),
+                    index: (index + 1).toString(),
                     name: val.meta.title,
                     show: !val.hidden,
                     path: val.path,
@@ -193,7 +236,6 @@ export default defineComponent({
                         if (!headerConfig.value[val].path) {
                             headerConfig.value[val].children.forEach((res:any) => {
                                 if (route.path.indexOf(res.path) > -1) {
-                                    debugger
                                     active.value = res.index
                                     throw new Error('')
                                 }
@@ -216,9 +258,10 @@ export default defineComponent({
                 }
             })
         }
-        const loginUser = ref<string>('')
+
         // 语种切换
         const {t, locale} = useI18n()
+        const instanceInner = getCurrentInstance()
         const changeLanguage = (data: string): void => {
             if (data === 'logout') {
                 routerPush('/login')
@@ -226,12 +269,19 @@ export default defineComponent({
             }
             setStore('language', data)
             locale.value = data
-            computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH'
+            computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH';
+            (instanceInner?.refs.popoverLang as IPopover).close()
             route.meta.titleInfo = t(route.meta.title)
         }
         const computeLang = ref<string>('EN')
+        const computeIsLogin = computed(()=>{
+            return getStore('token') ? true : false
+        })
         return {
+            headerConfigMore,
+            loginUser,
             computeLang,
+            computeIsLogin,
             active,
             changeLanguage,
             getStore,
@@ -244,7 +294,25 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-
+.popover-logout,.popover-lang,.popover-router{
+    .be-popover-body{
+        padding:0 ;
+        .popover-item{
+            min-width: 60px;
+            height: 35px;
+            line-height: 35px;
+            cursor: pointer;
+            &:hover{
+                background-color: $mainColor16;
+            }
+        }
+    }
+    .popover-router-item{
+        span{
+            margin: 0 10px;
+        }
+    }
+}
 
 .el-dropdown-menu__item_on {
   color: $mainColor3;
@@ -294,14 +362,41 @@ export default defineComponent({
         background-repeat: no-repeat;
         background-position: right;
         background-size: 100% 100%;
-
+        .setting{
+            vertical-align: middle;
+            cursor: pointer;
+            .be-icon{
+                fill:$textColor4;
+                &:hover{
+                    fill:$mainColor3
+                }
+            }
+        }
+        .dropdown-lang{
+            background-color: $mainColor17;
+            height: 32px;
+            width: 60px;
+            display: flex;
+            justify-content: center;
+        }
+        .dropdown-link{
+            font-size: 14px;
+            color: $textColor4;
+            cursor: pointer;
+            .lang-under{
+                .be-icon{
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+        }
         .tsgz-user {
             width: 28px;
             height: 28px;
             line-height: 28px;
             color: $textColor6;
             text-align: center;
-            background-color: $mainColor3;
+            background-color: $textColor4;
             border-radius: 30px;
         }
 
@@ -315,7 +410,7 @@ export default defineComponent({
     }
 
     .expend-logo {
-        background-image: url("../../assets/image/pc/logo-white.png");
+        background-image: url("../assets/image/pc/logo-white.png");
         background-repeat: no-repeat;
         width: 164px;
         margin-left: 30px;

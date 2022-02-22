@@ -51,7 +51,7 @@
                 tooltip-effect="light"
                 :data="tableData"
                 v-loading="loading"
-                ref="riskWarningList">
+                ref="riskTrxList">
                 <template #empty>
                     <div
                         class='empty-data'>
@@ -152,12 +152,12 @@
 </template>
 
 <script lang="ts">
-import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
-import {getContractProjectTs, getProjectRankList} from "../../../api/project-ranking";
-import {getUrlkey, beijing2utc, formatDate, createDate, isFunction, setStore, getStore} from "../../../utils/common";
+import BePagination from "../../../../components/common-components/pagination/be-pagination.vue";
+import {getContractProjectTs, getProjectRankList} from "../../../../api/project-ranking";
+import {getUrlkey, beijing2utc, formatDate, createDate, isFunction, setStore, getStore} from "../../../../utils/common";
 import {computed, defineComponent, onMounted, ref, watch} from "vue";
-import composition from "../../../utils/mixin/common-func";
-import {IPageParam} from "../../../utils/types";
+import composition from "../../../../utils/mixin/common-func";
+import {IPageParam} from "../../../../utils/types";
 interface IProjectObj{
     info?:Array<any>
 }

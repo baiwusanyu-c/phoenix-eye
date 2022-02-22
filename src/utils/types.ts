@@ -31,3 +31,6 @@ export interface IPageParam {
     pageSize?: number
     total?: number
 }
+export interface IPopover{
+    close:Function
+}

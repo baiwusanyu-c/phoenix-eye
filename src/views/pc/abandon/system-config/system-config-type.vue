@@ -37,14 +37,14 @@
 </template>
 
 <script lang="ts">
-import SystemConfigTypeCard from "./components/system-config-type-card.vue";
-import AddRiskType from "./components/add-risk-type.vue";
-import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType,IRiskType} from "../../../api/system-config";
+import SystemConfigTypeCard from "./system-config-type-card.vue";
+import AddRiskType from "./add-risk-type.vue";
+import {createRiskType, deleteRiskType, getRiskTypeList, saveEditRiskType,IRiskType} from "../../../../api/system-config";
 import {defineComponent, ref, shallowReactive, onMounted, nextTick} from "vue";
 import {useI18n} from "vue-i18n";
-import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-import {ceReg} from "../../../utils/reg";
-import composition from "../../../utils/mixin/common-func";
+import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
+import {ceReg} from "../../../../utils/reg";
+import composition from "../../../../utils/mixin/common-func";
 
 export default defineComponent({
     name: "system-config-type",

@@ -169,9 +169,9 @@ export const setStore = (name:string, content:string) => {
 /**
  * 获取localStorage
  */
-export const getStore = (name:string) =>{
+export const getStore = (name:string):string | undefined =>{
     if (!name) return;
-    return window.localStorage.getItem(name);
+    return window.localStorage.getItem(name) as string;
 }
 export const removeStore = (name:string) =>{
     if (!name) return;
