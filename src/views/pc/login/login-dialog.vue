@@ -57,13 +57,19 @@ export default defineComponent({
 #login_dialog{
 
   .login-dialog {
-      width: 1080px;
-      height: 592px;
-      border: 4px;
+    width: 1080px;
+    height: 592px;
+    background-image: url("../../../assets/image/pc/login-bg.png");
+    background-repeat: round;
+    background-size: 100%;
+    border: 4px;
+
       .be-dialog-title{
-          display: flex;
-          justify-content: space-between;
+
+          background-color: transparent;
+
       }
+
   }
 }
 
