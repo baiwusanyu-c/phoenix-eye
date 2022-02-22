@@ -1,5 +1,5 @@
 <template>
-    <div id="app" ref="app" :class="{'noM': isMobile == null}">
+    <div ref="app" :class="{'noM': isMobile == null}">
         <router-view></router-view>
         <!--下线弹窗-->
         <MsgDialog @confirm="()=>delTip = false"

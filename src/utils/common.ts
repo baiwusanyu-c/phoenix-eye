@@ -178,7 +178,7 @@ export const removeStore = (name:string) =>{
     window.localStorage.removeItem(name);
 }
 export const clearStore = () =>{
-    window.sessionStorage.clear();
+    window.localStorage.clear();
 }
 /**
  * 存储

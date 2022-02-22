@@ -440,7 +440,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   padding: 24px;
-  background: $mainColor7;
+  background: transparent;
 
   .search-area {
     display: flex;

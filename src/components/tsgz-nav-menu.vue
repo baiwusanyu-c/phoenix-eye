@@ -62,7 +62,7 @@
                      @click="changeLanguage('en_US')">EN</div>
             </be-popover>
             <be-popover placement="bottom"
-                        v-if="computeIsLogin"
+                        v-if="isLogin"
                         trigger="click"
                         customClass="popover-logout">
                 <template #trigger>
@@ -70,15 +70,15 @@
                               <div class="tsgz-user">{{ loginUser }}</div>
                       </span>
                 </template>
-                <div @click="changeLanguage('logout')" class="popover-item">{{ $t('lang.header.logout') }}</div>
+                <div @click="routerSwitch('/logout')" class="popover-item">{{ $t('lang.header.logout') }}</div>
             </be-popover>
-            <be-button v-if="!computeIsLogin" customClass="eagle-btn" round="4">{{ $t('lang.signUp') }}</be-button>
+            <be-button v-if="!isLogin" customClass="eagle-btn" round="4">{{ $t('lang.signUp') }}</be-button>
         </div>
         <!--退出弹窗-->
         <MsgDialog
-            @confirm="() => (isLogout = false)"
-            @close="() => (isLogout = false)"
-            :isShow.sync="isLogout"
+            @confirm="confirm(true)"
+            @close="confirm(false)"
+            :isShow="isLogout"
             :isShowCancel="false"
             :title="$t('lang.loginConfig.confirmLogout')">
         </MsgDialog>
@@ -112,6 +112,8 @@ export default defineComponent({
         const {routerPush,route} = composition(props, ctx)
         //是否登出
         const isLogout = ref<boolean>(false)
+        //是否登陆
+        const isLogin = ref<boolean>(false)
         /**
          * 登出方法
          * @param {String} command - 登出指令类型
@@ -123,12 +125,14 @@ export default defineComponent({
             }
         }
         /**
-         * 退出接口调用方法
+         * 退出调用方法
          */
-        const confirm = (): void => {
-            routerPush("/login")
-            clearSession();
-            clearStore();
+        const confirm = (isConfirm:boolean): void => {
+            if(isConfirm){
+                clearSession();
+                clearStore();
+                isLogin.value = false
+            }
             isLogout.value = false;
         }
         /**
@@ -138,7 +142,7 @@ export default defineComponent({
          */
         const routerSwitch = (router: any, isPush: boolean): void => {
             (instanceInner?.refs.popoverRouter as IPopover).close()
-            if (router.path === '/logout') {
+            if (router === '/logout') {
                 loginOut()
                 return;
             }
@@ -156,6 +160,7 @@ export default defineComponent({
         const loginUser = ref<string>('')
         onMounted(() => {
             nextTick(()=>{
+                isLogin.value = getStore('token') ? true : false
                 const userInfo = JSON.parse(getStore('userInfo') as string)
                 loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
                 setHeaderConfig()
@@ -263,10 +268,6 @@ export default defineComponent({
         const {t, locale} = useI18n()
         const instanceInner = getCurrentInstance()
         const changeLanguage = (data: string): void => {
-            if (data === 'logout') {
-                routerPush('/login')
-                return
-            }
             setStore('language', data)
             locale.value = data
             computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH';
@@ -274,19 +275,18 @@ export default defineComponent({
             route.meta.titleInfo = t(route.meta.title)
         }
         const computeLang = ref<string>('EN')
-        const computeIsLogin = computed(()=>{
-            return getStore('token') ? true : false
-        })
         return {
             headerConfigMore,
             loginUser,
             computeLang,
-            computeIsLogin,
+            isLogin,
             active,
             changeLanguage,
             getStore,
             headerConfig,
             routerSwitch,
+            confirm,
+            isLogout,
         }
     }
 })

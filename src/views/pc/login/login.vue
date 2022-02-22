@@ -46,7 +46,7 @@
             :headerTitle="$t('lang.loginConfig.titleDeadline')"
             @confirm="() => (delTip = false)"
             @close="() => (delTip = false)"
-            :isShow.sync="delTip"
+            :isShow="delTip"
             :isShowCancel="false"
             :title="$t('lang.loginConfig.infoDeadLine')">
         </MsgDialog>

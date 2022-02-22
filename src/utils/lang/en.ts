@@ -32,6 +32,7 @@ export default {
     loss:'loss',
     profit:'profit',
     signUp:'sign up',
+    contact:'Contact',
     header:{
         me:'Me',
         language:'语言',

@@ -31,7 +31,8 @@ export default {
     piece:'条',
     loss:'亏损',
     profit:'收益',
-    signUp:'sign up',
+    signUp:'注册',
+    contact:'联系我们',
     header:{
         me:'我',
         language:'language',
