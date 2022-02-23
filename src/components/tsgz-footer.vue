@@ -68,7 +68,7 @@ export default {
       color: $textColor12;
 
       .be-icon{
-          fill:$textColor12 ;
+        fill:$textColor12 ;
 
         &:hover{
           fill:$mainColor11 ;

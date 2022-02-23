@@ -150,7 +150,6 @@ export default {
         },
         features:'交易特征',
         values:'金额',
-        txDetail:'在浏览器查看',
         stateSuccess:'成功',
         stateFailed:'失败',
         profit:'地址收益',

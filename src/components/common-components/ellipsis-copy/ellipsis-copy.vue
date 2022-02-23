@@ -7,7 +7,7 @@
  * @FilePath: \anti-fraud-front\src\components\common-components\ellipsis-copy\ellipsis-copy.vue
 -->
 <template>
-    <div class="ellipsis-copy" @mouseover="enter"  @mouseout="leave">
+    <div :class="`ellipsis-copy ${customClass}`" @mouseover="enter"  @mouseout="leave" >
         <el-tooltip placement="top" effect="light" class="address" :disabled="(!isTooltip) || !targetStr">
             <template #content>
                 <span >{{getTooltipTxt()}}</span>
@@ -86,6 +86,10 @@ export default defineComponent({
             default: ''
         },
         emptyText:{
+            type: String,
+            default: ''
+        },
+        customClass:{
             type: String,
             default: ''
         }

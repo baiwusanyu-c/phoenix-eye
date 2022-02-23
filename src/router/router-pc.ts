@@ -34,7 +34,14 @@ const routes =
                     path: '/riskTrx/list',
                     name: 'riskTrx',
                     component: () => import('../views/pc/risk-trx/risk-trx-list.vue'),
-                    meta: {title: 'lang.subNav.navName2'}
+                    meta: {title: 'lang.subNav.navName2'},
+
+                },
+                {
+                    path: '/riskTrx/detail',
+                    name: 'riskTrxDetail',
+                    component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
+                    meta: {title: 'lang.subNav.navName2'},
                 },
             ]
         },

@@ -18,14 +18,14 @@
                     :ellipsis="false"
                     :default-active="active"
                     class="el-menu-demo menu-part1">
-                    <div v-for="(value,key) in headerConfig" :key="key">
+<!--                    <div v-for="(value,key) in headerConfig" :key="key">
                         <el-menu-item  :key="key" :index="value.index"
                                        v-if='value !== undefined && value.show && value?.children.length === 0'
                                        :disabled="value.isDisabled"
                                        @click="routerSwitch(value,value.isPush)">
                             <span style="margin-left: 10px">{{ $t(value.name) }}</span>
                         </el-menu-item>
-                    </div>
+                    </div>-->
                 </el-menu>
             </div>
         </div>

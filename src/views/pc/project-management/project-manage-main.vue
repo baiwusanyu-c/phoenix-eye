@@ -221,54 +221,6 @@ export default defineComponent({
                     contract_infos: [1, 2, 3],
                     risk_trx: 10,
                     public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
                 }
             ]
         })
@@ -460,6 +412,7 @@ export default defineComponent({
   box-sizing: border-box;
   width: 100%;
   height: auto;
+  min-height: calc(100% - 100px);
   padding-bottom: 86px;
 
   .project-manage-search {

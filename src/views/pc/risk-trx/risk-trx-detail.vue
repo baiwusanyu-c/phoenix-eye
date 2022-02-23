@@ -5,54 +5,79 @@
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="risk-trx-detail scrollDiy" v-loading="loading">
+    <div class="risk-trx-detail" v-loading="loading">
         <!--   基本信息     -->
         <div class="detail-body">
             <div class="detail-item">
                 <div class="detail-item-txt">
-                    {{ $t('lang.riskConfig.tableHeader.txHash') }}：
-                    {{ baseInfo.tx_hash }}
+                    <span style="width: 8%">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
+                    <be-ellipsis-copy
+                        customClass="detail-copy"
+                        :targetStr="baseInfo.tx_hash"
+                        :is-ellipsis="false"
+                        :isShowCopyBtn="false"
+                        styles="color: #008EE9;cursor:pointer;"
+                        fontLength="8"
+                        endLength="8">
+                    </be-ellipsis-copy>
+                    <be-tag type="info" v-if="baseInfo.platform">
+                        <div class="flex items-center">
+                            <be-icon :content="$t('lang.profit')" :icon="iconDict[baseInfo.platform.toUpperCase()]"></be-icon>
+                            <span style="margin-left: 10px;">{{ baseInfo.platform.toUpperCase() }}</span>
+                        </div>
+                    </be-tag>
                 </div>
-                <el-button class="default open-web" @click="openWeb">{{ $t('lang.riskConfig.txDetail') }} >></el-button>
+
             </div>
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.platform') }}：</span>
-                    {{ baseInfo.platform ? baseInfo.platform.toUpperCase() : '' }}
+                    <span style="width: 15%">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
+                    <be-ellipsis-copy
+                        :tooltipTxt="baseInfo.from_address"
+                        :targetStr="baseInfo.from_address_tag ? baseInfo.from_address_tag :  baseInfo.from_address"
+                        :is-ellipsis="(baseInfo.from_address && baseInfo.from_address.length > 15 && !baseInfo.from_address_tag) ? true : false"
+                        :isShowCopyBtn="false"
+                        styles="color: #008EE9;cursor:pointer;font-weight:400"
+                        fontLength="8"
+                        endLength="8">
+                    </be-ellipsis-copy>
                 </div>
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.values') }}：</span>
+                    <span >{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
+                    <be-ellipsis-copy
+                        :tooltipTxt="baseInfo.to_address"
+                        :targetStr="baseInfo.to_address_tag ? baseInfo.to_address_tag :  baseInfo.to_address"
+                        :is-ellipsis="(baseInfo.to_address && baseInfo.to_address.length > 15 && !baseInfo.to_address_tag) ? true : false"
+                        :isShowCopyBtn="false"
+                        styles="color: #008EE9;cursor:pointer;font-weight:400"
+                        fontLength="8"
+                        endLength="8">
+                    </be-ellipsis-copy>
+                </div>
+                <div class="detail-item-txt">
+                    <span >{{ $t('lang.riskConfig.values') }}：</span>
                     <el-tooltip placement="top" effect="light">
                         <template #content>
                             <span>{{ baseInfo.token_num }}</span>
                         </template>
-                        <span> {{simulateToFixed(baseInfo.token_num,6)}}</span>
+                        <span style="font-weight:400"> {{simulateToFixed(baseInfo.token_num,6)}}</span>
                     </el-tooltip>
-                    <span>&nbsp;&nbsp;{{ baseInfo.token_unit ? baseInfo.token_unit.toUpperCase() : '' }}&nbsp;&nbsp;</span>
+                    <span style="font-weight:400">&nbsp;&nbsp;{{ baseInfo.token_unit ? baseInfo.token_unit.toUpperCase() : '' }}&nbsp;&nbsp;</span>
                     <el-tooltip placement="top" effect="light">
                         <template #content>
                             <span>{{ baseInfo.dollar_money }}</span>
                         </template>
-                        <span> ({{handleProfit(baseInfo.dollar_money,0)}})</span>
+                        <span style="font-weight:400"> ({{handleProfit(baseInfo.dollar_money,0)}})</span>
                     </el-tooltip>
-                </div>
-            </div>
-            <div class="detail-item detail-form">
-                <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
-                    {{ baseInfo.from_address_tag ? baseInfo.from_address_tag :  baseInfo.from_address}}
-                </div>
-                <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
-                    {{ baseInfo.to_address_tag ? baseInfo.to_address_tag :  baseInfo.to_address}}
                 </div>
             </div>
             <div class="detail-item">
                 <div class="detail-item-txt">
-                    <span class="label">{{ $t('lang.riskConfig.features') }}：</span>
-                    <el-tag v-for="item in baseInfo.risk_features"
+                    <span >{{ $t('lang.riskConfig.features') }}：</span>
+                    <be-tag v-for="item in baseInfo.risk_features"
+                            type="info"
                             :key="item">{{item}}
-                    </el-tag>
+                    </be-tag>
                 </div>
             </div>
         </div>
@@ -72,14 +97,13 @@
                     </template>
                     <el-table-column
                         prop="platform"
-                        :label="$t('lang.riskConfig.profitTableHeader.addr')"
                         :width="addrCellWidth"
                         align="left">
+                        <template #header>
+                            <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.addr') }}</span>
+                        </template>
                         <template #default="scope">
                             <div style="display: flex;align-items: center;justify-content: center;">
-                                <be-svg-icon disabled-tool-tip icon-class="Files" style="margin-right: 15px"  v-if="scope.row.address_tag"></be-svg-icon>
-                                <!--             占位                   -->
-                                <be-svg-icon disabled-tool-tip icon-class="Files" style="margin-right: 15px;visibility: hidden" v-if="!scope.row.address_tag"></be-svg-icon>
                                 <be-ellipsis-copy :targetStr="scope.row.address_tag"
                                                   styles="font-weight: bold;color:#409EFF"
                                                   :copyContent="scope.row.address"
@@ -92,7 +116,7 @@
                                                   v-if="!scope.row.address_tag"
                                                   :emptyText="$t('lang.emptyData')"
                                                   :is-ellipsis="isEllipsis || scope.row.address.length >=45"
-                                                  styles="font-weight: bold;"
+                                                  styles="font-weight: bold;color:#409EFF"
                                                   fontLength="8"
                                                   endLength="8">
                                 </be-ellipsis-copy>
@@ -101,44 +125,56 @@
                     </el-table-column>
                     <el-table-column
                         prop="tx_hash"
-                        :label="$t('lang.riskConfig.profitTableHeader.profitSum')"
-                        align="right">
+                        align="left">
+                        <template #header>
+                            <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.profitSum') }}</span>
+                        </template>
                         <template #default="scope">
+                            <be-icon v-if="scope.row.profit > 0" :content="$t('lang.profit')" icon="iconArrowUp"></be-icon>
+                            <be-icon v-if="scope.row.profit < 0" :content="$t('lang.loss')" icon="iconArrowDown" style="margin-right: 4px;"></be-icon>
+                            <!-- 占位 -->
+                            <be-icon v-if="scope.row.profit === 0" disabled-tool-tip icon-class="iconArrowDown" style="visibility: hidden"></be-icon>
                             <el-tooltip placement="top" effect="light">
                                 <template #content>
                                     <span>{{ scope.row.profit }}</span>
                                 </template>
-                                <span>{{handleProfit(scope.row.profit,0)}}</span>
+                                <span style="margin-left: 10px;font-weight: bold;vertical-align: super"
+                                      :class="profitClass(scope.row.profit)">
+                                    {{handleProfit(scope.row.profit,0)}}
+                                </span>
                             </el-tooltip>
-                            <be-svg-icon v-if="scope.row.profit > 0" :content="$t('lang.profit')" icon-class="ArrowUp"></be-svg-icon>
-                            <be-svg-icon v-if="scope.row.profit < 0" :content="$t('lang.loss')" icon-class="ArrowDown" style="margin-right: 4px;"></be-svg-icon>
-                            <!-- 占位 -->
-                            <be-svg-icon v-if="scope.row.profit === 0" disabled-tool-tip icon-class="ArrowDown" style="visibility: hidden"></be-svg-icon>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="addrList"
-                        :label="$t('lang.riskConfig.profitTableHeader.tokenName')"
-                        align="right">
+                        align="left">
                         <template #header>
-                            <div style="width: 100%;text-align: right">
-                               {{ $t('lang.riskConfig.profitTableHeader.tokenName') }}
-                            </div>
+                            <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenName') }}</span>
                         </template>
                         <template #default="scope">
                             <div  v-if="scope.row.addrList && scope.row.addrList.length > 0 ">
-                                <p v-for="item in scope.row.addrList"
-                                        style="margin-top: 10px;"
-                                        :key="item.itemId">{{item.val}}</p>
+                                <be-ellipsis-copy
+                                    v-for="item in scope.row.addrList"
+                                    :key="item.itemId"
+                                    :targetStr="item.val"
+                                    :is-ellipsis="(item.val.length > 25) ? true : false"
+                                    :isShowCopyBtn="false"
+                                    styles="color: #008EE9;cursor:pointer;font-weight:400"
+                                    fontLength="8"
+                                    endLength="8">
+                                </be-ellipsis-copy>
                             </div>
+
                             <div style="display: flex;flex-direction: column;align-items: center;justify-content: center" v-else>
                                 {{ $t('lang.emptyData') }}</div>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="valueList"
-                        :label="$t('lang.riskConfig.profitTableHeader.tokenNum')"
-                        align="right">
+                        align="left">
+                        <template #header>
+                            <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenNum') }}</span>
+                        </template>
                         <template #default="scope">
                             <div  v-if="scope.row.valueList && scope.row.valueList.length > 0 ">
                                 <p v-for="item in scope.row.valueList"
@@ -153,17 +189,19 @@
                                 </p>
                             </div>
                             <div style="display: flex;flex-direction: column;align-items: center;justify-content: center" v-else>
-                                {{ $t('lang.emptyData') }}</div>
+                                / </div>
                         </template>
                     </el-table-column>
                     <el-table-column
                         prop="dollarList"
-                        :label="$t('lang.riskConfig.profitTableHeader.tokenVal')"
-                        align="right">
+                        align="left">
+                        <template #header>
+                            <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenVal') }}</span>
+                        </template>
                         <template #default="scope">
                             <div  v-if="scope.row.dollarList && scope.row.dollarList.length > 0 ">
                                 <p v-for="item in scope.row.dollarList"
-                                      style="margin-top: 10px;font-weight: bold"
+                                      style="margin-top: 10px;"
                                       :key="item.itemId">
                                     <el-tooltip placement="top" effect="light">
                                         <template #content>
@@ -174,7 +212,7 @@
                                 </p>
                             </div>
                             <div style="display: flex;flex-direction: column;align-items: center;justify-content: center" v-else>
-                                {{ $t('lang.emptyData') }}</div>
+                                / </div>
                         </template>
                     </el-table-column>
 
@@ -193,6 +231,7 @@ import {platformToCurrency,IPlatformToCurrency} from "../../../utils/platform-di
 import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from 'vue'
 import composition from "../../../utils/mixin/common-func"
 import {getUuid,simulateToFixed,openWindow} from "../../../utils/common";
+import {BeTag,BeIcon} from "../../../../public/be-ui/be-ui.es";
 interface IBaseInfo {
     platform?:string
     tx_hash?:string
@@ -201,7 +240,7 @@ interface IBaseInfo {
 
 export default defineComponent({
     name: "RiskTrxDetail",
-    components: {BeSvgIcon,BeEllipsisCopy},
+    components: {BeSvgIcon,BeEllipsisCopy,BeTag,BeIcon},
     setup(props:any,ctx:any){
         const {message,route} = composition(props, ctx)
         // 基础信息
@@ -294,8 +333,31 @@ export default defineComponent({
             const url = `${mainUrl}${baseInfo.value.tx_hash}`
             openWindow(url)
         }
+        /**
+         * 收益浮动样式夹杂
+         */
+        const profitClass = computed(()=>{
+            return function (val:number){
+                if(val > 0){
+                    return 'profit-x'
+                }
+                if(val < 0){
+                    return 'profit-d'
+                }
+                return ''
 
+            }
+        })
+        // 币种字典
+        const iconDict = {
+            HT:'iconHecoEagle',
+            BSC:'iconBnbEagle',
+            ETH:'iconEthEagle',
+            POLYGON:'iconPolygonEagle',
+        }
         return {
+            iconDict,
+            profitClass,
             baseInfo,
             profitData,
             loading,
@@ -312,111 +374,28 @@ export default defineComponent({
 
         }
     },
-    /*  data() {
-          return {
-              // 基础信息
-              baseInfo:{},
-              // 收益信息
-              profitData:[],
-              // loading
-              loading:false,
-              // 是否缩略
-              isEllipsis:false,
-              // 缩略数量
-              ellipsis:'8',
-              // 链平台转化币种
-              platformToCurrencyInner:platformToCurrency,
-              //
-              addrCellWidth:'430'
-          }
-      },
-      mounted() {
-          this.getInfoData()
-          this.initView()
-          window.onresize = this.initView
-      },
-      beforeDestroy() {
-          window.onresize = null
-      },
-      computed:{
-          handleProfit(){
-              return function (val,dec){
-                  if(val< 0){
-                      return `-$${this.$simulateToFixed(Math.abs(val),dec)}`
-                  }
-                  return `$${this.$simulateToFixed(val,dec)}`
-              }
-          }
-      },
-      methods: {
-          /!**
-           * 根据屏幕分辨率调整
-           *!/
-          initView(){
-              const width = window.screen.availWidth
-              const height = window.screen.availHeight
-              if(height <= 680 || width <=1280) {
-                  this.addrCellWidth = '260'
-                  this.isEllipsis = true
-                  this.ellipsis = '12'
-              }
-          },
-          /!**
-           * 獲得基本信息
-           *!/
-          getInfoData(){
-              const _this = this
-              const params = {
-                  tx_hash:_this.$route.query.tx_hash
-              }
-              _this.loading = true
-              getProjWarningDetail(params).then(res=>{
-                  _this.baseInfo = res.data
-                  _this.profitData = res.data.address_profits
-                  _this.profitData.forEach(val=>{
-                      val.addrList = []
-                      val.dollarList = []
-                      val.valueList = []
-                      val.token_profits.forEach(valRes=>{
-                          res.itemId = this.$getUuid
-                          val.addrList.push({val:valRes.token_name,itemId:'token_name'+_this.$getUuid(),tag:valRes.contract_address_tag})
-                          val.valueList.push({
-                              ordVal:valRes.token_num,
-                              val:_this.$simulateToFixed(valRes.token_num,6),
-                              itemId:'token_profit_no_dollar'+_this.$getUuid()})
-                          val.dollarList.push({
-                              ordVal:valRes.dollar_money,
-                              val:_this.$simulateToFixed(valRes.dollar_money,0),
-                              itemId:'token_profit_dollar'+_this.$getUuid()})
-                      })
-                  })
-                  _this.loading = false
-              }).catch(err=>{
-                  _this.$message.error(err.message)
-                  console.error(err)
-                  _this.loading = false
-              })
-          },
-          /!**
-           * 跳轉到第三方頁面
-           *!/
-          openWeb(){
-              if(!this.baseInfo.platform || !this.baseInfo.tx_hash) return
-              const url = `${webURL[this.baseInfo.platform]}${this.baseInfo.tx_hash}`
-              this.$openWindow(url, 'view_window')
-          }
 
-      },*/
 })
 </script>
 
 <style lang="scss">
 .risk-trx-detail{
-  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: calc(100% - 100px);
+  padding-bottom: 86px;
 
   .detail-body{
+    box-sizing: border-box;
+    width: 67.5%;
     padding: 20px;
-    background: $mainColor7;
+    margin: 40px auto 0 auto;
+    background: $mainColor7-06;
 
     .detail-item{
       display: flex;
@@ -433,28 +412,50 @@ export default defineComponent({
         align-items: center;
         margin-top: 15px;
         font-weight: bold;
+        color: $textColor3;
 
-        .label{
-          font-weight: normal;
-          color: $textColor4;
+        .detail-copy{
+          width: initial;
+          margin-right: 16px;
         }
 
-        .el-tag {
+        .be-tag {
           height: 30px;
           margin-top: 5px;
           margin-right: 15px;
           line-height: 30px;
+          background-color: $mainColor16;
+          border-width: 0;
           border-radius: 0;
+
+          span{
+            font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: $textColor3;
+          }
+
+          &:hover{
+            @apply shadow
+           }
         }
       }
     }
   }
 
   .detail-profit{
-    min-height: 69.5%;
-    padding: 20px;
-    margin-top: 20px;
-    background: $mainColor7;
+    width: 67.5%;
+    margin: 40px auto 0 auto;
+    color: $textColor3;
+    background: transparent;
+
+    .profit-d{
+      color: $lessColor4;
+    }
+
+    .profit-x{
+      color: $mainColor3;
+    }
 
     .detail-profit-body{
       height: calc(100% - 40px);
