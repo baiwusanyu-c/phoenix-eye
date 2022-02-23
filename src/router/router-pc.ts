@@ -58,7 +58,7 @@ const metaTitleDict:any = {
     XMGL: 'lang.subNav.navName3',
 }
 // 递归路由配置对象
-export const initRouterConfig = (treeData:any) => {
+export const initRouterConfig = <T>(treeData:Array<T>):Array<T> => {
     treeData.forEach((val:any) => {
         // 删除bms默认的redirect配置
         if (val.redirect === "noRedirect") {

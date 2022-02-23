@@ -71,7 +71,7 @@
                         <el-form-item :label="'Telegram:'">
                             <el-input class="projectKeyWordsInput" v-model="websiteForm.telegram"></el-input>
                         </el-form-item>
-                        <el-form-item :label="$t('lang.createProject.associatedaccount') + ':'">>
+                        <el-form-item :label="$t('lang.createProject.associatedAccount') + ':'">
                             <el-select-v2
                                 v-model="account"
                                 filterable

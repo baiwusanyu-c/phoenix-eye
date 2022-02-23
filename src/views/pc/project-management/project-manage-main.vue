@@ -73,7 +73,7 @@
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
                     </template>
                     <template #default="scope">
-                        <span>{{ scope.row.risk_trx }}</span>
+                        <span>{{ scope.row.risk_trx || '/' }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="public_opinion" sortable width="200">
@@ -81,7 +81,7 @@
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
                     </template>
                     <template #default="scope">
-                        <span>{{ scope.row.public_opinion }}</span>
+                        <span>{{ scope.row.public_opinion || '/' }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="create_time" width="180">
@@ -89,8 +89,15 @@
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
                     </template>
                     <template #default="scope">
-                        <p style="color: #888">{{ scope.row.create_time && scope.row.create_time.split(' ')[0] }}</p>
-                        <p style="color: #888">{{ scope.row.create_time && scope.row.create_time.split(' ')[1] }}</p>
+                        <el-tooltip placement="top" effect="light" >
+                            <template #content>
+                                <span >{{formatDate(createDate(scope.row.create_time))}} UTC：{{beijing2utc(scope.row.create_time) }}</span>
+                            </template>
+                            <span style="color: #888">
+                                <p>{{formatDate(createDate(scope.row.create_time)).split(' ')[0]}}</p>
+                                <p>{{formatDate(createDate(scope.row.create_time)).split(' ')[1]}}</p>
+                            </span>
+                        </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column prop="operation" width="160">
@@ -165,6 +172,7 @@ import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
+import {createDate,formatDate,beijing2utc,fomateTimeStamp} from "../../../utils/common";
 
 export default defineComponent({
     name: "ProjectManageMain",
@@ -189,40 +197,7 @@ export default defineComponent({
         const deleteText = ref<string>('')
         // 项目列表示例
         const projectList = reactive({
-            data: [
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                }
-            ]
+            data: []
         })
 
         // loading
@@ -352,7 +327,7 @@ export default defineComponent({
                 // 關鍵詞字符串轉化為數組
                 projectList.data.forEach((val: any) => {
                     let keyword = val.keyword.replace('；', ';')
-                    val.keywordList = keyword.split(';').filter((filterVal: any) => filterVal)
+                    val.keywordList = keyword.split(';').filter((filterVal: any) => filterVal).join(',')
                 })
                 loading.value = false
             }).catch(err => {
@@ -380,6 +355,10 @@ export default defineComponent({
         }
 
         return {
+            createDate,
+            formatDate,
+            beijing2utc,
+            fomateTimeStamp,
             sortChange,
             searchParams,
             curItem,
