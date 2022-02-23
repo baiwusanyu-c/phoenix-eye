@@ -6,17 +6,14 @@
                 class="createProjectBox"
                 :title="type === 'add' ? $t('lang.createProject.createProjectTitle') : $t('lang.createProject.editProjectTitle')"
                 v-model="createProjectWindow"
-                width="970px">
+                width="1000px">
                 <div>
-                    <el-form :label-position="labelPosition" label-width="130px" class="projectForm">
+                    <el-form :label-position="labelPosition" label-width="140px" class="projectForm">
                         <el-form-item :label="$t('lang.createProject.createProjectName') + ':'">
                             <span class="reg-start project-star">*</span>
-                            <el-input class="projectNameInput" v-model="projectName"
+                            <el-input class="projectKeyWordsInput" v-model="projectName"
                                       :placeholder="$t('lang.createProject.createProjectNameInput')"></el-input>
                             <span class="reg-start project-Ver">{{ verName }}</span>
-                            <span class="projectOpenTitle">{{ $t('lang.createProject.createProjectOpenTitle') }}</span>
-                            <el-switch v-model="openTF"></el-switch>
-                            <span class="projectOpenSecret">{{ isPublic }}</span>
                         </el-form-item>
                         <el-form-item :label="$t('lang.createProject.createProjectKeyWords') + ':'">
                             <span class="reg-start project-star">*</span>
@@ -54,18 +51,49 @@
                                 <div class="btn-border"
                                      v-show="index === 0"
                                      @click="addContractSite">
-                                    <be-svg-icon icon-class="Add" class="add-create" disabled-tool-tip></be-svg-icon>
+                                    <be-icon icon ="add" class="add-create"></be-icon>
                                 </div>
                             </div>
                         </el-form-item>
+                        <!--        聯係地址 - WebSite    -->
+                        <el-form-item :label="'WebSite:'">
+                            <el-input class="projectKeyWordsInput" v-model="websiteForm.website"></el-input>
+                        </el-form-item>
+                        <!--        聯係地址 - GitHub    -->
+                        <el-form-item :label="'GitHub:'">
+                            <el-input class="projectKeyWordsInput" v-model="websiteForm.github"></el-input>
+                        </el-form-item>
+                        <!--        聯係地址 - Twitter    -->
+                        <el-form-item :label="'Twitter:'">
+                            <el-input class="projectKeyWordsInput" v-model="websiteForm.twitter"></el-input>
+                        </el-form-item>
+                        <!--        聯係地址 - Telegram    -->
+                        <el-form-item :label="'Telegram:'">
+                            <el-input class="projectKeyWordsInput" v-model="websiteForm.telegram"></el-input>
+                        </el-form-item>
+                        <el-form-item :label="$t('lang.createProject.associatedaccount') + ':'">>
+                            <el-select-v2
+                                v-model="account"
+                                filterable
+                                :options="accountList"
+                                style="width: 772px"
+                                multiple
+                            />
+                        </el-form-item>
+
                     </el-form>
                 </div>
                 <template #footer>
                     <span class="dialog-footer">
-                        <el-button class="default" type="primary"
-                                   @click="createProjectCancel">{{ $t('lang.createProject.createProjectCancel') }}</el-button>
-                        <el-button class="primary hbjbh" type="primary"
-                                   @click="createProjectConfirm">{{ $t('lang.createProject.createProjectConfirm') }}</el-button>
+                        <be-button type="success"
+                                   customClass="eagle-cancel-btn"
+                                   @click="createProjectCancel">
+                            {{ $t('lang.createProject.createProjectCancel') }}
+                        </be-button>
+                        <be-button
+                            type="success"
+                            customClass="eagle-btn"
+                            @click="createProjectConfirm">{{ $t('lang.createProject.createProjectConfirm') }}</be-button>
                     </span>
                 </template>
             </el-dialog>
@@ -76,19 +104,26 @@
 </template>
 
 <script lang="ts">
+
 import {createProject, getProjectInfo, ICreateProj, saveEditProject,IContractInfos} from "../../../../api/project-management";
 import {platformListDict,IPlatformListItem} from "../../../../utils/platform-dict";
 import {defineComponent, ref, reactive, computed, watch, onMounted, toRaw, inject} from "vue"
 import {useI18n} from "vue-i18n";
 
 import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
+import {BeButton, BeIcon} from "../../../../../public/be-ui/be-ui.es";
 import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
 import composition from "../../../../utils/mixin/common-func";
 import {IOption} from "../../../../utils/types";
-
+interface IWebsiteForm {
+    website?:string
+    github?:string
+    twitter?:string
+    telegram?:string
+}
 export default defineComponent({
     name: "CreateProject",
-    components:{BeSvgIcon},
+    components:{BeIcon,BeButton},
     props: {
         // 操作類型
         type: {
@@ -113,7 +148,7 @@ export default defineComponent({
         const createProjectWindow = ref<boolean>(false)
         const projectName= ref<string>('')
         const projectKeyWords= ref<string>('')
-        const openTF= ref<boolean>(true)
+
         const labelPosition= ref<string>('right')
         const addContract= ref<number>(0)
         const contractSite=reactive({data: [{platform: 'eth', contract_address: '', label: '', verAddr: '', verContract: ''}]})
@@ -127,17 +162,12 @@ export default defineComponent({
         onMounted(()=>{
             takePlatformListDict.value = platformListDict
         })
-        const isPublic = computed(()=>{
-            if(openTF.value){
-                return t('lang.createProject.createProjectUnSecret')
-            }else{
-                return t('lang.createProject.createProjectOpenSecret')
-            }
-        })
+
         watch(createProjectWindow,(nVal)=>{
             if (nVal) {
                 // 獲取詳情信息
                 getDetailData()
+                getAccountList()
             } else {
                 // 重置表單
                 resetVar()
@@ -176,7 +206,6 @@ export default defineComponent({
             projectKeyWords.value = ''
             verKeyword.value = ''
             verName.value = ''
-            openTF.value = true
             labelPosition.value='right'
             addContract.value= 0
             contractSite.data = [{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
@@ -196,7 +225,6 @@ export default defineComponent({
             getProjectInfo( params).then(res => {
                 if (res) {
                     projectName.value = res.data.name
-                    openTF.value = res.data.is_public
                     projectKeyWords.value = res.data.keyword
                     contractSite.data = res.data.contract_infos
                 }
@@ -344,9 +372,9 @@ export default defineComponent({
         const addProject = () => {
             let params:ICreateProj = {
                 name:projectName.value,
-                is_public:openTF.value,
                 keyword:projectKeyWords.value,
-                contract_infos:toRaw(contractSite.data)
+                contract_infos:toRaw(contractSite.data),
+                ...websiteForm.value
             }
             // 表单校验
             if(!formVerification(params)){
@@ -374,9 +402,9 @@ export default defineComponent({
         const editProject = () => {
             let params:ICreateProj = {
                 name:projectName.value,
-                is_public:openTF.value,
                 keyword:projectKeyWords.value,
-                contract_infos:contractSite.data
+                contract_infos:contractSite.data,
+                ...websiteForm.value
             }
             const pathParams = {
                 id: props.projectId
@@ -400,19 +428,30 @@ export default defineComponent({
                 console.error(err)
             })
         }
-
+        // 聯係地址表單
+        const websiteForm = ref<IWebsiteForm>({})
+        // 關聯用戶表單
+        const account = ref<Array<any>>([])
+        // 關聯用戶列表
+        const accountList = ref<Array<any>>([])
+        // 獲取用戶列表
+        const getAccountList = ():void =>{
+            accountList.value = []
+        }
         return{
             createProjectWindow,
+            account,
             projectName,
             projectKeyWords,
-            openTF,
             labelPosition,
             addContract,
             contractSite,
             takePlatformListDict,
             verName,
             verKeyword,
-            isPublic,
+            websiteForm,
+            accountList,
+            getAccountList,
             resetVar,
             getDetailData,
             semicolonVerification,
@@ -429,315 +468,16 @@ export default defineComponent({
             deleteContractSite
         }
     },
-    /*data() {
-        return {
-            createProjectWindow: false,
-            projectName: '',
-            projectKeyWords: '',
-            openTF: true,
-            labelPosition: 'right',
-            addContract: 0,
-            contractSite:[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}],
-            // 下拉平台字典
-            platformListDict:[],
-            // 名称校验信息
-            verName:'',
-            // 关键词校验信息
-            verKeyword:''
-        }
-    },
-    props: {
-        // 操作類型
-        type: {
-            type: String,
-            default: 'add'
-        },
-        // 项目id
-        projectId: {
-            type: [String,Number],
-            default: ''
-        }
-    },
-    computed:{
-      isPublic(){
-          if(this.openTF){
-              return this.$t('el.createProject.createProjectUnSecret')
-          }else{
-              return this.$t('el.createProject.createProjectOpenSecret')
-          }
-      }
-    },
-    watch: {
-        createProjectWindow(nVal) {
-            if (nVal) {
-                // 獲取詳情信息
-                this.getDetailData()
-            } else {
-                // 重置表單
-                this.resetVar()
-            }
-        }
-    },
-    created() {
-        this.platformListDict = platformListDict
-    },
-    methods: {
-        /!**
-         * 弹窗确认方法
-         *!/
-        async createProjectConfirm() {
-            if(this.type === 'add'){
-                await this.addProject()
-            }
-            if(this.type === 'edit'){
-                await this.editProject()
-            }
-        },
-        /!**
-         * 弹窗取消方法
-         *!/
-        createProjectCancel() {
-            this.createProjectWindow = false
-        },
-        addContractSite() {
-            this.contractSite.push({platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''})
-        },
-        deleteContractSite(i) {
-            this.contractSite.splice(i, 1)
-        },
-        /!**
-         * 重置參數變量
-         *!/
-        resetVar() {
-            this.createProjectWindow = false
-            this.projectName = ''
-            this.projectKeyWords = ''
-            this.verKeyword = ''
-            this.verName = ''
-            this.openTF = true
-            this.labelPosition='right'
-            this.addContract= 0
-            this.contractSite=[{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
-
-        },
-        /!**
-         * 获取风险类型详情数据
-         *!/
-        getDetailData() {
-            const _this = this
-            if (this.type === 'add') {
-                this.projectName = ''
-                return
-            }
-            const params = {
-                id: this.projectId
-            }
-            getProjectInfo( params).then(res => {
-                if (res) {
-                    _this.projectName = res.data.name
-                    _this.openTF = res.data.is_public
-                    _this.projectKeyWords = res.data.keyword
-                    _this.contractSite = res.data.contract_infos
-                }
-            }).catch(err => {
-                const msg = _this.$t('el.search') + _this.$t('el.failed')
-                _this.$message.error(msg)
-                console.error(err)
-            })
-        },
-        /!**
-         * 分号处理方法
-         * @param {String} params - 处理字符串
-         *!/
-        semicolonVerification(params){
-            // 那中文分号处理成英文
-            let res = params.replace('；',';')
-            // 如果最后一个字符是分号，去除末尾的符号
-            if(res.charAt(res.length-1) === '；' || res.charAt(res.length-1) === ';'){
-                res = res.substring(0,res.length -1)
-            }
-            return res
-        },
-        /!**
-         * 校驗名稱
-         * @param {Object} params - 搜索参数
-         *!/
-        verificationName(params){
-            if(!params.name){
-                this.verName = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectName')
-                return false
-            }
-            if(params.name && !this.ceReg.test(params.name)){
-                this.verName = this.$t('el.createProject.verCE')
-                return false
-            }
-            return true
-        },
-        /!**
-         * 校驗關鍵詞
-         * @param {Object} params - 搜索参数
-         *!/
-        verificationKeyword(params){
-            if(!params.keyword){
-                this.verKeyword = this.$t('el.pleaseInput') + this.$t('el.createProject.createProjectKeyWords')
-                return false
-            }
-            // 校驗中英文，分號
-            if(params.keyword){
-                let keyword = this.semicolonVerification(params.keyword)
-                if(!this.ceSemicolonReg.test(keyword)){
-                    this.verKeyword = this.$t('el.createProject.verCeSemicolonReg')
-                    return false
-                }
-                params.keyword = keyword
-            }
-            return true
-        },
-        /!**
-         * 校验合约地址
-         *!/
-        verificationContractAddr(val){
-            const platformReg = {
-                bsc:(addr)=>this.ETHaddress.test(addr),
-                eth:(addr)=>this.ETHaddress.test(addr),
-                heco:(addr)=>this.ETHaddress.test(addr),
-                polygon:(addr)=>this.ETHaddress.test(addr),
-            }
-            // 没有填写合约地址
-            if(!val.contract_address){
-                val.verAddr = this.$t('el.pleaseInput')+ this.$t('el.createProject.contractSite')
-                return true
-            }
-            // 校验地址格式
-            if(!platformReg[val.platform](val.contract_address)){
-                val.verAddr = this.$t('el.createProject.contractSite')+ this.$t('el.formatError')
-                return true
-            }
-            return false
-        },
-        /!**
-         * 表單校驗方法
-         * @param {Object} params - 搜索参数
-         *!/
-        formVerification(params){
-            this.verName = ''
-            this.verKeyword = ''
-            if(!this.verificationName(params)) return false
-            if(!this.verificationKeyword(params)) return false
-            let contractInfos = []
-            let hasEmpty = false
-            params.contract_infos.forEach(val=>{
-                val.verAddr = ''
-                val.verContract = ''
-                hasEmpty = this.verificationContractAddr(val)
-                // 填写了合约标签，则进行校验
-                if(val.label){
-                    let label = this.semicolonVerification(val.label)
-                    if(!this.ceSemicolonReg.test(label)){
-                        val.verContract = this.$t('el.createProject.verCeSemicolonTag')
-                        hasEmpty = true
-                    }else{
-                        val.label = label
-                    }
-
-                }
-                if(val.contract_address){
-                    contractInfos.push(val)
-                }
-            })
-            if(hasEmpty) {
-                return false
-            }
-            if(contractInfos.length === 0) {
-                const msg = this.$t('el.createProject.verInfo')
-                this.$message.warning(msg)
-                return false
-            }
-            params.contract_infos = contractInfos
-            return true
-        },
-        /!**
-         * 处理格式化参数
-         *!/
-        setParams(params){
-            params.map((val)=>{
-                return {
-                    platform:val.platform,
-                    contract_address:val.contract_address,
-                    label:val.label
-                }
-            })
-        },
-        /!**
-         * 确认增加项目方法
-         *!/
-        addProject(){
-            const _this = this
-            let params = {
-                name:_this.projectName,
-                is_public:_this.openTF,
-                keyword:_this.projectKeyWords,
-                contract_infos:_this.contractSite
-            }
-            // 表单校验
-            if(!this.formVerification(params)){
-                this.$forceUpdate()
-                return
-            }
-            this.setParams(params.contract_infos)
-            createProject(params).then(res=>{
-                if(res){
-                    const msg = _this.$t('el.add')+ _this.$t('el.success')
-                    _this.$message.success(msg)
-                    // 更新列表
-                    _this.$parent.getList()
-                    _this.createProjectWindow = false
-                }
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-            })
-
-        },
-        /!**
-         * 确认编辑项目方法
-         *!/
-        editProject(){
-            const _this = this
-            let params = {
-                name:_this.projectName,
-                is_public:_this.openTF,
-                keyword:_this.projectKeyWords,
-                contract_infos:_this.contractSite
-            }
-            const pathParams = {
-                id: this.projectId
-            }
-            // 表单校验
-            if(!this.formVerification(params)){
-                this.$forceUpdate()
-                return
-            }
-            this.setParams(params.contract_infos)
-            saveEditProject(params,pathParams).then(res=>{
-                if(res){
-                    const msg = _this.$t('el.edit')+ _this.$t('el.success')
-                    _this.$message.success(msg)
-                    // 更新列表
-                    _this.$parent.getList()
-                    _this.createProjectWindow = false
-                }
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-            })
-        }
-    }*/
 })
 </script>
 
 <style lang="scss">
 .createBox{
+
+  .el-dialog__title{
+    font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+    color: $mainColor3;
+  }
 
   .el-input__inner {
     height: 40px;
@@ -762,29 +502,26 @@ export default defineComponent({
   }
 }
 
-.projectNameInput {
-  width: 440px;
-}
-
 .projectKeyWordsInput {
-  width: 682px;
+  width: 772px;
 }
 
-/* .subtract:hover{
-    .svg-icon.subtract-btn{
-        fill:#0468C2
-    }
+.subtract:hover{
+
+  .svg-icon.subtract-btn{
+    fill:#0468C2
+  }
 }
 
 .svg-icon.subtract-btn{
-    margin-left: 11px;
-    width: 20px;
-    height: 20px;
-    vertical-align: -0.3em;
-    fill: gray;
-    overflow: hidden;
-    font-size: 15px;
-} */
+  width: 20px;
+  height: 20px;
+  margin-left: 11px;
+  overflow: hidden;
+  font-size: 15px;
+  vertical-align: -.3em;
+  fill: gray;
+}
 
 
 
@@ -797,35 +534,30 @@ export default defineComponent({
   margin-left: 12px;
   border: solid 1px darkgray;
   border-radius: 2px;
+
+  .add-create{
+
+    .be-icon{
+      fill:darkgray
+    }
+  }
 }
 
 .btn-border:hover{
-  border-color: #0468C2;
+  border-color: $mainColor3;
 
-  .svg-icon.add-create{
-    fill:#0468C2
-  }
+  .add-create{
 
-  .plus-create{
-    color: #81b3e0;
+    .be-icon{
+      fill:$mainColor3
+    }
   }
 
   .subtract-create{
-    border: solid 1px #81b3e0;
+    border: solid 1px $mainColor3;
   }
 }
 
-.plus-create{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  font-size: 27px;
-  color: darkgray;
-  cursor: default;
-  user-select: none;
-}
 
 .subtract-create{
   width: 14px;

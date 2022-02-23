@@ -23,8 +23,8 @@
             </div>
             <template #footer>
             <div class="dialog-footer" v-if="isShowBtn">
-                <be-button class="default" type="primary" v-if="isShowCancel" @click="closeMsg">{{ $t('lang.createProject.createProjectCancel') }}</be-button>
-                <be-button class="primary" type="primary" v-if="isShowConfirm" @click="confirm">{{ $t('lang.createProject.createProjectConfirm') }}</be-button>
+                <be-button customClass="eagle-cancel-btn" type="success" v-if="isShowCancel" @click="closeMsg">{{ $t('lang.createProject.createProjectCancel') }}</be-button>
+                <be-button customClass="eagle-btn" type="success" v-if="isShowConfirm" @click="confirm">{{ $t('lang.createProject.createProjectConfirm') }}</be-button>
             </div>
             </template>
         </be-dialog>

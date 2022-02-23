@@ -5,6 +5,7 @@
 * @update (czh 2021/12/15)
 */
 export default {
+    searchT:'SEARCH',
     companyAddr:'联系地址：成都市武侯区世纪城南路599号天府软件园D7座504室',
     companyTel:'联系电话： 028-8326-2585',
     companyRecord:'蜀ICP备18013498号-1',
@@ -122,7 +123,7 @@ export default {
         addPro:'Click to create',
         proPublic:'Public',
         proPrivate:'Confidential',
-        createTime:'Create time'
+        createTime:'Create time',
     },
     riskConfig:{
         platform:'Blockchain platform',
@@ -161,6 +162,7 @@ export default {
         createProjectCancel:'Cancel',
         createProjectConfirm:'Confirm',
         createProjectKeyWords:'Keyword',
+        associatedAccount:'Associated Account',
         createProjectKeyWordsInput:'Multiple keywords separated by ";", e.g. PancakeSwap;CAKE',
         createProjectOpenTitle:'Whether to make it public',
         createProjectOpenSecret:'Confidential',
@@ -173,7 +175,17 @@ export default {
         verInfo:'Please fill in at least one valid contract address',
         verCE:'Input is illegal, please input English letters, Chinese characters, number only',
         verCeSemicolonReg:'Input is illegal, please input English letters, Chinese characters, number, semicolon only, and do not start with semicolon',
-        verCeSemicolonTag:'Input is illegal'
+        verCeSemicolonTag:'Input is illegal',
+        searchP:'Project name / Contract / Associated Account',
+        tableHeader:{
+            projectName:'Project Name',
+            shortName:'Short Name',
+            contractNum:'Contract',
+            riskTrx:'RiskTrx(24h)',
+            publicOpinion:'Public Opinion(24h)',
+            createTime:'Create Time',
+            operation:'operation'
+        },
     },
     addRiskWindow:{
         addRiskWindowTitle:'Add risk type identification rules',

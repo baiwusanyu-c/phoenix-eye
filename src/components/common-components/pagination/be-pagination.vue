@@ -5,7 +5,7 @@
 * @update (czh 2021/4/21)
 */
 <template>
-    <div class="pagination-wrap" :class="customClass">
+    <div :class="`${customClass} pagination-wrap`">
         <slot name="prev">
             <span class="pagesize-readonly" v-if="isShowgetListPages">共计{{totals || 0}}条</span>
         </slot>
@@ -21,7 +21,7 @@
                 :pager-count="5"
                 :page-sizes="[10, 20, 50, 100]"
                 :hide-on-single-page="false"
-                :layout="'prev, pager, next'"
+                :layout="layout"
                 class="pagination_c"
                 :total="totals">
         </el-pagination>
@@ -140,6 +140,13 @@ import {setStore} from '../../../utils/common'
                 type: Boolean,
                 default: false,
             },
+            /**
+             * 佈局
+             */
+            layout:{
+                type: String,
+                default: 'prev, pager,next',
+            }
         },
         setup(props,ctx){
             const totals = ref<number>(0)
@@ -289,10 +296,14 @@ import {setStore} from '../../../utils/common'
     })
 </script>
 
-<style scoped lang='scss'>
+<style  lang='scss'>
   .pagination_c {
     margin-top: 20px;
     text-align: center;
+
+    .btn-prev,.btn-next,.el-pager{
+      background-color: transparent;
+    }
   }
 
   .pagination-wrap {

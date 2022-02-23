@@ -73,7 +73,7 @@
                 </template>
                 <div @click="routerSwitch('/logout')" class="popover-item">{{ $t('lang.header.logout') }}</div>
             </be-popover>
-            <be-button v-if="!isLogin" customClass="eagle-btn" round="4" @click="openLogin">{{ $t('lang.signUp') }}</be-button>
+            <be-button v-if="!isLogin" customClass="eagle-btn" round="4" @click="openLogin" type="success">{{ $t('lang.signUp') }}</be-button>
         </div>
         <!--退出弹窗-->
         <MsgDialog
@@ -149,7 +149,7 @@ export default defineComponent({
          * @param {Boolean} isPush
          */
         const routerSwitch = (router: any, isPush: boolean): void => {
-            (instanceInner?.refs.popoverRouter as IPopover).close()
+            (instanceInner?.refs.popoverRouter as IPopover)?.close()
             if (router === '/logout') {
                 loginOut()
                 return;
@@ -303,9 +303,11 @@ export default defineComponent({
 
 <style lang="scss">
 .popover-logout,.popover-lang,.popover-router{
-    .be-popover{
-        z-index: 10;
-    }
+
+  .be-popover{
+    z-index: 10;
+  }
+
   .be-popover-body{
     padding:0 ;
 

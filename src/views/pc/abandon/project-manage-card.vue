@@ -65,10 +65,10 @@
 </template>
 
 <script lang="ts">
-import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
+import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon.vue";
 import {defineComponent, ref, computed, onMounted} from 'vue'
-import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-import {beijing2utc,formatDate,createDate} from '../../../../utils/common'
+import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
+import {beijing2utc,formatDate,createDate} from '../../../utils/common'
 export default defineComponent({
     name: "project-manage-card",
     components: {BeSvgIcon,BeEllipsisCopy},
@@ -254,7 +254,7 @@ export default defineComponent({
     justify-content: center;
     width: 100%;
     height: 100%;
-    background-image: url("../../../../assets/image/pc/type-add.png");
+    background-image: url("../../../assets/image/pc/type-add.png");
     background-repeat: no-repeat;
     background-size: cover;
 

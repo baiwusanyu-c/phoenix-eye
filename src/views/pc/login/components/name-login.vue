@@ -45,7 +45,7 @@
                 </div>
             </div>
         </el-form>
-        <be-button class="primary" type="primary" :loading="isLogin" @click="login">
+        <be-button customClass="primary" type="success" :loading="isLogin" @click="login">
             {{ $t('lang.loginConfig.login') }}
         </be-button>
         <p class=" flex-end checkArea">

@@ -18,7 +18,7 @@ export interface IContractInfos{
 }
 export interface ICreateProj {
     name:string
-    is_public:boolean,
+    is_public?:boolean,
     keyword:string,
     contract_infos?:Array<IContractInfos>
 }

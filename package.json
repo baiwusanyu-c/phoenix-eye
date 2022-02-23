@@ -10,8 +10,8 @@
     "build:stage": "vite build --mode staging",
     "build:prod": "vite build --mode production",
     "build:pretest": "vite build --mode pretest",
-    "lint:style": "stylelint src/**/*.{html,vue,css}",
-    "lint:style-fix": "stylelint --fix src/**/*.{html,vue,css}"
+    "lint:style": "stylelint src/**/*.{html,vue,css,scss}",
+    "lint:style-fix": "stylelint --fix src/**/*.{html,vue,css,scss}"
   },
   "dependencies": {
     "@antv/data-set": "^0.11.8",

@@ -6,23 +6,130 @@
 */
 <template>
     <div class="project-manage-main">
-        <div class="project-manage-list scrollDiy" v-loading="loading">
-            <project-manage-card
-                type="add"
-                @add="addProject">
-            </project-manage-card>
-            <project-manage-card
-                type="edit"
-                :title="item.name"
-                :is-public="item.is_public"
-                :keyword-list="item.keywordList"
-                :create-time="item.create_time"
-                :contract-list="item.contract_infos"
-                @edit="editProject(item)"
-                @fresh="freshProject(item)"
-                @delete="deleteProjects(item)"
-                v-for="(item) in projectList.data" :key="item.id">
-            </project-manage-card>
+        <div class="project-manage-search">
+            <div class="project-manage-search-input">
+                <el-input v-model="searchParams"
+                          :placeholder="$t('lang.createProject.searchP')"
+                          style="margin-right: 16px"/>
+                <be-button type="success"
+                           customClass="eagle-btn search-btn"
+                           size="large"
+                           @click="getList"
+                           round="4">
+                    <span>{{ $t('lang.searchT') }}</span>
+                </be-button>
+            </div>
+            <be-button type="success"
+                       customClass="eagle-btn create-btn"
+                       size="large"
+                       prevIcon="add"
+                       @click="addProject"
+                       round="4">
+                {{ $t('lang.createProject.createProjectTitle') }}
+            </be-button>
+        </div>
+        <div class="project-manage-list eagle-table">
+            <el-table :data="projectList.data" style="width: 100%" @sort-change="sortChange">
+                <el-table-column prop="name" width="180">
+                    <template #header>
+                        <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
+                    </template>
+                    <template #default="scope">
+                        <be-ellipsis-copy :targetStr="scope.row.name"
+                                          :is-ellipsis="scope.row.name.length > 8 ? true : false"
+                                          :isShowCopyBtn="false"
+                                          :isTooltip="true"
+                                          styles="color: black;font-weight: bold;font-size: 16px;"
+                                          fontLength="8"
+                                          endLength="0">
+                        </be-ellipsis-copy>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="keywordList" width="180">
+                    <template #header>
+                        <span class="table-head">{{ $t('lang.createProject.tableHeader.shortName') }}</span>
+                    </template>
+                    <template #default="scope">
+                        <be-ellipsis-copy :targetStr="scope.row.keywordList"
+                                          :is-ellipsis="scope.row.name.keywordList > 8 ? true : false"
+                                          :isShowCopyBtn="false"
+                                          :isTooltip="true"
+                                          styles="color: black;font-weight: 400;font-size: 14px;"
+                                          fontLength="8"
+                                          endLength="0">
+                        </be-ellipsis-copy>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="contract_infos" sortable width="180">
+                    <template #header>
+                        <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
+                    </template>
+                    <template #default="scope">
+                        <span>{{ scope.row.contract_infos.length }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="risk_trx" sortable width="180">
+                    <template #header>
+                        <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
+                    </template>
+                    <template #default="scope">
+                        <span>{{ scope.row.risk_trx }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="public_opinion" sortable width="200">
+                    <template #header>
+                        <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
+                    </template>
+                    <template #default="scope">
+                        <span>{{ scope.row.public_opinion }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="create_time" width="180">
+                    <template #header>
+                        <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
+                    </template>
+                    <template #default="scope">
+                        <p style="color: #888">{{ scope.row.create_time && scope.row.create_time.split(' ')[0] }}</p>
+                        <p style="color: #888">{{ scope.row.create_time && scope.row.create_time.split(' ')[1] }}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="operation" width="160">
+                    <template #header>
+                        <span class="table-head">{{ $t('lang.createProject.tableHeader.operation') }}</span>
+                    </template>
+                    <template #default="scope">
+                        <el-tooltip placement="top" >
+                            <template #content>
+                                {{$t('lang.edit')}}
+                            </template>
+                            <be-icon @click='editProject(scope.row)' customClass="table-icon" icon="iconEditEagle"
+                                     width="24" height="24"></be-icon>
+                        </el-tooltip>
+                        <el-tooltip placement="top">
+                            <template #content>
+                                {{$t('lang.delete')}}
+                            </template>
+                            <be-icon @click='deleteProjects(scope.row)' customClass="table-icon" icon="iconDeleteEagle"
+                                     width="24" height="24"></be-icon>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <be-pagination
+                custom-class="table-page"
+                :pageSize='pageParams.pageSize'
+                :currentPage='pageParams.currentPage'
+                :total='pageParams.total'
+                layout="sizes,prev, pager,next"
+                @updatePage="pageChange"
+                :init-func="getList"
+                :is-front="false">
+                <template #prev>
+                    <span class="table-page-info">
+                        {{$t('lang.total')}} {{ pageParams.total }}</span>
+                </template>
+                <template #next><span></span></template>
+            </be-pagination>
         </div>
         <!--    新增、编辑项目弹窗   ref="createProjectDialog" -->
         <create-project
@@ -39,35 +146,36 @@
                    :isShow="showDelete"
                    :title="deleteText">
         </MsgDialog>
-        <!--    重新评估彈窗   -->
-        <MsgDialog @confirm="confirmFresh"
-                   @close="()=>showFresh = false"
-                   :headerTitle="$t('lang.systemConfig.reassess')"
-                   :isShow="showFresh"
-                   :title="freshText">
-        </MsgDialog>
     </div>
 </template>
 
 <script lang="ts">
-import ProjectManageCard from "./components/project-manage-card.vue";
+import {BeButton, BeIcon} from "../../../../public/be-ui/be-ui.es";
 import CreateProject from "./components/create-project.vue";
+import {IPageParam} from "../../../utils/types";
 import {
     createProject,
     deleteProject,
     getProjectList, ICreateProj, IReappraise,
-    reappraiseProject,
     saveEditProject
 } from "../../../api/project-management";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-import {defineComponent, ref, reactive, onMounted, provide, getCurrentInstance, nextTick} from 'vue'
-
+import {defineComponent, ref, reactive, onMounted, nextTick} from 'vue'
 import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func";
+import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
+import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 
 export default defineComponent({
     name: "ProjectManageMain",
-    components: {CreateProject, ProjectManageCard, MsgDialog},
+    components: {
+        BeEllipsisCopy,
+        CreateProject,
+        MsgDialog,
+        BeButton,
+        BeIcon,
+        BePagination
+    },
     setup(props, ctx) {
         const {t, locale} = useI18n()
         const {message} = composition(props, ctx)
@@ -75,32 +183,108 @@ export default defineComponent({
         const curItem = reactive({data: {}})
         // 当前操作类型
         const opType = ref<string>('add')
-        // 重新评估弹窗显示
-        const showFresh = ref<boolean>(false)
-        // 重新评估弹窗显示内容
-        const freshText = ref<string>('')
         // 删除弹窗显示
         const showDelete = ref<boolean>(false)
         // 删除弹窗显示内容
         const deleteText = ref<string>('')
         // 项目列表示例
-        const projectList = reactive({data: []})
-        // 项目列表的地址列表示例
-        const addrList = reactive({data: []})
+        const projectList = reactive({
+            data: [
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                },
+                {
+                    create_time: '2022/01/04 04:19:50',
+                    name: 'AAVE',
+                    keywordList: 'zuk; zuktoken',
+                    contract_infos: [1, 2, 3],
+                    risk_trx: 10,
+                    public_opinion: 10,
+                }
+            ]
+        })
+
         // loading
         const loading = ref<boolean>(false)
+        // 创建项目弹窗
         const createProjectDialog = ref<any>({})
         onMounted(() => {
             getList()
         })
-
-        //const instanceInner = getCurrentInstance()
         /**
          * 新增类型方法
          */
         const addProject = () => {
             opType.value = 'add'
-            //instanceInner.refs.createProjectDialogXXX.createProjectWindow = true
             nextTick(() => {
                 createProjectDialog.value.createProjectWindow = true
             })
@@ -109,7 +293,7 @@ export default defineComponent({
          * 確認新增方法
          * @param {Object} param - 表单参数
          */
-        const confirmAdd = (param:ICreateProj) => {
+        const confirmAdd = (param: ICreateProj) => {
             createProject(param).then(res => {
                 if (res) {
                     const msg = t('lang.add') + t('lang.success')
@@ -126,7 +310,7 @@ export default defineComponent({
         /**
          * 编辑类型方法
          */
-        const editProject = (item:ICreateProj) => {
+        const editProject = (item: ICreateProj) => {
             opType.value = 'edit'
             curItem.data = item
             nextTick(() => {
@@ -184,47 +368,39 @@ export default defineComponent({
                 console.error(err)
             })
         }
-        /**
-         * 重新评估项目
-         * @param {Object} item - 项目数据对象
-         */
-        const freshProject = (item: ICreateProj) => {
-            curItem.data = item
-            freshText.value = `${t('lang.systemConfig.isConfirm')}${item.name}${t('lang.systemConfig.reassessInfo')}？`
-            showFresh.value = true
-        }
-        /**
-         * 确认重新评估项目
-         */
-        const confirmFresh = () => {
-            const params = {
-                id: (curItem.data as IReappraise).id
-            }
-            reappraiseProject(params).then(res => {
-                if (res) {
-                    const msg = t('lang.operation') + t('lang.success')
-                    message('success', msg)
-                    // 更新列表
-                    getList()
-                    showFresh.value = false
-                }
-            }).catch(err => {
-                message('error', err.message || err)
-                console.error(err)
-            })
-        }
+
         /**
          * 获取项目列表
          */
+            // 搜索参数
+        const searchParams = ref<string>('')
+        // 分页参数
+        const pageParams = ref<IPageParam>({
+            currentPage: 1,
+            pageNum: 1,
+            pageSize: 10,
+            total: 0
+        })
+        /**
+         * 获取项目列表
+         * 重置：清空所有条件进行搜索
+         * 翻页：带上所有现有条件搜索
+         * 排序：只清空翻页搜索
+         * 搜索：只清空翻页参数、排序参数，保留搜索参数，搜索
+         */
         const getList = () => {
             loading.value = true
+            let params:IPageParam = {
+                page_num: pageParams.value.pageNum,
+                page_size: pageParams.value.pageSize,
+            }
             getProjectList().then(res => {
                 // 项目列表
                 projectList.data = res.data
                 // 關鍵詞字符串轉化為數組
-                projectList.data.forEach((val:any) => {
+                projectList.data.forEach((val: any) => {
                     let keyword = val.keyword.replace('；', ';')
-                    val.keywordList = keyword.split(';').filter((filterVal:any) => filterVal)
+                    val.keywordList = keyword.split(';').filter((filterVal: any) => filterVal)
                 })
                 loading.value = false
             }).catch(err => {
@@ -232,214 +408,90 @@ export default defineComponent({
                 console.error(err)
             })
         }
+        /**
+         * 排序方法
+         * @param column
+         * @param prop
+         * @param order
+         */
+        const sortChange = ({column, prop, order}: any): void => {
+
+        }
+        /**
+         * 分页方法
+         * @param item 分页参数
+         */
+        const pageChange = (item:IPageParam) :void =>{
+            pageParams.value.pageNum = item.currentPage
+            pageParams.value.currentPage = item.currentPage
+            getList()
+        }
 
         return {
+            sortChange,
+            searchParams,
             curItem,
             opType,
-            showFresh,
-            freshText,
             showDelete,
             deleteText,
             projectList,
             loading,
-            addrList,
             createProjectDialog,
-            confirmFresh,
-            freshProject,
             confirmDelete,
             deleteProjects,
             confirmEdit,
             editProject,
             addProject,
             confirmAdd,
-            getList
+            getList,
+            pageParams,
+            pageChange,
         }
-    },
-    /*data() {
-        return {
-            // 当前操作的项目对象
-            curItem:{},
-            // 当前操作类型
-            opType:'add',
-            // 重新评估弹窗显示
-            showFresh:false,
-            // 重新评估弹窗显示内容
-            freshText:'',
-            // 删除弹窗显示
-            showDelete:false,
-            // 删除弹窗显示内容
-            deleteText:'',
-            // 项目列表示例
-            projectList:[],
-            // 项目列表的地址列表示例
-            addrList:[],
-            // loading
-            loading:false,
-        }
-    },
-    created() {
-        this.getList()
-    },
-    methods: {
-        /!**
-         * 新增类型方法
-         *!/
-        addProject(){
-            this.opType = 'add'
-            this.$refs.createProjectDialog.createProjectWindow = true
-        },
-        /!**
-         * 確認新增方法
-         * @param {Object} param - 表单参数
-         *!/
-        confirmAdd(param){
-            const _this = this
-            createProject(param).then(res=>{
-                if(res){
-                    const msg = _this.$t('el.add')+ _this.$t('el.success')
-                    _this.$message.success(msg)
-                    // 更新列表
-                    _this.getList()
-                    _this.$refs.createProjectDialog.createProjectWindow = false
-                }
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-            })
-        },
-        /!**
-         * 编辑类型方法
-         *!/
-        editProject(item){
-            this.opType = 'edit'
-            this.curItem = item
-            this.$refs.createProjectDialog.createProjectWindow = true
-
-        },
-        /!**
-         * 確認編輯方法
-         * @param {Object} param - 表单参数
-         *!/
-        confirmEdit(param){
-            const _this = this
-            const pathParams = {
-                id:this.curItem.id
-            }
-            saveEditProject(param,pathParams).then(res=>{
-                if(res){
-                    const msg = _this.$t('el.edit')+ _this.$t('el.success')
-                    _this.$message.success(msg)
-                    // 更新列表
-                    _this.getList()
-                    _this.$refs.createProjectDialog.createProjectWindow = false
-                }
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-            })
-        },
-        /!**
-         * 删除类型方法
-         * @param {Object} item - 项目数据对象
-         *!/
-        deleteProject(item){
-            this.curItem = item
-            this.deleteText = `${this.$t('el.systemConfig.delete')}${item.name}？`
-            this.showDelete = true
-        },
-        /!**
-         * 确认删除项目信息
-         *!/
-        confirmDelete(){
-            const _this = this
-            const params = {
-                id:this.curItem.id
-            }
-            deleteProject(params).then(res=>{
-                if(res){
-                    const msg = _this.$t('el.delete')+ _this.$t('el.success')
-                    _this.$message.success(msg)
-                    // 更新列表
-                    _this.getList()
-                    _this.showDelete = false
-                }
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-            })
-        },
-        /!**
-         * 重新评估项目
-         * @param {Object} item - 项目数据对象
-         *!/
-        freshProject(item){
-            this.curItem = item
-            this.freshText = `${this.$t('el.systemConfig.isConfirm')}${item.name}${this.$t('el.systemConfig.reassessInfo')}？`
-            this.showFresh = true
-        },
-        /!**
-         * 确认重新评估项目
-         *!/
-        confirmFresh(){
-            const _this = this
-            const params = {
-                id:this.curItem.id
-            }
-            reappraiseProject(params).then(res=>{
-                if(res){
-                    const msg = _this.$t('el.operation')+ _this.$t('el.success')
-                    _this.$message.success(msg)
-                    // 更新列表
-                    _this.getList()
-                    _this.showFresh = false
-                }
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-            })
-        },
-
-        /!**
-         * 获取项目列表
-         *!/
-        getList(){
-            const _this = this
-            _this.loading = true
-            getProjectList().then(res => {
-                // 项目列表
-                _this.projectList =  res.data
-                // 關鍵詞字符串轉化為數組
-                _this.projectList.forEach(val=>{
-                    let keyword = val.keyword.replace('；',';')
-                    val.keywordList =  keyword.split(';').filter(filterVal=>filterVal)
-                })
-                _this.loading = false
-            }).catch(err=>{
-                _this.$message.error(err.message)
-                console.error(err)
-            })
-        }
-    },*/
+    }
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .project-manage-main {
   position: relative;
   top: 0;
   left: 0;
   z-index: 1;
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: auto;
+  padding-bottom: 86px;
+
+  .project-manage-search {
+    width: 67.5%;
+    margin: 40px auto 0 auto;
+
+    .project-manage-search-input {
+      display: flex;
+
+      input::-webkit-input-placeholder { /* WebKit browsers */
+        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-size: 18px;
+        color: $mainColor14;
+      }
+
+      .el-input__inner {
+        height: 52px;
+        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-size: 18px;
+        line-height: 52px;
+        color: $textColor4;
+      }
+    }
+
+    .create-btn {
+      margin: 38px 0;
+    }
+  }
 
   .project-manage-list {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-
-    /* display: flex;
-             justify-content: flex-start;
-             flex-wrap: wrap; */
+    width: 67.5%;
+    margin: 0 auto;
 
   }
 }

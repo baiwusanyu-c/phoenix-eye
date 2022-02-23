@@ -34,8 +34,8 @@
                     <div class="browser-msg-dialog__right"></div>
                 </div>
                 <template #footer>
-                    <be-button class="primary"
-                               type="primary"
+                    <be-button customClass="primary"
+                               type="success"
                                @click="showBrowserTip = false">
                         我知道了
                     </be-button>

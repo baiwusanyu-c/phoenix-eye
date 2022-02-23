@@ -5,6 +5,7 @@
 * @update (czh 2021/12/15)
 */
 export default {
+    searchT:'搜索',
     companyAddr:'联系地址：成都市武侯区世纪城南路599号天府软件园D7座504室',
     companyTel:'联系电话： 028-8326-2585',
     companyRecord:'蜀ICP备18013498号-1',
@@ -96,7 +97,7 @@ export default {
         navName2:'风险交易',
         navName3:'项目管理',
         navName4:'系统配置',
-        navName5:'项目浏览器',
+
     },
     subNav:{
         navName0:'链上态势',
@@ -106,6 +107,7 @@ export default {
         navName2:'风险交易',
         navName3:'项目管理',
         navName4:'系统配置',
+        navName5:'项目浏览器',
         navName4s1:'风险类型配置',
         navName4s2:'风险评分配置',
     },
@@ -161,6 +163,7 @@ export default {
         createProjectCancel:'取 消',
         createProjectConfirm:'确 定',
         createProjectKeyWords:'关键词',
+        associatedAccount:'关联账户',
         createProjectKeyWordsInput:'多个关键词用“；”隔开，如：PancakeSwap;CAKE',
         createProjectOpenTitle:'是否公开',
         createProjectOpenSecret:'保密',
@@ -173,7 +176,17 @@ export default {
         verInfo:'请至少填写一条有效合约地址',
         verCE:'输入不合法，请输入仅支持中英文、数字',
         verCeSemicolonReg:'输入不合法，仅支持中英文、数字、分号,且不以分号开头',
-        verCeSemicolonTag:'输入不合法'
+        verCeSemicolonTag:'输入不合法',
+        searchP:'项目名称 / 合约名称 / 关联账户',
+        tableHeader:{
+            projectName:'项目名称',
+            shortName:'关键字',
+            contractNum:'合约数',
+            riskTrx:'风险交易数(24h)',
+            publicOpinion:'公共舆情(24h)',
+            createTime:'创建时间',
+            operation:'操作'
+        },
     },
     addRiskWindow:{
         addRiskWindowTitle:'添加风险类型识别规则',

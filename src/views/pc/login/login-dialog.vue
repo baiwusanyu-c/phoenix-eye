@@ -27,7 +27,7 @@
                 </el-select>
             </div>
             <template #footer>
-                <be-button customClass="eagle-btn" type="primary">
+                <be-button customClass="eagle-btn" type="success">
                     注册
                 </be-button>
             </template>
