@@ -112,7 +112,6 @@ import {useI18n} from "vue-i18n";
 
 import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
 import {BeButton, BeIcon} from "../../../../../public/be-ui/be-ui.es";
-import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
 import composition from "../../../../utils/mixin/common-func";
 import {IOption} from "../../../../utils/types";
 interface IWebsiteForm {

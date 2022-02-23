@@ -12,28 +12,30 @@
         <div class="contact">
             <div class="contact-logo">
                 {{ $t('lang.contact') }}:
-                <img role="button" src="../assets/image/pc/twitter.png">
-                <img role="button" src="../assets/image/pc/telegram.png">
-                <img role="button" src="../assets/image/pc/email-logo.png">
-                <img role="button" src="../assets/image/pc/wechat.png">
+                <be-icon role="button" width="40" height="40" icon="iconTwitterEagle"></be-icon>
+                <be-icon role="button" width="40" height="40" icon="iconTelegramEagle"></be-icon>
+                <be-icon role="button" width="40" height="40" icon="iconEmailEagle"></be-icon>
+                <be-icon role="button" width="40" height="40" icon="iconWechatEagle"></be-icon>
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import {BeIcon} from "../../public/be-ui/be-ui.es";
+
 export default {
     name: "tsgz-footer",
-    data() {
-        return {}
-    },
-    mounted() {
-    },
-    methods: {},
+    components:{BeIcon},
+    setup(){
+        return {
+
+        }
+    }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .tsgz-footer{
   display: flex;
   align-items: center;
@@ -64,6 +66,14 @@ export default {
       font-size: 14px;
       font-weight: 400;
       color: $textColor12;
+
+      .be-icon{
+          fill:$textColor12 ;
+
+        &:hover{
+          fill:$mainColor11 ;
+        }
+      }
     }
   }
 }
