@@ -4,24 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    BeAside: typeof import('./src/components/common-components/container/be-aside.vue')['default']
-    BeContainer: typeof import('./src/components/common-components/container/be-container.vue')['default']
-    BeContextmenu: typeof import('./src/components/common-components/contextmenu/be-contextmenu.vue')['default']
-    BeContextmenuItem: typeof import('./src/components/common-components/contextmenu/be-contextmenu-item.vue')['default']
-    BeContextmenuSubmenu: typeof import('./src/components/common-components/contextmenu/be-contextmenu-Submenu.vue')['default']
-    BeDatePicker: typeof import('./src/components/common-components/date-picker/be-date-picker.vue')['default']
-    BeDialog: typeof import('./src/components/common-components/dialog/be-dialog.vue')['default']
     BeEllipsis: typeof import('./src/components/common-components/ellipsis/src/be-ellipsis.vue')['default']
-    BeFooter: typeof import('./src/components/common-components/container/be-footer.vue')['default']
-    BeHeader: typeof import('./src/components/common-components/container/be-header.vue')['default']
-    BeInput: typeof import('./src/components/common-components/input/be-input.vue')['default']
-    BeInputFuzzySearch: typeof import('./src/components/common-components/input/be-input-FuzzySearch.vue')['default']
-    BeInputSelect: typeof import('./src/components/common-components/input/be-input-select.vue')['default']
-    BeLoading: typeof import('./src/components/common-components/loading/be-loading.vue')['default']
-    BeMain: typeof import('./src/components/common-components/container/be-main.vue')['default']
-    BeMessageBox: typeof import('./src/components/common-components/message-box/be-message-box.vue')['default']
-    BeMsgDialog: typeof import('./src/components/common-components/msg-dialog/be-msg-dialog.vue')['default']
-    BeNotification: typeof import('./src/components/common-components/notification/be-notification.vue')['default']
     BePagination: typeof import('./src/components/common-components/pagination/be-pagination.vue')['default']
     BeSvgIcon: typeof import('./src/components/common-components/svg-icon/be-svg-icon.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -41,9 +24,9 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
-    SmallDialog: typeof import('./src/components/common-components/element-dialog/small-dialog.vue')['default']
-    TextArea: typeof import('./src/components/common-components/simulate-textarea/text-area.vue')['default']
-    TsgzNavMenu: typeof import('./src/components/nav-menu/tsgz-nav-menu.vue')['default']
+    MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
+    TsgzFooter: typeof import('./src/components/tsgz-footer.vue')['default']
+    TsgzNavMenu: typeof import('./src/components/tsgz-nav-menu.vue')['default']
   }
 }
 

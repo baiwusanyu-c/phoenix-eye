@@ -16,8 +16,8 @@
             v-if="isExternal"
             :style="styleExternalIcon"
             class="svg-external-icon svg-icon"
-            v-on="$listeners"></div>
-        <svg :class="svgClass" aria-hidden="true" v-else v-on="$listeners">
+            v-on="$attrs"></div>
+        <svg :class="svgClass" aria-hidden="true" v-else v-on="$attrs">
             <use :xlink:href="iconName" width="100%" height="100%" />
         </svg>
     </el-tooltip>
@@ -25,18 +25,19 @@
         v-else-if="isExternal && disabledToolTip"
         :style="styleExternalIcon"
         class="svg-external-icon svg-icon"
-        v-on="$listeners">
+        v-on="$attrs">
     </div>
-    <svg :class="svgClass" aria-hidden="true" v-else-if="!isExternal && disabledToolTip" v-on="$listeners">
+    <svg :class="svgClass" aria-hidden="true" v-else-if="!isExternal && disabledToolTip" v-on="$attrs">
         <use :xlink:href="iconName" width="100%" height="100%" />
     </svg>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * Svg图表组件
  */
-export default {
+import {computed, defineComponent} from "vue";
+export default defineComponent({
     name: "BeSvgIcon",
     props: {
         /**
@@ -86,48 +87,53 @@ export default {
             default: true
         }
     },
-    computed: {
-        isExternal() {
-            return this.isExternal_(this.iconClass);
-        },
-        iconName() {
-            return `#icon${this.iconClass}`;
-        },
-        svgClass() {
-            if (this.className) {
-                return "svg-icon " + this.className;
+    setup(props){
+        const isExternalF = (path:string):boolean => {
+            return /^(https?:|mailto:|tel:)/.test(path)
+        }
+        const isExternal = computed(()=>{
+            return isExternalF(props.iconClass);
+        })
+        const iconName = computed(()=>{
+            return `#icon${props.iconClass}`;
+        })
+        const svgClass = computed(()=>{
+            if (props.className) {
+                return "svg-icon " + props.className;
             } else {
                 return "svg-icon";
             }
-        },
-        styleExternalIcon() {
+        })
+        const styleExternalIcon = computed(()=>{
             return {
-                mask: `url(${this.iconClass}) no-repeat 50% 50%`,
-                "-webkit-mask": `url(${this.iconClass}) no-repeat 50% 50%`
+                mask: `url(${props.iconClass}) no-repeat 50% 50%`,
+                "-webkit-mask": `url(${props.iconClass}) no-repeat 50% 50%`
             };
-        }
-    },
-    methods: {
-        isExternal_(path) {
-            return /^(https?:|mailto:|tel:)/.test(path)
+        })
+        return {
+            isExternal,
+            iconName,
+            svgClass,
+            styleExternalIcon
         }
     }
-};
+})
 </script>
 
 <style scoped>
 .svg-icon {
-    width: 1.2em;
-    height: 1.2em;
-    vertical-align: -0.3em;
-    fill: currentColor;
-    overflow: hidden;
-    font-size: 1.2em;
+  display: inline;
+  width: 1.2em;
+  height: 1.2em;
+  overflow: hidden;
+  font-size: 1.2em;
+  vertical-align: -.3em;
+  fill: currentColor;
 }
 
 .svg-external-icon {
-    background-color: currentColor;
-    mask-size: cover !important;
-    display: inline-block;
+  display: inline-block;
+  background-color: currentColor;
+  mask-size: cover !important;
 }
 </style>

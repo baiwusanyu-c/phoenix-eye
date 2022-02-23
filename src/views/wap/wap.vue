@@ -16,19 +16,21 @@
     width: 100vw;
     height: calc(100vh - 1.28rem);
     padding-top: 1.28rem;
+
     img{
+      display: block;
       width: 1.53rem;
       height: 1.53rem;
       margin: auto;
-      display: block;
-      margin-bottom: 0.36rem;
+      margin-bottom: .36rem;
     }
+
     p{
-      font-size: 0.14rem;
+      font-size: .14rem;
       font-weight: 400;
-      line-height: 0.24rem;
-      text-align: center;
+      line-height: .24rem;
       color: #000;
+      text-align: center;
     }
   }
 </style>
