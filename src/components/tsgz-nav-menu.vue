@@ -151,6 +151,7 @@ export default defineComponent({
             (instanceInner?.refs.popoverRouter as IPopover)?.close()
             if (router === '/logout') {
                 loginOut()
+                routerPush('/riskTrx/list')
                 return;
             }
             if (!isPush || !router.path) {

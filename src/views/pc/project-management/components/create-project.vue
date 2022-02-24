@@ -72,13 +72,9 @@
                             <el-input class="projectKeyWordsInput" v-model="websiteForm.telegram"></el-input>
                         </el-form-item>
                         <el-form-item :label="$t('lang.createProject.associatedAccount') + ':'">
-                            <el-select-v2
-                                v-model="account"
-                                filterable
-                                :options="accountList"
-                                style="width: 772px"
-                                multiple
-                            />
+                            <el-input class="projectKeyWordsInput"
+                                      :placeholder="$t('lang.createProject.createProjectEmailInput')"
+                                      v-model="emailList"></el-input>
                         </el-form-item>
 
                     </el-form>
@@ -107,7 +103,7 @@
 
 import {createProject, getProjectInfo, ICreateProj, saveEditProject,IContractInfos} from "../../../../api/project-management";
 import {platformListDict,IPlatformListItem} from "../../../../utils/platform-dict";
-import {defineComponent, ref, reactive, computed, watch, onMounted, toRaw, inject} from "vue"
+import {defineComponent, ref, reactive, watch, onMounted} from "vue"
 import {useI18n} from "vue-i18n";
 
 import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
@@ -150,7 +146,7 @@ export default defineComponent({
 
         const labelPosition= ref<string>('right')
         const addContract= ref<number>(0)
-        const contractSite=reactive({data: [{platform: 'eth', contract_address: '', label: '', verAddr: '', verContract: ''}]})
+        const contractSite=reactive({data: [{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]})
         // 下拉平台字典
         const takePlatformListDict=ref<Array<IPlatformListItem>>([])
         // 名称校验信息
@@ -166,7 +162,6 @@ export default defineComponent({
             if (nVal) {
                 // 獲取詳情信息
                 getDetailData()
-                getAccountList()
             } else {
                 // 重置表單
                 resetVar()
@@ -208,6 +203,11 @@ export default defineComponent({
             labelPosition.value='right'
             addContract.value= 0
             contractSite.data = [{platform: 'eth', contract_address: '', label: '',verAddr:'',verContract:''}]
+            emailList.value = ''
+            websiteForm.value.website = ''
+            websiteForm.value.github = ''
+            websiteForm.value.telegram = ''
+            websiteForm.value.twitter = ''
 
         }
         /**
@@ -226,6 +226,11 @@ export default defineComponent({
                     projectName.value = res.data.name
                     projectKeyWords.value = res.data.keyword
                     contractSite.data = res.data.contract_infos
+                    emailList.value = res.data.email_list.join(';')
+                    websiteForm.value.website = res.data.website
+                    websiteForm.value.github = res.data.github
+                    websiteForm.value.telegram = res.data.telegram
+                    websiteForm.value.twitter = res.data.twitter
                 }
             }).catch(err => {
                 const msg = t('lang.search') + t('lang.failed')
@@ -372,8 +377,9 @@ export default defineComponent({
             let params:ICreateProj = {
                 name:projectName.value,
                 keyword:projectKeyWords.value,
-                contract_infos:toRaw(contractSite.data),
-                ...websiteForm.value
+                contract_infos:contractSite.data,
+                ...websiteForm.value,
+                email_list:emailList.value.split(';'),
             }
             // 表单校验
             if(!formVerification(params)){
@@ -403,7 +409,8 @@ export default defineComponent({
                 name:projectName.value,
                 keyword:projectKeyWords.value,
                 contract_infos:contractSite.data,
-                ...websiteForm.value
+                ...websiteForm.value,
+                email_list:emailList.value.split(';'),
             }
             const pathParams = {
                 id: props.projectId
@@ -429,17 +436,10 @@ export default defineComponent({
         }
         // 聯係地址表單
         const websiteForm = ref<IWebsiteForm>({})
-        // 關聯用戶表單
-        const account = ref<Array<any>>([])
-        // 關聯用戶列表
-        const accountList = ref<Array<any>>([])
-        // 獲取用戶列表
-        const getAccountList = ():void =>{
-            accountList.value = []
-        }
+        const emailList = ref<string>('')
         return{
+            emailList,
             createProjectWindow,
-            account,
             projectName,
             projectKeyWords,
             labelPosition,
@@ -449,8 +449,6 @@ export default defineComponent({
             verName,
             verKeyword,
             websiteForm,
-            accountList,
-            getAccountList,
             resetVar,
             getDetailData,
             semicolonVerification,
@@ -486,7 +484,7 @@ export default defineComponent({
   .project-star{
     position: absolute;
     top: 4px;
-    left: -142px;
+    left: -152px;
   }
 
   .project-Ver{

@@ -172,6 +172,7 @@ export default {
         createProjectKeyWords:'Keyword',
         associatedAccount:'Associated Account',
         createProjectKeyWordsInput:'Multiple keywords separated by ";", e.g. PancakeSwap;CAKE',
+        createProjectEmailInput:'Multiple emails separated by ";", e.g. "emailA;emailB"',
         createProjectOpenTitle:'Whether to make it public',
         createProjectOpenSecret:'Confidential',
         createProjectUnSecret:'Public',

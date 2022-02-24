@@ -172,6 +172,7 @@ export default {
         createProjectKeyWords:'关键词',
         associatedAccount:'关联账户',
         createProjectKeyWordsInput:'多个关键词用“；”隔开，如：PancakeSwap;CAKE',
+        createProjectEmailInput:'多个邮箱地址用“；”隔开，如：C@gmail.com;A@gmail.com',
         createProjectOpenTitle:'是否公开',
         createProjectOpenSecret:'保密',
         createProjectUnSecret:'公开',
