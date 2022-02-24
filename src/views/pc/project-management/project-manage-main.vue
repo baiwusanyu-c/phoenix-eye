@@ -124,8 +124,10 @@
             </el-table>
             <be-pagination
                 custom-class="table-page"
-                :pageSize='pageParams.pageSize'
-                :currentPage='pageParams.currentPage'
+                :pageSize = 'pageParams.pageSize'
+                :currentPage = 'pageParams.currentPage'
+                @update:pageSize = 'pageParams.pageSize = $event'
+                @update:currentPage = 'pageParams.currentPage = $event'
                 :total='pageParams.total'
                 layout="sizes,prev, pager,next"
                 @updatePage="pageChange"

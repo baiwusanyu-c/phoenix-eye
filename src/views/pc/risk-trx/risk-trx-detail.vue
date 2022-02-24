@@ -351,7 +351,9 @@ export default defineComponent({
         // 币种字典
         const iconDict = {
             HT:'iconHecoEagle',
+            HECO:'iconHecoEagle',
             BSC:'iconBnbEagle',
+            BNB:'iconBnbEagle',
             ETH:'iconEthEagle',
             POLYGON:'iconPolygonEagle',
         }

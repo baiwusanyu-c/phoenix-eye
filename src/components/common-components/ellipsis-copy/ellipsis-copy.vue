@@ -124,7 +124,7 @@ export default defineComponent({
          */
         const changeEllipsisStr = (str:string):string =>{
             if(!str) {
-                return '-'
+                return props.emptyText
             }
             if(!props.isEllipsis) return str
             const frontLen:number = Number(props.fontLength);

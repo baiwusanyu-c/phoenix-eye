@@ -127,18 +127,27 @@ export default {
     },
     riskConfig:{
         platform:'Blockchain platform',
-        searchP:'Please enter the transaction hash, sender and recipient',
+        searchP:'Trx Hash / Contract Address',
         platformP:'Please select the blockchain platform',
+        filter:{
+            chain:'Chain',
+            type:'Type',
+            level:'Alert Level',
+            dangerHigh:'High',
+            dangerMiddle:'Medium',
+            dangerLow:'Low',
+        },
         tableHeader:{
-            platform:'platform',
+            platform:'Chain',
             txHash:'Trx Hash',
-            txTime:'Transaction time',
-            state:'Transaction status',
+            level:'Alert Level',
+            warningType:'Type',
+            gainer:'Gainer',
+            amount:'Amount',
+            txTime:'Date',
             from:'From',
-            to:'To',
-            warningType:'Suspected risk type',
-            score:'Risk evaluation',
-            detail:'Details',
+            to:'To'
+
         },
         profitTableHeader:{
             addr:'Address',

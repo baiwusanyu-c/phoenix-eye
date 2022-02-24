@@ -10,8 +10,8 @@ interface IProjWarning  extends IPageParam{
 }
 export function getProjWarning(params:IProjWarning) {
     return request({
-        url: `${config.baseURL}/ussa/risk_warning/list`,
-        method: 'get',
+        url: `${config.baseURL}/ussa/risk_tx/list`,
+        method: 'post',
         params
     })
 }
