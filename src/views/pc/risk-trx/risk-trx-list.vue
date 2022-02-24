@@ -548,6 +548,7 @@ export default defineComponent({
     }
 
     .table-tag{
+      margin-top: 10px;
       margin-right: 10px;
       color: $mainColor3;
       background-color: $mainColor16;

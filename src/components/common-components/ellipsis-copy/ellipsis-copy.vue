@@ -18,7 +18,7 @@
             <be-svg-icon iconClass="-fuzhi" v-if="isShowCopyBtn"
                          disabled-tool-tip class="icon"
                          style="color: #1496F2" content="复制"
-                         v-show="isShowCopy" @click="copyAddress(copyContent || targetStr)">
+                         v-show="isShowCopy" @click.stop="copyAddress(copyContent || targetStr)">
             </be-svg-icon>
         </span>
         
@@ -87,7 +87,7 @@ export default defineComponent({
         },
         emptyText:{
             type: String,
-            default: ''
+            default: '-'
         },
         customClass:{
             type: String,

@@ -21,7 +21,7 @@ export interface IProjDetail{
 }
 export function getProjWarningDetail(params:IProjDetail) {
     return request({
-        url: `${config.baseURL}/ussa/risk_warning/tx_detail`,
+        url: `${config.baseURL}/ussa/risk_tx/tx_detail`,
         method: 'get',
         params
     })

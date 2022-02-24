@@ -16,6 +16,8 @@
                         :targetStr="baseInfo.tx_hash"
                         :is-ellipsis="false"
                         :isShowCopyBtn="false"
+                        emptyText="/"
+                        @click="openWeb(baseInfo.tx_hash,'tx')"
                         styles="color: #008EE9;cursor:pointer;"
                         fontLength="8"
                         endLength="8">
@@ -37,6 +39,8 @@
                         :targetStr="baseInfo.from_address_tag ? baseInfo.from_address_tag :  baseInfo.from_address"
                         :is-ellipsis="(baseInfo.from_address && baseInfo.from_address.length > 15 && !baseInfo.from_address_tag) ? true : false"
                         :isShowCopyBtn="false"
+                        emptyText="/"
+                        @click="openWeb(baseInfo.from_address,'addr')"
                         styles="color: #008EE9;cursor:pointer;font-weight:400"
                         fontLength="8"
                         endLength="8">
@@ -49,7 +53,9 @@
                         :targetStr="baseInfo.to_address_tag ? baseInfo.to_address_tag :  baseInfo.to_address"
                         :is-ellipsis="(baseInfo.to_address && baseInfo.to_address.length > 15 && !baseInfo.to_address_tag) ? true : false"
                         :isShowCopyBtn="false"
-                        styles="color: #008EE9;cursor:pointer;font-weight:400"
+                        emptyText="/"
+                        @click="openWeb(baseInfo.to_address,'addr')"
+                         styles="color: #008EE9;cursor:pointer;font-weight:400"
                         fontLength="8"
                         endLength="8">
                     </be-ellipsis-copy>
@@ -103,18 +109,20 @@
                             <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.addr') }}</span>
                         </template>
                         <template #default="scope">
-                            <div style="display: flex;align-items: center;justify-content: center;">
+                            <div style="display: flex;align-items: center;justify-content: center;cursor: pointer">
                                 <be-ellipsis-copy :targetStr="scope.row.address_tag"
                                                   styles="font-weight: bold;color:#409EFF"
                                                   :copyContent="scope.row.address"
                                                   :tooltip-txt="scope.row.address"
-                                                  :emptyText="$t('lang.emptyData')"
+                                                  emptyText="/"
+                                                  @click="openWeb(scope.row.address,'addr')"
                                                   :isEllipsis="false"
                                                   v-if="scope.row.address_tag">
                                 </be-ellipsis-copy>
                                 <be-ellipsis-copy :targetStr="scope.row.address"
+                                                  @click="openWeb(scope.row.address,'addr')"
                                                   v-if="!scope.row.address_tag"
-                                                  :emptyText="$t('lang.emptyData')"
+                                                  emptyText="/"
                                                   :is-ellipsis="isEllipsis || scope.row.address.length >=45"
                                                   styles="font-weight: bold;color:#409EFF"
                                                   fontLength="8"
@@ -158,7 +166,9 @@
                                     :key="item.itemId"
                                     :targetStr="item.val"
                                     :is-ellipsis="(item.val.length > 25) ? true : false"
-                                    :isShowCopyBtn="false"
+                                    :isShowCopyBtn="true"
+                                    emptyText="/"
+                                    @click="item.val ? openWeb(item.contractAddress,'token') : null"
                                     styles="color: #008EE9;cursor:pointer;font-weight:400"
                                     fontLength="8"
                                     endLength="8">
@@ -166,7 +176,7 @@
                             </div>
 
                             <div style="display: flex;flex-direction: column;align-items: center;justify-content: center" v-else>
-                                {{ $t('lang.emptyData') }}</div>
+                                 / </div>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -306,7 +316,7 @@ export default defineComponent({
                         if(valRes.token_name === null){
                             valRes.token_name = valRes.contract_address
                         }
-                        val.addrList.push({val:valRes.token_name,itemId:'token_name'+getUuid(),tag:valRes.contract_address_tag})
+                        val.addrList.push({val:valRes.token_name,itemId:'token_name'+getUuid(),tag:valRes.contract_address_tag,contractAddress:valRes.contract_address})
                         val.valueList.push({
                             ordVal:valRes.token_num,
                             val:simulateToFixed(valRes.token_num,6),
@@ -327,10 +337,10 @@ export default defineComponent({
         /**
          * 跳轉到第三方頁面
          */
-        const openWeb = ():void => {
-            if(!baseInfo.value.platform || !baseInfo.value.tx_hash) return
-            let mainUrl:string = (webURL as any)[baseInfo.value.platform] as string
-            const url = `${mainUrl}${baseInfo.value.tx_hash}`
+        const openWeb = (params:string,type:string):void => {
+            if(!params) return
+            let mainUrl:string = (webURL as any)[`${baseInfo.value.platform}_${type}` ] as string
+            const url = `${mainUrl}${params}`
             openWindow(url)
         }
         /**

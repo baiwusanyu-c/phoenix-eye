@@ -80,7 +80,6 @@
             @confirm="confirm(true)"
             @close="confirm(false)"
             :isShow="isLogout"
-            :isShowCancel="false"
             :title="$t('lang.loginConfig.confirmLogout')">
         </MsgDialog>
         <login-dialog ref="loginDialog"></login-dialog>
@@ -506,12 +505,10 @@ export default defineComponent({
 </style>
 
 <!--1080p的105% - 125%放大-->
+<!--
 <style scoped lang="scss">
 @media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
 
-  .tsgz-nav-menu {
-
-  }
 }
 </style>
 <style lang="scss">
@@ -519,34 +516,25 @@ export default defineComponent({
 
 }
 </style>
-<!--1080p的130% - 140%放大-->
+&lt;!&ndash;1080p的130% - 140%放大&ndash;&gt;
 <style scoped lang="scss">
 @media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
 
-  .tsgz-nav-menu {
-
-  }
 }
 </style>
 <style lang="scss">
 @media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
 
-
-
 }
 </style>
-<!--1080p的145% - 150%放大-->
+&lt;!&ndash;1080p的145% - 150%放大&ndash;&gt;
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-
 
 }
 </style>
 <style lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-
-
 }
-</style>
+</style>-->
