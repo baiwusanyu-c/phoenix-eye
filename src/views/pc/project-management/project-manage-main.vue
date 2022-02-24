@@ -283,7 +283,7 @@ export default defineComponent({
          * 排序：只清空翻页搜索
          * 搜索：只清空翻页参数、排序参数，保留搜索参数，搜索
          */
-        const getList = (type:string) => {
+        const getList = (type?:string) => {
             loading.value = true
             if(type === 'reset'){
                 searchParams.value = ''

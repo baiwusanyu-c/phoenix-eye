@@ -5,7 +5,9 @@
 * @update (czh 2022/2/22)
 */
 <template>
-<div>project-search-main</div>
+<div class="project-manage-main">
+    project-manage-main
+</div>
 </template>
 
 <script lang="ts">
@@ -20,6 +22,16 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.project-manage-main {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: calc(100% - 100px);
+  padding-bottom: 86px;
+}
 </style>
