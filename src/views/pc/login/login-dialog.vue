@@ -24,14 +24,15 @@
                     </div>
                     <div class="login-input-class" v-show="loginType === 'login'">
                         <div class="login-input-title">{{$t('lang.loginConfig.titleLogin')}}</div>
-                        <el-input :placeholder = "`${$t('lang.loginConfig.loginNameP3')}`"
-                                  v-model="username">
+                        <name-login v-show="loginType === 'login'"></name-login>
+                        <!--<el-input :placeholder = "`${$t('lang.loginConfig.loginNameP3')}`"
+                                  v-model="form.name">
                             <template #prefix>
                                 <img src="../../../assets/image/pc/login-email.png" height="20" width="20"/>
                             </template>
                         </el-input>
                         <el-input :placeholder = "`${$t('lang.loginConfig.loginPwdP')}`"
-                                  v-model="password">
+                                  v-model="form.pwd">
                             <template #prefix>
                                 <img src="../../../assets/image/pc/login-password.png" height="20" width="20"/>
                             </template>
@@ -39,6 +40,7 @@
                         <be-button customClass="eagle-btn" @click="login" type="success">
                             {{$t('lang.loginConfig.login')}}
                         </be-button>
+                        -->
                         <div class="change-register">
                             <el-button type="text" @click="forgetPassword" class="forget-btn">{{$t('lang.loginConfig.forget')}}</el-button>
                             <el-button class="button-change" type="text" @click="loginOrSingUp">{{changeLogin}}</el-button>
@@ -46,6 +48,69 @@
                     </div>
                     <div class="register-input-class" v-show="loginType === 'register'&&!registerSuccess">
                         <div class="register-input-title">{{$t('lang.loginConfig.register')}}</div>
+                        <user-registration v-show="loginType === 'register'&&!registerSuccess"></user-registration>
+
+                        <!--<el-form :model="form" :rules="rules" ref="resetPwdForm">
+                            <el-form-item class="label" prop='name'>
+                                <el-input autocomplete="off" :placeholder="$t('lang.loginConfig.phone')" v-model="form.name">
+                                    <template #prefix>
+                                        <img src="../../../assets/image/pc/login-email.png" height="20" width="20"/>
+                                    </template>
+                                </el-input>
+                            </el-form-item>
+                            <div class="flex">
+                                <el-form-item class="label" prop='code' style="width: 58%;">
+                                    <el-input :placeholder = "`${$t('lang.loginConfig.loginVerCodeP')}`"
+                                              maxlength="6" type="text" autocomplete="off"
+                                              class="send-code-input"
+                                              v-model="code">
+                                        <template #prefix>
+                                            <img src="../../../assets/image/pc/login-code.png" height="20" width="20"/>
+                                        </template>
+                                    </el-input>
+                                    <el-button class="send-button">{{$t('lang.loginConfig.send')}}</el-button>
+
+                                    <el-input maxlength="6" type="text" autocomplete="off"
+                                              :placeholder="$t('lang.loginConfig.loginVerCodeP2')" v-model="form.code">
+                                        <template  #prepend><img class="iconImg" src="../../../assets/image/pc/code.png" alt="">
+                                        </template>
+                                    </el-input>
+                                </el-form-item>
+                                <p class="codeBtn" v-if="!isTip" @click="getMailCode">{{ $t('lang.loginConfig.getVerCodeValid') }}</p>
+                                <p class="tips" v-else>{{ number }}s</p>
+                            </div>
+                            <el-form-item class="label" prop='newPwd'>
+                                <el-input maxlength="12" @keyup.native="form.newPwd=form.newPwd.replace(/[ ]/g,'')"
+                                          :type="visible ? 'text' : 'password'"
+                                          autocomplete="off" :placeholder="$t('lang.loginConfig.newPassword')" v-model="form.newPwd">
+                                    <template  #prepend><img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
+                                    </template>
+                                    <template #append>
+                                        <img class="showIcon" v-if="!visible" @click="visible = !visible"
+                                             src="../../../../assets/image/pc/hide.png" alt="">
+                                        <img class="showIcon" v-else @click="visible = !visible"
+                                             src="../../../../assets/image/pc/show.png" alt="">
+                                    </template>
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item class="label" prop='password'>
+                                <el-input maxlength="12" @keyup.native="form.password=form.password.replace(/[ ]/g,'')"
+                                          :type="visibleAgain ? 'text' : 'password'"
+                                          autocomplete="off" :placeholder="$t('lang.loginConfig.confirmPassword')"
+                                          v-model="form.password">
+                                    <template  #prepend><img class="iconImg" src="../../../assets/image/pc/pwd.png" alt="">
+                                    </template>
+                                    <template #append>
+                                        <img class="showIcon" v-if="!visibleAgain" @click="visibleAgain = !visibleAgain"
+                                             src="../../../assets/image/pc/hide.png" alt="">
+                                        <img class="showIcon" v-else @click="visibleAgain = !visibleAgain"
+                                             src="../../../assets/image/pc/show.png" alt="">
+                                    </template>
+                                </el-input>
+                            </el-form-item>
+                        </el-form>
+
+
                         <el-input :placeholder = "`${$t('lang.loginConfig.loginNameP')}`"
                                   v-model="username">
                             <template #prefix>
@@ -70,21 +135,15 @@
                         </el-input>
                         <be-button customClass="eagle-btn" @click="login" type="success">
                             {{$t('lang.loginConfig.register')}}
-                        </be-button>
+                        </be-button>-->
                         <div class="change-login">
                             <el-button class="button-change" type="text" @click="loginOrSingUp">{{changeLogin}}</el-button>
                         </div>
                     </div>
-                    <div class="success" v-show="loginType === 'register'&&registerSuccess">
-                        <img src="../../../assets/image/pc/login-success.png" height="64" width="64"/>
-                        <div class="success-message">{{$t('lang.loginConfig.registerSuccess')}}</div>
-                        <be-button customClass="eagle-btn" @click="loginOrSingUp" type="success">
-                            {{$t('lang.loginConfig.login')}}
-                        </be-button>
-                    </div>
                     <div class="forget-input-class" v-show="loginType === 'forget'&&!resetPsSuccess">
                         <div class="forget-input-title">{{$t('lang.loginConfig.rember')}}</div>
-                        <el-input :placeholder = "`${$t('lang.loginConfig.loginNameP')}`"
+                        <reset-password v-show="loginType === 'forget'&&!resetPsSuccess"></reset-password>
+                       <!-- <el-input :placeholder = "`${$t('lang.loginConfig.loginNameP')}`"
                                   v-model="username">
                             <template #prefix>
                                 <img src="../../../assets/image/pc/login-email.png" height="20" width="20"/>
@@ -114,10 +173,17 @@
                         </el-input>
                         <be-button customClass="eagle-btn" @click="login" type="success">
                             {{$t('lang.loginConfig.confirmReset')}}
-                        </be-button>
+                        </be-button>-->
                         <div class="change-login">
                             <el-button class="button-change" type="text" @click="forgetPassword">{{changeLogin}}</el-button>
                         </div>
+                    </div>
+                    <div class="success" v-show="loginType === 'register'&&registerSuccess">
+                        <img src="../../../assets/image/pc/login-success.png" height="64" width="64"/>
+                        <div class="success-message">{{$t('lang.loginConfig.registerSuccess')}}</div>
+                        <be-button customClass="eagle-btn" @click="loginOrSingUp" type="success">
+                            {{$t('lang.loginConfig.login')}}
+                        </be-button>
                     </div>
                     <div class="success" v-show="loginType === 'forget'&&resetPsSuccess">
                         <img src="../../../assets/image/pc/login-success.png" height="64" width="64"/>
@@ -134,17 +200,47 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, computed} from "vue";
+    import {
+        defineComponent,
+        ref,
+        computed,
+        ComponentInternalInstance,
+        getCurrentInstance,
+        reactive,
+        onMounted
+    } from "vue";
 import {BeDialog,BeButton} from "../../../../public/be-ui/be-ui.es.js";
 import {useI18n} from "vue-i18n";
+import {getStore, setStore, trim} from "../../../utils/common";
+import {getRouterInfo, IRouterParams, loginName} from "../../../api/login";
+import {Base64} from "js-base64";
+import composition from "../../../utils/mixin/common-func"
+import {ElForm,ElMessage} from "element-plus/es";
+import ResetPassword from "./components/reset-password.vue"
+import NameLogin from "./components/name-login.vue"
+import UserRegistration from "./components/user-registration.vue"
+import {useStore} from "vuex";
+import {initRouterConfig} from "../../../router/router-pc";
+import {RouteRecordRaw} from "vue-router";
+    import {pwdReg} from "../../../utils/reg";
+type FormInstance = InstanceType<typeof ElForm>
+declare type loginType = {
+    name: string
+    pwd: string
+    code: string
+}
 export default defineComponent({
     name: "login-dialog",
     components:{
-        BeDialog,BeButton
+        BeDialog,BeButton,
+        ResetPassword,NameLogin,UserRegistration
     },
-    setup(){
+    setup(props,ctx){
         const {t} = useI18n()
+        const {message, codeUrl, uuid, getCode, router, routerPush} = composition(props,ctx)
+
         const showDialog = ref<boolean>(false)
+        const visible = ref<boolean>(false)
         const loginType = ref<string>('login')
         const loginOrSingUp = () => {
             if(loginType.value === 'login'){
@@ -174,15 +270,40 @@ export default defineComponent({
         const resetPsSuccess = ref<boolean>(false)
         const registerSuccess = ref<boolean>(false)
 
-        const username = ref<string>('')
-        const password = ref<string>('')
-        const code = ref<string>('')
+        const isLogin = ref<boolean>(false)
+        const refsForm: ComponentInternalInstance | null = getCurrentInstance()
+        onMounted(() => {
+            getCode();
+        })
+        // 校驗提示
+        const validatePwd = (rule: any, value: any, callback: any):void => {
+            if (!pwdReg.test(value)) {
+                callback(new Error(t('lang.loginConfig.phoneNumErr')));
+            } else {
+                callback();
+            }
+        };
+        // 校驗規則
+        const rules = reactive({
+            name: [
+                {required: true, message: t('lang.loginConfig.loginNameP'), trigger: 'blur'},
+            ],
+            pwd: [
+                {required: true, message: t('lang.loginConfig.loginPwdP'), trigger: 'blur'},
+                {validator: validatePwd, trigger: 'blur'}
+            ],
+            code: [
+                {required: true, message: t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},
+            ],
+        })
+
+        const form = ref<loginType>({name: '', pwd: '', code: ''})
         /**
          * 登录、忘记密码或注册方法
          */
         const login = ()=>{
             if(loginType.value === 'login'){
-                console.log('登录')
+                userLogin()
             }else if(loginType.value === 'register'){
                 registerSuccess.value = true
                 console.log('注册')
@@ -191,6 +312,69 @@ export default defineComponent({
                 resetPsSuccess.value = true
             }
         }
+        const userLogin = (): void => {
+            form.value.name = trim(form.value.name);
+            form.value.code = trim(form.value.code);
+            refsForm && (refsForm.refs.loginForm as FormInstance).validate((valid: boolean | undefined) => {
+                if (valid) {
+                    loginName({
+                        username: form.value.name,
+                        password: Base64.encode(form.value.pwd),
+                        code: form.value.code,
+                        uuid: uuid.value,
+                        client_id: 'beosin-eye',
+                        client_secret: '123456',
+                        grant_type: 'password',
+                        login_type: "password",
+                        scope: 'server',
+
+                    }).then((res: any) => {
+                        const langCache = getStore('language')
+                        window.localStorage.clear();
+                        langCache && setStore('language', langCache)
+                        isLogin.value = false;
+                        setStore('userInfo', JSON.stringify({
+                            username: res.username
+                        }));
+                        setStore('token', res.access_token);
+                        setStore('userId', res.user_id);
+                        !getStore('debugSessionId') && setStore('debugSessionId', (new Date().getTime()).toString());
+                        showDialog.value = false
+                        /*// 登錄先拿路由在跳轉
+                        getRouter()*/
+                    }).catch(err => {
+                        message('error', err.message || err)
+                        getCode();
+                        isLogin.value = false;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        }
+        /*// 获取路由
+        const store = useStore()
+        const getRouter = (): void => {
+            const params: IRouterParams = {
+                systemCode: 'beosin-eye',
+                userId: getStore('userId'),
+            }
+            getRouterInfo(params).then(res => {
+                const routerConfig = initRouterConfig(res.data[0].children)
+                store.commit('update', ['routeConfig', routerConfig])
+                routerConfig.map((val: RouteRecordRaw) => {
+                    router.addRoute('layout', val)
+                })
+                router.addRoute({
+                    path: '/:w+',
+                    redirect: '/404'
+                })
+                // routerPush('/404')
+                routerPush('/blockchainSituation')
+            }).catch(err => {
+                console.error(err)
+                message('error', err.message || err)})
+        }*/
         /**
          * 忘记密码方法
          */
@@ -212,11 +396,13 @@ export default defineComponent({
             registerSuccess,
             loginOrSingUp,
             changeLogin,
-            username,
-            password,
-            code,
             login,
             forgetPassword,
+            form,
+            codeUrl,
+            getCode,
+            rules,
+            visible,
         }
     }
 })
@@ -266,6 +452,11 @@ export default defineComponent({
 </style>
 
 <style lang="scss" scoped>
+  .codeBtn{
+    height: 48px;
+    margin-bottom: 18px;
+  }
+
   .login-main{
     background: transparent;
 

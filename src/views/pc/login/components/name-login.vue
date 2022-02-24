@@ -9,8 +9,9 @@
         <el-form :model="form" :rules="rules" ref="loginForm" class="login-form">
             <el-form-item class="label" prop='name'>
                 <el-input :maxlength="40" autocomplete="off"
-                          :placeholder="$t('lang.loginConfig.loginNameP2')" v-model="form.name">
-                    <template #prepend><img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
+                          :placeholder="$t('lang.loginConfig.loginNameP3')" v-model="form.name">
+                    <template #prefix>
+                        <img src="../../../../assets/image/pc/login-email.png" alt="" height="20" width="20"/>
                     </template>
                 </el-input>
             </el-form-item>
@@ -18,8 +19,8 @@
                 <el-input maxlength="40" :type="visible ? 'text' : 'password'" autocomplete="off"
                           :placeholder="$t('lang.loginConfig.loginPwdP')"
                           v-model="form.pwd">
-                    <template #prepend>
-                        <img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
+                    <template #prefix>
+                        <img src="../../../../assets/image/pc/login-password.png" alt="" height="20" width="20"/>
                     </template>
                     <template #append>
                         <img class="iconImg showIcon" v-if="!visible" @click="visible = !visible"
@@ -33,7 +34,7 @@
                 <el-form-item class="label" prop='code' style="width: calc(100% - 130px);">
                     <el-input maxlength="4" @keyup.enter.native="login()" type="text" autocomplete="off"
                               :placeholder="$t('lang.loginConfig.loginVerCodeP2')" v-model="form.code">
-                        <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
+                        <template #prefix><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
                         </template>
                     </el-input>
                 </el-form-item>
@@ -48,15 +49,6 @@
         <be-button customClass="primary" type="success" :loading="isLogin" @click="login">
             {{ $t('lang.loginConfig.login') }}
         </be-button>
-        <p class=" flex-end checkArea">
-            <span class="phone cursor" @click="changeShow(3)">{{ $t('lang.loginConfig.titleRegister') }}</span>
-            <span class="phone cursor"></span>
-            <span class="reg">
-        <!-- <span class="cursor" @click="$parent.areaType = 3">注册</span>-->
-
-          <span class="cursor" @click="changeShow(4)">{{ $t('lang.loginConfig.titleReset') }}</span>
-        </span>
-        </p>
     </div>
 </template>
 
@@ -146,7 +138,7 @@ export default defineComponent({
                         setStore('token', res.access_token);
                         setStore('userId', res.user_id);
                         !getStore('debugSessionId') && setStore('debugSessionId', (new Date().getTime()).toString());
-                        // 登錄先拿路由在跳轉
+                        // 登錄先拿路由在跳轉 变为关闭弹窗
                         getRouter()
                     }).catch(err => {
                         message('error', err.message || err)
@@ -158,7 +150,7 @@ export default defineComponent({
                 }
             });
         }
-        // 获取路由
+        /*// 获取路由
         const store = useStore()
         const getRouter = (): void => {
             const params: IRouterParams = {
@@ -180,7 +172,7 @@ export default defineComponent({
             }).catch(err => {
                 console.error(err)
                 message('error', err.message || err)})
-        }
+        }*/
         /**
          * 修改显示类型
          * @param type 显示类型

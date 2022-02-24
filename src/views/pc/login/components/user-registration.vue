@@ -11,23 +11,6 @@
                     </template>
                 </el-input>
             </el-form-item>
-            <el-form-item class="label" prop='unit'>
-                <el-input maxlength="15" autocomplete="off" :placeholder="$t('lang.loginConfig.unitName')"
-                          v-model="form.unit">
-                    <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
-                    <template #prepend>
-                        <img class="iconImg" src="../../../../assets/image/pc/unit.png" alt="">
-                    </template>
-                </el-input>
-            </el-form-item>
-            <el-form-item class="label" prop='addr'>
-                <el-input maxlength="15" autocomplete="off" :placeholder="$t('lang.loginConfig.addr')"
-                          v-model="form.addr">
-                    <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
-                    <template #prepend><img class="iconImg" src="../../../../assets/image/pc/addr.png" alt="">
-                    </template>
-                </el-input>
-            </el-form-item>
             <el-form-item class="label" prop='email'>
                 <el-input maxlength="15" autocomplete="off" :placeholder="$t('lang.loginConfig.email')"
                           v-model="form.email">
@@ -63,9 +46,6 @@
         <el-button class="primary" type="primary" :loading="isLogin" @click="registerSubmit">
             {{ $t('lang.loginConfig.register') }}
         </el-button>
-        <p class="flex flex-center checkArea">
-            <span class="phone cursor" @click="changeShow(1)">{{ $t('lang.loginConfig.goNameLogin') }}</span>
-        </p>
     </div>
 </template>
 

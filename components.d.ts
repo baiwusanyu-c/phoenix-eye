@@ -8,6 +8,8 @@ declare module 'vue' {
     BePagination: typeof import('./src/components/common-components/pagination/be-pagination.vue')['default']
     BeSvgIcon: typeof import('./src/components/common-components/svg-icon/be-svg-icon.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElForm: typeof import('element-plus/es')['ElForm']
+    ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     EllipsisCopy: typeof import('./src/components/common-components/ellipsis-copy/ellipsis-copy.vue')['default']
