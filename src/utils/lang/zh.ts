@@ -52,7 +52,7 @@ export default {
         prodWelcome:'欢迎使用成都链安',
         prodName:'区块链态势感知管理平台',
         titleLogin:'登录',
-        titleRegister:'用户注册',
+        titleRegister:'新用户注册',
         titleReset:'忘记密码',
         titleDeadline:'到期提示',
         infoDeadLine:'您的账号权益已到期，请及时续费。在此期间可通过免费版用户登录入口使用产品免费版!',
@@ -61,10 +61,12 @@ export default {
         loginExpire:'登录过期!',
         register:'注册',
         rember:'忘记密码',
+        forget:'忘记密码?',
         login:'登 录',
         loging:'登 录 中..',
         loginNameP:'请输入邮箱',
         loginNameP2:'请输入邮箱',
+        loginNameP3:'请输入账户名或邮箱',
         loginPwdP:'请输入密码',
         loginVerCodeP:'请输入验证码',
         loginVerCodeP2:'请输入验证码',
@@ -89,7 +91,10 @@ export default {
         confirmReset:'确认重置',
         goLogin:'已有账号去登录',
         passwordAgreement:'两次输入密码不一致',
-        resetPassword:'重置密码'
+        resetPassword:'重置密码',
+        resetPasswordSuccess:'密码修改成功',
+        registerSuccess: '注册成功',
+        send:'发送'
     },
     navTextConfig:{
         navName0:'链上态势',

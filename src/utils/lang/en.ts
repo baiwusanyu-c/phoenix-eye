@@ -60,11 +60,13 @@ export default {
         loginInfo:'Login successfully!',
         register:'Register',
         rember:'Forgot password',
+        forget:'Forgot password ?',
         login:'Login',
         loging:'Logging in...',
         loginExpire:'Login Expired!',
         loginNameP:'Please enter your email address',
         loginNameP2:' email',
+        loginNameP3:'Please enter your username or email',
         loginPwdP:'Please enter your password',
         loginVerCodeP:'Please enter the verification code',
         loginVerCodeP2:'verification code',
@@ -89,7 +91,10 @@ export default {
         confirmReset:'Confirm the reset',
         goLogin:'Already have an account, Login now',
         passwordAgreement:'The two passwords entered are inconsistent',
-        resetPassword:'Reset password'
+        resetPassword:'Reset password',
+        resetPasswordSuccess:'Reset password successfully',
+        registerSuccess:'Register successfully',
+        send:'send'
     },
     navTextConfig:{
         navName0:'On-chain situation',
