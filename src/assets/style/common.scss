@@ -482,7 +482,7 @@
   border-collapse: separate;
 }
 
-.el-table td.el-table__cell, .el-table th.el-table__cell.is-leaf,
+.el-table td.el-table__cell,
 .el-table th.el-table__cell.is-leaf{
   border: 0;
 }
@@ -619,6 +619,23 @@
 
 .el-select-dropdown__item.selected {
   color: $mainColor3;
+}
+
+.table-tag{
+  margin-top: 10px;
+  margin-right: 10px;
+  color: $mainColor3;
+  background-color: $mainColor16;
+  border:0;
+
+  &:hover{
+    color: $mainColor3;
+    background-color: $mainColor16-025;
+  }
+
+  .ellipsis-copy{
+    min-width: initial !important;
+  }
 }
 
 //弹窗表单样式
@@ -862,7 +879,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 60px;
   color: $textColor5;
 }
 

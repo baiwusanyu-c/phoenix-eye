@@ -157,8 +157,6 @@ const tips = (): void => {
   min-width: 1280px;
   height: 100%;
 }
-
-@import 'assets/style/reset';
 </style>
 <!--适配1366X768与1080p的150%放大-->
 <style scoped lang="scss">

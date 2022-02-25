@@ -1,11 +1,16 @@
 // 项目管理api
 import request from '../utils/request'
-import config from '../enums/config' //路径配置
-// 获取项目列表 （完成）
-export function getProjectList() {
+import config from '../enums/config'
+import {IPageParam} from "../utils/types"; //路径配置
+// 获取项目列表 （完成） 管理员
+export interface IProjectListAdmin extends IPageParam{
+    param?:string
+}
+export function getProjectListAdmin(params:IProjectListAdmin) {
     return request({
-        url: `${config.baseURL}/ussa/project/list`,
-        method: 'get'
+        url: `${config.baseURL}/ussa/project/admin/list`,
+        method: 'post',
+        params
     })
 }
 //创建项目 （完成）
@@ -21,6 +26,7 @@ export interface ICreateProj {
     is_public?:boolean,
     keyword:string,
     contract_infos?:Array<IContractInfos>
+    email_list?:Array<string>,
 }
 export function createProject(params:ICreateProj) {
     return request({
@@ -33,6 +39,7 @@ export function createProject(params:ICreateProj) {
 // 重新评估项目 (暫時不做)
 export interface IReappraise {
     id:string | number
+    project_id?:string | number
 }
 export function reappraiseProject(params:IReappraise) {
     return request({

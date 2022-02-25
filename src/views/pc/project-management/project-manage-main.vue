@@ -51,7 +51,7 @@
                     </template>
                     <template #default="scope">
                         <be-ellipsis-copy :targetStr="scope.row.keywordList"
-                                          :is-ellipsis="scope.row.name.keywordList > 8 ? true : false"
+                                          :is-ellipsis="(scope.row.keywordList && scope.row.keywordList.length >= 14) ? true : false"
                                           :isShowCopyBtn="false"
                                           :isTooltip="true"
                                           styles="color: black;font-weight: 400;font-size: 14px;"
@@ -60,28 +60,28 @@
                         </be-ellipsis-copy>
                     </template>
                 </el-table-column>
-                <el-table-column prop="contract_infos" sortable width="180">
+                <el-table-column prop="contract_num" sortable width="180">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
                     </template>
                     <template #default="scope">
-                        <span>{{ scope.row.contract_infos.length }}</span>
+                        <span>{{ scope.row.contract_num }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="risk_trx" sortable width="180">
+                <el-table-column prop="risk_tx_num" sortable width="180">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
                     </template>
                     <template #default="scope">
-                        <span>{{ scope.row.risk_trx }}</span>
+                        <span>{{ scope.row.risk_tx_num || '/' }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="public_opinion" sortable width="200">
+                <el-table-column prop="opinion_num" sortable width="200">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
                     </template>
                     <template #default="scope">
-                        <span>{{ scope.row.public_opinion }}</span>
+                        <span>{{ scope.row.opinion_num || '/' }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="create_time" width="180">
@@ -89,8 +89,15 @@
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
                     </template>
                     <template #default="scope">
-                        <p style="color: #888">{{ scope.row.create_time && scope.row.create_time.split(' ')[0] }}</p>
-                        <p style="color: #888">{{ scope.row.create_time && scope.row.create_time.split(' ')[1] }}</p>
+                        <el-tooltip placement="top" effect="light" >
+                            <template #content>
+                                <span >{{formatDate(createDate(scope.row.create_time))}} UTC：{{beijing2utc(scope.row.create_time) }}</span>
+                            </template>
+                            <span style="color: #888">
+                                <p>{{formatDate(createDate(scope.row.create_time)).split(' ')[0]}}</p>
+                                <p>{{formatDate(createDate(scope.row.create_time)).split(' ')[1]}}</p>
+                            </span>
+                        </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column prop="operation" width="160">
@@ -117,8 +124,10 @@
             </el-table>
             <be-pagination
                 custom-class="table-page"
-                :pageSize='pageParams.pageSize'
-                :currentPage='pageParams.currentPage'
+                :pageSize = 'pageParams.pageSize'
+                :currentPage = 'pageParams.currentPage'
+                @update:pageSize = 'pageParams.pageSize = $event'
+                @update:currentPage = 'pageParams.currentPage = $event'
                 :total='pageParams.total'
                 layout="sizes,prev, pager,next"
                 @updatePage="pageChange"
@@ -131,12 +140,11 @@
                 <template #next><span></span></template>
             </be-pagination>
         </div>
-        <!--    新增、编辑项目弹窗   ref="createProjectDialog" -->
+        <!--    新增、编辑项目弹窗 -->
         <create-project
             :type="opType"
-            :projectId='curItem.data.id'
+            :projectId='curItem.data.project_id'
             :getList="getList"
-            @confirm="()=>{return opType === 'add' ? confirmAdd() : confirmEdit()}"
             ref="createProjectDialog">
         </create-project>
         <!--    删除项目弹窗    -->
@@ -156,8 +164,7 @@ import {IPageParam} from "../../../utils/types";
 import {
     createProject,
     deleteProject,
-    getProjectList, ICreateProj, IReappraise,
-    saveEditProject
+    getProjectListAdmin, ICreateProj, IProjectListAdmin, IReappraise,
 } from "../../../api/project-management";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 import {defineComponent, ref, reactive, onMounted, nextTick} from 'vue'
@@ -165,6 +172,7 @@ import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
+import {createDate,formatDate,beijing2utc,fomateTimeStamp} from "../../../utils/common";
 
 export default defineComponent({
     name: "ProjectManageMain",
@@ -189,40 +197,7 @@ export default defineComponent({
         const deleteText = ref<string>('')
         // 项目列表示例
         const projectList = reactive({
-            data: [
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                },
-                {
-                    create_time: '2022/01/04 04:19:50',
-                    name: 'AAVEAAVEAAVEAAVEAAVEAAVEAAVE',
-                    keywordList: 'zuk; zuktoken',
-                    contract_infos: [1, 2, 3],
-                    risk_trx: 10,
-                    public_opinion: 10,
-                }
-            ]
+            data: []
         })
 
         // loading
@@ -230,8 +205,11 @@ export default defineComponent({
         // 创建项目弹窗
         const createProjectDialog = ref<any>({})
         onMounted(() => {
-            getList()
+             getList('reset')
         })
+
+
+
         /**
          * 新增类型方法
          */
@@ -241,24 +219,7 @@ export default defineComponent({
                 createProjectDialog.value.createProjectWindow = true
             })
         }
-        /**
-         * 確認新增方法
-         * @param {Object} param - 表单参数
-         */
-        const confirmAdd = (param: ICreateProj) => {
-            createProject(param).then(res => {
-                if (res) {
-                    const msg = t('lang.add') + t('lang.success')
-                    message('success', msg)
-                    // 更新列表
-                    getList()
-                    createProjectDialog.value.createProjectWindow = false
-                }
-            }).catch(err => {
-                message('error', err.message || err)
-                console.error(err)
-            })
-        }
+
         /**
          * 编辑类型方法
          */
@@ -270,27 +231,9 @@ export default defineComponent({
             })
 
         }
-        /**
-         * 確認編輯方法
-         * @param {Object} param - 表单参数
-         */
-        const confirmEdit = (param: ICreateProj) => {
-            const pathParams = {
-                id: (curItem.data as IReappraise).id
-            }
-            saveEditProject(param, pathParams).then(res => {
-                if (res) {
-                    const msg = t('lang.edit') + t('lang.success')
-                    message('success', msg)
-                    // 更新列表
-                    getList()
-                    createProjectDialog.value.createProjectWindow = false
-                }
-            }).catch(err => {
-                message('error', err.message || err)
-                console.error(err)
-            })
-        }
+
+
+
         /**
          * 删除类型方法
          * @param {Object} item - 项目数据对象
@@ -305,14 +248,14 @@ export default defineComponent({
          */
         const confirmDelete = () => {
             const params = {
-                id: (curItem.data as IReappraise).id
+                id: (curItem.data as IReappraise).project_id
             }
             deleteProject(params).then(res => {
                 if (res) {
                     const msg = t('lang.delete') + t('lang.success')
                     message('success', msg)
                     // 更新列表
-                    getList()
+                     getList('reset')
                     showDelete.value = false
                 }
             }).catch(err => {
@@ -340,20 +283,30 @@ export default defineComponent({
          * 排序：只清空翻页搜索
          * 搜索：只清空翻页参数、排序参数，保留搜索参数，搜索
          */
-        const getList = () => {
+        const getList = (type?:string) => {
             loading.value = true
-            let params:IPageParam = {
+            if(type === 'reset'){
+                searchParams.value = ''
+                pageParams.value = {
+                    currentPage: 1,
+                    pageNum: 1,
+                    pageSize: 10,
+                    total: 0
+                }
+            }
+            let params:IProjectListAdmin = {
                 page_num: pageParams.value.pageNum,
                 page_size: pageParams.value.pageSize,
+                param:searchParams.value
             }
-            getProjectList().then(res => {
+            getProjectListAdmin(params).then(res => {
                 // 项目列表
-                projectList.data = res.data
+                projectList.data = res.data.page_infos
                 // 關鍵詞字符串轉化為數組
-                projectList.data.forEach((val: any) => {
-                    let keyword = val.keyword.replace('；', ';')
-                    val.keywordList = keyword.split(';').filter((filterVal: any) => filterVal)
-                })
+                 projectList.data.forEach((val: any) => {
+                     let keyword = val.keyword.replace('；', ';')
+                     val.keywordList = keyword.split(';').filter((filterVal: any) => filterVal).join(',')
+                 })
                 loading.value = false
             }).catch(err => {
                 message('error', err.message || err)
@@ -380,6 +333,10 @@ export default defineComponent({
         }
 
         return {
+            createDate,
+            formatDate,
+            beijing2utc,
+            fomateTimeStamp,
             sortChange,
             searchParams,
             curItem,
@@ -391,10 +348,8 @@ export default defineComponent({
             createProjectDialog,
             confirmDelete,
             deleteProjects,
-            confirmEdit,
             editProject,
             addProject,
-            confirmAdd,
             getList,
             pageParams,
             pageChange,

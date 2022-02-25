@@ -135,16 +135,24 @@ export default {
         platform:'链平台',
         searchP:'请输入交易哈希、发送方、接收方',
         platformP:'请选择链平台',
+        filter:{
+            chain:'链平台',
+            type:'风险类别',
+            level:'风险等级',
+            dangerHigh:'高危',
+            dangerMiddle:'中危',
+            dangerLow:'低危',
+        },
         tableHeader:{
-            platform:'链平台',
-            txHash:'交易哈希',
-            txTime:'交易时间',
-            state:'交易状态',
             from:'发送方',
             to:'接收方',
-            warningType:'疑似风险类型',
-            score:'风险评估',
-            detail:'分析详情',
+            platform:'链平台',
+            txHash:'交易哈希',
+            level:'风险等级',
+            warningType:'风险类型',
+            gainer:'Gainer',
+            amount:'金额',
+            txTime:'日期',
         },
         profitTableHeader:{
             addr:'地址',
@@ -169,6 +177,7 @@ export default {
         createProjectKeyWords:'关键词',
         associatedAccount:'关联账户',
         createProjectKeyWordsInput:'多个关键词用“；”隔开，如：PancakeSwap;CAKE',
+        createProjectEmailInput:'多个邮箱地址用“；”隔开，如：C@gmail.com;A@gmail.com',
         createProjectOpenTitle:'是否公开',
         createProjectOpenSecret:'保密',
         createProjectUnSecret:'公开',
@@ -191,6 +200,21 @@ export default {
             createTime:'创建时间',
             operation:'操作'
         },
+    },
+    projectExplorer:{
+        title:'项目浏览器',
+        subTitle:'搜索你感兴趣的项目来查看项目细节。',
+        searchP:'项目名称 / 合约地址',
+        example:'示例',
+        project:'项目名称',
+        contract:'合约地址',
+        MultipleResults:'匹配到了多条搜索结果，请选择其中一条查看',
+        name:'项目名称',
+        detail:{
+            riskTrx:'风险交易',
+            riskPublicOpinion:'风险公共舆情',
+            source:'來源'
+        }
     },
     addRiskWindow:{
         addRiskWindowTitle:'添加风险类型识别规则',

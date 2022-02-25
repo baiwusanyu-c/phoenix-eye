@@ -58,7 +58,7 @@ const metaTitleDict:any = {
     XMGL: 'lang.subNav.navName3',
 }
 // 递归路由配置对象
-export const initRouterConfig = (treeData:any) => {
+export const initRouterConfig = <T>(treeData:Array<T>):Array<T> => {
     treeData.forEach((val:any) => {
         // 删除bms默认的redirect配置
         if (val.redirect === "noRedirect") {
@@ -94,7 +94,7 @@ const beforeEachHandle = (router:Router) => {
                 const routerConfig = initRouterConfig(res.data[0].children)
                 store.commit('update', ['routeConfig', routerConfig])
                 let title:string = ''
-                routerConfig.map((val:RouteRecordRaw) => {
+                routerConfig.map((val:any) => {
                      if(val.path === to.path ){
                          title = val?.meta?.title as string
                      }
@@ -106,7 +106,7 @@ const beforeEachHandle = (router:Router) => {
                 })
                 setTimeout(() => {
                    i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
-                   to.meta.titleInfo = i18n.global.t(title)
+
                 }, 100)
                 next({path:to.path,query:to.query})
             }).catch(err=>console.log(err))

@@ -18,14 +18,14 @@
                     :ellipsis="false"
                     :default-active="active"
                     class="el-menu-demo menu-part1">
-<!--                    <div v-for="(value,key) in headerConfig" :key="key">
+                    <div v-for="(value,key) in headerConfig" :key="key">
                         <el-menu-item  :key="key" :index="value.index"
                                        v-if='value !== undefined && value.show && value?.children.length === 0'
                                        :disabled="value.isDisabled"
                                        @click="routerSwitch(value,value.isPush)">
                             <span style="margin-left: 10px">{{ $t(value.name) }}</span>
                         </el-menu-item>
-                    </div>-->
+                    </div>
                 </el-menu>
             </div>
         </div>
@@ -80,7 +80,6 @@
             @confirm="confirm(true)"
             @close="confirm(false)"
             :isShow="isLogout"
-            :isShowCancel="false"
             :title="$t('lang.loginConfig.confirmLogout')">
         </MsgDialog>
         <login-dialog ref="loginDialog"></login-dialog>
@@ -89,12 +88,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch} from "vue";
+import {defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch} from "vue";
 import {clearSession, clearStore, getStore, setStore} from "../utils/common";
 import composition from "../utils/mixin/common-func";
 import {useStore} from "vuex";
 import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-import BeSvgIcon from "./common-components/svg-icon/be-svg-icon.vue";
 import {BeIcon,BePopover,BeButton} from '../../public/be-ui/be-ui.es.js'
 import {useI18n} from "vue-i18n";
 import {ILoginDialog, IPopover} from "../utils/types";
@@ -107,7 +105,6 @@ export default defineComponent({
     components:{
         LoginDialog,
         MsgDialog,
-        BeSvgIcon,
         BeIcon,
         BePopover,
         BeButton
@@ -152,6 +149,7 @@ export default defineComponent({
             (instanceInner?.refs.popoverRouter as IPopover)?.close()
             if (router === '/logout') {
                 loginOut()
+                routerPush('/riskTrx/list')
                 return;
             }
             if (!isPush || !router.path) {
@@ -318,6 +316,7 @@ export default defineComponent({
       cursor: pointer;
 
       &:hover{
+        color: $mainColor3;
         background-color: $mainColor16;
       }
     }
@@ -506,12 +505,10 @@ export default defineComponent({
 </style>
 
 <!--1080p的105% - 125%放大-->
+<!--
 <style scoped lang="scss">
 @media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
 
-  .tsgz-nav-menu {
-
-  }
 }
 </style>
 <style lang="scss">
@@ -519,34 +516,25 @@ export default defineComponent({
 
 }
 </style>
-<!--1080p的130% - 140%放大-->
+&lt;!&ndash;1080p的130% - 140%放大&ndash;&gt;
 <style scoped lang="scss">
 @media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
 
-  .tsgz-nav-menu {
-
-  }
 }
 </style>
 <style lang="scss">
 @media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
 
-
-
 }
 </style>
-<!--1080p的145% - 150%放大-->
+&lt;!&ndash;1080p的145% - 150%放大&ndash;&gt;
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-
 
 }
 </style>
 <style lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-
-
 }
-</style>
+</style>-->

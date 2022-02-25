@@ -132,18 +132,27 @@ export default {
     },
     riskConfig:{
         platform:'Blockchain platform',
-        searchP:'Please enter the transaction hash, sender and recipient',
+        searchP:'Trx Hash / Contract Address',
         platformP:'Please select the blockchain platform',
+        filter:{
+            chain:'Chain',
+            type:'Type',
+            level:'Alert Level',
+            dangerHigh:'High',
+            dangerMiddle:'Medium',
+            dangerLow:'Low',
+        },
         tableHeader:{
-            platform:'platform',
+            platform:'Chain',
             txHash:'Trx Hash',
-            txTime:'Transaction time',
-            state:'Transaction status',
+            level:'Alert Level',
+            warningType:'Type',
+            gainer:'Gainer',
+            amount:'Amount',
+            txTime:'Date',
             from:'From',
-            to:'To',
-            warningType:'Suspected risk type',
-            score:'Risk evaluation',
-            detail:'Details',
+            to:'To'
+
         },
         profitTableHeader:{
             addr:'Address',
@@ -158,6 +167,21 @@ export default {
         stateFailed:'Failed',
         profit:'Address Income',
     },
+    projectExplorer:{
+        title:'Project Explorer',
+        subTitle:'Search for project that interest you and see their details.',
+        searchP:'ProjectName / Contract',
+        example:'e.g.',
+        project:'Project',
+        contract:'Contract',
+        MultipleResults:'Multiple results are matched. Select one of them',
+        name:'Project Name',
+        detail:{
+            riskTrx:'Risk Trx',
+            riskPublicOpinion:'Risk Public Opinion',
+            source:'source'
+        }
+    },
     createProject:{
         createProjectTitle:'Create Project',
         editProjectTitle:'Edit Project',
@@ -168,6 +192,7 @@ export default {
         createProjectKeyWords:'Keyword',
         associatedAccount:'Associated Account',
         createProjectKeyWordsInput:'Multiple keywords separated by ";", e.g. PancakeSwap;CAKE',
+        createProjectEmailInput:'Multiple emails separated by ";", e.g. "emailA;emailB"',
         createProjectOpenTitle:'Whether to make it public',
         createProjectOpenSecret:'Confidential',
         createProjectUnSecret:'Public',
@@ -232,7 +257,7 @@ export default {
     projectRinking:{
         contract:'Contract',
         proNum:'No.',
-        name:'Project name',
+        name:'Project Name',
         contractNum:'Number of contracts',
         score: 'Security score',
         txScale:'Transaction scale',
