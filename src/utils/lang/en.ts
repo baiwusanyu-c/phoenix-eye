@@ -170,7 +170,12 @@ export default {
         project:'Project',
         contract:'Contract',
         MultipleResults:'Multiple results are matched. Select one of them',
-        name:'Project Name'
+        name:'Project Name',
+        detail:{
+            riskTrx:'Risk Trx',
+            riskPublicOpinion:'Risk Public Opinion',
+            source:'source'
+        }
     },
     createProject:{
         createProjectTitle:'Create Project',

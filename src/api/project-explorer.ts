@@ -20,3 +20,14 @@ export function getProjectListUser(params:IProjParam) {
         params
     })
 }
+
+export interface IPublicOpinion extends IPageParam{
+    project_id?:number | null
+}
+export function getPublicOpinion(params:IPublicOpinion) {
+    return request({
+        url: `${config.baseURL}/ussa/project/opinion/list`,
+        method: 'post',
+        params
+    })
+}

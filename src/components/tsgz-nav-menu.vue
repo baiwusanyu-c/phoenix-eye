@@ -316,6 +316,7 @@ export default defineComponent({
       cursor: pointer;
 
       &:hover{
+        color: $mainColor3;
         background-color: $mainColor16;
       }
     }

@@ -205,6 +205,11 @@ export default {
         contract:'合约地址',
         MultipleResults:'匹配到了多条搜索结果，请选择其中一条查看',
         name:'项目名称',
+        detail:{
+            riskTrx:'风险交易',
+            riskPublicOpinion:'风险公共舆情',
+            source:'來源'
+        }
     },
     addRiskWindow:{
         addRiskWindowTitle:'添加风险类型识别规则',
