@@ -4,9 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    BeEllipsis: typeof import('./src/components/common-components/ellipsis/src/be-ellipsis.vue')['default']
     BePagination: typeof import('./src/components/common-components/pagination/be-pagination.vue')['default']
-    BeSvgIcon: typeof import('./src/components/common-components/svg-icon/be-svg-icon.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
     ElDialog: typeof import('element-plus/es')['ElDialog']

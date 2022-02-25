@@ -6,7 +6,6 @@ import 'virtual:windi.css'
 //import BeUI from '../public/be-ui/be-ui.es.js'
 import '../public/be-ui/style.css'
 import {i18n} from "./utils/i18n";
-import '@/components/common-components/svg-icon/icons/iconfont/iconfont.js'
 import '../node_modules/animate.css/animate.css'
 import store from "./store/store";
 import {SvgDom} from "./utils/create-svg";

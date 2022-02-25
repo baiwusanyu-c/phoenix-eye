@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import BeSvgIcon from "../../../components/common-components/svg-icon/be-svg-icon.vue";
+import BeSvgIcon from "./svg-icon/be-svg-icon.vue";
 import {defineComponent, ref, computed, onMounted} from 'vue'
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {beijing2utc,formatDate,createDate} from '../../../utils/common'

@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import BeSvgIcon from "../../../../components/common-components/svg-icon/be-svg-icon.vue";
+import BeSvgIcon from "../svg-icon/be-svg-icon.vue";
 import {defineComponent} from "vue";
 export default defineComponent({
     name: "system-config-type-card",

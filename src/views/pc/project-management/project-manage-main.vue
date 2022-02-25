@@ -144,7 +144,7 @@
         <create-project
             :type="opType"
             :projectId='curItem.data.project_id'
-            :getList="getList('reset')"
+            :getList="getList"
             ref="createProjectDialog">
         </create-project>
         <!--    删除项目弹窗    -->
@@ -205,7 +205,7 @@ export default defineComponent({
         // 创建项目弹窗
         const createProjectDialog = ref<any>({})
         onMounted(() => {
-            getList('reset')
+             getList('reset')
         })
 
 
@@ -255,7 +255,7 @@ export default defineComponent({
                     const msg = t('lang.delete') + t('lang.success')
                     message('success', msg)
                     // 更新列表
-                    getList('reset')
+                     getList('reset')
                     showDelete.value = false
                 }
             }).catch(err => {
@@ -283,7 +283,7 @@ export default defineComponent({
          * 排序：只清空翻页搜索
          * 搜索：只清空翻页参数、排序参数，保留搜索参数，搜索
          */
-        const getList = (type:string) => {
+        const getList = (type?:string) => {
             loading.value = true
             if(type === 'reset'){
                 searchParams.value = ''
