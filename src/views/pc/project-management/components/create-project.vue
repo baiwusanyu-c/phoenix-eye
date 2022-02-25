@@ -392,7 +392,7 @@ export default defineComponent({
                     const msg = t('lang.add')+ t('lang.success')
                     message('success', msg)
                     // 更新列表
-                    props.getList()
+                    props.getList('reset')
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
@@ -426,7 +426,7 @@ export default defineComponent({
                     const msg = t('lang.edit')+ t('lang.success')
                     message('success', msg)
                     // 更新列表
-                    props.getList()
+                    props.getList('reset')
                     createProjectWindow.value = false
                 }
             }).catch(err=>{
