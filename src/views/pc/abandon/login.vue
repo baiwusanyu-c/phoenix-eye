@@ -55,10 +55,10 @@
 
 <script setup lang="ts">
 import {nextTick, onBeforeUnmount, onMounted, ref} from 'vue'
-import userRegistration from "./components/user-registration.vue";
+import userRegistration from "../login/components/user-registration.vue";
 import animatedInit, {destroyTHERR} from "../../../../public/login-3d.js";
-import NameLogin from "./components/name-login.vue";
-import ResetPassword from "./components/reset-password.vue";
+import NameLogin from "../login/components/name-login.vue";
+import ResetPassword from "../login/components/reset-password.vue";
 import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
 
 

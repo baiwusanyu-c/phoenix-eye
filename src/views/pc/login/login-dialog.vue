@@ -75,7 +75,6 @@ import {defineComponent, ref, computed,} from "vue";
 import {BeDialog,BeButton} from "../../../../public/be-ui/be-ui.es.js";
 import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func"
-import {ElForm,ElMessage} from "element-plus/es";
 import ResetPassword from "./components/reset-password.vue"
 import NameLogin from "./components/name-login.vue"
 import UserRegistration from "./components/user-registration.vue"

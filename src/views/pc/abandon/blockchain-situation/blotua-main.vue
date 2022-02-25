@@ -209,7 +209,7 @@
                                     <template #content>
                                      <span >{{formatDate(createDate(item.tx_time))}} UTC：{{beijing2utc(item.tx_time) }}</span>
                                     </template>
-                                    <span class="cursor">{{fomateTimeStamp(createDate(item.tx_time).getTime(),$i18n.locale)}}</span>
+                                    <span class="cursor">{{formatTimeStamp(createDate(item.tx_time).getTime(),$i18n.locale)}}</span>
                                 </el-tooltip>
                             </td>
                         </tr>
@@ -268,7 +268,7 @@ import {ShapeAttrs} from "@antv/g2/src/dependents";
 import {getContractAudit, getTxFxQs, getTxNum} from "../../../../api/blotua";
 import {getProjWarning} from "../../../../api/risk-trx";
 import {getProjectRankList, getPublicSentimentSecurity,ISentimentSecurity} from "../../../../api/project-ranking";
-import {nFormatter, getStore, setStore,openWindow,formatDate,createDate,fomateTimeStamp,beijing2utc} from "../../../../utils/common";
+import {nFormatter, getStore, setStore,openWindow,formatDate,createDate,formatTimeStamp,beijing2utc} from "../../../../utils/common";
 import {computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref, getCurrentInstance} from "vue";
 import {useI18n} from "vue-i18n";
 import composition from "../../../../utils/mixin/common-func";
@@ -722,7 +722,7 @@ export default defineComponent({
             formatDate,
             safetyData,
             createDate,
-            fomateTimeStamp,
+            formatTimeStamp,
             beijing2utc,
             scrollConfig,
             txTotal,

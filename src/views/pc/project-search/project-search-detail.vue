@@ -6,6 +6,54 @@
 */
 <template>
     <div class="project-search-detail">
+        <!--基本信息-->
+        <div class="proj-detail-item" style="margin-top: 32px">
+            <div class="item-title">
+                <h2>{{ $t('lang.projectExplorer.detail.title') }}</h2>
+                <span style="margin-right: 6px">{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h)  :  </span>
+                <span
+                    style="margin-right: 30px;font-size: 14px;font-weight: bold;color: #333">{{
+                        baseInfo.riksTrxNum
+                    }}</span>
+                <span style="margin-right: 6px">{{
+                        $t('lang.projectExplorer.detail.riskPublicOpinion')
+                    }}(24h)  :  </span>
+                <span
+                    style="margin-right: 16px;font-size: 14px;font-weight: bold;color: #333">{{
+                        baseInfo.riskPublicOpinion
+                    }}</span>
+            </div>
+            <div class="base-info">
+                <div class="base-info-item">
+                    <p>{{ $t('lang.projectExplorer.detail.transactions') }}(24h)</p>
+                    <span>{{ numberToCommaString(baseInfo.transactions) }}</span>
+                </div>
+                <div class="base-info-item">
+                    <div style="flex: 1">
+                        <p>{{ $t('lang.projectExplorer.detail.transactionsTotal') }}(24h)</p>
+                        <span class="total">{{ numberToCommaString(baseInfo.transactionsTotal) }}</span>
+                    </div>
+                    <div style="flex: 1">
+                        <p>{{ $t('lang.projectExplorer.detail.lastDate') }}(24h)</p>
+                        <p class="date">{{ formatDate(createDate(baseInfo.lastTradeData))}}</p>
+                        <p class="time">{{ formatTimeStamp(createDate(baseInfo.lastTradeData).getTime(),$i18n.locale) }}</p>
+                    </div>
+                </div>
+                <div class="base-info-item">
+                    <p>{{ $t('lang.projectExplorer.detail.socialProfiles') }}:</p>
+                    <be-icon @click='openWindow(baseInfo.website)' v-if="baseInfo.website" role="button" width="50" height="60" icon="iconWebsiteEagle"></be-icon>
+                    <be-icon @click='openWindow(baseInfo.twitter)' v-if="baseInfo.twitter" role="button" width="60" height="60" icon="iconTwitterEagle"></be-icon>
+                    <be-icon @click='openWindow(baseInfo.telegram)' v-if="baseInfo.telegram" role="button" width="60" height="60" icon="iconTelegramEagle"></be-icon>
+                    <be-icon @click='openWindow(baseInfo.github)' v-if="baseInfo.github" role="button" width="50" height="60" icon="iconGithubEagle"></be-icon>
+                </div>
+            </div>
+
+        </div>
+        <!--top5 数据表格-->
+        <div class="proj-detail-item" style="display: flex">
+            <project-detail-top style="margin-right: 16px"></project-detail-top>
+            <project-detail-top></project-detail-top>
+        </div>
         <!--风险交易-->
         <div class="proj-detail-item">
             <div class="item-title" style="margin-bottom: 0">
@@ -54,13 +102,15 @@
 import {defineComponent, nextTick, onMounted, ref} from "vue";
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import {IPageParam} from "../../../utils/types";
-
+import {BeIcon} from "../../../../public/be-ui/be-ui.es";
 import composition from "../../../utils/mixin/common-func";
 import {useI18n} from "vue-i18n";
 import ProjectDetailPubliOpinion from "./components/project-detail-public-opinion.vue";
-import {getPublicOpinion,IPublicOpinion} from "../../../api/project-explorer";
-import {getStore} from "../../../utils/common";
+import {getPublicOpinion, IPublicOpinion} from "../../../api/project-explorer";
+import {numberToCommaString, createDate, formatDate, formatTimeStamp, openWindow} from "../../../utils/common";
 import RiskTrxTable from "../risk-trx/components/risk-trx-table.vue";
+import ProjectDetailTop from "./components/project-detail-top.vue";
+
 interface ISafetyData {
     negative?: string
     negativeMsg?: string
@@ -71,49 +121,47 @@ interface ISafetyData {
     time?: string
     label?: string
 }
+
+interface IBaseInfo {
+    transactions?: number | string,
+    transactionsTotal?: number | string,
+    lastTradeData?: string,
+    riksTrxNum?: number | string,
+    riskPublicOpinion?: number | string,
+    github?: string
+    telegram?: string
+    twitter?: string
+    website?: string
+}
+
 export default defineComponent({
     name: "project-search-detail",
-    components:{
+    components: {
+        ProjectDetailTop,
         RiskTrxTable,
         BePagination,
         ProjectDetailPubliOpinion,
+        BeIcon,
     },
-    setup(props, ctx){
-        const {message,route} = composition(props, ctx)
+    setup(props, ctx) {
+        const {message, route} = composition(props, ctx)
         const {t} = useI18n()
-        const getProSituData  = async () => {
-            // 这是在上级路由存储的数据
-            //const data = JSON.parse(getStore('ContractProjectTs') as string)
-            //if (!data) {
-            //    resetData()
-            //    return
-            //}
-            //// 项目态势基本信息
-            //projectInfo.value = data.project_info
-            //
-            //// 项目检测评分信息
-            //getOutLineData(projectInfo.value)
-            //// 项目检测评分雷达图
-            //staticPieData.value = [
-            //    {key:'jtjc-staticDetection',item: t('lang.projectRinking.staticDetection'), a: projectInfo.value?.static_testing?.score},
-            //    {key:'jyaq-txSecurity',item: t('lang.projectRinking.txSecurity'), a: projectInfo.value?.tx_safety?.score},
-            //    {key:'jywd-txStability',item: t('lang.projectRinking.txStability'), a: projectInfo.value?.tx_stability?.score},
-            //    {key:'yqaq-safetyPublicOptionClass',item: t('lang.systemConfigScore.safetyPublicOptionClass'), a: projectInfo.value?.safety_opinion?.score},
-            //]
-            //safetyEvaluatePieData.value = projectInfo.value.safety_evaluate
+        const baseInfo = ref<IBaseInfo>({})
+        const getProSituData = async () => {
+            // 获取项目详情数据
+            baseInfo.value = {
+                transactions: 1122,
+                transactionsTotal: 24393035,
+                lastTradeData: '2022-02-01T10:04:00.000+0000',
+                riksTrxNum: 1234,
+                riskPublicOpinion: 1234,
+                github: 'string',
+                telegram: 'string',
+                twitter: 'string',
+                website: 'string',
+            }
+            // 获取合约静态检测数据
 
-
-            // 市场表现数据
-            /*this.marketPerformance = [
-                {title: this.$t('lang.projectRinking.txSumNum'), num: data.market_performance.tx_total},
-                {title: this.$t('lang.projectRinking.userSumNum'), num: data.market_performance.user_total},
-                {title: this.$t('lang.projectRinking.contractSumNum'), num: data.market_performance.contract_total},
-            ]*/
-            // 市场表现图表数据
-            // this.mpTxNum = data.market_performance.tx_amounts
-            // this.mpNewUserNum = data.market_performance.new_user_nums
-            // 获取合约安全数据
-            //await getContractSecurData()
             // 获取舆情安全数据
             await getPublicOpinionData()
         }
@@ -122,7 +170,7 @@ export default defineComponent({
         /**
          * 获取舆情安全数据
          */
-        // 舆情安全数据
+            // 舆情安全数据
         const safetyData = ref<Array<ISafetyData>>([])
         // 舆情安全loading
         const loadingFs = ref<boolean>(false)
@@ -136,17 +184,17 @@ export default defineComponent({
         /**
          * 舆情安全数据获取方法
          */
-        const getPublicOpinionData = ():void=> {
+        const getPublicOpinionData = (): void => {
             safetyData.value = []
             loadingFs.value = true
-            let params:IPublicOpinion = {
+            let params: IPublicOpinion = {
                 project_id: parseInt(projectId.value),
                 page_num: pageParamsFs.value.pageNum,
                 page_size: pageParamsFs.value.pageSize,
             }
             getPublicOpinion(params).then(res => {
                 if (res) {
-                    res.data.page_infos.forEach((val:any) => {
+                    res.data.page_infos.forEach((val: any) => {
                         safetyData.value.push({
                             negative: val.is_negative_news,
                             negativeMsg: '经自动识别，该资讯为负面信息',
@@ -171,29 +219,36 @@ export default defineComponent({
          * 舆情安全分页方法
          * @param {IPageParam} item - 分页参数对象
          */
-        const pageChangeFs = (item:IPageParam):void =>{
+        const pageChangeFs = (item: IPageParam): void => {
             pageParamsFs.value.pageNum = item.currentPage
             pageParamsFs.value.currentPage = item.currentPage
             getPublicOpinionData()
         }
-        onMounted(()=>{
-            const {param,project_id} = route.query
-            projectId.value = (param || project_id) as string
+        onMounted(() => {
+            const {param, id} = route.query
+            projectId.value = (param || id) as string
             getProSituData()
 
         })
         return {
+            baseInfo,
+            pageChangeFs,
             getPublicOpinionData,
             safetyData,
             pageParamsFs,
             loadingFs,
+            numberToCommaString,
+            createDate,
+            formatDate,
+            openWindow,
+            formatTimeStamp,
         }
     }
 })
 </script>
 
 <style lang="scss">
-.project-search-detail{
+.project-search-detail {
   position: relative;
   top: 0;
   left: 0;
@@ -203,6 +258,71 @@ export default defineComponent({
   height: auto;
   min-height: calc(100% - 192px);
   padding-bottom: 86px;
+
+  .base-info {
+    display: flex;
+    width: 100%;
+
+    .base-info-item:nth-child(1) {
+      margin-right: 20px;
+      background: linear-gradient(90deg, #FFF 0%, #E5F3F2 100%);
+
+      span {
+        font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+        font-size: 36px;
+        font-weight: bold;
+        color: $textColor3;
+      }
+    }
+
+    .base-info-item:nth-child(2) {
+      display: flex;
+      flex: 2;
+      margin-right: 20px;
+
+      .total{
+        font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        color: $textColor3;
+      }
+
+      .date{
+        font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        color: $textColor3;
+      }
+    }
+
+    .base-info-item {
+      box-sizing: border-box;
+      flex: 1;
+      min-height: 126px;
+      padding: 24px;
+      background-color: $mainColor7-06;
+      border-radius: 4px;
+
+      &:hover {
+        @apply shadow-xl
+        }
+
+      .be-icon {
+        fill: $textColor12;
+
+        &:hover {
+          fill: $mainColor11;
+        }
+      }
+
+      p {
+        margin-bottom: 12px;
+        font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+        color: $textColor4;
+      }
+    }
+  }
+
 
   .proj-detail-item {
     width: 67.5%;
@@ -225,71 +345,6 @@ export default defineComponent({
       }
     }
 
-    .proj-detail-item-outline {
-      display: flex;
-
-      .outline-radar {
-        display: flex;
-        flex: 1;
-        align-items: center;
-        justify-content: center;
-        height: 400px;
-        background: linear-gradient(90deg, #FFF 0%, #E3F2FF 100%);
-      }
-
-      .outline-info {
-        box-sizing: border-box;
-        flex: 1;
-        height: 400px;
-        padding: 40px 30px 20px 30px;
-        background: $mainColor7;
-
-        h2 {
-          margin-bottom: 20px;
-          font-family: PingFangSC-Medium, PingFang SC, sans-serif;
-          color: $textColor3;
-        }
-
-        .outline-info-txt {
-          height: 80%;
-
-          div {
-            display: flex;
-            margin-bottom: 15px;
-
-            .label {
-              margin-right: 15px;
-              font-family: PingFangSC-Medium, PingFang SC, sans-serif;
-              font-weight: 500;
-              color: $textColor3;
-            }
-
-            .inner-text {
-              color: $textColor4;
-            }
-          }
-        }
-
-        .height-light {
-          font-weight: bold;
-          color: #FA6400
-        }
-
-        p {
-          font-size: 12px;
-          color: $mainColor14;
-          text-align: right;
-        }
-      }
-    }
-
-    .proj-detail-item-contractSecur {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: start;
-      margin-bottom: 24px;
-    }
-
     .proj-detail-item-hyaq {
       display: flex;
       align-items: center;
@@ -303,11 +358,6 @@ export default defineComponent({
       padding-bottom: 15px;
     }
 
-    .proj-detail-item-market {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 24px;
-    }
 
     .table-page {
       display: flex;

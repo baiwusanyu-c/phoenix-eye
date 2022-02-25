@@ -54,13 +54,9 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, ref, reactive, getCurrentInstance, ComponentInternalInstance} from 'vue'
-import {loginName, IRouterParams} from '../../../../api/login';
+import {loginName} from '../../../../api/login';
 import {Base64} from 'js-base64';
 import {getStore, trim, setStore} from "../../../../utils/common";
-import {getRouterInfo} from "../../../../api/login";
-import {initRouterConfig} from "../../../../router/router-pc";
-import {RouteRecordRaw} from 'vue-router'
-import {useStore} from "vuex";
 import composition from "../../../../utils/mixin/common-func";
 import {nameReg, pwdReg} from "../../../../utils/reg";
 import {useI18n} from "vue-i18n";

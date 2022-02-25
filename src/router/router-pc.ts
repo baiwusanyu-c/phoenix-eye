@@ -45,12 +45,6 @@ const routes =
                 },
             ]
         },
-        {
-            path: '/login',
-            name: 'login',
-            component: () => import('../views/pc/login/login.vue'),
-            meta: {title: '登录'}
-        },
     ]
 // 路由的metaTitle字典
 const metaTitleDict:any = {

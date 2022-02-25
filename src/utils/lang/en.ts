@@ -177,9 +177,14 @@ export default {
         MultipleResults:'Multiple results are matched. Select one of them',
         name:'Project Name',
         detail:{
+            title:'Project Details',
             riskTrx:'Risk Trx',
             riskPublicOpinion:'Risk Public Opinion',
-            source:'source'
+            source:'source',
+            transactions:'Transactions',
+            transactionsTotal:'Transactions(Total)',
+            lastDate:'Latest Trading Date',
+            socialProfiles:'Social Profiles',
         }
     },
     createProject:{

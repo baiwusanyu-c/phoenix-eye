@@ -64,7 +64,7 @@
 <script lang="ts">
 import {forgetPasswordApi, verifyCodePassword,} from '../../../../api/login';
 import {defineComponent, ref, reactive, getCurrentInstance, ComponentInternalInstance} from 'vue'
-import {pwdReg, phoneReg, emailReg} from "../../../../utils/reg";
+import {pwdReg, emailReg} from "../../../../utils/reg";
 import {useI18n} from "vue-i18n";
 import composition from "../../../../utils/mixin/common-func";
 import {trim} from "../../../../utils/common";

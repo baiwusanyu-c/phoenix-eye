@@ -172,7 +172,7 @@ import {useI18n} from "vue-i18n";
 import composition from "../../../utils/mixin/common-func";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
-import {createDate,formatDate,beijing2utc,fomateTimeStamp} from "../../../utils/common";
+import {createDate,formatDate,beijing2utc,formatTimeStamp} from "../../../utils/common";
 
 export default defineComponent({
     name: "ProjectManageMain",
@@ -336,7 +336,7 @@ export default defineComponent({
             createDate,
             formatDate,
             beijing2utc,
-            fomateTimeStamp,
+            formatTimeStamp,
             sortChange,
             searchParams,
             curItem,

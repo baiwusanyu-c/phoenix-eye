@@ -211,9 +211,14 @@ export default {
         MultipleResults:'匹配到了多条搜索结果，请选择其中一条查看',
         name:'项目名称',
         detail:{
+            title:'项目详情',
             riskTrx:'风险交易',
             riskPublicOpinion:'风险公共舆情',
-            source:'來源'
+            source:'來源',
+            transactionsTotal:'Transactions(Total)',
+            lastDate:'Latest Trading Date',
+            transactions:'Transactions',
+            socialProfiles:'Social Profiles',
         }
     },
     addRiskWindow:{

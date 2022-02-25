@@ -322,6 +322,7 @@ export const browserInfo = ():{browser:any,version:any} => {
 export const trim = (str:string):string => {
     return str.replace(/^(\s|\xA0)+|(\s|\xA0)+$/g, '');
 }
+// 数字转百万M 100M
 export function nFormatter(num:number, digits:number) {
     const si = [
         { value: 1, symbol: "" },
@@ -379,23 +380,23 @@ export function ieVersion() {
         return -1;//不是ie浏览器
     }
 }
-export function fomateTimeStamp(dateTimeStamp:number,lang:string) {
+export function formatTimeStamp(dateTimeStamp:number,lang:string) {
     let minute = 1000 * 60;
     let hour = minute * 60;
     let day = hour * 24;
     let result = '';
     let now = new Date().getTime();
     let diffValue = now - dateTimeStamp;
-    let gg = '刚刚'
-    let dq = '天前'
-    let sq = '小时前'
-    let fq = '分钟前'
+    let gg = ' 刚刚'
+    let dq = ' 天前'
+    let sq = ' 小时前'
+    let fq = ' 分钟前'
     let yesterday = '昨天'
     if(lang === 'en_US'){
         gg = 'Just happened'
-        dq = 'day ago'
-        sq = 'hour ago'
-        fq = 'minutes ago'
+        dq = ' day ago'
+        sq = ' hour ago'
+        fq = ' minutes ago'
         yesterday = 'yesterday'
     }
     result = gg;
@@ -536,4 +537,16 @@ export const transferToNumber = (inputNumber:any) => {
     let eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
     let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
     return inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
+}
+// 數字轉都好分隔字符串 1123 =》'1,223'
+export const numberToCommaString = (nStr:number):string =>{
+    nStr += '';  //数字转换为字符
+    let x:string = nStr.split('.');  //按照小数点分隔
+    let x1:string = x[0];  //整数部分
+    let x2:string = x.length > 1 ? '.' + x[1] : '';  //小数部分
+    let rgx:RegExp = /(\d+)(\d{3})/;  //正则式定义
+    while (rgx.test(x1)) {  //正则式匹配
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');   //正则式替换
+    }
+    return x1 + x2;
 }
