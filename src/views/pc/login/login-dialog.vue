@@ -71,35 +71,15 @@
 </template>
 
 <script lang="ts">
-    import {
-        defineComponent,
-        ref,
-        computed,
-        ComponentInternalInstance,
-        getCurrentInstance,
-        reactive,
-        onMounted
-    } from "vue";
+import {defineComponent, ref, computed,} from "vue";
 import {BeDialog,BeButton} from "../../../../public/be-ui/be-ui.es.js";
 import {useI18n} from "vue-i18n";
-import {getStore, setStore, trim} from "../../../utils/common";
-import {getRouterInfo, IRouterParams, loginName} from "../../../api/login";
-import {Base64} from "js-base64";
 import composition from "../../../utils/mixin/common-func"
 import {ElForm,ElMessage} from "element-plus/es";
 import ResetPassword from "./components/reset-password.vue"
 import NameLogin from "./components/name-login.vue"
 import UserRegistration from "./components/user-registration.vue"
-import {useStore} from "vuex";
-import {initRouterConfig} from "../../../router/router-pc";
-import {RouteRecordRaw} from "vue-router";
-    import {pwdReg} from "../../../utils/reg";
-type FormInstance = InstanceType<typeof ElForm>
-declare type loginType = {
-    name: string
-    pwd: string
-    code: string
-}
+
 export default defineComponent({
     name: "login-dialog",
     components:{
@@ -108,7 +88,7 @@ export default defineComponent({
     },
     setup(props,ctx){
         const {t} = useI18n()
-        const {message, codeUrl, uuid, getCode, router, routerPush} = composition(props,ctx)
+        const {codeUrl, getCode} = composition(props,ctx)
 
         const showDialog = ref<boolean>(false)
         const visible = ref<boolean>(false)
@@ -148,30 +128,6 @@ export default defineComponent({
         const registerSuc = () => {
             registerSuccess.value = true
         }
-
-        /*// 获取路由
-        const store = useStore()
-        const getRouter = (): void => {
-            const params: IRouterParams = {
-                systemCode: 'beosin-eye',
-                userId: getStore('userId'),
-            }
-            getRouterInfo(params).then(res => {
-                const routerConfig = initRouterConfig(res.data[0].children)
-                store.commit('update', ['routeConfig', routerConfig])
-                routerConfig.map((val: RouteRecordRaw) => {
-                    router.addRoute('layout', val)
-                })
-                router.addRoute({
-                    path: '/:w+',
-                    redirect: '/404'
-                })
-                // routerPush('/404')
-                routerPush('/blockchainSituation')
-            }).catch(err => {
-                console.error(err)
-                message('error', err.message || err)})
-        }*/
 
         const handleClose = ():void =>{
             // 关闭弹窗

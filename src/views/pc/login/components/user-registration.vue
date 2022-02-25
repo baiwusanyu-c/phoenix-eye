@@ -63,6 +63,7 @@ declare type registerType = {
 export default defineComponent({
     name: "UserRegistration",
     components:{BeButton},
+    emits:['registerSuccess'],
     setup(props, ctx) {
         const {t} = useI18n()
         const {message} = composition(props, ctx)
@@ -104,6 +105,7 @@ export default defineComponent({
         const isTip = ref<boolean>(false)
         const num = ref<number>(60)
         const refsForm: ComponentInternalInstance | null = getCurrentInstance()
+        // 获取验证码
         const getCode = () => {
             form.value.password = trim(form.value.password);
             refsForm && (refsForm.refs.registerForm as FormInstance).validateField('email', (error:any) => {
@@ -123,7 +125,6 @@ export default defineComponent({
                                 isTip.value = false;
                             }
                         }, 1000)
-
                     }).catch((err:any) => {
                         ElMessage.error(err)
                         console.error(err)
@@ -132,34 +133,8 @@ export default defineComponent({
                 }
             })
         }
-        /*// 獲取手機驗證碼
-        const getCode = (): void => {
-            form.value.phoneNumber = trim(form.value.phoneNumber);
-            refsForm && (refsForm.refs.registerForm as FormInstance).validateField('phoneNumber', (error: string | undefined) => {
-                if (!error) {
-                    getRegCode({
-                        userName: form.value.phoneNumber
-                    }).then((res: any) => {
-                        message('success',t('lang.loginConfig.getVerCodeValid') + t('lang.success'));
-                        form.value.uuid = res;
-                        isTip.value = true;
-                        num.value = 60;
-                        let codeInerval = setInterval(() => {
-                            if (num.value > 0) {
-                                num.value--;
-                            } else {
-                                clearInterval(codeInerval);
-                                isTip.value = false;
-                            }
-                        }, 1000)
-                    }).catch((err) => {
-                        message('error', err.message || err)
-                        console.error(err)
-                    });
-                }
-            })
-        }*/
         const isLogin = ref<boolean>(false)
+        // 注册成功
         const registerSubmit = (): void => {
             form.value.email = trim(form.value.email);
             form.value.code = trim(form.value.code);
@@ -186,13 +161,6 @@ export default defineComponent({
         }
         const visible = ref<boolean>(false)
         const visibleAgain = ref<boolean>(false)
-        /**
-         * 修改显示类型
-         * @param type 显示类型
-         */
-        /*const changeShow = (type: number): void => {
-            ctx.emit('changeShow', type)
-        }*/
         return {
             rules,
             form,
@@ -210,83 +178,6 @@ export default defineComponent({
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<!--<style lang='scss' scoped>
-.formArea {
-  width: 100%;
-
-  .primary {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .showIcon {
-    position: relative;
-    top: -2px;
-    display: inline-block;
-    height: 16px;
-    cursor: pointer;
-  }
-
-  .errBtn {
-    cursor: not-allowed;
-  }
-
-  .codeBtn {
-    width: 34%;
-    height: 38px;
-    font-size: 14px;
-    line-height: 38px;
-    color: #fff;
-    text-align: center;
-    cursor: pointer;
-    background-color: $mainColor3;
-    border-radius: 5px;
-    opacity: .8;
-  }
-
-  .tips {
-    width: 110px;
-    height: 37px;
-    font-size: 14px;
-    line-height: 37px;
-    color: #76838F;
-    text-align: center;
-    background-color: #F2F4F5;
-    border-radius: 5px;
-  }
-
-  .checkArea {
-    height: 54px;
-    margin-top: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 21px;
-    text-align: right;
-
-    .cursor {
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .phone {
-      color: $textColor3;
-    }
-  }
-}
-
-.flex {
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.flex-center {
-  justify-content: center;
-}
-
-</style>-->
 <style lang="scss" scoped>
   .send-code{
     display: flex;

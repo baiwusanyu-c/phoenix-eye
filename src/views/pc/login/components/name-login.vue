@@ -147,36 +147,6 @@ export default defineComponent({
                 }
             });
         }
-        /*// 获取路由
-        const store = useStore()
-        const getRouter = (): void => {
-            const params: IRouterParams = {
-                systemCode: 'beosin-eye',
-                userId: getStore('userId'),
-            }
-            getRouterInfo(params).then(res => {
-                const routerConfig = initRouterConfig(res.data[0].children)
-                store.commit('update', ['routeConfig', routerConfig])
-                routerConfig.map((val: RouteRecordRaw) => {
-                    router.addRoute('layout', val)
-                })
-                router.addRoute({
-                    path: '/:w+',
-                    redirect: '/404'
-                })
-               // routerPush('/404')
-                routerPush('/blockchainSituation')
-            }).catch(err => {
-                console.error(err)
-                message('error', err.message || err)})
-        }*/
-        /**
-         * 修改显示类型
-         * @param type 显示类型
-         */
-        /*const changeShow = (type: number): void => {
-            ctx.emit('changeShow', type)
-        }*/
         onMounted(() => {
             getCode();
         })
