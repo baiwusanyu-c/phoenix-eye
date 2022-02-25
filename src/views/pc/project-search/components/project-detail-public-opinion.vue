@@ -47,8 +47,9 @@
                     <template #content>
                         <span>UTC：{{ beijing2utc(opinion.time) }}</span>
                     </template>
-                    <span class="msg-font">{{ formatDate(createDate(opinion.time)) }}</span>
+                    <span class="msg-font">{{fomateTimeStamp(createDate(opinion.time).getTime(),$i18n.locale)}}</span>
                 </el-tooltip>
+
             </div>
         </div>
 
@@ -56,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import {getUuid, openWindow, beijing2utc, formatDate, createDate} from "../../../../utils/common";
+import {getUuid, openWindow, beijing2utc, formatDate, createDate,fomateTimeStamp} from "../../../../utils/common";
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
 import {computed, defineComponent} from "vue";
 import {BeTag} from "../../../../../public/be-ui/be-ui.es";
@@ -99,6 +100,7 @@ export default defineComponent({
             beijing2utc,
             formatDate,
             createDate,
+            fomateTimeStamp,
             lookTextOriginal
         }
     }
