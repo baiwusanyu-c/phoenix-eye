@@ -162,6 +162,16 @@ export default {
         stateFailed:'Failed',
         profit:'Address Income',
     },
+    projectExplorer:{
+        title:'Project Explorer',
+        subTitle:'Search for project that interest you and see their details.',
+        searchP:'ProjectName / Contract',
+        example:'e.g.',
+        project:'Project',
+        contract:'Contract',
+        MultipleResults:'Multiple results are matched. Select one of them',
+        name:'Project Name'
+    },
     createProject:{
         createProjectTitle:'Create Project',
         editProjectTitle:'Edit Project',
@@ -237,7 +247,7 @@ export default {
     projectRinking:{
         contract:'Contract',
         proNum:'No.',
-        name:'Project name',
+        name:'Project Name',
         contractNum:'Number of contracts',
         score: 'Security score',
         txScale:'Transaction scale',
