@@ -10,7 +10,6 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     EllipsisCopy: typeof import('./src/components/common-components/ellipsis-copy/ellipsis-copy.vue')['default']
     ElMenu: typeof import('element-plus/es')['ElMenu']

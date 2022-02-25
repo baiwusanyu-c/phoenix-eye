@@ -44,28 +44,37 @@ export function loginPhone(params: any) {
     })
 }
 
-//获得注册验证码
-export function getRegCode(params: IReset) {
+// 注册 -获取邮箱验证码
+export function verifyCode(params:IReset){
     return request({
-        url: '/system/user/verifyCode',
+        url: '/system/user/official_site_sg_system/verify_code/register',
         method: 'get',
-        params
+        params,
     })
 }
 
+/*
+// old获得注册验证码 url已改
+export function getRegCode(params: IReset) {
+    return request({
+        url: '/system/user/official_site_sg_system/verify_code/register',
+        method: 'get',
+        params
+    })
+}*/
+
 //注册
 interface IRegister {
-    userName: string
-    phonenumber: string
-    uuid: string
-    code: string
+    account: string
+    verification_code: string
     password: string
-    sourceCode: string
+    from: string
 }
 
-export function registerUser(params: IRegister) {
+// 注册获取邮箱验证码
+export function registerAccount(params: IRegister) {
     return request({
-        url: '/system/user/register',
+        url: '/system/user/official_site_sg_system/email/register',
         method: 'post',
         params
     })
@@ -86,32 +95,52 @@ export function loginCode(params: ILoginCode) {
 
 //忘记密码
 interface IUpdatePwd {
-    userName: string
+    account: string
     password: string
-    uuid: string
-    code: string
+    re_password:string
+    verification_code: string
 }
 
-export function updatePwd(params: IUpdatePwd) {
+// 郵箱修改密碼 提交
+export function forgetPasswordApi(params:IUpdatePwd){
+    return request({
+        url: '/system/user/official_site_sg_system/email/password/forget',
+        method: 'post',
+        params,
+    })
+}
+
+// old
+/*export function updatePwd(params: IUpdatePwd) {
     return request({
         url: '/system/user/password/update',
         method: 'put',
         params
     })
-}
+}*/
 
 // 获取数字验证码(忘记密码)
 interface IReset {
     userName: string,
 }
 
-export function getResetCode(params: IReset) {
+// 郵箱修改密碼驗證碼獲取
+export function verifyCodePassword(params:IReset){
+    return request({
+        url: '/system/user/official_site_sg_system/verify_code/reset',
+        method: 'get',
+        params,
+    })
+}
+
+// old
+/*export function getResetCode(params: IReset) {
     return request({
         url: '/system/user/password/code',
         method: 'get',
         params
     })
-}
+}*/
 
 //获取用户信息  获取用户的权限信息
 export function getInfo() {

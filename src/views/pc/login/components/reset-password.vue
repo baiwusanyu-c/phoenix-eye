@@ -2,27 +2,33 @@
     <div class="formArea">
         <el-form :model="form" :rules="rules" ref="resetPwdForm">
             <el-form-item class="label" prop='name'>
-                <el-input autocomplete="off" :placeholder="$t('lang.loginConfig.phone')" v-model="form.name">
-                    <template #prepend><img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
+                <el-input autocomplete="off"
+                          :placeholder="$t('lang.loginConfig.phone')"
+                          v-model="form.name">
+                    <template #prefix>
+                        <img alt="" src="../../../../assets/image/pc/login-email.png" height="20" width="20"/>
                     </template>
                 </el-input>
             </el-form-item>
-            <div class="flex">
-                <el-form-item class="label" prop='code' style="width: 58%;">
-                    <el-input maxlength="6" type="text" autocomplete="off"
-                              :placeholder="$t('lang.loginConfig.loginVerCodeP2')" v-model="form.code">
-                        <template  #prepend><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
+            <el-form-item class="label" prop='code' style="width: 58%;">
+                <div class="send-code">
+                    <el-input :placeholder = "`${$t('lang.loginConfig.loginVerCodeP')}`"
+                              class="send-code-input"
+                              v-model="form.code">
+                        <template #prefix>
+                            <img alt="" src="../../../../assets/image/pc/login-code.png" height="20" width="20"/>
                         </template>
                     </el-input>
-                </el-form-item>
-                <p class="codeBtn" v-if="!isTip" @click="getCode">{{ $t('lang.loginConfig.getVerCodeValid') }}</p>
-                <p class="tips" v-else>{{ number }}s</p>
-            </div>
+                    <el-button v-if="!isTip" class="send-button" @click="getCode">{{$t('lang.loginConfig.send')}}</el-button>
+                    <el-button class="send-button" v-else>{{ num }}s</el-button>
+                </div>
+            </el-form-item>
             <el-form-item class="label" prop='newPwd'>
                 <el-input maxlength="12" @keyup.native="form.newPwd=form.newPwd.replace(/[ ]/g,'')"
                           :type="visible ? 'text' : 'password'"
                           autocomplete="off" :placeholder="$t('lang.loginConfig.newPassword')" v-model="form.newPwd">
-                    <template  #prepend><img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
+                    <template #prefix>
+                        <img alt="" src="../../../../assets/image/pc/login-password.png" height="20" width="20"/>
                     </template>
                     <template #append>
                         <img class="showIcon" v-if="!visible" @click="visible = !visible"
@@ -37,7 +43,8 @@
                           :type="visibleAgain ? 'text' : 'password'"
                           autocomplete="off" :placeholder="$t('lang.loginConfig.confirmPassword')"
                           v-model="form.password">
-                    <template  #prepend><img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
+                    <template #prefix>
+                        <img alt="" src="../../../../assets/image/pc/login-password.png" height="20" width="20"/>
                     </template>
                     <template #append>
                         <img class="showIcon" v-if="!visibleAgain" @click="visibleAgain = !visibleAgain"
@@ -48,36 +55,32 @@
                 </el-input>
             </el-form-item>
         </el-form>
-        <el-button class="primary" type="primary" :loading="isLogin" @click="resetPwd">
-            {{ $t('lang.loginConfig.confirmReset') }}
-        </el-button>
-        <p class="checkArea">
-            <span class="phone cursor" @click="changeShow(1)">{{ $t('lang.loginConfig.confirmReset') }}</span>
-        </p>
+        <be-button style="width: 100%;" customClass="eagle-btn" @click="resetPwd" type="success">
+            {{$t('lang.loginConfig.confirmReset')}}
+        </be-button>
     </div>
 </template>
 
 <script lang="ts">
-import {updatePwd, getResetCode} from '../../../../api/login';
+import {forgetPasswordApi, verifyCodePassword,} from '../../../../api/login';
 import {defineComponent, ref, reactive, getCurrentInstance, ComponentInternalInstance} from 'vue'
-import {pwdReg, phoneReg} from "../../../../utils/reg";
+import {pwdReg, phoneReg, emailReg} from "../../../../utils/reg";
 import {useI18n} from "vue-i18n";
 import composition from "../../../../utils/mixin/common-func";
 import {trim} from "../../../../utils/common";
 import type {ElForm} from 'element-plus'
+import {BeButton} from "../../../../../public/be-ui/be-ui.es";
+import {Base64} from "js-base64";
 type FormInstance = InstanceType<typeof ElForm>
 declare type resetPwdType = {
     name: string
     password: string
     code: string
-    uuid: string
     newPwd: string
 }
 export default defineComponent({
     name: "ResetPassword",
-    emits: [
-        'changeShow',
-    ],
+    components:{BeButton},
     setup(props, ctx) {
         const {t} = useI18n()
         const {message} = composition(props, ctx)
@@ -86,22 +89,20 @@ export default defineComponent({
             name: '',
             password: '',
             code: '',
-            uuid: '',
             newPwd: '',
         })
         const isTip = ref<boolean>(false)
         const num = ref<number>(60)
         const refsForm: ComponentInternalInstance | null = getCurrentInstance()
-        // 獲取手機驗證碼
+        // 獲取驗證碼
         const getCode = (): void => {
             form.value.name = trim(form.value.name);
             refsForm && (refsForm.refs.resetPwdForm as FormInstance).validateField('name', (error: string | undefined) => {
                 if (!error) {
-                    getResetCode({
+                    verifyCodePassword({
                         userName: form.value.name
                     }).then((res: any) => {
                         message('success', t('lang.loginConfig.getVerCodeValid') + t('lang.success'))
-                        form.value.uuid = res;
                         isTip.value = true;
                         num.value = 60;
                         let codeInerval = setInterval(() => {
@@ -127,21 +128,20 @@ export default defineComponent({
             refsForm && (refsForm.refs.resetPwdForm as FormInstance).validate((valid:boolean | undefined) => {
                 if (valid) {
                     isLogin.value = true;
-                    updatePwd({
-                        userName: form.value.name,
-                        password: form.value.password,
-                        uuid: form.value.uuid,
-                        code: form.value.code,
+                    forgetPasswordApi({
+                        account:form.value.name,
+                        password:Base64.encode(form.value.password),
+                        re_password:Base64.encode(form.value.password),
+                        verification_code:form.value.code,
                     }).then(() => {
-                        message('success', t('lang.loginConfig.resetPassword') + t('lang.success'))
-                        changeShow(1)
+                        ctx.emit('resetSuccess')
                     }).catch((err) => {
                         message('error', err.message || err)
                         console.error(err)
                         isLogin.value = false;
                     });
                 } else {
-                    return false;
+                    return false
                 }
             });
         }
@@ -149,10 +149,10 @@ export default defineComponent({
         const visibleAgain = ref<boolean>(false)
         // 電話號碼正則校驗提示
         const validatePhonenumber = (rule: any, value: any, callback: any):void => {
-            if (phoneReg.test(value)) {
+            if (emailReg.test(value)) {
                 callback();
             } else {
-                callback(new Error(t('lang.loginConfig.phoneErr')));
+                callback(new Error(t('lang.loginConfig.emailErr')));
             }
         }
         // 密碼正則校驗提示
@@ -177,7 +177,7 @@ export default defineComponent({
         // 校驗規則
         const rules = reactive({
             name: [
-                {required: true, message: t('lang.loginConfig.phone'), trigger: 'blur'},
+                {required: true, message: t('lang.loginConfig.email'), trigger: 'blur'},
                 {validator: validatePhonenumber, trigger: 'blur'}
             ],
             code: [
@@ -190,7 +190,7 @@ export default defineComponent({
             ],
             password: [
                 {required: true, message: t('lang.loginConfig.confirmPassword'), trigger: 'blur'},
-                {min: 6, max: 12, message: t('lang.loginConfig.phoneNumErr'), trigger: 'blur'},
+                {min: 6, max: 12, message:t('lang.loginConfig.phoneNumErr'), trigger: 'blur'},
                 {validator: validatePwd, trigger: 'blur'}
             ],
         })
@@ -198,9 +198,9 @@ export default defineComponent({
          * 修改显示类型
          * @param type 显示类型
          */
-        const changeShow = (type: number): void => {
+        /*const changeShow = (type: number): void => {
             ctx.emit('changeShow', type)
-        }
+        }*/
         return {
             rules,
             visible,
@@ -211,8 +211,6 @@ export default defineComponent({
             isLogin,
             resetPwd,
             getCode,
-            changeShow,
-
         }
     }
 
@@ -221,7 +219,7 @@ export default defineComponent({
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang='scss' scoped>
+<!--<style lang='scss' scoped>
 .formArea {
   width: 100%;
   margin: auto;
@@ -297,5 +295,29 @@ export default defineComponent({
   align-items: flex-start;
   justify-content: space-between;
 }
+</style>-->
+<style lang="scss" scoped>
+  .send-code{
+    display: flex;
+    justify-content: space-between;
+
+    .send-button{
+      width: 144px;
+      height: 48px;
+      color: #1CD2A9;
+      background: rgba(133, 229, 191, .1);
+      border-color: rgba(133, 229, 191, .1);
+      border-radius: 2px;
+    }
+
+    .send-button:hover{
+      border-color: #1CD2A9;
+    }
+
+    .send-code-input{
+      width: 256px;
+      padding-right: 16px;
+    }
+  }
 </style>
 

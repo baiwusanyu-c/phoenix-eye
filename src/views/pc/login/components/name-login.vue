@@ -46,7 +46,7 @@
                 </div>
             </div>
         </el-form>
-        <be-button customClass="primary" type="success" :loading="isLogin" @click="login">
+        <be-button style="width: 100%;" customClass="eagle-btn" type="success" :loading="isLogin" @click="login">
             {{ $t('lang.loginConfig.login') }}
         </be-button>
     </div>
@@ -74,9 +74,6 @@ declare type loginType = {
 }
 export default defineComponent({
     name: "NameLogin",
-    emits: [
-        'changeShow',
-    ],
     components:{BeButton},
     setup(props, ctx) {
         const {t} = useI18n()
@@ -139,7 +136,7 @@ export default defineComponent({
                         setStore('userId', res.user_id);
                         !getStore('debugSessionId') && setStore('debugSessionId', (new Date().getTime()).toString());
                         // 登錄先拿路由在跳轉 变为关闭弹窗
-                        getRouter()
+                        location.reload()
                     }).catch(err => {
                         message('error', err.message || err)
                         getCode();
@@ -177,14 +174,13 @@ export default defineComponent({
          * 修改显示类型
          * @param type 显示类型
          */
-        const changeShow = (type: number): void => {
+        /*const changeShow = (type: number): void => {
             ctx.emit('changeShow', type)
-        }
+        }*/
         onMounted(() => {
             getCode();
         })
         return {
-            changeShow,
             getCode,
             codeUrl,
             form,
@@ -207,7 +203,7 @@ export default defineComponent({
   .login-form {
 
     .el-form-item {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
   }
 
@@ -275,14 +271,14 @@ export default defineComponent({
 }
 
 .codeArea {
-  top: 6px;
+  top: 12px;
   width: 120px;
   margin-left: 10px;
   text-align: left;
 
   .codeBtn {
-    width: 95px;
-    height: 38px;
+    width: 120px;
+    height: 48px;
     cursor: pointer;
   }
 
