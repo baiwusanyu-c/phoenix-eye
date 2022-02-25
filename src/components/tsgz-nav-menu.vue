@@ -88,12 +88,11 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch} from "vue";
+import {defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch} from "vue";
 import {clearSession, clearStore, getStore, setStore} from "../utils/common";
 import composition from "../utils/mixin/common-func";
 import {useStore} from "vuex";
 import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-import BeSvgIcon from "./common-components/svg-icon/be-svg-icon.vue";
 import {BeIcon,BePopover,BeButton} from '../../public/be-ui/be-ui.es.js'
 import {useI18n} from "vue-i18n";
 import {ILoginDialog, IPopover} from "../utils/types";
@@ -106,7 +105,6 @@ export default defineComponent({
     components:{
         LoginDialog,
         MsgDialog,
-        BeSvgIcon,
         BeIcon,
         BePopover,
         BeButton

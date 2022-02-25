@@ -1,4 +1,4 @@
-import beEllipsis from './src/be-ellipsis'
+import beEllipsis from './be-ellipsis'
 const BeEllipsis = {
     install: function (Vue) {
         Vue.component('be-ellipsis', beEllipsis)
