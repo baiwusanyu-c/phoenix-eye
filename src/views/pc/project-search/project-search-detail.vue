@@ -104,10 +104,10 @@
                 <template #next><span></span></template>
             </be-pagination>
         </div>
-        <!--top5 数据表格 -->
+        <!--top5 数据表格 :data=" top5TokenHolder"-->
         <div class="proj-detail-item" style="display: flex">
             <project-detail-top
-                :data=" top5TokenHolder"
+
                 style="margin-right: 16px"
                 :header="top5THTableHeader"
                 :title="$t('lang.projectExplorer.detail.top5Title1')"

@@ -41,6 +41,15 @@
                     <span  v-if="item.prop === 'pair'">
                         {{scope.row.pair }}
                     </span>
+                    <div v-if="item.prop === 'percentage'">
+                        <p>30%</p>
+                        <be-progress percent="30"
+                                     strokeWidth="6"
+                                     color="#1CD2A9"
+                                     :showInfo="false">
+                        </be-progress>
+                    </div>
+
                 </template>
             </el-table-column>
 
@@ -50,7 +59,7 @@
 
 <script lang="ts">
 import {defineComponent,PropType} from "vue";
-import {BeTag} from "../../../../../public/be-ui/be-ui.es";
+import {BeTag,BeProgress} from "../../../../../public/be-ui/be-ui.es";
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {numberToCommaString} from "../../../../utils/common";
 export interface ITableHeader {
@@ -59,7 +68,7 @@ export interface ITableHeader {
 }
 export default defineComponent({
     name: "project-detail-top",
-    components:{BeTag,BeEllipsisCopy},
+    components:{BeTag,BeEllipsisCopy,BeProgress},
     props:{
         title:{
             type:String,
