@@ -48,3 +48,9 @@ export function getProjectSituationStatistics(params:IPublicOpinion) {
         params
     })
 }
+export function getProjectListCurUser() {
+    return request({
+        url: `${config.baseURL}/ussa/project/user/list`,
+        method: 'get',
+    })
+}
