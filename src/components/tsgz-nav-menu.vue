@@ -9,7 +9,7 @@
         <!--    logo    -->
         <div style="display: flex;align-items: center">
             <div class="expend-logo"></div>
-            <el-select v-model="selectVal" filterable v-if="isLogin">
+            <el-select v-model="selectVal" filterable v-if="isLogin" clearable @change="handleProjectSelect">
                 <el-option
                     v-for="item in projectList"
                     :key="item.project_id + item.name"
@@ -320,7 +320,14 @@ export default defineComponent({
                 message('error', err.message || err)
             })
         }
+        /**
+         * 项目选择事件
+         */
+        const handleProjectSelect = ():void =>{
+            routerPush('/projectSearch/detail',{id:selectVal.value})
+        }
         return {
+            handleProjectSelect,
             getProjectUser,
             projectList,
             selectVal,
