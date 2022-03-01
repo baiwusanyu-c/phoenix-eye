@@ -7,8 +7,16 @@
 <template>
     <div class="tsgz-nav-menu" id="xnhb_nav_menu">
         <!--    logo    -->
-        <div style="display: flex">
+        <div style="display: flex;align-items: center">
             <div class="expend-logo"></div>
+            <el-select v-model="selectVal" filterable v-if="isLogin" clearable @change="handleProjectSelect">
+                <el-option
+                    v-for="item in projectList"
+                    :key="item.project_id + item.name"
+                    :label="item.name"
+                    :value="item.project_id">
+                </el-option>
+            </el-select>
             <!--    菜单    -->
             <div class="tsgz-nav-menu-container">
                 <el-menu
@@ -95,8 +103,10 @@ import {useStore} from "vuex";
 import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
 import {BeIcon,BePopover,BeButton} from '../../public/be-ui/be-ui.es.js'
 import {useI18n} from "vue-i18n";
-import {ILoginDialog, IPopover} from "../utils/types";
+import {ILoginDialog, IOption, IPopover} from "../utils/types";
 import LoginDialog from "../views/pc/login/login-dialog.vue";
+import {getProjectListCurUser} from "../api/project-explorer";
+import {useEventBus} from "@vueuse/core";
 /**
  * 头部菜单导航
  */
@@ -110,7 +120,7 @@ export default defineComponent({
         BeButton
     },
     setup(props, ctx) {
-        const {routerPush,route} = composition(props, ctx)
+        const {routerPush,route,message} = composition(props, ctx)
         //是否登出
         const isLogout = ref<boolean>(false)
         //是否登陆
@@ -125,18 +135,34 @@ export default defineComponent({
                 isLogout.value = true;
             }
         }
+
         /**
          * 退出调用方法
          */
-        const confirm = (isConfirm:boolean): void => {
-            if(isConfirm){
+        const confirm = (isConfirm:boolean | string): void => {
+            if(isConfirm === true || isConfirm === 'true'){
                 clearSession();
                 clearStore();
                 isLogin.value = false
+                headerConfig.value = {
+                    JYFX:{
+                        icon: '',
+                        index: 0,
+                        name: 'lang.subNav.navName2',
+                        show: true,
+                        path: '/riskTrx/list',
+                        isPush: true,
+                        children: [],
+                        isDisabled: false,
+                    }
+                }
+                headerConfigMore.value = []
+                setStore('language', locale.value)
             }
             isLogout.value = false;
         }
-
+        const bus = useEventBus<string>('loginExpired')
+        bus.on(confirm)
         const openLogin = ():void=>{
             (instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
         }
@@ -169,6 +195,9 @@ export default defineComponent({
             const userInfo = JSON.parse(getStore('userInfo') as string)
             loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
             nextTick(()=>{
+                if(loginUser.value){
+                    getProjectUser()
+                }
                 setHeaderConfig()
             })
 
@@ -271,7 +300,7 @@ export default defineComponent({
         }
 
         // 语种切换
-        const {t, locale} = useI18n()
+        const {locale} = useI18n()
         const instanceInner = getCurrentInstance()
         const changeLanguage = (data: string): void => {
             setStore('language', data)
@@ -280,7 +309,28 @@ export default defineComponent({
             (instanceInner?.refs.popoverLang as IPopover).close()
         }
         const computeLang = ref<string>('EN')
+
+        // 获取用户项目下拉列表
+        const projectList = ref<Array<IOption>>([])
+        const selectVal = ref<string>('')
+        const getProjectUser = ():void =>{
+            getProjectListCurUser().then(res=>{
+                projectList.value = res.data
+            }).catch(err=>{
+                message('error', err.message || err)
+            })
+        }
+        /**
+         * 项目选择事件
+         */
+        const handleProjectSelect = ():void =>{
+            routerPush('/projectSearch/detail',{id:selectVal.value})
+        }
         return {
+            handleProjectSelect,
+            getProjectUser,
+            projectList,
+            selectVal,
             headerConfigMore,
             loginUser,
             computeLang,
@@ -348,7 +398,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 800px;
+  /*width: 800px;*/
   height: 60px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -436,7 +486,8 @@ export default defineComponent({
 
   .expend-logo {
     width: 164px;
-    margin-left: 30px;
+    height: 60px;
+    margin: 0 30px;
     background-image: url("../assets/image/pc/logo-white.png");
     background-repeat: no-repeat;
     background-position-y: center;

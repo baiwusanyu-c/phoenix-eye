@@ -10,20 +10,56 @@
             <span>{{title}}</span>
             <be-tag round="4" type="success" customClass="tag">{{tag}}</be-tag>
         </div>
+        <el-table
+            tooltip-effect="light"
+            :data="data"
+            class="top5-list-table"
+            ref="Top5List">
+            <template #empty>
+                <div class='empty-data' style="width: 100%">
+                    <img class="img" src="@/assets/image/pc/empty-data.png" alt="">
+                    <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
+                </div>
+            </template>
+            <el-table-column
+                v-for="item in header"
+                :prop="item.prop"
+                width="140"
+                align="left">
+                <template #header>
+                    <span class="table-head">{{ item.label }}</span>
+                </template>
+                <template #default="scope">
+                    <be-ellipsis-copy :targetStr="scope.row.address"
+                                      v-if="item.prop === 'address'"
+                                      fontLength="6"
+                                      endLength="6">
+                    </be-ellipsis-copy>
+                    <span v-if="item.prop === 'quantity'">
+                        {{ numberToCommaString(scope.row.quantity) }}
+                    </span>
+                    <span  v-if="item.prop === 'pair'">
+                        {{scope.row.pair }}
+                    </span>
+                </template>
+            </el-table-column>
 
+        </el-table>
     </div>
 </template>
 
 <script lang="ts">
 import {defineComponent,PropType} from "vue";
 import {BeTag} from "../../../../../public/be-ui/be-ui.es";
-interface ITableHeader {
+import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
+import {numberToCommaString} from "../../../../utils/common";
+export interface ITableHeader {
     prop:string,
     label:string
 }
 export default defineComponent({
     name: "project-detail-top",
-    components:{BeTag},
+    components:{BeTag,BeEllipsisCopy},
     props:{
         title:{
             type:String,
@@ -31,6 +67,14 @@ export default defineComponent({
         },
         data:{
             type:Array as PropType<any>,
+            default:function (){
+                return [{
+                    address:'strinadwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwg',
+                    percentag:50,
+                    quantity:123123123,
+                    pair:'Cake / WBNB'
+                }]
+            }
         },
         header:{
             type:Array as PropType<ITableHeader[]>,
@@ -39,12 +83,46 @@ export default defineComponent({
             type:String,
             default:'cake'
         }
+    },
+    setup(){
+        return {
+            numberToCommaString
+        }
     }
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   .project-detail-top5{
+
+    .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell{
+      background-color: $mainColor6;
+    }
+
+    .top5-list-table{
+
+      .el-table__empty-block{
+        width: 100% !important;
+      }
+
+      .el-table__body {
+        border-spacing: 0;
+
+      }
+
+      thead {
+        font-size: 16px;
+        line-height: 30px;
+      }
+
+      .el-table__row{
+        height: 20px;
+
+        &:hover{
+          box-shadow: none;
+        }
+      }
+    }
     box-sizing: border-box;
     flex:1;
     min-height: 284px;
@@ -62,11 +140,8 @@ export default defineComponent({
       font-weight: bold;
       color: $textColor3;
 
-      span{
-        margin-right: 16px;
-      }
-
       .tag{
+        margin-left: 16px;
         background-color: $mainColor15;
         border:0;
         opacity: .8;

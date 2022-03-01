@@ -8,6 +8,7 @@ import axios from 'axios'
 import config from '../enums/config'
 import {getStore, removeSession, removeStore} from "./common";
 import qs from 'qs'
+import {useEventBus} from "@vueuse/core";
 // create an axios instance
 const service = axios.create({
     baseURL:  String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? config.baseURL + '/hermit/back/' :  config.baseURL,
@@ -43,18 +44,21 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         const res = response.data
+        const bus = useEventBus<string>('loginExpired')
         if (res.code !== 200 && res.code !== '0000') {
 
             // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
             if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
                 // to re-login
-
+                window.location.href = '#/riskTrx/list'
+                bus.emit('true')
             }
             if (res.code === 401 || res.code === 920000003) {
                 removeSession('CETInfo')
                 removeStore('token')
                 removeStore('userInfo')
-                //$vue.$router.push({path: "/login"})
+                window.location.href = '#/riskTrx/list'
+                bus.emit('true')
                 return Promise.reject(new Error('登录过期' || 'Error'))
             }
             return Promise.reject(new Error(res.msg || res.message ||'Error'))

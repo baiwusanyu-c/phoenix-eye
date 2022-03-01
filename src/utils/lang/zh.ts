@@ -213,12 +213,19 @@ export default {
         detail:{
             title:'项目详情',
             riskTrx:'风险交易',
+            top5Title1:'Top 5 Token Holders',
+            top5Title2:'Top 5 Liquidity Pairs Holders',
             riskPublicOpinion:'风险公共舆情',
             source:'來源',
+            contractStatistics:'Contract Statistics',
             transactionsTotal:'Transactions(Total)',
             lastDate:'Latest Trading Date',
             transactions:'Transactions',
             socialProfiles:'Social Profiles',
+            address:'address',
+            percentage:'percentage',
+            quantity:'quantity',
+            pair:'pair'
         }
     },
     addRiskWindow:{

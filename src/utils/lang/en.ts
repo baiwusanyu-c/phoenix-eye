@@ -178,13 +178,20 @@ export default {
         name:'Project Name',
         detail:{
             title:'Project Details',
+            top5Title1:'Top 5 Token Holders',
+            top5Title2:'Top 5 Liquidity Pairs Holders',
             riskTrx:'Risk Trx',
             riskPublicOpinion:'Risk Public Opinion',
             source:'source',
+            contractStatistics:'Contract Statistics',
             transactions:'Transactions',
             transactionsTotal:'Transactions(Total)',
             lastDate:'Latest Trading Date',
             socialProfiles:'Social Profiles',
+            address:'address',
+            percentage:'percentage',
+            quantity:'quantity',
+            pair:'pair'
         }
     },
     createProject:{
