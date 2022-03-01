@@ -1,6 +1,6 @@
 <template>
     <div class="safety-opinion-info-body"
-         v-for="(opinion,index) in infoData" :key="createKey(opinion)">
+         v-for="(opinion) in infoData" :key="createKey(opinion)">
         <!--        header                -->
         <div class="safety-opinion-header">
             <div class="safety-opinion-header-title">
@@ -12,12 +12,12 @@
             <div class="safety-opinion-body-msg scrollDiy">
                 <be-ellipsis-copy
                     :targetStr="opinion.message"
-                    :is-ellipsis="opinion.message.length > 400 ? true : false"
+                    :is-ellipsis="opinion.message.length > 300 ? true : false"
                     :isShowCopyBtn="false"
                     :isTooltip="false"
                     styles="font-weight: 400;font-size: 14px;line-height:1.5"
-                    fontLength="0"
-                    :endLength="opinion.message.length - 200">
+                    :fontLength="opinion.message.length - 200"
+                    :endLength="0">
                 </be-ellipsis-copy>
             </div>
         </div>

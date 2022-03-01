@@ -30,29 +30,95 @@
                 </div>
                 <div class="base-info-item">
                     <div style="flex: 1">
-                        <p>{{ $t('lang.projectExplorer.detail.transactionsTotal') }}(24h)</p>
+                        <p>{{ $t('lang.projectExplorer.detail.transactionsTotal') }}</p>
                         <span class="total">{{ numberToCommaString(baseInfo.transactionsTotal) }}</span>
                     </div>
                     <div style="flex: 1">
-                        <p>{{ $t('lang.projectExplorer.detail.lastDate') }}(24h)</p>
-                        <p class="date">{{ formatDate(createDate(baseInfo.lastTradeData))}}</p>
-                        <p class="time">{{ formatTimeStamp(createDate(baseInfo.lastTradeData).getTime(),$i18n.locale) }}</p>
+                        <p>{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
+                        <p class="date">{{ formatDate(createDate(baseInfo.lastTradeData)) }}</p>
+                        <p class="time">{{
+                                formatTimeStamp(createDate(baseInfo.lastTradeData).getTime(), $i18n.locale)
+                            }}</p>
                     </div>
                 </div>
                 <div class="base-info-item">
                     <p>{{ $t('lang.projectExplorer.detail.socialProfiles') }}:</p>
-                    <be-icon @click='openWindow(baseInfo.website)' v-if="baseInfo.website" role="button" width="50" height="60" icon="iconWebsiteEagle"></be-icon>
-                    <be-icon @click='openWindow(baseInfo.twitter)' v-if="baseInfo.twitter" role="button" width="60" height="60" icon="iconTwitterEagle"></be-icon>
-                    <be-icon @click='openWindow(baseInfo.telegram)' v-if="baseInfo.telegram" role="button" width="60" height="60" icon="iconTelegramEagle"></be-icon>
-                    <be-icon @click='openWindow(baseInfo.github)' v-if="baseInfo.github" role="button" width="50" height="60" icon="iconGithubEagle"></be-icon>
+                    <be-icon @click='openWindow(baseInfo.website)' v-if="baseInfo.website" role="button" width="50"
+                             height="60" icon="iconWebsiteEagle"></be-icon>
+                    <be-icon @click='openWindow(baseInfo.twitter)' v-if="baseInfo.twitter" role="button" width="60"
+                             height="60" icon="iconTwitterEagle"></be-icon>
+                    <be-icon @click='openWindow(baseInfo.telegram)' v-if="baseInfo.telegram" role="button" width="60"
+                             height="60" icon="iconTelegramEagle"></be-icon>
+                    <be-icon @click='openWindow(baseInfo.github)' v-if="baseInfo.github" role="button" width="50"
+                             height="60" icon="iconGithubEagle"></be-icon>
                 </div>
             </div>
 
         </div>
-        <!--top5 数据表格-->
+        <!--合约统计-->
+        <div class="proj-detail-item">
+            <div class="item-title">
+                <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
+            </div>
+            <div v-for="item in contractStatisticsData" class="contract-statistics" :key="item.contract_address">
+                <div style="flex:1">
+                    <div style="margin-bottom: 6px;">
+                        <be-tag type="info">
+                            <div class="flex items-center">
+                                <span style="margin-left: 10px;">{{ item.platform.toUpperCase() }}</span>
+                            </div>
+                        </be-tag>
+                        <span class="total">{{ item.token_name }}</span>
+                    </div>
+                    <be-ellipsis-copy :targetStr="item.contract_address"
+                                      styles="color: #008EE9;cursor:pointer;font-weight:400"
+                                      fontLength="8"
+                                      endLength="8">
+                    </be-ellipsis-copy>
+                </div>
+                <div style="flex:1">
+                    <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.transactions') }}(24h)</p>
+                    <span>{{ numberToCommaString(item.tx_24) }}</span>
+                </div>
+                <div style="flex:1">
+                    <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.transactionsTotal') }}</p>
+                    <span class="total">{{ numberToCommaString(item.tx_total) }}</span>
+                </div>
+                <div style="flex:1">
+                    <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
+                    <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
+                </div>
+            </div>
+            <be-pagination
+                v-if="contractStatisticsData.length > 0"
+                custom-class="table-page"
+                :pageSize='pageParamsTj.pageSize'
+                :currentPage='pageParamsTj.currentPage'
+                :total='pageParamsTj.total'
+                @updatePage="pageChangeTj"
+                :is-front="false">
+                <template #prev>
+                        <span class="table-page-info">
+                        {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
+                </template>
+                <template #next><span></span></template>
+            </be-pagination>
+        </div>
+        <!--top5 数据表格 -->
         <div class="proj-detail-item" style="display: flex">
-            <project-detail-top style="margin-right: 16px"></project-detail-top>
-            <project-detail-top></project-detail-top>
+            <project-detail-top
+                :data=" top5TokenHolder"
+                style="margin-right: 16px"
+                :header="top5THTableHeader"
+                :title="$t('lang.projectExplorer.detail.top5Title1')"
+               >
+            </project-detail-top>
+            <project-detail-top
+                :data="top5QuidityPairs"
+                :header="top5QPTableHeader"
+                :title="$t('lang.projectExplorer.detail.top5Title2')"
+                >
+            </project-detail-top>
         </div>
         <!--风险交易-->
         <div class="proj-detail-item">
@@ -61,7 +127,7 @@
             </div>
             <risk-trx-table></risk-trx-table>
         </div>
-        <!--舆情安全-->
+        <!--项目舆情安全-->
         <div class="proj-detail-item">
             <div class="item-title">
                 <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
@@ -99,18 +165,23 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, nextTick, onMounted, ref} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import {IPageParam} from "../../../utils/types";
-import {BeIcon} from "../../../../public/be-ui/be-ui.es";
+import {BeIcon,BeTag} from "../../../../public/be-ui/be-ui.es";
 import composition from "../../../utils/mixin/common-func";
 import {useI18n} from "vue-i18n";
 import ProjectDetailPubliOpinion from "./components/project-detail-public-opinion.vue";
-import {getPublicOpinion, IPublicOpinion} from "../../../api/project-explorer";
+import {
+    getProjectSituation,
+    getProjectSituationStatistics,
+    getPublicOpinion,
+    IPublicOpinion
+} from "../../../api/project-explorer";
 import {numberToCommaString, createDate, formatDate, formatTimeStamp, openWindow} from "../../../utils/common";
 import RiskTrxTable from "../risk-trx/components/risk-trx-table.vue";
-import ProjectDetailTop from "./components/project-detail-top.vue";
-
+import ProjectDetailTop, {ITableHeader} from "./components/project-detail-top.vue";
+import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 interface ISafetyData {
     negative?: string
     negativeMsg?: string
@@ -120,6 +191,15 @@ interface ISafetyData {
     from?: string
     time?: string
     label?: string
+}
+
+interface IContractStatistics {
+    contract_address: string,
+    token_name: string,
+    platform: string
+    tx_24?: number | string,
+    tx_total?: number | string,
+    latest_trading_date?: string,
 }
 
 interface IBaseInfo {
@@ -133,7 +213,14 @@ interface IBaseInfo {
     twitter?: string
     website?: string
 }
-
+interface ITop5TokenHolder{
+    address?:string,
+    percentage?:number,
+    quantity?:string,
+}
+interface ITop5QuidityPairs extends ITop5TokenHolder{
+    pair?:string
+}
 export default defineComponent({
     name: "project-search-detail",
     components: {
@@ -142,39 +229,130 @@ export default defineComponent({
         BePagination,
         ProjectDetailPubliOpinion,
         BeIcon,
+        BeTag,
+        BeEllipsisCopy,
     },
     setup(props, ctx) {
         const {message, route} = composition(props, ctx)
         const {t} = useI18n()
         const baseInfo = ref<IBaseInfo>({})
+        const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
+        const top5THTableHeader:Array<ITableHeader> = [
+            {prop:'address',label:t('lang.projectExplorer.detail.address')},
+            {prop:'percentage',label:t('lang.projectExplorer.detail.percentage')},
+            {prop:'quantity',label:t('lang.projectExplorer.detail.quantity')},
+        ]
+        const top5QPTableHeader:Array<ITableHeader> = [
+            {prop:'address',label:t('lang.projectExplorer.detail.address')},
+            {prop:'percentage',label:t('lang.projectExplorer.detail.percentage')},
+            {prop:'quantity',label:t('lang.projectExplorer.detail.quantity')},
+            {prop:'pair',label:t('lang.projectExplorer.detail.pair')},
+        ]
+        const top5QuidityPairs = ref<Array<ITop5QuidityPairs>>([])
         const getProSituData = async () => {
-            // 获取项目详情数据
-            baseInfo.value = {
-                transactions: 1122,
-                transactionsTotal: 24393035,
-                lastTradeData: '2022-02-01T10:04:00.000+0000',
-                riksTrxNum: 1234,
-                riskPublicOpinion: 1234,
-                github: 'string',
-                telegram: 'string',
-                twitter: 'string',
-                website: 'string',
+            let params: IPublicOpinion = {
+                project_id: parseInt(projectId.value),
             }
-            // 获取合约静态检测数据
+            getProjectSituation(params).then(res=>{
+                if (res) {
+                    // 获取项目详情数据
+                    baseInfo.value = {
+                        transactions: res.data.details.tx_24,
+                        transactionsTotal: res.data.details.tx_total,
+                        lastTradeData: res.data.details.latest_trading_date,
+                        riksTrxNum: res.data.details.risk_tx_24,
+                        riskPublicOpinion: res.data.details.risk_public_opinion_24,
+                        github: 'string',
+                        telegram: 'string',
+                        twitter: 'string',
+                        website: ''
+                    }
+                    // top5数据
+                    top5TokenHolder.value = res.data.details.top_5_token_holders
+                    top5QuidityPairs.value = res.data.details.top_5_liquidity_pairs_holders
 
-            // 获取舆情安全数据
+                }
+            }).catch(err => {
+                message('error', err.message || err)
+                console.error(err)
+            })
+
+            // 获取合约静态检测数据
+            await getContractStatistics()
+            // 获取项目舆情安全数据
             await getPublicOpinionData()
         }
         // 项目id
         const projectId = ref<string>('')
         /**
-         * 获取舆情安全数据
+         * 获取项目合约统计数据
          */
-            // 舆情安全数据
+        const contractStatisticsData = ref<Array<IContractStatistics>>([])
+        const pageParamsTj = ref<IPageParam>({
+            currentPage: 1,
+            pageNum: 1,
+            pageSize: 3,
+            total: 0
+        })
+        const getContractStatistics = (): void => {
+            contractStatisticsData.value = [
+                {
+                    contract_address: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156aa',
+                    token_name: 'string',
+                    platform: 'heco',
+                    tx_24: 1122,
+                    tx_total: 24393035,
+                    latest_trading_date: '2022-02-01T10:04:00.000+0000',
+                },
+                {
+                    contract_address: '0x3da74c09ccb8wcfaba3153b7f6189dda9d7f28156aa',
+                    token_name: 'string',
+                    platform: 'heco',
+                    tx_24: 1122,
+                    tx_total: 24393035,
+                    latest_trading_date: '2022-02-01T10:04:00.000+0000',
+                },
+                {
+                    contract_address: '0x3da74ca09ccb8faba3153b7f6189dda9d7f28156aa',
+                    token_name: 'string',
+                    platform: 'heco',
+                    tx_24: 1122,
+                    tx_total: 24393035,
+                    latest_trading_date: '2022-02-01T10:04:00.000+0000',
+                }
+            ]
+            const params:IPublicOpinion = {
+                project_id:projectId.value,
+                page_num:pageParamsTj.value.pageNum,
+                page_size:pageParamsTj.value.pageSize,
+            }
+            getProjectSituationStatistics(params).then(res=>{
+                if (res) {
+                    contractStatisticsData.value = res.data.page_infos
+                    pageParamsTj.value = res.data.total
+                }
+            }).catch(err => {
+                message('error', err.message || err)
+                console.error(err)
+            })
+        }
+        /**
+         * 项目舆情安全分页方法
+         * @param {IPageParam} item - 分页参数对象
+         */
+        const pageChangeTj = (item: IPageParam): void => {
+            pageParamsTj.value.pageNum = item.currentPage
+            pageParamsTj.value.currentPage = item.currentPage
+            getContractStatistics()
+        }
+        /**
+         * 获取项目舆情安全数据
+         */
+        // 项目舆情安全数据
         const safetyData = ref<Array<ISafetyData>>([])
-        // 舆情安全loading
+        // 项目舆情安全loading
         const loadingFs = ref<boolean>(false)
-        // 舆情安全分页参数
+        // 项目舆情安全分页参数
         const pageParamsFs = ref<IPageParam>({
             currentPage: 1,
             pageNum: 1,
@@ -182,7 +360,7 @@ export default defineComponent({
             total: 0
         })
         /**
-         * 舆情安全数据获取方法
+         * 项目舆情安全数据获取方法
          */
         const getPublicOpinionData = (): void => {
             safetyData.value = []
@@ -216,7 +394,7 @@ export default defineComponent({
             })
         }
         /**
-         * 舆情安全分页方法
+         * 项目舆情安全分页方法
          * @param {IPageParam} item - 分页参数对象
          */
         const pageChangeFs = (item: IPageParam): void => {
@@ -231,8 +409,15 @@ export default defineComponent({
 
         })
         return {
+            top5QPTableHeader,
+            top5THTableHeader,
+            top5TokenHolder,
+            top5QuidityPairs,
+            contractStatisticsData,
             baseInfo,
             pageChangeFs,
+            pageParamsTj,
+            pageChangeTj,
             getPublicOpinionData,
             safetyData,
             pageParamsFs,
@@ -280,14 +465,14 @@ export default defineComponent({
       flex: 2;
       margin-right: 20px;
 
-      .total{
+      .total {
         font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
         font-size: 24px;
         font-weight: bold;
         color: $textColor3;
       }
 
-      .date{
+      .date {
         font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
         font-size: 18px;
         font-weight: bold;
@@ -305,7 +490,7 @@ export default defineComponent({
 
       &:hover {
         @apply shadow-xl
-        }
+            }
 
       .be-icon {
         fill: $textColor12;
@@ -343,6 +528,55 @@ export default defineComponent({
         font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
         color: $textColor4;
       }
+    }
+
+    .contract-statistics {
+      box-sizing: border-box;
+      display: flex;
+      width: 100%;
+      height: 88px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background-color: $mainColor7;
+      border-radius: 4px;
+
+      .be-tag {
+        height: 30px;
+        margin-right: 14px;
+        line-height: 30px;
+        background-color: $mainColor16;
+        border-width: 0;
+        border-radius: 0;
+
+        span{
+          font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: $textColor3;
+        }
+
+        &:hover{
+          @apply shadow
+        }
+      }
+
+      .contract-statistics-label {
+        margin-bottom: 12px;
+        font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+        color: $textColor4;
+      }
+
+      span, .date {
+        font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        color: $textColor3;
+      }
+
+
+      &:hover {
+        @apply shadow-md
+            }
     }
 
     .proj-detail-item-hyaq {

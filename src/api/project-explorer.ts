@@ -22,11 +22,28 @@ export function getProjectListUser(params:IProjParam) {
 }
 
 export interface IPublicOpinion extends IPageParam{
-    project_id?:number | null
+    project_id?:number | string | null
 }
 export function getPublicOpinion(params:IPublicOpinion) {
     return request({
         url: `${config.baseURL}/ussa/project/opinion/list`,
+        method: 'post',
+        params
+    })
+}
+
+
+export function getProjectSituation(params:IPublicOpinion) {
+    return request({
+        url: `${config.baseURL}/ussa/project/situation`,
+        method: 'post',
+        params
+    })
+}
+
+export function getProjectSituationStatistics(params:IPublicOpinion) {
+    return request({
+        url: `${config.baseURL}/ussa/project/situation/contract/statistics`,
         method: 'post',
         params
     })
