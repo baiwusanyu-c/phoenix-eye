@@ -2,16 +2,16 @@ import {
     createRouter,
     createWebHashHistory,
     RouterOptions,
-    RouteRecordRaw,
     RouteLocationNormalized,
     Router,
 } from 'vue-router'
-import {isString, getStore, removeStore, clearSession} from "../utils/common";
+import {isString, getStore} from "../utils/common";
 import {i18n} from "../utils/i18n";
 import {getRouterInfo} from "../api/login";
 import store from "../store/store";
 // @ts-ignore
 import {BeMessage} from "../../public/be-ui/be-ui.es.js";
+import {IOption} from "../utils/types";
 const routes =
     [
         {
@@ -43,6 +43,7 @@ const routes =
                     component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
                     meta: {title: 'lang.subNav.navName2'},
                 },
+
             ]
         },
     ]
@@ -50,6 +51,14 @@ const routes =
 const metaTitleDict:any = {
     XMSS:'lang.subNav.navName5',
     XMGL: 'lang.subNav.navName3',
+}
+// 组件字典
+// 递归路由配置对象时会使用到，其key必须和bms的组件路径一致
+// 有这个字典是为了保持对组建的引用，否则在打包时会被vite的tree shaking掉
+const routerDict:IOption = {
+    'pc/project-management/project-manage-main':() => import('../views/pc/project-management/project-manage-main.vue'),
+    'pc/project-search/project-search-main':() => import('../views/pc/project-search/project-search-main.vue'),
+    'pc/project-search/project-search-detail':() => import('../views/pc/project-search/project-search-detail.vue')
 }
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData:Array<T>):Array<T> => {
@@ -61,8 +70,9 @@ export const initRouterConfig = <T>(treeData:Array<T>):Array<T> => {
         // 将meta.title 配置成国家化变量
         val.meta.title = metaTitleDict[val.perms]
         // 配置组件引入
+        //val.component = () => import(`../views/${val.componentPath}.vue`)
         val.componentPath = isString(val.component) && val.component
-        val.component = () => import(`../views/${val.componentPath}.vue`)
+        val.component = routerDict[val.componentPath]
         if (val.children && val.children.length > 0) {
             initRouterConfig(val.children)
         }
