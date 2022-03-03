@@ -433,7 +433,7 @@ export default defineComponent({
           border-radius: 0;
 
           span{
-            font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+            font-family: AlibabaPuHuiTi-Regular,  sans-serif;
             font-size: 14px;
             font-weight: 500;
             color: $textColor3;

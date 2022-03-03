@@ -138,14 +138,14 @@ export default defineComponent({
   padding-bottom: 86px;
 
   .subTitle {
-    font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+    font-family: AlibabaPuHuiTi-Regular, sans-serif;
     font-size: 18px;
     font-weight: 400;
     color: $textColor12;
   }
 
   .item {
-    font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+    font-family: AlibabaPuHuiTi-Medium, sans-serif;
     font-size: 14px;
     font-weight: bold;
     line-height: 22px;
@@ -161,7 +161,7 @@ export default defineComponent({
 
   .title {
     margin-bottom: 16px;
-    font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+    font-family: AlibabaPuHuiTi-Regular, sans-serif;
     font-size: 36px;
     font-weight: 500;
     line-height: 40px;
@@ -198,7 +198,7 @@ export default defineComponent({
 
     p {
       margin-bottom: 16px;
-      font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+      font-family: AlibabaPuHuiTi-Medium, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 22px;

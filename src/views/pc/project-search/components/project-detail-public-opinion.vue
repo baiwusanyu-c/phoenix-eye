@@ -150,7 +150,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  font-family: AlibabaPuHuiTi-Medium, AlibabaPuHuiTi sans-serif;
+  font-family: AlibabaPuHuiTi-Medium, sans-serif;
   color: $textColor3;
 }
 

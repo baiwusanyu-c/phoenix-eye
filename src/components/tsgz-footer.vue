@@ -51,7 +51,7 @@ export default {
     display: flex;
     flex: 1;
     justify-content: center;
-    font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+    font-family: AlibabaPuHuiTi-Regular, sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 60px;
@@ -66,7 +66,7 @@ export default {
     .contact-logo{
       display: flex;
       align-items: center;
-      font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+      font-family: AlibabaPuHuiTi-Regular, sans-serif;
       font-size: 14px;
       font-weight: 400;
       color: $textColor12;

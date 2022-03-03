@@ -76,6 +76,8 @@ const tips = (): void => {
 </script>
 
 <style lang='scss'>
+@import "assets/style/font-style.css";
+
 #browser_msg_dialog {
 
   .browser-msg-dialog {

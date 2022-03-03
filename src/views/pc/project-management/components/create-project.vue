@@ -472,7 +472,7 @@ export default defineComponent({
 .createBox{
 
   .el-dialog__title{
-    font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi sans-serif;
+    font-family: AlibabaPuHuiTi-Regular, sans-serif;
     color: $mainColor3;
   }
 
