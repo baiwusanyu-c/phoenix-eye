@@ -162,10 +162,6 @@ export default defineComponent({
   color: #5c5c5c;
 }
 
-.el-divider--horizontal {
-  margin: 0 0;
-}
-
 .msg-font {
   font-size: 14px;
   color: #5c5c5c;

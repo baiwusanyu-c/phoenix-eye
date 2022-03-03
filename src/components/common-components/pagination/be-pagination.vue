@@ -298,7 +298,7 @@ import {setStore} from '../../../utils/common'
 
 <style  lang='scss'>
   .pagination_c {
-    margin-top: 20px;
+    margin-top: 14px;
     text-align: center;
 
     .btn-prev,.btn-next,.el-pager{

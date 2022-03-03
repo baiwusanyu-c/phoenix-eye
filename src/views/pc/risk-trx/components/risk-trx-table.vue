@@ -5,7 +5,7 @@
 * @update (czh 2022/2/25)
 */
 <template>
-    <div class="risk-table-inner">
+    <div class="risk-table-inner eagle-table">
         <el-table
             tooltip-effect="light"
             :data="tableData"
@@ -346,22 +346,6 @@ export default defineComponent({
     width: 8px;
     height: 8px;
     margin: 5px;
-  }
-
-  .table-page {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    .table-page-info {
-      margin-top: 14px;
-      font-size: 14px;
-      color: $textColor4;
-    }
-
-    .pagination_c {
-      margin-top: 14px;
-    }
   }
 }
 

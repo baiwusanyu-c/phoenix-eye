@@ -5,7 +5,7 @@
 * @update (czh 2021/11/2)
 */
 <template>
-    <div class="risk-trx-list">
+    <div class="risk-trx-list eagle-page">
 
         <div class="search-area">
             <div class="risk-trx-search-input">
@@ -143,15 +143,7 @@ export default defineComponent({
 
 <style lang="scss">
 .risk-trx-list {
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
   min-height: calc(100% - 100px);
-  padding-bottom: 86px;
 
   .search-area {
     width: 67.5%;

@@ -56,7 +56,7 @@
 
         </div>
         <!--合约统计-->
-        <div class="proj-detail-item">
+        <div class="proj-detail-item eagle-table">
             <div class="item-title">
                 <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
             </div>
@@ -133,6 +133,7 @@
                 <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
             </div>
             <div :class="{
+                        'eagle-table':true,
                         'proj-detail-item-feelingSecurity':true,
                         'proj-detail-item-hyaq':safetyData.length === 0
                     }"
@@ -596,19 +597,6 @@ export default defineComponent({
     .proj-detail-item-feelingSecurity {
       box-sizing: border-box;
       padding-bottom: 15px;
-    }
-
-
-    .table-page {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      .table-page-info {
-        margin-top: 20px;
-        font-size: 14px;
-        color: $textColor4;
-      }
     }
   }
 }

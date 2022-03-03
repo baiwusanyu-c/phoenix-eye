@@ -581,7 +581,18 @@
 .be-header {
   padding: 0;
 }
+// 通用的页面样式
 
+.eagle-page{
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  padding-bottom: 86px;
+}
 @media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
 
   .el-table td, .el-table th {
