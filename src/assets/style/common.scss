@@ -114,18 +114,6 @@
   padding: 5px 10px;
 }
 
-.el-select .el-input__inner:focus {
-  border-color: $mainColor3;
-}
-
-.el-select-v2__wrapper{
-  height: 40px;
-  border-radius: 2px;
-}
-
-.el-select-v2__wrapper.is-focused{
-  border-color: $mainColor3;
-}
 
 //弹窗样式
 
@@ -350,13 +338,25 @@
 //下拉样式
 
 .el-select .el-input.is-focus .el-input__inner {
-  border-color: $mainColor3;
+  border-color: $mainColor3 !important;
 }
 
 .el-select-dropdown__item.selected {
   color: $mainColor3;
 }
 
+.el-select .el-input__inner:focus{
+  border-color: $mainColor3 !important;
+}
+
+.el-select-v2__wrapper{
+  height: 40px;
+  border-radius: 2px;
+}
+
+.el-select-v2__wrapper.is-focused{
+  border-color: $mainColor3;
+}
 
 
 
