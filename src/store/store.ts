@@ -9,15 +9,6 @@ import { createStore } from 'vuex'
 const store = createStore({
     state () {
         return {
-            // 菜单禁用配置，在任务进行中‘已完成切换是用到
-            menuDisable: {
-                'FRAUD_ISN':false,
-                'FRAUD_IMN':false,
-                'FRAUD_BRO':false,
-                'FRAUD_ISN_ADDR':false,
-                'FRAUD_ISN_INTEL':false,
-                'FRAUD_ISN_TX':false,
-            },
             routeConfig:[],
             lang:'',
         }

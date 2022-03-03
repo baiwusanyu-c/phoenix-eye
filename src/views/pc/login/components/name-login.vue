@@ -34,7 +34,7 @@
                 <el-form-item class="label" prop='code' style="width: calc(100% - 130px);">
                     <el-input maxlength="4" @keyup.enter.native="login()" type="text" autocomplete="off"
                               :placeholder="$t('lang.loginConfig.loginVerCodeP2')" v-model="form.code">
-                        <template #prefix><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
+                        <template #prefix><img class="iconImg" src="../../../../assets/image/pc/login-code.png" alt="">
                         </template>
                     </el-input>
                 </el-form-item>
@@ -173,12 +173,6 @@ export default defineComponent({
     }
   }
 
-  .primary {
-    width: 100%;
-    height: 38px;
-    margin-top: 5px
-  }
-
   .showIcon {
     position: relative;
     top: -2px;
@@ -186,53 +180,10 @@ export default defineComponent({
     height: 16px;
     cursor: pointer;
   }
-
-  .errBtn {
-    cursor: not-allowed;
-  }
-
-  .checkArea {
-    margin-top: 26px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 21px;
-
-    .cursor {
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .phone {
-      color: $lessColor3;
-    }
-
-    .reg {
-      color: $lessColor3;
-
-      span:first-child {
-        margin-right: 10px;
-      }
-    }
-  }
 }
 
 .flex {
   align-items: center;
-  justify-content: space-between;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-}
-
-.flex-end {
-  display: flex;
-
-  /*   justify-content: flex-end; */
   justify-content: space-between;
 }
 
@@ -264,13 +215,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
 
-  .flex-center {
-    justify-content: center;
-  }
 
-  .flex-end {
-    justify-content: flex-end;
-  }
 
   .formArea {
 

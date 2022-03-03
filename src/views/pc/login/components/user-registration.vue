@@ -211,9 +211,5 @@ export default defineComponent({
     margin-bottom: 20px;
 
   }
-
-  .primary {
-    margin-top: 0;
-  }
 }
 </style>

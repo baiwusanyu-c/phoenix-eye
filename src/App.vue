@@ -22,7 +22,6 @@
                 <div class="browser-msg-dialog-body">
                     <div class="browser-msg-dialog__left">
                         <div class="browser-msg-dialog-ul">
-
                             <ul>
                                 <li v-for="(item) in tipList"
                                     :key="item">
@@ -34,7 +33,7 @@
                     <div class="browser-msg-dialog__right"></div>
                 </div>
                 <template #footer>
-                    <be-button customClass="primary"
+                    <be-button customClass="egal-btn"
                                type="success"
                                @click="showBrowserTip = false">
                         我知道了
@@ -46,8 +45,8 @@
 </template>
 <script setup lang="tsx">
 import {getStore, browserInfo, setStore} from "./utils/common";
-import {ref,defineComponent} from "vue";
-import {BeDialog,BeButton} from "../public/be-ui/be-ui.es.js";
+import {ref, defineComponent} from "vue";
+import {BeDialog, BeButton} from "../public/be-ui/be-ui.es.js";
 import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
 // 設置是否手機訪問變量
 const ua = navigator.userAgent
@@ -122,19 +121,6 @@ const tips = (): void => {
           }
         }
 
-        .subTitle {
-          font-family: Microsoft YaHei, sans-serif;
-          font-size: 14px;
-          font-weight: 400;
-          color: #3588FF;
-
-          /* margin-top: 10px; */
-          cursor: pointer;
-
-          &:hover {
-            color: #192980;
-          }
-        }
       }
 
       .browser-msg-dialog__right {

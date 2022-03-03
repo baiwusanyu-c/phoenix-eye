@@ -15,32 +15,6 @@
 @import './mixin.scss';
 //公共样式
 
-.cursor {
-  cursor: pointer;
-}
-
-.por {
-  position: relative;
-}
-
-.flex {
-  @include flex(flex-start, center);
-}
-
-.toh {
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.noPadding {
-
-  .el-dialog__body {
-    padding: 0 !important;
-  }
-}
-
 .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap > .el-form-item__label::before,
 .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label::before {
   position: relative;
@@ -48,20 +22,6 @@
   display: none;
 }
 
-
-.v-modal {
-  z-index: 2000 !important;
-}
-
-//content-box
-
-.content-box {
-  // padding-bottom: 120px;
-}
-
-.tip-warning {
-  color: $lessColor9;
-}
 
 //form表单label两端对齐
 
@@ -101,6 +61,7 @@
 .el-input__icon {
   line-height: 30px;
 }
+// 搜索框样式
 
 .search-area {
 
@@ -165,163 +126,8 @@
 .el-select-v2__wrapper.is-focused{
   border-color: $mainColor3;
 }
-//按钮样式
-
-.primary, .add {
-  color: $mainColor7;
-  background-color: $mainColor3;
-  border-color: $mainColor3;
-  opacity: .8;
-
-  &:hover {
-    color: $mainColor7;
-    background-color: $mainColor3;
-    border-color: $mainColor3;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
-    opacity: 1;
-  }
-}
-
-.primary:focus, .add:focus {
-  color: $mainColor7;
-  background-color: $mainColor3;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
-}
-
-.primary-cancel {
-  color: $mainColor1;
-  background-color: $mainColor6;
-  border: none;
-
-  &:hover {
-    background-color: rgb(213, 216, 224);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
-  }
-}
-
-.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {
-  cursor: not-allowed;
-  background-image: none;
-  opacity: .7;
-}
-
-.info {
-  color: $mainColor7;
-  background-color: #5B5B5B;
-
-  &:hover {
-    background-color: #414141;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .26);
-  }
-}
-
-.default {
-  color: #707070;
-  background-color: $mainColor7;
-  border: 1px solid rgba(0, 0, 0, .15);
-
-  &:hover {
-    color: $mainColor3;
-    background: #fff;
-    border: 1px solid $mainColor3;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
-  }
-}
-
-.el-button {
-  @include flex(center, center);
-  padding: 0;
-  border-radius: 3px;
-}
-
-.el-popup-parent--hidden {
-  padding-right: 0 !important;
-}
 
 //弹窗样式
-
-.el-dialog__header {
-  position: relative;
-  padding: 20px $l_r 0 $l_r;
-  line-height: 24px;
-
-  .el-dialog__close {
-    font-size: 24px;
-    font-weight: bold;
-    color: $textColor3;
-    opacity: .7;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  .el-dialog__headerbtn {
-    position: absolute;
-    top: 20px;
-    right: 27px;
-  }
-}
-
-.el-dialog__title {
-  @include text($fz18, $textColor3, 20px, bold);
-  position: relative;
-  // &::before {
-  //     content: "";
-  //     width: 2px;
-  //     height: 20px;
-  //     position: absolute;
-  //     background: $textColor2;
-  //     left: -8px;
-  //     top: -1px;
-  // }
-}
-
-.noTitle {
-
-  .el-dialog__title {
-
-    &::before {
-      display: none;
-    }
-  }
-}
-
-.el-dialog__footer {
-  padding: 0 $l_r $p_b $l_r;
-
-  .dialog-footer {
-    position: relative;
-    @include flex(center, center);
-
-    .el-button + .el-button {
-      margin-left: 20px;
-    }
-
-    .tip {
-      @include text($fz14, #D11C1C, 19px, 400);
-      position: absolute;
-      top: -27px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-    }
-  }
-}
-
-.el-dialog {
-  border-radius: 3px;
-}
-
-.el-dialog__body {
-  padding: $t_b $l_r;
-}
-
-
-.default,
-.primary {
-  @include wh(100px, 30px);
-}
 
 .el-popper {
   z-index: 10000 !important;
@@ -330,9 +136,12 @@
 .el-dialog__wrapper {
   z-index: 6001 !important;
 }
+//一些表单样式
 
 .label {
-  @include flex(flex-start, center);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 
   .el-form-item__label {
     @include text($fz16, $textColor3, 21px, 400);
@@ -379,98 +188,8 @@
   }
 }
 
-//查询条件样式
-
-.inquire-area {
-  padding: 35px 40px;
-  border: 1px solid $mainColor5;
-  border-radius: 10px;
-  @include flex(space-between, center);
-
-  .input-box {
-    @include flex(space-between, center);
-
-    .label {
-      @include text($fz16, $textColor3, 30px, bold);
-      min-width: 40px;
-    }
-
-    .el-input {
-      width: 89%;
-    }
-
-    .el-input__inner {
-      height: 30px;
-      line-height: 30px;
-    }
-
-    .el-input__inner:focus {
-      border-color: $mainColor3;
-    }
-
-    .el-select {
-      width: 100%;
-
-      .el-input {
-        width: 100%;
-      }
-    }
-
-    .el-input__icon {
-      line-height: 30px;
-    }
-  }
-
-  .btn-box {
-    @include flex(space-between, center);
-
-    .default,
-    .primary {
-      @include wh(88px, 30px);
-
-      span {
-        @include flex(center, center);
-      }
-
-      .icon {
-        @include wh(16px, 16px);
-        margin-right: 4px;
-      }
-    }
-  }
-}
-
-.btn-box {
-  @include flex(space-between, center);
-
-  .default,
-  .primary {
-    @include wh(88px, 30px);
-
-    span {
-      @include flex(center, center);
-    }
-
-    .icon {
-      @include wh(16px, 16px);
-      margin-right: 4px;
-    }
-  }
-}
-
-.btn-area {
-
-  .default,
-  .add {
-
-    span {
-      @include flex(center, center);
-    }
-  }
-}
 
 //表格样式
-
 
 .el-table__header {
   width: 100% !important;
@@ -565,6 +284,22 @@
   border-top-color:$mainColor3
 }
 
+.table-tag{
+  margin-top: 10px;
+  margin-right: 10px;
+  color: $mainColor3;
+  background-color: $mainColor16;
+  border:0;
+
+  &:hover{
+    color: $mainColor3;
+    background-color: $mainColor16-025;
+  }
+
+  .ellipsis-copy{
+    min-width: initial !important;
+  }
+}
 
 //多选框样式
 
@@ -612,6 +347,7 @@
 .el-pagination__sizes .el-input .el-input__inner:hover {
   border-color: $mainColor3;
 }
+//下拉样式
 
 .el-select .el-input.is-focus .el-input__inner {
   border-color: $mainColor3;
@@ -621,88 +357,7 @@
   color: $mainColor3;
 }
 
-.table-tag{
-  margin-top: 10px;
-  margin-right: 10px;
-  color: $mainColor3;
-  background-color: $mainColor16;
-  border:0;
 
-  &:hover{
-    color: $mainColor3;
-    background-color: $mainColor16-025;
-  }
-
-  .ellipsis-copy{
-    min-width: initial !important;
-  }
-}
-
-//弹窗表单样式
-
-.dialogForm {
-
-  .el-select {
-    width: 100%;
-  }
-
-  .el-form-item__content {
-    @include flex(space-between, center);
-
-    .select_area {
-      width: 150px;
-      padding-left: 10px;
-      border: 1px solid #B5B5B5;
-      border-radius: 5px;
-      @include flex(center, center);
-
-      .el-input__inner {
-        border: none;
-      }
-    }
-
-    &::before {
-      display: none;
-    }
-
-    &::after {
-      display: none;
-    }
-  }
-
-  .el-form-item__label {
-    @include text(14px, $textColor3, 30px, 400);
-    height: 30px;
-    text-align: right;
-  }
-
-  .el-input__inner {
-    height: 30px;
-    line-height: 30px;
-    border: 1px solid $mainColor12;
-    border-radius: 2px;
-  }
-
-  .el-input__inner:focus {
-    border: 1px solid $mainColor3;
-  }
-
-  .el-input__icon {
-    height: 30px;
-    line-height: 30px;
-  }
-
-  .el-textarea__inner {
-    @include text($fz14, $textColor3, 21px, 400);
-  }
-}
-
-.trackEmail {
-
-  .el-form-item__error {
-    margin-left: 105px;
-  }
-}
 
 
 //droopdown样式
@@ -712,30 +367,13 @@
   color: $mainColor3;
 }
 
-//用户中心
-
-.user-box {
-  width: calc(100% - 270px);
-  min-width: 1000px;
-  min-height: calc(100vh - 141px);
-  padding: 30px;
-  background-color: #F2F4F5;
-}
-
 .active-dropdown {
   color: $mainColor3;
   background-color: #ecf5ff;
 }
 
-//暂无数据
 
-.noData {
-  width: 100%;
-  height: 100%;
-  @include flex(center, center);
-  padding-top: 60px;
-  padding-bottom: 40px;
-}
+
 
 .el-tooltip__popper {
   z-index: 10001 !important;
@@ -818,6 +456,7 @@
   width: calc(100% + 17px);
 }
 
+
 .el-message {
   top: 72px !important;
   z-index: 10002 !important;
@@ -868,11 +507,7 @@
   color: $lessColor4;
   vertical-align: bottom;
 }
-
-.is-disabled {
-  color: $textColor5 !important;
-  cursor: not-allowed !important;
-}
+//暂无数据
 
 .empty-data {
   display: flex;

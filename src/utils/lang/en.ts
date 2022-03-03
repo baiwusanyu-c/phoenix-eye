@@ -195,7 +195,7 @@ export default {
         }
     },
     createProject:{
-        createProjectTitle:'Create Project',
+        createProjectTitle:'Create',
         editProjectTitle:'Edit Project',
         createProjectName:'Project name',
         createProjectNameInput:'e.g. PancakeSwap',

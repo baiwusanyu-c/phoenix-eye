@@ -22,9 +22,12 @@
   z-index: 1;
 
   .content-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: calc(100vh - 120px);
-    @include flex(center,center);
+
   }
 }
 </style>

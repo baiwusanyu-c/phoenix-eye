@@ -398,7 +398,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  /*width: 800px;*/
+
+  /* width: 800px; */
   height: 60px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -469,7 +470,7 @@ export default defineComponent({
       width: 28px;
       height: 28px;
       line-height: 28px;
-      color: $textColor6;
+      color: $mainColor7;
       text-align: center;
       background-color: $textColor4;
       border-radius: 30px;

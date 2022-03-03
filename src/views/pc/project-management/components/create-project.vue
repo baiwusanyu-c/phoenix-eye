@@ -503,25 +503,6 @@ export default defineComponent({
   width: 772px;
 }
 
-.subtract:hover{
-
-  .svg-icon.subtract-btn{
-    fill:#0468C2
-  }
-}
-
-.svg-icon.subtract-btn{
-  width: 20px;
-  height: 20px;
-  margin-left: 11px;
-  overflow: hidden;
-  font-size: 15px;
-  vertical-align: -.3em;
-  fill: gray;
-}
-
-
-
 .btn-border{
   display:flex;
   align-items: center;
@@ -561,14 +542,7 @@ export default defineComponent({
   border: solid 1px darkgray;
 }
 
-.svg-icon.add-create{
-  width: 14px;
-  height: 14px;
-  overflow: hidden;
-  font-size: 15px;
-  vertical-align: -.3em;
-  fill: gray;
-}
+
 
 
 
@@ -577,13 +551,9 @@ export default defineComponent({
   display: none;
 }
 
-.projectOpenTitle {
-  margin-left: 45px;
-}
 
-.projectOpenSecret {
-  margin-left: 16px;
-}
+
+
 
 .contractSiteBox {
   display: flex;
