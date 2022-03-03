@@ -20,4 +20,9 @@ export enum webURL {
     eth_token= "https://etherscan.io/token/",
     polygon_token= "https://polygonscan.com/token/",
 
+    contact_email = 'contact@beosin.com',
+    contact_twitter = 'https://twitter.com/Beosin_com',
+    contact_telegram = 'https://t.me/+dD8Bnqd133RmNWNl',
+    contact_discord = 'https://discord.gg/B4QJxhStV4',
+
 }
