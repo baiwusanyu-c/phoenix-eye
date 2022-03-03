@@ -8,7 +8,7 @@
     <div class="project-detail-top5">
         <div class="project-detail-top5-title">
             <span>{{title}}</span>
-            <be-tag round="4" type="success" customClass="tag">{{tag}}</be-tag>
+            <be-tag round="4" type="success" customClass="tag" v-if="tokenName">{{tokenName}}</be-tag>
         </div>
         <el-table
             tooltip-effect="light"
@@ -42,8 +42,8 @@
                         {{scope.row.pair }}
                     </span>
                     <div v-if="item.prop === 'percentage'">
-                        <p>30%</p>
-                        <be-progress percent="30"
+                        <p>{{ scope.row.percentage }}%</p>
+                        <be-progress :percent="scope.row.percentage"
                                      strokeWidth="6"
                                      color="#1CD2A9"
                                      :showInfo="false">
@@ -79,7 +79,7 @@ export default defineComponent({
             default:function (){
                 return [{
                     address:'strinadwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwg',
-                    percentag:50,
+                    percentage:50,
                     quantity:123123123,
                     pair:'Cake / WBNB'
                 }]
@@ -88,9 +88,13 @@ export default defineComponent({
         header:{
             type:Array as PropType<ITableHeader[]>,
         },
-        tag:{
+        tokenName:{
             type:String,
-            default:'cake'
+            default:''
+        },
+        tokenAddress:{
+            type:String,
+            default:''
         }
     },
     setup(){
