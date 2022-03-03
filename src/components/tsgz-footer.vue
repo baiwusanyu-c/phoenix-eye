@@ -12,24 +12,28 @@
         <div class="contact">
             <div class="contact-logo">
                 {{ $t('lang.contact') }}:
-                <be-icon role="button" width="40" height="40" icon="iconTwitterEagle"></be-icon>
-                <be-icon role="button" width="40" height="40" icon="iconTelegramEagle"></be-icon>
-                <be-icon role="button" width="40" height="40" icon="iconEmailEagle"></be-icon>
-                <be-icon role="button" width="40" height="40" icon="iconWechatEagle"></be-icon>
+                <el-tooltip :content="`email:${webURL['contact_email']}`" placement="top">
+                    <be-icon role="button" width="40" height="40" icon="iconEmailEagle"></be-icon>
+                </el-tooltip>
+                <be-icon @click="openWindow(webURL['contact_twitter'])" role="button" width="40" height="40" icon="iconTwitterEagle"></be-icon>
+                <be-icon @click="openWindow(webURL['contact_telegram'])" role="button" width="40" height="40" icon="iconTelegramEagle"></be-icon>
+                <be-icon @click="openWindow(webURL['contact_discord'])" role="button" width="40" height="40" icon="iconDiscordEagle"></be-icon>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import {BeIcon} from "../../public/be-ui/be-ui.es";
-
+import {BeIcon,BeTooltip} from "../../public/be-ui/be-ui.es";
+import {openWindow} from '../utils/common';
+import {webURL} from "../enums/link";
 export default {
     name: "tsgz-footer",
-    components:{BeIcon},
+    components:{BeIcon,BeTooltip},
     setup(){
         return {
-
+            webURL,
+            openWindow
         }
     }
 }
