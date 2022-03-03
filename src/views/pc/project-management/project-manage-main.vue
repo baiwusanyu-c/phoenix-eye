@@ -208,8 +208,6 @@ export default defineComponent({
              getList('reset')
         })
 
-
-
         /**
          * 新增类型方法
          */
@@ -231,8 +229,6 @@ export default defineComponent({
             })
 
         }
-
-
 
         /**
          * 删除类型方法

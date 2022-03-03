@@ -5,16 +5,18 @@
 * @update (czh 2021/11/19)
 */
 export interface IPlatformDict {
+    HT?:string,
     ETH:string
     BSC:string
     HECO:string
-    Polygon:string
+    BNB?:string,
+    POLYGON:string,
 }
 export const platformDict:IPlatformDict = {
     ETH:'eth',
     BSC:'bsc',
     HECO:'heco',
-    Polygon:'polygon'
+    POLYGON:'polygon'
 }
 export interface IPlatformListItem {
     label:string
@@ -52,4 +54,12 @@ export const platformToCurrency:IPlatformToCurrency = {
     bsc:'BNB',
     heco:'HT',
     Polygon:'POLYGON'
+}
+export const iconDict:IPlatformDict = {
+    HT:'iconHecoEagle',
+    HECO:'iconHecoEagle',
+    BSC:'iconBnbEagle',
+    BNB:'iconBnbEagle',
+    ETH:'iconEthEagle',
+    POLYGON:'iconPolygonEagle',
 }

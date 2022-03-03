@@ -182,6 +182,7 @@ import {numberToCommaString, createDate, formatDate, formatTimeStamp, openWindow
 import RiskTrxTable from "../risk-trx/components/risk-trx-table.vue";
 import ProjectDetailTop, {ITableHeader} from "./components/project-detail-top.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
+import {useEventBus} from "@vueuse/core";
 interface ISafetyData {
     negative?: string
     negativeMsg?: string
@@ -239,17 +240,17 @@ export default defineComponent({
         const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
         const top5TokenHolderAddr = ref<string>('')
         const top5TokenHolderName = ref<string>('')
-        const top5THTableHeader:Array<ITableHeader> = [
+        const top5THTableHeader = ref<Array<ITableHeader>>([
             {prop:'address',label:t('lang.projectExplorer.detail.address')},
             {prop:'percentage',label:t('lang.projectExplorer.detail.percentage')},
             {prop:'quantity',label:t('lang.projectExplorer.detail.quantity')},
-        ]
-        const top5QPTableHeader:Array<ITableHeader> = [
+        ])
+        const top5QPTableHeader = ref<Array<ITableHeader>>([
             {prop:'address',label:t('lang.projectExplorer.detail.address')},
             {prop:'percentage',label:t('lang.projectExplorer.detail.percentage')},
             {prop:'quantity',label:t('lang.projectExplorer.detail.quantity')},
             {prop:'pair',label:t('lang.projectExplorer.detail.pair')},
-        ]
+        ])
         const top5QuidityPairs = ref<Array<ITop5QuidityPairs>>([])
         const getProSituData = async () => {
             let params: IPublicOpinion = {
@@ -410,6 +411,20 @@ export default defineComponent({
             const {param, id} = route.query
             projectId.value = (param || id) as string
             getProSituData()
+
+        })
+
+        // 语种切换重新赋值一下 解决不更新问题
+        const busLanguage = useEventBus<string>('language')
+        busLanguage.on(()=>{
+            top5THTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
+            top5THTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
+            top5THTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
+
+            top5QPTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
+            top5QPTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
+            top5QPTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
+            top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
 
         })
         return {

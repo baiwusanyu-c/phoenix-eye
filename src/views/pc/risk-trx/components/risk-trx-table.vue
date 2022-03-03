@@ -190,7 +190,7 @@ import composition from "../../../../utils/mixin/common-func";
 import {BeButton,BeIcon,BeTag} from "../../../../../public/be-ui/be-ui.es";
 import BePagination from "../../../../components/common-components/pagination/be-pagination.vue";
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-
+import {iconDict} from '../../../../utils/platform-dict'
 export default defineComponent({
     name: "risk-trx-table",
     components:{
@@ -291,15 +291,6 @@ export default defineComponent({
          */
         const openDetail = (params: any) => {
             openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
-        }
-        // 币种字典
-        const iconDict = {
-            HT:'iconHecoEagle',
-            HECO:'iconHecoEagle',
-            BSC:'iconBnbEagle',
-            BNB:'iconBnbEagle',
-            ETH:'iconEthEagle',
-            POLYGON:'iconPolygonEagle',
         }
         onMounted(() => {
             getList('reset')

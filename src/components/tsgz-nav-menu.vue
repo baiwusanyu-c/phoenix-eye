@@ -9,7 +9,10 @@
         <!--    logo    -->
         <div style="display: flex;align-items: center">
             <div class="expend-logo"></div>
-            <el-select v-model="selectVal" filterable v-if="isLogin" clearable @change="handleProjectSelect">
+            <el-select v-model="selectVal"
+                       filterable
+                       :placeholder="$t('lang.pleaseSelect')"
+                       v-if="isLogin" clearable @change="handleProjectSelect">
                 <el-option
                     v-for="item in projectList"
                     :key="item.project_id + item.name"
@@ -302,11 +305,13 @@ export default defineComponent({
         // 语种切换
         const {locale} = useI18n()
         const instanceInner = getCurrentInstance()
+        const busLanguage = useEventBus<string>('language')
         const changeLanguage = (data: string): void => {
             setStore('language', data)
             locale.value = data
             computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH';
             (instanceInner?.refs.popoverLang as IPopover).close()
+            busLanguage.emit(locale.value)
         }
         const computeLang = ref<string>('EN')
 

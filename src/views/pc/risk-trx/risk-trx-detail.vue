@@ -33,7 +33,7 @@
             </div>
             <div class="detail-item detail-form">
                 <div class="detail-item-txt">
-                    <span style="width: 15%">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
+                    <span style="width: 24%">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
                     <be-ellipsis-copy
                         :tooltipTxt="baseInfo.from_address"
                         :targetStr="baseInfo.from_address_tag ? baseInfo.from_address_tag :  baseInfo.from_address"
@@ -47,7 +47,7 @@
                     </be-ellipsis-copy>
                 </div>
                 <div class="detail-item-txt">
-                    <span >{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
+                    <span style="width: 24%">{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
                     <be-ellipsis-copy
                         :tooltipTxt="baseInfo.to_address"
                         :targetStr="baseInfo.to_address_tag ? baseInfo.to_address_tag :  baseInfo.to_address"
@@ -233,7 +233,6 @@
 </template>
 
 <script lang="ts">
-import BeSvgIcon from "../abandon/svg-icon/be-svg-icon.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue";
 import {getProjWarningDetail,IProjDetail} from "../../../api/risk-trx";
 import {webURL} from "../../../enums/link";
@@ -242,6 +241,7 @@ import {defineComponent, reactive, ref, onMounted, computed, onUnmounted} from '
 import composition from "../../../utils/mixin/common-func"
 import {getUuid,simulateToFixed,openWindow} from "../../../utils/common";
 import {BeTag,BeIcon} from "../../../../public/be-ui/be-ui.es";
+import {iconDict} from '../../../utils/platform-dict'
 interface IBaseInfo {
     platform?:string
     tx_hash?:string
@@ -250,7 +250,7 @@ interface IBaseInfo {
 
 export default defineComponent({
     name: "RiskTrxDetail",
-    components: {BeSvgIcon,BeEllipsisCopy,BeTag,BeIcon},
+    components: {BeEllipsisCopy,BeTag,BeIcon},
     setup(props:any,ctx:any){
         const {message,route} = composition(props, ctx)
         // 基础信息
@@ -358,15 +358,7 @@ export default defineComponent({
 
             }
         })
-        // 币种字典
-        const iconDict = {
-            HT:'iconHecoEagle',
-            HECO:'iconHecoEagle',
-            BSC:'iconBnbEagle',
-            BNB:'iconBnbEagle',
-            ETH:'iconEthEagle',
-            POLYGON:'iconPolygonEagle',
-        }
+
         return {
             iconDict,
             profitClass,

@@ -79,7 +79,7 @@ import {defineComponent, ref, reactive, onMounted, getCurrentInstance} from "vue
 import {useI18n} from "vue-i18n";
 import {BeButton,BeIcon,BeTag} from "../../../../public/be-ui/be-ui.es";
 import RiskTrxTable from "./components/risk-trx-table.vue";
-
+import {useEventBus} from "@vueuse/core";
 
 export interface IFilterItem {
     label: string,
@@ -113,11 +113,19 @@ export default defineComponent({
             {label: '', val: '', isActive: false},
             /*{label: 'Slippage', val: 'Slippage', isActive: false},*/
         ])
+
         const filterLevelItem = ref<Array<IFilterItem>>([
             {label: t('lang.riskConfig.filter.dangerHigh'), val: 'High', isActive: false},
             {label: t('lang.riskConfig.filter.dangerMiddle'), val: 'Medium', isActive: false},
             {label: t('lang.riskConfig.filter.dangerLow'), val: 'Low', isActive: false},
         ])
+        // 语种切换重新赋值一下 解决不更新问题
+        const busLanguage = useEventBus<string>('language')
+        busLanguage.on(()=>{
+            filterLevelItem.value[0].label = t('lang.riskConfig.filter.dangerHigh')
+            filterLevelItem.value[1].label = t('lang.riskConfig.filter.dangerMiddle')
+            filterLevelItem.value[2].label = t('lang.riskConfig.filter.dangerLow')
+        })
         /**
          * 处理过滤点击
          */
