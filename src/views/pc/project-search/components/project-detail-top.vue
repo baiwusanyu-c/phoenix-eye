@@ -8,7 +8,7 @@
     <div class="project-detail-top5">
         <div class="project-detail-top5-title">
             <span>{{title}}</span>
-            <be-tag round="4" type="success" customClass="tag">{{tag}}</be-tag>
+            <be-tag round="4" type="success" customClass="tag" v-if="tokenName">{{tokenName}}</be-tag>
         </div>
         <el-table
             tooltip-effect="light"
@@ -41,6 +41,15 @@
                     <span  v-if="item.prop === 'pair'">
                         {{scope.row.pair }}
                     </span>
+                    <div v-if="item.prop === 'percentage'">
+                        <p>{{ scope.row.percentage }}%</p>
+                        <be-progress :percent="scope.row.percentage"
+                                     strokeWidth="6"
+                                     color="#1CD2A9"
+                                     :showInfo="false">
+                        </be-progress>
+                    </div>
+
                 </template>
             </el-table-column>
 
@@ -50,7 +59,7 @@
 
 <script lang="ts">
 import {defineComponent,PropType} from "vue";
-import {BeTag} from "../../../../../public/be-ui/be-ui.es";
+import {BeTag,BeProgress} from "../../../../../public/be-ui/be-ui.es";
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {numberToCommaString} from "../../../../utils/common";
 export interface ITableHeader {
@@ -59,7 +68,7 @@ export interface ITableHeader {
 }
 export default defineComponent({
     name: "project-detail-top",
-    components:{BeTag,BeEllipsisCopy},
+    components:{BeTag,BeEllipsisCopy,BeProgress},
     props:{
         title:{
             type:String,
@@ -70,7 +79,7 @@ export default defineComponent({
             default:function (){
                 return [{
                     address:'strinadwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwg',
-                    percentag:50,
+                    percentage:50,
                     quantity:123123123,
                     pair:'Cake / WBNB'
                 }]
@@ -79,9 +88,13 @@ export default defineComponent({
         header:{
             type:Array as PropType<ITableHeader[]>,
         },
-        tag:{
+        tokenName:{
             type:String,
-            default:'cake'
+            default:''
+        },
+        tokenAddress:{
+            type:String,
+            default:''
         }
     },
     setup(){

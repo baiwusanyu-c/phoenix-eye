@@ -41,12 +41,6 @@ export interface IReappraise {
     id:string | number
     project_id?:string | number
 }
-export function reappraiseProject(params:IReappraise) {
-    return request({
-        url: `${config.baseURL}/ussa/project/reappraise/${params.id}`,
-        method: 'post',
-    })
-}
 
 //项目编辑-获取项目详情 （完成）
 export function getProjectInfo(params:IReappraise) {

@@ -93,7 +93,7 @@ interface IRiskTable {
 export default defineComponent({
     name: "RiskTrxList",
     components: {RiskTrxTable, BePagination, BeEllipsisCopy, BeButton,BeIcon,BeTag},
-    setup(props, ctx) {
+    setup() {
         const {t} = useI18n()
         const searchParams = ref<string>('')
 
@@ -202,13 +202,13 @@ export default defineComponent({
       }
 
       &:hover {
-        color: $textColor6;
+        color: $mainColor7;
         background-color: $mainColor3;
       }
     }
 
     .filter-btn-active {
-      color: $textColor6;
+      color: $mainColor7;
       background-color: $mainColor3;
     }
   }

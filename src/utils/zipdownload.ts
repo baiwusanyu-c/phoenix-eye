@@ -34,12 +34,12 @@ export function downLoadZip(str:string, filename:string) {
  */
 export function resolveBlob(res:any, mimeType:string,fileN:string) {
     const aLink = document.createElement('a')
-    var blob = new Blob([res.data], { type: mimeType })
-        // //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
-    var patt = new RegExp('filename=([^;]+\\.[^\\.;]+);*')
-    var contentDisposition = decodeURI(res.headers['Content-disposition'])
-    var result = patt.exec(contentDisposition)
-    var fileName = result ? result[1] : fileN;
+    let blob = new Blob([res.data], { type: mimeType })
+     // //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
+    let patt = new RegExp('filename=([^;]+\\.[^\\.;]+);*')
+    let contentDisposition = decodeURI(res.headers['Content-disposition'])
+    let result = patt.exec(contentDisposition)
+    let fileName = result ? result[1] : fileN;
     fileName = fileName.replace(/\"/g, '')
     if ((navigator as INavigator).msSaveBlob) { // IE10+
         return ((navigator as INavigator)?.msSaveBlob as Function)(blob, fileName);

@@ -11,7 +11,6 @@ import {IOption} from "./types";
  * id生成方法
  * @return {string}
  */
-
 export const getUuid = (): string => {
     let s: Array<any> = [];
     let hexDigits: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -23,7 +22,10 @@ export const getUuid = (): string => {
     s[8] = s[13] = s[18] = s[23] = "-"
     return s.join("")
 }
-export const getUrlkey = function () {
+/**
+ * 获取url参数
+ */
+export const getUrlkey = function ():IOption {
     let params:IOption = {};
     let url = window.location.href
     if(url.indexOf("?")>-1){//判断如果请求地址中包含参数
@@ -36,9 +38,7 @@ export const getUrlkey = function () {
     }
     return params;
 }
-export function createKey(){
-    return Math.random().toString(36).substr(2)
-}
+
 // 判空
 export function isEmpty(val: unknown) {
     if (
@@ -147,17 +147,7 @@ export const accSub = (arg:Array<number>):number =>{
 
     return sum / Math.pow(10, maxDecimalLength)
 }
-/**
- * 校验字符纯数字
- * @param str
- */
-export const checkNumber = (str:string):boolean=> {
-    let reg = /^(([1-9][0-9]*\.[0-9][0-9]*)|([0]\.[0-9][0-9]*)|([1-9][0-9]*)|([0]{1}))$/
-    if (reg.test(str)) {
-        return true;
-    }
-    return false;
-}
+
 /**
  * 存储
  */
@@ -318,7 +308,7 @@ function uaMatch(ua:string):uaMatchRes {
 export const browserInfo = ():{browser:any,version:any} => {
     return uaMatch(navigator.userAgent.toLowerCase());
 }
-
+// 去除空格
 export const trim = (str:string):string => {
     return str.replace(/^(\s|\xA0)+|(\s|\xA0)+$/g, '');
 }
@@ -343,6 +333,10 @@ export function nFormatter(num:number, digits:number) {
     return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 }
 
+/**
+ * 打开窗口
+ * @param strUrl
+ */
 export const openWindow = (strUrl:string):void =>{
     // 模拟a标签点击，实现无糖浏览器下的新开tab
     let aDom = document.createElement("a");
@@ -352,6 +346,10 @@ export const openWindow = (strUrl:string):void =>{
     aDom.click();
     document.body.removeChild(aDom);
 }
+
+/**
+ * 判断浏览器版本
+ */
 export function ieVersion() {
     let userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
     let isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
@@ -380,6 +378,12 @@ export function ieVersion() {
         return -1;//不是ie浏览器
     }
 }
+
+/**
+ * 时间转 刚刚..
+ * @param dateTimeStamp
+ * @param lang
+ */
 export function formatTimeStamp(dateTimeStamp:number,lang:string) {
     let minute = 1000 * 60;
     let hour = minute * 60;
@@ -474,6 +478,7 @@ export const beijing2utc = (now:number, formats:string) => {
     const tempTime = (parseInt(timestamp.toString()) * 1000)
     return formatDate((createDate(tempTime).toString()), formats)
 }
+
 const message = (type:string,info:string,className?:string):void =>{
     BeMessage.service({
         customClass:className,
@@ -484,9 +489,13 @@ const message = (type:string,info:string,className?:string):void =>{
         close: true,
     })
 }
-export const copyAddress = function copyAddress(currentAdd:string){
+/**
+ * 文本复制
+ * @param copyVal
+ */
+export const copyAddress = function copyAddress(copyVal:string){
     let oInput = document.createElement('input')
-    oInput.value = currentAdd;
+    oInput.value = copyVal;
     document.body.appendChild(oInput)
     oInput.select()
     document.execCommand("Copy")
@@ -525,7 +534,7 @@ export const simulateToFixed = (num:number, decimal = 6)=> {
 
 /**
  * 科学计数法转化成小数点
- * @param num 数值
+ * @param inputNumber 数值
  * @returns Number
  */
 export const transferToNumber = (inputNumber:any) => {
@@ -540,8 +549,8 @@ export const transferToNumber = (inputNumber:any) => {
 }
 // 數字轉都好分隔字符串 1123 =》'1,223'
 export const numberToCommaString = (nStr:number):string =>{
-    nStr += '';  //数字转换为字符
-    let x:string = nStr.split('.');  //按照小数点分隔
+    let text:string = nStr + ''
+    let x:Array<string> = text.split('.');  //按照小数点分隔
     let x1:string = x[0];  //整数部分
     let x2:string = x.length > 1 ? '.' + x[1] : '';  //小数部分
     let rgx:RegExp = /(\d+)(\d{3})/;  //正则式定义

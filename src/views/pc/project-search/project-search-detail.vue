@@ -104,10 +104,11 @@
                 <template #next><span></span></template>
             </be-pagination>
         </div>
-        <!--top5 数据表格 -->
+        <!--top5 数据表格 :data=" top5TokenHolder"-->
         <div class="proj-detail-item" style="display: flex">
             <project-detail-top
-                :data=" top5TokenHolder"
+                :token-name="top5TokenHolderAddr"
+                :token-address="top5TokenHolderName"
                 style="margin-right: 16px"
                 :header="top5THTableHeader"
                 :title="$t('lang.projectExplorer.detail.top5Title1')"
@@ -116,8 +117,7 @@
             <project-detail-top
                 :data="top5QuidityPairs"
                 :header="top5QPTableHeader"
-                :title="$t('lang.projectExplorer.detail.top5Title2')"
-                >
+                :title="$t('lang.projectExplorer.detail.top5Title2')">
             </project-detail-top>
         </div>
         <!--风险交易-->
@@ -237,6 +237,8 @@ export default defineComponent({
         const {t} = useI18n()
         const baseInfo = ref<IBaseInfo>({})
         const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
+        const top5TokenHolderAddr = ref<string>('')
+        const top5TokenHolderName = ref<string>('')
         const top5THTableHeader:Array<ITableHeader> = [
             {prop:'address',label:t('lang.projectExplorer.detail.address')},
             {prop:'percentage',label:t('lang.projectExplorer.detail.percentage')},
@@ -262,14 +264,16 @@ export default defineComponent({
                         lastTradeData: res.data.details.latest_trading_date,
                         riksTrxNum: res.data.details.risk_tx_24,
                         riskPublicOpinion: res.data.details.risk_public_opinion_24,
-                        github: 'string',
-                        telegram: 'string',
-                        twitter: 'string',
-                        website: ''
+                        github: res.data.social_profiles.github,
+                        telegram: res.data.social_profiles.telegram,
+                        twitter: res.data.social_profiles.twitter,
+                        website: res.data.social_profiles.website,
                     }
                     // top5数据
-                    top5TokenHolder.value = res.data.details.top_5_token_holders
-                    top5QuidityPairs.value = res.data.details.top_5_liquidity_pairs_holders
+                    top5TokenHolder.value = res.data.top_5_token_holders.records
+                    top5TokenHolderAddr.value = res.data.top_5_token_holders.token_address
+                    top5TokenHolderName.value = res.data.top_5_token_holders.token_name
+                    top5QuidityPairs.value = res.data.top_5_liquidity_pairs_holders
 
                 }
             }).catch(err => {
@@ -411,6 +415,8 @@ export default defineComponent({
         return {
             top5QPTableHeader,
             top5THTableHeader,
+            top5TokenHolderAddr,
+            top5TokenHolderName,
             top5TokenHolder,
             top5QuidityPairs,
             contractStatisticsData,

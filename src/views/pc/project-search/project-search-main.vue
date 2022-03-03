@@ -67,7 +67,7 @@ declare type projListType = {
     project_name: string
 }
 export default defineComponent({
-    name: "project-search-main",
+    name: "ProjectSearchMain",
     components: {BeButton},
     setup(props, ctx) {
         const {message,routerPush} = composition(props, ctx)

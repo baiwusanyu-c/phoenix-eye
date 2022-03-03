@@ -197,10 +197,7 @@ export default defineComponent({
 </style>
 
 <style lang="scss" scoped>
-  .codeBtn{
-    height: 48px;
-    margin-bottom: 18px;
-  }
+
 
   .login-main{
     background: transparent;

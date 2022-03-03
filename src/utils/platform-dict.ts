@@ -1,6 +1,6 @@
 /*
 * @platform-dict.ts
-* @deprecated 
+* @deprecated 一些关于币种、链平台的下拉数据、字典等
 * @author czh
 * @update (czh 2021/11/19)
 */
