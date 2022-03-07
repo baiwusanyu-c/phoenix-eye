@@ -14,7 +14,7 @@ module.exports = {
   ],
   rules: {
     'type-enum': [2, 'always', [
-      'feat', 'update', 'fixbug', 'refactor', 'optimize', 'style', 'docs', 'chore'
+      'feats', 'update', 'fixbug', 'refactor', 'optimize', 'style', 'docs', 'chore'
     ]],
     'type-case': [0],
     'type-empty': [0],
