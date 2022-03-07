@@ -13,6 +13,13 @@
     "lint:style": "stylelint src/**/*.{html,vue,css,scss}",
     "lint:style-fix": "stylelint --fix src/**/*.{html,vue,css,scss}"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "checking your commit message...",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "code will push..."
+    }
+  },
   "dependencies": {
     "@types/qs": "^6.9.7",
     "@vueuse/core": "^7.3.0",
@@ -32,6 +39,8 @@
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
+    "@commitlint/cli": "^16.2.1",
+    "@commitlint/config-conventional": "^16.2.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@types/jest": "^27.0.2",
     "@types/marked": "^2.0.2",
@@ -42,6 +51,7 @@
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/test-utils": "^2.0.0-rc.16",
     "babel-jest": "26.0.0",
+    "husky": "^7.0.4",
     "jest": "26.0.0",
     "sass": "^1.49.0",
     "stylelint": "^13.13.1",
