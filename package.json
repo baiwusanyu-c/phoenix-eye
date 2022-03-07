@@ -11,14 +11,9 @@
     "build:prod": "vite build --mode production",
     "build:pretest": "vite build --mode pretest",
     "lint:style": "stylelint src/**/*.{html,vue,css,scss}",
-    "lint:style-fix": "stylelint --fix src/**/*.{html,vue,css,scss}"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "checking your commit message...",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "code will push..."
-    }
+    "lint:style-fix": "stylelint --fix src/**/*.{html,vue,css,scss}",
+    "prepare": "husky install",
+    "commit": "stylelint --fix src/**/*.{html,vue,css}"
   },
   "dependencies": {
     "@types/qs": "^6.9.7",

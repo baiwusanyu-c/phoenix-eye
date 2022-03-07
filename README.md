@@ -80,6 +80,19 @@
 
 * vite.config.ts vite配置文件
 
+### 配置hasky与commitlint
+* npm install -save-dev @commitlint/cli @commitlint/config-conventional
+* 新建文件commitlint.config.js，内容：module.exports = {extends: ['@commitlint/config-conventional']}
+* npm install husky --save-dev
+* npm set-script prepare "husky install"
+* npm run prepare
+* npx husky add .husky/pre-commit "npm run commit"
+* git add .husky/pre-commit
+* npx husky add .husky/commit-msg "npx --no -- commitlint --edit $1"
+* 在package.json的script里面配置"commit": "这里面添加 eslint、单测、stylelint等"
+* 提交时执行命令例如 git commit -am "feat: 项目添加commitlint本地校验配置" 或 git commit -m "feat: 项目添加commitlint本地校验配置"
+
+
 ### 火狐浏览器兼容汇总
 * 登录页需要兼容  √
 * 产品页与about us 过长 （偶现）
