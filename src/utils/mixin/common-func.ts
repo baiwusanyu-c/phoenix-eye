@@ -5,12 +5,13 @@
 * @update (czh 2021/12/24)
 */
 import {Router, RouteLocationNormalizedLoaded,useRouter,useRoute} from "vue-router";
-import {ref} from "vue";
+import {ref,computed} from "vue";
 import {getCodeImg} from "../../api/login";
-
+import {useI18n} from "vue-i18n";
 // @ts-ignore
 import {BeMessage} from "../../../public/be-ui/be-ui.es.js";
 import {Ref} from "@vue/reactivity";
+import {isNumber, isString} from "../common";
 export default (props: any, ctx: any) => {
     /**
      * 打開窗口
@@ -64,7 +65,20 @@ export default (props: any, ctx: any) => {
             }
         },200)
     }
+    const {t} = useI18n()
+    const isEmpty = computed(()=>{
+        return function (val:string |number){
+            if(isNumber(val) && (val || val === 0)){
+                return val
+            }
+            if(isString(val) && val){
+                return val
+            }
+            return t('lang.emptyData')
+        }
+    })
     return{
+        isEmpty,
         startTimer,
         uuid,
         message,

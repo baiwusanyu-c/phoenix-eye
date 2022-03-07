@@ -7,20 +7,20 @@
 <template>
     <div class="project-search-detail">
         <!--基本信息-->
-        <div class="proj-detail-item" style="margin-top: 32px">
+        <div class="proj-detail-item" style="margin-top: 32px" v-loading="baseLoading">
             <div class="item-title">
-                <h2>{{ baseInfo.name || $t('lang.emptyData') }}</h2>
+                <h2>{{isEmpty(baseInfo.name)}}</h2>
                 <span style="margin-right: 6px">{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h)  :  </span>
                 <span
                     style="margin-right: 30px;font-size: 14px;font-weight: bold;color: #333">{{
-                        baseInfo.riksTrxNum || $t('lang.emptyData')
+                        isEmpty(baseInfo.riksTrxNum)
                     }}</span>
                 <span style="margin-right: 6px">{{
                         $t('lang.projectExplorer.detail.riskPublicOpinion')
                     }}(24h)  :  </span>
                 <span
                     style="margin-right: 16px;font-size: 14px;font-weight: bold;color: #333">{{
-                        baseInfo.riskPublicOpinion || $t('lang.emptyData')
+                        isEmpty(baseInfo.riskPublicOpinion)
                     }}</span>
             </div>
             <div class="base-info">
@@ -62,7 +62,7 @@
 
         </div>
         <!--合约统计-->
-        <div class="proj-detail-item eagle-table">
+        <div class="proj-detail-item eagle-table" v-loading="statisticsLoading">
             <div class="item-title">
                 <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
             </div>
@@ -111,7 +111,7 @@
             </be-pagination>
         </div>
         <!--top5 数据表格 :data=" top5TokenHolder"-->
-        <div class="proj-detail-item" style="display: flex">
+        <div class="proj-detail-item" style="display: flex" v-loading="baseLoading">
             <project-detail-top
                 :token-name="top5TokenHolderAddr"
                 :token-address="top5TokenHolderName"
@@ -259,7 +259,7 @@ export default defineComponent({
         BeEllipsisCopy,
     },
     setup(props, ctx) {
-        const {message, route} = composition(props, ctx)
+        const {message, route,isEmpty} = composition(props, ctx)
         const {t} = useI18n()
         const baseInfo = ref<IBaseInfo>({})
 
@@ -300,10 +300,12 @@ export default defineComponent({
                 })
             }
         }
+        const baseLoading = ref<boolean>(false)
         const getProSituData = async () => {
             let params: IPublicOpinion = {
                 project_id: parseInt(projectId.value),
             }
+            baseLoading.value = true
             getProjectSituation(params).then(res => {
                 if (res) {
                     // 获取项目详情数据
@@ -324,10 +326,10 @@ export default defineComponent({
                     handleSelectTop5({platform:'bsc',type:'holder'})
                     top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
                     handleSelectTop5({platform:'bsc',type:'pairs'})
-
-
                 }
+                baseLoading.value = false
             }).catch(err => {
+                baseLoading.value = false
                 message('error', err.message || err)
                 console.error(err)
             })
@@ -349,44 +351,22 @@ export default defineComponent({
             pageSize: 3,
             total: 0
         })
+        const statisticsLoading = ref<boolean>(false)
         const getContractStatistics = (): void => {
-            contractStatisticsData.value = [
-                {
-                    contract_address: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156aa',
-                    token_name: 'string',
-                    platform: 'heco',
-                    tx_24: 1122,
-                    tx_total: 24393035,
-                    latest_trading_date: '2022-02-01T10:04:00.000+0000',
-                },
-                {
-                    contract_address: '0x3da74c09ccb8wcfaba3153b7f6189dda9d7f28156aa',
-                    token_name: 'string',
-                    platform: 'heco',
-                    tx_24: 1122,
-                    tx_total: 24393035,
-                    latest_trading_date: '2022-02-01T10:04:00.000+0000',
-                },
-                {
-                    contract_address: '0x3da74ca09ccb8faba3153b7f6189dda9d7f28156aa',
-                    token_name: 'string',
-                    platform: 'heco',
-                    tx_24: 1122,
-                    tx_total: 24393035,
-                    latest_trading_date: '2022-02-01T10:04:00.000+0000',
-                }
-            ]
             const params: IPublicOpinion = {
                 project_id: projectId.value,
                 page_num: pageParamsTj.value.pageNum,
                 page_size: pageParamsTj.value.pageSize,
             }
+            statisticsLoading.value = true
             getProjectSituationStatistics(params).then(res => {
                 if (res) {
                     contractStatisticsData.value = res.data.page_infos
                     pageParamsTj.value = res.data.total
                 }
+                statisticsLoading.value = false
             }).catch(err => {
+                statisticsLoading.value = false
                 message('error', err.message || err)
                 console.error(err)
             })
@@ -478,6 +458,9 @@ export default defineComponent({
 
         })
         return {
+            statisticsLoading,
+            baseLoading,
+            isEmpty,
             top5QPTableHeader,
             top5THTableHeader,
             top5TokenHolderAddr,
