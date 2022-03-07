@@ -9,7 +9,7 @@
         <!--基本信息-->
         <div class="proj-detail-item" style="margin-top: 32px">
             <div class="item-title">
-                <h2>{{ $t('lang.projectExplorer.detail.title') }}</h2>
+                <h2>{{ baseInfo.name || $t('lang.emptyData') }}</h2>
                 <span style="margin-right: 6px">{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h)  :  </span>
                 <span
                     style="margin-right: 30px;font-size: 14px;font-weight: bold;color: #333">{{
@@ -115,13 +115,17 @@
             <project-detail-top
                 :token-name="top5TokenHolderAddr"
                 :token-address="top5TokenHolderName"
+                type="holder"
                 style="margin-right: 16px"
+                @select="handleSelectTop5"
                 :header="top5THTableHeader"
                 :title="$t('lang.projectExplorer.detail.top5Title1')"
             >
             </project-detail-top>
             <project-detail-top
                 :data="top5QuidityPairs"
+                type="pairs"
+                @select="handleSelectTop5"
                 :header="top5QPTableHeader"
                 :title="$t('lang.projectExplorer.detail.top5Title2')">
             </project-detail-top>
@@ -221,6 +225,7 @@ interface IBaseInfo {
     telegram?: string
     twitter?: string
     website?: string
+    name?:string
 }
 
 interface ITop5TokenHolder {
@@ -232,7 +237,16 @@ interface ITop5TokenHolder {
 interface ITop5QuidityPairs extends ITop5TokenHolder {
     pair?: string
 }
-
+interface ITop5QuiditySelect {
+    platform?:string
+    records:Array<any>
+}
+interface ITop5TokenHolderSelect {
+    token_address?:string
+    token_name?:string
+    platform?:string
+    records:Array<any>
+}
 export default defineComponent({
     name: "project-search-detail",
     components: {
@@ -248,9 +262,11 @@ export default defineComponent({
         const {message, route} = composition(props, ctx)
         const {t} = useI18n()
         const baseInfo = ref<IBaseInfo>({})
+
         const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
         const top5TokenHolderAddr = ref<string>('')
         const top5TokenHolderName = ref<string>('')
+        // top5表格header
         const top5THTableHeader = ref<Array<ITableHeader>>([
             {prop: 'address', label: t('lang.projectExplorer.detail.address')},
             {prop: 'percentage', label: t('lang.projectExplorer.detail.percentage')},
@@ -263,6 +279,27 @@ export default defineComponent({
             {prop: 'pair', label: t('lang.projectExplorer.detail.pair')},
         ])
         const top5QuidityPairs = ref<Array<ITop5QuidityPairs>>([])
+        const top5QuiditySelect = ref<Array<ITop5QuiditySelect>>([])
+        const top5TokenHolderSelect = ref<Array<ITop5TokenHolderSelect>>([])
+        const handleSelectTop5 = (params:{platform:string,type:string}):void=>{
+            // top5数据
+            if(params.type === 'holder'){
+                top5TokenHolderSelect.value && top5TokenHolderSelect.value.forEach((val:any)=>{
+                    if(val.platform === params.platform){
+                        top5TokenHolder.value = val.records
+                        top5TokenHolderAddr.value = val.token_address
+                        top5TokenHolderName.value = val.token_name
+                    }
+                })
+            }
+            if(params.type === 'pairs'){
+                top5QuiditySelect.value && top5QuiditySelect.value.forEach((val:any)=>{
+                    if(val.platform === params.platform){
+                        top5QuidityPairs.value = val.records
+                    }
+                })
+            }
+        }
         const getProSituData = async () => {
             let params: IPublicOpinion = {
                 project_id: parseInt(projectId.value),
@@ -276,16 +313,18 @@ export default defineComponent({
                         lastTradeData: res.data.details.latest_trading_date,
                         riksTrxNum: res.data.details.risk_tx_24,
                         riskPublicOpinion: res.data.details.risk_public_opinion_24,
+                        name:res.data.details.name,
                         github: res.data.social_profiles.github,
                         telegram: res.data.social_profiles.telegram,
                         twitter: res.data.social_profiles.twitter,
                         website: res.data.social_profiles.website,
                     }
                     // top5数据
-                    top5TokenHolder.value = res.data.top_5_token_holders.records
-                    top5TokenHolderAddr.value = res.data.top_5_token_holders.token_address
-                    top5TokenHolderName.value = res.data.top_5_token_holders.token_name
-                    top5QuidityPairs.value = res.data.top_5_liquidity_pairs_holders
+                    top5TokenHolderSelect.value = res.data.top_5_token_holders
+                    handleSelectTop5({platform:'bsc',type:'holder'})
+                    top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
+                    handleSelectTop5({platform:'bsc',type:'pairs'})
+
 
                 }
             }).catch(err => {
@@ -454,6 +493,9 @@ export default defineComponent({
             safetyData,
             pageParamsFs,
             loadingFs,
+            top5QuiditySelect,
+            top5TokenHolderSelect,
+            handleSelectTop5,
             numberToCommaString,
             createDate,
             formatDate,

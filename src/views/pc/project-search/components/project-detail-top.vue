@@ -9,6 +9,14 @@
         <div class="project-detail-top5-title">
             <span>{{title}}</span>
             <be-tag round="4" type="success" customClass="tag" v-if="tokenName">{{tokenName}}</be-tag>
+            <el-select v-model="curPlatform" style="float:right;width: 120px" @change="handleSelect">
+                <el-option
+                    v-for="item in platformListDict"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
         </div>
         <el-table
             tooltip-effect="light"
@@ -58,10 +66,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent,PropType} from "vue";
+import {defineComponent,PropType,ref} from "vue";
 import {BeTag,BeProgress} from "../../../../../public/be-ui/be-ui.es";
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {numberToCommaString} from "../../../../utils/common";
+import {platformListDict} from '../../../../utils/platform-dict'
 export interface ITableHeader {
     prop:string,
     label:string
@@ -69,6 +78,7 @@ export interface ITableHeader {
 export default defineComponent({
     name: "project-detail-top",
     components:{BeTag,BeEllipsisCopy,BeProgress},
+    emits:['select'],
     props:{
         title:{
             type:String,
@@ -76,14 +86,6 @@ export default defineComponent({
         },
         data:{
             type:Array as PropType<any>,
-            default:function (){
-                return [{
-                    address:'strinadwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwg',
-                    percentage:50,
-                    quantity:123123123,
-                    pair:'Cake / WBNB'
-                }]
-            }
         },
         header:{
             type:Array as PropType<ITableHeader[]>,
@@ -95,10 +97,26 @@ export default defineComponent({
         tokenAddress:{
             type:String,
             default:''
-        }
+        },
+        types:{
+            type:String,
+            default:''
+        },
     },
-    setup(){
+    setup(props,ctx){
+        const curPlatform = ref<string>('bsc')
+        /**
+         * 處理選擇事件
+         * @param {String} platform - 幣種
+         */
+        const handleSelect = (platform:string):void =>{
+            let type:string = props.types
+            ctx.emit('select', {platform,type })
+        }
         return {
+            handleSelect,
+            platformListDict,
+            curPlatform,
             numberToCommaString
         }
     }
