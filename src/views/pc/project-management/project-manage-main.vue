@@ -5,7 +5,7 @@
 * @update (czh 2021/11/1)
 */
 <template>
-    <div class="project-manage-main">
+    <div class="project-manage-main eagle-page">
         <div class="project-manage-search">
             <div class="project-manage-search-input">
                 <el-input v-model="searchParams"
@@ -243,8 +243,8 @@ export default defineComponent({
          * 确认删除项目信息
          */
         const confirmDelete = () => {
-            const params = {
-                id: (curItem.data as IReappraise).project_id
+            const params:IReappraise = {
+                id: (curItem.data as IReappraise).project_id as string
             }
             deleteProject(params).then(res => {
                 if (res) {
@@ -356,15 +356,7 @@ export default defineComponent({
 
 <style lang="scss">
 .project-manage-main {
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
   min-height: calc(100% - 100px);
-  padding-bottom: 86px;
 
   .project-manage-search {
     width: 67.5%;

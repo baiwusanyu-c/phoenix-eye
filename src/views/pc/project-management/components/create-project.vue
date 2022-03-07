@@ -542,18 +542,9 @@ export default defineComponent({
   border: solid 1px darkgray;
 }
 
-
-
-
-
-
 .el-form-item__content::after, .el-form-item__content::before {
   display: none;
 }
-
-
-
-
 
 .contractSiteBox {
   display: flex;

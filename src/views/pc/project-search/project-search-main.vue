@@ -5,7 +5,7 @@
 * @update (czh 2022/2/22)
 */
 <template>
-    <div class="project-search-main">
+    <div class="project-search-main eagle-page">
         <div class="project-search-container">
             <h1 class="title">{{ $t('lang.projectExplorer.title') }}</h1>
             <p class="subTitle mb-18">{{ $t('lang.projectExplorer.subTitle') }}</p>
@@ -127,15 +127,7 @@ export default defineComponent({
 
 <style lang="scss">
 .project-search-main {
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
   min-height: calc(100% - 192px);
-  padding-bottom: 86px;
 
   .subTitle {
     font-family: AlibabaPuHuiTi-Regular, sans-serif;
