@@ -16,7 +16,7 @@
             @close="handleClose"
             custom-class="login-dialog">
             <div class="login-main">
-                <img class="login-logo-img" src="../../../assets/image/pc/login-logo.png" height="45" width="200"/>
+                <img class="login-logo-img" src="../../../assets/image/pc/login-logo.png" height="45" width="200" alt=""/>
                 <div class="login-body">
                     <div class="login-title">
                         <div class="login-title-small">Welcome to Eagle Eye</div>
@@ -50,14 +50,14 @@
                         </div>
                     </div>
                     <div class="success" v-show="loginType === 'register'&&registerSuccess">
-                        <img src="../../../assets/image/pc/login-success.png" height="64" width="64"/>
+                        <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt=""/>
                         <div class="success-message">{{$t('lang.loginConfig.registerSuccess')}}</div>
                         <be-button style="width: 100%" customClass="eagle-btn" @click="loginOrSingUp" type="success">
                             {{$t('lang.loginConfig.login')}}
                         </be-button>
                     </div>
                     <div class="success" v-show="loginType === 'forget'&&resetPsSuccess">
-                        <img src="../../../assets/image/pc/login-success.png" height="64" width="64"/>
+                        <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt=""/>
                         <div class="success-message">{{$t('lang.loginConfig.resetPasswordSuccess')}}</div>
                         <be-button style="width: 100%" customClass="eagle-btn" @click="forgetPassword" type="success">
                             {{$t('lang.loginConfig.login')}}
