@@ -168,7 +168,7 @@
                                     :is-ellipsis="(item.val.length > 25) ? true : false"
                                     :isShowCopyBtn="true"
                                     :copyContent="scope.row.address"
-                                    :tooltip-txt="item.val"
+                                    :tooltip-txt="scope.row.address"
                                     emptyText="/"
                                     @click="item.val ? openWeb(item.contractAddress,'token') : null"
                                     styles="color: #008EE9;cursor:pointer;font-weight:400;"
