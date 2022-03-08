@@ -126,7 +126,7 @@ export default defineComponent({
                             }
                         }, 1000)
                     }).catch((err:any) => {
-                        ElMessage.error(err)
+                        message('error', err.message || err)
                         console.error(err)
                     })
 
