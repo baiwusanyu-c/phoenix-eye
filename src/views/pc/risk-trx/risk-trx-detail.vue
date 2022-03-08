@@ -167,8 +167,8 @@
                                     :targetStr="item.val"
                                     :is-ellipsis="(item.val.length > 25) ? true : false"
                                     :isShowCopyBtn="true"
-                                    :copyContent="scope.row.address"
-                                    :tooltip-txt="scope.row.address"
+                                    :copyContent="item.contractAddress"
+                                    :tooltip-txt="item.contractAddress"
                                     emptyText="/"
                                     @click="item.val ? openWeb(item.contractAddress,'token') : null"
                                     styles="color: #008EE9;cursor:pointer;font-weight:400;"
@@ -339,7 +339,7 @@ export default defineComponent({
          * 跳轉到第三方頁面
          */
         const openWeb = (params:string,type:string):void => {
-            if(!params) return
+            if(!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic') return
             let mainUrl:string = (webURL as any)[`${baseInfo.value.platform}_${type}` ] as string
             const url = `${mainUrl}${params}`
             openWindow(url)

@@ -135,7 +135,7 @@
             <div class="item-title" style="margin-bottom: 0">
                 <h2>{{ $t('lang.projectExplorer.detail.riskTrx') }}</h2>
             </div>
-            <risk-trx-table></risk-trx-table>
+            <risk-trx-table :project-id="projectId"></risk-trx-table>
         </div>
         <!--项目舆情安全-->
         <div class="proj-detail-item">
@@ -454,6 +454,7 @@ export default defineComponent({
 
         })
         return {
+            projectId,
             statisticsLoading,
             baseLoading,
             isEmpty,

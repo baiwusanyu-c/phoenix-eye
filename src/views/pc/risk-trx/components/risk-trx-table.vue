@@ -201,6 +201,10 @@ export default defineComponent({
         BeEllipsisCopy,
     },
     props:{
+        projectId:{
+            type:String,
+            default:''
+        },
         searchParams:{
             type:String,
             default:''
@@ -256,6 +260,7 @@ export default defineComponent({
             let params = {
                 page_num: pageParams.data.currentPage,
                 page_size: pageParams.data.pageSize,
+                project_id:props.projectId,
                 platform: getFilterParams(props.filterChainItem),
                 alert_level: getFilterParams(props.filterLevelItem),
                 type: getFilterParams(props.filterTypeItem),
