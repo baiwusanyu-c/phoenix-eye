@@ -273,12 +273,12 @@
 }
 
 .table-tag{
+  height: auto;
   margin-top: 10px;
   margin-right: 10px;
   color: $mainColor3;
   background-color: $mainColor16;
   border:0;
-  height: auto;
 
   &:hover{
     color: $mainColor3;

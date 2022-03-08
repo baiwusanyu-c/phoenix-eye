@@ -166,6 +166,9 @@ export default defineComponent({
   }
 
   .copy-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 24px;
     height: 24px;
   }

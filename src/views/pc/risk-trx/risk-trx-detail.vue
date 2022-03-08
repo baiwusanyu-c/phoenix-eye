@@ -171,7 +171,7 @@
                                     :tooltip-txt="item.val"
                                     emptyText="/"
                                     @click="item.val ? openWeb(item.contractAddress,'token') : null"
-                                    styles="color: #008EE9;cursor:pointer;font-weight:400"
+                                    styles="color: #008EE9;cursor:pointer;font-weight:400;"
                                     fontLength="8"
                                     endLength="8">
                                 </be-ellipsis-copy>
@@ -190,7 +190,6 @@
                         <template #default="scope">
                             <div  v-if="scope.row.valueList && scope.row.valueList.length > 0 ">
                                 <p v-for="item in scope.row.valueList"
-                                      style="margin-top: 10px;"
                                       :key="item.itemId">
                                     <el-tooltip placement="top" effect="light">
                                         <template #content>
@@ -213,7 +212,7 @@
                         <template #default="scope">
                             <div  v-if="scope.row.dollarList && scope.row.dollarList.length > 0 ">
                                 <p v-for="item in scope.row.dollarList"
-                                      style="margin-top: 10px;"
+
                                       :key="item.itemId">
                                     <el-tooltip placement="top" effect="light">
                                         <template #content>
