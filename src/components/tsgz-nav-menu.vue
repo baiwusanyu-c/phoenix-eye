@@ -356,9 +356,10 @@ export default defineComponent({
 
 <style lang="scss">
 .tsgz-nav-menu .sign-up-btn{
-    min-width: initial;
-    width: 90px;
+  width: 90px;
+  min-width: initial;
 }
+
 .popover-logout,.popover-lang,.popover-router{
 
   .be-popover{
