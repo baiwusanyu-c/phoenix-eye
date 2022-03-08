@@ -60,7 +60,7 @@
                         </be-ellipsis-copy>
                     </template>
                 </el-table-column>
-                <el-table-column prop="contract_num" sortable width="180">
+                <el-table-column prop="contract_num"  width="180">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
                     </template>
@@ -68,20 +68,20 @@
                         <span>{{ scope.row.contract_num }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="risk_tx_num" sortable width="180">
+                <el-table-column prop="risk_tx_num"  width="180">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
                     </template>
                     <template #default="scope">
-                        <span>{{ scope.row.risk_tx_num || '/' }}</span>
+                        <span>{{isEmpty(scope.row.risk_tx_num,'/')}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="opinion_num" sortable width="200">
+                <el-table-column prop="opinion_num"  width="200">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
                     </template>
                     <template #default="scope">
-                        <span>{{ scope.row.opinion_num || '/' }}</span>
+                        <span>{{isEmpty(scope.row.opinion_num,'/')}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="create_time" width="180">
@@ -186,7 +186,7 @@ export default defineComponent({
     },
     setup(props, ctx) {
         const {t, locale} = useI18n()
-        const {message} = composition(props, ctx)
+        const {message,isEmpty} = composition(props, ctx)
         // 当前操作的项目对象
         const curItem = reactive({data: {}})
         // 当前操作类型
@@ -327,6 +327,7 @@ export default defineComponent({
         }
 
         return {
+            isEmpty,
             createDate,
             formatDate,
             beijing2utc,

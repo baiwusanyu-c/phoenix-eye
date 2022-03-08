@@ -144,6 +144,7 @@
       margin-top: 20px;
       text-align: center;
       @include text($fz16, $textColor3, 21px, 400);
+      word-break: break-all;
     }
 
     .subTitle {
@@ -161,7 +162,7 @@
       top: 26vh;
       left: calc(50% - 218px);
       width: 436px;
-      height: 280px;
+      min-height: 280px;
       background: white;
 
       .be-dialog-title{

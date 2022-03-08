@@ -67,14 +67,14 @@ export default (props: any, ctx: any) => {
     }
     const {t} = useI18n()
     const isEmpty = computed(()=>{
-        return function (val:string |number){
+        return function (val:string |number,emptyStr:string){
             if(isNumber(val) && (val || val === 0)){
                 return val
             }
             if(isString(val) && val){
                 return val
             }
-            return t('lang.emptyData')
+            return emptyStr || t('lang.emptyData')
         }
     })
     return{
