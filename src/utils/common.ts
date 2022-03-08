@@ -411,7 +411,7 @@ export function formatTimeStamp(dateTimeStamp:number,lang:string) {
     let hourC = diffValue / hour;
     let minC = diffValue / minute;
     if (parseInt(dayC.toString()) > 30) {
-        result = "" + formatDD(dateTimeStamp.toString(),"yyyy-MM-dd");
+        result = "" + formatDD(createDate(dateTimeStamp),"yyyy-MM-dd");
     }else if(parseInt(dayC.toString()) > 1) {
         result = "" + parseInt(dayC.toString()) + dq;
     }else if (parseInt(dayC.toString()) == 1) {
@@ -423,7 +423,7 @@ export function formatTimeStamp(dateTimeStamp:number,lang:string) {
     }
     return result;
 }
-function formatDD(date:string | Date, format:string){
+function formatDD(date:string | Date , format:string){
     if (typeof date == 'string') {
         if(date.indexOf('T')>=0){
             date = date.replace('T',' ')
