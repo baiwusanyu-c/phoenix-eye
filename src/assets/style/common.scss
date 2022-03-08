@@ -220,9 +220,19 @@
   background-color: $mainColor7;
 }
 
+
+.el-table__row > td:first-child {
+  border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+}
+
+.el-table__row > td:last-child {
+  border-radius:  0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+}
+
 .el-table__row{
   height: 64px;
-
   &:hover{
     background-color: $mainColor7;
     @apply shadow-md
@@ -524,11 +534,11 @@
   padding: 0 10px;
   color: $mainColor7;
   background: linear-gradient(90deg, #0DE3B2 0%, #008EE9 100%);
-  opacity: .8;
+  opacity: 1;
 
   &:hover,&:focus {
     box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
-    opacity: 1;
+    opacity: .8;
   }
 
 }

@@ -34,7 +34,7 @@
                                        v-if='value !== undefined && value.show && value?.children.length === 0'
                                        :disabled="value.isDisabled"
                                        @click="routerSwitch(value,value.isPush)">
-                            <span style="margin-left: 10px">{{ $t(value.name) }}</span>
+                            <span style="margin-left: 10px;">{{ $t(value.name) }}</span>
                         </el-menu-item>
                     </div>
                 </el-menu>
@@ -84,7 +84,7 @@
                 </template>
                 <div @click="routerSwitch('/logout')" class="popover-item">{{ $t('lang.header.logout') }}</div>
             </be-popover>
-            <be-button v-if="!isLogin" customClass="eagle-btn" round="4" @click="openLogin" type="success">{{ $t('lang.signUp') }}</be-button>
+            <be-button v-if="!isLogin" customClass="eagle-btn sign-up-btn" round="4" @click="openLogin" type="success">{{ $t('lang.signUp') }}</be-button>
         </div>
         <!--退出弹窗-->
         <MsgDialog
@@ -355,6 +355,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.tsgz-nav-menu .sign-up-btn{
+    min-width: initial;
+    width: 90px;
+}
 .popover-logout,.popover-lang,.popover-router{
 
   .be-popover{
@@ -523,8 +527,9 @@ export default defineComponent({
       position: relative;
       height: 40px;
       margin-bottom: 10px;
+      font-weight: bold;
       line-height: 40px;
-      color: $textColor8;
+      color: $textColor3;
       white-space: nowrap;
       list-style: none;
     }

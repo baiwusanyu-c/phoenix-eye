@@ -32,7 +32,7 @@ export default {
     piece:'piece',
     loss:'loss',
     profit:'profit',
-    signUp:'sign up',
+    signUp:'Sign Up',
     contact:'Contact',
     header:{
         me:'Me',

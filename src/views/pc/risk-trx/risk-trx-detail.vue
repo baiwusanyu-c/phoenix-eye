@@ -429,6 +429,7 @@ export default defineComponent({
           margin-top: 5px;
           margin-right: 15px;
           line-height: 30px;
+          cursor: context-menu;
           background-color: $mainColor16;
           border-width: 0;
           border-radius: 0;
@@ -440,9 +441,6 @@ export default defineComponent({
             color: $textColor3;
           }
 
-          &:hover{
-            @apply shadow
-           }
         }
       }
     }
