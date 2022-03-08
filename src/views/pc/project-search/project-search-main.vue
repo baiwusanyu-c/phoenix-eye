@@ -32,8 +32,8 @@
                 </p>
                 <p>
                     {{ $t('lang.projectExplorer.contract') }}:
-                    <span class="item ml-4" @click="searchParams = '0x62ddb3f4509a556df1ac8451e35f1a2268213a30';getList()">
-                        0x62ddb3f4509a556df1ac8451e35f1a2268213a30
+                    <span class="item ml-4" @click="searchParams = '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9';getList()">
+                        0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9
                     </span>
                 </p>
             </div>
@@ -91,7 +91,7 @@ export default defineComponent({
             let params: IProjParam = {
                 param: searchParams.value
             }
-            getProjectListUser(params).then(res => {
+            getProjectListUser(params).then((res:any) => {
                 if (res && res.data) {
                     projectList.value = res.data
                     // 大于一条则显示列表
@@ -100,7 +100,7 @@ export default defineComponent({
                         routerSwitch(projectList.value[0].project_id)
                     }
                 } else {
-                    message('error', 'system error')
+                    message('warning', res.message || res)
                 }
                 loading.value = false
             }).catch(err => {

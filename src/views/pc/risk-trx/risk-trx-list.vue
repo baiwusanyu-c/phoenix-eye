@@ -107,7 +107,7 @@ export default defineComponent({
             {label: 'POLYGON', val: 'polygon', isActive: false},
         ])
         const filterTypeItem = ref<Array<IFilterItem>>([
-            {label: 'BlockTrade', val: 'BlockTrade', isActive: false},
+            {label: 'Huge income', val: 'BlockTrade', isActive: false},
             {label: 'FlashLoan', val: 'FlashLoan', isActive: false},
             {label: 'PrivilegedOperation', val: 'PrivilegedOperation', isActive: false},
             {label: '', val: '', isActive: false},
@@ -178,7 +178,7 @@ export default defineComponent({
     .risk-trx-search-filter {
       box-sizing: border-box;
       display: grid;
-      grid-template-columns:100px 120px 120px 200px 100px;
+      grid-template-columns:100px 160px 120px 200px 100px;
       grid-gap: 20px;
       width: 100%;
       padding: 20px;

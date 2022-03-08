@@ -84,7 +84,7 @@
                 </template>
                 <div @click="routerSwitch('/logout')" class="popover-item">{{ $t('lang.header.logout') }}</div>
             </be-popover>
-            <be-button v-if="!isLogin" customClass="eagle-btn sign-up-btn" round="4" @click="openLogin" type="success">{{ $t('lang.signUp') }}</be-button>
+            <be-button v-if="!isLogin" customClass="eagle-btn sign-up-btn" round="4" @click="openLogin" type="success">{{ $t('lang.loginConfig.login') }}</be-button>
         </div>
         <!--退出弹窗-->
         <MsgDialog

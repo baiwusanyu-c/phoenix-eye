@@ -271,7 +271,13 @@ export default defineComponent({
                     tableData.value = res.data.page_infos
                     pageParams.data.total = res.data.total
                 }else{
-                    message('error', 'system error')
+                    tableData.value = []
+                    pageParams.data = {
+                        currentPage: 1,
+                        pageSize: 10,
+                        total: 0
+                    }
+                   // message('error', 'system error')
                 }
                 loading.value = false
             }).catch(err => {

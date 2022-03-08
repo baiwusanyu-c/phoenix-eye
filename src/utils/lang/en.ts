@@ -132,7 +132,7 @@ export default {
     },
     riskConfig:{
         platform:'Blockchain platform',
-        searchP:'Trx Hash / Contract Address',
+        searchP:'Trx Hash / Address',
         platformP:'Please select the blockchain platform',
         filter:{
             chain:'Chain',
@@ -157,8 +157,8 @@ export default {
         profitTableHeader:{
             addr:'Address',
             profitSum:'Amount',
-            tokenName:'Token',
-            tokenNum:'Token Volume',
+            tokenName:'Coin & Token',
+            tokenNum:'Volume',
             tokenVal:'Income',
         },
         features:'Tag',

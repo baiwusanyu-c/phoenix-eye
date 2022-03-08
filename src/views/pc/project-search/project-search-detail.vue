@@ -77,6 +77,7 @@
                         <span class="total">{{ item.token_name }}</span>
                     </div>
                     <be-ellipsis-copy :targetStr="item.contract_address"
+                                      @click="item.contract_address ? openWeb(item.contract_address,'token',item.platform) : null"
                                       styles="color: #008EE9;cursor:pointer;font-weight:400"
                                       fontLength="8"
                                       endLength="8">
@@ -194,6 +195,7 @@ import RiskTrxTable from "../risk-trx/components/risk-trx-table.vue";
 import ProjectDetailTop, {ITableHeader} from "./components/project-detail-top.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {useEventBus} from "@vueuse/core";
+import {webURL} from "../../../enums/link";
 
 interface ISafetyData {
     negative?: string
@@ -453,7 +455,17 @@ export default defineComponent({
             top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
 
         })
+        /**
+         * 跳轉到第三方頁面
+         */
+        const openWeb = (params:string,type:string,platform:string):void => {
+            if(!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic') return
+            let mainUrl:string = (webURL as any)[`${platform}_${type}` ] as string
+            const url = `${mainUrl}${params}`
+            openWindow(url)
+        }
         return {
+            openWeb,
             projectId,
             statisticsLoading,
             baseLoading,

@@ -45,7 +45,7 @@ service.interceptors.response.use(
     response => {
         const res = response.data
         const bus = useEventBus<string>('loginExpired')
-        if (res.code !== 200 && res.code !== '0000') {
+        if (res.code !== 200 && res.code !== '0000' && res.code !== '0400') {
 
             // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
             if (res.code === 50008 || res.code === 50012 || res.code === 50014) {

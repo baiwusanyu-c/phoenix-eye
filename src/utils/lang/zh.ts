@@ -157,8 +157,8 @@ export default {
         profitTableHeader:{
             addr:'地址',
             profitSum:'总收益',
-            tokenName:'代币',
-            tokenNum:'代币数量',
+            tokenName:'币种',
+            tokenNum:'数量',
             tokenVal:'代币金额',
         },
         features:'交易特征',
