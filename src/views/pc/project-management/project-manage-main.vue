@@ -126,7 +126,7 @@
                 custom-class="table-page"
                 :pageSize = 'pageParams.pageSize'
                 :currentPage = 'pageParams.currentPage'
-                @update:pageSize = 'pageParams.pageSize = $event'
+                @update:pageSize = 'pageParams.pageSize = $event;'
                 @update:currentPage = 'pageParams.currentPage = $event'
                 :total='pageParams.total'
                 layout="sizes,prev, pager,next"
@@ -268,7 +268,6 @@ export default defineComponent({
         // 分页参数
         const pageParams = ref<IPageParam>({
             currentPage: 1,
-            pageNum: 1,
             pageSize: 10,
             total: 0
         })
@@ -285,19 +284,19 @@ export default defineComponent({
                 searchParams.value = ''
                 pageParams.value = {
                     currentPage: 1,
-                    pageNum: 1,
                     pageSize: 10,
                     total: 0
                 }
             }
             let params:IProjectListAdmin = {
-                page_num: pageParams.value.pageNum,
+                page_num: pageParams.value.currentPage,
                 page_size: pageParams.value.pageSize,
                 param:searchParams.value
             }
             getProjectListAdmin(params).then(res => {
                 // 项目列表
                 projectList.data = res.data.page_infos
+                pageParams.value.total = res.data.total
                 // 關鍵詞字符串轉化為數組
                  projectList.data.forEach((val: any) => {
                      let keyword = val.keyword.replace('；', ';')
@@ -323,7 +322,6 @@ export default defineComponent({
          * @param item 分页参数
          */
         const pageChange = (item:IPageParam) :void =>{
-            pageParams.value.pageNum = item.currentPage
             pageParams.value.currentPage = item.currentPage
             getList()
         }

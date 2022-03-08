@@ -224,7 +224,6 @@ export default defineComponent({
         const pageParams = reactive({
             data: {
                 currentPage: 1,
-                pageNum: 1,
                 pageSize: 10,
                 total: 0
             }
@@ -241,7 +240,6 @@ export default defineComponent({
             if (type === 'reset') {
                 pageParams.data = {
                     currentPage: 1,
-                    pageNum: 1,
                     pageSize: 10,
                     total: 0
                 }
@@ -256,7 +254,7 @@ export default defineComponent({
                 return res
             }
             let params = {
-                page_num: pageParams.data.pageNum,
+                page_num: pageParams.data.currentPage,
                 page_size: pageParams.data.pageSize,
                 platform: getFilterParams(props.filterChainItem),
                 alert_level: getFilterParams(props.filterLevelItem),
@@ -282,7 +280,6 @@ export default defineComponent({
          * @param {Object} item - 分页参数对象
          */
         const pageChange = (item: any): void => {
-            pageParams.data.pageNum = item.currentPage
             pageParams.data.currentPage = item.currentPage
             getList()
         }

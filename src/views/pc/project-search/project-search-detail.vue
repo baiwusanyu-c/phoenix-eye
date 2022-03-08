@@ -347,7 +347,6 @@ export default defineComponent({
         const contractStatisticsData = ref<Array<IContractStatistics>>([])
         const pageParamsTj = ref<IPageParam>({
             currentPage: 1,
-            pageNum: 1,
             pageSize: 3,
             total: 0
         })
@@ -355,7 +354,7 @@ export default defineComponent({
         const getContractStatistics = (): void => {
             const params: IPublicOpinion = {
                 project_id: projectId.value,
-                page_num: pageParamsTj.value.pageNum,
+                page_num: pageParamsTj.value.currentPage,
                 page_size: pageParamsTj.value.pageSize,
             }
             statisticsLoading.value = true
@@ -376,7 +375,6 @@ export default defineComponent({
          * @param {IPageParam} item - 分页参数对象
          */
         const pageChangeTj = (item: IPageParam): void => {
-            pageParamsTj.value.pageNum = item.currentPage
             pageParamsTj.value.currentPage = item.currentPage
             getContractStatistics()
         }
@@ -390,7 +388,6 @@ export default defineComponent({
         // 项目舆情安全分页参数
         const pageParamsFs = ref<IPageParam>({
             currentPage: 1,
-            pageNum: 1,
             pageSize: 5,
             total: 0
         })
@@ -402,7 +399,7 @@ export default defineComponent({
             loadingFs.value = true
             let params: IPublicOpinion = {
                 project_id: parseInt(projectId.value),
-                page_num: pageParamsFs.value.pageNum,
+                page_num: pageParamsFs.value.currentPage,
                 page_size: pageParamsFs.value.pageSize,
             }
             getPublicOpinion(params).then(res => {
@@ -433,7 +430,6 @@ export default defineComponent({
          * @param {IPageParam} item - 分页参数对象
          */
         const pageChangeFs = (item: IPageParam): void => {
-            pageParamsFs.value.pageNum = item.currentPage
             pageParamsFs.value.currentPage = item.currentPage
             getPublicOpinionData()
         }
