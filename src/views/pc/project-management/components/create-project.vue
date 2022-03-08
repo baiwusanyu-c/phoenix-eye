@@ -143,6 +143,7 @@ export default defineComponent({
         const createProjectWindow = ref<boolean>(false)
         const projectName= ref<string>('')
         const projectKeyWords= ref<string>('')
+        const emailList = ref<string>('')
 
         const labelPosition= ref<string>('right')
         const addContract= ref<number>(0)
@@ -436,7 +437,6 @@ export default defineComponent({
         }
         // 聯係地址表單
         const websiteForm = ref<IWebsiteForm>({})
-        const emailList = ref<string>('')
         return{
             emailList,
             createProjectWindow,
