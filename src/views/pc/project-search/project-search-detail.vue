@@ -343,6 +343,8 @@ export default defineComponent({
         }
         // 项目id
         const projectId = ref<string>('')
+        const {param, id} = route.query
+        projectId.value = (param || id) as string
         /**
          * 获取项目合约统计数据
          */
@@ -436,8 +438,6 @@ export default defineComponent({
             getPublicOpinionData()
         }
         onMounted(() => {
-            const {param, id} = route.query
-            projectId.value = (param || id) as string
             getProSituData()
 
         })
