@@ -58,7 +58,6 @@ import {loginName} from '../../../../api/login';
 import {Base64} from 'js-base64';
 import {getStore, trim, setStore} from "../../../../utils/common";
 import composition from "../../../../utils/mixin/common-func";
-import {nameReg, pwdReg} from "../../../../utils/reg";
 import {useI18n} from "vue-i18n";
 import type {ElForm} from 'element-plus'
 type FormInstance = InstanceType<typeof ElForm>
@@ -73,24 +72,12 @@ export default defineComponent({
     components:{BeButton},
     setup(props, ctx) {
         const {t} = useI18n()
-        const {message, codeUrl, uuid, getCode, router, routerPush} = composition(props, ctx)
+        const {message, codeUrl, uuid, getCode,} = composition(props, ctx)
         const visible = ref<boolean>(false)
-        // 校驗提示
-        const validatePwd = (rule: any, value: any, callback: any):void => {
-            if (!pwdReg.test(value)) {
-                callback(new Error(t('lang.loginConfig.phoneNumErr')));
-            } else {
-                callback();
-            }
-        };
         // 校驗規則
         const rules = reactive({
             name: [
                 {required: true, message: t('lang.loginConfig.loginNameP'), trigger: 'blur'},
-            ],
-            pwd: [
-                {required: true, message: t('lang.loginConfig.loginPwdP'), trigger: 'blur'},
-                {validator: validatePwd, trigger: 'blur'}
             ],
             code: [
                 {required: true, message: t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},

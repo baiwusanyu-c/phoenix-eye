@@ -106,7 +106,7 @@ import {platformListDict,IPlatformListItem} from "../../../../utils/platform-dic
 import {defineComponent, ref, reactive, watch, onMounted} from "vue"
 import {useI18n} from "vue-i18n";
 
-import {ceReg,ceSemicolonReg,ETHaddress} from "../../../../utils/reg";
+import {ceSemiSpecialCharReg,ETHaddress} from "../../../../utils/reg";
 import {BeButton, BeIcon} from "../../../../../public/be-ui/be-ui.es";
 import composition from "../../../../utils/mixin/common-func";
 import {IOption} from "../../../../utils/types";
@@ -261,10 +261,10 @@ export default defineComponent({
                 verName.value = t('lang.pleaseInput') + t('lang.createProject.createProjectName')
                 return false
             }
-            if(params.name && !ceReg.test(params.name)){
-                verName.value = t('lang.createProject.verCE')
-                return false
-            }
+            // if(params.name && !ceReg.test(params.name)){
+            //     verName.value = t('lang.createProject.verCE')
+            //     return false
+            // }
             return true
         }
         /**
@@ -279,7 +279,7 @@ export default defineComponent({
             // 校驗中英文，分號
             if(params.keyword){
                 let keyword = semicolonVerification(params.keyword)
-                if(!ceSemicolonReg.test(keyword)){
+                if(!ceSemiSpecialCharReg.test(keyword)){
                     verKeyword.value = t('lang.createProject.verCeSemicolonReg')
                     return false
                 }
@@ -336,7 +336,7 @@ export default defineComponent({
                 // 填写了合约标签，则进行校验
                 if(val.label){
                     let label = semicolonVerification(val.label)
-                    if(!ceSemicolonReg.test(label)){
+                    if(!ceSemiSpecialCharReg.test(label)){
                         val.verContract = t('lang.createProject.verCeSemicolonTag')
                         hasEmpty = true
                     }else{
@@ -388,13 +388,15 @@ export default defineComponent({
                 return
             }
             setParams(params.contract_infos)
-            createProject(params).then(res=>{
-                if(res){
+            createProject(params).then((res:any)=>{
+                if(res && res.data){
                     const msg = t('lang.add')+ t('lang.success')
                     message('success', msg)
                     // 更新列表
                     props.getList('reset')
                     createProjectWindow.value = false
+                }else{
+                    message('warning', res.message || res)
                 }
             }).catch(err=>{
                 message('error', err.message || err)
