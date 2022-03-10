@@ -526,164 +526,164 @@ export default defineComponent({
 
 <style lang="scss">
 .project-search-detail {
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    box-sizing: border-box;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: calc(100% - 192px);
+  padding-bottom: 86px;
+
+  .base-info {
+    display: flex;
     width: 100%;
-    height: auto;
-    min-height: calc(100% - 192px);
-    padding-bottom: 86px;
 
-    .base-info {
-        display: flex;
-        width: 100%;
+    .base-info-item:nth-child(1) {
+      margin-right: 20px;
+      background: linear-gradient(90deg, #FFF 0%, #E5F3F2 100%);
 
-        .base-info-item:nth-child(1) {
-            margin-right: 20px;
-            background: linear-gradient(90deg, #FFF 0%, #E5F3F2 100%);
-
-            span {
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                font-size: 36px;
-                font-weight: bold;
-                color: $textColor3;
-            }
-        }
-
-        .base-info-item:nth-child(2) {
-            display: flex;
-            flex: 2;
-            margin-right: 20px;
-
-            .total {
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                font-size: 24px;
-                font-weight: bold;
-                color: $textColor3;
-            }
-
-            .date {
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                font-size: 18px;
-                font-weight: bold;
-                color: $textColor3;
-            }
-        }
-
-        .base-info-item {
-            box-sizing: border-box;
-            flex: 1;
-            min-height: 126px;
-            padding: 24px;
-            background-color: $mainColor7-06;
-            border-radius: 4px;
-
-            &:hover {
-                @apply shadow-xl
-            }
-
-            .be-icon {
-                fill: $textColor12;
-
-                &:hover {
-                    fill: $mainColor11;
-                }
-            }
-
-            p {
-                margin-bottom: 12px;
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                color: $textColor4;
-            }
-        }
+      span {
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-size: 36px;
+        font-weight: bold;
+        color: $textColor3;
+      }
     }
 
+    .base-info-item:nth-child(2) {
+      display: flex;
+      flex: 2;
+      margin-right: 20px;
 
-    .proj-detail-item {
-        width: 67.5%;
-        margin: 24px auto 0 auto;
+      .total {
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        color: $textColor3;
+      }
 
-        .item-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-
-            h2 {
-                margin-right: 15px;
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                color: $textColor3;
-            }
-
-            span {
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                color: $textColor4;
-            }
-        }
-
-        .contract-statistics {
-            box-sizing: border-box;
-            display: flex;
-            width: 100%;
-            height: 88px;
-            padding: 16px;
-            margin-bottom: 12px;
-            background-color: $mainColor7;
-            border-radius: 4px;
-
-            .be-tag {
-                height: 30px;
-                margin-right: 14px;
-                line-height: 30px;
-                background-color: $mainColor16;
-                border-width: 0;
-                border-radius: 0;
-
-                span {
-                    font-family: AlibabaPuHuiTi-Regular, sans-serif;
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: $textColor3;
-                }
-
-                &:hover {
-                    @apply shadow
-                }
-            }
-
-            .contract-statistics-label {
-                margin-bottom: 12px;
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                color: $textColor4;
-            }
-
-            span, .date {
-                font-family: AlibabaPuHuiTi-Medium, sans-serif;
-                font-size: 16px;
-                font-weight: bold;
-                color: $textColor3;
-            }
-
-
-            &:hover {
-                @apply shadow-md
-            }
-        }
-
-        .proj-detail-item-hyaq {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-            background-color: $mainColor7;
-        }
-
-        .proj-detail-item-feelingSecurity {
-            box-sizing: border-box;
-            padding-bottom: 15px;
-        }
+      .date {
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        color: $textColor3;
+      }
     }
+
+    .base-info-item {
+      box-sizing: border-box;
+      flex: 1;
+      min-height: 126px;
+      padding: 24px;
+      background-color: $mainColor7-06;
+      border-radius: 4px;
+
+      &:hover {
+        @apply shadow-xl
+            }
+
+      .be-icon {
+        fill: $textColor12;
+
+        &:hover {
+          fill: $mainColor11;
+        }
+      }
+
+      p {
+        margin-bottom: 12px;
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        color: $textColor4;
+      }
+    }
+  }
+
+
+  .proj-detail-item {
+    width: 67.5%;
+    margin: 24px auto 0 auto;
+
+    .item-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+
+      h2 {
+        margin-right: 15px;
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        color: $textColor3;
+      }
+
+      span {
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        color: $textColor4;
+      }
+    }
+
+    .contract-statistics {
+      box-sizing: border-box;
+      display: flex;
+      width: 100%;
+      height: 88px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background-color: $mainColor7;
+      border-radius: 4px;
+
+      .be-tag {
+        height: 30px;
+        margin-right: 14px;
+        line-height: 30px;
+        background-color: $mainColor16;
+        border-width: 0;
+        border-radius: 0;
+
+        span {
+          font-family: AlibabaPuHuiTi-Regular, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: $textColor3;
+        }
+
+        &:hover {
+          @apply shadow
+                }
+      }
+
+      .contract-statistics-label {
+        margin-bottom: 12px;
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        color: $textColor4;
+      }
+
+      span, .date {
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        color: $textColor3;
+      }
+
+
+      &:hover {
+        @apply shadow-md
+            }
+    }
+
+    .proj-detail-item-hyaq {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      background-color: $mainColor7;
+    }
+
+    .proj-detail-item-feelingSecurity {
+      box-sizing: border-box;
+      padding-bottom: 15px;
+    }
+  }
 }
 
 </style>
