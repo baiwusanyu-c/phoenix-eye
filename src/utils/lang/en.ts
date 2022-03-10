@@ -215,7 +215,7 @@ export default {
         contractSiteLabel:'Enter a contract label, multiple labels separated by semicolons',
         verInfo:'Please fill in at least one valid contract address',
         verCE:'Input is illegal, please input English letters, Chinese characters, number only',
-        verCeSemicolonReg:'Input is illegal, please input English letters, Chinese characters, number, semicolon only, and do not start with semicolon',
+        verCeSemicolonReg:'Input is illegal, do not start with semicolon',
         verCeSemicolonTag:'Input is illegal',
         searchP:'Project name / Contract / Associated Account',
         tableHeader:{

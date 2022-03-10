@@ -111,7 +111,7 @@ export default defineComponent({
          */
         const handleSelect = (platform:string):void =>{
             let type:string = props.types
-            ctx.emit('select', {platform,type })
+            ctx.emit('select', {platform:platform,type:type })
         }
         return {
             handleSelect,

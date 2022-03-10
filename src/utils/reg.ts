@@ -27,5 +27,6 @@ export const specialChar:RegExp = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#
 export const nameReg:RegExp = /^(?!\d+$)[\da-zA-Z]{1,15}$/;
 // 只允許中英文，和中英文分號，且不允许符号开头
 export const ceSemicolonReg:RegExp = /^(?![;；])[ \u4e00-\u9fa5a-zA-Z0-9；;()（）]+$/
+export const ceSemiSpecialCharReg:RegExp = /^(?![;；])[ \u4e00-\u9fa5a-zA-Z0-9,./?@#$%，。、？~`！￥…&*（）()+_‘’|；:;!,\",\'-~]+$/
 // 项目名称，只允許中英文数字、空格、括号
 export const ceReg:RegExp = /^[ \u4e00-\u9fa5a-zA-Z0-9()（）]+$/

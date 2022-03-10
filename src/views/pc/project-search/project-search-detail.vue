@@ -9,7 +9,7 @@
         <!--基本信息-->
         <div class="proj-detail-item" style="margin-top: 32px" v-loading="baseLoading">
             <div class="item-title">
-                <h2>{{isEmpty(baseInfo.name)}}</h2>
+                <h2>{{ isEmpty(baseInfo.name) }}</h2>
                 <span style="margin-right: 6px">{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h)  :  </span>
                 <span
                     style="margin-right: 30px;font-size: 14px;font-weight: bold;color: #333">{{
@@ -26,18 +26,22 @@
             <div class="base-info">
                 <div class="base-info-item">
                     <p>{{ $t('lang.projectExplorer.detail.transactions') }}(24h)</p>
-                    <span v-if="baseInfo.transactions">{{ numberToCommaString(baseInfo.transactions)}}</span>
+                    <span v-if="baseInfo.transactions">{{ numberToCommaString(baseInfo.transactions) }}</span>
                     <span v-if="!baseInfo.transactions">{{ $t('lang.emptyData') }}</span>
                 </div>
                 <div class="base-info-item">
                     <div style="flex: 1">
                         <p>{{ $t('lang.projectExplorer.detail.transactionsTotal') }}</p>
-                        <span class="total" v-if="baseInfo.transactionsTotal">{{ numberToCommaString(baseInfo.transactionsTotal) }}</span>
+                        <span class="total" v-if="baseInfo.transactionsTotal">{{
+                                numberToCommaString(baseInfo.transactionsTotal)
+                            }}</span>
                         <span class="total" v-if="!baseInfo.transactionsTotal">{{ $t('lang.emptyData') }}</span>
                     </div>
                     <div style="flex: 1">
                         <p>{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
-                        <p class="date" v-if="baseInfo.lastTradeData">{{ formatDate(createDate(baseInfo.lastTradeData)) }}</p>
+                        <p class="date" v-if="baseInfo.lastTradeData">{{
+                                formatDate(createDate(baseInfo.lastTradeData))
+                            }}</p>
                         <p class="date" v-if="!baseInfo.lastTradeData">{{ $t('lang.emptyData') }}</p>
                         <p class="time" v-if="baseInfo.lastTradeData">{{
                                 formatTimeStamp(createDate(baseInfo.lastTradeData).getTime(), $i18n.locale)
@@ -54,7 +58,8 @@
                              height="60" icon="iconTelegramEagle"></be-icon>
                     <be-icon @click='openWindow(baseInfo.github)' v-if="baseInfo.github" role="button" width="50"
                              height="60" icon="iconGithubEagle"></be-icon>
-                    <span class="total" v-if="!baseInfo.github && !baseInfo.twitter && !baseInfo.telegram && !baseInfo.github">
+                    <span class="total"
+                          v-if="!baseInfo.website && !baseInfo.twitter && !baseInfo.telegram && !baseInfo.github">
                         {{ $t('lang.emptyData') }}
                     </span>
                 </div>
@@ -114,9 +119,10 @@
         <!--top5 数据表格 :data=" top5TokenHolder"-->
         <div class="proj-detail-item" style="display: flex" v-loading="baseLoading">
             <project-detail-top
-                :token-name="top5TokenHolderAddr"
-                :token-address="top5TokenHolderName"
-                type="holder"
+                :token-name="top5TokenHolderName"
+                :token-address="top5TokenHolderAddr"
+                types="holder"
+                :data="top5TokenHolder"
                 style="margin-right: 16px"
                 @select="handleSelectTop5"
                 :header="top5THTableHeader"
@@ -125,7 +131,7 @@
             </project-detail-top>
             <project-detail-top
                 :data="top5QuidityPairs"
-                type="pairs"
+                types="pairs"
                 @select="handleSelectTop5"
                 :header="top5QPTableHeader"
                 :title="$t('lang.projectExplorer.detail.top5Title2')">
@@ -196,6 +202,8 @@ import ProjectDetailTop, {ITableHeader} from "./components/project-detail-top.vu
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {useEventBus} from "@vueuse/core";
 import {webURL} from "../../../enums/link";
+import { onBeforeRouteUpdate } from "vue-router";
+
 
 interface ISafetyData {
     negative?: string
@@ -227,7 +235,7 @@ interface IBaseInfo {
     telegram?: string
     twitter?: string
     website?: string
-    name?:string
+    name?: string
 }
 
 interface ITop5TokenHolder {
@@ -239,16 +247,19 @@ interface ITop5TokenHolder {
 interface ITop5QuidityPairs extends ITop5TokenHolder {
     pair?: string
 }
+
 interface ITop5QuiditySelect {
-    platform?:string
-    records:Array<any>
+    platform?: string
+    records: Array<any>
 }
+
 interface ITop5TokenHolderSelect {
-    token_address?:string
-    token_name?:string
-    platform?:string
-    records:Array<any>
+    token_address?: string
+    token_name?: string
+    platform?: string
+    records: Array<any>
 }
+
 export default defineComponent({
     name: "project-search-detail",
     components: {
@@ -261,7 +272,7 @@ export default defineComponent({
         BeEllipsisCopy,
     },
     setup(props, ctx) {
-        const {message, route,isEmpty} = composition(props, ctx)
+        const {message, route, isEmpty} = composition(props, ctx)
         const {t} = useI18n()
         const baseInfo = ref<IBaseInfo>({})
 
@@ -283,20 +294,20 @@ export default defineComponent({
         const top5QuidityPairs = ref<Array<ITop5QuidityPairs>>([])
         const top5QuiditySelect = ref<Array<ITop5QuiditySelect>>([])
         const top5TokenHolderSelect = ref<Array<ITop5TokenHolderSelect>>([])
-        const handleSelectTop5 = (params:{platform:string,type:string}):void=>{
+        const handleSelectTop5 = (params: { platform: string, type: string }): void => {
             // top5数据
-            if(params.type === 'holder'){
-                top5TokenHolderSelect.value && top5TokenHolderSelect.value.forEach((val:any)=>{
-                    if(val.platform === params.platform){
+            if (params.type === 'holder') {
+                top5TokenHolderSelect.value && top5TokenHolderSelect.value.forEach((val: any) => {
+                    if (val.platform === params.platform) {
                         top5TokenHolder.value = val.records
                         top5TokenHolderAddr.value = val.token_address
                         top5TokenHolderName.value = val.token_name
                     }
                 })
             }
-            if(params.type === 'pairs'){
-                top5QuiditySelect.value && top5QuiditySelect.value.forEach((val:any)=>{
-                    if(val.platform === params.platform){
+            if (params.type === 'pairs') {
+                top5QuiditySelect.value && top5QuiditySelect.value.forEach((val: any) => {
+                    if (val.platform === params.platform) {
                         top5QuidityPairs.value = val.records
                     }
                 })
@@ -317,7 +328,7 @@ export default defineComponent({
                         lastTradeData: res.data.details.latest_trading_date,
                         riksTrxNum: res.data.details.risk_tx_24,
                         riskPublicOpinion: res.data.details.risk_public_opinion_24,
-                        name:res.data.details.name,
+                        name: res.data.details.name,
                         github: res.data.social_profiles.github,
                         telegram: res.data.social_profiles.telegram,
                         twitter: res.data.social_profiles.twitter,
@@ -325,9 +336,9 @@ export default defineComponent({
                     }
                     // top5数据
                     top5TokenHolderSelect.value = res.data.top_5_token_holders
-                    handleSelectTop5({platform:'bsc',type:'holder'})
+                    handleSelectTop5({platform: 'bsc', type: 'holder'})
                     top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
-                    handleSelectTop5({platform:'bsc',type:'pairs'})
+                    handleSelectTop5({platform: 'bsc', type: 'pairs'})
                 }
                 baseLoading.value = false
             }).catch(err => {
@@ -441,6 +452,21 @@ export default defineComponent({
             getProSituData()
 
         })
+        onBeforeRouteUpdate((to) => {
+            const {param, id} = to.query
+            projectId.value = (param || id) as string
+            pageParamsTj.value = {
+                currentPage: 1,
+                pageSize: 3,
+                total: 0
+            }
+            pageParamsFs.value = {
+                currentPage: 1,
+                pageSize: 5,
+                total: 0
+            }
+            getProSituData()
+        });
 
         // 语种切换重新赋值一下 解决不更新问题
         const busLanguage = useEventBus<string>('language')
@@ -458,9 +484,9 @@ export default defineComponent({
         /**
          * 跳轉到第三方頁面
          */
-        const openWeb = (params:string,type:string,platform:string):void => {
-            if(!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic') return
-            let mainUrl:string = (webURL as any)[`${platform}_${type}` ] as string
+        const openWeb = (params: string, type: string, platform: string): void => {
+            if (!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic') return
+            let mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
             const url = `${mainUrl}${params}`
             openWindow(url)
         }
@@ -500,164 +526,164 @@ export default defineComponent({
 
 <style lang="scss">
 .project-search-detail {
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  box-sizing: border-box;
-  width: 100%;
-  height: auto;
-  min-height: calc(100% - 192px);
-  padding-bottom: 86px;
-
-  .base-info {
-    display: flex;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    box-sizing: border-box;
     width: 100%;
+    height: auto;
+    min-height: calc(100% - 192px);
+    padding-bottom: 86px;
 
-    .base-info-item:nth-child(1) {
-      margin-right: 20px;
-      background: linear-gradient(90deg, #FFF 0%, #E5F3F2 100%);
+    .base-info {
+        display: flex;
+        width: 100%;
 
-      span {
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        font-size: 36px;
-        font-weight: bold;
-        color: $textColor3;
-      }
-    }
+        .base-info-item:nth-child(1) {
+            margin-right: 20px;
+            background: linear-gradient(90deg, #FFF 0%, #E5F3F2 100%);
 
-    .base-info-item:nth-child(2) {
-      display: flex;
-      flex: 2;
-      margin-right: 20px;
+            span {
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                font-size: 36px;
+                font-weight: bold;
+                color: $textColor3;
+            }
+        }
 
-      .total {
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        font-size: 24px;
-        font-weight: bold;
-        color: $textColor3;
-      }
+        .base-info-item:nth-child(2) {
+            display: flex;
+            flex: 2;
+            margin-right: 20px;
 
-      .date {
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        font-size: 18px;
-        font-weight: bold;
-        color: $textColor3;
-      }
-    }
-
-    .base-info-item {
-      box-sizing: border-box;
-      flex: 1;
-      min-height: 126px;
-      padding: 24px;
-      background-color: $mainColor7-06;
-      border-radius: 4px;
-
-      &:hover {
-        @apply shadow-xl
+            .total {
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                font-size: 24px;
+                font-weight: bold;
+                color: $textColor3;
             }
 
-      .be-icon {
-        fill: $textColor12;
-
-        &:hover {
-          fill: $mainColor11;
-        }
-      }
-
-      p {
-        margin-bottom: 12px;
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        color: $textColor4;
-      }
-    }
-  }
-
-
-  .proj-detail-item {
-    width: 67.5%;
-    margin: 24px auto 0 auto;
-
-    .item-title {
-      display: flex;
-      align-items: center;
-      margin-bottom: 16px;
-
-      h2 {
-        margin-right: 15px;
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        color: $textColor3;
-      }
-
-      span {
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        color: $textColor4;
-      }
-    }
-
-    .contract-statistics {
-      box-sizing: border-box;
-      display: flex;
-      width: 100%;
-      height: 88px;
-      padding: 16px;
-      margin-bottom: 12px;
-      background-color: $mainColor7;
-      border-radius: 4px;
-
-      .be-tag {
-        height: 30px;
-        margin-right: 14px;
-        line-height: 30px;
-        background-color: $mainColor16;
-        border-width: 0;
-        border-radius: 0;
-
-        span {
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
-          font-size: 14px;
-          font-weight: 500;
-          color: $textColor3;
+            .date {
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                font-size: 18px;
+                font-weight: bold;
+                color: $textColor3;
+            }
         }
 
-        &:hover {
-          @apply shadow
+        .base-info-item {
+            box-sizing: border-box;
+            flex: 1;
+            min-height: 126px;
+            padding: 24px;
+            background-color: $mainColor7-06;
+            border-radius: 4px;
+
+            &:hover {
+                @apply shadow-xl
+            }
+
+            .be-icon {
+                fill: $textColor12;
+
+                &:hover {
+                    fill: $mainColor11;
                 }
-      }
-
-      .contract-statistics-label {
-        margin-bottom: 12px;
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        color: $textColor4;
-      }
-
-      span, .date {
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        font-size: 16px;
-        font-weight: bold;
-        color: $textColor3;
-      }
-
-
-      &:hover {
-        @apply shadow-md
             }
+
+            p {
+                margin-bottom: 12px;
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                color: $textColor4;
+            }
+        }
     }
 
-    .proj-detail-item-hyaq {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 300px;
-      background-color: $mainColor7;
-    }
 
-    .proj-detail-item-feelingSecurity {
-      box-sizing: border-box;
-      padding-bottom: 15px;
+    .proj-detail-item {
+        width: 67.5%;
+        margin: 24px auto 0 auto;
+
+        .item-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+
+            h2 {
+                margin-right: 15px;
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                color: $textColor3;
+            }
+
+            span {
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                color: $textColor4;
+            }
+        }
+
+        .contract-statistics {
+            box-sizing: border-box;
+            display: flex;
+            width: 100%;
+            height: 88px;
+            padding: 16px;
+            margin-bottom: 12px;
+            background-color: $mainColor7;
+            border-radius: 4px;
+
+            .be-tag {
+                height: 30px;
+                margin-right: 14px;
+                line-height: 30px;
+                background-color: $mainColor16;
+                border-width: 0;
+                border-radius: 0;
+
+                span {
+                    font-family: AlibabaPuHuiTi-Regular, sans-serif;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: $textColor3;
+                }
+
+                &:hover {
+                    @apply shadow
+                }
+            }
+
+            .contract-statistics-label {
+                margin-bottom: 12px;
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                color: $textColor4;
+            }
+
+            span, .date {
+                font-family: AlibabaPuHuiTi-Medium, sans-serif;
+                font-size: 16px;
+                font-weight: bold;
+                color: $textColor3;
+            }
+
+
+            &:hover {
+                @apply shadow-md
+            }
+        }
+
+        .proj-detail-item-hyaq {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            background-color: $mainColor7;
+        }
+
+        .proj-detail-item-feelingSecurity {
+            box-sizing: border-box;
+            padding-bottom: 15px;
+        }
     }
-  }
 }
 
 </style>
