@@ -156,7 +156,7 @@ export default defineComponent({
     flex-shrink: 0;
     width: 16px;
     margin-right: 0 !important;
-    margin-left: 8px;
+    margin-left: 4px;
     cursor: pointer;
   }
 

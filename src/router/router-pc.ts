@@ -95,6 +95,7 @@ const beforeEachHandle = (router:Router) => {
                 userId: getStore('userId'),
             }
              getRouterInfo(params).then(res => {
+                 if(!res){return}
                 const routerConfig = initRouterConfig(res.data[0].children)
                 store.commit('update', ['routeConfig', routerConfig])
                 let title:string = ''

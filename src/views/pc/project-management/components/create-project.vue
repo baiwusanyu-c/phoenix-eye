@@ -223,6 +223,7 @@ export default defineComponent({
                 id: props.projectId
             }
             getProjectInfo( params).then(res => {
+                if(!res){return}
                 if (res) {
                     projectName.value = res.data.name
                     projectKeyWords.value = res.data.keyword
@@ -389,6 +390,7 @@ export default defineComponent({
             }
             setParams(params.contract_infos)
             createProject(params).then((res:any)=>{
+                if(!res){return}
                 if(res && res.data){
                     const msg = t('lang.add')+ t('lang.success')
                     message('success', msg)
@@ -425,6 +427,7 @@ export default defineComponent({
             }
             setParams(params.contract_infos)
             saveEditProject(params,pathParams).then(res=>{
+                if(!res){return}
                 if(res){
                     const msg = t('lang.edit')+ t('lang.success')
                     message('success', msg)

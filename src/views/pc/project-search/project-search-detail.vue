@@ -297,6 +297,7 @@ export default defineComponent({
         const handleSelectTop5 = (params: { platform: string, type: string }): void => {
             // top5数据
             if (params.type === 'holder') {
+                top5TokenHolder.value = []
                 top5TokenHolderSelect.value && top5TokenHolderSelect.value.forEach((val: any) => {
                     if (val.platform === params.platform) {
                         top5TokenHolder.value = val.records
@@ -306,6 +307,7 @@ export default defineComponent({
                 })
             }
             if (params.type === 'pairs') {
+                top5QuidityPairs.value = []
                 top5QuiditySelect.value && top5QuiditySelect.value.forEach((val: any) => {
                     if (val.platform === params.platform) {
                         top5QuidityPairs.value = val.records
@@ -320,6 +322,7 @@ export default defineComponent({
             }
             baseLoading.value = true
             getProjectSituation(params).then(res => {
+                if(!res){return}
                 if (res) {
                     // 获取项目详情数据
                     baseInfo.value = {
@@ -374,6 +377,7 @@ export default defineComponent({
             }
             statisticsLoading.value = true
             getProjectSituationStatistics(params).then(res => {
+                if(!res){return}
                 if (res) {
                     contractStatisticsData.value = res.data.page_infos
                     pageParamsTj.value = res.data.total
@@ -418,6 +422,7 @@ export default defineComponent({
                 page_size: pageParamsFs.value.pageSize,
             }
             getPublicOpinion(params).then(res => {
+                if(!res){return}
                 if (res) {
                     res.data.page_infos.forEach((val: any) => {
                         safetyData.value.push({
@@ -602,7 +607,7 @@ export default defineComponent({
 
 
   .proj-detail-item {
-    width: 67.5%;
+    width: 70%;
     margin: 24px auto 0 auto;
 
     .item-title {

@@ -121,7 +121,7 @@ export default {
         warningType:'风险类型',
         features:'异常特征',
         reassess:'重新评估',
-        delete:'是否要删除',
+        delete:'是否要删除 ',
         isConfirm:'是否对',
         reassessInfo:'的所有安全项进行重新评估'
     },

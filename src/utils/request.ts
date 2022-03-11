@@ -6,7 +6,7 @@
 */
 import axios from 'axios'
 import config from '../enums/config'
-import {getStore, removeSession, removeStore} from "./common";
+import {getStore, removeSession, removeStore,setStore,message} from "./common";
 import qs from 'qs'
 import {useEventBus} from "@vueuse/core";
 // create an axios instance
@@ -53,13 +53,18 @@ service.interceptors.response.use(
                 window.location.href = '#/riskTrx/list'
                 bus.emit('true')
             }
-            if (res.code === 401 || res.code === 920000003) {
+            if (res.code === 401 || res.code === 920000003 ) {
                 removeSession('CETInfo')
                 removeStore('token')
                 removeStore('userInfo')
                 window.location.href = '#/riskTrx/list'
-                bus.emit('true')
-                return Promise.reject(new Error('登录过期' || 'Error'))
+                if(getStore('loginExpiredNum') === 'false'){
+                    bus.emit('true')
+                    let err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期';
+                        message('error',err)
+                        setStore('loginExpiredNum','true')
+                }
+                return null
             }
             return Promise.reject(new Error(res.msg || res.message ||'Error'))
         } else {

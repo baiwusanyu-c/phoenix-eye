@@ -43,7 +43,7 @@
         <!--    语种、设置菜单等    -->
         <div class="tsgz-slogan">
             <be-popover placement="bottom"
-                        v-if="isLogin"
+                        v-if="isLogin && headerConfigMore.length > 0"
                         ref="popoverRouter"
                         trigger="click"
                         customClass="popover-router">
@@ -320,6 +320,7 @@ export default defineComponent({
         const selectVal = ref<string>('')
         const getProjectUser = ():void =>{
             getProjectListCurUser().then(res=>{
+                if(!res){return}
                 projectList.value = res.data
             }).catch(err=>{
                 message('error', err.message || err)

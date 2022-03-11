@@ -15,7 +15,6 @@
                         customClass="detail-copy"
                         :targetStr="baseInfo.tx_hash"
                         :is-ellipsis="false"
-                        :isShowCopyBtn="false"
                         emptyText="/"
                         @click="openWeb(baseInfo.tx_hash,'tx')"
                         styles="color: #008EE9;cursor:pointer;"
@@ -38,7 +37,6 @@
                         :tooltipTxt="baseInfo.from_address"
                         :targetStr="baseInfo.from_address_tag ? baseInfo.from_address_tag :  baseInfo.from_address"
                         :is-ellipsis="(baseInfo.from_address && baseInfo.from_address.length > 15 && !baseInfo.from_address_tag) ? true : false"
-                        :isShowCopyBtn="false"
                         emptyText="/"
                         @click="openWeb(baseInfo.from_address,'addr')"
                         styles="color: #008EE9;cursor:pointer;font-weight:400"
@@ -52,7 +50,6 @@
                         :tooltipTxt="baseInfo.to_address"
                         :targetStr="baseInfo.to_address_tag ? baseInfo.to_address_tag :  baseInfo.to_address"
                         :is-ellipsis="(baseInfo.to_address && baseInfo.to_address.length > 15 && !baseInfo.to_address_tag) ? true : false"
-                        :isShowCopyBtn="false"
                         emptyText="/"
                         @click="openWeb(baseInfo.to_address,'addr')"
                          styles="color: #008EE9;cursor:pointer;font-weight:400"
@@ -306,6 +303,7 @@ export default defineComponent({
             }
             loading.value = true
             getProjWarningDetail(params).then((res:any)=>{
+                if(!res){return}
                 baseInfo.value = res.data
                 profitData.value = res.data.address_profits
                 profitData.value.forEach(val=>{
@@ -426,8 +424,6 @@ export default defineComponent({
 
         .be-tag {
           height: 30px;
-          margin-top: 5px;
-          margin-right: 15px;
           line-height: 30px;
           cursor: context-menu;
           background-color: $mainColor16;

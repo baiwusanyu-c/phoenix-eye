@@ -3,7 +3,7 @@
         <el-form :model="form" :rules="rules" ref="resetPwdForm">
             <el-form-item class="label" prop='name'>
                 <el-input autocomplete="off"
-                          :placeholder="$t('lang.loginConfig.phone')"
+                          :placeholder="$t('lang.loginConfig.loginNameP')"
                           v-model="form.name">
                     <template #prefix>
                         <img alt="" src="../../../../assets/image/pc/login-email.png" height="20" width="20"/>
@@ -103,6 +103,7 @@ export default defineComponent({
                     verifyCodePassword({
                         userName: form.value.name
                     }).then((res: any) => {
+                        if(!res){return}
                         message('success', t('lang.loginConfig.getVerCodeValid') + t('lang.success'))
                         isTip.value = true;
                         num.value = 60;
@@ -134,7 +135,8 @@ export default defineComponent({
                         password:Base64.encode(form.value.password),
                         re_password:Base64.encode(form.value.password),
                         verification_code:form.value.code,
-                    }).then(() => {
+                    }).then((res) => {
+                        if(!res){return}
                         ctx.emit('resetSuccess')
                     }).catch((err) => {
                         message('error', err.message || err)
@@ -148,8 +150,8 @@ export default defineComponent({
         }
         const visible = ref<boolean>(false)
         const visibleAgain = ref<boolean>(false)
-        // 電話號碼正則校驗提示
-        const validatePhonenumber = (rule: any, value: any, callback: any):void => {
+
+        const validateEmail = (rule: any, value: any, callback: any):void => {
             if (emailReg.test(value)) {
                 callback();
             } else {
@@ -179,7 +181,7 @@ export default defineComponent({
         const rules = reactive({
             name: [
                 {required: true, message: t('lang.loginConfig.email'), trigger: 'blur'},
-                {validator: validatePhonenumber, trigger: 'blur'}
+                {validator: validateEmail, trigger: 'blur'}
             ],
             code: [
                 {required: true, message: t('lang.loginConfig.loginVerCodeP2'), trigger: 'blur'},

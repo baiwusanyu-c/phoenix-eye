@@ -222,17 +222,18 @@
 
 
 .el-table__row > td:first-child {
-  border-radius: 4px 0 0 4px;
   -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
 }
 
 .el-table__row > td:last-child {
-  border-radius:  0 4px 4px 0;
   -moz-border-radius: 0 4px 4px 0;
+  border-radius:  0 4px 4px 0;
 }
 
 .el-table__row{
   height: 64px;
+
   &:hover{
     background-color: $mainColor7;
     @apply shadow-md

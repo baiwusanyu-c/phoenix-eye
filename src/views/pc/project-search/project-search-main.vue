@@ -92,6 +92,7 @@ export default defineComponent({
                 param: searchParams.value
             }
             getProjectListUser(params).then((res:any) => {
+                if(!res){return}
                 if (res && res.data) {
                     projectList.value = res.data
                     // 大于一条则显示列表

@@ -120,7 +120,7 @@ export default {
         warningType:'Risk type',
         features:'Exceptional features',
         reassess:'Reassess',
-        delete:'Whether to delete',
+        delete:'Whether to delete ',
         isConfirm:'Whether to',
         reassessInfo:'reassess all security items'
     },

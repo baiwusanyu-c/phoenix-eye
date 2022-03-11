@@ -247,6 +247,7 @@ export default defineComponent({
                 id: (curItem.data as IReappraise).project_id as string
             }
             deleteProject(params).then(res => {
+                if(!res){return}
                 if (res) {
                     const msg = t('lang.delete') + t('lang.success')
                     message('success', msg)
@@ -294,6 +295,7 @@ export default defineComponent({
                 param:searchParams.value
             }
             getProjectListAdmin(params).then(res => {
+                if(!res){return}
                 // 项目列表
                 projectList.data = res.data.page_infos
                 pageParams.value.total = res.data.total

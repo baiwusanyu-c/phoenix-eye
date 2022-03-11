@@ -63,7 +63,7 @@ if (browserInfo().browser !== 'chrome') {
 }
 // 設置語言
 if (!getStore('language')) {
-    setStore('language', 'zh_CN')
+    setStore('language', 'en_US')
 }
 
 /**
