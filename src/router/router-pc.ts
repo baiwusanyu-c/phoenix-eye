@@ -46,6 +46,12 @@ const routes =
 
             ]
         },
+        {
+            path: '/external/riskTrx/list',
+            name: 'riskTrxDetail',
+            component: () => import('../views/pc/external-page/external-risk-trx.vue'),
+            meta: {title: 'lang.subNav.navName2'},
+        },
     ]
 // 路由的metaTitle字典
 const metaTitleDict:any = {

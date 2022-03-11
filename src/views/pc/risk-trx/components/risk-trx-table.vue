@@ -138,6 +138,7 @@
             </el-table-column>
             <el-table-column
                 width="100"
+                fixed="right"
                 prop="tx_time"
                 align="left">
                 <template #header>
@@ -169,6 +170,7 @@
             </el-table-column>
         </el-table>
         <be-pagination
+            v-if="showPager"
             layout="sizes,prev, pager,next"
             :init-func="getList"
             custom-class="table-page"
@@ -217,6 +219,10 @@ export default defineComponent({
             default:''
         },
         showOperation:{
+            type:Boolean,
+            default:true
+        },
+        showPager:{
             type:Boolean,
             default:true
         },
