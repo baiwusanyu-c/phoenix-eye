@@ -87,7 +87,7 @@
         <!--   地址收益     -->
         <div class="detail-profit">
             <h3>{{ $t('lang.riskConfig.profit') }}</h3>
-            <div class="detail-profit-body" v-if="profitData.length > 0">
+            <div class="detail-profit-body">
                 <el-table
                     tooltip-effect="light"
                     :data="profitData">
