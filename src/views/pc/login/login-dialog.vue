@@ -22,41 +22,44 @@
                         <div class="login-title-small">Welcome to Eagle Eye</div>
                         <div class="login-title-big">Awareness Management Platform</div>
                     </div>
-                    <div class="login-input-class" v-show="loginType === 'login'">
+                    <div class="login-input-class" v-if ="loginType === 'login'">
                         <div class="login-input-title">{{$t('lang.loginConfig.titleLogin')}}</div>
                         <div>
-                            <name-login v-show="loginType === 'login'"></name-login>
+                            <name-login></name-login>
                             <div class="change-register">
                                 <el-button type="text" @click="forgetPassword" class="forget-btn">{{$t('lang.loginConfig.forget')}}</el-button>
                                 <el-button class="button-change" type="text" @click="loginOrSingUp">{{changeLogin}}</el-button>
                             </div>
                         </div>
                     </div>
-                    <div class="register-input-class" v-show="loginType === 'register'&&!registerSuccess">
+
+                    <div class="register-input-class" v-if="loginType === 'register'&&!registerSuccess">
                         <div class="register-input-title">{{$t('lang.loginConfig.register')}}</div>
                         <div>
-                            <user-registration @registerSuccess="registerSuc" v-show="loginType === 'register'&&!registerSuccess"></user-registration>
+                            <user-registration @registerSuccess="registerSuc"></user-registration>
                             <div class="change-login">
                                 <el-button class="button-change" type="text" @click="loginOrSingUp">{{changeLogin}}</el-button>
                             </div>
                         </div>
                     </div>
-                    <div class="forget-input-class" v-show="loginType === 'forget'&&!resetPsSuccess">
+
+                    <div class="forget-input-class" v-if="loginType === 'forget'&& !resetPsSuccess">
                         <div class="forget-input-title">{{$t('lang.loginConfig.rember')}}</div>
-                        <reset-password @resetSuccess="resetSuc"
-                                        v-show="loginType === 'forget'&&!resetPsSuccess"></reset-password>
+                        <reset-password @resetSuccess="resetSuc"></reset-password>
                         <div class="change-login">
                             <el-button class="button-change" type="text" @click="forgetPassword">{{changeLogin}}</el-button>
                         </div>
                     </div>
-                    <div class="success" v-show="loginType === 'register'&&registerSuccess">
+
+                    <div class="success" v-show="loginType === 'register'&& registerSuccess">
                         <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt=""/>
                         <div class="success-message">{{$t('lang.loginConfig.registerSuccess')}}</div>
                         <be-button style="width: 100%" customClass="eagle-btn" @click="loginOrSingUp" type="success">
                             {{$t('lang.loginConfig.login')}}
                         </be-button>
                     </div>
-                    <div class="success" v-show="loginType === 'forget'&&resetPsSuccess">
+
+                    <div class="success" v-show="loginType === 'forget'&& resetPsSuccess">
                         <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt=""/>
                         <div class="success-message">{{$t('lang.loginConfig.resetPasswordSuccess')}}</div>
                         <be-button style="width: 100%" customClass="eagle-btn" @click="forgetPassword" type="success">
@@ -133,6 +136,7 @@ export default defineComponent({
             resetPsSuccess.value = false
             registerSuccess.value = false
             showDialog.value = false
+            loginType.value = 'login'
         }
         return {
             resetSuc,

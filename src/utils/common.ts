@@ -479,7 +479,7 @@ export const beijing2utc = (now:number, formats:string) => {
     return formatDate((createDate(tempTime).toString()), formats)
 }
 
-const message = (type:string,info:string,className?:string):void =>{
+export const message = (type:string,info:string,className?:string):void =>{
     BeMessage.service({
         customClass:className,
         titles: info,

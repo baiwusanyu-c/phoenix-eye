@@ -19,7 +19,7 @@
             </template>
             <el-table-column
                 prop="platform"
-                width="140"
+                width="130"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
@@ -44,14 +44,14 @@
                 </template>
                 <template #default="scope">
                     <be-ellipsis-copy :targetStr="scope.row.tx_hash"
-                                      fontLength="8"
-                                      endLength="8">
+                                      fontLength="7"
+                                      endLength="7">
                     </be-ellipsis-copy>
                 </template>
             </el-table-column>
             <el-table-column
                 prop="alert_level"
-                width="120"
+                width="110"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.level') }}</span>
@@ -96,7 +96,7 @@
             </el-table-column>
             <el-table-column
                 prop="from_address"
-                width="170"
+                width="200"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.gainer') }}</span>
@@ -128,11 +128,11 @@
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.amount') }}</span>
                 </template>
                 <template #default="scope">
-                    $ {{ scope.row.amount }}
+                    {{ isEmpty(scope.row.amount,'/') === '/' ? '/' : `$ ${scope.row.amount}`}}
                 </template>
             </el-table-column>
             <el-table-column
-                width="120"
+                width="100"
                 prop="tx_time"
                 align="left">
                 <template #header>
@@ -151,7 +151,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                width="60"
+                width="50"
                 label=" "
                 align="center">
                 <template #default="scope">
@@ -222,7 +222,7 @@ export default defineComponent({
         },
     },
     setup(props, ctx){
-        const {message} = composition(props, ctx)
+        const {message,isEmpty} = composition(props, ctx)
         const tableData = ref<object>([])
         const loading = ref<boolean>(false)
         const pageParams = reactive({
@@ -267,6 +267,7 @@ export default defineComponent({
                 param: props.searchParams
             }
             getProjWarning(params).then(res => {
+                if(!res){return}
                 if (res.data) {
                     tableData.value = res.data.page_infos
                     pageParams.data.total = res.data.total
@@ -304,6 +305,7 @@ export default defineComponent({
             getList('reset')
         })
         return {
+            isEmpty,
             openDetail,
             iconDict,
             pageChange,

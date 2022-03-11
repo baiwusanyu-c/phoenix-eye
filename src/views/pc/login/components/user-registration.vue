@@ -29,6 +29,7 @@
             <el-form-item class="label" prop='password'>
                 <el-input :placeholder = "$t('lang.loginConfig.loginPwdValid')"
                           autocomplete="off"
+                          type="password"
                           v-model="form.password">
                     <template #prefix>
                         <img alt="" src="../../../../assets/image/pc/login-password.png" height="20" width="20"/>
@@ -114,6 +115,7 @@ export default defineComponent({
                         userName:String(form.value.email)
                     }
                     verifyCode(params).then((res:any)=>{
+                        if(!res){return}
                         ElMessage.success(t('lang.loginConfig.getVerCodeValid') + t('lang.success'));
                         isTip.value = true;
                         num.value = 60;
@@ -147,7 +149,8 @@ export default defineComponent({
                         verification_code: form.value.code,
                         password: Base64.encode(form.value.password),
                         from: 'fraud_system',
-                    }).then(() => {
+                    }).then((res) => {
+                        if(!res){return}
                         ctx.emit('registerSuccess')
                     }).catch(err => {
                         message('error', err.message || err)

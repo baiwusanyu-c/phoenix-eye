@@ -38,11 +38,10 @@
                         </template>
                     </el-input>
                 </el-form-item>
-                <div class="por codeArea">
+                <div class="codeArea">
                     <img :src="codeUrl" class="codeBtn" @click="getCode" alt="">
-                    <!-- <span class="codeBtnText" @click="getCode">换一换</span> -->
-                    <svg-icon iconClass="Addresstracking_reset1" :disabledToolTip="true" class="codeBtnText"
-                              @click="getCode"></svg-icon>
+                    <be-icon icon="refresh" class="codeBtnText" color="#C1CCEC"
+                              @click="getCode"></be-icon>
                 </div>
             </div>
         </el-form>
@@ -56,12 +55,13 @@
 import {defineComponent, onMounted, ref, reactive, getCurrentInstance, ComponentInternalInstance} from 'vue'
 import {loginName} from '../../../../api/login';
 import {Base64} from 'js-base64';
-import {getStore, trim, setStore} from "../../../../utils/common";
+import {getStore, trim, setStore,clearStore} from "../../../../utils/common";
 import composition from "../../../../utils/mixin/common-func";
+
 import {useI18n} from "vue-i18n";
 import type {ElForm} from 'element-plus'
 type FormInstance = InstanceType<typeof ElForm>
-import {BeButton} from "../../../../../public/be-ui/be-ui.es.js";
+import {BeButton,BeIcon} from "../../../../../public/be-ui/be-ui.es.js";
 declare type loginType = {
     name: string
     pwd: string
@@ -69,15 +69,20 @@ declare type loginType = {
 }
 export default defineComponent({
     name: "NameLogin",
-    components:{BeButton},
+    components:{BeButton,BeIcon},
     setup(props, ctx) {
         const {t} = useI18n()
-        const {message, codeUrl, uuid, getCode,} = composition(props, ctx)
+        const {message, codeUrl, uuid, getCode} = composition(props, ctx)
         const visible = ref<boolean>(false)
+
+
         // 校驗規則
         const rules = reactive({
             name: [
                 {required: true, message: t('lang.loginConfig.loginNameP'), trigger: 'blur'},
+            ],
+            pwd: [
+                {required: true, message: t('lang.loginConfig.loginPwdP'), trigger: 'blur'},
             ],
             code: [
                 {required: true, message: t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},
@@ -108,8 +113,9 @@ export default defineComponent({
                         scope: 'server',
 
                     }).then((res: any) => {
+                        if(!res){return}
                         const langCache = getStore('language')
-                        window.localStorage.clear();
+                        clearStore()
                         langCache && setStore('language', langCache)
                         isLogin.value = false;
                         setStore('userInfo', JSON.stringify({
@@ -117,6 +123,7 @@ export default defineComponent({
                         }));
                         setStore('token', res.access_token);
                         setStore('userId', res.user_id);
+                        setStore('loginExpiredNum','false')
                         !getStore('debugSessionId') && setStore('debugSessionId', (new Date().getTime()).toString());
                         // 登錄先拿路由在跳轉 变为关闭弹窗
                         location.reload()
@@ -176,12 +183,15 @@ export default defineComponent({
 
 .codeArea {
   top: 12px;
+  display: flex;
+  align-items: center;
   width: 120px;
+  margin-bottom: 20px;
   margin-left: 10px;
   text-align: left;
 
   .codeBtn {
-    width: 120px;
+    width: 96px;
     height: 48px;
     cursor: pointer;
   }
@@ -193,7 +203,6 @@ export default defineComponent({
     font-size: 12px;
     font-weight: 400;
     line-height: 43px;
-    color: #C1CCEC;
     cursor: pointer;
   }
 }

@@ -75,9 +75,9 @@
 <script lang="ts">
 import BePagination from "../../../components/common-components/pagination/be-pagination.vue";
 import BeEllipsisCopy from "../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-import {defineComponent, ref, reactive, onMounted, getCurrentInstance} from "vue";
+import {defineComponent, ref, getCurrentInstance} from "vue";
 import {useI18n} from "vue-i18n";
-import {BeButton,BeIcon,BeTag} from "../../../../public/be-ui/be-ui.es";
+import {BeButton,BeIcon,BeTag} from "../../../../public/be-ui/be-ui.es.js";
 import RiskTrxTable from "./components/risk-trx-table.vue";
 import {useEventBus} from "@vueuse/core";
 
@@ -189,6 +189,7 @@ export default defineComponent({
 
       .filter-label {
         font-weight: bold;
+        vertical-align: sub;
       }
     }
 
