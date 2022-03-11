@@ -10,7 +10,7 @@
             <be-header height="60px">
 
             </be-header>
-            <be-main style="box-sizing: border-box;width: calc(100vw - 60px)">
+            <be-main class="external-risk-trx--main">
                 <risk-trx-table
                     :show-operation="false"
                     :show-pager="false"
@@ -32,6 +32,8 @@ export default defineComponent({
     name: "external-risk-trx",
     components: {RiskTrxTable,BeContainer,BeHeader,BeMain},
     setup(){
+        console.log('w:',window.innerWidth)
+        console.log('h:',window.innerHeight)
         /**
          * 筛选框选择
          */
@@ -48,9 +50,24 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
   #external_risk_trx {
     height: 100vh;
     overflow-y: auto;
+  }
+  .external-risk-trx--main{
+      box-sizing: border-box;
+      width: calc(100vw - 60px);
+      margin: 0 auto;
+  }
+  @media screen and (min-width: 1200px) and (max-width: 1278px) {
+      .noM{
+          min-width: 1200px;
+      }
+      .external-risk-trx--main{
+          box-sizing: border-box;
+          width: calc(100vw - 8px);
+          margin: 0;
+      }
   }
 </style>

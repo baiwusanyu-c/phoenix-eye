@@ -146,9 +146,9 @@ const tips = (): void => {
   height: 100%;
 }
 </style>
-<!--适配1366X768与1080p的150%放大-->
+
 <style scoped lang="scss">
-@media screen and (max-width: 1366px) and (max-height: 768px) {
+@media screen and (min-width: 1280px) and (max-width: 1326px) {
 
   .noM {
     min-width: 1280px;

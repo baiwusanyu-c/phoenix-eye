@@ -6,18 +6,18 @@
 ##主要技術依賴  
 **Vue3.2 + Vue-router4 + Vite2.x + typeScript4.5**
 
-|  名称   |  版本   | 説明  |
-|  ---- |  ----  | ----  |
-|  Vue |  ^3.2.3  | 前端開發框架  |  
-|  axios |  ^0.24.0  | Ajax封裝庫  |
-|  vite |  ^2.2.3  | 工程化開發打包框架  |
-|  vue-router |  4  | vue3.x 路由  |
-|  vue-i18n |  ^9.2.0-beta.23  | vue3.x 國際化插件  |
-|  @vueuse/core |  ^7.3.0  | vue3.x 的composition Api 方法庫  |
-|  animate.css |  ^4.1.1  | 動畫庫  |
-|  windi.css | ^3.4.3  | css原子化樣式庫  |
-|  element-plus |  ^2.22.0  | UI組件庫  |
-|  be-ui |  -  | 内部UI組件庫  |
+|  名称   |  版本   | 説明                                                       |
+|  ---- |  ----  |----------------------------------------------------------|
+|  Vue |  ^3.2.3  | 前端開發框架                                                   |  
+|  axios |  ^0.24.0  | Ajax封裝庫                                                  |
+|  vite |  ^2.2.3  | 工程化開發打包框架                                                |
+|  vue-router |  4  | vue3.x 路由  注意，vue-router4.x 路由配置 name 不可以重复，否则会导致打包后路由混乱 |
+|  vue-i18n |  ^9.2.0-beta.23  | vue3.x 國際化插件                                             |
+|  @vueuse/core |  ^7.3.0  | vue3.x 的composition Api 方法庫                              |
+|  animate.css |  ^4.1.1  | 動畫庫                                                      |
+|  windi.css | ^3.4.3  | css原子化樣式庫                                                |
+|  element-plus |  ^2.22.0  | UI組件庫                                                    |
+|  be-ui |  -  | 内部UI組件庫                                                  |
 ##package指令
 
 `"serve:dev": "vite --host --mode development",`  

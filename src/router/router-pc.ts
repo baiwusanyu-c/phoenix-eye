@@ -48,7 +48,7 @@ const routes =
         },
         {
             path: '/external/riskTrx/list',
-            name: 'riskTrxDetail',
+            name: 'externalRiskTrxDetail',
             component: () => import('../views/pc/external-page/external-risk-trx.vue'),
             meta: {title: 'lang.subNav.navName2'},
         },

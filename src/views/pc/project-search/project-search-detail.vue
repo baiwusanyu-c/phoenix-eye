@@ -73,13 +73,19 @@
             </div>
             <div v-for="item in contractStatisticsData" class="contract-statistics" :key="item.contract_address">
                 <div style="flex:1">
-                    <div style="margin-bottom: 6px;">
+                    <div style="margin-bottom: 6px; display: flex">
                         <be-tag type="info">
                             <div class="flex items-center">
                                 <span style="margin-left: 10px;">{{ item.platform.toUpperCase() }}</span>
                             </div>
                         </be-tag>
-                        <span class="total">{{ item.token_name }}</span>
+                        <be-ellipsis-copy :targetStr="item.token_name"
+                                          custom-class="total"
+                                          :is-show-copy-btn="false"
+                                          :is-ellipsis="item.token_name.length > 20 ? true : false"
+                                          fontLength="8"
+                                          endLength="8">
+                        </be-ellipsis-copy>
                     </div>
                     <be-ellipsis-copy :targetStr="item.contract_address"
                                       @click="item.contract_address ? openWeb(item.contract_address,'token',item.platform) : null"
@@ -116,12 +122,13 @@
                 <template #next><span></span></template>
             </be-pagination>
         </div>
-        <!--top5 数据表格 :data=" top5TokenHolder"-->
+        <!--top5 数据表格 "-->
         <div class="proj-detail-item" style="display: flex" v-loading="baseLoading">
             <project-detail-top
                 :token-name="top5TokenHolderName"
                 :token-address="top5TokenHolderAddr"
                 types="holder"
+                :default-platfom="defaultPlatformTop5Token"
                 :data="top5TokenHolder"
                 style="margin-right: 16px"
                 @select="handleSelectTop5"
@@ -132,6 +139,7 @@
             <project-detail-top
                 :data="top5QuidityPairs"
                 types="pairs"
+                :default-platfom="defaultPlatformTop5Quidity"
                 @select="handleSelectTop5"
                 :header="top5QPTableHeader"
                 :title="$t('lang.projectExplorer.detail.top5Title2')">
@@ -279,6 +287,8 @@ export default defineComponent({
         const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
         const top5TokenHolderAddr = ref<string>('')
         const top5TokenHolderName = ref<string>('')
+        const defaultPlatformTop5Token = ref<string>('')
+        const defaultPlatformTop5Quidity = ref<string>('')
         // top5表格header
         const top5THTableHeader = ref<Array<ITableHeader>>([
             {prop: 'address', label: t('lang.projectExplorer.detail.address')},
@@ -298,6 +308,8 @@ export default defineComponent({
             // top5数据
             if (params.type === 'holder') {
                 top5TokenHolder.value = []
+                top5TokenHolderAddr.value = ''
+                top5TokenHolderName.value = ''
                 top5TokenHolderSelect.value && top5TokenHolderSelect.value.forEach((val: any) => {
                     if (val.platform === params.platform) {
                         top5TokenHolder.value = val.records
@@ -339,9 +351,14 @@ export default defineComponent({
                     }
                     // top5数据
                     top5TokenHolderSelect.value = res.data.top_5_token_holders
-                    handleSelectTop5({platform: 'bsc', type: 'holder'})
+                    // 默认取第一个币种
+                    defaultPlatformTop5Token.value = (top5TokenHolderSelect.value && top5TokenHolderSelect.value.length > 0) ?
+                        (top5TokenHolderSelect.value[0].platform as string) : 'bsc'
+                    handleSelectTop5({platform: defaultPlatformTop5Token.value, type: 'holder'})
                     top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
-                    handleSelectTop5({platform: 'bsc', type: 'pairs'})
+                    defaultPlatformTop5Quidity.value = (top5QuiditySelect.value && top5QuiditySelect.value.length > 0) ?
+                        (top5QuiditySelect.value[0].platform as string) : 'bsc'
+                    handleSelectTop5({platform: defaultPlatformTop5Quidity.value, type: 'pairs'})
                 }
                 baseLoading.value = false
             }).catch(err => {
@@ -496,6 +513,8 @@ export default defineComponent({
             openWindow(url)
         }
         return {
+            defaultPlatformTop5Token ,
+            defaultPlatformTop5Quidity ,
             openWeb,
             projectId,
             statisticsLoading,
@@ -631,7 +650,7 @@ export default defineComponent({
       box-sizing: border-box;
       display: flex;
       width: 100%;
-      height: 88px;
+      min-height: 88px;
       padding: 16px;
       margin-bottom: 12px;
       background-color: $mainColor7;

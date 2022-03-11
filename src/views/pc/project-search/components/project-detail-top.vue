@@ -9,7 +9,7 @@
         <div class="project-detail-top5-title">
             <span>{{title}}</span>
             <be-tag round="4" type="success" customClass="tag" v-if="tokenName">{{tokenName}}</be-tag>
-            <el-select v-model="curPlatform" style="float:right;width: 120px" @change="handleSelect">
+            <el-select v-model="curPlatform" style="float:right;width: 120px" @change="handleSelect" v-if="data && data.length > 0">
                 <el-option
                     v-for="item in platformListDict"
                     :key="item.id"
@@ -44,7 +44,7 @@
                                       endLength="6">
                     </be-ellipsis-copy>
                     <span v-if="item.prop === 'quantity'">
-                        {{ numberToCommaString(scope.row.quantity) }}
+                        {{ simulateToFixed(scope.row.quantity) }}
                     </span>
                     <span  v-if="item.prop === 'pair'">
                         {{scope.row.pair }}
@@ -66,10 +66,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent,PropType,ref} from "vue";
+import {defineComponent,PropType,ref,watch} from "vue";
 import {BeTag,BeProgress} from "../../../../../public/be-ui/be-ui.es";
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
-import {numberToCommaString} from "../../../../utils/common";
+import {simulateToFixed} from "../../../../utils/common";
 import {platformListDict} from '../../../../utils/platform-dict'
 export interface ITableHeader {
     prop:string,
@@ -98,13 +98,20 @@ export default defineComponent({
             type:String,
             default:''
         },
+        defaultPlatfom:{
+            type:String,
+            default:'bsc'
+        },
         types:{
             type:String,
             default:''
         },
     },
     setup(props,ctx){
-        const curPlatform = ref<string>('bsc')
+        const curPlatform = ref<string>('')
+        watch(()=>props.defaultPlatfom,(nVal:string)=>{
+            curPlatform.value = nVal
+        })
         /**
          * 處理選擇事件
          * @param {String} platform - 幣種
@@ -117,7 +124,7 @@ export default defineComponent({
             handleSelect,
             platformListDict,
             curPlatform,
-            numberToCommaString
+            simulateToFixed
         }
     }
 })

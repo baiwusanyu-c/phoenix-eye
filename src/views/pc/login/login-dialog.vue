@@ -19,8 +19,8 @@
                 <img class="login-logo-img" src="../../../assets/image/pc/login-logo.png" height="45" width="200" alt=""/>
                 <div class="login-body">
                     <div class="login-title">
-                        <div class="login-title-small">Welcome to Eagle Eye</div>
-                        <div class="login-title-big">Awareness Management Platform</div>
+                        <div class="login-title-big">Welcome to Eagle Eye</div>
+                        <div class="login-title-small">© 2022 by Beosin. All Rights Reserved.</div>
                     </div>
                     <div class="login-input-class" v-if ="loginType === 'login'">
                         <div class="login-input-title">{{$t('lang.loginConfig.titleLogin')}}</div>
@@ -220,11 +220,13 @@ export default defineComponent({
         height: 336px;
 
         .login-title-small{
-          width: 490px;
-          font-size: 24px;
-          font-weight: 400;
-          line-height: 33px;
-          color: #333;
+            width: 490px;
+            height: 20px;
+            font-size: 14px;
+            font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi,sans-serif;
+            font-weight: 400;
+            color: #666666;
+            line-height: 40px;
           text-align: left;
         }
 
@@ -235,6 +237,7 @@ export default defineComponent({
           line-height: 48px;
           color: #333;
           text-align: left;
+
         }
       }
 

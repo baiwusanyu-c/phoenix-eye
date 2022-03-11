@@ -466,7 +466,7 @@ export default defineComponent({
 </style>
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+@media screen and (min-width: 1280px) and (max-width: 1326px) {
 
   .risk-trx-detail {
 
