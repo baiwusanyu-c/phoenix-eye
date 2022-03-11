@@ -312,6 +312,10 @@ export const browserInfo = ():{browser:any,version:any} => {
 export const trim = (str:string):string => {
     return str.replace(/^(\s|\xA0)+|(\s|\xA0)+$/g, '');
 }
+// 去收尾看看
+export function trimStr(str:string):string{
+    return str.replace(/(^\s*)|(\s*$)/g,"");
+}
 // 数字转百万M 100M
 export function nFormatter(num:number, digits:number) {
     const si = [
