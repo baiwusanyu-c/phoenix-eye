@@ -10,7 +10,9 @@
     <div :class="`ellipsis-copy ${customClass}`" @mouseover="enter"  @mouseout="leave" >
         <el-tooltip placement="top" effect="light" class="address" :disabled="(!isTooltip) || !targetStr">
             <template #content>
-                <span >{{getTooltipTxt()}}</span>
+                <slot name="content">
+                    <span>{{getTooltipTxt()}}</span>
+                </slot>
             </template>
             <span :style="styles">{{changeEllipsisStr(targetStr)}} </span>
         </el-tooltip>

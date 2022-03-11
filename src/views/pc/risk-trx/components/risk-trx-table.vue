@@ -20,6 +20,7 @@
             <el-table-column
                 prop="platform"
                 width="130"
+                fixed="left"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
@@ -64,6 +65,7 @@
             </el-table-column>
             <el-table-column
                 prop="risk_features"
+                width="400"
                 align="left">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.warningType') }}</span>
@@ -113,16 +115,19 @@
                                       :tooltipTxt="scope.row.gainer_address"
                                       v-if="scope.row.gainer_address_tag"
                                       emptyText="/"
-                                      :is-ellipsis="false"
+                                      :is-ellipsis="scope.row.gainer_address_tag.length > 16 ? true : false"
                                       style="color: #1496F2"
                                       fontLength="8"
                                       endLength="8">
+                        <template #content>
+                            <p style="text-align: center">{{scope.row.gainer_address}}</p>
+                            <p style="text-align: center" v-if="scope.row.gainer_address_tag.length > 16">{{scope.row.gainer_address_tag}}</p>
+                        </template>
                     </be-ellipsis-copy>
                 </template>
             </el-table-column>
             <el-table-column
                 prop="amount"
-                width="170"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.amount') }}</span>
@@ -153,6 +158,7 @@
             <el-table-column
                 width="50"
                 label=" "
+                fixed="right"
                 align="center">
                 <template #default="scope">
                     <div class="more-btn">

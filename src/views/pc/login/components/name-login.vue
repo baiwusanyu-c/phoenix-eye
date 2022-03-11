@@ -55,7 +55,7 @@
 import {defineComponent, onMounted, ref, reactive, getCurrentInstance, ComponentInternalInstance} from 'vue'
 import {loginName} from '../../../../api/login';
 import {Base64} from 'js-base64';
-import {getStore, trim, setStore,clearStore} from "../../../../utils/common";
+import {getStore, trim, setStore, clearStore, setSession} from "../../../../utils/common";
 import composition from "../../../../utils/mixin/common-func";
 
 import {useI18n} from "vue-i18n";
@@ -123,7 +123,7 @@ export default defineComponent({
                         }));
                         setStore('token', res.access_token);
                         setStore('userId', res.user_id);
-                        setStore('loginExpiredNum','false')
+                        setSession('loginExpiredNum','false')
                         !getStore('debugSessionId') && setStore('debugSessionId', (new Date().getTime()).toString());
                         // 登錄先拿路由在跳轉 变为关闭弹窗
                         location.reload()
