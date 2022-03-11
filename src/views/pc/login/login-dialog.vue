@@ -220,13 +220,13 @@ export default defineComponent({
         height: 336px;
 
         .login-title-small{
-            width: 490px;
-            height: 20px;
-            font-size: 14px;
-            font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi,sans-serif;
-            font-weight: 400;
-            color: #666666;
-            line-height: 40px;
+          width: 490px;
+          height: 20px;
+          font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi,sans-serif;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 40px;
+          color: #666;
           text-align: left;
         }
 

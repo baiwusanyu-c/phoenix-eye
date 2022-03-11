@@ -55,19 +55,22 @@ export default defineComponent({
     height: 100vh;
     overflow-y: auto;
   }
+
   .external-risk-trx--main{
-      box-sizing: border-box;
-      width: calc(100vw - 60px);
-      margin: 0 auto;
+    box-sizing: border-box;
+    width: calc(100vw - 60px);
+    margin: 0 auto;
   }
   @media screen and (min-width: 1200px) and (max-width: 1278px) {
-      .noM{
-          min-width: 1200px;
-      }
-      .external-risk-trx--main{
-          box-sizing: border-box;
-          width: calc(100vw - 8px);
-          margin: 0;
-      }
+
+    .noM{
+      min-width: 1200px;
+    }
+
+    .external-risk-trx--main{
+      box-sizing: border-box;
+      width: calc(100vw - 8px);
+      margin: 0;
+    }
   }
 </style>

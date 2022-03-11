@@ -73,7 +73,7 @@
             </div>
             <div v-for="item in contractStatisticsData" class="contract-statistics" :key="item.contract_address">
                 <div style="flex:1">
-                    <div style="margin-bottom: 6px; display: flex">
+                    <div style=" display: flex;margin-bottom: 6px">
                         <be-tag type="info">
                             <div class="flex items-center">
                                 <span style="margin-left: 10px;">{{ item.platform.toUpperCase() }}</span>
