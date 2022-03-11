@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import {defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch} from "vue";
-import {clearSession, clearStore, getStore, setStore} from "../utils/common";
+import {clearSession, clearStore, getStore, setSession, setStore} from "../utils/common";
 import composition from "../utils/mixin/common-func";
 import {useStore} from "vuex";
 import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
@@ -164,6 +164,7 @@ export default defineComponent({
             }
             isLogout.value = false;
             routerPush('/riskTrx/list')
+            setActiveNav()
         }
         const bus = useEventBus<string>('loginExpired')
         bus.on(confirm)
@@ -201,6 +202,7 @@ export default defineComponent({
             nextTick(()=>{
                 if(loginUser.value){
                     getProjectUser()
+                    setSession('loginExpiredNum','false')
                 }
                 setHeaderConfig()
             })
