@@ -163,6 +163,7 @@ export default defineComponent({
                 setStore('language', locale.value)
             }
             isLogout.value = false;
+            routerPush('/riskTrx/list')
         }
         const bus = useEventBus<string>('loginExpired')
         bus.on(confirm)
@@ -178,7 +179,6 @@ export default defineComponent({
             (instanceInner?.refs.popoverRouter as IPopover)?.close()
             if (router === '/logout') {
                 loginOut()
-                routerPush('/riskTrx/list')
                 return;
             }
             if (!isPush || !router.path) {
@@ -197,6 +197,7 @@ export default defineComponent({
             isLogin.value = getStore('token') ? true : false
             const userInfo = JSON.parse(getStore('userInfo') as string)
             loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
+            computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH';
             nextTick(()=>{
                 if(loginUser.value){
                     getProjectUser()

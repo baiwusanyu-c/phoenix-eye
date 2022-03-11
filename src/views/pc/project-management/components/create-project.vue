@@ -110,6 +110,7 @@ import {ceSemiSpecialCharReg,ETHaddress} from "../../../../utils/reg";
 import {BeButton, BeIcon} from "../../../../../public/be-ui/be-ui.es";
 import composition from "../../../../utils/mixin/common-func";
 import {IOption} from "../../../../utils/types";
+import {trimStr} from "../../../../utils/common";
 interface IWebsiteForm {
     website?:string
     github?:string
@@ -258,8 +259,9 @@ export default defineComponent({
          * @param {Object} params - 搜索参数
          */
         const verificationName = (params:ICreateProj) => {
+            params.name = trimStr(params.name)
             if(!params.name){
-                verName.value = t('lang.pleaseInput') + t('lang.createProject.createProjectName')
+                verName.value = t('lang.pleaseInput') + t('lang.createProject.createProjectName').toLocaleLowerCase()
                 return false
             }
             // if(params.name && !ceReg.test(params.name)){
@@ -273,8 +275,9 @@ export default defineComponent({
          * @param {Object} params - 搜索参数
          */
         const verificationKeyword = (params:ICreateProj) => {
+            params.keyword = trimStr(params.keyword)
             if(!params.keyword){
-                verKeyword.value = t('lang.pleaseInput') + t('lang.createProject.createProjectKeyWords')
+                verKeyword.value = t('lang.pleaseInput') + t('lang.createProject.createProjectKeyWords').toLocaleLowerCase()
                 return false
             }
             // 校驗中英文，分號
