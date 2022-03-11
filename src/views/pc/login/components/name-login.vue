@@ -111,6 +111,7 @@ export default defineComponent({
                         grant_type: 'password',
                         login_type: "password",
                         scope: 'server',
+                        product_version:'FREE',
 
                     }).then((res: any) => {
                         if(!res){return}

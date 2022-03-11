@@ -25,6 +25,7 @@ interface ILogin {
     grant_type: string
     login_type: string
     scope: string
+    product_version:string
 }
 
 //登录用户名密码
