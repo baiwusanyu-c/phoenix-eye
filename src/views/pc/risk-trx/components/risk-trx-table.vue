@@ -99,7 +99,7 @@
             <el-table-column
                 prop="from_address"
                 width="200"
-                align="center">
+                align="left">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.gainer') }}</span>
                 </template>
@@ -116,7 +116,7 @@
                                       v-if="scope.row.gainer_address_tag"
                                       emptyText="/"
                                       :is-ellipsis="scope.row.gainer_address_tag.length > 16 ? true : false"
-                                      style="color: #1496F2"
+                                      style="color: #1496F2;"
                                       fontLength="8"
                                       endLength="8">
                         <template #content>
@@ -156,6 +156,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                v-if="showOperation"
                 width="50"
                 label=" "
                 fixed="right"
@@ -214,6 +215,10 @@ export default defineComponent({
         searchParams:{
             type:String,
             default:''
+        },
+        showOperation:{
+            type:Boolean,
+            default:true
         },
         filterChainItem:{
             type: Array as PropType<IFilterItem[]>,
