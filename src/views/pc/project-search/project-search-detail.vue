@@ -9,7 +9,15 @@
         <!--基本信息-->
         <div class="proj-detail-item" style="margin-top: 32px" v-loading="baseLoading">
             <div class="item-title">
-                <h2>{{ isEmpty(baseInfo.name) }}</h2>
+                <h2>
+                    <be-ellipsis-copy :targetStr="isEmpty(baseInfo.name)"
+                                      :is-show-copy-btn="false"
+                                      :is-ellipsis=" isEmpty(baseInfo.name) && isEmpty(baseInfo.name).length > 20 ? true : false"
+                                      styles="color:#333"
+                                      fontLength="8"
+                                      endLength="8">
+                    </be-ellipsis-copy>
+                </h2>
                 <span style="margin-right: 6px">{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h)  :  </span>
                 <span
                     style="margin-right: 30px;font-size: 14px;font-weight: bold;color: #333">{{
@@ -709,5 +717,9 @@ export default defineComponent({
     }
   }
 }
-
+@media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .project-search-detail .proj-detail-item{
+        width: 78%;
+    }
+}
 </style>

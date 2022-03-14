@@ -29,7 +29,7 @@
             </be-button>
         </div>
         <div class="project-manage-list eagle-table">
-            <el-table :data="projectList.data" style="width: 100%" @sort-change="sortChange">
+            <el-table :data="projectList.data" @sort-change="sortChange">
                 <el-table-column prop="name" width="180">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
@@ -60,7 +60,7 @@
                         </be-ellipsis-copy>
                     </template>
                 </el-table-column>
-                <el-table-column prop="contract_num"  width="180">
+                <el-table-column prop="contract_num"  >
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
                     </template>
@@ -68,7 +68,7 @@
                         <span>{{ scope.row.contract_num }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="risk_tx_num"  width="180">
+                <el-table-column prop="risk_tx_num"  >
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
                     </template>
@@ -76,7 +76,7 @@
                         <span>{{isEmpty(scope.row.risk_tx_num,'/')}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="opinion_num"  width="200">
+                <el-table-column prop="opinion_num"  >
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
                     </template>
@@ -84,7 +84,7 @@
                         <span>{{isEmpty(scope.row.opinion_num,'/')}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="create_time" width="180">
+                <el-table-column prop="create_time" >
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
                     </template>
@@ -100,7 +100,7 @@
                         </el-tooltip>
                     </template>
                 </el-table-column>
-                <el-table-column prop="operation" width="160">
+                <el-table-column prop="operation">
                     <template #header>
                         <span class="table-head">{{ $t('lang.createProject.tableHeader.operation') }}</span>
                     </template>

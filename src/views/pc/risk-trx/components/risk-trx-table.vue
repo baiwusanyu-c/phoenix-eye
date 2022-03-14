@@ -19,8 +19,8 @@
             </template>
             <el-table-column
                 prop="platform"
-                width="130"
-                fixed="left"
+                :width="tableHeader('platform')"
+                :fixed="tableData.length > 0 ? 'left' :'null'"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
@@ -38,7 +38,7 @@
             </el-table-column>
             <el-table-column
                 prop="tx_hash"
-                width="170"
+                :width="tableHeader('tx_hash')"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
@@ -52,7 +52,7 @@
             </el-table-column>
             <el-table-column
                 prop="alert_level"
-                width="110"
+                :width="tableHeader('alert_level')"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.level') }}</span>
@@ -65,7 +65,7 @@
             </el-table-column>
             <el-table-column
                 prop="risk_features"
-                width="400"
+                :width="tableHeader('risk_features')"
                 align="left">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.warningType') }}</span>
@@ -98,7 +98,7 @@
             </el-table-column>
             <el-table-column
                 prop="from_address"
-                width="200"
+                :width="tableHeader('from_address')"
                 align="left">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.gainer') }}</span>
@@ -128,6 +128,7 @@
             </el-table-column>
             <el-table-column
                 prop="amount"
+                :width="tableHeader('amount')"
                 align="center">
                 <template #header>
                     <span class="table-head">{{ $t('lang.riskConfig.tableHeader.amount') }}</span>
@@ -137,7 +138,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                width="100"
+                :width="tableHeader('tx_time')"
                 fixed="right"
                 prop="tx_time"
                 align="left">
@@ -161,6 +162,7 @@
                 width="50"
                 label=" "
                 fixed="right"
+
                 align="center">
                 <template #default="scope">
                     <div class="more-btn">
@@ -191,7 +193,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive, ref,PropType} from "vue";
+import {defineComponent, onMounted, reactive, ref,PropType,nextTick,computed} from "vue";
 import {getProjWarning} from "../../../../api/risk-trx";
 import {openWindow,beijing2utc, createDate, formatDate} from "../../../../utils/common";
 import {IFilterItem} from "../risk-trx-list.vue";
@@ -200,6 +202,7 @@ import {BeButton,BeIcon,BeTag} from "../../../../../public/be-ui/be-ui.es";
 import BePagination from "../../../../components/common-components/pagination/be-pagination.vue";
 import BeEllipsisCopy from "../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue"
 import {iconDict} from '../../../../utils/platform-dict'
+import {IOption} from "../../../../utils/types";
 export default defineComponent({
     name: "risk-trx-table",
     components:{
@@ -284,7 +287,12 @@ export default defineComponent({
                 param: props.searchParams
             }
             getProjWarning(params).then(res => {
-                if(!res){return}
+
+                if(!res){
+                   // loading.value = false
+                   // location.reload()
+                    return
+                }
                 if (res.data) {
                     tableData.value = res.data.page_infos
                     pageParams.data.total = res.data.total
@@ -319,10 +327,26 @@ export default defineComponent({
         const openDetail = (params: any) => {
             openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
         }
+        let tableHeader = computed(()=>{
+            let headerDict:IOption = {
+                platform:"130",
+                tx_hash:"170",
+                alert_level:"110",
+                risk_features:"400",
+                from_address:"200",
+                amount:"100",
+                tx_time:"100"
+            }
+            return function (key:string){
+                return headerDict[key]
+            }
+        })
         onMounted(() => {
             getList('reset')
-        })
+            })
+
         return {
+            tableHeader,
             isEmpty,
             openDetail,
             iconDict,

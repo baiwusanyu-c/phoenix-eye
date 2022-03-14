@@ -7,9 +7,9 @@
 <template>
     <div class="project-detail-top5">
         <div class="project-detail-top5-title">
-            <span>{{title}}</span>
+            <span style="margin-right: 16px">{{title}}</span>
             <be-tag round="4" type="success" customClass="tag" v-if="tokenName">{{tokenName}}</be-tag>
-            <el-select v-model="curPlatform" style="float:right;width: 120px" @change="handleSelect" v-if="data && data.length > 0">
+            <el-select v-model="curPlatform" style="float:right;width: 120px" @change="handleSelect">
                 <el-option
                     v-for="item in platformListDict"
                     :key="item.id"
@@ -32,7 +32,7 @@
             <el-table-column
                 v-for="item in header"
                 :prop="item.prop"
-                width="140"
+                :width="item.prop === 'address' ? '140' : tableW"
                 align="left">
                 <template #header>
                     <span class="table-head">{{ item.label }}</span>
@@ -57,7 +57,6 @@
                                      :showInfo="false">
                         </be-progress>
                     </div>
-
                 </template>
             </el-table-column>
 
@@ -120,7 +119,14 @@ export default defineComponent({
             let type:string = props.types
             ctx.emit('select', {platform:platform,type:type })
         }
+        const windowInnerW:number = window.innerWidth
+        const tableW = ref<number>(140)
+        if(windowInnerW <= 1280){
+            tableW.value = 120
+        }
+
         return {
+            tableW,
             handleSelect,
             platformListDict,
             curPlatform,
@@ -177,9 +183,7 @@ export default defineComponent({
       font-size: 18px;
       font-weight: bold;
       color: $textColor3;
-
       .tag{
-        margin-left: 16px;
         background-color: $mainColor15;
         border:0;
         opacity: .8;
@@ -189,7 +193,6 @@ export default defineComponent({
         }
       }
     }
-
-
   }
+
 </style>

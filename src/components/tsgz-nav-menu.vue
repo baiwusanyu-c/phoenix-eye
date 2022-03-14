@@ -201,7 +201,7 @@ export default defineComponent({
             isLogin.value = getStore('token') ? true : false
             const userInfo = JSON.parse(getStore('userInfo') as string)
             loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
-            computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH';
+            computeLang.value = locale.value === 'en_US' ? 'EN' : '中文';
             nextTick(()=>{
                 if(loginUser.value){
                     getProjectUser()
@@ -317,7 +317,7 @@ export default defineComponent({
         const changeLanguage = (data: string): void => {
             setStore('language', data)
             locale.value = data
-            computeLang.value = locale.value === 'en_US' ? 'EN' : 'ZH';
+            computeLang.value = locale.value === 'en_US' ? 'EN' : '中文';
             (instanceInner?.refs.popoverLang as IPopover).close()
             busLanguage.emit(locale.value)
         }

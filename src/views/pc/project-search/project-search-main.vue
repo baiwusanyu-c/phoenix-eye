@@ -138,6 +138,7 @@ export default defineComponent({
   }
 
   .item {
+    word-break: break-all;
     font-family: AlibabaPuHuiTi-Medium, sans-serif;
     font-size: 14px;
     font-weight: bold;
