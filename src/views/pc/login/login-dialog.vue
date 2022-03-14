@@ -163,7 +163,7 @@ export default defineComponent({
 
   .be-dialog{
     position: absolute;
-      min-width: 1280px;
+    min-width: 1280px;
   }
 
   .login-dialog {
