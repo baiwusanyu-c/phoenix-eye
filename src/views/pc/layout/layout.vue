@@ -18,16 +18,18 @@ import {computed, defineComponent, onMounted, ref} from "vue";
 import composition from "../../../utils/mixin/common-func";
 import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
 import TsgzFooter from "../../../components/tsgz-footer.vue";
+import {getRouterData} from "../../../router/router-pc";
 
 export default defineComponent({
     name: 'layout',
     components: {TsgzFooter, TsgzNavMenu, BeIcon},
     setup(props, ctx) {
-        const {route} = composition(props, ctx)
+        const {route,router} = composition(props, ctx)
         const key = computed(() => {
             return route.path
         })
-
+        // 每次载入页面都加载路由
+        getRouterData(router)
         return {
             key
         }

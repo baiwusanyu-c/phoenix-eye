@@ -12,6 +12,7 @@ import store from "../store/store";
 // @ts-ignore
 import {BeMessage} from "../../public/be-ui/be-ui.es.js";
 import {IOption} from "../utils/types";
+import {useEventBus} from "@vueuse/core";
 const routes =
     [
         {
@@ -86,14 +87,15 @@ export const initRouterConfig = <T>(treeData:Array<T>):Array<T> => {
     return treeData
 }
 
-export function getRouterData(router:Router,next:Function,to:RouteLocationNormalized) {
+export function getRouterData(router:Router,next?:Function,to?:RouteLocationNormalized) {
     const params = {
         systemCode: 'beosin-eye',
         userId: getStore('userId'),
     }
+    const bus = useEventBus<string>('getRouterInfo')
     getRouterInfo(params).then(res => {
         if (!res || res.data.length === 0) {
-            next({
+            next && next({
                 path: '/riskTrx/list',
             })
             return
@@ -109,12 +111,11 @@ export function getRouterData(router:Router,next:Function,to:RouteLocationNormal
         })
         setTimeout(() => {
             i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
-
+            bus.emit('true')
         }, 100)
-        getRouterNum = 0
-        next({path: to.path, query: to.query})
+        next && to && next({path: to.path, query: to.query})
     }).catch(err => {
-        next({
+        next && next({
             path: '/riskTrx/list',
         })
         console.log(err)
@@ -125,30 +126,21 @@ export function getRouterData(router:Router,next:Function,to:RouteLocationNormal
  * 路由守卫方法
  * @param {Object} router - 路由对象
  */
-let getRouterNum:number = 0
 const beforeEachHandle = (router:Router) => {
     router.beforeEach( (to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
-        // 路由跳转白名单（不需要验证token,和获取路由）
-        // const whiteList = ['/riskTrx/list']
-        // let isWhitePath = false
-        // whiteList.forEach(val=>{
-        //     if(val === to.path){
-        //         isWhitePath = true
-        //     }
-        // })
-        if(store.state.routeConfig.length > 0 || !getStore('token') ){
+         // 路由跳转白名单（不需要验证token,和获取路由）
+         const whiteList = ['/riskTrx/list']
+         let isWhitePath = false
+         whiteList.forEach(val=>{
+             if(val === to.path){
+                 isWhitePath = true
+             }
+         })
+        if(store.state.routeConfig.length > 0 || !getStore('token') || isWhitePath){
             next()
             return;
         }else{
-             getRouterData(router,next, to);
-            // getRouterNum++
-            // if(getRouterNum < 10){
-            //     getRouterData(router,next, to);
-            // }else{
-            //     next({
-            //         path: '/riskTrx/list',
-            //     })
-            // }
+            getRouterData(router,next, to);
         }
     })
 }

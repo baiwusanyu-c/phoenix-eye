@@ -194,7 +194,10 @@ export default defineComponent({
             })
         })
         const loginUser = ref<string>('')
-        onMounted(() => {
+        const busRouterInfo = useEventBus<string>('getRouterInfo')
+        busRouterInfo.on(()=>{initVar()})
+        // 初始化方法
+        const initVar = ():void =>{
             isLogin.value = getStore('token') ? true : false
             const userInfo = JSON.parse(getStore('userInfo') as string)
             loginUser.value = userInfo ? userInfo.username.substring(0,2) : ''
@@ -203,10 +206,12 @@ export default defineComponent({
                 if(loginUser.value){
                     getProjectUser()
                     setSession('loginExpiredNum','false')
+                    setHeaderConfig()
                 }
-                setHeaderConfig()
             })
-
+        }
+        onMounted(() => {
+            initVar()
         })
         /**
          * 配置头部菜单方法
@@ -223,7 +228,7 @@ export default defineComponent({
         const headerConfig = ref<any>({
             JYFX:{
                 icon: '',
-                index: 0,
+                index: '0',
                 name: 'lang.subNav.navName2',
                 show: true,
                 path: '/riskTrx/list',
@@ -272,7 +277,6 @@ export default defineComponent({
             const menuList:HTMLCollectionOf<Element> = document.getElementsByClassName('el-menu-item')
             nextTick(() => {
                 try {
-
                     Object.keys(headerConfig.value).forEach(val => {
                         if (route.path.indexOf(headerConfig.value[val].path) > -1 || route.meta.title === headerConfig.value[val].name
                         ) {
