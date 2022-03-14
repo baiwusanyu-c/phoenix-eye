@@ -92,7 +92,15 @@ export const initRouterConfig = <T>(treeData:Array<T>):Array<T> => {
 
 const beforeEachHandle = (router:Router) => {
     router.beforeEach( (to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
-        if(store.state.routeConfig.length > 0 || !getStore('token')){
+        // 路由跳转白名单（不需要验证token,和获取路由）
+        const whiteList = ['/riskTrx/list']
+        let isWhitePath = false
+        whiteList.forEach(val=>{
+            if(val === to.path){
+                isWhitePath = true
+            }
+        })
+        if(store.state.routeConfig.length > 0 || !getStore('token') || isWhitePath){
             next()
             return;
         }else{
@@ -101,7 +109,12 @@ const beforeEachHandle = (router:Router) => {
                 userId: getStore('userId'),
             }
              getRouterInfo(params).then(res => {
-                 if(!res){return}
+                 if(!res || res.data.length === 0){
+                     next({
+                         path: '/riskTrx/list',
+                     })
+                     return
+                 }
                 const routerConfig = initRouterConfig(res.data[0].children)
                 store.commit('update', ['routeConfig', routerConfig])
                 let title:string = ''
@@ -120,7 +133,12 @@ const beforeEachHandle = (router:Router) => {
 
                 }, 100)
                 next({path:to.path,query:to.query})
-            }).catch(err=>console.log(err))
+            }).catch(err=>{
+                 next({
+                     path: '/riskTrx/list',
+                 })
+                console.log(err)
+            })
 
         }
     })

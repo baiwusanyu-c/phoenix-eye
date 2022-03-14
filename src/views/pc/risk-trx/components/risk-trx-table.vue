@@ -300,6 +300,7 @@ export default defineComponent({
                 loading.value = false
             }).catch(err => {
                 message('error', err.message || err)
+                loading.value = false
                 console.error(err)
             })
         }
