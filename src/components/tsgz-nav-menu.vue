@@ -240,6 +240,7 @@ export default defineComponent({
         const headerConfigMore = ref<any>([])
         const store = useStore()
         const initHeaderConfig = (): void => {
+            headerConfigMore.value = []
             const menuConfig = store.state.routeConfig
             const iconList: Array<string> = ['-renwu', '-liulanqi', '-tiaochaquzheng', '-jiaoyifenxi', '-xitongpeizhi']
             menuConfig.forEach((val: any, index: number) => {
