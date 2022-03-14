@@ -10,6 +10,7 @@
             tooltip-effect="light"
             :data="tableData"
             v-loading="loading"
+            @row-click="openDetail"
             ref="riskTrxList">
             <template #empty>
                 <div class='empty-data'>
@@ -167,7 +168,7 @@
                 align="center">
                 <template #default="scope">
                     <div class="more-btn">
-                        <be-icon icon="more" @click="openDetail(scope.row)" width="20" height="21"></be-icon>
+                        <be-icon icon="more" width="20" height="21"></be-icon>
                     </div>
                 </template>
             </el-table-column>
