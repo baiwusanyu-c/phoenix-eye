@@ -247,14 +247,17 @@
 .el-table th.el-table__cell{
   background-color: transparent;
 }
+
 .el-table__header-wrapper tr th.el-table-fixed-column--left,
 .el-table__header-wrapper tr th.el-table-fixed-column--right{
   background-color: transparent;
 }
+
 .el-table__header-wrapper tr th.el-table-fixed-column--left::before,
 .el-table__header-wrapper tr th.el-table-fixed-column--right::before,{
   content: none !important;
 }
+
 .el-table__empty-text {
   margin-top: 16px;
   margin-bottom: 16px;
