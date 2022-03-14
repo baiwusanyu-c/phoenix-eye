@@ -163,11 +163,11 @@ export default defineComponent({
 
   .be-dialog{
     position: absolute;
+      min-width: 1280px;
   }
 
   .login-dialog {
     width: 1080px;
-    min-width: 1280px;
     height: 592px;
     background-image: url("../../../assets/image/pc/login-bg.png");
     background-repeat: round;
