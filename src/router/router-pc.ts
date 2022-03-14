@@ -85,11 +85,47 @@ export const initRouterConfig = <T>(treeData:Array<T>):Array<T> => {
     })
     return treeData
 }
+
+export function getRouterData(router:Router,next:Function,to:RouteLocationNormalized) {
+    const params = {
+        systemCode: 'beosin-eye',
+        userId: getStore('userId'),
+    }
+    getRouterInfo(params).then(res => {
+        if (!res || res.data.length === 0) {
+            next({
+                path: '/riskTrx/list',
+            })
+            return
+        }
+        const routerConfig = initRouterConfig(res.data[0].children)
+        store.commit('update', ['routeConfig', routerConfig])
+        routerConfig.map((val: any) => {
+            router.addRoute('layout', val)
+        })
+        router.addRoute({
+            path: '/:w+',
+            redirect: '/404'
+        })
+        setTimeout(() => {
+            i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
+
+        }, 100)
+        getRouterNum = 0
+        next({path: to.path, query: to.query})
+    }).catch(err => {
+        next({
+            path: '/riskTrx/list',
+        })
+        console.log(err)
+    })
+}
+
 /**
  * 路由守卫方法
  * @param {Object} router - 路由对象
  */
-
+let getRouterNum:number = 0
 const beforeEachHandle = (router:Router) => {
     router.beforeEach( (to:RouteLocationNormalized, from:RouteLocationNormalized, next:Function) => {
         // 路由跳转白名单（不需要验证token,和获取路由）
@@ -100,46 +136,19 @@ const beforeEachHandle = (router:Router) => {
                 isWhitePath = true
             }
         })
-        if(store.state.routeConfig.length > 0 || !getStore('token') || isWhitePath){
+        if(store.state.routeConfig.length > 0 || !getStore('token') ){
             next()
             return;
         }else{
-            const params = {
-                systemCode: 'beosin-eye',
-                userId: getStore('userId'),
-            }
-             getRouterInfo(params).then(res => {
-                 if(!res || res.data.length === 0){
-                     next({
-                         path: '/riskTrx/list',
-                     })
-                     return
-                 }
-                const routerConfig = initRouterConfig(res.data[0].children)
-                store.commit('update', ['routeConfig', routerConfig])
-                let title:string = ''
-                routerConfig.map((val:any) => {
-                     if(val.path === to.path ){
-                         title = val?.meta?.title as string
-                     }
-                     router.addRoute('layout', val)
-                })
-                 router.addRoute({
-                    path: '/:w+',
-                    redirect: '/404'
-                })
-                setTimeout(() => {
-                   i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
-
-                }, 100)
-                next({path:to.path,query:to.query})
-            }).catch(err=>{
-                 next({
-                     path: '/riskTrx/list',
-                 })
-                console.log(err)
-            })
-
+             getRouterData(router,next, to);
+            // getRouterNum++
+            // if(getRouterNum < 10){
+            //     getRouterData(router,next, to);
+            // }else{
+            //     next({
+            //         path: '/riskTrx/list',
+            //     })
+            // }
         }
     })
 }
