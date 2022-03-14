@@ -82,7 +82,7 @@
                         <be-ellipsis-copy :targetStr="item.token_name"
                                           custom-class="total"
                                           :is-show-copy-btn="false"
-                                          :is-ellipsis="item.token_name.length > 20 ? true : false"
+                                          :is-ellipsis="( item.token_name && item.token_name.length) > 20 ? true : false"
                                           fontLength="8"
                                           endLength="8">
                         </be-ellipsis-copy>
