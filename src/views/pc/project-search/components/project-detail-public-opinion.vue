@@ -113,7 +113,7 @@ export default defineComponent({
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   padding: 24px;
   margin-bottom: 16px;
