@@ -138,12 +138,12 @@ export default defineComponent({
   }
 
   .item {
-    word-break: break-all;
     font-family: AlibabaPuHuiTi-Medium, sans-serif;
     font-size: 14px;
     font-weight: bold;
     line-height: 22px;
     color: $lessColor3;
+    word-break: break-all;
     cursor: pointer;
   }
 }

@@ -183,6 +183,7 @@ export default defineComponent({
       font-size: 18px;
       font-weight: bold;
       color: $textColor3;
+
       .tag{
         background-color: $mainColor15;
         border:0;

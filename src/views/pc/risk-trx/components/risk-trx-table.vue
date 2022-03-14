@@ -45,6 +45,7 @@
                 </template>
                 <template #default="scope">
                     <be-ellipsis-copy :targetStr="scope.row.tx_hash"
+                                      :is-show-copy-btn="false"
                                       fontLength="7"
                                       endLength="7">
                     </be-ellipsis-copy>
@@ -105,13 +106,14 @@
                 </template>
                 <template #default="scope">
                     <be-ellipsis-copy :targetStr="scope.row.gainer_address"
+                                      :is-show-copy-btn="false"
                                       v-if="!scope.row.gainer_address_tag"
                                       emptyText="/"
                                       fontLength="8"
                                       endLength="8">
                     </be-ellipsis-copy>
                     <be-ellipsis-copy :targetStr="scope.row.gainer_address_tag"
-                                      :copyContent="scope.row.gainer_address"
+                                      :is-show-copy-btn="false"
                                       :tooltipTxt="scope.row.gainer_address"
                                       v-if="scope.row.gainer_address_tag"
                                       emptyText="/"
@@ -162,7 +164,6 @@
                 width="50"
                 label=" "
                 fixed="right"
-
                 align="center">
                 <template #default="scope">
                     <div class="more-btn">
