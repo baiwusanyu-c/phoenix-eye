@@ -236,7 +236,8 @@
 
   &:hover{
     background-color: $mainColor7;
-    @apply shadow-md
+
+    @apply shadow-md cursor-pointer
   }
 }
 

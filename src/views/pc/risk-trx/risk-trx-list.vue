@@ -82,11 +82,11 @@ import RiskTrxTable from "./components/risk-trx-table.vue";
 import {useEventBus} from "@vueuse/core";
 
 export interface IFilterItem {
-    label: string,
+    label?: string,
     val: string,
     isActive: boolean
 }
-interface IRiskTable {
+export interface IRiskTable {
     getList:Function
 }
 
