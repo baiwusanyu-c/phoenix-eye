@@ -9,6 +9,7 @@ import config from '../enums/config'
 import {getStore, removeSession, removeStore, getSession, message, setSession} from "./common";
 import qs from 'qs'
 import {useEventBus} from "@vueuse/core";
+console.log(import.meta.env.VITE_PROJECT_ENV)
 // create an axios instance
 const service = axios.create({
     baseURL:  String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? config.baseURL + '/hermit/back/' :  config.baseURL,
