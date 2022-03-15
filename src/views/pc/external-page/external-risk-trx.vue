@@ -101,20 +101,22 @@ export default defineComponent({
       background-size: 100%;
 
     }
-      .external-select{
-          display: flex;
-          align-items: center;
-      }
+
+    .external-select{
+      display: flex;
+      align-items: center;
+    }
   }
 
   .external-risk-trx--main{
     box-sizing: border-box;
     width: 100%;
     padding: 0;
-      .el-table__header-wrapper tr th.el-table-fixed-column--left,
-      .el-table__header-wrapper tr th.el-table-fixed-column--right{
-          background-color: transparent;
-      }
+
+    .el-table__header-wrapper tr th.el-table-fixed-column--left,
+    .el-table__header-wrapper tr th.el-table-fixed-column--right{
+      background-color: transparent;
+    }
   }
   @media screen and (min-width: 1200px) and (max-width: 1278px) {
 
