@@ -158,7 +158,7 @@
           <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
         </div>
       </div>
-      {{pageParamsTj}}
+      {{ pageParamsTj }}
       <be-pagination
         v-if="contractStatisticsData.length > 0"
         custom-class="table-page"
