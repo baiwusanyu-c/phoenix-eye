@@ -172,6 +172,7 @@
       display: flex;
 
       input::-webkit-input-placeholder {
+
         /* WebKit browsers */
         font-family: AlibabaPuHuiTi-Regular, sans-serif;
         font-size: 18px;

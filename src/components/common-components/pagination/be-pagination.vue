@@ -215,6 +215,7 @@
 </style>
 <style lang="scss">
   .paginationN {
+
     .number:last-child {
       display: none;
     }
