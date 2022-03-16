@@ -34,24 +34,24 @@
             <div class="base-info">
                 <div class="base-info-item">
                     <p>{{ $t('lang.projectExplorer.detail.transactions') }}(24h)</p>
-                    <span v-if="baseInfo.transactions">{{ numberToCommaString(baseInfo.transactions) }}</span>
-                    <span v-if="!baseInfo.transactions">{{ $t('lang.emptyData') }}</span>
+                    <span v-if="baseInfo.transactions || baseInfo.transactions ===0">{{ numberToCommaString(isEmpty(baseInfo.transactions)) }}</span>
+                    <span v-if="!baseInfo.transactions && baseInfo.transactions !== 0">{{ $t('lang.emptyData') }}</span>
                 </div>
                 <div class="base-info-item">
                     <div style="flex: 1">
                         <p>{{ $t('lang.projectExplorer.detail.transactionsTotal') }}</p>
-                        <span class="total" v-if="baseInfo.transactionsTotal">{{
-                                numberToCommaString(baseInfo.transactionsTotal)
+                        <span class="total" v-if="baseInfo.transactionsTotal || baseInfo.transactionsTotal ===0">{{
+                                numberToCommaString(isEmpty(baseInfo.transactionsTotal))
                             }}</span>
-                        <span class="total" v-if="!baseInfo.transactionsTotal">{{ $t('lang.emptyData') }}</span>
+                        <span class="total" v-if="!baseInfo.transactionsTotal && baseInfo.transactionsTotal !== 0">{{ $t('lang.emptyData') }}</span>
                     </div>
                     <div style="flex: 1">
                         <p>{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
-                        <p class="date" v-if="baseInfo.lastTradeData">{{
+                        <p class="date" v-if="baseInfo.lastTradeData || baseInfo.lastTradeData ===0">{{
                                 formatDate(createDate(baseInfo.lastTradeData))
                             }}</p>
-                        <p class="date" v-if="!baseInfo.lastTradeData">{{ $t('lang.emptyData') }}</p>
-                        <p class="time" v-if="baseInfo.lastTradeData">{{
+                        <p class="date" v-if="!baseInfo.lastTradeData && baseInfo.lastTradeData !== 0">{{ $t('lang.emptyData') }}</p>
+                        <p class="time" v-if="baseInfo.lastTradeData || baseInfo.lastTradeData ===0">{{
                                 formatTimeStamp(createDate(baseInfo.lastTradeData).getTime(), $i18n.locale)
                             }}</p>
                     </div>
@@ -90,6 +90,7 @@
                         <be-ellipsis-copy :targetStr="item.token_name"
                                           custom-class="total"
                                           :is-show-copy-btn="false"
+                                          emptyText=" "
                                           :is-ellipsis="( item.token_name && item.token_name.length) > 20 ? true : false"
                                           fontLength="8"
                                           endLength="8">
@@ -104,11 +105,11 @@
                 </div>
                 <div style="flex:1">
                     <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.transactions') }}(24h)</p>
-                    <span>{{ numberToCommaString(item.tx_24) }}</span>
+                    <span>{{ numberToCommaString(isEmpty(item.tx_24)) }}</span>
                 </div>
                 <div style="flex:1">
                     <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.transactionsTotal') }}</p>
-                    <span class="total">{{ numberToCommaString(item.tx_total) }}</span>
+                    <span class="total">{{ numberToCommaString(isEmpty(item.tx_total)) }}</span>
                 </div>
                 <div style="flex:1">
                     <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
