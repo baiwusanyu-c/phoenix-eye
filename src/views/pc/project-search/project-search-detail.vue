@@ -158,6 +158,7 @@
           <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
         </div>
       </div>
+      {{pageParamsTj}}
       <be-pagination
         v-if="contractStatisticsData.length > 0"
         custom-class="table-page"
@@ -462,7 +463,7 @@
             }
             if (res) {
               contractStatisticsData.value = res.data.page_infos
-              pageParamsTj.value = res.data.total
+              pageParamsTj.value.total = res.data.total
             }
             statisticsLoading.value = false
           })
@@ -587,6 +588,7 @@
         const url = `${mainUrl}${params}`
         openWindow(url)
       }
+
       return {
         defaultPlatformTop5Token,
         defaultPlatformTop5Quidity,
