@@ -450,8 +450,6 @@
     }
   }
 
-
-
   .tsgz-nav-menu-container-free {
     height: calc(68% - 16px);
   }
