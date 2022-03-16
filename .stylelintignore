@@ -5,7 +5,7 @@
 *.tsx
 *.jpg
 *.woff
-
+tailwind.css
 # 依赖和打包目录
 /dist/
 /node_modules/

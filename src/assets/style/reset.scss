@@ -39,9 +39,32 @@ menu {
   margin: 0;
 }
 
+h2{
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  font-weight: bold;
+}
+
 html,
 body {
   height: 100%;
+}
+
+.be-message {
+  z-index: 9999 !important;
+
+  .be-message-head{
+
+    span {
+      margin-right: 5px;
+    }
+  }
 }
 
 html {

@@ -16,10 +16,18 @@
 
 <style scoped lang='scss'>
 .notfound{
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
   .content-area{
-    width: calc(100vw - 210px);
-    height: calc(100vh - 200px);
-    @include flex(center,center);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 120px);
+
   }
 }
 </style>

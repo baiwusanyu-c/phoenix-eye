@@ -6,25 +6,26 @@
 */
 <template>
     <div class="formArea">
-        <el-form :model="form" :rules="rules" ref="form" class="login-form">
+        <el-form :model="form" :rules="rules" ref="loginForm" class="login-form">
             <el-form-item class="label" prop='name'>
-                <el-input maxlength="40" autocomplete="off"
-                          :placeholder="$t('el.loginConfig.loginNameP2')" v-model="form.name">
-                    <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/user.png" alt="">
+                <el-input :maxlength="40" autocomplete="off"
+                          :placeholder="$t('lang.loginConfig.loginNameP3')" v-model="form.name">
+                    <template #prefix>
+                        <img src="../../../../assets/image/pc/login-email.png" alt="" height="20" width="20"/>
                     </template>
                 </el-input>
             </el-form-item>
             <el-form-item class="label" prop='pwd'>
                 <el-input maxlength="40" :type="visible ? 'text' : 'password'" autocomplete="off"
-                          :placeholder="$t('el.loginConfig.loginPwdP')"
+                          :placeholder="$t('lang.loginConfig.loginPwdP')"
                           v-model="form.pwd">
-                    <template slot="prepend">
-                        <img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
+                    <template #prefix>
+                        <img src="../../../../assets/image/pc/login-password.png" alt="" height="20" width="20"/>
                     </template>
-                    <template slot="append">
-                        <img class="showIcon" v-if="!visible" @click="visible = !visible"
+                    <template #append>
+                        <img class="iconImg showIcon" v-if="!visible" @click="visible = !visible"
                              src="../../../../assets/image/pc/hide.png" alt="">
-                        <img class="showIcon" v-else @click="visible = !visible"
+                        <img class=" iconImg showIcon" v-else @click="visible = !visible"
                              src="../../../../assets/image/pc/show.png" alt="">
                     </template>
                 </el-input>
@@ -32,294 +33,193 @@
             <div class="flex">
                 <el-form-item class="label" prop='code' style="width: calc(100% - 130px);">
                     <el-input maxlength="4" @keyup.enter.native="login()" type="text" autocomplete="off"
-                              :placeholder="$t('el.loginConfig.loginVerCodeP2')" v-model="form.code">
-                        <template slot="prepend"><img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
+                              :placeholder="$t('lang.loginConfig.loginVerCodeP2')" v-model="form.code">
+                        <template #prefix><img class="iconImg" src="../../../../assets/image/pc/login-code.png" alt="">
                         </template>
                     </el-input>
                 </el-form-item>
-                <div class="por codeArea">
+                <div class="codeArea">
                     <img :src="codeUrl" class="codeBtn" @click="getCode" alt="">
-                    <!-- <span class="codeBtnText" @click="getCode">换一换</span> -->
-                    <svg-icon iconClass="Addresstracking_reset1" :disabledToolTip="true" class="codeBtnText"
-                              @click="getCode"></svg-icon>
+                    <be-icon icon="refresh" class="codeBtnText" color="#C1CCEC"
+                              @click="getCode"></be-icon>
                 </div>
             </div>
         </el-form>
-        <el-button class="primary" type="primary" v-if='!chipId || isSignatured' :loading="isLogin" @click="login">
-            {{ $t('el.loginConfig.login') }}
-        </el-button>
-        <p class=" flex-end checkArea">
-         <span class="phone cursor" @click="$parent.areaType = 3">{{ $t('el.loginConfig.titleRegister') }}</span>
-            <span class="phone cursor" ></span>
-            <span class="reg">
-        <!-- <span class="cursor" @click="$parent.areaType = 3">注册</span>-->
-
-          <span class="cursor" @click="$parent.areaType = 4">{{ $t('el.loginConfig.titleReset') }}</span>
-        </span>
-        </p>
+        <be-button style="width: 100%;" customClass="eagle-btn" type="success" :loading="isLogin" @click="login">
+            {{ $t('lang.loginConfig.login') }}
+        </be-button>
     </div>
 </template>
 
-<script>
-import {loginAccount, getCodeImg} from '@/api/login.js';
+<script lang="ts">
+import {defineComponent, onMounted, ref, reactive, getCurrentInstance, ComponentInternalInstance} from 'vue'
+import {loginName} from '../../../../api/login';
 import {Base64} from 'js-base64';
-import {getStore} from "../../../../utils/auth";
-import {getRouterInfo} from "../../../../api/login";
-import {initRouterConfig} from "../../../../router";
-import store from "../../../../store/store";
-export default {
+import {getStore, trim, setStore, clearStore, setSession} from "../../../../utils/common";
+import composition from "../../../../utils/mixin/common-func";
+
+import {useI18n} from "vue-i18n";
+import type {ElForm} from 'element-plus'
+type FormInstance = InstanceType<typeof ElForm>
+import {BeButton,BeIcon} from "../../../../../public/be-ui/be-ui.es.js";
+declare type loginType = {
+    name: string
+    pwd: string
+    code: string
+}
+export default defineComponent({
     name: "NameLogin",
-    data() {
-        var validatePwd = (rule, value, callback) => {
-            if (!this.pwdReg.test(value)) {
-                callback(new Error(this.$t('el.loginConfig.phoneNumErr')));
-            } else {
-                callback();
-            }
-        };
+    components:{BeButton,BeIcon},
+    setup(props, ctx) {
+        const {t} = useI18n()
+        const {message, codeUrl, uuid, getCode} = composition(props, ctx)
+        const visible = ref<boolean>(false)
 
-        return {
-            form: {
-                name: this.name,
-                pwd: '',
-                code: '',
-                uuid: '',
-            },
-            isLogin: false,
-            rules: {
-                name: [
-                    {required: true, message: this.$t('el.loginConfig.loginNameP'), trigger: 'blur'},
-                    // { validator: validateUserName, trigger: 'blur' }
-                ],
-                pwd: [
-                    {required: true, message: this.$t('el.loginConfig.loginPwdP'), trigger: 'blur'},
-                     { validator: validatePwd, trigger: 'blur' }
-                ],
-                code: [
-                    {required: true, message: this.$t('el.loginConfig.loginVerCodeP'), trigger: 'blur'},
-                ],
-            },
-            isFocus: false,
-            codeUrl: '',
-            visible: false,
-        };
-    },
-    props: {
-        isSignatured: {
-            type: Boolean,
-            default: false,
-        },
-        chipId: {
-            type: String,
-            default: null,
-        },
-        name: {
-            type: String,
-            default: '',
-        }
-    },
-    created() {
-        this.getCode();
 
-    },
-    methods: {
-        /**
-         * 获取登录验证码
-         */
-        getCode() {
-            getCodeImg().then(res => {
-                this.form.uuid = res.uuid;
-                this.codeUrl = "data:image/gif;base64," + res.img;
-            }).catch(err=>this.$message.error(err));
-        },
+        // 校驗規則
+        const rules = reactive({
+            name: [
+                {required: true, message: t('lang.loginConfig.loginNameP'), trigger: 'blur'},
+            ],
+            pwd: [
+                {required: true, message: t('lang.loginConfig.loginPwdP'), trigger: 'blur'},
+            ],
+            code: [
+                {required: true, message: t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},
+            ],
+        })
+        // 表單對象
+        const form = ref<loginType>({name: '', pwd: '', code: ''})
+
         /**
          * 登录方法
          */
-        login() {
-            this.form.name = this.trim(this.form.name);
-            this.form.code = this.trim(this.form.code);
-            this.$refs['form'].validate((valid) => {
+        const isLogin = ref<boolean>(false)
+        const refsForm: ComponentInternalInstance | null = getCurrentInstance()
+        const login = (): void => {
+            form.value.name = trim(form.value.name);
+            form.value.code = trim(form.value.code);
+            refsForm && (refsForm.refs.loginForm as FormInstance).validate((valid: boolean | undefined) => {
                 if (valid) {
-                    loginAccount({
-                        username:this.form.name,
-                        password:Base64.encode(this.form.pwd),
-                        code: this.form.code,
-                        uuid: this.form.uuid,
-                         client_id: 'beosin-eye',
-                        //client_id: 'official_site_sg_system',
-                        //client_secret: 'uZtik#Iu8D',
-                         client_secret: '123456',
+                    loginName({
+                        username: form.value.name,
+                        password: Base64.encode(form.value.pwd),
+                        code: form.value.code,
+                        uuid: uuid.value,
+                        client_id: 'beosin-eye',
+                        client_secret: '123456',
                         grant_type: 'password',
-                        login_type:"password",
+                        login_type: "password",
                         scope: 'server',
-                        product_version:'FREE'
+                        product_version:'FREE',
 
-                    }).then(res => {
-                        const langCache = this.getStore('language')
-                        window.localStorage.clear();
-                        this.setStore('language',langCache)
-                        this.isLogin = false;
-                        this.setCookie('userInfo', JSON.stringify({
+                    }).then((res: any) => {
+                        if(!res){return}
+                        const langCache = getStore('language')
+                        clearStore()
+                        langCache && setStore('language', langCache)
+                        isLogin.value = false;
+                        setStore('userInfo', JSON.stringify({
                             username: res.username
                         }));
-                        this.setStore('userInfo', JSON.stringify({
-                            username: res.username
-                        }));
-                        this.setCookie('token', res.access_token);
-                        this.setStore('token', res.access_token);
-                        this.setStore('userId', res.user_id);
-                        this.$root.userInfo = {
-                            username: res.username
-                        };
-                        this.$root.token = res.access_token;
-                        !this.getStore('debugSessionId') && this.setStore('debugSessionId', new Date().getTime());
-                        // 登錄先拿路由在跳轉
-                        this.getRouter()
-                    }).catch(error => {
-                        this.$message.error(error)
-                        if (error.code && error.code == 920000001) {
-                            this.$parent.delTip = true;
-                        }
-                        this.getCode();
-                        this.isLogin = false;
+                        setStore('token', res.access_token);
+                        setStore('userId', res.user_id);
+                        setSession('loginExpiredNum','false')
+                        !getStore('debugSessionId') && setStore('debugSessionId', (new Date().getTime()).toString());
+                        // 登錄先拿路由在跳轉 变为关闭弹窗
+                        location.reload()
+                    }).catch(err => {
+                        message('error', err.message || err)
+                        getCode();
+                        isLogin.value = false;
                     });
                 } else {
                     return false;
                 }
             });
-        },
-        getRouter(){
-            const params = {
-                systemCode: 'beosin-eye',
-                userId: getStore('userId'),
-            }
-            getRouterInfo(params).then(res => {
-                const routerConfig = initRouterConfig(res.data[0].children)
-                store.commit('update', ['routeConfig', routerConfig])
-                routerConfig.map(val => {
-                    this.$router.addRoute('layout', val)
-                })
-                this.$router.addRoute({
-                    path: '*',
-                    redirect: '/404'
-                })
-                this.$router.push({path: '/blockchainSituation'})
-            }).catch(err=>this.$message.error(err))
         }
-
-    },
-};
+        onMounted(() => {
+            getCode();
+        })
+        return {
+            getCode,
+            codeUrl,
+            form,
+            visible,
+            login,
+            isLogin,
+            rules
+        }
+    }
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
 
 .formArea {
-    width: 100%;
-    margin: auto;
-    .login-form{
-        .el-form-item{
-            margin-bottom: 30px;
-        }
+  width: 100%;
+  margin: auto;
+
+  .login-form {
+
+    .el-form-item {
+      margin-bottom: 20px;
     }
-    .primary {
-        width: 100%;
-        margin-top: 5px;
-        height: 38px
-    }
+  }
 
-    .showIcon {
-        height: 16px;
-        position: relative;
-        top: -2px;
-        display: inline-block;
-        cursor: pointer;
-    }
-
-    .errBtn {
-        cursor: not-allowed;
-    }
-
-    .checkArea {
-        margin-top: 26px;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 21px;
-
-        .cursor {
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        .phone {
-            color: $lessColor3;
-        }
-
-        .reg {
-            color: $lessColor3;
-
-            span:first-child {
-                margin-right: 10px;
-            }
-        }
-    }
+  .showIcon {
+    position: relative;
+    top: -2px;
+    display: inline-block;
+    height: 16px;
+    cursor: pointer;
+  }
 }
 
 .flex {
-    justify-content: space-between;
-    align-items: center;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.flex-center {
-    display: flex;
-    justify-content: center;
-}
-.flex-end {
-    display: flex;
- /*   justify-content: flex-end;*/
-    justify-content: space-between;
-}
 .codeArea {
-    width: 120px;
-    text-align: left;
-    top: -11px;
-    margin-left: 10px;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  width: 120px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  text-align: left;
 
-    .codeBtn {
-        width: 95px;
-        height: 38px;
-        cursor: pointer;
-    }
+  .codeBtn {
+    width: 96px;
+    height: 48px;
+    cursor: pointer;
+  }
 
-    .codeBtnText {
-        width: 18px;
-        height: 18px;
-        font-size: 12px;
-        line-height: 43px;
-        font-weight: 400;
-        color: #C1CCEC;
-        cursor: pointer;
-        margin-left: 5px;
-    }
+  .codeBtnText {
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 43px;
+    cursor: pointer;
+  }
 }
 </style>
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px)  {
-    .flex-center {
-        justify-content: center;
+@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+
+
+
+  .formArea {
+
+    .checkArea {
+      margin-top: 20px;
     }
-    .flex-end {
-        justify-content: flex-end;
-    }
-    .formArea {
-        .checkArea {
-            margin-top: 20px;
-        }
-    }
+  }
 
 }
 </style>

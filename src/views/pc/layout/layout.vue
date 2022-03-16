@@ -1,262 +1,64 @@
 <template>
-    <div class="layout" id="app_layout">
-        <!--   左侧菜单     -->
-        <tsgz-nav-menu ref="headerCom" :listStatus="listStatus"></tsgz-nav-menu>
-        <div class="layout-right">
-
+    <div class="layout">
+        <!--   上侧菜单     -->
+        <tsgz-nav-menu ref="headerCom"></tsgz-nav-menu>
+        <div class="main scrollDiy">
+            <div class="bg"></div>
             <transition name="fade" mode="out-in">
-                <div class="tsgz-menu-info">
-                    <div class="mission-select">
-                        <h3>
-                            {{ $route.meta.titleInfo }}
-                        </h3>
-                    </div>
-                    <div class="tsgz-slogan">
-                        <div class="tsgz-user">{{ $t('el.header.me') }}</div>
-                        <el-dropdown @command="changeLanguage">
-                            <span class="el-dropdown-link">
-                              <h3>{{ loginUser }}</h3>
-                            </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="logout">{{$t('el.header.logout')}}</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                        <el-dropdown @command="changeLanguage">
-                            <span class="el-dropdown-link">
-                              {{$t('el.header.language')}}<i class="el-icon-arrow-down el-icon--right"></i>
-                            </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="zh_CN"
-                                                  :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' :''}`">
-                                    {{$t('el.header.chinese')}}
-                                </el-dropdown-item>
-                                <el-dropdown-item command="en_US"
-                                                  :class="`${getStore('language') === 'en_US' ? 'active-dropdown' :''}`">
-                                    {{$t('el.header.english')}}
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </div>
-                </div>
+                <router-view ref="parentRouterRef" :key="key"/>
             </transition>
-            <!--      主体内容      -->
-            <div class="scrollDiy"
-                 :class="{'viewArea': true}">
-                <transition name="fade" mode="out-in">
-                    <!--  只缓存二级路由下的 AnalysisMain 所有路径和 investigation、DebugMain 所有路径 -->
-                    <router-view ref="parentRouterRef" :key="key"/>
-                </transition>
-            </div>
+            <tsgz-footer></tsgz-footer>
         </div>
     </div>
 </template>
 
-<script>
-import TsgzNavMenu from "../../../components/nav-menu/tsgz-nav-menu";
+<script lang="ts">
+import TsgzNavMenu from "../../../components/tsgz-nav-menu.vue";
+import {computed, defineComponent, onMounted, ref} from "vue";
+import composition from "../../../utils/mixin/common-func";
+import {BeIcon} from '../../../../public/be-ui/be-ui.es.js'
+import TsgzFooter from "../../../components/tsgz-footer.vue";
+import {getRouterData} from "../../../router/router-pc";
 
-
-export default {
+export default defineComponent({
     name: 'layout',
-    components: {TsgzNavMenu},
-    data() {
+    components: {TsgzFooter, TsgzNavMenu, BeIcon},
+    setup(props, ctx) {
+        const {route,router} = composition(props, ctx)
+        const key = computed(() => {
+            return route.path
+        })
+        // 每次载入页面都加载路由
+        getRouterData(router)
         return {
-            isUnfold: false,
-            listStatus: 'ANALYSING',// 状态 ：ANALYSING 分析中，ARCHIVED 已结案
-            isPreview: false,
-            loginUser: '',
-        }
-    },
-    props: [],
-    computed: {
-        key() {
-            return this.$route.path
-        },
-        navMenu() {
-            return function (val) {
-                if (!val) {
-                    return ``
-                }
-                return `width: calc(100% - 60px); transition: all .3s`
-            }
-        },
-    },
-    created() {
-
-        this.loginUser = JSON.parse(this.getStore('userInfo')).username
-    },
-    methods: {
-        changeLanguage(data){
-            if(data === 'logout'){
-                this.$router.push('/login')
-                return
-            }
-            this.setStore('language', data)
-            this.$i18n.locale = data
-            this.$route.meta.titleInfo = this.$t(this.$route.meta.title)
+            key
         }
     }
-}
+})
+
 </script>
+<style lang="scss">
+  .layout{
+    transition: all .3s;
 
-<style scoped lang='scss'>
-.layout {
-    height: 100%;
-    background: #F2F4F5;
-    display: flex;
-    flex-direction: row;
+    .main{
+      position: relative;
+      top: 0;
+      left: 0;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      background-color: $mainColor18;
 
-    .layout-right {
-        width: calc(100% - 208px);
-        transition: all .3s
-    }
-
-    .tsgz-menu-info {
+      .bg{
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: 60px;
-        background: #FFFFFF;
-        display: flex;
-        align-items: center;
-        filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.16));
-        .mission-select {
-            flex: 3;
-            padding: 0 24px;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-
-            .misison-select-body {
-                display: flex;
-                align-items: center;
-                margin-right: 15px;
-            }
-
-            h3 {
-                color: #206596;
-                font-size: 20px;
-                font-family: PingFangSC-Medium, PingFang SC, sans-serif;
-            }
-
-            .iconTitle {
-                color: #777777;
-            }
-        }
-
-        .tsgz-slogan {
-            flex: 4;
-            background-position: right;
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-end;
-            height: 100%;
-            margin-right: 30px;
-            .tsgz-user {
-                width: 28px;
-                height: 28px;
-                color: $textColor6;
-                background-color: $mainColor3;
-                border-radius: 30px;
-                line-height: 28px;
-                text-align: center;
-            }
-
-            h3 {
-                font-weight: 500;
-                color: $textColor4;
-                font-size: 20px;
-                margin: 0 10px;
-                font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
-            }
-        }
+        height: 400px;
+        background-image: url("../../../assets/image/pc/bg.png");
+        background-repeat: round;
+      }
     }
-
-    .tsgz-menu-un-info {
-        height: 60px;
-        background: transparent;
-    }
-
-    .tsgz-menu-un-info-investigation {
-        height: 60px;
-        background: transparent;
-    }
-
-    .viewArea {
-        padding: 16px;
-        box-sizing: border-box;
-        width: 100%;
-        // height: calc(100vh - 112px);
-        height: calc(100vh - 60px);
-        transition: all .5s;
-        background: #F2F4F5;
-        overflow-y: auto;
-    }
-
-    .fold {
-        width: 100%;
-    }
-}
-</style>
-<style scoped lang="scss">
-@media screen and (max-width: 1366px) and (max-height: 768px) {
-    #app_layout {
-        .tsgz-menu-info {
-            height: 45px;
-
-            .tsgz-slogan h3 {
-                font-size: 14px;
-            }
-
-            .mission-select {
-                h3 {
-                    font-size: 14px;
-                }
-
-                flex: 2;
-                padding: 5px;
-
-                .misison-select-body {
-                    height: 30px;
-                }
-            }
-        }
-
-        .viewArea {
-            height: calc(91vh);
-        }
-
-    }
-}
+  }
 </style>
 
-<!--1080p的105% - 125%放大-->
-<style scoped lang="scss">
-@media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
-    .layout {
-        .layout-right {
-            width: calc(100% - 178px);
-        }
-    }
-}
-</style>
-<!--1080p的130% - 140%放大-->
-<style scoped lang="scss">
-@media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
-    .layout {
-        .layout-right {
-            width: calc(100% - 178px);
-        }
-    }
-}
-</style>
-<!--1080p的145% - 150%放大-->
-<style scoped lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-    .layout {
-        .layout-right {
-            width: calc(100% - 168px);
-        }
-    }
-}
-</style>

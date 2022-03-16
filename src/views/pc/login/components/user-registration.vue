@@ -1,251 +1,218 @@
 <template>
     <div class="formArea user-registration">
-        <el-form :model="form" :rules="rules" ref="form">
-
+        <el-form :model="form" :rules="rules" ref="registerForm">
             <el-form-item class="label" prop='email'>
-                <el-input autocomplete="off" :placeholder="$t('el.loginConfig.email')" v-model="form.email">
-                    <!-- onkeyup="this.value=this.value.replace(/[ /_]/g,'')" -->
-                    <template slot="prepend">
-                        <img class="iconImg" src="../../../../assets/image/pc/email.png" alt="">
-                        <span class="reg-start">*</span>
+                <el-input :placeholder = "$t('lang.loginConfig.loginNameP')"
+                          autocomplete="off"
+                          v-model="form.email">
+                    <template #prefix>
+                        <img alt="" src="../../../../assets/image/pc/login-email.png" height="20" width="20"/>
                     </template>
                 </el-input>
             </el-form-item>
-            <el-form-item class="label" prop='password'>
-                <el-input maxlength="40" :type="visible ? 'text' : 'password'" autocomplete="off"
-                          :placeholder="$t('el.loginConfig.loginPwdP')"
-                          v-model="form.password">
-                    <template slot="prepend">
-                        <img class="iconImg" src="../../../../assets/image/pc/pwd.png" alt="">
-                    </template>
-                    <template slot="append">
-                        <img class="showIcon" v-if="!visible" @click="visible = !visible"
-                             src="../../../../assets/image/pc/hide.png" alt="">
-                        <img class="showIcon" v-else @click="visible = !visible"
-                             src="../../../../assets/image/pc/show.png" alt="">
-                    </template>
-                </el-input>
-            </el-form-item>
-            <div class="flex">
-                <el-form-item class="label" prop='code' style="width: 58%;">
-                    <el-input maxlength="6" @keyup.enter.native="getCode()" type="text" autocomplete="off"
-                              :placeholder="$t('el.loginConfig.loginVerCodeP2')" v-model="form.code">
-                        <template slot="prepend">
-                            <img class="iconImg" src="../../../../assets/image/pc/code.png" alt="">
-                            <span class="reg-start">*</span>
+            <el-form-item class="label" prop='code'>
+                <div class="send-code">
+                    <el-input :placeholder = "$t('lang.loginConfig.loginVerCodeP')"
+                              autocomplete="off"
+                              class="send-code-input"
+                              maxlength="6"
+                              type="text"
+                              v-model="form.code">
+                        <template #prefix>
+                            <img alt="" src="../../../../assets/image/pc/login-code.png" height="20" width="20"/>
                         </template>
                     </el-input>
-                </el-form-item>
-                <p class="codeBtn" v-if="!isTip" @click="getCode">{{ $t('el.loginConfig.getVerCodeValid') }}</p>
-                <p class="tips" v-else>{{ number }}</p>
-            </div>
+                    <el-button v-if="!isTip" class="send-button" @click="getCode">{{$t('lang.loginConfig.send')}}</el-button>
+                    <el-button v-else class="send-button">{{num}}s</el-button>
+                </div>
+            </el-form-item>
+            <el-form-item class="label" prop='password'>
+                <el-input :placeholder = "$t('lang.loginConfig.loginPwdValid')"
+                          autocomplete="off"
+                          type="password"
+                          v-model="form.password">
+                    <template #prefix>
+                        <img alt="" src="../../../../assets/image/pc/login-password.png" height="20" width="20"/>
+                    </template>
+                </el-input>
+            </el-form-item>
         </el-form>
-        <el-button class="primary" type="primary" :loading="isLogin" @click="registerUser">{{ $t('el.loginConfig.register') }}</el-button>
-        <p class="flex flex-center checkArea">
-            <span class="phone cursor" @click="$parent.areaType = 1;">{{ $t('el.loginConfig.goNameLogin') }}</span>
-        </p>
+        <be-button style="width: 100%;" customClass="eagle-btn" @click="registerSubmit" type="success">
+            {{$t('lang.loginConfig.register')}}
+        </be-button>
     </div>
 </template>
 
-<script>
-
-import {registerAccount, verifyCode} from "../../../../api/login";
+<script lang="ts">
+import {defineComponent, ref, reactive, getCurrentInstance, ComponentInternalInstance} from 'vue'
+import {trim} from "../../../../utils/common";
+import {BeButton} from "../../../../../public/be-ui/be-ui.es";
+import {verifyCode, registerAccount} from "../../../../api/login";
+import composition from "../../../../utils/mixin/common-func";
+import {pwdReg, emailReg} from "../../../../utils/reg";
+import {useI18n} from "vue-i18n";
+import type {ElForm} from 'element-plus'
+import {ElMessage} from "element-plus/es";
 import {Base64} from "js-base64";
 
-export default {
+type FormInstance = InstanceType<typeof ElForm>
+declare type registerType = {
+    email:string
+    code: string
+    password: string
+}
+export default defineComponent({
     name: "UserRegistration",
-    data() {
-        var validatePwd = (rule, value, callback) => {
-            if (!this.pwdReg.test(value)) {
-                callback(new Error(this.$t('el.loginConfig.phoneNumErr')));
+    components:{BeButton},
+    emits:['registerSuccess'],
+    setup(props, ctx) {
+        const {t} = useI18n()
+        const {message} = composition(props, ctx)
+        const validatePwd = (rule: any, value: any, callback: any) => {
+            if (!pwdReg.test(value)) {
+                callback(new Error(t('lang.loginConfig.phoneNumErr')));
             } else {
                 callback();
             }
         };
-        var validateEmail = (rule, value, callback) => {
-            if (!this.emailReg.test(value)) {
-                callback(new Error(this.$t('el.loginConfig.emailErr')));
+        const validateEmail = (rule: any, value: any, callback: any): void => {
+            if (!emailReg.test(value)) {
+                callback(new Error(t('lang.loginConfig.emailErr')));
             } else {
                 callback();
             }
         };
-        return {
-            form: {
-                email: '',
-                code: '',
-                password: '',
-            },
-            isLogin: false,
-            rules: {
-                code: [
-                    {required: true, message: this.$t('el.loginConfig.loginVerCodeP'), trigger: 'blur'},
-                ],
-                password: [
-                    {required: true, message: this.$t('el.loginConfig.loginPwdP'), trigger: 'blur'},
-                    {validator: validatePwd, trigger: 'blur'}
-                ],
-                email: [
-                    {required: false, message: this.$t('el.loginConfig.email'), trigger: 'blur'},
-                    {validator: validateEmail, trigger: 'blur'}
-                ]
-            },
-            isFocus: false,
-            isTip: false,
-            number: 0,
-            visible: false,
-            visibleAgain: false,
+        // 校驗規則
+        const rules = reactive({
+            code: [
+                {required: true, message: t('lang.loginConfig.loginVerCodeP'), trigger: 'blur'},
+            ],
+            password: [
+                {required: true, message: t('lang.loginConfig.loginPwdP'), trigger: 'blur'},
+                {validator: validatePwd, trigger: 'blur'}
+            ],
+            email: [
+                {required: false, message: t('lang.loginConfig.email'), trigger: 'blur'},
+                {validator: validateEmail, trigger: 'blur'}
+            ]
+        })
+        // 表單對象
+        const form = ref<registerType>({
+            email:'',
+            code:'',
+            password:'',
+        })
 
-        };
-    },
-    methods: {
-        getCode() {
-            this.form.password = this.trim(this.form.password);
-            this.$refs['form'].validateField('password', (error) => {
+        const isTip = ref<boolean>(false)
+        const num = ref<number>(60)
+        const refsForm: ComponentInternalInstance | null = getCurrentInstance()
+        // 获取验证码
+        const getCode = () => {
+            form.value.password = trim(form.value.password);
+            refsForm && (refsForm.refs.registerForm as FormInstance).validateField('email', (error:any) => {
                 if (!error) {
                     const params = {
-                        userName:String(this.form.email)
+                        userName:String(form.value.email)
                     }
-                    verifyCode(params).then((res)=>{
-                        this.$message.success(this.$t('el.loginConfig.getVerCodeValid') + this.$t('el.success'));
-                        this.form.uuid = res.data;
-                        this.isTip = true;
-                        this.number = 60;
-                        this.codeInerval = setInterval(() => {
-                            if (this.number > 0) {
-                                this.number--;
+                    verifyCode(params).then((res:any)=>{
+                        if(!res){return}
+                        ElMessage.success(t('lang.loginConfig.getVerCodeValid') + t('lang.success'));
+                        isTip.value = true;
+                        num.value = 60;
+                        let codeInerval = setInterval(() => {
+                            if (num.value > 0) {
+                                num.value--;
                             } else {
-                                clearInterval(this.codeInerval);
-                                this.isTip = false;
+                                clearInterval(codeInerval);
+                                isTip.value = false;
                             }
                         }, 1000)
-
-                    }).catch(err=>{
-                        this.$message.error(err)
+                    }).catch((err:any) => {
+                        message('error', err.message || err)
                         console.error(err)
                     })
 
                 }
             })
-        },
-        registerUser() {
-            this.form.email = this.trim(this.form.email);
-            this.form.code = this.trim(this.form.code);
-            this.$refs['form'].validate((valid) => {
+        }
+        const isLogin = ref<boolean>(false)
+        // 注册成功
+        const registerSubmit = (): void => {
+            form.value.email = trim(form.value.email);
+            form.value.code = trim(form.value.code);
+            form.value.code = trim(form.value.code);
+            refsForm && (refsForm.refs.registerForm as FormInstance).validate((valid:boolean | undefined) => {
                 if (valid) {
-                    this.isLogin = true;
-                    const params = {
-                        account:this.form.email,
-                        password:Base64.encode(this.form.password),
-                        verification_code:this.form.code,
-                        from:'ussa_system'
-                    }
-                    registerAccount(params).then(() => {
-                        this.$message.success(this.$t('el.loginConfig.register') + this.$t('el.success'));
-                        this.$parent.areaType = 1;
-                    }).catch(error => {
-                        this.$message.error(error)
-                        console.error(error)
-                        this.isLogin = false;
+                    isLogin.value = true;
+                    registerAccount({
+                        account:form.value.email,
+                        verification_code: form.value.code,
+                        password: Base64.encode(form.value.password),
+                        from: 'fraud_system',
+                    }).then((res) => {
+                        if(!res){return}
+                        ctx.emit('registerSuccess')
+                    }).catch(err => {
+                        message('error', err.message || err)
+                        console.error(err)
+                        isLogin.value = false;
                     });
                 } else {
                     return false;
                 }
             });
         }
+        const visible = ref<boolean>(false)
+        const visibleAgain = ref<boolean>(false)
+        return {
+            rules,
+            form,
+            visible,
+            visibleAgain,
+            registerSubmit,
+            isLogin,
+            getCode,
+            isTip,
+            num,
+        }
     },
-};
+   
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang='scss' scoped>
-.formArea {
-    width: 100%;
-
-    .primary {
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .showIcon {
-        height: 16px;
-        position: relative;
-        top: -2px;
-        display: inline-block;
-        cursor: pointer;
-    }
-
-    .errBtn {
-        cursor: not-allowed;
-    }
-
-    .codeBtn {
-        width: 34%;
-        font-size: 14px;
-        line-height: 38px;
-        height: 38px;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-        background-color: $mainColor3;
-        opacity: 0.8;
-        border-radius: 5px;
-    }
-
-    .tips {
-        line-height: 37px;
-        color: #76838F;
-        font-size: 14px;
-        width: 110px;
-        height: 37px;
-        border-radius: 5px;
-        background-color: #F2F4F5;
-        text-align: center;
-    }
-
-    .checkArea {
-        margin-top: 20px;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 21px;
-        text-align: right;
-        height: 54px;
-
-        .cursor {
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        .phone {
-            color:$textColor3;
-        }
-    }
-}
-
-.flex {
+<style lang="scss" scoped>
+  .send-code{
+    display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-}
-.flex-center {
-    justify-content: center;
-}
 
+    .send-button{
+      width: 144px;
+      height: 48px;
+      color: #1CD2A9;
+      background: rgba(133, 229, 191, .1);
+      border-color: rgba(133, 229, 191, .1);
+      border-radius: 2px;
+    }
+
+    .send-button:hover{
+      border-color: #1CD2A9;
+    }
+
+    .send-code-input{
+      width: 256px;
+      padding-right: 16px;
+    }
+  }
 </style>
 <!--1080p的145% - 150%放大-->
 <style lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-    .formArea.user-registration {
-        .el-form-item{
-            margin-bottom: 20px;
-            .el-form-item__content{
-                padding: 4px;
-            }
-        }
-        .primary{
-            margin-top: 0;
-        }
-    }
+.formArea.user-registration {
+  height: 256px;
+
+  .el-form-item {
+    margin-bottom: 20px;
+
+  }
 }
 </style>
