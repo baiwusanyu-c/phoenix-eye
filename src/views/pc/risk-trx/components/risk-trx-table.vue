@@ -292,7 +292,7 @@ export default defineComponent({
 
                 if(!res){
                    // loading.value = false
-                   // location.reload()
+                   // location.validateEmail()
                     return
                 }
                 if (res.data) {

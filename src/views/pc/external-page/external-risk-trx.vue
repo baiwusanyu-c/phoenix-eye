@@ -14,7 +14,7 @@
                         <span style="margin-right: 10px">{{ $t('lang.riskConfig.filter.chain') }} : </span>
                         <el-select v-model="curPlatform" style="float:right;width: 120px;margin-right: 30px" @change="handleSelect">
                             <el-option
-                                v-for="item in platformListDict"
+                                v-for="item in platformList"
                                 :key="item.id"
                                 :label="item.label"
                                 :value="item.value">
@@ -53,20 +53,27 @@ export default defineComponent({
          * 筛选框选择
          */
         const filterChainItem = ref<Array<IFilterItem>>([])
-        const curPlatform = ref<string>('bsc')
+        const curPlatform = ref<string>('ALL')
+        const platformList = platformListDict.concat([{ label: 'ALL',value: 'all',id: 'qwdgsnldjaktg'}])
         /**
          * 處理選擇事件
          * @param {String} platform - 幣種
          */
         const tableInst = getCurrentInstance()
         const handleSelect = (platform:string):void =>{
-            filterChainItem.value = [{val:platform, isActive: true}];
+            if(platform === 'all'){
+                filterChainItem.value = []
+            }else{
+                filterChainItem.value = [{val:platform, isActive: true}];
+            }
+
             nextTick(()=>{
                 (tableInst?.refs.RiskTrxTable as IRiskTable).getList('reset')
             })
 
         }
         return{
+            platformList,
             handleSelect,
             curPlatform,
             platformListDict,
