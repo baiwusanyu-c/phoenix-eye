@@ -125,6 +125,7 @@
               :target-str="item.token_name"
               custom-class="total"
               :is-show-copy-btn="false"
+              :empty-text="' '"
               :is-ellipsis="(item.token_name && item.token_name.length) > 20 ? true : false"
               font-length="8"
               end-length="8">
@@ -783,7 +784,6 @@
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .project-search-detail .proj-detail-item {
       width: 78%;
     }
