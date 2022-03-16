@@ -25,23 +25,13 @@
         <p>{{ $t('lang.projectExplorer.example') }}</p>
         <p>
           {{ $t('lang.projectExplorer.project') }}:
-          <span
-            class="item ml-4"
-            @click="
-              searchParams = 'AAVE'
-              getList()
-            "
-            >AAVE</span
-          >
+          <span class="item ml-4" @click="handleDefaultSearch('AAVE')">AAVE</span>
         </p>
         <p>
           {{ $t('lang.projectExplorer.contract') }}:
           <span
             class="item ml-4"
-            @click="
-              searchParams = '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9'
-              getList()
-            ">
+            @click="handleDefaultSearch('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">
             0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9
           </span>
         </p>
@@ -127,7 +117,12 @@
       const routerSwitch = (id: string): void => {
         routerPush('/projectSearch/detail', { id })
       }
+      const handleDefaultSearch = (params: string): void => {
+        searchParams.value = params
+        getList()
+      }
       return {
+        handleDefaultSearch,
         routerSwitch,
         projectList,
         searchParams,
@@ -177,7 +172,6 @@
       display: flex;
 
       input::-webkit-input-placeholder {
-
         /* WebKit browsers */
         font-family: AlibabaPuHuiTi-Regular, sans-serif;
         font-size: 18px;
