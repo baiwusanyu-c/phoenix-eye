@@ -71,13 +71,13 @@ export default defineComponent({
             type: Boolean,
             default: true
         },
-        // tooltip显示内容
+        // tooltip显示内容，沒有傳則默認是 targetStr 内容
         tooltipTxt:{
             type: String,
             default: ''
         },
         /**
-         * 复制内容
+         * 复制内容 沒有傳則默認是 targetStr 内容
          */
         copyContent:{
             type: String,

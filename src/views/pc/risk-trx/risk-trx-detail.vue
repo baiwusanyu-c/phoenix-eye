@@ -36,6 +36,7 @@
                     <be-ellipsis-copy
                         :tooltipTxt="baseInfo.from_address"
                         :targetStr="baseInfo.from_address_tag ? baseInfo.from_address_tag :  baseInfo.from_address"
+                        :copy-content="baseInfo.from_address"
                         :is-ellipsis="(baseInfo.from_address && baseInfo.from_address.length > 15 && !baseInfo.from_address_tag) ? true : false"
                         emptyText="/"
                         @click="openWeb(baseInfo.from_address,'addr')"
@@ -49,6 +50,7 @@
                     <be-ellipsis-copy
                         :tooltipTxt="baseInfo.to_address"
                         :targetStr="baseInfo.to_address_tag ? baseInfo.to_address_tag :  baseInfo.to_address"
+                        :copy-content="baseInfo.to_address"
                         :is-ellipsis="(baseInfo.to_address && baseInfo.to_address.length > 15 && !baseInfo.to_address_tag) ? true : false"
                         emptyText="/"
                         @click="openWeb(baseInfo.to_address,'addr')"
