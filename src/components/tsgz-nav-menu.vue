@@ -116,7 +116,7 @@
 
 <script lang="ts">
   import { defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue'
-  import { clearSession, clearStore, getStore, setSession, setStore } from '../utils/common'
+  import { clearSession, clearStore, getStore, setSession, setStore,removeStore } from '../utils/common'
   import composition from '../utils/mixin/common-func'
   import { useStore } from 'vuex'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
@@ -126,6 +126,7 @@
   import LoginDialog from '../views/pc/login/login-dialog.vue'
   import { getProjectListCurUser } from '../api/project-explorer'
   import { useEventBus } from '@vueuse/core'
+  import { onBeforeRouteUpdate } from 'vue-router'
   /**
    * 头部菜单导航
    */
@@ -359,16 +360,32 @@
             if (!res) {
               return
             }
-            projectList.value = res.data
+            let list = res.data
+            list.map((val)=>{
+                val.project_id = (val.project_id).toString()
+            })
+              projectList.value =  list
+              selectVal.value = getStore('curSelectProjId')
           })
           .catch(err => {
             message('error', err.message || err)
           })
       }
+        onBeforeRouteUpdate((to)=>{
+            if(to.path !== '/projectSearch/detail'){
+                selectVal.value = ''
+            }
+        })
       /**
        * 项目选择事件
        */
       const handleProjectSelect = (): void => {
+          if(selectVal.value === ''){
+              removeStore('curSelectProjId')
+              routerPush('/riskTrx/list')
+              return
+          }
+        setStore('curSelectProjId',selectVal.value)
         routerPush('/projectSearch/detail', { id: selectVal.value })
       }
       return {
