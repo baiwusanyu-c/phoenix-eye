@@ -36,6 +36,6 @@ const configUrl: IOption = {
   pretest: pretestnUrl,
   staging02: stagingnUrl02,
   development02: developmentUrl02,
-  production02:production02,
+  production02: production02,
 }
 export default configUrl[String(import.meta.env.VITE_PROJECT_ENV)]
