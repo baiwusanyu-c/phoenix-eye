@@ -263,7 +263,7 @@
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
-  import { onBeforeRouteUpdate } from 'vue-router'
+
 
   interface ISafetyData {
     negative?: string
@@ -543,22 +543,23 @@
       onMounted(() => {
         getProSituData()
       })
-      onBeforeRouteUpdate(to => {
-        const { param, id } = to.query
-        projectId.value = (param || id) as string
-        pageParamsTj.value = {
-          currentPage: 1,
-          pageSize: 3,
-          total: 0,
-        }
-        pageParamsFs.value = {
-          currentPage: 1,
-          pageSize: 5,
-          total: 0,
-        }
-        getProSituData()
-      })
 
+      const selectProjBus = useEventBus<string>('selectProjBus')
+        selectProjBus.on(()=>{
+            const { param, id } = route.query
+            projectId.value = (param || id) as string
+            pageParamsTj.value = {
+                currentPage: 1,
+                pageSize: 3,
+                total: 0,
+            }
+            pageParamsFs.value = {
+                currentPage: 1,
+                pageSize: 5,
+                total: 0,
+            }
+            getProSituData()
+        })
       // 语种切换重新赋值一下 解决不更新问题
       const busLanguage = useEventBus<string>('language')
       busLanguage.on(() => {

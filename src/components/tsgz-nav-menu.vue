@@ -368,16 +368,20 @@
               return
             }
             let list = res.data
-            list.map(val => {
+            list.map((val:any) => {
               val.project_id = val.project_id.toString()
             })
             projectList.value = list
-            selectVal.value = getStore('curSelectProjId')
+              if(route.path === '/projectSearch/detail'){
+                  selectVal.value = getStore('curSelectProjId')!
+              }
           })
           .catch(err => {
             message('error', err.message || err)
           })
       }
+
+      // 路由不在項目態勢詳情也就清空選擇值
       onBeforeRouteUpdate(to => {
         if (to.path !== '/projectSearch/detail') {
           selectVal.value = ''
@@ -386,12 +390,15 @@
       /**
        * 项目选择事件
        */
+      const selectProjBus = useEventBus<string>('selectProjBus')
       const handleProjectSelect = (): void => {
+          // 清空時
         if (selectVal.value === '') {
           removeStore('curSelectProjId')
           routerPush('/riskTrx/list')
           return
         }
+        selectProjBus.emit('true')
         setStore('curSelectProjId', selectVal.value)
         routerPush('/projectSearch/detail', { id: selectVal.value })
       }
