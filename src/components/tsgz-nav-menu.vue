@@ -385,6 +385,7 @@
       onBeforeRouteUpdate(to => {
         if (to.path !== '/projectSearch/detail') {
           selectVal.value = ''
+            removeStore('curSelectProjId')
         }
       })
       /**
@@ -398,9 +399,9 @@
           routerPush('/riskTrx/list')
           return
         }
-        selectProjBus.emit('true')
         setStore('curSelectProjId', selectVal.value)
         routerPush('/projectSearch/detail', { id: selectVal.value })
+         selectProjBus.emit(selectVal.value)
       }
       return {
         handleProjectSelect,
