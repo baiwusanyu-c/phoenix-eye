@@ -264,7 +264,6 @@
   import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
 
-
   interface ISafetyData {
     negative?: string
     negativeMsg?: string
@@ -545,21 +544,21 @@
       })
 
       const selectProjBus = useEventBus<string>('selectProjBus')
-        selectProjBus.on(()=>{
-            const { param, id } = route.query
-            projectId.value = (param || id) as string
-            pageParamsTj.value = {
-                currentPage: 1,
-                pageSize: 3,
-                total: 0,
-            }
-            pageParamsFs.value = {
-                currentPage: 1,
-                pageSize: 5,
-                total: 0,
-            }
-            getProSituData()
-        })
+      selectProjBus.on(() => {
+        const { param, id } = route.query
+        projectId.value = (param || id) as string
+        pageParamsTj.value = {
+          currentPage: 1,
+          pageSize: 3,
+          total: 0,
+        }
+        pageParamsFs.value = {
+          currentPage: 1,
+          pageSize: 5,
+          total: 0,
+        }
+        getProSituData()
+      })
       // 语种切换重新赋值一下 解决不更新问题
       const busLanguage = useEventBus<string>('language')
       busLanguage.on(() => {

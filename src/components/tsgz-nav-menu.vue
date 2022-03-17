@@ -368,13 +368,13 @@
               return
             }
             let list = res.data
-            list.map((val:any) => {
+            list.map((val: any) => {
               val.project_id = val.project_id.toString()
             })
             projectList.value = list
-              if(route.path === '/projectSearch/detail'){
-                  selectVal.value = getStore('curSelectProjId')!
-              }
+            if (route.path === '/projectSearch/detail') {
+              selectVal.value = getStore('curSelectProjId')!
+            }
           })
           .catch(err => {
             message('error', err.message || err)
@@ -392,7 +392,7 @@
        */
       const selectProjBus = useEventBus<string>('selectProjBus')
       const handleProjectSelect = (): void => {
-          // 清空時
+        // 清空時
         if (selectVal.value === '') {
           removeStore('curSelectProjId')
           routerPush('/riskTrx/list')
