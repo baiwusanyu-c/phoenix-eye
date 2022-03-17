@@ -238,7 +238,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref,nextTick } from 'vue'
+  import { defineComponent, onMounted, ref, nextTick } from 'vue'
   import BePagination from '../../../components/common-components/pagination/be-pagination.vue'
   import { IPageParam } from '../../../utils/types'
   import { BeIcon, BeTag } from '../../../../public/be-ui/be-ui.es'
@@ -544,19 +544,19 @@
       })
 
       const selectProjBus = useEventBus<string>('selectProjBus')
-      selectProjBus.on((id:string) => {
-              projectId.value = id
-              pageParamsTj.value = {
-                  currentPage: 1,
-                  pageSize: 3,
-                  total: 0,
-              }
-              pageParamsFs.value = {
-                  currentPage: 1,
-                  pageSize: 5,
-                  total: 0,
-              }
-              getProSituData()
+      selectProjBus.on((id: string) => {
+        projectId.value = id
+        pageParamsTj.value = {
+          currentPage: 1,
+          pageSize: 3,
+          total: 0,
+        }
+        pageParamsFs.value = {
+          currentPage: 1,
+          pageSize: 5,
+          total: 0,
+        }
+        getProSituData()
       })
       // 语种切换重新赋值一下 解决不更新问题
       const busLanguage = useEventBus<string>('language')
