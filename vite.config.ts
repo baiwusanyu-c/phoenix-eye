@@ -95,7 +95,7 @@ export default defineConfig({
               }
           }
       },*/
-    /*build: {
+  /*build: {
       minify: false,
       cssCodeSplit: true, // 将组件的 style 打包到 js 文件中
       outDir: 'external-page',
