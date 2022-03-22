@@ -438,7 +438,7 @@
             if (!res) {
               return
             }
-            if (res && res.data) {
+            if (res && res.code === '0000') {
               const msg = t('lang.add') + t('lang.success')
               message('success', msg)
               // 更新列表
