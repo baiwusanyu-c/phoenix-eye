@@ -306,7 +306,7 @@
        */
       const active = ref<string>('0')
       const setActiveNav = (): void => {
-          active.value = ''
+        active.value = ''
         // prettier-ignore
         const menuList: any = document.getElementsByClassName('el-menu-item')
         nextTick(() => {
