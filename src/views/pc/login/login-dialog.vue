@@ -177,6 +177,7 @@
 
 <style lang="scss">
   #login_dialog {
+
     .be-dialog {
       position: absolute;
       min-width: 1280px;
@@ -272,7 +273,7 @@
           font-size: 24px;
           font-weight: 600;
           line-height: 32px;
-          color: rgba(0, 0, 0, 0.85);
+          color: rgba(0, 0, 0, .85);
           text-align: left;
         }
 
@@ -296,7 +297,7 @@
           font-size: 24px;
           font-weight: 600;
           line-height: 32px;
-          color: rgba(0, 0, 0, 0.85);
+          color: rgba(0, 0, 0, .85);
           text-align: left;
         }
 
@@ -320,7 +321,7 @@
           font-size: 24px;
           font-weight: 600;
           line-height: 32px;
-          color: rgba(0, 0, 0, 0.85);
+          color: rgba(0, 0, 0, .85);
           text-align: left;
         }
 
@@ -331,7 +332,7 @@
         }
 
         .forget-btn {
-          color: rgba(74, 74, 74, 0.85);
+          color: rgba(74, 74, 74, .85);
         }
 
         .forget-btn:hover {
