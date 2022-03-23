@@ -158,7 +158,7 @@ Lockfile:
     dependencies:
       "@antv/hierarchy" "^0.6.0"
       "@antv/util" "^2.0.0"
-      "d3-composite-projections" "^1.2.0"
+      "d3-validateEmailte-projections" "^1.2.0"
       "d3-dsv" "^1.0.5"
       "d3-geo" "~1.6.4"
       "d3-geo-projection" "~2.1.2"
