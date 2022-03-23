@@ -73,7 +73,7 @@
 - node_modules 項目依賴
 - public 公共文件
 - env 环境变量文件夹
-- icon 存放图标的svg文件，这个文件夹打包时会被摇曳，不必担心，图标会被vite-plugin-svg-transform-script插件读取成svg-dict
+- icon 存放图标的 svg 文件，这个文件夹打包时会被摇曳，不必担心，图标会被 vite-plugin-svg-transform-script 插件读取成 svg-dict
 - src
   api Api 封裝
 

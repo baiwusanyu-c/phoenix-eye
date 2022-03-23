@@ -6,7 +6,7 @@ import WindiCSS from 'vite-plugin-windicss'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import {transformScript} from "vite-plugin-svg-transform-script";
+import { transformScript } from 'vite-plugin-svg-transform-script'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -22,15 +22,15 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
     transformScript({
-      input:'./icon/',
-      output:'./src/utils/',
-      name:'svg-dict',
-      type:'ts',
-      format:'default'
-    })
+      input: './icon/',
+      output: './src/utils/',
+      name: 'svg-dict',
+      type: 'ts',
+      format: 'default',
+    }),
   ],
   // 指定环境变量文件路径
-  envDir:'./env/',
+  envDir: './env/',
   /**
    * 在生产中服务时的基本公共路径。
    * @default '/'
