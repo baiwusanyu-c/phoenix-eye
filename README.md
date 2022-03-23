@@ -62,7 +62,7 @@
 `"prepare": "husky install",`
 **husky 初始化**
 
-`"commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .&& stylelint --fix src/**/*.{html,vue,css}"`
+`"commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .&& stylelint --fix src/**/*.{html,vue,css}"`  
 **基于 husky 和 commitlint/cli 的 git commit 钩子指令，提交时会调用该指令进行**
 
 `"preview": "vite preview --port 8080 --host"`
@@ -72,6 +72,8 @@
 
 - node_modules 項目依賴
 - public 公共文件
+- env 环境变量文件夹
+- icon 存放图标的svg文件，这个文件夹打包时会被摇曳，不必担心，图标会被vite-plugin-svg-transform-script插件读取成svg-dict
 - src
   api Api 封裝
 
