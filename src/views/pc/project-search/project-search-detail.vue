@@ -238,7 +238,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref, nextTick } from 'vue'
+  import { defineComponent, onMounted, ref } from 'vue'
   import BePagination from '../../../components/common-components/pagination/be-pagination.vue'
   import { IPageParam } from '../../../utils/types'
   import { BeIcon, BeTag } from '../../../../public/be-ui/be-ui.es'
@@ -784,7 +784,6 @@
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .project-search-detail .proj-detail-item {
       width: 78%;
     }
