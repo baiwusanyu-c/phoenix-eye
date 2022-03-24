@@ -2,21 +2,23 @@
   <img width="144px" src="https://lianantech.com/commonImg/mail/hermit-logo.png" />
 </p>
 
-#eagle-eye-front 态势感知 ##主要技術依賴  
+#eagle-eye-front 态势感知 
+##主要技術依賴  
 **Vue3.2 + Vue-router4 + Vite2.x + typeScript4.5**
 
-| 名称         | 版本           | 説明                                                                               |
-| ------------ | -------------- | ---------------------------------------------------------------------------------- |
-| Vue          | ^3.2.3         | 前端開發框架                                                                       |
-| axios        | ^0.24.0        | Ajax 封裝庫                                                                        |
-| vite         | ^2.2.3         | 工程化開發打包框架                                                                 |
-| vue-router   | 4              | vue3.x 路由 注意，vue-router4.x 路由配置 name 不可以重复，否则会导致打包后路由混乱 |
-| vue-i18n     | ^9.2.0-beta.23 | vue3.x 國際化插件                                                                  |
-| @vueuse/core | ^7.3.0         | vue3.x 的 composition Api 方法庫                                                   |
-| animate.css  | ^4.1.1         | 動畫庫                                                                             |
-| windi.css    | ^3.4.3         | css 原子化樣式庫                                                                   |
-| element-plus | ^2.22.0        | UI 組件庫                                                                          |
-| be-ui        | -              | 内部 UI 組件庫                                                                     |
+| 名称         | 版本      | 説明                                                      |
+| ------------ |---------|---------------------------------------------------------|
+| Vue          | ^3.2.3  | 前端開發框架                                                  |
+| axios        | ^0.24.0 | Ajax 封裝庫                                                |
+| vite         | ^2.2.3  | 工程化開發打包框架                                               |
+| vue-router   | 4       | vue3.x 路由 注意，vue-router4.x 路由配置 name 不可以重复，否则会导致打包后路由混乱 |
+| vue-i18n     | 9       | vue3.x 國際化插件                                            |
+| @vueuse/core | ^7.3.0  | vue3.x 的 composition Api 方法庫                            |
+| animate.css  | ^4.1.1  | 動畫庫                                                     |
+| windi.css    | ^3.4.3  | css 原子化樣式庫                                              |
+| element-plus | ^2.22.0 | UI 組件庫                                                  |
+| be-ui        | -       | 内部 UI 組件庫                                               |
+| vite-plugin-svg-transform-script        | 0.0.7       | svg圖標文件處理脚本                                             |
 
 ##package 指令
 
@@ -50,22 +52,22 @@
 `"lint:style-fix": "stylelint --fix src/**/*.{html,vue,css}"`  
 **styleLint 樣式代碼修復**
 
-`"lint:ts": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",`
+`"lint:ts": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",`  
 **esLint 代碼校验**
 
-`"lint:ts-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx",`
+`"lint:ts-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx",`  
 **esLint 代碼校验修復**
 
-`"prettier:fix": "prettier --write ."`,
+`"prettier:fix": "prettier --write ."`,  
 **prettier 格式修復**
 
-`"prepare": "husky install",`
+`"prepare": "husky install",`  
 **husky 初始化**
 
 `"commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .&& stylelint --fix src/**/*.{html,vue,css}"`  
 **基于 husky 和 commitlint/cli 的 git commit 钩子指令，提交时会调用该指令进行**
 
-`"preview": "vite preview --port 8080 --host"`
+`"preview": "vite preview --port 8080 --host"`  
 **打包预览，当年你打包后使用该指令 vite 会自动开启一个容器来运行 dist 打包结果**
 
 ## 目錄結構
