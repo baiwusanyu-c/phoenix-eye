@@ -175,7 +175,7 @@
         </template>
       </el-table-column>
     </el-table>
-<!--    <pagesss
+    <!--    <pagesss
       is-ordianry
       :page-size="pageParams.data.pageSize"
       :page-count="pageParams.data.total"
@@ -189,7 +189,7 @@
         <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
       </template>
     </pagesss>-->
-        <be-pagination
+    <be-pagination
       v-if="showPager"
       layout="sizes,prev, pager,next"
       :init-func="getList"
@@ -215,7 +215,7 @@
   import { IFilterItem } from '../risk-trx-list.vue'
   import composition from '../../../../utils/mixin/common-func'
   import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
-   import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
+  import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
   import { IOption } from '../../../../utils/types'
