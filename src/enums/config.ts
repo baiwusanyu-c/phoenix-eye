@@ -1,6 +1,5 @@
-// 生产环境
 import { IOption } from '../utils/types'
-
+// 生产环境
 enum productionUrl {
   baseURL = 'https://eagleeye.beosin.com/eagle-eye-ussa/',
 }
@@ -9,19 +8,15 @@ enum developmentUrl {
   baseURL = 'http://192.168.0.216:9527',
 }
 // 测试环境
-enum stagingnUrl {
-  baseURL = 'http://124.71.193.230:9527',
-}
-// 预发布环境
-enum pretestnUrl {
-  baseURL = 'http://124.71.154.20:9527',
+enum stagingUrl {
+  baseURL = 'http://124.71.132.90:9527',
 }
 
 enum developmentUrl02 {
   baseURL = 'http://192.168.0.2:9527',
 }
 
-enum stagingnUrl02 {
+enum stagingUrl02 {
   baseURL = 'http://124.71.132.90:9527',
 }
 
@@ -32,9 +27,8 @@ enum production02 {
 const configUrl: IOption = {
   production: productionUrl,
   development: developmentUrl,
-  staging: stagingnUrl,
-  pretest: pretestnUrl,
-  staging02: stagingnUrl02,
+  staging: stagingUrl,
+  staging02: stagingUrl02,
   development02: developmentUrl02,
   production02: production02,
 }
