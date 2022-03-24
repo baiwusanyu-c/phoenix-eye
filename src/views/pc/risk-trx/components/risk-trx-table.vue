@@ -175,6 +175,20 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--    <pagesss
+      is-ordianry
+      :page-size="pageParams.data.pageSize"
+      :page-count="pageParams.data.total"
+      :current-page="pageParams.data.currentPage"
+      custom-class="table-page"
+      :pager-show-count="5"
+      :layout="['prev', 'pNum', 'page']"
+      @update-num="updateNum"
+      @change-page="pageChange">
+      <template #prev>
+        <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
+      </template>
+    </pagesss>-->
     <be-pagination
       v-if="showPager"
       layout="sizes,prev, pager,next"
@@ -210,7 +224,7 @@
     components: {
       BeIcon,
       BeTag,
-      BePagination,
+      BePagination: BePagination,
       BeEllipsisCopy,
     },
     props: {
@@ -321,6 +335,10 @@
         pageParams.data.currentPage = item.currentPage
         getList()
       }
+      /*const updateNum = (data): void => {
+        pageParams.data.pageSize = data.pageSize
+        getList()
+      }*/
       /**
        * 打開交易分析詳情tab
        */
@@ -346,6 +364,7 @@
       })
 
       return {
+        //updateNum,
         tableHeader,
         isEmpty,
         openDetail,
