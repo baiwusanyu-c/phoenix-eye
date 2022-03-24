@@ -137,24 +137,23 @@
           </template>
         </el-table-column>
       </el-table>
-        <div class="table-page">
-            <be-pagination
-                is-ordianry
-                :page-size="pageParams.pageSize"
-                :page-count="pageParams.total"
-                :current-page="pageParams.currentPage"
-                :page-num='[{ label: 20 }, { label: 40 }, { label: 80 },{ label: 100 },]'
-                :pager-show-count="5"
-                page-unit="page"
-                :layout="['prev', 'pNum', 'page']"
-                @update-num="updateNum"
-                @change-page="pageChange">
-                <template #prev>
-                    <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
-                </template>
-            </be-pagination>
-        </div>
-
+      <div class="table-page">
+        <be-pagination
+          is-ordianry
+          :page-size="pageParams.pageSize"
+          :page-count="pageParams.total"
+          :current-page="pageParams.currentPage"
+          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :pager-show-count="5"
+          page-unit="page"
+          :layout="['prev', 'pNum', 'page']"
+          @update-num="updateNum"
+          @change-page="pageChange">
+          <template #prev>
+            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
+          </template>
+        </be-pagination>
+      </div>
     </div>
     <!--    新增、编辑项目弹窗 -->
     <create-project
@@ -175,7 +174,7 @@
 </template>
 
 <script lang="ts">
-  import { BeButton, BeIcon,BePagination } from '../../../../public/be-ui/be-ui.es'
+  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import CreateProject from './components/create-project.vue'
   import { IPageParam } from '../../../utils/types'
   import {
@@ -200,7 +199,7 @@
       MsgDialog,
       BeButton,
       BeIcon,
-        BePagination,
+      BePagination,
     },
     setup() {
       const { t } = useI18n()
@@ -346,14 +345,14 @@
         pageParams.value.currentPage = item.currentPage
         getList()
       }
-        const updateNum = (data:IPageParam): void => {
-            pageParams.value.currentPage = 1
-            pageParams.value.pageSize = data.pageSize!
-            getList()
-        }
+      const updateNum = (data: IPageParam): void => {
+        pageParams.value.currentPage = 1
+        pageParams.value.pageSize = data.pageSize!
+        getList()
+      }
 
       return {
-          updateNum,
+        updateNum,
         isEmpty,
         createDate,
         formatDate,

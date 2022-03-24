@@ -175,23 +175,23 @@
         </template>
       </el-table-column>
     </el-table>
-      <div class="table-page" v-if="tableData.length > 0">
-          <be-pagination
-              is-ordianry
-              :page-size="pageParams.data.pageSize"
-              :page-count="pageParams.data.total"
-              :current-page="pageParams.data.currentPage"
-              :page-num='[{ label: 20 }, { label: 40 }, { label: 80 },{ label: 100 },]'
-              :pager-show-count="5"
-              page-unit="page"
-              :layout="['prev', 'pNum', 'page']"
-              @update-num="updateNum"
-              @change-page="pageChange">
-              <template #prev>
-                  <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
-              </template>
-          </be-pagination>
-      </div>
+    <div v-if="tableData.length > 0" class="table-page">
+      <be-pagination
+        is-ordianry
+        :page-size="pageParams.data.pageSize"
+        :page-count="pageParams.data.total"
+        :current-page="pageParams.data.currentPage"
+        :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+        :pager-show-count="5"
+        page-unit="page"
+        :layout="['prev', 'pNum', 'page']"
+        @update-num="updateNum"
+        @change-page="pageChange">
+        <template #prev>
+          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
+        </template>
+      </be-pagination>
+    </div>
   </div>
 </template>
 
@@ -201,16 +201,16 @@
   import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
   import { IFilterItem } from '../risk-trx-list.vue'
   import composition from '../../../../utils/mixin/common-func'
-  import { BeIcon, BeTag ,BePagination} from '../../../../../public/be-ui/be-ui.es'
+  import { BeIcon, BeTag, BePagination } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import {IOption, IPageParam} from '../../../../utils/types'
+  import { IOption, IPageParam } from '../../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
       BeIcon,
       BeTag,
-        BePagination,
+      BePagination,
       BeEllipsisCopy,
     },
     props: {
@@ -321,7 +321,7 @@
         pageParams.data.currentPage = item.currentPage
         getList()
       }
-      const updateNum = (data:IPageParam): void => {
+      const updateNum = (data: IPageParam): void => {
         pageParams.data.currentPage = 1
         pageParams.data.pageSize = data.pageSize!
         getList()

@@ -158,22 +158,22 @@
           <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
         </div>
       </div>
-        <div class="table-page"  v-if="contractStatisticsData.length > 0">
-            <be-pagination
-                is-ordianry
-                :page-size="pageParamsTj.pageSize"
-                :page-count="pageParamsTj.total"
-                :current-page="pageParamsTj.currentPage"
-                :page-num='[{ label: 20 }, { label: 40 }, { label: 80 },{ label: 100 },]'
-                :pager-show-count="5"
-                page-unit="page"
-                :layout="['prev', 'page']"
-                @change-page="pageChangeTj">
-                <template #prev>
-                    <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
-                </template>
-            </be-pagination>
-        </div>
+      <div v-if="contractStatisticsData.length > 0" class="table-page">
+        <be-pagination
+          is-ordianry
+          :page-size="pageParamsTj.pageSize"
+          :page-count="pageParamsTj.total"
+          :current-page="pageParamsTj.currentPage"
+          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :pager-show-count="5"
+          page-unit="page"
+          :layout="['prev', 'page']"
+          @change-page="pageChangeTj">
+          <template #prev>
+            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
+          </template>
+        </be-pagination>
+      </div>
     </div>
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
@@ -218,23 +218,23 @@
         }">
         <project-detail-publi-opinion v-if="safetyData.length > 0" :info-data="safetyData">
         </project-detail-publi-opinion>
-          <div class="table-page"   v-if="safetyData.length > 0">
-              <be-pagination
-                  is-ordianry
-                  :page-size="pageParamsFs.pageSize"
-                  :page-count="pageParamsFs.total"
-                  :current-page="pageParamsFs.currentPage"
-                  :page-num='[{ label: 20 }, { label: 40 }, { label: 80 },{ label: 100 },]'
-                  :pager-show-count="5"
-                  page-unit="page"
-                  :layout="['prev', 'pNum', 'page']"
-                  @update-num="updateNumFs"
-                  @change-page="pageChangeFs">
-                  <template #prev>
-                      <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
-                  </template>
-              </be-pagination>
-          </div>
+        <div v-if="safetyData.length > 0" class="table-page">
+          <be-pagination
+            is-ordianry
+            :page-size="pageParamsFs.pageSize"
+            :page-count="pageParamsFs.total"
+            :current-page="pageParamsFs.currentPage"
+            :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+            :pager-show-count="5"
+            page-unit="page"
+            :layout="['prev', 'pNum', 'page']"
+            @update-num="updateNumFs"
+            @change-page="pageChangeFs">
+            <template #prev>
+              <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
+            </template>
+          </be-pagination>
+        </div>
         <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px" />
           <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
@@ -247,7 +247,7 @@
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue'
   import { IPageParam } from '../../../utils/types'
-  import { BeIcon, BeTag ,BePagination} from '../../../../public/be-ui/be-ui.es'
+  import { BeIcon, BeTag, BePagination } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import { useI18n } from 'vue-i18n'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
@@ -330,7 +330,7 @@
     components: {
       ProjectDetailTop,
       RiskTrxTable,
-        BePagination,
+      BePagination,
       ProjectDetailPubliOpinion,
       BeIcon,
       BeTag,
@@ -546,11 +546,11 @@
         pageParamsFs.value.currentPage = item.currentPage
         getPublicOpinionData()
       }
-        const updateNumFs = (data:IPageParam): void => {
-            pageParamsFs.value.currentPage = 1
-            pageParamsFs.value.pageSize = data.pageSize!
-            getPublicOpinionData()
-        }
+      const updateNumFs = (data: IPageParam): void => {
+        pageParamsFs.value.currentPage = 1
+        pageParamsFs.value.pageSize = data.pageSize!
+        getPublicOpinionData()
+      }
       onMounted(() => {
         getProSituData()
       })
@@ -600,7 +600,7 @@
       }
 
       return {
-          updateNumFs,
+        updateNumFs,
         defaultPlatformTop5Token,
         defaultPlatformTop5Quidity,
         openWeb,

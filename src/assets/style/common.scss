@@ -563,6 +563,7 @@
     align-items: end;
     justify-content: flex-end;
     height: 60px;
+
     .table-page-info {
       font-size: 14px;
       color: $textColor4;
@@ -570,53 +571,66 @@
   }
 }
 //分页样式
+
 .be-pager li{
-  background-color: transparent;
   width: 32px;
   height: 32px;
-  border-radius: 2px;
   color: #606266;
+  background-color: transparent;
+  border-radius: 2px;
+
   .be-icon-container {
+
     .be-icon{
       width: 14px;
       height: 14px;
+
       use{
         fill:#606266 ;
       }
     }
   }
 }
+
 .be-pager li:hover{
-  border: 1px solid $mainColor3;
   color: $mainColor3;
+  border: 1px solid $mainColor3;
+
   .be-icon-container use{
     fill:$mainColor3 !important;
   }
 }
+
 .be-pager li.active{
-  background-color: $mainColor7;
-  color: $mainColor3;
   font-weight: bold;
+  color: $mainColor3;
+  background-color: $mainColor7;
 }
+
 .be-pager-container .be-select .be-select-body.be-pager-select{
   width: 8rem;
   height: 30px;
   line-height: 30px;
+
   .be-select-input__medium{
     height: 28px;
     color: #606266;
   }
 }
+
 .be-select .be-select-body:hover{
   border: 1px solid $mainColor3;
 }
+
 .be-select .be-select-body.be-select-body__focus{
   border: 1px solid $mainColor3;
   box-shadow: 0 0 0 2px $mainColor16-025;
 }
+
 .be-select-option-body .be-select-option-container .be-select-option__choice{
   color: $mainColor3;
 }
+
 .be-header {
   padding: 0;
 }
