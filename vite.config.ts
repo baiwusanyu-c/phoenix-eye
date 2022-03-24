@@ -59,13 +59,7 @@ export default defineConfig({
       },
     },
   },
-  // 定义环境变量
-  define: {
-    __DEV__: process.env.NODE_ENV == 'production',
-    __TEST_PROD__: process.env.NODE_ENV === 'staging',
-    __PROD__: process.env.NODE_ENV === 'development',
-    __PRE_PROD__: process.env.NODE_ENV === 'pretest',
-  },
+
   resolve: {
     // 导入文件夹别名
     alias: {
@@ -88,7 +82,8 @@ export default defineConfig({
                 @import "./src/assets/style/reset.scss";
                 @import "./src/assets/style/transition.scss";
                 @import "./src/assets/style/variable.scss";
-                @import "./src/assets/style/common.scss";`, // 添加公共样式
+                @import "./src/assets/style/common.scss";
+                @import "./src/assets/style/theme-dark.scss";`, // 添加公共样式
       },
     },
   },

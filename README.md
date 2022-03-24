@@ -2,23 +2,22 @@
   <img width="144px" src="https://lianantech.com/commonImg/mail/hermit-logo.png" />
 </p>
 
-#eagle-eye-front 态势感知 
-##主要技術依賴  
+#eagle-eye-front 态势感知 ##主要技術依賴  
 **Vue3.2 + Vue-router4 + Vite2.x + typeScript4.5**
 
-| 名称         | 版本      | 説明                                                      |
-| ------------ |---------|---------------------------------------------------------|
-| Vue          | ^3.2.3  | 前端開發框架                                                  |
-| axios        | ^0.24.0 | Ajax 封裝庫                                                |
-| vite         | ^2.2.3  | 工程化開發打包框架                                               |
-| vue-router   | 4       | vue3.x 路由 注意，vue-router4.x 路由配置 name 不可以重复，否则会导致打包后路由混乱 |
-| vue-i18n     | 9       | vue3.x 國際化插件                                            |
-| @vueuse/core | ^7.3.0  | vue3.x 的 composition Api 方法庫                            |
-| animate.css  | ^4.1.1  | 動畫庫                                                     |
-| windi.css    | ^3.4.3  | css 原子化樣式庫                                              |
-| element-plus | ^2.22.0 | UI 組件庫                                                  |
-| be-ui        | -       | 内部 UI 組件庫                                               |
-| vite-plugin-svg-transform-script        | 0.0.7       | svg圖標文件處理脚本                                             |
+| 名称                             | 版本    | 説明                                                                               |
+| -------------------------------- | ------- | ---------------------------------------------------------------------------------- |
+| Vue                              | ^3.2.3  | 前端開發框架                                                                       |
+| axios                            | ^0.24.0 | Ajax 封裝庫                                                                        |
+| vite                             | ^2.2.3  | 工程化開發打包框架                                                                 |
+| vue-router                       | 4       | vue3.x 路由 注意，vue-router4.x 路由配置 name 不可以重复，否则会导致打包后路由混乱 |
+| vue-i18n                         | 9       | vue3.x 國際化插件                                                                  |
+| @vueuse/core                     | ^7.3.0  | vue3.x 的 composition Api 方法庫                                                   |
+| animate.css                      | ^4.1.1  | 動畫庫                                                                             |
+| windi.css                        | ^3.4.3  | css 原子化樣式庫                                                                   |
+| element-plus                     | ^2.22.0 | UI 組件庫                                                                          |
+| be-ui                            | -       | 内部 UI 組件庫                                                                     |
+| vite-plugin-svg-transform-script | 0.0.7   | svg 圖標文件處理脚本                                                               |
 
 ##package 指令
 

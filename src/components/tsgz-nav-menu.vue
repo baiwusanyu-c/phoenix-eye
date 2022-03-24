@@ -174,10 +174,20 @@
           headerConfig.value = {
             JYFX: {
               icon: '',
-              index: 0,
+              index: '0',
               name: 'lang.subNav.navName2',
               show: true,
               path: '/riskTrx/list',
+              isPush: true,
+              children: [],
+              isDisabled: false,
+            },
+            RPIF: {
+              icon: '',
+              index: '1',
+              name: 'lang.subNav.navName6',
+              show: true,
+              path: '/RiskPublicInformation',
               isPush: true,
               children: [],
               isDisabled: false,
@@ -261,6 +271,16 @@
           children: [],
           isDisabled: false,
         },
+        RPIF: {
+          icon: '',
+          index: '1',
+          name: 'lang.subNav.navName6',
+          show: true,
+          path: '/RiskPublicInformation',
+          isPush: true,
+          children: [],
+          isDisabled: false,
+        },
       })
       const headerConfigMore = ref<any>([])
       const store = useStore()
@@ -275,7 +295,7 @@
           '-xitongpeizhi',
         ]
         menuConfig.forEach((val: any, index: number) => {
-          if (val.perms === 'XMGL') {
+          if (val.perms === 'XMGL' || val.perms === 'TRXRESET') {
             headerConfigMore.value.push({
               index: (index + 1).toString(),
               name: val.meta.title,
@@ -298,6 +318,7 @@
             isDisabled: false,
           }
         })
+        console.log(headerConfig)
       }
       /**
        * 设置激活菜单

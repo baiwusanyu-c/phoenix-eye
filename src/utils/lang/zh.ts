@@ -112,6 +112,7 @@ export default {
     navName3: '项目管理',
     navName4: '系统配置',
     navName5: '项目浏览器',
+    navName6: '风险公共信息',
     navName4s1: '风险类型配置',
     navName4s2: '风险评分配置',
   },
