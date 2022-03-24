@@ -175,7 +175,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagesss
+<!--    <pagesss
       is-ordianry
       :page-size="pageParams.data.pageSize"
       :page-count="pageParams.data.total"
@@ -188,8 +188,8 @@
       <template #prev>
         <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
       </template>
-    </pagesss>
-    <!--    <be-pagination   layout="['prev', 'pNum', 'page']"
+    </pagesss>-->
+        <be-pagination
       v-if="showPager"
       layout="sizes,prev, pager,next"
       :init-func="getList"
@@ -204,7 +204,7 @@
         <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
       </template>
       <template #next><span></span></template>
-    </be-pagination>-->
+    </be-pagination>
   </div>
 </template>
 
@@ -214,8 +214,8 @@
   import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
   import { IFilterItem } from '../risk-trx-list.vue'
   import composition from '../../../../utils/mixin/common-func'
-  import { BeIcon, BeTag, BePagination } from '../../../../../public/be-ui/be-ui.es'
-  // import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
+  import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
+   import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
   import { IOption } from '../../../../utils/types'
@@ -224,7 +224,7 @@
     components: {
       BeIcon,
       BeTag,
-      pagesss: BePagination,
+      BePagination: BePagination,
       BeEllipsisCopy,
     },
     props: {
@@ -335,10 +335,10 @@
         pageParams.data.currentPage = item.currentPage
         getList()
       }
-      const updateNum = (data): void => {
+      /*const updateNum = (data): void => {
         pageParams.data.pageSize = data.pageSize
         getList()
-      }
+      }*/
       /**
        * 打開交易分析詳情tab
        */
@@ -364,7 +364,7 @@
       })
 
       return {
-        updateNum,
+        //updateNum,
         tableHeader,
         isEmpty,
         openDetail,
