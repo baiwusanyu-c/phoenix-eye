@@ -13,8 +13,8 @@
 √ msg-dialog.vue 迁移完成
 √ risk-trx-main.vue 迁移完成
 √ system-config-mai.vue 迁移完成
-√ be-pagination.vue 迁移完成 （注，这里是项目内的组件，不是 be-ui 的,后期重构可以使用 be-ui 的）
-√ be-svg-icon.vue 迁移完成 （注，这里是项目内的组件，不是 be-ui 的,后期重构可以使用 be-ui 的）
+√ be-pagination.vue 迁移完成 
+√ be-svg-icon.vue 迁移完成 
 
 ### 2022 年 2 月 16 日
 

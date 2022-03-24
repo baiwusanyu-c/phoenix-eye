@@ -137,22 +137,24 @@
           </template>
         </el-table-column>
       </el-table>
-      <be-pagination
-        custom-class="table-page"
-        :page-size="pageParams.pageSize"
-        :current-page="pageParams.currentPage"
-        :total="pageParams.total"
-        layout="sizes,prev, pager,next"
-        :init-func="getList"
-        :is-front="false"
-        @update:page-size="pageParams.pageSize = $event"
-        @update:current-page="pageParams.currentPage = $event"
-        @update-page="pageChange">
-        <template #prev>
-          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
-        </template>
-        <template #next><span></span></template>
-      </be-pagination>
+        <div class="table-page">
+            <be-pagination
+                is-ordianry
+                :page-size="pageParams.pageSize"
+                :page-count="pageParams.total"
+                :current-page="pageParams.currentPage"
+                :page-num='[{ label: 20 }, { label: 40 }, { label: 80 },{ label: 100 },]'
+                :pager-show-count="5"
+                page-unit="page"
+                :layout="['prev', 'pNum', 'page']"
+                @update-num="updateNum"
+                @change-page="pageChange">
+                <template #prev>
+                    <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
+                </template>
+            </be-pagination>
+        </div>
+
     </div>
     <!--    新增、编辑项目弹窗 -->
     <create-project
@@ -173,7 +175,7 @@
 </template>
 
 <script lang="ts">
-  import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
+  import { BeButton, BeIcon,BePagination } from '../../../../public/be-ui/be-ui.es'
   import CreateProject from './components/create-project.vue'
   import { IPageParam } from '../../../utils/types'
   import {
@@ -188,7 +190,6 @@
   import { useI18n } from 'vue-i18n'
   import composition from '../../../utils/mixin/common-func'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import BePagination from '../../../components/common-components/pagination/be-pagination.vue'
   import { createDate, formatDate, beijing2utc, formatTimeStamp } from '../../../utils/common'
 
   export default defineComponent({
@@ -199,7 +200,7 @@
       MsgDialog,
       BeButton,
       BeIcon,
-      BePagination,
+        BePagination,
     },
     setup() {
       const { t } = useI18n()
@@ -345,8 +346,14 @@
         pageParams.value.currentPage = item.currentPage
         getList()
       }
+        const updateNum = (data:IPageParam): void => {
+            pageParams.value.currentPage = 1
+            pageParams.value.pageSize = data.pageSize!
+            getList()
+        }
 
       return {
+          updateNum,
         isEmpty,
         createDate,
         formatDate,

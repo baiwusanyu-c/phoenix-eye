@@ -175,36 +175,23 @@
         </template>
       </el-table-column>
     </el-table>
-    <!--    <pagesss
-      is-ordianry
-      :page-size="pageParams.data.pageSize"
-      :page-count="pageParams.data.total"
-      :current-page="pageParams.data.currentPage"
-      custom-class="table-page"
-      :pager-show-count="5"
-      :layout="['prev', 'pNum', 'page']"
-      @update-num="updateNum"
-      @change-page="pageChange">
-      <template #prev>
-        <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
-      </template>
-    </pagesss>-->
-    <be-pagination
-      v-if="showPager"
-      layout="sizes,prev, pager,next"
-      :init-func="getList"
-      custom-class="table-page"
-      :page-size="pageParams.data.pageSize"
-      :current-page="pageParams.data.currentPage"
-      :total="pageParams.data.total"
-      @update:page-size="pageParams.data.pageSize = $event"
-      @update:current-page="pageParams.data.currentPage = $event"
-      @update-page="pageChange">
-      <template #prev>
-        <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
-      </template>
-      <template #next><span></span></template>
-    </be-pagination>
+      <div class="table-page" v-if="tableData.length > 0">
+          <be-pagination
+              is-ordianry
+              :page-size="pageParams.data.pageSize"
+              :page-count="pageParams.data.total"
+              :current-page="pageParams.data.currentPage"
+              :page-num='[{ label: 20 }, { label: 40 }, { label: 80 },{ label: 100 },]'
+              :pager-show-count="5"
+              page-unit="page"
+              :layout="['prev', 'pNum', 'page']"
+              @update-num="updateNum"
+              @change-page="pageChange">
+              <template #prev>
+                  <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
+              </template>
+          </be-pagination>
+      </div>
   </div>
 </template>
 
@@ -214,17 +201,16 @@
   import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
   import { IFilterItem } from '../risk-trx-list.vue'
   import composition from '../../../../utils/mixin/common-func'
-  import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
-  import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
+  import { BeIcon, BeTag ,BePagination} from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import { IOption } from '../../../../utils/types'
+  import {IOption, IPageParam} from '../../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
       BeIcon,
       BeTag,
-      BePagination: BePagination,
+        BePagination,
       BeEllipsisCopy,
     },
     props: {
@@ -335,10 +321,11 @@
         pageParams.data.currentPage = item.currentPage
         getList()
       }
-      /*const updateNum = (data): void => {
-        pageParams.data.pageSize = data.pageSize
+      const updateNum = (data:IPageParam): void => {
+        pageParams.data.currentPage = 1
+        pageParams.data.pageSize = data.pageSize!
         getList()
-      }*/
+      }
       /**
        * 打開交易分析詳情tab
        */
@@ -364,7 +351,7 @@
       })
 
       return {
-        //updateNum,
+        updateNum,
         tableHeader,
         isEmpty,
         openDetail,
