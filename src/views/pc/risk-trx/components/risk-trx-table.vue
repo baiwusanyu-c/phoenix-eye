@@ -175,7 +175,21 @@
         </template>
       </el-table-column>
     </el-table>
-    <be-pagination
+      <pagesss
+          is-ordianry
+          :page-size="pageParams.data.pageSize"
+          :page-count="pageParams.data.total"
+          :current-page="pageParams.data.currentPage"
+          custom-class="table-page"
+          :pager-show-count="5"
+          :layout="['prev', 'pNum', 'page']"
+          @update-num="updateNum"
+          @change-page="pageChange">
+          <template #prev>
+              <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
+          </template>
+      </pagesss>
+<!--    <be-pagination   layout="['prev', 'pNum', 'page']"
       v-if="showPager"
       layout="sizes,prev, pager,next"
       :init-func="getList"
@@ -190,7 +204,7 @@
         <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
       </template>
       <template #next><span></span></template>
-    </be-pagination>
+    </be-pagination>-->
   </div>
 </template>
 
@@ -200,8 +214,8 @@
   import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
   import { IFilterItem } from '../risk-trx-list.vue'
   import composition from '../../../../utils/mixin/common-func'
-  import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
-  import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
+  import { BeIcon, BeTag,BePagination} from '../../../../../public/be-ui/be-ui.es'
+ // import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
   import { IOption } from '../../../../utils/types'
@@ -210,7 +224,7 @@
     components: {
       BeIcon,
       BeTag,
-      BePagination,
+      pagesss:BePagination,
       BeEllipsisCopy,
     },
     props: {
@@ -321,6 +335,10 @@
         pageParams.data.currentPage = item.currentPage
         getList()
       }
+        const updateNum = (data): void => {
+            pageParams.data.pageSize = data.pageSize
+            getList()
+        }
       /**
        * 打開交易分析詳情tab
        */
@@ -346,6 +364,7 @@
       })
 
       return {
+          updateNum,
         tableHeader,
         isEmpty,
         openDetail,
