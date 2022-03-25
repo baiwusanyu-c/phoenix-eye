@@ -202,8 +202,6 @@ export default {
     },
   },
   projectExplorer: {
-    title: '项目浏览器',
-    subTitle: '搜索你感兴趣的项目来查看项目细节。',
     searchP: '项目名称 / 合约地址',
     example: '示例',
     project: '项目名称',

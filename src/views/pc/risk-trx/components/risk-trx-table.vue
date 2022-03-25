@@ -183,7 +183,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div v-if="tableData.length > 0" class="table-page">
+    <div v-if="tableData.length > 0 && showPager" class="table-page">
       <be-pagination
         is-ordianry
         :page-size="pageParams.data.pageSize"
@@ -381,7 +381,6 @@
 
 <style lang="scss">
   .risk-table-inner {
-
     .more-btn {
       width: 24px;
       height: 24px;

@@ -6,6 +6,7 @@
  */
 export default {
   searchT: 'SEARCH',
+  reTry: 'RETRY',
   companyAddr: '联系地址：成都市武侯区世纪城南路599号天府软件园D7座504室',
   companyTel: '联系电话： 028-8326-2585',
   companyRecord: '蜀ICP备18013498号-1',
@@ -176,8 +177,6 @@ export default {
     profit: 'Address Income',
   },
   projectExplorer: {
-    title: 'Project Explorer',
-    subTitle: 'Search for project that interest you and see their details.',
     searchP: 'ProjectName / Contract',
     example: 'e.g.',
     project: 'Project',
@@ -201,6 +200,10 @@ export default {
       quantity: 'quantity',
       pair: 'pair',
     },
+  },
+  trxRetry: {
+    searchP: 'Trx Hash',
+    result: 'You have submitted！please check later on the risk trx page.',
   },
   createProject: {
     createProjectTitle: 'Create',

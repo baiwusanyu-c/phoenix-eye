@@ -204,6 +204,12 @@
 
 .el-table{
   background-color: transparent;
+  .be-popover--trigger{
+    display: inline-block;
+    height: 20px;
+    vertical-align: middle;
+
+  }
 }
 
 .el-table thead {
@@ -579,12 +585,7 @@
   }
 }
 
-.be-popover--trigger{
-  display: inline-block;
-  height: 20px;
-  vertical-align: middle;
 
-}
 //分页样式
 
 .be-pager li{

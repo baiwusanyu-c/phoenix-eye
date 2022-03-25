@@ -2,8 +2,6 @@
 <template>
   <div class="project-search-main eagle-page">
     <div class="project-search-container">
-      <h1 class="title">{{ $t('lang.projectExplorer.title') }}</h1>
-      <p class="subTitle mb-18">{{ $t('lang.projectExplorer.subTitle') }}</p>
       <div class="project-manage-search-input">
         <el-input
           v-model="searchParams"
@@ -156,23 +154,13 @@
 
   .project-search-container {
     width: 70%;
-    margin: 132px auto 0 auto;
+    margin: 40px auto 0 auto;
     text-align: center;
-
-    .title {
-      margin-bottom: 16px;
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
-      font-size: 36px;
-      font-weight: 500;
-      line-height: 40px;
-      color: $textColor3;
-    }
 
     .project-manage-search-input {
       display: flex;
 
       input::-webkit-input-placeholder {
-
         /* WebKit browsers */
         font-family: AlibabaPuHuiTi-Regular, sans-serif;
         font-size: 18px;
@@ -210,7 +198,7 @@
 
     .res {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       grid-gap: 22px;
 
       div {
