@@ -271,13 +271,16 @@
   line-height: 22px;
   color: $textColor3;
   letter-spacing: 1px;
+
   .table-popover{
     display: flex;
   }
 }
+
 .table-tooltip span{
   color: black;
 }
+
 .table-icon{
   margin-right: 10px;
 
@@ -575,10 +578,11 @@
     }
   }
 }
+
 .be-popover--trigger{
   display: inline-block;
-  vertical-align: middle;
   height: 20px;
+  vertical-align: middle;
 
 }
 //分页样式

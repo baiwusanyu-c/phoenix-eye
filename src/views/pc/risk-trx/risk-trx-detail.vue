@@ -99,7 +99,7 @@
       </div>
     </div>
     <!--   地址收益     -->
-    <div class="detail-profit" v-if="profitData.length > 0">
+    <div v-if="profitData.length > 0" class="detail-profit">
       <h3>{{ $t('lang.riskConfig.profit') }}</h3>
       <div class="detail-profit-body">
         <el-table tooltip-effect="light" :data="profitData">
@@ -150,7 +150,7 @@
                 $t('lang.riskConfig.profitTableHeader.profitSum')
               }}</span>
               <be-tooltip :content="$t('lang.riskConfig.amountExp')" custom-class="table-tooltip">
-                  <be-icon icon="iconHelpEagle"></be-icon>
+                <be-icon icon="iconHelpEagle"></be-icon>
               </be-tooltip>
             </template>
             <template #default="scope">
@@ -282,7 +282,7 @@
   import { defineComponent, ref, onMounted, computed, onUnmounted } from 'vue'
   import composition from '../../../utils/mixin/common-func'
   import { getUuid, simulateToFixed, openWindow } from '../../../utils/common'
-  import { BeTag, BeIcon,BeTooltip } from '../../../../public/be-ui/be-ui.es'
+  import { BeTag, BeIcon, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import { iconDict } from '../../../utils/platform-dict'
   interface IBaseInfo {
     platform?: string
@@ -291,7 +291,7 @@
 
   export default defineComponent({
     name: 'RiskTrxDetail',
-    components: { BeEllipsisCopy, BeTag, BeIcon,BeTooltip },
+    components: { BeEllipsisCopy, BeTag, BeIcon, BeTooltip },
     setup() {
       const { message, route } = composition()
       // 基础信息
