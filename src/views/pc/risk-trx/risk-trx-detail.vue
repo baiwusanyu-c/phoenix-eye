@@ -242,9 +242,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="dollarList" align="left">
-            <template #header>
-              <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenVal') }}</span>
-            </template>
+
             <template #default="scope">
               <div v-if="scope.row.dollarList && scope.row.dollarList.length > 0">
                 <p v-for="item in scope.row.dollarList" :key="item.itemId">
