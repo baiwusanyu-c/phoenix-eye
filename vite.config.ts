@@ -101,28 +101,28 @@ export default defineConfig({
           }
       },*/
   build: {
-      minify: false,
-      cssCodeSplit: true, // 将组件的 style 打包到 js 文件中
-      outDir: 'addr-monitor-email',
-      target: 'esnext',
-      // 库打包模式
-      lib: {
-        formats: ['iife'],
-        entry: './src/components/addr-monitor-email/index.js',
-        name: 'addrMonitorEmail',
-        fileName: (format) => `addr-monitor-email.${format}.js`
-      },
-      rollupOptions: {
-        // 确保外部化处理那些你不想打包进库的依赖
-        external: ['vue','be-ui'],
-        output: {
-          // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
-          globals: {
-            vue: 'Vue'
-          }
-        }
-      }
+    minify: false,
+    cssCodeSplit: true, // 将组件的 style 打包到 js 文件中
+    outDir: 'addr-monitor-email',
+    target: 'esnext',
+    // 库打包模式
+    lib: {
+      formats: ['iife'],
+      entry: './src/components/addr-monitor-email/index.js',
+      name: 'addrMonitorEmail',
+      fileName: format => `addr-monitor-email.${format}.js`,
     },
+    rollupOptions: {
+      // 确保外部化处理那些你不想打包进库的依赖
+      external: ['vue', 'be-ui'],
+      output: {
+        // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
+        globals: {
+          vue: 'Vue',
+        },
+      },
+    },
+  },
   esbuild: {
     jsxFactory: 'h',
     jsxFragment: 'Fragment',

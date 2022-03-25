@@ -27,7 +27,7 @@
           <span>{{ $t('lang.reTry') }}</span>
         </be-button>
       </div>
-      <p class="subTitle text-left mt-8" style="width: calc(100% - 160px); float: right">
+      <p class="subTitle text-left mt-8" style=" float: right;width: calc(100% - 160px)">
         {{ $t('lang.trxRetry.result') }}
       </p>
     </div>
@@ -37,8 +37,8 @@
   import { defineComponent, ref } from 'vue'
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
-  import composition from "../../../utils/mixin/common-func";
-  import {message} from "../../../utils/common";
+  import composition from '../../../utils/mixin/common-func'
+  import { message } from '../../../utils/common'
 
   export default defineComponent({
     name: 'TrxRetry',
@@ -46,23 +46,23 @@
       BeButton,
     },
     setup() {
-        const { message } = composition()
+      const { message } = composition()
       const curPlatform = ref<string>('ALL')
       const platformList = platformListDict.concat([
         { label: 'ALL', value: 'all', id: 'qwdgsnldjaaaaaktg' },
       ])
       const handleSelect = (platform: string): void => {
-          curPlatform.value = platform
+        curPlatform.value = platform
       }
       const searchParams = ref<string>('')
       const reTry = (): void => {
-          message('error', 'err')
+        message('error', 'err')
       }
       return {
         handleSelect,
         curPlatform,
         platformList,
-          reTry,
+        reTry,
         searchParams,
       }
     },
@@ -89,6 +89,7 @@
       display: flex;
 
       input::-webkit-input-placeholder {
+
         /* WebKit browsers */
         font-family: AlibabaPuHuiTi-Regular, sans-serif;
         font-size: 18px;

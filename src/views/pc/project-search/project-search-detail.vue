@@ -797,6 +797,7 @@
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
+
     .project-search-detail .proj-detail-item {
       width: 78%;
     }
