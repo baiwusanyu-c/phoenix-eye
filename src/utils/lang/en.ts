@@ -189,6 +189,7 @@ export default {
       top5Title2: 'Top 5 Liquidity Pairs Holders',
       riskTrx: 'Risk Trx',
       riskPublicOpinion: 'Risk Public Opinion',
+      subscribe:'Subscribe',
       source: 'source',
       contractStatistics: 'Contract Statistics',
       transactions: 'Transactions',

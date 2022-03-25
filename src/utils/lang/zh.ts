@@ -214,6 +214,7 @@ export default {
       top5Title1: '前五 Token 持有者',
       top5Title2: '前五 Liquidity Pairs 持有者',
       riskPublicOpinion: '风险公共舆情',
+      subscribe:'订阅',
       source: '來源',
       contractStatistics: '合约统计',
       transactionsTotal: '交易量(总共)',
