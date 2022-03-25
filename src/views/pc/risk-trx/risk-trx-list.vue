@@ -103,7 +103,7 @@
         { label: 'Huge income', val: 'BlockTrade', isActive: false },
         { label: 'FlashLoan', val: 'FlashLoan', isActive: false },
         { label: 'PrivilegedOperation', val: 'PrivilegedOperation', isActive: false },
-        {label: 'Slump', val: 'Slump', isActive: false},
+        { label: 'Slump', val: 'Slump', isActive: false },
       ])
 
       const filterLevelItem = ref<Array<IFilterItem>>([
