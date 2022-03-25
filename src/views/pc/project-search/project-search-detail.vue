@@ -4,7 +4,7 @@
   <div class="project-search-detail">
     <!--基本信息-->
     <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
-      <div class="item-title" style=" position: relative;width: 100%">
+      <div class="item-title" style="position: relative; width: 100%">
         <h2>
           <be-ellipsis-copy
             :target-str="isEmpty(baseInfo.name)"
