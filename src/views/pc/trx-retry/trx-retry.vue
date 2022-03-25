@@ -27,7 +27,7 @@
           <span>{{ $t('lang.reTry') }}</span>
         </be-button>
       </div>
-      <p class="subTitle text-left mt-8" style=" float: right;width: calc(100% - 160px)">
+      <p class="subTitle text-left mt-8" style="float: right; width: calc(100% - 160px)">
         {{ $t('lang.trxRetry.result') }}
       </p>
     </div>
