@@ -383,7 +383,7 @@
     min-height: calc(100% - 100px);
 
     .project-manage-search {
-      width: 67.5%;
+      width: 70%;
       margin: 40px auto 0 auto;
 
       .project-manage-search-input {
@@ -412,7 +412,7 @@
     }
 
     .project-manage-list {
-      width: 67.5%;
+      width: 70%;
       margin: 0 auto;
     }
   }

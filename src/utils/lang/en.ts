@@ -141,6 +141,8 @@ export default {
     platform: 'Blockchain platform',
     searchP: 'Trx Hash / Address',
     platformP: 'Please select the blockchain platform',
+    gainerExp:'The address with the highest return on the trx',
+    amountExp:'Estimate the total proceeds of the address in this transaction',
     filter: {
       chain: 'Chain',
       type: 'Type',

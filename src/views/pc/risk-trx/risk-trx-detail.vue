@@ -99,7 +99,7 @@
       </div>
     </div>
     <!--   地址收益     -->
-    <div class="detail-profit">
+    <div class="detail-profit" v-if="profitData.length > 0">
       <h3>{{ $t('lang.riskConfig.profit') }}</h3>
       <div class="detail-profit-body">
         <el-table tooltip-effect="light" :data="profitData">
@@ -149,6 +149,9 @@
               <span class="table-head">{{
                 $t('lang.riskConfig.profitTableHeader.profitSum')
               }}</span>
+              <be-tooltip :content="$t('lang.riskConfig.amountExp')" custom-class="table-tooltip">
+                  <be-icon icon="iconHelpEagle"></be-icon>
+              </be-tooltip>
             </template>
             <template #default="scope">
               <be-icon
@@ -279,7 +282,7 @@
   import { defineComponent, ref, onMounted, computed, onUnmounted } from 'vue'
   import composition from '../../../utils/mixin/common-func'
   import { getUuid, simulateToFixed, openWindow } from '../../../utils/common'
-  import { BeTag, BeIcon } from '../../../../public/be-ui/be-ui.es'
+  import { BeTag, BeIcon,BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import { iconDict } from '../../../utils/platform-dict'
   interface IBaseInfo {
     platform?: string
@@ -288,7 +291,7 @@
 
   export default defineComponent({
     name: 'RiskTrxDetail',
-    components: { BeEllipsisCopy, BeTag, BeIcon },
+    components: { BeEllipsisCopy, BeTag, BeIcon,BeTooltip },
     setup() {
       const { message, route } = composition()
       // 基础信息
@@ -450,7 +453,7 @@
 
     .detail-body {
       box-sizing: border-box;
-      width: 67.5%;
+      width: 70%;
       padding: 20px;
       margin: 40px auto 0 auto;
       background: $mainColor7-06;
@@ -497,7 +500,7 @@
     }
 
     .detail-profit {
-      width: 67.5%;
+      width: 70%;
       margin: 40px auto 0 auto;
       color: $textColor3;
       background: transparent;

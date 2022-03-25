@@ -155,7 +155,7 @@
   }
 
   .project-search-container {
-    width: 67.5%;
+    width: 70%;
     margin: 132px auto 0 auto;
     text-align: center;
 
@@ -190,7 +190,7 @@
   }
 
   .project-search-result {
-    width: 67.5%;
+    width: 70%;
     margin: 32px auto 0 auto;
 
     .project-search-eg {
