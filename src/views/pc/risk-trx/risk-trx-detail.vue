@@ -334,12 +334,12 @@
           </div>
           <div style="display: flex; align-items: center; margin-top: 20px">
             <span class="label">{{ $t('lang.riskConfig.presentPrice') }} : </span>
-            <span style=" width: 160px;font-weight: bold">{{
+            <span style="width: 160px; font-weight: bold">{{
               handleProfit(baseInfo.slump.value, 0)
             }}</span>
             <span
               :class="baseInfo.slump.profit > 0 ? 'profit-x' : 'profit-d'"
-              style=" margin-right: 6px;font-weight: bold">
+              style="margin-right: 6px; font-weight: bold">
               {{ baseInfo.slump.profit }} %
             </span>
             <be-icon
