@@ -100,7 +100,7 @@ export default defineConfig({
               }
           }
       },*/
-  build: {
+  /*build: {
     minify: false,
     cssCodeSplit: true, // 将组件的 style 打包到 js 文件中
     outDir: 'addr-monitor-email',
@@ -122,7 +122,7 @@ export default defineConfig({
         },
       },
     },
-  },
+  },*/
   esbuild: {
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
