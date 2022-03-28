@@ -149,7 +149,8 @@ const beforeEachHandle = (router: Router) => {
           isWhitePath = true
         }
       })
-      if (store.state.routeConfig.length > 0 || !getStore('token') || isWhitePath) {
+
+      if (store.state.routeConfig.length > 0 || isWhitePath) {
         next()
         return
       } else {

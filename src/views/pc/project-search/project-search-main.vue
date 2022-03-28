@@ -52,11 +52,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, ref, onMounted } from 'vue'
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import { getProjectListUser, IProjParam } from '../../../api/project-explorer'
-
+  import { getStore, getUrlkey } from '../../../utils/common'
+  import { useEventBus } from '@vueuse/core'
   declare type projListType = {
     project_id: string
     project_name: string
@@ -119,6 +120,34 @@
         searchParams.value = params
         getList()
       }
+
+      const busLogin = useEventBus<string>('openLogin')
+      const ProjIdByEmail = ref<number>(-1)
+      // http://192.168.0.30:3010/#/projectSearch?from=email&id=7
+      const initPage = (): void => {
+        const urlParams = getUrlkey()
+        const isLogin = getStore('token')
+        // 来自email 打开 且没有登录
+        if (urlParams.from === 'email' && !isLogin) {
+          // 开启登录窗口
+          busLogin.emit()
+          if (urlParams.id) {
+            ProjIdByEmail.value = urlParams.id
+          }
+        }
+        // 来自email 打开 且有登录
+        if (urlParams.from === 'email' && isLogin) {
+          // 开启登录窗口
+          if (urlParams.id) {
+            ProjIdByEmail.value = urlParams.id
+            // 直接去态势详情页面
+            routerSwitch(ProjIdByEmail.value.toString())
+          }
+        }
+      }
+      onMounted(() => {
+        initPage()
+      })
       return {
         handleDefaultSearch,
         routerSwitch,
@@ -132,7 +161,7 @@
 
 <style lang="scss">
   .project-search-main {
-    min-height: calc(100% - 192px);
+    min-height: calc(100% - 100px);
 
     .subTitle {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
