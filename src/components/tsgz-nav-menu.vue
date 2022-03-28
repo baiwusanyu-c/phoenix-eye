@@ -206,12 +206,12 @@
       const openLogin = (): void => {
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
-        // 外部通知打開登錄窗口
-        const busLogin = useEventBus<string>('openLogin')
-        busLogin.on(()=>{
-            openLogin()
-        })
-        /**
+      // 外部通知打開登錄窗口
+      const busLogin = useEventBus<string>('openLogin')
+      busLogin.on(() => {
+        openLogin()
+      })
+      /**
        * 路由跳转方法
        * @param {any} router
        * @param {Boolean} isPush
