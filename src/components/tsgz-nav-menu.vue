@@ -271,7 +271,7 @@
           children: [],
           isDisabled: false,
         },
-        RPIF: {
+        /*RPIF: {
           icon: '',
           index: '1',
           name: 'lang.subNav.navName6',
@@ -280,7 +280,7 @@
           isPush: true,
           children: [],
           isDisabled: false,
-        },
+        },*/
       })
       const headerConfigMore = ref<any>([])
       const store = useStore()
