@@ -175,6 +175,9 @@ export default {
     stateSuccess: 'Success',
     stateFailed: 'Failed',
     profit: 'Address Income',
+    privilegedOpertion: 'PrivilegedOpertion',
+    slump: 'Slump',
+    presentPrice: 'Present Price',
   },
   projectExplorer: {
     searchP: 'ProjectName / Contract',
@@ -263,7 +266,7 @@ export default {
     tradeSafetyClass: 'Transaction security',
     flash_load_tx: 'Flashloan transaction: ',
     large_fee: 'High gas fee: ',
-    huge_transfer: 'Huge income: ',
+    huge_transfer: 'LargeOutflow: ',
     repeat_call: 'Repeated submission: ',
     token_empty: 'empty token: ',
     privileged_operation: 'privileged operation: ',

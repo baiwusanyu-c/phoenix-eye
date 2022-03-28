@@ -5,8 +5,8 @@
     <!--   基本信息     -->
     <div class="detail-body">
       <div class="detail-item">
-        <div class="detail-item-txt">
-          <span style="width: 8%">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
+        <div class="detail-item-txt detail-item--hash">
+          <span style="width: 12%">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
           <be-ellipsis-copy
             custom-class="detail-copy"
             :target-str="baseInfo.tx_hash"
@@ -25,6 +25,19 @@
               <span style="margin-left: 10px">{{ baseInfo.platform.toUpperCase() }}</span>
             </div>
           </be-tag>
+        </div>
+        <div class="detail-item-txt detail-item--date">
+          <span class="date-label">{{ $t('lang.riskConfig.tableHeader.txTime') }}：</span>
+          <el-tooltip placement="top" effect="light">
+            <template #content>
+              <span style="font-weight: 400"
+                >UTC：{{ beijing2utc('2022-03-17T12:27:53.000+0000') }}</span
+              >
+            </template>
+            <span style="font-weight: 400">{{
+              formatDate(createDate('2022-03-17T12:27:53.000+0000').getTime())
+            }}</span>
+          </el-tooltip>
         </div>
       </div>
       <div class="detail-item detail-form">
@@ -169,6 +182,7 @@
                 disabled-tool-tip
                 icon-class="iconArrowDown"
                 style="visibility: hidden"></be-icon>
+
               <el-tooltip placement="top" effect="light">
                 <template #content>
                   <span>{{ scope.row.profit }}</span>
@@ -271,6 +285,82 @@
         </el-table>
       </div>
     </div>
+    <!--   Slump 与 PrivilegedOpertion   -->
+    <div class="detail-slump">
+      <div v-if="baseInfo.slump" class="detail-slump--container">
+        <h3>{{ $t('lang.riskConfig.privilegedOpertion') }}</h3>
+        <div class="detail-slump--body">
+          <div style="display: flex">
+            <span class="label">{{ $t('lang.projectExplorer.contract') }} :</span>
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.slump.contract"
+              :is-ellipsis="false"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;">
+            </be-ellipsis-copy>
+          </div>
+          <div style="display: flex; margin-top: 20px">
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.slump.to"
+              :is-ellipsis="true"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;font-weight:bold">
+            </be-ellipsis-copy>
+            <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.slump.from"
+              :is-ellipsis="true"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;font-weight:bold">
+            </be-ellipsis-copy>
+          </div>
+        </div>
+      </div>
+      <div v-if="baseInfo.slump" class="detail-slump--container">
+        <h3>{{ $t('lang.riskConfig.slump') }}</h3>
+        <div class="detail-slump--body">
+          <div style="display: flex">
+            <span class="label">Token :</span>
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.slump.token"
+              :is-ellipsis="false"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;">
+            </be-ellipsis-copy>
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 20px">
+            <span class="label">{{ $t('lang.riskConfig.presentPrice') }} : </span>
+            <span style="width: 160px; font-weight: bold">{{
+              handleProfit(baseInfo.slump.value, 0)
+            }}</span>
+            <span
+              :class="baseInfo.slump.profit > 0 ? 'profit-x' : 'profit-d'"
+              style="margin-right: 6px; font-weight: bold">
+              {{ baseInfo.slump.profit }} %
+            </span>
+            <be-icon
+              v-if="baseInfo.slump.profit > 0"
+              :content="$t('lang.profit')"
+              icon="iconArrowUp"></be-icon>
+            <be-icon
+              v-if="baseInfo.slump.profit < 0"
+              :content="$t('lang.loss')"
+              icon="iconArrowDown"
+              style="margin-right: 4px"></be-icon>
+            <!-- 占位 -->
+            <be-icon
+              v-if="baseInfo.slump.profit === 0"
+              disabled-tool-tip
+              icon-class="iconArrowDown"
+              style="visibility: hidden"></be-icon>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -281,12 +371,20 @@
   import { platformToCurrency, IPlatformToCurrency } from '../../../utils/platform-dict'
   import { defineComponent, ref, onMounted, computed, onUnmounted } from 'vue'
   import composition from '../../../utils/mixin/common-func'
-  import { getUuid, simulateToFixed, openWindow } from '../../../utils/common'
+  import {
+    getUuid,
+    simulateToFixed,
+    openWindow,
+    beijing2utc,
+    formatDate,
+    createDate,
+  } from '../../../utils/common'
   import { BeTag, BeIcon, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import { iconDict } from '../../../utils/platform-dict'
   interface IBaseInfo {
     platform?: string
     tx_hash?: string
+    slump?: any
   }
 
   export default defineComponent({
@@ -351,6 +449,15 @@
               return
             }
             baseInfo.value = res.data
+            baseInfo.value.time = '2022-03-17T12:27:53.000+0000'
+            baseInfo.value.slump = {
+              token: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
+              value: 1231231232,
+              to: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
+              from: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
+              contract: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
+              profit: -60,
+            }
             profitData.value = res.data.address_profits
             profitData.value.forEach(val => {
               val.addrList = []
@@ -419,6 +526,9 @@
       })
 
       return {
+        beijing2utc,
+        formatDate,
+        createDate,
         iconDict,
         profitClass,
         baseInfo,
@@ -441,6 +551,18 @@
 
 <style lang="scss">
   .risk-trx-detail {
+
+    .detail-copy {
+      width: initial;
+    }
+
+    .profit-d {
+      color: $lessColor4;
+    }
+
+    .profit-x {
+      color: $mainColor3;
+    }
     position: relative;
     top: 0;
     left: 0;
@@ -475,13 +597,9 @@
           font-weight: bold;
           color: $textColor3;
 
-          .detail-copy {
-            width: initial;
-            margin-right: 16px;
-          }
-
           .be-tag {
             height: 30px;
+            margin-left: 16px;
             line-height: 30px;
             cursor: context-menu;
             background-color: $mainColor16;
@@ -496,6 +614,19 @@
             }
           }
         }
+
+        .detail-item--hash {
+          flex: 2;
+          justify-content: flex-start;
+        }
+
+        .detail-item--date {
+          flex: 1;
+
+          .date-label {
+            width: 12%;
+          }
+        }
       }
     }
 
@@ -505,17 +636,50 @@
       color: $textColor3;
       background: transparent;
 
-      .profit-d {
-        color: $lessColor4;
-      }
-
-      .profit-x {
-        color: $mainColor3;
-      }
-
       .detail-profit-body {
         height: calc(100% - 40px);
         margin-top: 20px;
+      }
+    }
+
+    .detail-slump {
+      display: flex;
+      width: 70%;
+      margin: 40px auto 0 auto;
+      color: $textColor3;
+
+      & .detail-slump--container:nth-child(1) {
+        margin-right: 10px;
+      }
+
+      & .detail-slump--container:nth-child(2) {
+        margin-left: 10px;
+      }
+
+      .detail-slump--container {
+        flex: 1;
+
+        h3 {
+          line-height: 40px;
+        }
+
+        .detail-slump--body {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 20px;
+          margin-top: 20px;
+          background-color: $mainColor7;
+          border-radius: 4px;
+        }
+      }
+
+      .label {
+        margin-right: 20px;
+        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        color: #666;
       }
     }
   }
@@ -534,6 +698,17 @@
           .detail-item-txt {
             margin-top: 5px;
             font-size: 12px;
+          }
+
+          .detail-item--hash {
+            flex: 3;
+          }
+
+          .detail-item--date {
+
+            .date-label {
+              width: 16%;
+            }
           }
 
           .default {
