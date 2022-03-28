@@ -177,7 +177,7 @@ export default {
     profit: 'Address Income',
     privilegedOpertion: 'PrivilegedOpertion',
     slump: 'Slump',
-    presentPrice:'Present Price'
+    presentPrice: 'Present Price',
   },
   projectExplorer: {
     searchP: 'ProjectName / Contract',
