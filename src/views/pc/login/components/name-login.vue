@@ -188,6 +188,7 @@
     margin: auto;
 
     .login-form {
+
       .el-form-item {
         margin-bottom: 20px;
       }
@@ -237,7 +238,9 @@
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+
     .formArea {
+
       .checkArea {
         margin-top: 20px;
       }
