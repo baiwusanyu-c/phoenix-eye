@@ -610,7 +610,7 @@
        * 发送订阅
        */
       const submitSubscribe = (): void => {
-          // 状态根据接口返回 显示成功、文案等
+        // 状态根据接口返回 显示成功、文案等
         /*msgBox('Subscription Successful',
                 'We will send the latest risk trading and public opinion information to your email (1234567@qq.com).',
                 'subscribe subscribe--normal')*/
@@ -684,16 +684,19 @@
       color: $textColor3;
       background: transparent;
       border: 1px solid $textColor3;
-      .be-icon use{
-          fill: $textColor3 !important;
+
+      .be-icon use {
+        fill: $textColor3 !important;
       }
+
       &:hover {
         color: $mainColor7;
         background: $mainColor3;
         border-color: transparent;
-          .be-icon use{
-              fill: $mainColor7 !important;
-          }
+
+        .be-icon use {
+          fill: $mainColor7 !important;
+        }
       }
     }
 
