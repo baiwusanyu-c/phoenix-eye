@@ -166,6 +166,7 @@ export default {
     stateSuccess: '成功',
     stateFailed: '失败',
     profit: '地址收益',
+    presentPrice:'时价'
   },
   createProject: {
     createProjectTitle: '创建项目',

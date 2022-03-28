@@ -175,6 +175,9 @@ export default {
     stateSuccess: 'Success',
     stateFailed: 'Failed',
     profit: 'Address Income',
+    privilegedOpertion: 'PrivilegedOpertion',
+    slump: 'Slump',
+    presentPrice:'Present Price'
   },
   projectExplorer: {
     searchP: 'ProjectName / Contract',
