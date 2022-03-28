@@ -113,7 +113,9 @@
       </div>
     </div>
     <!--合约统计-->
-    <div v-loading="statisticsLoading" class="proj-detail-item eagle-table">
+    <div v-loading="statisticsLoading"
+         v-if="contractStatisticsData.length > 0"
+         class="proj-detail-item eagle-table">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
       </div>
@@ -165,7 +167,7 @@
           <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
         </div>
       </div>
-      <div v-if="contractStatisticsData.length > 0" class="table-page">
+      <div class="table-page">
         <be-pagination
           is-ordianry
           :page-size="pageParamsTj.pageSize"
@@ -185,6 +187,7 @@
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
       <project-detail-top
+          v-if="top5TokenHolder.length > 0"
         :token-name="top5TokenHolderName"
         :token-address="top5TokenHolderAddr"
         types="holder"
@@ -196,6 +199,7 @@
         @select="handleSelectTop5">
       </project-detail-top>
       <project-detail-top
+        v-if="top5QuidityPairs.length > 0"
         :data="top5QuidityPairs"
         types="pairs"
         :default-platfom="defaultPlatformTop5Quidity"
@@ -212,7 +216,7 @@
       <risk-trx-table :project-id="projectId"></risk-trx-table>
     </div>
     <!--项目舆情安全-->
-    <div class="proj-detail-item">
+    <div class="proj-detail-item" v-if="safetyData.length > 0">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
       </div>
@@ -223,9 +227,9 @@
           'proj-detail-item-feelingSecurity': true,
           'proj-detail-item-hyaq': safetyData.length === 0,
         }">
-        <project-detail-publi-opinion v-if="safetyData.length > 0" :info-data="safetyData">
+        <project-detail-publi-opinion :info-data="safetyData">
         </project-detail-publi-opinion>
-        <div v-if="safetyData.length > 0" class="table-page">
+        <div class="table-page">
           <be-pagination
             is-ordianry
             :page-size="pageParamsFs.pageSize"
@@ -242,10 +246,10 @@
             </template>
           </be-pagination>
         </div>
-        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
+<!--        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px" />
           <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
