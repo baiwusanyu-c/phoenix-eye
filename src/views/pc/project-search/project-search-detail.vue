@@ -113,9 +113,10 @@
       </div>
     </div>
     <!--合约统计-->
-    <div v-loading="statisticsLoading"
-         v-if="contractStatisticsData.length > 0"
-         class="proj-detail-item eagle-table">
+    <div
+      v-if="contractStatisticsData.length > 0"
+      v-loading="statisticsLoading"
+      class="proj-detail-item eagle-table">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
       </div>
@@ -187,7 +188,7 @@
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
       <project-detail-top
-          v-if="top5TokenHolder.length > 0"
+        v-if="top5TokenHolder.length > 0"
         :token-name="top5TokenHolderName"
         :token-address="top5TokenHolderAddr"
         types="holder"
@@ -216,7 +217,7 @@
       <risk-trx-table :project-id="projectId"></risk-trx-table>
     </div>
     <!--项目舆情安全-->
-    <div class="proj-detail-item" v-if="safetyData.length > 0">
+    <div v-if="safetyData.length > 0" class="proj-detail-item">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
       </div>
@@ -227,8 +228,7 @@
           'proj-detail-item-feelingSecurity': true,
           'proj-detail-item-hyaq': safetyData.length === 0,
         }">
-        <project-detail-publi-opinion :info-data="safetyData">
-        </project-detail-publi-opinion>
+        <project-detail-publi-opinion :info-data="safetyData"> </project-detail-publi-opinion>
         <div class="table-page">
           <be-pagination
             is-ordianry
@@ -246,7 +246,7 @@
             </template>
           </be-pagination>
         </div>
-<!--        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
+        <!--        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px" />
           <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
         </div>-->
