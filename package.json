@@ -18,7 +18,7 @@
     "prettier:fix": "prettier --write .",
     "prepare": "husky install",
     "commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .&& stylelint --fix src/**/*.{html,vue,scss}",
-    "preview": "vite preview --port 8080 --host"
+    "formatDateiew": "vite preview --port 8080 --host"
   },
   "dependencies": {
     "@types/qs": "^6.9.7",

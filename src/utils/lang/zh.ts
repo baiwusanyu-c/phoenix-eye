@@ -34,6 +34,11 @@ export default {
   profit: '收益',
   signUp: '注册',
   contact: '联系我们',
+  feedback: {
+    title: '需求反馈',
+    formTitle: '标题',
+    formContract: '联系方式',
+  },
   header: {
     me: '我',
     language: 'language',

@@ -35,6 +35,13 @@ export default {
   profit: 'profit',
   signUp: 'Sign Up',
   contact: 'Contact',
+  feedback: {
+    title: 'Feedback',
+    formTitle: 'Title',
+    formContract: 'Contract',
+    formContractP:
+      'If you have any questions about the information we present, or find any errors, please contact us and we will correct them in time.',
+  },
   header: {
     me: 'Me',
     language: '语言',

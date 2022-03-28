@@ -663,6 +663,20 @@
   height: auto;
   padding-bottom: 86px;
 }
+// be-dialog 弹窗样式
+
+.be-dialog .be-dialog-container .be-dialog-title {
+
+  .be-dialog-container-head{
+    text-align: left;
+
+    span{
+      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      color: #1CD2A9;
+    }
+  }
+}
+
 @media screen and (min-width: 1536px) and (max-width: 1830px) {
 
   .el-table td, .el-table th {

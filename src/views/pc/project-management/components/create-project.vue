@@ -526,7 +526,6 @@
 
 <style lang="scss">
   .createBox {
-
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -570,7 +569,6 @@
     border-radius: 2px;
 
     .add-create {
-
       .be-icon {
         fill: darkgray;
       }
@@ -581,7 +579,6 @@
     border-color: $mainColor3;
 
     .add-create {
-
       .be-icon {
         fill: $mainColor3;
       }

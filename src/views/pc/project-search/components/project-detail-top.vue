@@ -134,13 +134,11 @@
 
 <style lang="scss">
   .project-detail-top5 {
-
     .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
       background-color: $mainColor6;
     }
 
     .top5-list-table {
-
       .el-table__empty-block {
         width: 100% !important;
       }
@@ -182,7 +180,7 @@
       .tag {
         background-color: $mainColor15;
         border: 0;
-        opacity: .8;
+        opacity: 0.8;
 
         &:hover {
           opacity: 1;

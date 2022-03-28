@@ -43,6 +43,16 @@
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
+      <!--    需求反馈   -->
+      <be-button
+        custom-class="eagle-btn feedback-btn"
+        prev-icon="iconFeedbackEagle"
+        round="4"
+        type="success"
+        @click="openFeedBack"
+        >{{ $t('lang.feedback.title') }}</be-button
+      >
+      <!--    设置菜单   -->
       <be-popover
         v-if="isLogin && headerConfigMore.length > 0"
         ref="popoverRouter"
@@ -60,6 +70,7 @@
           <span>{{ $t(item.name) }}</span>
         </div>
       </be-popover>
+      <!--    语种   -->
       <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
         <template #trigger>
           <div
@@ -84,6 +95,7 @@
           EN
         </div>
       </be-popover>
+      <!--    登出   -->
       <be-popover v-if="isLogin" placement="bottom" trigger="click" custom-class="popover-logout">
         <template #trigger>
           <span class="dropdown-link">
@@ -94,6 +106,7 @@
           {{ $t('lang.header.logout') }}
         </div>
       </be-popover>
+      <!--    登陆   -->
       <be-button
         v-if="!isLogin"
         custom-class="eagle-btn sign-up-btn"
@@ -110,7 +123,10 @@
       @confirm="confirm(true)"
       @close="confirm(false)">
     </MsgDialog>
+    <!--登錄彈窗-->
     <login-dialog ref="loginDialog"></login-dialog>
+    <!--需求反馈彈窗-->
+    <feed-back ref="feedbackDialog"></feed-back>
   </div>
 </template>
 
@@ -134,12 +150,14 @@
   import { getProjectListCurUser } from '../api/project-explorer'
   import { useEventBus } from '@vueuse/core'
   import { onBeforeRouteUpdate } from 'vue-router'
+  import FeedBack from './feed-back.vue'
   /**
    * 头部菜单导航
    */
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
+      FeedBack,
       LoginDialog,
       MsgDialog,
       BeIcon,
@@ -205,6 +223,7 @@
       const openLogin = (): void => {
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
+
       /**
        * 路由跳转方法
        * @param {any} router
@@ -271,7 +290,7 @@
           children: [],
           isDisabled: false,
         },
-        /*RPIF: {
+        RPIF: {
           icon: '',
           index: '1',
           name: 'lang.subNav.navName6',
@@ -280,7 +299,7 @@
           isPush: true,
           children: [],
           isDisabled: false,
-        },*/
+        },
       })
       const headerConfigMore = ref<any>([])
       const store = useStore()
@@ -425,7 +444,14 @@
         routerPush('/projectSearch/detail', { id: selectVal.value })
         selectProjBus.emit(selectVal.value)
       }
+      /**
+       * 打开需求反馈
+       */
+      const openFeedBack = (): void => {
+        ;(instanceInner?.refs.feedbackDialog as ILoginDialog).showDialog = true
+      }
       return {
+        openFeedBack,
         handleProjectSelect,
         getProjectUser,
         projectList,
@@ -453,10 +479,14 @@
     min-width: initial;
   }
 
+  .tsgz-nav-menu .feedback-btn {
+    width: 120px;
+    min-width: initial;
+  }
+
   .popover-logout,
   .popover-lang,
   .popover-router {
-
     .be-popover {
       z-index: 10;
     }
@@ -478,7 +508,6 @@
     }
 
     .popover-router-item {
-
       span {
         margin: 0 10px;
       }
@@ -516,7 +545,7 @@
     overflow-y: auto;
     text-align: center;
     background-color: $mainColor7;
-    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, .12);
+    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
 
     .tsgz-slogan {
       display: flex;
@@ -531,6 +560,7 @@
       background-size: 100% 100%;
 
       .setting {
+        margin-left: 10px;
         vertical-align: middle;
         cursor: pointer;
 
@@ -557,7 +587,6 @@
         cursor: pointer;
 
         .lang-under {
-
           .be-icon {
             width: 14px;
             height: 14px;
@@ -602,13 +631,11 @@
     }
 
     .nav-menu-icon {
-
       /* margin-right: 10px; */
       fill: $textColor8 !important;
     }
 
     .el-menu {
-
       /* width: 100% !important; */
       background-color: transparent;
       border: 0;
@@ -634,7 +661,6 @@
     }
 
     .menu-part1 {
-
       .el-menu-item.is-active,
       .el-menu-item:focus {
         font-weight: bold;
@@ -648,7 +674,6 @@
     }
 
     .menu-fold-item {
-
       &:hover {
         background-color: $mainColor3;
       }

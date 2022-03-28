@@ -38,8 +38,6 @@
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'
-  import { message } from '../../../utils/common'
-
   export default defineComponent({
     name: 'TrxRetry',
     components: {
@@ -89,7 +87,6 @@
       display: flex;
 
       input::-webkit-input-placeholder {
-
         /* WebKit browsers */
         font-family: AlibabaPuHuiTi-Regular, sans-serif;
         font-size: 18px;
