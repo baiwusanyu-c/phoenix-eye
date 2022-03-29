@@ -185,6 +185,15 @@
         </be-pagination>
       </div>
     </div>
+    <!--Audit-->
+    <div class="proj-detail-item project-detail-audit--body">
+        <project-detail-audit v-for="(item) in auditList"
+                              :url="item.url"
+                              :name="item.name"
+                              :date="item.date"
+                              :key="item.url">
+        </project-detail-audit>
+    </div>
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
       <project-detail-top
@@ -257,7 +266,17 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue'
-  import { IPageParam } from '../../../utils/types'
+  import {
+    IAuditList,
+    IBaseInfo,
+    IContractStatistics,
+    IPageParam,
+    ISafetyData,
+    ITop5QuidityPairs,
+    ITop5QuiditySelect,
+    ITop5TokenHolder,
+    ITop5TokenHolderSelect,
+  } from '../../../utils/types'
   import { BeIcon, BeTag, BePagination, BeButton } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import { useI18n } from 'vue-i18n'
@@ -280,65 +299,12 @@
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
-
-  interface ISafetyData {
-    negative?: string
-    negativeMsg?: string
-    sourceUrl?: string
-    title?: string
-    message?: string
-    from?: string
-    time?: string
-    label?: string
-  }
-
-  interface IContractStatistics {
-    contract_address: string
-    token_name: string
-    platform: string
-    tx_24?: number | string
-    tx_total?: number | string
-    latest_trading_date?: string
-  }
-
-  interface IBaseInfo {
-    transactions?: number | string
-    transactionsTotal?: number | string
-    lastTradeData?: string
-    riksTrxNum?: number | string
-    riskPublicOpinion?: number | string
-    github?: string
-    telegram?: string
-    twitter?: string
-    website?: string
-    name?: string
-  }
-
-  interface ITop5TokenHolder {
-    address?: string
-    percentage?: number
-    quantity?: string
-  }
-
-  interface ITop5QuidityPairs extends ITop5TokenHolder {
-    pair?: string
-  }
-
-  interface ITop5QuiditySelect {
-    platform?: string
-    records: Array<any>
-  }
-
-  interface ITop5TokenHolderSelect {
-    token_address?: string
-    token_name?: string
-    platform?: string
-    records: Array<any>
-  }
+  import ProjectDetailAudit from "./components/project-detail-audit.vue";
 
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      ProjectDetailAudit,
       ProjectDetailTop,
       RiskTrxTable,
       BePagination,
@@ -445,11 +411,25 @@
             message('error', err.message || err)
             console.error(err)
           })
+        // 获取Audit数据
+        await getAuditData()
 
         // 获取合约静态检测数据
         await getContractStatistics()
         // 获取项目舆情安全数据
         await getPublicOpinionData()
+      }
+      /**
+       * 获取Audit数据
+       */
+      const auditList = ref<Array<IAuditList>>([])
+      const getAuditData = (): void => {
+        auditList.value = [
+          { name: 'project name1', date: '2020-12-13', url: 'www.baidu.com' },
+          { name: 'project name2', date: '2020-12-13', url: 'https://www.bilibili.com/' },
+          { name: 'project name3', date: '2020-12-13', url: 'https://github.com/' },
+          { name: 'project name4', date: '2020-12-13', url: 'http://be-ui3.cn/' },
+        ]
       }
       // 项目id
       const projectId = ref<string>('')
@@ -625,6 +605,7 @@
         )
       }
       return {
+        auditList,
         updateNumFs,
         submitSubscribe,
         defaultPlatformTop5Token,
@@ -767,7 +748,11 @@
         }
       }
     }
-
+    .project-detail-audit--body{
+        display: grid;
+        grid-template-columns: 24% 24% 24% 24%;
+        grid-gap: 20px;
+    }
     .proj-detail-item {
       width: 70%;
       margin: 24px auto 0 auto;
@@ -854,13 +839,12 @@
   }
 
   .subscribe {
-
     .be-message-box-container {
       width: 575px;
       height: 148px;
       background: $mainColor7;
       border-radius: 4px;
-      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, .1);
+      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, 0.1);
 
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor3;
@@ -878,16 +862,13 @@
   }
 
   .subscribe--normal {
-
     .be-message-box-container {
-
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor19;
       }
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .project-search-detail .proj-detail-item {
       width: 78%;
     }

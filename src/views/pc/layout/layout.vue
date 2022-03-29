@@ -37,7 +37,7 @@
 </script>
 <style lang="scss">
   .layout {
-    transition: all .3s;
+    transition: all 0.3s;
 
     .main {
       position: relative;
