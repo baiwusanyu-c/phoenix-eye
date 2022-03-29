@@ -222,6 +222,7 @@ export default {
       riskPublicOpinion: '风险公共舆情',
       subscribe: '订阅',
       source: '來源',
+      audit:'审计报告',
       contractStatistics: '合约统计',
       transactionsTotal: '交易量(总共)',
       lastDate: '最新交易日期',

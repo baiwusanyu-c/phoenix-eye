@@ -106,5 +106,13 @@
       line-height: 22px;
       color: $textColor3;
     }
+    .el-input__inner {
+        height: 40px;
+        line-height: 40px;
+        border-radius: 2px;
+    }
+      .el-textarea__inner{
+          border-radius: 2px;
+      }
   }
 </style>

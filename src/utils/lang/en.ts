@@ -198,6 +198,7 @@ export default {
       top5Title1: 'Top 5 Token Holders',
       top5Title2: 'Top 5 Liquidity Pairs Holders',
       riskTrx: 'Risk Trx',
+      audit:'Audit',
       riskPublicOpinion: 'Risk Public Opinion',
       subscribe: 'Subscribe',
       source: 'source',
