@@ -187,12 +187,13 @@
     </div>
     <!--Audit-->
     <div class="proj-detail-item project-detail-audit--body">
-        <project-detail-audit v-for="(item) in auditList"
-                              :url="item.url"
-                              :name="item.name"
-                              :date="item.date"
-                              :key="item.url">
-        </project-detail-audit>
+      <project-detail-audit
+        v-for="item in auditList"
+        :key="item.url"
+        :url="item.url"
+        :name="item.name"
+        :date="item.date">
+      </project-detail-audit>
     </div>
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
@@ -299,7 +300,7 @@
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
-  import ProjectDetailAudit from "./components/project-detail-audit.vue";
+  import ProjectDetailAudit from './components/project-detail-audit.vue'
 
   export default defineComponent({
     name: 'ProjectSearchDetail',
@@ -748,11 +749,13 @@
         }
       }
     }
-    .project-detail-audit--body{
-        display: grid;
-        grid-template-columns: 24% 24% 24% 24%;
-        grid-gap: 20px;
+
+    .project-detail-audit--body {
+      display: grid;
+      grid-template-columns: 24% 24% 24% 24%;
+      grid-gap: 20px;
     }
+
     .proj-detail-item {
       width: 70%;
       margin: 24px auto 0 auto;
@@ -839,12 +842,13 @@
   }
 
   .subscribe {
+
     .be-message-box-container {
       width: 575px;
       height: 148px;
       background: $mainColor7;
       border-radius: 4px;
-      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, .1);
 
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor3;
@@ -862,13 +866,16 @@
   }
 
   .subscribe--normal {
+
     .be-message-box-container {
+
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor19;
       }
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
+
     .project-search-detail .proj-detail-item {
       width: 78%;
     }

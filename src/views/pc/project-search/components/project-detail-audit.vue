@@ -13,7 +13,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import {openWindow} from "../../../../utils/common";
+  import { openWindow } from '../../../../utils/common'
   export default defineComponent({
     name: 'ProjectDetailAudit',
     props: {
@@ -26,17 +26,16 @@
         default: '2019-12-23 ',
       },
       url: {
-          type: String,
-          default: '',
+        type: String,
+        default: '',
       },
     },
     setup() {
-
-        const openAudit = (url:string):void=>{
-           openWindow(url)
-        }
+      const openAudit = (url: string): void => {
+        openWindow(url)
+      }
       return {
-          openAudit
+        openAudit,
       }
     },
   })
@@ -44,24 +43,27 @@
 
 <style lang="scss">
   .project-detail-audit {
-      background-color: $mainColor7;
-      border-radius: 4px;
-      padding: 20px;
-      box-sizing: border-box;
-      cursor: pointer;
+    box-sizing: border-box;
+    padding: 20px;
+    cursor: pointer;
+    background-color: $mainColor7;
+    border-radius: 4px;
+
     .project-detail-audit--img {
-        width: 70%;
-        height: 70%;
-        margin: 0 auto;
+      width: 70%;
+      height: 70%;
+      margin: 0 auto;
     }
+
     .project-detail-audit--name {
-        font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
-        line-height: 24px;
-        margin: 40px 0 10px 0;
+      margin: 40px 0 10px 0;
+      font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
+      line-height: 24px;
     }
+
     .project-detail-audit--date {
-        font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
-        line-height: 22px;
+      font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
+      line-height: 22px;
     }
   }
 </style>
