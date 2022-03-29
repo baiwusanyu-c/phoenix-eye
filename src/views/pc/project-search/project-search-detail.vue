@@ -187,18 +187,18 @@
     </div>
     <!--Audit-->
     <div class="proj-detail-item">
-        <div class="item-title">
-            <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
-        </div>
-        <div class="project-detail-audit--body">
-            <project-detail-audit
-                v-for="item in auditList"
-                :key="item.url"
-                :url="item.url"
-                :name="item.name"
-                :date="item.date">
-            </project-detail-audit>
-        </div>
+      <div class="item-title">
+        <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
+      </div>
+      <div class="project-detail-audit--body">
+        <project-detail-audit
+          v-for="item in auditList"
+          :key="item.url"
+          :url="item.url"
+          :name="item.name"
+          :date="item.date">
+        </project-detail-audit>
+      </div>
     </div>
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">

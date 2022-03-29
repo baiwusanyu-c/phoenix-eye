@@ -48,9 +48,11 @@
     cursor: pointer;
     background-color: $mainColor7;
     border-radius: 4px;
-    &:hover{
-        box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+
+    &:hover {
+      box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
     }
+
     .project-detail-audit--img {
       width: 70%;
       height: 70%;
