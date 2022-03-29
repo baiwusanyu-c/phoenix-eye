@@ -492,6 +492,7 @@
   .popover-logout,
   .popover-lang,
   .popover-router {
+
     .be-popover {
       z-index: 10;
     }
@@ -513,6 +514,7 @@
     }
 
     .popover-router-item {
+
       span {
         margin: 0 10px;
       }
@@ -550,7 +552,7 @@
     overflow-y: auto;
     text-align: center;
     background-color: $mainColor7;
-    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
+    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, .12);
 
     .tsgz-slogan {
       display: flex;
@@ -592,6 +594,7 @@
         cursor: pointer;
 
         .lang-under {
+
           .be-icon {
             width: 14px;
             height: 14px;
@@ -636,11 +639,13 @@
     }
 
     .nav-menu-icon {
+
       /* margin-right: 10px; */
       fill: $textColor8 !important;
     }
 
     .el-menu {
+
       /* width: 100% !important; */
       background-color: transparent;
       border: 0;
@@ -666,6 +671,7 @@
     }
 
     .menu-part1 {
+
       .el-menu-item.is-active,
       .el-menu-item:focus {
         font-weight: bold;
@@ -679,6 +685,7 @@
     }
 
     .menu-fold-item {
+
       &:hover {
         background-color: $mainColor3;
       }

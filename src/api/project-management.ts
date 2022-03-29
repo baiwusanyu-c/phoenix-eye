@@ -1,7 +1,7 @@
 // 项目管理api
 import request from '../utils/request'
 import config from '../enums/config'
-import {IAudit, IPageParam} from '../utils/types' //路径配置
+import { IAudit, IPageParam } from '../utils/types' //路径配置
 // 获取项目列表 （完成） 管理员
 export interface IProjectListAdmin extends IPageParam {
   param?: string
@@ -27,7 +27,7 @@ export interface ICreateProj {
   keyword: string
   contract_infos?: Array<IContractInfos>
   email_list?: Array<string>
-  audit_list?:Array<IAudit>
+  audit_list?: Array<IAudit>
 }
 export function createProject(params: ICreateProj) {
   return request({

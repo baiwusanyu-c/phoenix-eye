@@ -18,7 +18,6 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     FeedBack: typeof import('./src/components/feed-back.vue')['default']
-    Loading: typeof import('element-plus/es')['ElLoadingDirective']
     MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
     TsgzFooter: typeof import('./src/components/tsgz-footer.vue')['default']
     TsgzNavMenu: typeof import('./src/components/tsgz-nav-menu.vue')['default']

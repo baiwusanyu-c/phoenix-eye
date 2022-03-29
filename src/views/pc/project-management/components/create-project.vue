@@ -103,20 +103,20 @@
             </el-form-item>
             <el-form-item :label="$t('lang.projectExplorer.detail.audit') + ':'">
               <be-tag
-                v-for="(item,index) in auditList"
+                v-for="(item, index) in auditList"
+                :key="item.url"
+                is-close
                 @close="handleClose(index)"
-                @click="openWindow(item.url)"
-                isClose
-                :key="item.url">
+                @click="openWindow(item.url)">
                 {{ item.name }}
               </be-tag>
-                <be-button
-                    @click="matchAudit"
-                    custom-class="retrieval-btn"
-                    prevIcon="iconRetrievalEagle"
-                    title="Click to match the audit according to the contract">
-                    {{$t('lang.searchBtn')}}
-                </be-button>
+              <be-button
+                custom-class="retrieval-btn"
+                prev-icon="iconRetrievalEagle"
+                title="Click to match the audit according to the contract"
+                @click="matchAudit">
+                {{ $t('lang.searchBtn') }}
+              </be-button>
             </el-form-item>
           </el-form>
         </div>
@@ -446,14 +446,13 @@
        * 确认增加项目方法
        */
       const addProject = () => {
-
         let params: ICreateProj = {
           name: projectName.value,
           keyword: projectKeyWords.value,
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
-            audit_list:auditList.value
+          audit_list: auditList.value,
         }
         // 表单校验
         if (!formVerification(params)) {
@@ -491,7 +490,7 @@
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
-            audit_list:auditList.value
+          audit_list: auditList.value,
         }
         const pathParams = {
           id: props.projectId,
@@ -528,34 +527,34 @@
           { url: 'https://fanyi.baidu.com/?aldtype=16047#en/zh/Audit', name: '1231231.pdf' },
           {
             url: 'http://be-ui3.cn/#/home',
-            name: '123123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
+            name: '123123啊啊啊啊1.pdf',
           },
         ]
       }
-        /**
-         * 根據合約地址匹配审计
-         */
-        const matchAudit = (): void => {
-            auditList.value = [
-                { url: 'https://fanyi.baidu.com/?aldtype=16047#en/zh/Audit', name: '1231231.pdf' },
-                {
-                    url: 'http://be-ui3.cn/#/home',
-                    name: '123123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
-                },
-                {
-                    url: 'http://be-ui3.cn/#/',
-                    name: '12啊啊啊3123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
-                },
-            ]
-        }
+      /**
+       * 根據合約地址匹配审计
+       */
+      const matchAudit = (): void => {
+        auditList.value = [
+          { url: 'https://fanyi.baidu.com/?aldtype=16047#en/zh/Audit', name: '1231231.pdf' },
+          {
+            url: 'http://be-ui3.cn/#/home',
+            name: '123123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
+          },
+          {
+            url: 'http://be-ui3.cn/#/',
+            name: '12啊啊啊3123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
+          },
+        ]
+      }
       /**
        * 审计点击关闭
        */
-      const handleClose = (index:number): void => {
-          auditList.value.splice(index,1)
+      const handleClose = (index: number): void => {
+        auditList.value.splice(index, 1)
       }
       return {
-          matchAudit,
+        matchAudit,
         openWindow,
         handleClose,
         auditList,
@@ -590,6 +589,7 @@
 
 <style lang="scss">
   .createBox {
+
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -633,6 +633,7 @@
     border-radius: 2px;
 
     .add-create {
+
       .be-icon {
         fill: darkgray;
       }
@@ -643,6 +644,7 @@
     border-color: $mainColor3;
 
     .add-create {
+
       .be-icon {
         fill: $mainColor3;
       }
@@ -687,38 +689,46 @@
     width: 600px;
     margin-left: 8px;
   }
+
   .createBox .be-tag {
     margin: 5px;
-      span{
-          height: 100%;
-      }
-      &:hover{
-          color: $textColor3;
-          background: #E8FFF0;
-          border-radius: 2px;
-          border: 1px solid #CDE4DF;
-         .be-icon use{
-             fill: $textColor3;
-         }
-      }
-  }
-  .retrieval-btn{
-      width: 98px;
       height: 36px;
-      background: $mainColor7;
+      line-height: 36px;
+    span {
+      height: 100%;
+    }
+
+    &:hover {
+      color: $textColor3;
+      background: #e8fff0;
+      border: 1px solid #cde4df;
       border-radius: 2px;
-      border: 1px solid $mainColor3;
-      margin: 5px;
-      &:hover{
-          background: $mainColor7;
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+
+      .be-icon use {
+        fill: $textColor3;
       }
-      .be-button-body .be-button-slot{
-          font-size: 14px;
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
-          font-weight: 400;
-          color: #333333;
-          line-height: 22px;
-      }
+    }
+  }
+
+  .retrieval-btn {
+    width: 98px;
+    height: 36px;
+    margin: 5px;
+    background: $mainColor7;
+    border: 1px solid $mainColor3;
+    border-radius: 2px;
+
+    &:hover {
+      background: $mainColor7;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+    }
+
+    .be-button-body .be-button-slot {
+      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      color: #333;
+    }
   }
 </style>
