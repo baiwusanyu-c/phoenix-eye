@@ -102,3 +102,15 @@ export interface IAuditList {
   name: string
   url: string
 }
+// create-project
+
+export interface IWebsiteForm {
+  website?: string
+  github?: string
+  twitter?: string
+  telegram?: string
+}
+export interface IAudit {
+  name?: string
+  url?: string
+}

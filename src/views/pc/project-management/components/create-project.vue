@@ -101,6 +101,23 @@
                 class="projectKeyWordsInput"
                 :placeholder="$t('lang.createProject.createProjectEmailInput')"></el-input>
             </el-form-item>
+            <el-form-item :label="$t('lang.projectExplorer.detail.audit') + ':'">
+              <be-tag
+                v-for="(item,index) in auditList"
+                @close="handleClose(index)"
+                @click="openWindow(item.url)"
+                isClose
+                :key="item.url">
+                {{ item.name }}
+              </be-tag>
+                <be-button
+                    @click="matchAudit"
+                    custom-class="retrieval-btn"
+                    prevIcon="iconRetrievalEagle"
+                    title="Click to match the audit according to the contract">
+                    {{$t('lang.searchBtn')}}
+                </be-button>
+            </el-form-item>
           </el-form>
         </div>
         <template #footer>
@@ -131,19 +148,14 @@
   import { useI18n } from 'vue-i18n'
 
   import { ceSemiSpecialCharReg, ETHaddress } from '../../../../utils/reg'
-  import { BeButton, BeIcon } from '../../../../../public/be-ui/be-ui.es'
+  import { BeButton, BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
-  import { IOption } from '../../../../utils/types'
-  import { trimStr } from '../../../../utils/common'
-  interface IWebsiteForm {
-    website?: string
-    github?: string
-    twitter?: string
-    telegram?: string
-  }
+  import { IAudit, IOption, IWebsiteForm } from '../../../../utils/types'
+  import { trimStr, openWindow } from '../../../../utils/common'
+
   export default defineComponent({
     name: 'CreateProject',
-    components: { BeIcon, BeButton },
+    components: { BeIcon, BeButton, BeTag },
     props: {
       // 操作類型
       type: {
@@ -169,6 +181,11 @@
       const projectName = ref<string>('')
       const projectKeyWords = ref<string>('')
       const emailList = ref<string>('')
+      // 聯係地址表單
+      const websiteForm = ref<IWebsiteForm>({})
+
+      // 审计列表
+      const auditList = ref<Array<IAudit>>([])
 
       const labelPosition = ref<string>('right')
       const addContract = ref<number>(0)
@@ -188,6 +205,13 @@
 
       watch(createProjectWindow, nVal => {
         if (nVal) {
+          // 新增时
+          if (props.type === 'add') {
+            projectName.value = ''
+            // 新增时直接获取审计
+            getDefaultAudit()
+            return
+          }
           // 獲取詳情信息
           getDetailData()
         } else {
@@ -249,10 +273,6 @@
        * 获取风险类型详情数据
        */
       const getDetailData = () => {
-        if (props.type === 'add') {
-          projectName.value = ''
-          return
-        }
         const params = {
           id: props.projectId,
         }
@@ -270,6 +290,12 @@
               websiteForm.value.github = res.data.github
               websiteForm.value.telegram = res.data.telegram
               websiteForm.value.twitter = res.data.twitter
+              // 编辑时，如果原数据有审计就使用，否则调用获取默认审计
+              if (res.data.audit) {
+                auditList.value = res.data.audit
+              } else {
+                getDefaultAudit()
+              }
             }
           })
           .catch(err => {
@@ -420,12 +446,14 @@
        * 确认增加项目方法
        */
       const addProject = () => {
+
         let params: ICreateProj = {
           name: projectName.value,
           keyword: projectKeyWords.value,
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
+            audit_list:auditList.value
         }
         // 表单校验
         if (!formVerification(params)) {
@@ -463,6 +491,7 @@
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
+            audit_list:auditList.value
         }
         const pathParams = {
           id: props.projectId,
@@ -491,9 +520,45 @@
             console.error(err)
           })
       }
-      // 聯係地址表單
-      const websiteForm = ref<IWebsiteForm>({})
+      /**
+       * 获取默认审计
+       */
+      const getDefaultAudit = (): void => {
+        auditList.value = [
+          { url: 'https://fanyi.baidu.com/?aldtype=16047#en/zh/Audit', name: '1231231.pdf' },
+          {
+            url: 'http://be-ui3.cn/#/home',
+            name: '123123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
+          },
+        ]
+      }
+        /**
+         * 根據合約地址匹配审计
+         */
+        const matchAudit = (): void => {
+            auditList.value = [
+                { url: 'https://fanyi.baidu.com/?aldtype=16047#en/zh/Audit', name: '1231231.pdf' },
+                {
+                    url: 'http://be-ui3.cn/#/home',
+                    name: '123123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
+                },
+                {
+                    url: 'http://be-ui3.cn/#/',
+                    name: '12啊啊啊3123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
+                },
+            ]
+        }
+      /**
+       * 审计点击关闭
+       */
+      const handleClose = (index:number): void => {
+          auditList.value.splice(index,1)
+      }
       return {
+          matchAudit,
+        openWindow,
+        handleClose,
+        auditList,
         emailList,
         createProjectWindow,
         projectName,
@@ -506,7 +571,6 @@
         verKeyword,
         websiteForm,
         resetVar,
-        getDetailData,
         semicolonVerification,
         verificationName,
         verificationKeyword,
@@ -526,7 +590,6 @@
 
 <style lang="scss">
   .createBox {
-
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -570,7 +633,6 @@
     border-radius: 2px;
 
     .add-create {
-
       .be-icon {
         fill: darkgray;
       }
@@ -581,7 +643,6 @@
     border-color: $mainColor3;
 
     .add-create {
-
       .be-icon {
         fill: $mainColor3;
       }
@@ -625,5 +686,39 @@
   .contractSiteLabel {
     width: 600px;
     margin-left: 8px;
+  }
+  .createBox .be-tag {
+    margin: 5px;
+      span{
+          height: 100%;
+      }
+      &:hover{
+          color: $textColor3;
+          background: #E8FFF0;
+          border-radius: 2px;
+          border: 1px solid #CDE4DF;
+         .be-icon use{
+             fill: $textColor3;
+         }
+      }
+  }
+  .retrieval-btn{
+      width: 98px;
+      height: 36px;
+      background: $mainColor7;
+      border-radius: 2px;
+      border: 1px solid $mainColor3;
+      margin: 5px;
+      &:hover{
+          background: $mainColor7;
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+      }
+      .be-button-body .be-button-slot{
+          font-size: 14px;
+          font-family: AlibabaPuHuiTi-Regular, sans-serif;
+          font-weight: 400;
+          color: #333333;
+          line-height: 22px;
+      }
   }
 </style>
