@@ -346,4 +346,11 @@ export default {
     rank: '排行',
     xmgm: '项目规模',
   },
+  riskPublicInfo: {
+    searchP: '关键词',
+  },
+  trxRetry: {
+    searchP: 'Trx Hash',
+    result: 'You have submitted！please check later on the risk trx page.',
+  },
 }

@@ -265,21 +265,16 @@
           if (loginUser.value) {
             getProjectUser()
             setSession('loginExpiredNum', 'false')
-            setHeaderConfig()
+            // 登錄了 才根據路由接口設置header
+            initHeaderConfig()
           }
+          // 設置高亮
+          setActiveNav()
         })
       }
       onMounted(() => {
         initVar()
       })
-      /**
-       * 配置头部菜单方法
-       * 这里根据权限、禁用等进行设置
-       */
-      const setHeaderConfig = (): void => {
-        initHeaderConfig()
-        setActiveNav()
-      }
 
       /**
        * 初始化菜单配置
@@ -342,7 +337,6 @@
             isDisabled: false,
           }
         })
-        console.log(headerConfig)
       }
       /**
        * 设置激活菜单

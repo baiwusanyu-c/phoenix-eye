@@ -50,7 +50,7 @@ export interface ISafetyData {
   message?: string
   from?: string
   time?: string
-  label?: string
+  label?: Array<string>
 }
 
 export interface IContractStatistics {

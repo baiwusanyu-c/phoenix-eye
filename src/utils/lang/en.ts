@@ -217,6 +217,9 @@ export default {
     searchP: 'Trx Hash',
     result: 'You have submitted！please check later on the risk trx page.',
   },
+  riskPublicInfo: {
+    searchP: 'Key Words',
+  },
   createProject: {
     createProjectTitle: 'Create',
     editProjectTitle: 'Edit Project',

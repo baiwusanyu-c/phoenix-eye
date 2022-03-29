@@ -23,7 +23,7 @@
           custom-class="eagle-btn search-btn"
           size="large"
           round="4"
-          @click="getList">
+          @click="reTry">
           <span>{{ $t('lang.reTry') }}</span>
         </be-button>
       </div>
