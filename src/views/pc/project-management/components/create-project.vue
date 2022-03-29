@@ -691,9 +691,10 @@
   }
 
   .createBox .be-tag {
+    height: 36px;
     margin: 5px;
-      height: 36px;
-      line-height: 36px;
+    line-height: 36px;
+
     span {
       height: 100%;
     }
