@@ -467,7 +467,7 @@
       z-index: 10;
     }
 
-    .be-popover-body {
+    .be-popover--body {
       padding: 0;
 
       .popover-item {
