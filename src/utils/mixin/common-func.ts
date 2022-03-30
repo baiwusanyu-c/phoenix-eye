@@ -9,8 +9,8 @@ import { ref, computed } from 'vue'
 import { getCodeImg } from '../../api/login'
 import { useI18n } from 'vue-i18n'
 // @ts-ignore
-// import BeMessage from '../../components/common-components/message'
-import { ElMessage } from 'element-plus'
+import {BeMessage} from '../../../public/be-ui/be-ui.es'
+// import { ElMessage } from 'element-plus'
 import { Ref } from '@vue/reactivity'
 import { isNumber, isString } from '../common'
 export default () => {
@@ -44,19 +44,19 @@ export default () => {
     })
   }
   const message = (type: string, info: string, className?: string): void => {
-    /*BeMessage.service({
+    BeMessage.service({
       customClass: className,
       titles: info,
       msgType: type,
       duration: 2500,
       offsetTop: 80,
       close: true,
-    })*/
-    ElMessage({
+    })
+   /* ElMessage({
       showClose: true,
       message: info,
       type: type,
-    })
+    })*/
   }
   /**
    * 開啓定時器，進行數字滾動
