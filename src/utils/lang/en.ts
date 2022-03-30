@@ -175,7 +175,7 @@ export default {
     stateSuccess: 'Success',
     stateFailed: 'Failed',
     profit: 'Address Income',
-    privilegedOpertion: 'PrivilegedOpertion',
+    PrivilegedOperation: 'PrivilegedOperation',
     slump: 'Slump',
     presentPrice: 'Present Price',
   },

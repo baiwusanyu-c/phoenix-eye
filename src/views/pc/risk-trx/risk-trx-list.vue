@@ -100,9 +100,9 @@
         { label: 'POLYGON', val: 'polygon', isActive: false },
       ])
       const filterTypeItem = ref<Array<IFilterItem>>([
-        { label: 'LargeOutflow', val: 'LargeOutflow', isActive: false },
-        { label: 'FlashLoan', val: 'FlashLoan', isActive: false },
-        { label: 'PrivilegedOperation', val: 'PrivilegedOperation', isActive: false },
+        { label: 'Large outflow', val: 'Large outflow', isActive: false },
+        { label: 'Flash loan', val: 'Flash loan', isActive: false },
+        { label: 'Privileged operation', val: 'Privileged operation', isActive: false },
         { label: 'Slump', val: 'Slump', isActive: false },
       ])
 
@@ -172,7 +172,7 @@
       .risk-trx-search-filter {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: 100px 160px 120px 200px 100px;
+        grid-template-columns: 100px 160px 140px 200px 100px;
         grid-gap: 20px;
         width: 100%;
         padding: 20px;
