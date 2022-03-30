@@ -412,10 +412,10 @@
     }
 
     .project-manage-list {
-        background-color: #fff;
-        padding: 20px;
       width: 70%;
+      padding: 20px;
       margin: 0 auto;
+      background-color: #fff;
     }
   }
 </style>

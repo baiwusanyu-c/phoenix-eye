@@ -339,7 +339,7 @@
               v-if="baseInfo.slump.drop_prop"
               :class="'profit-d'"
               style="margin-right: 6px; font-weight: bold">
-              {{ (baseInfo.slump.drop_prop * 100).toFixed(2)}} %
+              {{ (baseInfo.slump.drop_prop * 100).toFixed(2) }} %
             </span>
             <be-icon
               v-if="baseInfo.slump.drop_prop"
@@ -622,10 +622,10 @@
       background: transparent;
 
       .detail-profit-body {
-        padding: 20px;
-        background-color: $mainColor7;
         height: calc(100% - 40px);
+        padding: 20px;
         margin-top: 20px;
+        background-color: $mainColor7;
       }
     }
 
