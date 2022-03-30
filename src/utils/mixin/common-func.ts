@@ -10,6 +10,7 @@ import { getCodeImg } from '../../api/login'
 import { useI18n } from 'vue-i18n'
 // @ts-ignore
 // import BeMessage from '../../components/common-components/message'
+import { ElMessage } from 'element-plus'
 import { Ref } from '@vue/reactivity'
 import { isNumber, isString } from '../common'
 export default () => {
@@ -51,6 +52,12 @@ export default () => {
       offsetTop: 80,
       close: true,
     })*/
+    ElMessage({
+      showClose: true,
+      message: info,
+      type: type,
+      duration: 99999,
+    })
   }
   /**
    * 開啓定時器，進行數字滾動

@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import router from './router/is-mobile' //判断访问设备并引入对应路由
 import App from './App.vue'
 import 'virtual:windi.css'
+import 'element-plus/dist/index.css'
 // @ts-ignore
 //import BeUI from '../public/be-ui/be-ui.es.js'
 import '../public/be-ui/style.css'

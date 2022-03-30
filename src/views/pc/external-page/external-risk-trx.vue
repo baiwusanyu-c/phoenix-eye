@@ -123,7 +123,6 @@
     }
   }
   @media screen and (min-width: 1200px) and (max-width: 1278px) {
-
     .noM {
       min-width: 1200px;
     }
