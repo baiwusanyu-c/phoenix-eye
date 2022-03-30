@@ -29,11 +29,12 @@
         <span style="margin-right: 16px; font-size: 14px; font-weight: bold; color: #333">{{
           isEmpty(baseInfo.riskPublicOpinion)
         }}</span>
+        <!--    订阅      -->
         <be-button
-          custom-class="eagle-btn subscribe--btn subscribe-btn-ed"
-          prev-icon="iconStar2Eagle"
+          :custom-class="`eagle-btn subscribe--btn ${baseInfo.isSubscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'} `"
+          :prev-icon="baseInfo.isSubscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
           type="success"
-          @click="submitSubscribe">
+          @click="handleSubscribe">
           {{ $t('lang.projectExplorer.detail.subscribe') }}
         </be-button>
       </div>
@@ -263,17 +264,18 @@
   import { useI18n } from 'vue-i18n'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import {
-    getProjectSituation,
-    getProjectSituationStatistics,
-    getPublicOpinion,
-    IPublicOpinion,
+      createSubscribe, deleteSubscribe,
+      getProjectSituation,
+      getProjectSituationStatistics,
+      getPublicOpinion,
+      IPublicOpinion,
   } from '../../../api/project-explorer'
   import {
-    numberToCommaString,
-    createDate,
-    formatDate,
-    formatTimeStamp,
-    openWindow,
+      numberToCommaString,
+      createDate,
+      formatDate,
+      formatTimeStamp,
+      openWindow, getStore,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import ProjectDetailTop, { ITableHeader } from './components/project-detail-top.vue'
@@ -312,6 +314,7 @@
     twitter?: string
     website?: string
     name?: string
+    isSubscribe:boolean
   }
 
   interface ITop5TokenHolder {
@@ -416,6 +419,7 @@
                 transactionsTotal: res.data.details.tx_total,
                 lastTradeData: res.data.details.latest_trading_date,
                 riksTrxNum: res.data.details.risk_tx_24,
+                isSubscribe:res.data.details.is_subscribe,
                 riskPublicOpinion: res.data.details.risk_public_opinion_24,
                 name: res.data.details.name,
                 github: res.data.social_profiles.github,
@@ -614,19 +618,63 @@
        * 发送订阅
        */
       const submitSubscribe = (): void => {
-        // 状态根据接口返回 显示成功、文案等
-        /*msgBox('Subscription Successful',
-                'We will send the latest risk trading and public opinion information to your email (1234567@qq.com).',
-                'subscribe subscribe--normal')*/
-        msgBox(
-          'Subscription Successful',
-          'We will send the latest risk trading and public opinion information to your email (1234567@qq.com).',
-          'subscribe'
-        )
+          const params = {
+              project_id:parseInt(projectId.value)
+          }
+          createSubscribe(params).then((res:any)=>{
+            if(res.code === '0000'){
+                const userInfo = JSON.parse(getStore('userInfo') as string)
+                const username = userInfo ? '(' + userInfo.username + ')' : ''
+                msgBox(
+                    'Subscription Successful',
+                    `We will send the latest risk trading and public opinion information to your email ${username}.`,
+                    'subscribe'
+                )
+                baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+            }else{
+                msgBox(
+                    'Failing',
+                    'Failure due to unknown reasons, please contact our customer service.',
+                    'subscribe subscribe--normal'
+                )
+            }
+          }).catch((err)=>{
+              message('error', err.message || err)
+              console.error(err)
+          })
+
+      }
+      const cancelSubscribe = (): void => {
+          const params = {
+              project_id:parseInt(projectId.value)
+          }
+          deleteSubscribe(params).then((res:any)=>{
+              if(res.code === '0000'){
+                  msgBox(
+                      'Unsubscribes',
+                      'Unsubscribe succeeded!',
+                      'subscribe'
+                  )
+                  baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+              }else{
+                  message('warning', 'An unknown error has occurred in the system')
+              }
+          }).catch((err)=>{
+              message('error', err.message || err)
+              console.error(err)
+          })
+      }
+
+      const handleSubscribe = ():void =>{
+          if(baseInfo.value.isSubscribe){
+              cancelSubscribe()
+          }else{
+              submitSubscribe()
+          }
       }
       return {
+        handleSubscribe,
         updateNumFs,
-        submitSubscribe,
         defaultPlatformTop5Token,
         defaultPlatformTop5Quidity,
         openWeb,
@@ -680,11 +728,12 @@
       float: right;
       width: 118px;
       height: 40px;
-      background: $mainColor3;
       border-radius: 4px !important;
     }
-
-    .subscribe-btn-ed {
+    .subscribe-btn__as {
+        background: $mainColor3;
+    }
+    .subscribe-btn__ed {
       color: $textColor3;
       background: transparent;
       border: 1px solid $textColor3;
