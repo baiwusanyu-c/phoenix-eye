@@ -38,7 +38,7 @@
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'
-  import { message } from '../../../utils/common'
+  // import { message } from '../../../utils/common'
 
   export default defineComponent({
     name: 'TrxRetry',
