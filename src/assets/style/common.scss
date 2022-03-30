@@ -185,14 +185,14 @@
 
 .el-table__body {
   width: 100% !important;
-  border-spacing: 0 12px;
-  border-collapse: separate;
+  /*border-spacing: 0 12px;
+  border-collapse: separate;*/
 }
 
-.el-table td.el-table__cell,
+/*.el-table td.el-table__cell,
 .el-table th.el-table__cell.is-leaf{
   border: 0;
-}
+}*/
 
 .el-table__inner-wrapper::before{
   content: none;
@@ -621,7 +621,7 @@
 .be-pager li.active{
   font-weight: bold;
   color: $mainColor3;
-  background-color: $mainColor7;
+  background-color: $mainColor14-025;
 }
 
 .be-pager-container .be-select .be-select-body.be-pager-select{

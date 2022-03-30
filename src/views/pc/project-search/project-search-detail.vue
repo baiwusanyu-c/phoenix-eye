@@ -214,7 +214,7 @@
     </div>
     <!--风险交易-->
     <div class="proj-detail-item">
-      <div class="item-title" style="margin-bottom: 0">
+      <div class="item-title" style="margin-bottom: 32px">
         <h2>{{ $t('lang.projectExplorer.detail.riskTrx') }}</h2>
       </div>
       <risk-trx-table :project-id="projectId"></risk-trx-table>

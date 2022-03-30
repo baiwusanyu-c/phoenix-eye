@@ -412,6 +412,8 @@
     }
 
     .project-manage-list {
+        background-color: #fff;
+        padding: 20px;
       width: 70%;
       margin: 0 auto;
     }
