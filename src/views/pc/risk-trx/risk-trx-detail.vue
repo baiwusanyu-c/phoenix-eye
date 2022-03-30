@@ -536,6 +536,7 @@
 
 <style lang="scss">
   .risk-trx-detail {
+
     .detail-copy {
       width: initial;
     }
@@ -671,11 +672,14 @@
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
+
     .risk-trx-detail {
+
       .detail-body {
         padding: 10px;
 
         .detail-item {
+
           .detail-item-txt {
             margin-top: 5px;
             font-size: 12px;
@@ -686,6 +690,7 @@
           }
 
           .detail-item--date {
+
             .date-label {
               width: 16%;
             }
