@@ -13,10 +13,7 @@
           <p style="line-height: 25px">{{ $t('lang.noRisk') }}</p>
         </div>
       </template>
-      <el-table-column
-        prop="platform"
-        :width="tableHeader('platform')"
-        align="center">
+      <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
@@ -353,10 +350,10 @@
           amount: '120',
           tx_time: '100',
         }
-        if(1280 <= screenWidth && 1326 <= screenWidth){
-            headerDict.risk_features = '320'
-            headerDict.from_address = '170'
-         }
+        if (1280 <= screenWidth && 1326 <= screenWidth) {
+          headerDict.risk_features = '320'
+          headerDict.from_address = '170'
+        }
         return function (key: string) {
           return headerDict[key]
         }

@@ -30,12 +30,10 @@
           <span class="date-label">{{ $t('lang.riskConfig.tableHeader.txTime') }}：</span>
           <el-tooltip placement="top" effect="light">
             <template #content>
-              <span style="font-weight: 400"
-                >UTC：{{ beijing2utc('2022-03-17T12:27:53.000+0000') }}</span
-              >
+              <span style="font-weight: 400">UTC：{{ beijing2utc(baseInfo.tx_time) }}</span>
             </template>
             <span style="font-weight: 400">{{
-              formatDate(createDate('2022-03-17T12:27:53.000+0000').getTime())
+              formatDate(createDate(baseInfo.tx_time).getTime())
             }}</span>
           </el-tooltip>
         </div>
@@ -285,16 +283,16 @@
         </el-table>
       </div>
     </div>
-    <!--   Slump 与 PrivilegedOpertion   -->
+    <!--   Slump 与 PrivilegedOperation   -->
     <div class="detail-slump">
-      <div v-if="baseInfo.slump" class="detail-slump--container">
-        <h3>{{ $t('lang.riskConfig.privilegedOpertion') }}</h3>
+      <div v-if="baseInfo.privileged_operation" class="detail-slump--container">
+        <h3>{{ $t('lang.riskConfig.PrivilegedOperation') }}</h3>
         <div class="detail-slump--body">
           <div style="display: flex">
             <span class="label">{{ $t('lang.projectExplorer.contract') }} :</span>
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.slump.contract"
+              :target-str="baseInfo.privileged_operation.contract"
               :is-ellipsis="false"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;">
@@ -303,7 +301,7 @@
           <div style="display: flex; margin-top: 20px">
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.slump.to"
+              :target-str="baseInfo.privileged_operation.to"
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold">
@@ -311,7 +309,7 @@
             <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.slump.from"
+              :target-str="baseInfo.privileged_operation.from"
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold">
@@ -335,28 +333,19 @@
           <div style="display: flex; align-items: center; margin-top: 20px">
             <span class="label">{{ $t('lang.riskConfig.presentPrice') }} : </span>
             <span style="width: 160px; font-weight: bold">{{
-              handleProfit(baseInfo.slump.value, 0)
+              handleProfit(baseInfo.slump.present_price, 0)
             }}</span>
             <span
-              :class="baseInfo.slump.profit > 0 ? 'profit-x' : 'profit-d'"
+              v-if="baseInfo.slump.drop_prop"
+              :class="'profit-d'"
               style="margin-right: 6px; font-weight: bold">
-              {{ baseInfo.slump.profit }} %
+              {{ baseInfo.slump.drop_prop }} %
             </span>
             <be-icon
-              v-if="baseInfo.slump.profit > 0"
-              :content="$t('lang.profit')"
-              icon="iconArrowUp"></be-icon>
-            <be-icon
-              v-if="baseInfo.slump.profit < 0"
+              v-if="baseInfo.slump.drop_prop"
               :content="$t('lang.loss')"
               icon="iconArrowDown"
               style="margin-right: 4px"></be-icon>
-            <!-- 占位 -->
-            <be-icon
-              v-if="baseInfo.slump.profit === 0"
-              disabled-tool-tip
-              icon-class="iconArrowDown"
-              style="visibility: hidden"></be-icon>
           </div>
         </div>
       </div>
@@ -371,6 +360,7 @@
   import { platformToCurrency, IPlatformToCurrency } from '../../../utils/platform-dict'
   import { defineComponent, ref, onMounted, computed, onUnmounted } from 'vue'
   import composition from '../../../utils/mixin/common-func'
+  import { useI18n } from 'vue-i18n'
   import {
     getUuid,
     simulateToFixed,
@@ -405,8 +395,12 @@
       // 链平台转化币种
       const platformToCurrencyInner = ref<IPlatformToCurrency>(platformToCurrency)
       const addrCellWidth = ref<string>('430')
+      const { t } = useI18n()
       const handleProfit = computed(() => {
         return function (val: number, dec: number) {
+          if (val === null) {
+            return t('lang.emptyData')
+          }
           if (val < 0) {
             return `-$${simulateToFixed(Math.abs(val), dec)}`
           }
@@ -449,15 +443,6 @@
               return
             }
             baseInfo.value = res.data
-            baseInfo.value.time = '2022-03-17T12:27:53.000+0000'
-            baseInfo.value.slump = {
-              token: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
-              value: 1231231232,
-              to: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
-              from: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
-              contract: '0x3da74c09ccb8faba3153b7f6189dda9d7f28156a',
-              profit: -60,
-            }
             profitData.value = res.data.address_profits
             profitData.value.forEach(val => {
               val.addrList = []

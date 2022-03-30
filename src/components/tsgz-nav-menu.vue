@@ -324,7 +324,6 @@
             isDisabled: false,
           }
         })
-        console.log(headerConfig)
       }
       /**
        * 设置激活菜单
@@ -432,7 +431,7 @@
         selectProjBus.emit(selectVal.value)
       }
       return {
-          routerPush,
+        routerPush,
         handleProjectSelect,
         getProjectUser,
         projectList,
@@ -595,10 +594,10 @@
       width: 164px;
       height: 60px;
       margin: 0 30px;
+      cursor: pointer;
       background-image: url('../assets/image/pc/logo-white.png');
       background-repeat: no-repeat;
       background-position-y: center;
-        cursor: pointer;
     }
 
     .el-menu-item {

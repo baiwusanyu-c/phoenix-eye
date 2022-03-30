@@ -13,7 +13,7 @@ export default {
   companyName: '成都链安科技有限公司',
   copyright: 'Copyright',
   emptyData: 'No data available',
-  noRisk : 'No risk transactions detected',
+  noRisk: 'No risk transactions detected',
   scan: 'View',
   success: 'Success',
   failed: 'Failed',
