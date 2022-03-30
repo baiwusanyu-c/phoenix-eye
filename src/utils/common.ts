@@ -1,7 +1,7 @@
 import { isArray, isObject, toRawType } from '@vue/shared'
 // @ts-ignore
-// import BeMessage from '../components/common-components/message'
-import { ElMessage } from 'element-plus'
+import { BeMessage } from '../../public/be-ui/be-ui.es'
+//import { ElMessage } from 'element-plus'
 import { IOption } from './types'
 /**
  * id生成方法
@@ -486,19 +486,19 @@ export const beijing2utc = (now: number, formats: string) => {
 }
 
 export const message = (type: string, info: string, className?: string): void => {
-  /*BeMessage.service({
+  BeMessage.service({
     customClass: className,
     titles: info,
     msgType: type,
     duration: 2500,
     offsetTop: 80,
     close: true,
-  })*/
-  ElMessage({
+  })
+  /* ElMessage({
     showClose: true,
     message: info,
     type: type,
-  })
+  })*/
 }
 /**
  * 文本复制
