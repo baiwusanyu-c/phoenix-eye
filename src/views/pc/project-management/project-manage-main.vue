@@ -413,7 +413,9 @@
 
     .project-manage-list {
       width: 70%;
+      padding: 20px;
       margin: 0 auto;
+      background-color: #fff;
     }
   }
 </style>

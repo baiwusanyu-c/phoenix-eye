@@ -383,6 +383,8 @@
 
 <style lang="scss">
   .risk-table-inner {
+    padding: 20px;
+    background-color: #fff;
 
     .more-btn {
       width: 24px;

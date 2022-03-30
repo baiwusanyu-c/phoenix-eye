@@ -185,14 +185,15 @@
 
 .el-table__body {
   width: 100% !important;
-  border-spacing: 0 12px;
-  border-collapse: separate;
+
+  /* border-spacing: 0 12px;
+  border-collapse: separate; */
 }
 
-.el-table td.el-table__cell,
+/* .el-table td.el-table__cell,
 .el-table th.el-table__cell.is-leaf{
   border: 0;
-}
+} */
 
 .el-table__inner-wrapper::before{
   content: none;
@@ -470,6 +471,16 @@
   top: 72px !important;
   z-index: 10002 !important;
   box-shadow: 0 0 13px rgba(0, 0, 0, .16);
+
+  .el-message__closeBtn {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    font-size: var(--el-message-close-size,16px);
+    color: var(--el-message-close-icon-color);
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
 }
 
 //多选框样式
@@ -621,7 +632,7 @@
 .be-pager li.active{
   font-weight: bold;
   color: $mainColor3;
-  background-color: $mainColor7;
+  background-color: $mainColor14-025;
 }
 
 .be-pager-container .be-select .be-select-body.be-pager-select{
