@@ -1,6 +1,6 @@
 import { isArray, isObject, toRawType } from '@vue/shared'
 // @ts-ignore
-import  BeMessage  from '../components/common-components/message'
+import BeMessage from '../components/common-components/message'
 import { IOption } from './types'
 /**
  * id生成方法

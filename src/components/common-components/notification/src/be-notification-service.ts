@@ -48,7 +48,7 @@ const closeNotify = function (instance: DefineComponent, isAll = false): void {
         throw new Error('EndIterative')
       }
     })
-  } catch (e:any) {
+  } catch (e: any) {
     if (e.message !== 'EndIterative') throw e
   }
 

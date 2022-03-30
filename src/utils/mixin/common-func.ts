@@ -9,7 +9,7 @@ import { ref, computed } from 'vue'
 import { getCodeImg } from '../../api/login'
 import { useI18n } from 'vue-i18n'
 // @ts-ignore
-import  BeMessage  from '../../components/common-components/message'
+import BeMessage from '../../components/common-components/message'
 import { Ref } from '@vue/reactivity'
 import { isNumber, isString } from '../common'
 export default () => {

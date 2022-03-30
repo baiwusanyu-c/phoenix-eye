@@ -7,7 +7,7 @@
 
 import { computed, defineComponent, reactive, ref, h, getCurrentInstance } from 'vue'
 // @ts-ignore
-import {BeIcon} from '../../../../../public/be-ui/be-ui.es'
+import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
 import { INotfiy } from './be-notification-type'
 
 export default defineComponent({
