@@ -10,14 +10,10 @@
       <template #empty>
         <div class="empty-data">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-          <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
+          <p style="line-height: 25px">{{ $t('lang.noRisk') }}</p>
         </div>
       </template>
-      <el-table-column
-        prop="platform"
-        :width="tableHeader('platform')"
-        :fixed="tableData.length > 0 ? 'left' : 'null'"
-        align="center">
+      <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
@@ -155,7 +151,7 @@
           {{ isEmpty(scope.row.amount, '/') === '/' ? '/' : `$ ${scope.row.amount}` }}
         </template>
       </el-table-column>
-      <el-table-column :width="tableHeader('tx_time')" fixed="right" prop="tx_time" align="left">
+      <el-table-column :width="tableHeader('tx_time')" prop="tx_time" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
         </template>
@@ -175,7 +171,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column v-if="showOperation" width="50" label=" " fixed="right" align="center">
+      <el-table-column v-if="showOperation" width="50" label=" " align="center">
         <template #default>
           <div class="more-btn">
             <be-icon icon="more" width="20" height="21"></be-icon>
@@ -342,6 +338,8 @@
       const openDetail = (params: any) => {
         openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
       }
+
+      const screenWidth = window.screen.width
       let tableHeader = computed(() => {
         let headerDict: IOption = {
           platform: '130',
@@ -351,6 +349,10 @@
           from_address: '200',
           amount: '120',
           tx_time: '100',
+        }
+        if (1280 <= screenWidth && 1326 <= screenWidth) {
+          headerDict.risk_features = '320'
+          headerDict.from_address = '170'
         }
         return function (key: string) {
           return headerDict[key]
@@ -381,7 +383,6 @@
 
 <style lang="scss">
   .risk-table-inner {
-
     .more-btn {
       width: 24px;
       height: 24px;

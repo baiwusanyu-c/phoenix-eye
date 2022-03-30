@@ -4,7 +4,7 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <!--    logo    -->
     <div style="display: flex; align-items: center">
-      <div class="expend-logo"></div>
+      <div class="expend-logo" @click="routerPush('/riskTrx/list')"></div>
       <el-select
         v-if="isLogin"
         v-model="selectVal"
@@ -451,6 +451,7 @@
       }
       return {
         openFeedBack,
+        routerPush,
         handleProjectSelect,
         getProjectUser,
         projectList,
@@ -486,7 +487,6 @@
   .popover-logout,
   .popover-lang,
   .popover-router {
-
     .be-popover {
       z-index: 10;
     }
@@ -508,7 +508,6 @@
     }
 
     .popover-router-item {
-
       span {
         margin: 0 10px;
       }
@@ -546,7 +545,7 @@
     overflow-y: auto;
     text-align: center;
     background-color: $mainColor7;
-    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, .12);
+    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
 
     .tsgz-slogan {
       display: flex;
@@ -588,7 +587,6 @@
         cursor: pointer;
 
         .lang-under {
-
           .be-icon {
             width: 14px;
             height: 14px;
@@ -619,6 +617,7 @@
       width: 164px;
       height: 60px;
       margin: 0 30px;
+      cursor: pointer;
       background-image: url('../assets/image/pc/logo-white.png');
       background-repeat: no-repeat;
       background-position-y: center;
@@ -633,13 +632,11 @@
     }
 
     .nav-menu-icon {
-
       /* margin-right: 10px; */
       fill: $textColor8 !important;
     }
 
     .el-menu {
-
       /* width: 100% !important; */
       background-color: transparent;
       border: 0;
@@ -665,7 +662,6 @@
     }
 
     .menu-part1 {
-
       .el-menu-item.is-active,
       .el-menu-item:focus {
         font-weight: bold;
@@ -679,7 +675,6 @@
     }
 
     .menu-fold-item {
-
       &:hover {
         background-color: $mainColor3;
       }

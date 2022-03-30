@@ -100,9 +100,9 @@
         { label: 'POLYGON', val: 'polygon', isActive: false },
       ])
       const filterTypeItem = ref<Array<IFilterItem>>([
-        { label: 'LargeOutflow', val: 'LargeOutflow', isActive: false },
-        { label: 'FlashLoan', val: 'FlashLoan', isActive: false },
-        { label: 'PrivilegedOperation', val: 'PrivilegedOperation', isActive: false },
+        { label: 'Large outflow', val: 'Large outflow', isActive: false },
+        { label: 'Flash loan', val: 'Flash loan', isActive: false },
+        { label: 'Privileged operation', val: 'Privileged operation', isActive: false },
         { label: 'Slump', val: 'Slump', isActive: false },
       ])
 
@@ -153,7 +153,6 @@
         display: flex;
 
         input::-webkit-input-placeholder {
-
           /* WebKit browsers */
           font-family: AlibabaPuHuiTi-Regular, sans-serif;
           font-size: 18px;
@@ -172,14 +171,14 @@
       .risk-trx-search-filter {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: 100px 160px 120px 200px 100px;
+        grid-template-columns: 100px 160px 140px 200px 100px;
         grid-gap: 20px;
         width: 100%;
         padding: 20px;
         margin-top: 36px;
         background-color: $mainColor7;
         border-radius: 4px;
-        opacity: .69;
+        opacity: 0.69;
 
         .filter-label {
           font-weight: bold;
@@ -211,6 +210,22 @@
     .risk-table {
       width: 70%;
       margin: 30px auto 0 auto;
+    }
+  }
+
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .risk-trx-list .search-area,
+    .risk-trx-list .risk-table {
+      width: 92%;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .risk-trx-list .search-area,
+    .risk-trx-list .risk-table {
+      width: 80%;
     }
   }
 </style>

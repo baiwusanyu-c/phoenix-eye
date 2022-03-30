@@ -24,8 +24,8 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
-  import { IProjParam } from '../../../api/project-explorer'
-  import { IPageParam } from '../../../utils/types'
+  // import { IProjParam } from '../../../api/project-explorer'
+  // import { IPageParam } from '../../../utils/types'
 
   export default defineComponent({
     name: 'AddrMonitor',
@@ -35,16 +35,16 @@
       const searchParams = ref<string>('')
       const loading = ref<boolean>(false)
       // 分页参数
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
+      // const pageParams = ref<IPageParam>({
+      //   currentPage: 1,
+      //   pageSize: 10,
+      //   total: 0,
+      // })
       const getList = () => {
         loading.value = true
-        let params: IProjParam = {
-          param: searchParams.value,
-        }
+        // let params: IProjParam = {
+        //   param: searchParams.value,
+        // }
       }
       return {
         getList,
@@ -85,7 +85,6 @@
       display: flex;
 
       input::-webkit-input-placeholder {
-
         /* WebKit browsers */
         font-family: AlibabaPuHuiTi-Regular, sans-serif;
         font-size: 18px;
