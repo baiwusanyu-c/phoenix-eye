@@ -1,0 +1,124 @@
+@mixin be-notification-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  line-height: 25px;
+}
+
+.be-notification {
+  z-index: 10;
+  min-height: 100px;
+
+  .be-notification-container {
+    @apply min-w-16 bg-default p-2.5 rounded shadow absolute box-border;
+    z-index: 998;
+
+    .be-notification-title {
+      @apply w-full h-6;
+
+      .be-notification-head {
+        @apply leading-6 flex justify-between items-center;
+
+        div:nth-child(1) {
+          @apply flex items-center;
+
+          .icon-warning {
+            @apply fill-warning;
+            @include be-notification-icon;
+          }
+
+          .icon-info {
+            @apply fill-info;
+            @include be-notification-icon;
+          }
+
+          .icon-success {
+            @apply fill-success;
+            @include be-notification-icon;
+          }
+
+          .icon-error {
+            @apply fill-error;
+            @include be-notification-icon;
+          }
+
+          .txt-warning {
+            @include be-message-title;
+            @apply text-warning font-mono;
+          }
+
+          .txt-info {
+            @include be-message-title;
+            @apply text-info font-mono;
+          }
+
+          .txt-success {
+            @include be-message-title;
+            @apply text-success font-mono;
+          }
+
+          .txt-error {
+            @include be-message-title;
+            @apply text-error font-mono;
+          }
+        }
+
+        div:nth-child(2) {
+          @apply cursor-pointer;
+        }
+      }
+
+    }
+  }
+
+  .be-notification-container__topLeft,
+  .be-notification-container__bottomLeft {
+    left: 5px;
+  }
+
+  .be-notification-container__bottomRight,
+  .be-notification-container__topRight {
+    right: 5px;
+  }
+
+  .be-notification-body {
+    min-height: 50px;
+    margin-top: 10px;
+
+    .be-notification-description {
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: $defaultText;
+      letter-spacing: 3px;
+    }
+  }
+}
+
+.be-notification__topLeft, .be-notification__bottomLeft {
+  position: fixed;
+  left: 5px;
+}
+
+.be-notification__topRight, .be-notification__bottomRight {
+  position: fixed;
+  right: 5px;
+}
+
+.be-notification-bottom {
+  transition: bottom .3s;
+}
+
+.be-notification-top {
+  transition: bottom .3s;
+}
+
+.be-notification-animation-right-in {
+  -webkit-animation: bounce-in-right .3s .2s ease both;
+  -moz-animation: bounce-in-right .3s .2s ease both;
+}
+
+.be-notification-animation-left-in {
+  -webkit-animation: fade-in-left-big .3s .2s ease both;
+  -moz-animation: fade-in-left-big .3s .2s ease both;
+}
