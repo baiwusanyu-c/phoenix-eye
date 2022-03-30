@@ -4,7 +4,7 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <!--    logo    -->
     <div style="display: flex; align-items: center">
-      <div class="expend-logo"></div>
+      <div class="expend-logo" @click="routerPush('/riskTrx/list')"></div>
       <el-select
         v-if="isLogin"
         v-model="selectVal"
@@ -432,6 +432,7 @@
         selectProjBus.emit(selectVal.value)
       }
       return {
+          routerPush,
         handleProjectSelect,
         getProjectUser,
         projectList,
@@ -597,6 +598,7 @@
       background-image: url('../assets/image/pc/logo-white.png');
       background-repeat: no-repeat;
       background-position-y: center;
+        cursor: pointer;
     }
 
     .el-menu-item {
