@@ -498,7 +498,6 @@ export const message = (type: string, info: string, className?: string): void =>
     showClose: true,
     message: info,
     type: type,
-    duration: 99999,
   })
 }
 /**

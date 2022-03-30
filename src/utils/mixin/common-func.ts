@@ -56,7 +56,6 @@ export default () => {
       showClose: true,
       message: info,
       type: type,
-      duration: 99999,
     })
   }
   /**

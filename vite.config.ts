@@ -93,7 +93,7 @@ export default defineConfig({
     },
   },
 
- /* build: {
+  /* build: {
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
       external: [path.resolve(__dirname, 'public/be-ui/be-ui.es.js')],
