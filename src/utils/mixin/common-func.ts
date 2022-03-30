@@ -9,7 +9,7 @@ import { ref, computed } from 'vue'
 import { getCodeImg } from '../../api/login'
 import { useI18n } from 'vue-i18n'
 // @ts-ignore
-import {BeMessage} from '../../../public/be-ui/be-ui.es'
+import { BeMessage } from '../../../public/be-ui/be-ui.es'
 // import { ElMessage } from 'element-plus'
 import { Ref } from '@vue/reactivity'
 import { isNumber, isString } from '../common'
@@ -52,7 +52,7 @@ export default () => {
       offsetTop: 80,
       close: true,
     })
-   /* ElMessage({
+    /* ElMessage({
       showClose: true,
       message: info,
       type: type,

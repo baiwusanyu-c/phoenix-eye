@@ -1,6 +1,6 @@
 import { isArray, isObject, toRawType } from '@vue/shared'
 // @ts-ignore
- import {BeMessage} from '../../public/be-ui/be-ui.es'
+import { BeMessage } from '../../public/be-ui/be-ui.es'
 //import { ElMessage } from 'element-plus'
 import { IOption } from './types'
 /**
@@ -494,7 +494,7 @@ export const message = (type: string, info: string, className?: string): void =>
     offsetTop: 80,
     close: true,
   })
- /* ElMessage({
+  /* ElMessage({
     showClose: true,
     message: info,
     type: type,
