@@ -26,13 +26,13 @@ time: 2020-08-05 11:01:54 */
       width: 1.53rem;
       height: 1.53rem;
       margin: auto;
-      margin-bottom: 0.36rem;
+      margin-bottom: .36rem;
     }
 
     p {
-      font-size: 0.14rem;
+      font-size: .14rem;
       font-weight: 400;
-      line-height: 0.24rem;
+      line-height: .24rem;
       color: #000;
       text-align: center;
     }

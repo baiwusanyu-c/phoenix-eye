@@ -384,6 +384,7 @@
 
 <style lang="scss">
   .risk-table-inner {
+
     .more-btn {
       width: 24px;
       height: 24px;

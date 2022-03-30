@@ -154,6 +154,7 @@
         display: flex;
 
         input::-webkit-input-placeholder {
+
           /* WebKit browsers */
           font-family: AlibabaPuHuiTi-Regular, sans-serif;
           font-size: 18px;
@@ -179,7 +180,7 @@
         margin-top: 36px;
         background-color: $mainColor7;
         border-radius: 4px;
-        opacity: 0.69;
+        opacity: .69;
 
         .filter-label {
           font-weight: bold;
