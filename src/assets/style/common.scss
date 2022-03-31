@@ -185,14 +185,15 @@
 
 .el-table__body {
   width: 100% !important;
-  border-spacing: 0 12px;
-  border-collapse: separate;
+
+  /* border-spacing: 0 12px;
+  border-collapse: separate; */
 }
 
-.el-table td.el-table__cell,
+/* .el-table td.el-table__cell,
 .el-table th.el-table__cell.is-leaf{
   border: 0;
-}
+} */
 
 .el-table__inner-wrapper::before{
   content: none;
@@ -204,6 +205,13 @@
 
 .el-table{
   background-color: transparent;
+
+  .be-popover--trigger{
+    display: inline-block;
+    height: 20px;
+    vertical-align: middle;
+
+  }
 }
 
 .el-table thead {
@@ -269,8 +277,16 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
-  color: #333;
+  color: $textColor3;
   letter-spacing: 1px;
+
+  .table-popover{
+    display: flex;
+  }
+}
+
+.table-tooltip span{
+  color: black;
 }
 
 .table-icon{
@@ -327,36 +343,8 @@
   border-color: $mainColor3;
 }
 
-//分页样式
 
-.el-pagination.is-background .el-pager li:not(.disabled).active {
-  color: $mainColor3 !important;
-  background-color: $mainColor7;
-  border: 0 solid $mainColor3;
 
-  &:hover {
-    color: $mainColor3 !important;
-  }
-}
-
-.el-pagination.is-background .btn-next,
-.el-pagination.is-background .btn-prev,
-.el-pagination.is-background .el-pager li {
-  background: transparent;
-
-  &:hover {
-    color: $mainColor3 !important;
-    border: 1px solid $mainColor3;
-  }
-}
-
-.el-pagination.is-background .el-pager li:not(.disabled):hover {
-  color: $mainColor3;
-}
-
-.el-pagination__sizes .el-input .el-input__inner:hover {
-  border-color: $mainColor3;
-}
 //下拉样式
 
 .el-select .el-input.is-focus .el-input__inner {
@@ -598,17 +586,78 @@
 
   .table-page {
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: flex-end;
+    height: 60px;
 
     .table-page-info {
-      margin-top: 20px;
       font-size: 14px;
       color: $textColor4;
     }
   }
 }
 
+
+//分页样式
+
+.be-pager li{
+  width: 32px;
+  height: 32px;
+  color: #606266;
+  background-color: transparent;
+  border-radius: 2px;
+
+  .be-icon-container {
+
+    .be-icon{
+      width: 14px;
+      height: 14px;
+
+      use{
+        fill:#606266 ;
+      }
+    }
+  }
+}
+
+.be-pager li:hover{
+  color: $mainColor3;
+  border: 1px solid $mainColor3;
+
+  .be-icon-container use{
+    fill:$mainColor3 !important;
+  }
+}
+
+.be-pager li.active{
+  font-weight: bold;
+  color: $mainColor3;
+  background-color: $mainColor14-025;
+}
+
+.be-pager-container .be-select .be-select-body.be-pager-select{
+  width: 8rem;
+  height: 30px;
+  line-height: 30px;
+
+  .be-select-input__medium{
+    height: 28px;
+    color: #606266;
+  }
+}
+
+.be-select .be-select-body:hover{
+  border: 1px solid $mainColor3;
+}
+
+.be-select .be-select-body.be-select-body__focus{
+  border: 1px solid $mainColor3;
+  box-shadow: 0 0 0 2px $mainColor16-025;
+}
+
+.be-select-option-body .be-select-option-container .be-select-option__choice{
+  color: $mainColor3;
+}
 
 .be-header {
   padding: 0;

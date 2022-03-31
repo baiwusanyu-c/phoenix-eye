@@ -1,5 +1,5 @@
 <template>
-  <div ref="app" :class="{ noM: isMobile == null }">
+  <div ref="app" :class="{ noM: isMobile == null, 'theme--dark': theme === 'dark' }">
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog
@@ -68,6 +68,8 @@
    * 下线弹窗显示方法
    */
   const delTip = ref<boolean>(false)
+  // 主题
+  const theme = ref<string>(import.meta.env.VITE_APP_THEME as string)
 </script>
 
 <style lang="scss">

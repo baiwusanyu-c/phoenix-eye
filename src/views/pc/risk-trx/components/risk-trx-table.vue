@@ -10,14 +10,10 @@
       <template #empty>
         <div class="empty-data">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-          <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
+          <p style="line-height: 25px">{{ $t('lang.noRisk') }}</p>
         </div>
       </template>
-      <el-table-column
-        prop="platform"
-        :width="tableHeader('platform')"
-        :fixed="tableData.length > 0 ? 'left' : 'null'"
-        align="center">
+      <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
@@ -109,7 +105,12 @@
       </el-table-column>
       <el-table-column prop="from_address" :width="tableHeader('from_address')" align="left">
         <template #header>
-          <span class="table-head">{{ $t('lang.riskConfig.tableHeader.gainer') }}</span>
+          <span class="table-head">
+            {{ $t('lang.riskConfig.tableHeader.gainer') }}
+          </span>
+          <be-tooltip :content="$t('lang.riskConfig.gainerExp')" custom-class="table-tooltip">
+            <be-icon icon="iconHelpEagle"></be-icon>
+          </be-tooltip>
         </template>
         <template #default="scope">
           <be-ellipsis-copy
@@ -142,12 +143,15 @@
       <el-table-column prop="amount" :width="tableHeader('amount')" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.amount') }}</span>
+          <be-tooltip :content="$t('lang.riskConfig.amountExp')" custom-class="table-tooltip">
+            <be-icon icon="iconHelpEagle"></be-icon>
+          </be-tooltip>
         </template>
         <template #default="scope">
           {{ isEmpty(scope.row.amount, '/') === '/' ? '/' : `$ ${scope.row.amount}` }}
         </template>
       </el-table-column>
-      <el-table-column :width="tableHeader('tx_time')" fixed="right" prop="tx_time" align="left">
+      <el-table-column :width="tableHeader('tx_time')" prop="tx_time" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
         </template>
@@ -167,7 +171,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column v-if="showOperation" width="50" label=" " fixed="right" align="center">
+      <el-table-column v-if="showOperation" width="50" label=" " align="center">
         <template #default>
           <div class="more-btn">
             <be-icon icon="more" width="20" height="21"></be-icon>
@@ -175,36 +179,23 @@
         </template>
       </el-table-column>
     </el-table>
-    <!--    <pagesss
-      is-ordianry
-      :page-size="pageParams.data.pageSize"
-      :page-count="pageParams.data.total"
-      :current-page="pageParams.data.currentPage"
-      custom-class="table-page"
-      :pager-show-count="5"
-      :layout="['prev', 'pNum', 'page']"
-      @update-num="updateNum"
-      @change-page="pageChange">
-      <template #prev>
-        <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
-      </template>
-    </pagesss>-->
-    <be-pagination
-      v-if="showPager"
-      layout="sizes,prev, pager,next"
-      :init-func="getList"
-      custom-class="table-page"
-      :page-size="pageParams.data.pageSize"
-      :current-page="pageParams.data.currentPage"
-      :total="pageParams.data.total"
-      @update:page-size="pageParams.data.pageSize = $event"
-      @update:current-page="pageParams.data.currentPage = $event"
-      @update-page="pageChange">
-      <template #prev>
-        <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
-      </template>
-      <template #next><span></span></template>
-    </be-pagination>
+    <div v-if="tableData.length > 0 && showPager" class="table-page">
+      <be-pagination
+        is-ordianry
+        :page-size="pageParams.data.pageSize"
+        :page-count="pageParams.data.total"
+        :current-page="pageParams.data.currentPage"
+        :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+        :pager-show-count="5"
+        page-unit="page"
+        :layout="['prev', 'pNum', 'page']"
+        @update-num="updateNum"
+        @change-page="pageChange">
+        <template #prev>
+          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
+        </template>
+      </be-pagination>
+    </div>
   </div>
 </template>
 
@@ -214,17 +205,18 @@
   import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
   import { IFilterItem } from '../risk-trx-list.vue'
   import composition from '../../../../utils/mixin/common-func'
-  import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
-  import BePagination from '../../../../components/common-components/pagination/be-pagination.vue'
+  import { BeIcon, BeTag, BePagination, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import { IOption } from '../../../../utils/types'
+  import { IOption, IPageParam } from '../../../../utils/types'
+
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
+      BeTooltip,
       BeIcon,
       BeTag,
-      BePagination: BePagination,
+      BePagination,
       BeEllipsisCopy,
     },
     props: {
@@ -335,16 +327,19 @@
         pageParams.data.currentPage = item.currentPage
         getList()
       }
-      /*const updateNum = (data): void => {
-        pageParams.data.pageSize = data.pageSize
+      const updateNum = (data: IPageParam): void => {
+        pageParams.data.currentPage = 1
+        pageParams.data.pageSize = data.pageSize!
         getList()
-      }*/
+      }
       /**
        * 打開交易分析詳情tab
        */
       const openDetail = (params: any) => {
         openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
       }
+
+      const screenWidth = window.screen.width
       let tableHeader = computed(() => {
         let headerDict: IOption = {
           platform: '130',
@@ -352,8 +347,12 @@
           alert_level: '110',
           risk_features: '400',
           from_address: '200',
-          amount: '100',
+          amount: '120',
           tx_time: '100',
+        }
+        if (1280 <= screenWidth && 1326 <= screenWidth) {
+          headerDict.risk_features = '320'
+          headerDict.from_address = '170'
         }
         return function (key: string) {
           return headerDict[key]
@@ -364,7 +363,7 @@
       })
 
       return {
-        //updateNum,
+        updateNum,
         tableHeader,
         isEmpty,
         openDetail,
@@ -384,6 +383,8 @@
 
 <style lang="scss">
   .risk-table-inner {
+    padding: 20px;
+    background-color: #fff;
 
     .more-btn {
       width: 24px;

@@ -46,9 +46,31 @@ export function getProjectSituationStatistics(params: IPublicOpinion) {
     params,
   })
 }
+
 export function getProjectListCurUser() {
   return request({
     url: `${config.baseURL}/ussa/project/user/list`,
     method: 'get',
+  })
+}
+
+/**
+ * 创建项目订阅
+ * @param params
+ */
+export interface ISubscribe {
+  project_id?: number | string
+}
+export function createSubscribe(params: ISubscribe) {
+  return request({
+    url: `${config.baseURL}/ussa/project/subscription/create/${params.project_id}`,
+    method: 'post',
+  })
+}
+
+export function deleteSubscribe(params: ISubscribe) {
+  return request({
+    url: `${config.baseURL}/ussa/project/subscription/delete/${params.project_id}`,
+    method: 'post',
   })
 }
