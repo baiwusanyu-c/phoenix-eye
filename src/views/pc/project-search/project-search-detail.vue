@@ -627,7 +627,7 @@
         }
         createSubscribe(params)
           .then((res: any) => {
-            if (res.code === '0000') {
+            if (res.success) {
               const userInfo = JSON.parse(getStore('userInfo') as string)
               const username = userInfo ? '(' + userInfo.username + ')' : ''
               msgBox(
