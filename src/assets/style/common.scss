@@ -483,6 +483,16 @@
   top: 72px !important;
   z-index: 10002 !important;
   box-shadow: 0 0 13px rgba(0, 0, 0, .16);
+
+  .el-message__closeBtn {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    font-size: var(--el-message-close-size,16px);
+    color: var(--el-message-close-icon-color);
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
 }
 
 //多选框样式

@@ -100,7 +100,7 @@
         { label: 'POLYGON', val: 'polygon', isActive: false },
       ])
       const filterTypeItem = ref<Array<IFilterItem>>([
-        { label: 'Huge income', val: 'BlockTrade', isActive: false },
+        { label: 'LargeOutflow', val: 'LargeOutflow', isActive: false },
         { label: 'FlashLoan', val: 'FlashLoan', isActive: false },
         { label: 'PrivilegedOperation', val: 'PrivilegedOperation', isActive: false },
         { label: '', val: '', isActive: false },

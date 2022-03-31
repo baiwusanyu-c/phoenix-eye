@@ -6,6 +6,7 @@ import WindiCSS from 'vite-plugin-windicss'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { transformScript } from 'vite-plugin-svg-transform-script'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,7 +21,16 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    transformScript({
+      input: './icon/',
+      output: './src/utils/',
+      name: 'svg-dict',
+      type: 'ts',
+      format: 'default',
+    }),
   ],
+  // 指定环境变量文件路径
+  envDir: './env/',
   /**
    * 在生产中服务时的基本公共路径。
    * @default '/'
@@ -83,18 +93,18 @@ export default defineConfig({
     },
   },
 
-  /*  build: {
-          rollupOptions: {
-              // 确保外部化处理那些你不想打包进库的依赖
-              external: [  path.resolve( __dirname, 'public/be-ui/be-ui.es.js' ),],
-              output: {
-                  // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
-                  globals: {
-                      vue: 'Vue'
-                  }
-              }
-          }
-      },*/
+  /* build: {
+    rollupOptions: {
+      // 确保外部化处理那些你不想打包进库的依赖
+      external: [path.resolve(__dirname, 'public/be-ui/be-ui.es.js')],
+      output: {
+        // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
+        globals: {
+          vue: 'Vue',
+        },
+      },
+    },
+  },*/
   /*build: {
       minify: false,
       cssCodeSplit: true, // 将组件的 style 打包到 js 文件中

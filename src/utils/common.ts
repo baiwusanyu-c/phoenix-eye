@@ -1,6 +1,7 @@
 import { isArray, isObject, toRawType } from '@vue/shared'
 // @ts-ignore
 import { BeMessage } from '../../public/be-ui/be-ui.es'
+//import { ElMessage } from 'element-plus'
 import { IOption } from './types'
 /**
  * id生成方法
@@ -493,6 +494,11 @@ export const message = (type: string, info: string, className?: string): void =>
     offsetTop: 80,
     close: true,
   })
+  /* ElMessage({
+    showClose: true,
+    message: info,
+    type: type,
+  })*/
 }
 /**
  * 文本复制
