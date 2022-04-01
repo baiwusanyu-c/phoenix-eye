@@ -74,10 +74,8 @@ export function deleteSubscribe(params: ISubscribe) {
     method: 'post',
   })
 }
-export interface IContractReport {
+export interface IContractReport extends IPageParam{
   project_id: number
-  page_num?: number
-  page_size?: number
 }
 // 获取项目合约报告
 export function getContractReportList(params: IContractReport) {

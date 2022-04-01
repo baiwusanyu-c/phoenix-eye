@@ -29,7 +29,7 @@
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
             @update-num="updateNum"
-            @change-page="pageParams">
+            @change-page="pageChange">
             <template #prev>
               <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
             </template>
@@ -44,6 +44,7 @@
   import { BeButton, BePagination } from '../../../../public/be-ui/be-ui.es'
   import { IPageParam, ISafetyData } from '../../../utils/types'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
+  import {getPublicOpinionList, IPOList} from "../../../api/risk-public-info";
   export default defineComponent({
     name: 'RiskPublicInfo',
     components: { ProjectDetailPublicOpinion, BeButton, BePagination },
@@ -60,68 +61,42 @@
        * 获取列表数据
        */
       const getList = (): void => {
-        const mock = [
-          {
-            title:
-              'RT @PeckShieldAlert: #PeckShieldAlert Unverified PYE (PYE) smart contract is exploited in a flurry of TXs (one representative hack TX: http…',
-            url: 'https://twitter.com/peckshield/status/1507126529146253326',
-            content:
-              'RT @PeckShieldAlert: #PeckShieldAlert Unverified PYE (PYE) smart contract is exploited in a flurry of TXs (one representative hack TX: http…',
-            tag: ['twitter', 'content', 'title'],
-            source: 'twitter',
-            pub_time: '2022-03-24T22:45:40.000+0000',
-          },
-          {
-            title:
-              '#PeckShieldAlert Unverified PYE (PYE) smart contract is exploited in a flurry of TXs (one representative hack TX: https://t.co/NhTsgGXYH7),\nleading to the loss of ~$2.1m. The exploit is possible because of the lack of "k invariant verification" in swap() routine. @PyeEcosystem https://t.co/ecWCNaKABh',
-            url: 'https://twitter.com/PeckShieldAlert/status/1507021035224580097',
-            content:
-              '#PeckShieldAlert Unverified PYE (PYE) smart contract is exploited in a flurry of TXs (one representative hack TX: https://t.co/NhTsgGXYH7),\nleading to the loss of ~$2.1m. The exploit is possible because of the lack of "k invariant verification" in swap() routine. @PyeEcosystem https://t.co/ecWCNaKABh',
-            tag: ['twitter', 'content', 'title'],
-            source: 'twitter',
-            pub_time: '2022-03-24T15:46:28.000+0000',
-          },
-          {
-            title:
-              '#PeckShieldAlert @Arthur_0x ’s hot wallet appears to be compromised. ~59 #NFTs was transferred to https://t.co/MZXIWN4ING , including ~5 #CloneX, ~17 $Azuki @AzukiZen, ~2 @TabinekoKIKI, ~2 @HedgiesOfficial,  ~33 @SecondSelfNFT\n~19 stolen NFTs wiped for ~233 $ETH (~$690k). https://t.co/oqM08ex1Yg',
-            url: 'https://twitter.com/PeckShieldAlert/status/1506110131259736071',
-            content:
-              '#PeckShieldAlert @Arthur_0x ’s hot wallet appears to be compromised. ~59 #NFTs was transferred to https://t.co/MZXIWN4ING , including ~5 #CloneX, ~17 $Azuki @AzukiZen, ~2 @TabinekoKIKI, ~2 @HedgiesOfficial,  ~33 @SecondSelfNFT\n~19 stolen NFTs wiped for ~233 $ETH (~$690k). https://t.co/oqM08ex1Yg',
-            tag: ['twitter', 'content', 'title'],
-            source: 'twitter',
-            pub_time: '2022-03-22T03:26:52.000+0000',
-          },
-          {
-            title:
-              '#PeckShieldAlert #rugpull PeckShield has detected @WW3Apes #NFT just rugged. @WW3Apes deleted its social accounts. Its twin account @GodZape rugged ~20 $ETH and deleted its social accounts a few days ago. Do *NOT* fall prey to it. #NFTs #APES  #YellowArmy @NFTethics @opensea https://t.co/w6SWeNsphH',
-            url: 'https://twitter.com/PeckShieldAlert/status/1505822966751567876',
-            content:
-              '#PeckShieldAlert #rugpull PeckShield has detected @WW3Apes #NFT just rugged. @WW3Apes deleted its social accounts. Its twin account @GodZape rugged ~20 $ETH and deleted its social accounts a few days ago. Do *NOT* fall prey to it. #NFTs #APES  #YellowArmy @NFTethics @opensea https://t.co/w6SWeNsphH',
-            tag: ['twitter', 'content', 'title'],
-            source: 'twitter',
-            pub_time: '2022-03-21T08:25:46.000+0000',
-          },
-        ]
-        mock.forEach(value => {
-          list.value.push({
-            negativeMsg: '经自动识别，该资讯为负面信息',
-            sourceUrl: value.url,
-            title: value.title,
-            message: value.content,
-            from: value.source,
-            time: value.pub_time,
-            label: value.tag,
+          const params:IPOList = {
+              param:searchParams.value,
+              page_num:pageParams.value.currentPage,
+              page_size:pageParams.value.pageSize,
+          }
+          getPublicOpinionList(params).then((res:any)=>{
+              if (res.success) {
+                  list.value = res.data.page_infos
+                  res.data.page_infos.forEach((value:any)=>{
+                      list.value.push({
+                          negativeMsg: '经自动识别，该资讯为负面信息',
+                          sourceUrl: value.url,
+                          title: value.title,
+                          message: value.content,
+                          from: value.source,
+                          time: value.pub_time,
+                          label: value.tag,
+                      })
+                  })
+
+                  pageParams.value.total = res.data.total
+              }
           })
-        })
-        pageParams.value.total = 4
       }
       const updateNum = (data: IPageParam): void => {
         pageParams.value.currentPage = 1
         pageParams.value.pageSize = data.pageSize!
         getList()
       }
+      const pageChange = (item:IPageParam):void=>{
+          pageParams.value.currentPage = item.currentPage
+          getList()
+      }
       getList()
       return {
+        pageChange,
         updateNum,
         pageParams,
         list,

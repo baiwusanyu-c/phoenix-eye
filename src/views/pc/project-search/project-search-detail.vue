@@ -181,7 +181,7 @@
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
-          @change-page="pageChangeTj">
+          @change-page="(item)=>handlePageChange(item.currentPage,pageChangeTj,pageChangeTj)">
           <template #prev>
             <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
           </template>
@@ -212,7 +212,7 @@
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
-          @change-page="pageChangeAudit">
+          @change-page="(item)=>handlePageChange(item.currentPage,pageParamsAudit,pageChangeAudit)">
           <template #prev>
             <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsAudit.total }}</span>
           </template>
@@ -274,7 +274,7 @@
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
             @update-num="updateNumFs"
-            @change-page="pageChangeFs">
+            @change-page="(item)=>handlePageChange(item.currentPage,pageParamsFs,pageChangeFs)">
             <template #prev>
               <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
             </template>
@@ -484,14 +484,7 @@
             console.error(err)
           })
       }
-      /**
-       * 项目舆情安全分页方法
-       * @param {IPageParam} item - 分页参数对象
-       */
-      const pageChangeAudit = (item: IPageParam): void => {
-        pageParamsAudit.value.currentPage = item.currentPage
-        getAuditData()
-      }
+
       // 项目id
       const projectId = ref<string>('')
       const { param, id } = route.query
@@ -529,14 +522,6 @@
             message('error', err.message || err)
             console.error(err)
           })
-      }
-      /**
-       * 项目舆情安全分页方法
-       * @param {IPageParam} item - 分页参数对象
-       */
-      const pageChangeTj = (item: IPageParam): void => {
-        pageParamsTj.value.currentPage = item.currentPage
-        getContractStatistics()
       }
 
       /**
@@ -591,6 +576,7 @@
             console.error(err)
           })
       }
+
       /**
        * 项目舆情安全分页方法
        * @param {IPageParam} item - 分页参数对象
@@ -599,6 +585,26 @@
         pageParamsFs.value.currentPage = item.currentPage
         getPublicOpinionData()
       }
+        /**
+         * 项目舆情安全分页方法
+         * @param {IPageParam} item - 分页参数对象
+         */
+        const pageChangeTj = (item: IPageParam): void => {
+            pageParamsTj.value.currentPage = item.currentPage
+            getContractStatistics()
+        }
+        /**
+         * 项目舆情安全分页方法
+         * @param {IPageParam} item - 分页参数对象
+         */
+        const pageChangeAudit = (item: IPageParam): void => {
+            pageParamsAudit.value.currentPage = item.currentPage
+            getAuditData()
+        }
+        const handlePageChange = (currentPage:number,item:IPageParam,cb:Function ):void =>{
+            item.currentPage = currentPage
+            cb()
+        }
       const updateNumFs = (data: IPageParam): void => {
         pageParamsFs.value.currentPage = 1
         pageParamsFs.value.pageSize = data.pageSize!
@@ -717,6 +723,7 @@
         }
       }
       return {
+          handlePageChange,
         pageParamsAudit,
         auditList,
         handleSubscribe,
