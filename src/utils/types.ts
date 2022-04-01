@@ -72,7 +72,7 @@ export interface IBaseInfo {
   telegram?: string
   twitter?: string
   website?: string
-  isSubscribe?:boolean
+  isSubscribe?: boolean
   name?: string
 }
 
@@ -104,7 +104,7 @@ export interface IAuditList {
   report_id: string
   report_name: string
   url: string
-  create_time:string
+  create_time: string
 }
 // create-project
 
