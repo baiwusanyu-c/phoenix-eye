@@ -455,10 +455,11 @@
 </script>
 
 <style lang="scss">
-.project-select{
+  .project-select {
     width: 214px;
     background: white;
-}
+  }
+
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
     min-width: initial;
