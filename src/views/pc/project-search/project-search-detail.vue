@@ -334,7 +334,7 @@
   import { webURL } from '../../../enums/link'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import config from '../../../enums/config'
-  import {ITableHeader} from "../../../utils/types";
+  import { ITableHeader } from '../../../utils/types'
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
