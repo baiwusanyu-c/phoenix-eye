@@ -61,7 +61,7 @@ service.interceptors.response.use(
         removeStore('token')
         removeStore('userInfo')
         // 如果当前路由是 /riskTrx/list 直接刷新页面
-        if(window.location.hash === '#/riskTrx/list'){
+        if (window.location.hash === '#/riskTrx/list') {
           location.reload()
           return
         }
