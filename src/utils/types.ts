@@ -114,3 +114,27 @@ export interface IWebsiteForm {
   twitter?: string
   telegram?: string
 }
+// risk-trx-list
+export interface IFilterItem {
+  label?: string
+  val: string
+  isActive: boolean
+}
+export interface IRiskTable {
+  getList: Function
+}
+// risk-trx-detail
+export interface IBaseInfoRiskInfo {
+  platform?: string
+  tx_hash?: string
+  slump?: any
+}
+// zipdownload.ts
+export interface INavigator {
+  msSaveBlob?: (blob: any, defaultName?: string) => boolean
+}
+// project-search-detail/project-detail-top
+export interface ITableHeader {
+  prop: string
+  label: string
+}

@@ -371,11 +371,7 @@
   } from '../../../utils/common'
   import { BeTag, BeIcon, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import { iconDict } from '../../../utils/platform-dict'
-  interface IBaseInfo {
-    platform?: string
-    tx_hash?: string
-    slump?: any
-  }
+  import { IBaseInfoRiskInfo } from '../../../utils/types'
 
   export default defineComponent({
     name: 'RiskTrxDetail',
@@ -383,7 +379,7 @@
     setup() {
       const { message, route } = composition()
       // 基础信息
-      const baseInfo = ref<IBaseInfo>({})
+      const baseInfo = ref<IBaseInfoRiskInfo>({})
       // 收益信息
       const profitData = ref<Array<any>>([])
       // loading

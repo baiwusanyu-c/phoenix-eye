@@ -328,13 +328,13 @@
     openWindow,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
-  import ProjectDetailTop, { ITableHeader } from './components/project-detail-top.vue'
+  import ProjectDetailTop from './components/project-detail-top.vue'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import config from '../../../enums/config'
-
+  import {ITableHeader} from "../../../utils/types";
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {

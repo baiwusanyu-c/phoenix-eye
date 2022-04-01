@@ -63,10 +63,8 @@
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'
-  export interface ITableHeader {
-    prop: string
-    label: string
-  }
+  import { ITableHeader } from '../../../../utils/types'
+
   export default defineComponent({
     name: 'ProjectDetailTop',
     components: { BeTag, BeEllipsisCopy, BeProgress },

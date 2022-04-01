@@ -73,16 +73,7 @@
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
   import RiskTrxTable from './components/risk-trx-table.vue'
   import { useEventBus } from '@vueuse/core'
-
-  export interface IFilterItem {
-    label?: string
-    val: string
-    isActive: boolean
-  }
-  export interface IRiskTable {
-    getList: Function
-  }
-
+  import { IFilterItem, IRiskTable } from '../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxList',
     components: { RiskTrxTable, BeButton },
