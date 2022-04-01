@@ -60,6 +60,11 @@ service.interceptors.response.use(
         removeSession('CETInfo')
         removeStore('token')
         removeStore('userInfo')
+        // 如果当前路由是 /riskTrx/list 直接刷新页面
+        if(window.location.hash === '#/riskTrx/list'){
+          location.reload()
+          return
+        }
         window.location.href = '#/riskTrx/list'
         if (getSession('loginExpiredNum') === 'false' || !getSession('loginExpiredNum')) {
           bus.emit('true')
