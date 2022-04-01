@@ -340,4 +340,12 @@ export default {
     rank: '排行',
     xmgm: '项目规模',
   },
+  subscribe: {
+    titleSuccess: '订阅成功',
+    success: '我们将发送最新的风险交易与风险公共舆情到您的邮箱',
+    titleFailed: '失败',
+    failed: '由于未知原因导致订阅失败，请联系我们的客服',
+    titleUn: '订阅取消',
+    unSubscribes: '取消订阅成功！',
+  },
 }
