@@ -356,4 +356,12 @@ export default {
     rank: 'Ranking',
     xmgm: 'Project scale',
   },
+  subscribe:{
+    titleSuccess:'Subscription Successful',
+    success: 'We will send the latest risk trading and public opinion information to your email',
+    titleFailed:'Failing',
+    failed:'Failure due to unknown reasons, please contact our customer service.',
+    titleUn:'Unsubscribes',
+    unSubscribes:'Unsubscribe succeeded!',
+  }
 }

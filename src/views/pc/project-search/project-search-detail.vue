@@ -629,15 +629,15 @@
           .then((res: any) => {
             if (res.success) {
               msgBox(
-                'Subscription Successful',
-                `We will send the latest risk trading and public opinion information to your email (${res.data.email}).`,
+                t('lang.subscribe.titleSuccess'),
+                `${t('lang.subscribe.success')}(${res.data.email}).`,
                 'subscribe'
               )
               baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
             } else {
               msgBox(
-                'Failing',
-                'Failure due to unknown reasons, please contact our customer service.',
+                  t('lang.subscribe.titleFailed'),
+                  t('lang.subscribe.failed'),
                 'subscribe subscribe--normal'
               )
             }
@@ -654,7 +654,7 @@
         deleteSubscribe(params)
           .then((res: any) => {
             if (res.code === '0000') {
-              msgBox('Unsubscribes', 'Unsubscribe succeeded!', 'subscribe')
+              msgBox( t('lang.subscribe.titleUn'), t('lang.subscribe.unSubscribes'), 'subscribe')
               baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
             } else {
               message('warning', 'An unknown error has occurred in the system')
