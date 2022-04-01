@@ -9,10 +9,10 @@ import { ref, computed } from 'vue'
 import { getCodeImg } from '../../api/login'
 import { useI18n } from 'vue-i18n'
 // @ts-ignore
-import { BeMessage } from '../../../public/be-ui/be-ui.es'
-// import { ElMessage } from 'element-plus'
+import { BeMessage, BeMsg } from '../../../public/be-ui/be-ui.es.js'
 import { Ref } from '@vue/reactivity'
 import { isNumber, isString } from '../common'
+
 export default () => {
   /**
    * 打開窗口
@@ -52,11 +52,6 @@ export default () => {
       offsetTop: 80,
       close: true,
     })
-    /* ElMessage({
-      showClose: true,
-      message: info,
-      type: type,
-    })*/
   }
   /**
    * 開啓定時器，進行數字滾動
@@ -85,7 +80,23 @@ export default () => {
       return emptyStr || t('lang.emptyData')
     }
   })
+  const msgBox = (title: string, content: string, className: string): void => {
+    BeMsg.service({
+      titles: title,
+      customClass: className,
+      bodyRender: () => {
+        return <p>{content}</p>
+      },
+      footerRender: function () {
+        return <div></div>
+      },
+      iconPreRender: function () {
+        return <div></div>
+      },
+    })
+  }
   return {
+    msgBox,
     isEmpty,
     startTimer,
     uuid,

@@ -4,7 +4,7 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <!--    logo    -->
     <div style="display: flex; align-items: center">
-      <div class="expend-logo"></div>
+      <div class="expend-logo" @click="routerPush('/riskTrx/list')"></div>
       <el-select
         v-if="isLogin"
         v-model="selectVal"
@@ -174,10 +174,20 @@
           headerConfig.value = {
             JYFX: {
               icon: '',
-              index: 0,
+              index: '0',
               name: 'lang.subNav.navName2',
               show: true,
               path: '/riskTrx/list',
+              isPush: true,
+              children: [],
+              isDisabled: false,
+            },
+            RPIF: {
+              icon: '',
+              index: '1',
+              name: 'lang.subNav.navName6',
+              show: true,
+              path: '/RiskPublicInformation',
               isPush: true,
               children: [],
               isDisabled: false,
@@ -192,9 +202,15 @@
       }
       const bus = useEventBus<string>('loginExpired')
       bus.on(confirm)
+
       const openLogin = (): void => {
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
+      // 外部通知打開登錄窗口
+      const busLogin = useEventBus<string>('openLogin')
+      busLogin.on(() => {
+        openLogin()
+      })
       /**
        * 路由跳转方法
        * @param {any} router
@@ -261,6 +277,16 @@
           children: [],
           isDisabled: false,
         },
+        /*RPIF: {
+          icon: '',
+          index: '1',
+          name: 'lang.subNav.navName6',
+          show: true,
+          path: '/RiskPublicInformation',
+          isPush: true,
+          children: [],
+          isDisabled: false,
+        },*/
       })
       const headerConfigMore = ref<any>([])
       const store = useStore()
@@ -275,7 +301,7 @@
           '-xitongpeizhi',
         ]
         menuConfig.forEach((val: any, index: number) => {
-          if (val.perms === 'XMGL') {
+          if (val.perms === 'XMGL' || val.perms === 'TRXRESET') {
             headerConfigMore.value.push({
               index: (index + 1).toString(),
               name: val.meta.title,
@@ -405,6 +431,7 @@
         selectProjBus.emit(selectVal.value)
       }
       return {
+        routerPush,
         handleProjectSelect,
         getProjectUser,
         projectList,
@@ -567,6 +594,7 @@
       width: 164px;
       height: 60px;
       margin: 0 30px;
+      cursor: pointer;
       background-image: url('../assets/image/pc/logo-white.png');
       background-repeat: no-repeat;
       background-position-y: center;

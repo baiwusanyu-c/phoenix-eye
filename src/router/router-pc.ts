@@ -35,6 +35,12 @@ const routes = [
         meta: { title: 'lang.subNav.navName2' },
       },
       {
+        path: '/RiskPublicInformation',
+        name: 'RiskPublicInformation',
+        component: () => import('../views/pc/risk-public-info/risk-public-info.vue'),
+        meta: { title: 'lang.subNav.navName6' },
+      },
+      {
         path: '/riskTrx/detail',
         name: 'riskTrxDetail',
         component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
@@ -53,6 +59,8 @@ const routes = [
 const metaTitleDict: any = {
   XMSS: 'lang.subNav.navName5',
   XMGL: 'lang.subNav.navName3',
+  DZJK: 'lang.subNav.navName7',
+  TRXRESET: 'lang.subNav.navName8',
 }
 // 组件字典
 // 递归路由配置对象时会使用到，其key必须和bms的组件路径一致
@@ -64,6 +72,8 @@ const routerDict: IOption = {
     import('../views/pc/project-search/project-search-main.vue'),
   'pc/project-search/project-search-detail': () =>
     import('../views/pc/project-search/project-search-detail.vue'),
+  'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
+  'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
 }
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
@@ -139,7 +149,8 @@ const beforeEachHandle = (router: Router) => {
           isWhitePath = true
         }
       })
-      if (store.state.routeConfig.length > 0 || !getStore('token') || isWhitePath) {
+
+      if (store.state.routeConfig.length > 0 || isWhitePath) {
         next()
         return
       } else {

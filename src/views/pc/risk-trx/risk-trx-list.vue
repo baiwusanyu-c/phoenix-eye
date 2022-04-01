@@ -100,11 +100,10 @@
         { label: 'POLYGON', val: 'polygon', isActive: false },
       ])
       const filterTypeItem = ref<Array<IFilterItem>>([
-        { label: 'LargeOutflow', val: 'LargeOutflow', isActive: false },
-        { label: 'FlashLoan', val: 'FlashLoan', isActive: false },
-        { label: 'PrivilegedOperation', val: 'PrivilegedOperation', isActive: false },
-        { label: '', val: '', isActive: false },
-        /*{label: 'Slippage', val: 'Slippage', isActive: false},*/
+        { label: 'Large outflow', val: 'Large outflow', isActive: false },
+        { label: 'Flash loan', val: 'Flash loan', isActive: false },
+        { label: 'Privileged operation', val: 'Privileged operation', isActive: false },
+        { label: 'Slump', val: 'Slump', isActive: false },
       ])
 
       const filterLevelItem = ref<Array<IFilterItem>>([
@@ -147,7 +146,7 @@
     min-height: calc(100% - 100px);
 
     .search-area {
-      width: 67.5%;
+      width: 70%;
       margin: 40px auto 0 auto;
 
       .risk-trx-search-input {
@@ -173,7 +172,7 @@
       .risk-trx-search-filter {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: 100px 160px 120px 200px 100px;
+        grid-template-columns: 100px 160px 140px 200px 100px;
         grid-gap: 20px;
         width: 100%;
         padding: 20px;
@@ -210,8 +209,26 @@
     }
 
     .risk-table {
-      width: 67.5%;
+      width: 70%;
       margin: 30px auto 0 auto;
+    }
+  }
+
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+
+    .risk-trx-list .search-area,
+    .risk-trx-list .risk-table {
+      width: 92%;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+
+    .risk-trx-list .search-area,
+    .risk-trx-list .risk-table {
+      width: 80%;
     }
   }
 </style>

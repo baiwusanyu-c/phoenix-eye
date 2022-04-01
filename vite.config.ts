@@ -59,13 +59,7 @@ export default defineConfig({
       },
     },
   },
-  // 定义环境变量
-  define: {
-    __DEV__: process.env.NODE_ENV == 'production',
-    __TEST_PROD__: process.env.NODE_ENV === 'staging',
-    __PROD__: process.env.NODE_ENV === 'development',
-    __PRE_PROD__: process.env.NODE_ENV === 'pretest',
-  },
+
   resolve: {
     // 导入文件夹别名
     alias: {
@@ -88,7 +82,8 @@ export default defineConfig({
                 @import "./src/assets/style/reset.scss";
                 @import "./src/assets/style/transition.scss";
                 @import "./src/assets/style/variable.scss";
-                @import "./src/assets/style/common.scss";`, // 添加公共样式
+                @import "./src/assets/style/common.scss";
+                @import "./src/assets/style/theme-dark.scss";`, // 添加公共样式
       },
     },
   },
@@ -106,28 +101,28 @@ export default defineConfig({
     },
   },*/
   /*build: {
-      minify: false,
-      cssCodeSplit: true, // 将组件的 style 打包到 js 文件中
-      outDir: 'external-page',
-      target: 'esnext',
-      // 库打包模式
-      lib: {
-        formats: ['umd'],
-        entry: './src/views/pc/external-page/index.js',
-        name: 'ExternalRiskTrx',
-        fileName: (format) => `external-risk-trx.${format}.js`
+    minify: false,
+    cssCodeSplit: true, // 将组件的 style 打包到 js 文件中
+    outDir: 'addr-monitor-email',
+    target: 'esnext',
+    // 库打包模式
+    lib: {
+      formats: ['iife'],
+      entry: './src/components/addr-monitor-email/index.js',
+      name: 'addrMonitorEmail',
+      fileName: format => `addr-monitor-email.${format}.js`,
+    },
+    rollupOptions: {
+      // 确保外部化处理那些你不想打包进库的依赖
+      external: ['vue', 'be-ui'],
+      output: {
+        // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
+        globals: {
+          vue: 'Vue',
+        },
       },
-      rollupOptions: {
-        // 确保外部化处理那些你不想打包进库的依赖
-        external: ['vue'],
-        output: {
-          // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
-          globals: {
-            vue: 'Vue'
-          }
-        }
-      }
-    },*/
+    },
+  },*/
   esbuild: {
     jsxFactory: 'h',
     jsxFragment: 'Fragment',

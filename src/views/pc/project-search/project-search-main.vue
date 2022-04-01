@@ -2,8 +2,6 @@
 <template>
   <div class="project-search-main eagle-page">
     <div class="project-search-container">
-      <h1 class="title">{{ $t('lang.projectExplorer.title') }}</h1>
-      <p class="subTitle mb-18">{{ $t('lang.projectExplorer.subTitle') }}</p>
       <div class="project-manage-search-input">
         <el-input
           v-model="searchParams"
@@ -54,11 +52,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, ref, onMounted } from 'vue'
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import { getProjectListUser, IProjParam } from '../../../api/project-explorer'
-
+  import { getStore, getUrlkey } from '../../../utils/common'
+  import { useEventBus } from '@vueuse/core'
   declare type projListType = {
     project_id: string
     project_name: string
@@ -121,6 +120,34 @@
         searchParams.value = params
         getList()
       }
+
+      const busLogin = useEventBus<string>('openLogin')
+      const ProjIdByEmail = ref<number>(-1)
+      // http://192.168.0.30:3010/#/projectSearch?from=email&id=7
+      const initPage = (): void => {
+        const urlParams = getUrlkey()
+        const isLogin = getStore('token')
+        // 来自email 打开 且没有登录
+        if (urlParams.from === 'email' && !isLogin) {
+          // 开启登录窗口
+          busLogin.emit()
+          if (urlParams.id) {
+            ProjIdByEmail.value = urlParams.id
+          }
+        }
+        // 来自email 打开 且有登录
+        if (urlParams.from === 'email' && isLogin) {
+          // 开启登录窗口
+          if (urlParams.id) {
+            ProjIdByEmail.value = urlParams.id
+            // 直接去态势详情页面
+            routerSwitch(ProjIdByEmail.value.toString())
+          }
+        }
+      }
+      onMounted(() => {
+        initPage()
+      })
       return {
         handleDefaultSearch,
         routerSwitch,
@@ -134,7 +161,7 @@
 
 <style lang="scss">
   .project-search-main {
-    min-height: calc(100% - 192px);
+    min-height: calc(100% - 100px);
 
     .subTitle {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
@@ -155,18 +182,9 @@
   }
 
   .project-search-container {
-    width: 67.5%;
-    margin: 132px auto 0 auto;
+    width: 70%;
+    margin: 40px auto 0 auto;
     text-align: center;
-
-    .title {
-      margin-bottom: 16px;
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
-      font-size: 36px;
-      font-weight: 500;
-      line-height: 40px;
-      color: $textColor3;
-    }
 
     .project-manage-search-input {
       display: flex;
@@ -190,7 +208,7 @@
   }
 
   .project-search-result {
-    width: 67.5%;
+    width: 70%;
     margin: 32px auto 0 auto;
 
     .project-search-eg {
@@ -210,7 +228,7 @@
 
     .res {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       grid-gap: 22px;
 
       div {
