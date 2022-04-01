@@ -628,11 +628,9 @@
         createSubscribe(params)
           .then((res: any) => {
             if (res.success) {
-              const userInfo = JSON.parse(getStore('userInfo') as string)
-              const username = userInfo ? '(' + userInfo.username + ')' : ''
               msgBox(
                 'Subscription Successful',
-                `We will send the latest risk trading and public opinion information to your email ${username}.`,
+                `We will send the latest risk trading and public opinion information to your email (${res.data.email}).`,
                 'subscribe'
               )
               baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
