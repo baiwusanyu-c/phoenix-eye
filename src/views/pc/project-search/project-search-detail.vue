@@ -189,18 +189,34 @@
       </div>
     </div>
     <!--Audit-->
-    <div class="proj-detail-item">
+    <div class="proj-detail-item" v-if="auditList.length > 0">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
       </div>
       <div class="project-detail-audit--body">
         <project-detail-audit
           v-for="item in auditList"
-          :key="item.url"
+          :key="item.report_id"
           :url="item.url"
-          :name="item.name"
-          :date="item.date">
+          :name="item.report_name"
+          :date="formatDate(createDate(item.create_time))">
         </project-detail-audit>
+      </div>
+      <div class="table-page">
+          <be-pagination
+               is-ordianry
+              :page-size="pageParamsAudit.pageSize"
+              :page-count="pageParamsAudit.total"
+              :current-page="pageParamsAudit.currentPage"
+              :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+              :pager-show-count="5"
+              page-unit="page"
+              :layout="['prev', 'page']"
+              @change-page="pageChangeAudit">
+              <template #prev>
+                  <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsAudit.total }}</span>
+              </template>
+          </be-pagination>
       </div>
     </div>
     <!--top5 数据表格 "-->
@@ -291,12 +307,13 @@
   import { useI18n } from 'vue-i18n'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import {
-    createSubscribe,
-    deleteSubscribe,
-    getProjectSituation,
-    getProjectSituationStatistics,
-    getPublicOpinion,
-    IPublicOpinion,
+      createSubscribe,
+      deleteSubscribe,
+      getProjectSituation,
+      getProjectSituationStatistics,
+      getPublicOpinion, IContractReport,
+      getContractReportList,
+      IPublicOpinion,
   } from '../../../api/project-explorer'
   import {
     numberToCommaString,
@@ -312,6 +329,7 @@
   import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
+  import config from "../../../enums/config";
 
   export default defineComponent({
     name: 'ProjectSearchDetail',
@@ -436,14 +454,41 @@
        * 获取Audit数据
        */
       const auditList = ref<Array<IAuditList>>([])
+      const pageParamsAudit= ref<IPageParam>({
+            currentPage: 1,
+            pageSize: 4,
+            total: 0,
+        })
       const getAuditData = (): void => {
-        auditList.value = [
-          { name: 'project name1', date: '2020-12-13', url: 'www.baidu.com' },
-          { name: 'project name2', date: '2020-12-13', url: 'https://www.bilibili.com/' },
-          { name: 'project name3', date: '2020-12-13', url: 'https://github.com/' },
-          { name: 'project name4', date: '2020-12-13', url: 'http://be-ui3.cn/' },
-        ]
+          const params:IContractReport = {
+              project_id:parseInt(projectId.value),
+              page_num: pageParamsAudit.value.currentPage,
+              page_size: pageParamsAudit.value.pageSize,
+          }
+          const prevUrl =
+              String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+          let baseURL = config.baseURL
+        getContractReportList(params).then((res:any)=>{
+            if(res.success){
+                auditList.value = res.data.page_infos
+                pageParamsAudit.value.total = res.data.total
+                auditList.value.forEach(val=>{
+                    val.url =  `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+                })
+            }
+        }) .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+        })
       }
+        /**
+         * 项目舆情安全分页方法
+         * @param {IPageParam} item - 分页参数对象
+         */
+        const pageChangeAudit = (item: IPageParam): void => {
+            pageParamsAudit.value.currentPage = item.currentPage
+            getAuditData()
+        }
       // 项目id
       const projectId = ref<string>('')
       const { param, id } = route.query
@@ -559,7 +604,9 @@
       onMounted(() => {
         getProSituData()
       })
-
+        /**
+         * 选择项目 重置变量
+          */
       const selectProjBus = useEventBus<string>('selectProjBus')
       selectProjBus.on((id: string) => {
         projectId.value = id
@@ -573,6 +620,11 @@
           pageSize: 5,
           total: 0,
         }
+          pageParamsAudit.value = {
+              currentPage: 1,
+              pageSize: 4,
+              total: 0,
+          }
         getProSituData()
       })
       // 语种切换重新赋值一下 解决不更新问题
@@ -632,6 +684,9 @@
             console.error(err)
           })
       }
+        /**
+         * 取消订阅
+         */
       const cancelSubscribe = (): void => {
         const params = {
           project_id: parseInt(projectId.value),
@@ -659,6 +714,7 @@
         }
       }
       return {
+          pageParamsAudit,
         auditList,
         handleSubscribe,
         updateNumFs,
@@ -680,6 +736,7 @@
         pageChangeFs,
         pageParamsTj,
         pageChangeTj,
+         pageChangeAudit,
         getPublicOpinionData,
         safetyData,
         pageParamsFs,

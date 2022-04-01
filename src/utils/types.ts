@@ -72,6 +72,7 @@ export interface IBaseInfo {
   telegram?: string
   twitter?: string
   website?: string
+  isSubscribe?:boolean
   name?: string
 }
 
@@ -98,9 +99,12 @@ export interface ITop5TokenHolderSelect {
 }
 
 export interface IAuditList {
-  date: string
-  name: string
+  uuid: string
+  report_num: string
+  report_id: string
+  report_name: string
   url: string
+  create_time:string
 }
 // create-project
 
