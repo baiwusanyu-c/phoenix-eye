@@ -301,7 +301,7 @@
           <div style="display: flex; margin-top: 20px">
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.privileged_operation.to"
+              :target-str="baseInfo.privileged_operation.from"
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold">
@@ -309,7 +309,7 @@
             <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.privileged_operation.from"
+              :target-str="baseInfo.privileged_operation.to"
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold">
