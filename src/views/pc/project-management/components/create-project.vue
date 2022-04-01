@@ -108,7 +108,7 @@
                 is-close
                 @close="handleClose(index)"
                 @click="openWindow(item.url)">
-                {{ item.name }}
+                {{ item.report_name }}
               </be-tag>
               <be-button
                 custom-class="retrieval-btn"
@@ -136,13 +136,13 @@
 </template>
 
 <script lang="ts">
-  import {
+import {
     createProject,
     getProjectInfo,
     ICreateProj,
     saveEditProject,
-    IContractInfos,
-  } from '../../../../api/project-management'
+    IContractInfos, getReport, IReport,
+} from '../../../../api/project-management'
   import { platformListDict, IPlatformListItem } from '../../../../utils/platform-dict'
   import { defineComponent, ref, reactive, watch, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
@@ -150,8 +150,9 @@
   import { ceSemiSpecialCharReg, ETHaddress } from '../../../../utils/reg'
   import { BeButton, BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
-  import { IAudit, IOption, IWebsiteForm } from '../../../../utils/types'
+import {IAuditList, IOption, IWebsiteForm} from '../../../../utils/types'
   import { trimStr, openWindow } from '../../../../utils/common'
+import config from "../../../../enums/config";
 
   export default defineComponent({
     name: 'CreateProject',
@@ -185,7 +186,7 @@
       const websiteForm = ref<IWebsiteForm>({})
 
       // 审计列表
-      const auditList = ref<Array<IAudit>>([])
+      const auditList = ref<Array<IAuditList>>([])
 
       const labelPosition = ref<string>('right')
       const addContract = ref<number>(0)
@@ -205,11 +206,12 @@
 
       watch(createProjectWindow, nVal => {
         if (nVal) {
+
           // 新增时
           if (props.type === 'add') {
             projectName.value = ''
-            // 新增时直接获取审计
-            getDefaultAudit()
+            // 新增窗口打开，获取默认的合约报告列表
+            getReportDate()
             return
           }
           // 獲取詳情信息
@@ -291,10 +293,10 @@
               websiteForm.value.telegram = res.data.telegram
               websiteForm.value.twitter = res.data.twitter
               // 编辑时，如果原数据有审计就使用，否则调用获取默认审计
-              if (res.data.audit) {
-                auditList.value = res.data.audit
+              if (res.data.contract_report_list) {
+                auditList.value = res.data.contract_report_list
               } else {
-                getDefaultAudit()
+                  getReportDate()
               }
             }
           })
@@ -442,6 +444,15 @@
             }
           })
       }
+        /**
+         * 处理合约数据
+         * @param auditList 合约列表
+         */
+      const handleAuditParams = (auditList:Array<IAuditList>):Array<number> =>{
+            return (auditList.map((val)=>{
+                return Number(val.report_id)
+            }))
+      }
       /**
        * 确认增加项目方法
        */
@@ -452,7 +463,7 @@
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
-          audit_list: auditList.value,
+          report_id_list:[],
         }
         // 表单校验
         if (!formVerification(params)) {
@@ -460,6 +471,7 @@
           return
         }
         setParams(params.contract_infos)
+        params.report_id_list = handleAuditParams(auditList.value)
         createProject(params)
           .then((res: any) => {
             if (!res) {
@@ -490,7 +502,7 @@
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
-          audit_list: auditList.value,
+          report_id_list:[],
         }
         const pathParams = {
           id: props.projectId,
@@ -501,6 +513,7 @@
           return
         }
         setParams(params.contract_infos)
+        params.report_id_list = handleAuditParams(auditList.value)
         saveEditProject(params, pathParams)
           .then(res => {
             if (!res) {
@@ -520,38 +533,36 @@
           })
       }
       /**
-       * 获取默认审计
-       */
-      const getDefaultAudit = (): void => {
-        auditList.value = [
-          { url: 'https://fanyi.baidu.com/?aldtype=16047#en/zh/Audit', name: '1231231.pdf' },
-          {
-            url: 'http://be-ui3.cn/#/home',
-            name: '123123啊啊啊啊1.pdf',
-          },
-        ]
-      }
-      /**
-       * 根據合約地址匹配审计
+       * 根據合約地址匹配
        */
       const matchAudit = (): void => {
-        auditList.value = [
-          { url: 'https://fanyi.baidu.com/?aldtype=16047#en/zh/Audit', name: '1231231.pdf' },
-          {
-            url: 'http://be-ui3.cn/#/home',
-            name: '123123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
-          },
-          {
-            url: 'http://be-ui3.cn/#/',
-            name: '12啊啊啊3123啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊1.pdf',
-          },
-        ]
+         const params:IReport = {
+             contract_address_list:[]
+         }
+          contractSite.data.forEach(val=>{
+              val.contract_address && params.contract_address_list.push(val.contract_address.toString())
+          })
+        getReportDate(params)
       }
       /**
-       * 审计点击关闭
+       * 合约报告点击关闭
        */
       const handleClose = (index: number): void => {
         auditList.value.splice(index, 1)
+      }
+      const getReportDate = (params?:IReport):void=>{
+          const prevUrl =
+              String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+          const baseURL = config.baseURL
+          getReport(params).then((res:any)=>{
+              auditList.value = res.data
+              auditList.value.forEach((val:any) => {
+                  val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+              })
+          }).catch(err => {
+              message('error', err.message || err)
+              console.error(err)
+          })
       }
       return {
         matchAudit,

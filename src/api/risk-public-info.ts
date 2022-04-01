@@ -7,13 +7,14 @@
 // 获取项目合约报告
 import request from '../utils/request'
 import { IPageParam } from '../utils/types'
+import config from '../enums/config'
 export interface IPOList extends IPageParam {
   param?: string
 }
 
 export function getPublicOpinionList(params: IPOList) {
   return request({
-    url: '/ussa/public/opinion/list',
+    url: `${config.baseURL}/ussa/public/opinion/list`,
     method: 'post',
     params,
   })

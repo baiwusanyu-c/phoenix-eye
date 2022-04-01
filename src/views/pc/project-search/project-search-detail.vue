@@ -181,7 +181,7 @@
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
-          @change-page="item => handlePageChange(item.currentPage, pageChangeTj, pageChangeTj)">
+          @change-page="item => handlePageChange(item.currentPage, pageParamsTj, getContractStatistics)">
           <template #prev>
             <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
           </template>
@@ -213,7 +213,7 @@
           page-unit="page"
           :layout="['prev', 'page']"
           @change-page="
-            item => handlePageChange(item.currentPage, pageParamsAudit, pageChangeAudit)
+            item => handlePageChange(item.currentPage, pageParamsAudit, getAuditData)
           ">
           <template #prev>
             <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsAudit.total }}</span>
@@ -276,7 +276,7 @@
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
             @update-num="updateNumFs"
-            @change-page="item => handlePageChange(item.currentPage, pageParamsFs, pageChangeFs)">
+            @change-page="item => handlePageChange(item.currentPage, pageParamsFs, getPublicOpinionData)">
             <template #prev>
               <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
             </template>
@@ -470,7 +470,7 @@
         }
         const prevUrl =
           String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
-        let baseURL = config.baseURL
+        const baseURL = config.baseURL
         getContractReportList(params)
           .then((res: any) => {
             if (res.success) {
@@ -579,30 +579,12 @@
           })
       }
 
-      /**
-       * 项目舆情安全分页方法
-       * @param {IPageParam} item - 分页参数对象
-       */
-      const pageChangeFs = (item: IPageParam): void => {
-        pageParamsFs.value.currentPage = item.currentPage
-        getPublicOpinionData()
-      }
-      /**
-       * 项目舆情安全分页方法
-       * @param {IPageParam} item - 分页参数对象
-       */
-      const pageChangeTj = (item: IPageParam): void => {
-        pageParamsTj.value.currentPage = item.currentPage
-        getContractStatistics()
-      }
-      /**
-       * 项目舆情安全分页方法
-       * @param {IPageParam} item - 分页参数对象
-       */
-      const pageChangeAudit = (item: IPageParam): void => {
-        pageParamsAudit.value.currentPage = item.currentPage
-        getAuditData()
-      }
+        /**
+         * 分页处理方法
+         * @param currentPage 当前页
+         * @param item 分页参数
+         * @param cb 回调方法获取数据
+         */
       const handlePageChange = (currentPage: number, item: IPageParam, cb: Function): void => {
         item.currentPage = currentPage
         cb()
@@ -725,9 +707,11 @@
         }
       }
       return {
+          getAuditData,
         handlePageChange,
         pageParamsAudit,
         auditList,
+          getContractStatistics,
         handleSubscribe,
         updateNumFs,
         defaultPlatformTop5Token,
@@ -745,10 +729,7 @@
         top5QuidityPairs,
         contractStatisticsData,
         baseInfo,
-        pageChangeFs,
         pageParamsTj,
-        pageChangeTj,
-        pageChangeAudit,
         getPublicOpinionData,
         safetyData,
         pageParamsFs,

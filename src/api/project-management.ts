@@ -1,7 +1,7 @@
 // 项目管理api
 import request from '../utils/request'
 import config from '../enums/config'
-import { IAudit, IPageParam } from '../utils/types' //路径配置
+import { IPageParam } from '../utils/types' //路径配置
 // 获取项目列表 （完成） 管理员
 export interface IProjectListAdmin extends IPageParam {
   param?: string
@@ -27,7 +27,7 @@ export interface ICreateProj {
   keyword: string
   contract_infos?: Array<IContractInfos>
   email_list?: Array<string>
-  audit_list?: Array<IAudit>
+  report_id_list?:Array<number>
 }
 export function createProject(params: ICreateProj) {
   return request({
@@ -63,5 +63,16 @@ export function deleteProject(params: IReappraise) {
   return request({
     url: `${config.baseURL}/ussa/project/delete/${params.id}`,
     method: 'post',
+  })
+}
+export interface IReport{
+  contract_address_list:Array<string>
+}
+// 项目创建获取合约报告
+export function getReport(params?: IReport) {
+  return request({
+    url: `${config.baseURL}/ussa/project/contract/report/search`,
+    method: 'post',
+    params,
   })
 }

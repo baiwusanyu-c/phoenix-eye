@@ -114,7 +114,4 @@ export interface IWebsiteForm {
   twitter?: string
   telegram?: string
 }
-export interface IAudit {
-  name?: string
-  url?: string
-}
+

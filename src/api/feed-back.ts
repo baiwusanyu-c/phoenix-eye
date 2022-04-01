@@ -6,7 +6,7 @@
  */
 
 import request from '../utils/request'
-
+import config from '../enums/config'
 export interface IFeedBack {
   title?: string
   content?: string
@@ -15,7 +15,7 @@ export interface IFeedBack {
 // 创建需求反馈
 export function createFeedBack(params: IFeedBack) {
   return request({
-    url: '/ussa/project/feedback/create',
+    url: `${config.baseURL}/ussa/project/feedback/create`,
     method: 'post',
     params,
   })
