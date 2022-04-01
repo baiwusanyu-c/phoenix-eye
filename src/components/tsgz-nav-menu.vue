@@ -11,6 +11,7 @@
         filterable
         :placeholder="$t('lang.pleaseSelect')"
         clearable
+        popper-class="project-select"
         @change="handleProjectSelect">
         <el-option
           v-for="item in projectList"
@@ -454,6 +455,10 @@
 </script>
 
 <style lang="scss">
+.project-select{
+    width: 214px;
+    background: white;
+}
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
     min-width: initial;
