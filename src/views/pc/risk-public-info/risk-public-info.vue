@@ -44,7 +44,7 @@
   import { BeButton, BePagination } from '../../../../public/be-ui/be-ui.es'
   import { IPageParam, ISafetyData } from '../../../utils/types'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
-  import {getPublicOpinionList, IPOList} from "../../../api/risk-public-info";
+  import { getPublicOpinionList, IPOList } from '../../../api/risk-public-info'
   export default defineComponent({
     name: 'RiskPublicInfo',
     components: { ProjectDetailPublicOpinion, BeButton, BePagination },
@@ -61,38 +61,38 @@
        * 获取列表数据
        */
       const getList = (): void => {
-          const params:IPOList = {
-              param:searchParams.value,
-              page_num:pageParams.value.currentPage,
-              page_size:pageParams.value.pageSize,
-          }
-          getPublicOpinionList(params).then((res:any)=>{
-              if (res.success) {
-                  list.value = res.data.page_infos
-                  res.data.page_infos.forEach((value:any)=>{
-                      list.value.push({
-                          negativeMsg: '经自动识别，该资讯为负面信息',
-                          sourceUrl: value.url,
-                          title: value.title,
-                          message: value.content,
-                          from: value.source,
-                          time: value.pub_time,
-                          label: value.tag,
-                      })
-                  })
+        const params: IPOList = {
+          param: searchParams.value,
+          page_num: pageParams.value.currentPage,
+          page_size: pageParams.value.pageSize,
+        }
+        getPublicOpinionList(params).then((res: any) => {
+          if (res.success) {
+            list.value = res.data.page_infos
+            res.data.page_infos.forEach((value: any) => {
+              list.value.push({
+                negativeMsg: '经自动识别，该资讯为负面信息',
+                sourceUrl: value.url,
+                title: value.title,
+                message: value.content,
+                from: value.source,
+                time: value.pub_time,
+                label: value.tag,
+              })
+            })
 
-                  pageParams.value.total = res.data.total
-              }
-          })
+            pageParams.value.total = res.data.total
+          }
+        })
       }
       const updateNum = (data: IPageParam): void => {
         pageParams.value.currentPage = 1
         pageParams.value.pageSize = data.pageSize!
         getList()
       }
-      const pageChange = (item:IPageParam):void=>{
-          pageParams.value.currentPage = item.currentPage
-          getList()
+      const pageChange = (item: IPageParam): void => {
+        pageParams.value.currentPage = item.currentPage
+        getList()
       }
       getList()
       return {

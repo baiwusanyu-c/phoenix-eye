@@ -1,14 +1,14 @@
 /*
-* @risk-public-info.ts
-* @deprecated 
-* @author czh
-* @update (czh 2022/4/1)
-*/
+ * @risk-public-info.ts
+ * @deprecated
+ * @author czh
+ * @update (czh 2022/4/1)
+ */
 // 获取项目合约报告
-import request from "../utils/request";
-import {IPageParam} from "../utils/types";
-export interface IPOList extends IPageParam{
-  param?:string
+import request from '../utils/request'
+import { IPageParam } from '../utils/types'
+export interface IPOList extends IPageParam {
+  param?: string
 }
 
 export function getPublicOpinionList(params: IPOList) {
