@@ -153,7 +153,6 @@
         display: flex;
 
         input::-webkit-input-placeholder {
-
           /* WebKit browsers */
           font-family: AlibabaPuHuiTi-Regular, sans-serif;
           font-size: 18px;
@@ -179,7 +178,7 @@
         margin-top: 36px;
         background-color: $mainColor7;
         border-radius: 4px;
-        opacity: .69;
+        opacity: 0.69;
 
         .filter-label {
           font-weight: bold;
@@ -216,7 +215,6 @@
 
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .risk-trx-list .search-area,
     .risk-trx-list .risk-table {
       width: 92%;
@@ -225,7 +223,6 @@
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-
     .risk-trx-list .search-area,
     .risk-trx-list .risk-table {
       width: 80%;

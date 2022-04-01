@@ -11,13 +11,11 @@
     "build:dev02": "vite build --mode development02",
     "build:test02": "vite build --mode staging02",
     "build:prod02": "vite build --mode production02",
-    "lint:style": "stylelint src/**/*.{html,vue,css,scss}",
-    "lint:style-fix": "stylelint --fix src/**/*.{html,vue,css,scss}",
     "lint:ts": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",
     "lint:ts-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx ",
     "prettier:fix": "prettier --write .",
     "prepare": "husky install",
-    "commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .&& stylelint --fix src/**/*.{html,vue,scss}",
+    "commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .",
     "formatDateiew": "vite preview --port 8080 --host"
   },
   "dependencies": {

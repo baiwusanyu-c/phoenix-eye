@@ -114,4 +114,3 @@ export interface IWebsiteForm {
   twitter?: string
   telegram?: string
 }
-

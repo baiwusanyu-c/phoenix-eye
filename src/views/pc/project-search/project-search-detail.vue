@@ -181,7 +181,9 @@
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
-          @change-page="item => handlePageChange(item.currentPage, pageParamsTj, getContractStatistics)">
+          @change-page="
+            item => handlePageChange(item.currentPage, pageParamsTj, getContractStatistics)
+          ">
           <template #prev>
             <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
           </template>
@@ -212,9 +214,7 @@
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
-          @change-page="
-            item => handlePageChange(item.currentPage, pageParamsAudit, getAuditData)
-          ">
+          @change-page="item => handlePageChange(item.currentPage, pageParamsAudit, getAuditData)">
           <template #prev>
             <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsAudit.total }}</span>
           </template>
@@ -276,7 +276,9 @@
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
             @update-num="updateNumFs"
-            @change-page="item => handlePageChange(item.currentPage, pageParamsFs, getPublicOpinionData)">
+            @change-page="
+              item => handlePageChange(item.currentPage, pageParamsFs, getPublicOpinionData)
+            ">
             <template #prev>
               <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
             </template>
@@ -324,7 +326,6 @@
     formatDate,
     formatTimeStamp,
     openWindow,
-    getStore,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import ProjectDetailTop, { ITableHeader } from './components/project-detail-top.vue'
@@ -579,12 +580,12 @@
           })
       }
 
-        /**
-         * 分页处理方法
-         * @param currentPage 当前页
-         * @param item 分页参数
-         * @param cb 回调方法获取数据
-         */
+      /**
+       * 分页处理方法
+       * @param currentPage 当前页
+       * @param item 分页参数
+       * @param cb 回调方法获取数据
+       */
       const handlePageChange = (currentPage: number, item: IPageParam, cb: Function): void => {
         item.currentPage = currentPage
         cb()
@@ -707,11 +708,11 @@
         }
       }
       return {
-          getAuditData,
+        getAuditData,
         handlePageChange,
         pageParamsAudit,
         auditList,
-          getContractStatistics,
+        getContractStatistics,
         handleSubscribe,
         updateNumFs,
         defaultPlatformTop5Token,
@@ -948,13 +949,12 @@
   }
 
   .subscribe {
-
     .be-message-box-container {
       width: 575px;
       height: 148px;
       background: $mainColor7;
       border-radius: 4px;
-      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, .1);
+      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, 0.1);
 
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor3;
@@ -972,16 +972,13 @@
   }
 
   .subscribe--normal {
-
     .be-message-box-container {
-
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor19;
       }
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .project-search-detail .proj-detail-item {
       width: 78%;
     }

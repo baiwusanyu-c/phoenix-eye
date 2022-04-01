@@ -136,13 +136,15 @@
 </template>
 
 <script lang="ts">
-import {
+  import {
     createProject,
     getProjectInfo,
     ICreateProj,
     saveEditProject,
-    IContractInfos, getReport, IReport,
-} from '../../../../api/project-management'
+    IContractInfos,
+    getReport,
+    IReport,
+  } from '../../../../api/project-management'
   import { platformListDict, IPlatformListItem } from '../../../../utils/platform-dict'
   import { defineComponent, ref, reactive, watch, onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
@@ -150,9 +152,9 @@ import {
   import { ceSemiSpecialCharReg, ETHaddress } from '../../../../utils/reg'
   import { BeButton, BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
-import {IAuditList, IOption, IWebsiteForm} from '../../../../utils/types'
+  import { IAuditList, IOption, IWebsiteForm } from '../../../../utils/types'
   import { trimStr, openWindow } from '../../../../utils/common'
-import config from "../../../../enums/config";
+  import config from '../../../../enums/config'
 
   export default defineComponent({
     name: 'CreateProject',
@@ -206,7 +208,6 @@ import config from "../../../../enums/config";
 
       watch(createProjectWindow, nVal => {
         if (nVal) {
-
           // 新增时
           if (props.type === 'add') {
             projectName.value = ''
@@ -296,7 +297,7 @@ import config from "../../../../enums/config";
               if (res.data.contract_report_list) {
                 auditList.value = res.data.contract_report_list
               } else {
-                  getReportDate()
+                getReportDate()
               }
             }
           })
@@ -444,14 +445,14 @@ import config from "../../../../enums/config";
             }
           })
       }
-        /**
-         * 处理合约数据
-         * @param auditList 合约列表
-         */
-      const handleAuditParams = (auditList:Array<IAuditList>):Array<number> =>{
-            return (auditList.map((val)=>{
-                return Number(val.report_id)
-            }))
+      /**
+       * 处理合约数据
+       * @param auditList 合约列表
+       */
+      const handleAuditParams = (auditList: Array<IAuditList>): Array<number> => {
+        return auditList.map(val => {
+          return Number(val.report_id)
+        })
       }
       /**
        * 确认增加项目方法
@@ -463,7 +464,7 @@ import config from "../../../../enums/config";
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
-          report_id_list:[],
+          report_id_list: [],
         }
         // 表单校验
         if (!formVerification(params)) {
@@ -502,7 +503,7 @@ import config from "../../../../enums/config";
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
-          report_id_list:[],
+          report_id_list: [],
         }
         const pathParams = {
           id: props.projectId,
@@ -536,12 +537,12 @@ import config from "../../../../enums/config";
        * 根據合約地址匹配
        */
       const matchAudit = (): void => {
-         const params:IReport = {
-             contract_address_list:[]
-         }
-          contractSite.data.forEach(val=>{
-              val.contract_address && params.contract_address_list.push(val.contract_address.toString())
-          })
+        const params: IReport = {
+          contract_address_list: [],
+        }
+        contractSite.data.forEach(val => {
+          val.contract_address && params.contract_address_list.push(val.contract_address.toString())
+        })
         getReportDate(params)
       }
       /**
@@ -550,18 +551,20 @@ import config from "../../../../enums/config";
       const handleClose = (index: number): void => {
         auditList.value.splice(index, 1)
       }
-      const getReportDate = (params?:IReport):void=>{
-          const prevUrl =
-              String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
-          const baseURL = config.baseURL
-          getReport(params).then((res:any)=>{
-              auditList.value = res.data
-              auditList.value.forEach((val:any) => {
-                  val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
-              })
-          }).catch(err => {
-              message('error', err.message || err)
-              console.error(err)
+      const getReportDate = (params?: IReport): void => {
+        const prevUrl =
+          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+        const baseURL = config.baseURL
+        getReport(params)
+          .then((res: any) => {
+            auditList.value = res.data
+            auditList.value.forEach((val: any) => {
+              val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+            })
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
           })
       }
       return {
@@ -600,7 +603,6 @@ import config from "../../../../enums/config";
 
 <style lang="scss">
   .createBox {
-
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -644,7 +646,6 @@ import config from "../../../../enums/config";
     border-radius: 2px;
 
     .add-create {
-
       .be-icon {
         fill: darkgray;
       }
@@ -655,7 +656,6 @@ import config from "../../../../enums/config";
     border-color: $mainColor3;
 
     .add-create {
-
       .be-icon {
         fill: $mainColor3;
       }
@@ -732,7 +732,7 @@ import config from "../../../../enums/config";
 
     &:hover {
       background: $mainColor7;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     }
 
     .be-button-body .be-button-slot {
