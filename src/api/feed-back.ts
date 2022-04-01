@@ -1,11 +1,11 @@
 /*
-* @feed-back.ts
-* @deprecated 
-* @author czh
-* @update (czh 2022/4/1)
-*/
+ * @feed-back.ts
+ * @deprecated
+ * @author czh
+ * @update (czh 2022/4/1)
+ */
 
-import request from "../utils/request";
+import request from '../utils/request'
 
 export interface IFeedBack {
   title?: string

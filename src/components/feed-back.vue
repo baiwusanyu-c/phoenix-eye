@@ -43,8 +43,8 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   import { BeDialog, BeButton } from '../../public/be-ui/be-ui.es'
-  import {IFeedBack,createFeedBack} from "../api/feed-back";
-  import composition from "../utils/mixin/common-func";
+  import { IFeedBack, createFeedBack } from '../api/feed-back'
+  import composition from '../utils/mixin/common-func'
   import { useI18n } from 'vue-i18n'
   export default defineComponent({
     name: 'FeedBack',
@@ -53,8 +53,8 @@
       BeButton,
     },
     setup() {
-     const { message } = composition()
-     const { t } = useI18n()
+      const { message } = composition()
+      const { t } = useI18n()
       /**
        * 關閉方法
        */
@@ -75,15 +75,17 @@
        * 反饋提交
        */
       const handleConfirm = (): void => {
-        createFeedBack(form.value).then((res:any)=>{
-            if (res.success === true){
-                const msg = `${t('lang.operation')} ${t('lang.success')}`
-                message('success', msg)
+        createFeedBack(form.value)
+          .then((res: any) => {
+            if (res.success === true) {
+              const msg = `${t('lang.operation')} ${t('lang.success')}`
+              message('success', msg)
             }
-        }).catch(err=>{
+          })
+          .catch(err => {
             message('error', err.message || err)
             console.error(err)
-        })
+          })
         console.log('handleConfirm')
       }
       const showDialog = ref<boolean>(false)
