@@ -636,8 +636,8 @@
               baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
             } else {
               msgBox(
-                  t('lang.subscribe.titleFailed'),
-                  t('lang.subscribe.failed'),
+                t('lang.subscribe.titleFailed'),
+                t('lang.subscribe.failed'),
                 'subscribe subscribe--normal'
               )
             }
@@ -654,7 +654,7 @@
         deleteSubscribe(params)
           .then((res: any) => {
             if (res.code === '0000') {
-              msgBox( t('lang.subscribe.titleUn'), t('lang.subscribe.unSubscribes'), 'subscribe')
+              msgBox(t('lang.subscribe.titleUn'), t('lang.subscribe.unSubscribes'), 'subscribe')
               baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
             } else {
               message('warning', 'An unknown error has occurred in the system')
