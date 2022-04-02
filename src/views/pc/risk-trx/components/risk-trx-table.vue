@@ -349,14 +349,12 @@
           from_address: '200',
           amount: '120',
           tx_time: '100',
-
         }
         if (1280 <= screenWidth && 1326 <= screenWidth) {
-           headerDict.risk_features = '320'
-           headerDict.from_address = '140'
-           headerDict.tx_hash = '140'
-           headerDict.platform = '120'
-
+          headerDict.risk_features = '320'
+          headerDict.from_address = '140'
+          headerDict.tx_hash = '140'
+          headerDict.platform = '120'
         }
         return function (key: string) {
           return headerDict[key]
