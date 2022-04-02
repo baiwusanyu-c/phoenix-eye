@@ -15,10 +15,7 @@
     </div>
     <el-table ref="Top5List" tooltip-effect="light" :data="data" class="top5-list-table">
       <template #empty>
-        <div class="empty-data" style="width: 100%">
-          <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-          <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-        </div>
+        <empty-data style="width: 100%"></empty-data>
       </template>
       <el-table-column
         v-for="item in header"
@@ -64,10 +61,11 @@
   import { simulateToFixed } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'
   import { ITableHeader } from '../../../../utils/types'
+  import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
 
   export default defineComponent({
     name: 'ProjectDetailTop',
-    components: { BeTag, BeEllipsisCopy, BeProgress },
+    components: { EmptyData, BeTag, BeEllipsisCopy, BeProgress },
     props: {
       title: {
         type: String,

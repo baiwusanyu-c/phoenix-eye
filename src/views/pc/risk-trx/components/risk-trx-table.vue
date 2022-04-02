@@ -8,17 +8,14 @@
       :data="tableData"
       @row-click="openDetail">
       <template #empty>
-        <div class="empty-data">
-          <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-          <p style="line-height: 25px">{{ $t('lang.noRisk') }}</p>
-        </div>
+        <empty-data content="lang.noRisk"></empty-data>
       </template>
       <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
         <template #default="scope">
-            <platform-cell :platform="scope.row.platform"></platform-cell>
+          <platform-cell :platform="scope.row.platform"></platform-cell>
         </template>
       </el-table-column>
       <el-table-column prop="tx_hash" :width="tableHeader('tx_hash')" align="center">
@@ -201,12 +198,14 @@
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
   import { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
-  import PlatformCell from "../../../../components/common-components/platform-cell.vue";
+  import PlatformCell from '../../../../components/common-components/platform-cell/platform-cell.vue'
+  import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
 
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
-        PlatformCell,
+      EmptyData,
+      PlatformCell,
       BeTooltip,
       BeIcon,
       BeTag,

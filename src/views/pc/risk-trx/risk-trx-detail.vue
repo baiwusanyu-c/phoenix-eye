@@ -115,10 +115,7 @@
       <div class="detail-profit-body">
         <el-table tooltip-effect="light" :data="profitData">
           <template #empty>
-            <div class="empty-data">
-              <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-              <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-            </div>
+            <empty-data></empty-data>
           </template>
           <el-table-column prop="platform" :width="addrCellWidth" align="left">
             <template #header>
@@ -372,10 +369,11 @@
   import { BeTag, BeIcon, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import { iconDict } from '../../../utils/platform-dict'
   import { IBaseInfoRiskInfo } from '../../../utils/types'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
 
   export default defineComponent({
     name: 'RiskTrxDetail',
-    components: { BeEllipsisCopy, BeTag, BeIcon, BeTooltip },
+    components: { EmptyData, BeEllipsisCopy, BeTag, BeIcon, BeTooltip },
     setup() {
       const { message, route } = composition()
       // 基础信息
