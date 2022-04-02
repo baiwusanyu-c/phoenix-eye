@@ -551,7 +551,10 @@
   }
 
 }
-
+.create-btn {
+  display: block;
+  margin: 38px 0;
+}
 .search-btn{
   width: 184px;
   height: 52px;
@@ -566,7 +569,22 @@
     opacity: 1;
   }
 }
+.more-btn {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border: 1px solid $textColor9;
+  border-radius: 30px;
 
+  &:hover {
+    background-color: $mainColor3;
+    border-color: $mainColor3;
+
+    .be-icon {
+      fill: $mainColor7;
+    }
+  }
+}
 .eagle-cancel-btn{
   min-width: 120px;
   margin-right: 16px;

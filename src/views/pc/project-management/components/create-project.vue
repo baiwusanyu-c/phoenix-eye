@@ -186,10 +186,8 @@
       const emailList = ref<string>('')
       // 聯係地址表單
       const websiteForm = ref<IWebsiteForm>({})
-
       // 审计列表
       const auditList = ref<Array<IAuditList>>([])
-
       const labelPosition = ref<string>('right')
       const addContract = ref<number>(0)
       const contractSite = reactive({

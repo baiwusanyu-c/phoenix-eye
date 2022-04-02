@@ -404,17 +404,13 @@
           color: $textColor4;
         }
       }
-
-      .create-btn {
-        margin: 38px 0;
-      }
     }
 
     .project-manage-list {
       width: 70%;
       padding: 20px;
       margin: 0 auto;
-      background-color: #fff;
+      background-color: $mainColor7;
     }
   }
 </style>

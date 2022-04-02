@@ -203,12 +203,12 @@
   import { defineComponent, onMounted, reactive, ref, PropType, computed } from 'vue'
   import { getProjWarning } from '../../../../api/risk-trx'
   import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
-  import { IFilterItem } from '../risk-trx-list.vue'
+
   import composition from '../../../../utils/mixin/common-func'
   import { BeIcon, BeTag, BePagination, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import { IOption, IPageParam } from '../../../../utils/types'
+  import { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'RiskTrxTable',
@@ -385,23 +385,6 @@
   .risk-table-inner {
     padding: 20px;
     background-color: #fff;
-
-    .more-btn {
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      border: 1px solid $textColor9;
-      border-radius: 30px;
-
-      &:hover {
-        background-color: $mainColor3;
-        border-color: $mainColor3;
-
-        .be-icon {
-          fill: $mainColor7;
-        }
-      }
-    }
 
     /* 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸 */
 

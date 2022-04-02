@@ -115,7 +115,7 @@
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       font-size: 14px;
       font-weight: bold;
-      line-height: 22px;
+      line-height: 40px;
       color: $textColor3;
     }
 

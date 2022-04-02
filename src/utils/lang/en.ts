@@ -375,4 +375,22 @@ export default {
     titleUn: 'Unsubscribes',
     unSubscribes: 'Unsubscribe succeeded!',
   },
+  addrMonitor: {
+    searchP: 'Address',
+    create: 'Add the monitor',
+    title: 'Address Monitor',
+    tableHeader: {
+      addr: 'Address',
+      remark: 'Remark',
+      createTime: 'Create Time',
+      link: 'The Event Link',
+      operate: 'Operate',
+    },
+    form: {
+      labelAddr: 'Address',
+      labelRemark: 'Address',
+      labelLink: 'The Event Link',
+      linkDiscr: 'Add an associated security event link.',
+    },
+  },
 }

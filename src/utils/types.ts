@@ -138,3 +138,17 @@ export interface ITableHeader {
   prop: string
   label: string
 }
+// addr-monitor
+export interface IAddrMonitor {
+  address?: string
+  warningNum?: number
+  remark?: string
+  create_time?: string
+  link?: string
+}
+// create-addr-monitor
+export interface IAddrMonitorForm {
+  addr: string
+  remark: string
+  link: string
+}
