@@ -18,15 +18,7 @@
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
         <template #default="scope">
-          <div class="flex items-center">
-            <be-icon
-              :icon="iconDict[scope.row.platform.toUpperCase()]"
-              class="mr-2"
-              width="24"
-              height="24">
-            </be-icon>
-            {{ scope.row.platform.toUpperCase() }}
-          </div>
+            <platform-cell :platform="scope.row.platform"></platform-cell>
         </template>
       </el-table-column>
       <el-table-column prop="tx_hash" :width="tableHeader('tx_hash')" align="center">
@@ -209,10 +201,12 @@
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
   import { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
+  import PlatformCell from "../../../../components/common-components/platform-cell.vue";
 
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
+        PlatformCell,
       BeTooltip,
       BeIcon,
       BeTag,

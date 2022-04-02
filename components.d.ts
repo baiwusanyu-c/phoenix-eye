@@ -19,6 +19,7 @@ declare module 'vue' {
     FeedBack: typeof import('./src/components/feed-back.vue')['default']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
+    PlatformCell: typeof import('./src/components/common-components/platform-cell.vue')['default']
     TsgzFooter: typeof import('./src/components/tsgz-footer.vue')['default']
     TsgzNavMenu: typeof import('./src/components/tsgz-nav-menu.vue')['default']
   }
