@@ -283,8 +283,8 @@
       width: 144px;
       height: 48px;
       color: #1cd2a9;
-      background: rgba(133, 229, 191, 0.1);
-      border-color: rgba(133, 229, 191, 0.1);
+      background: rgba(133, 229, 191, .1);
+      border-color: rgba(133, 229, 191, .1);
       border-radius: 2px;
     }
 

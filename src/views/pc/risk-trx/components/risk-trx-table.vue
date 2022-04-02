@@ -185,7 +185,7 @@
         :page-size="pageParams.pageSize"
         :page-count="pageParams.total"
         :current-page="pageParams.currentPage"
-        :page-num="[{ label: 10 },{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+        :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
         :pager-show-count="5"
         page-unit="page"
         :layout="['prev', 'pNum', 'page']"
@@ -251,9 +251,9 @@
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
       let pageParams = ref<IPageParam>({
-          currentPage: 1,
-          pageSize: 10,
-          total: 0,
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
       })
       /**
        * 获取表格数据
@@ -298,10 +298,10 @@
             }
             if (res.data) {
               tableData.value = res.data.page_infos
-                pageParams.value.total = res.data.total
+              pageParams.value.total = res.data.total
             } else {
               tableData.value = []
-                pageParams.value = {
+              pageParams.value = {
                 currentPage: 1,
                 pageSize: 10,
                 total: 0,
@@ -322,12 +322,12 @@
        * @param {Object} item - 分页参数对象
        */
       const pageChange = (item: any): void => {
-          pageParams.value.currentPage = item.currentPage
+        pageParams.value.currentPage = item.currentPage
         getList()
       }
       const updateNum = (data: IPageParam): void => {
-          pageParams.value.currentPage = 1
-          pageParams.value.pageSize = data.pageSize!
+        pageParams.value.currentPage = 1
+        pageParams.value.pageSize = data.pageSize!
         getList()
       }
       /**

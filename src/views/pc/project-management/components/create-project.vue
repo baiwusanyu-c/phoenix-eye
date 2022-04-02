@@ -438,8 +438,7 @@
               return
             }
             if (res && res.code === '0000') {
-
-                message('success', `${t('lang.add')} ${t('lang.success')}`)
+              message('success', `${t('lang.add')} ${t('lang.success')}`)
 
               // 更新列表
               props.getList('reset')
@@ -479,8 +478,7 @@
               return
             }
             if (res) {
-
-                message('success', `${t('lang.edit')} ${t('lang.success')}`)
+              message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
               createProjectWindow.value = false
@@ -526,6 +524,7 @@
 
 <style lang="scss">
   .createBox {
+
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -569,6 +568,7 @@
     border-radius: 2px;
 
     .add-create {
+
       .be-icon {
         fill: darkgray;
       }
@@ -579,6 +579,7 @@
     border-color: $mainColor3;
 
     .add-create {
+
       .be-icon {
         fill: $mainColor3;
       }

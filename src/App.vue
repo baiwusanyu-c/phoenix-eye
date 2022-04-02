@@ -76,6 +76,7 @@
   @import 'assets/style/font-style.css';
 
   #browser_msg_dialog {
+
     .browser-msg-dialog {
       top: calc(50% - 220px);
       left: calc(50% - 200px);
@@ -88,6 +89,7 @@
       background-color: white;
 
       .be-dialog-title {
+
         .be-dialog-contanter-head {
           box-sizing: border-box;
           padding: 0;
@@ -106,6 +108,7 @@
         background-color: transparent;
 
         .browser-msg-dialog__left {
+
           .browser-msg-dialog-ul {
             max-width: 320px;
             overflow-y: auto;
@@ -140,6 +143,7 @@
 
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
+
     .noM {
       min-width: 1280px;
     }
