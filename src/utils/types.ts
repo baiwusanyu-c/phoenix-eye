@@ -146,11 +146,9 @@ export interface IAddrMonitorForm {
 }
 
 // addr-monitor
-export interface IAddrMonitor extends IAddrMonitorForm{
+export interface IAddrMonitor extends IAddrMonitorForm {
   warningNum?: number
   create_time?: string
 }
 // addr-monitor-detail
-export interface IAddrMonitorInfo extends IAddrMonitor{
-
-}
+export type IAddrMonitorInfo = IAddrMonitor

@@ -75,7 +75,7 @@
       }
       const labelPosition = ref<string>('right')
       const form = ref<IAddrMonitorForm>({
-          address: '',
+        address: '',
         remark: '',
         link: '',
       })
@@ -97,7 +97,7 @@
        */
       const resetVar = (): void => {
         form.value = {
-            address: '',
+          address: '',
           remark: '',
           link: '',
         }
