@@ -864,8 +864,7 @@
     }
 
     .proj-detail-item {
-      width: 70%;
-      margin: 24px auto 0 auto;
+      @include common-container(24px);
 
       .item-title {
         display: flex;

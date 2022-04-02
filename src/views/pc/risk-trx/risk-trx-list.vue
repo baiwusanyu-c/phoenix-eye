@@ -137,8 +137,7 @@
     min-height: calc(100% - 100px);
 
     .search-area {
-      width: 70%;
-      margin: 40px auto 0 auto;
+      @include common-container(40px);
 
       .risk-trx-search-input {
         display: flex;
@@ -199,8 +198,7 @@
     }
 
     .risk-table {
-      width: 70%;
-      margin: 30px auto 0 auto;
+      @include common-container(30px);
     }
   }
 

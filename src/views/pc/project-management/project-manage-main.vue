@@ -383,8 +383,7 @@
     min-height: calc(100% - 100px);
 
     .project-manage-search {
-      width: 70%;
-      margin: 40px auto 0 auto;
+      @include common-container(40px);
 
       .project-manage-search-input {
         display: flex;

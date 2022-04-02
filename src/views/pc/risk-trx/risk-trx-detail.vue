@@ -555,9 +555,8 @@
 
     .detail-body {
       box-sizing: border-box;
-      width: 70%;
+      @include common-container(40px);
       padding: 20px;
-      margin: 40px auto 0 auto;
       background: $mainColor7-06;
 
       .detail-item {
@@ -611,8 +610,7 @@
     }
 
     .detail-profit {
-      width: 70%;
-      margin: 40px auto 0 auto;
+      @include common-container(40px);
       color: $textColor3;
       background: transparent;
 
@@ -626,8 +624,7 @@
 
     .detail-slump {
       display: flex;
-      width: 70%;
-      margin: 40px auto 0 auto;
+      @include common-container(40px);
       color: $textColor3;
 
       & .detail-slump--container:nth-child(1) {

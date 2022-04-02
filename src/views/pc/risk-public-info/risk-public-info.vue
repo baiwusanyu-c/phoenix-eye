@@ -120,8 +120,7 @@
   }
 
   .risk-public-info-container {
-    width: 70%;
-    margin: 40px auto 0 auto;
+    @include common-container(40px);
     text-align: center;
 
     .project-manage-search-input {

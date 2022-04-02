@@ -331,8 +331,7 @@
     }
   }
   .addr-monitor-search {
-    width: 70%;
-    margin: 40px auto 0 auto;
+    @include common-container(40px);
     text-align: center;
 
     .addr-monitor-search--input {
@@ -355,8 +354,7 @@
     }
   }
   .addr-monitor-result {
-    width: 70%;
-    margin: 32px auto 0 auto;
+    @include common-container(32px);
     padding: 20px;
     box-sizing: border-box;
     background-color: $mainColor7;
