@@ -182,17 +182,17 @@
     <div v-if="tableData.length > 0 && showPager" class="table-page">
       <be-pagination
         is-ordianry
-        :page-size="pageParams.data.pageSize"
-        :page-count="pageParams.data.total"
-        :current-page="pageParams.data.currentPage"
-        :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+        :page-size="pageParams.pageSize"
+        :page-count="pageParams.total"
+        :current-page="pageParams.currentPage"
+        :page-num="[{ label: 10 },{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
         :pager-show-count="5"
         page-unit="page"
         :layout="['prev', 'pNum', 'page']"
         @update-num="updateNum"
         @change-page="pageChange">
         <template #prev>
-          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
+          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
         </template>
       </be-pagination>
     </div>
@@ -250,12 +250,10 @@
       const { message, isEmpty } = composition()
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
-      const pageParams = reactive({
-        data: {
+      let pageParams = ref<IPageParam>({
           currentPage: 1,
           pageSize: 10,
           total: 0,
-        },
       })
       /**
        * 获取表格数据
@@ -267,7 +265,7 @@
         }
         loading.value = true
         if (type === 'reset') {
-          pageParams.data = {
+          pageParams.value = {
             currentPage: 1,
             pageSize: 10,
             total: 0,
@@ -283,8 +281,8 @@
           return res
         }
         let params = {
-          page_num: pageParams.data.currentPage,
-          page_size: pageParams.data.pageSize,
+          page_num: pageParams.value.currentPage,
+          page_size: pageParams.value.pageSize,
           project_id: props.projectId,
           platform: getFilterParams(props.filterChainItem),
           alert_level: getFilterParams(props.filterLevelItem),
@@ -300,10 +298,10 @@
             }
             if (res.data) {
               tableData.value = res.data.page_infos
-              pageParams.data.total = res.data.total
+                pageParams.value.total = res.data.total
             } else {
               tableData.value = []
-              pageParams.data = {
+                pageParams.value = {
                 currentPage: 1,
                 pageSize: 10,
                 total: 0,
@@ -324,12 +322,12 @@
        * @param {Object} item - 分页参数对象
        */
       const pageChange = (item: any): void => {
-        pageParams.data.currentPage = item.currentPage
+          pageParams.value.currentPage = item.currentPage
         getList()
       }
       const updateNum = (data: IPageParam): void => {
-        pageParams.data.currentPage = 1
-        pageParams.data.pageSize = data.pageSize!
+          pageParams.value.currentPage = 1
+          pageParams.value.pageSize = data.pageSize!
         getList()
       }
       /**

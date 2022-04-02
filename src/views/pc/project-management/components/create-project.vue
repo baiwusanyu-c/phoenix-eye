@@ -273,8 +273,7 @@
             }
           })
           .catch(err => {
-            const msg = t('lang.search') + t('lang.failed')
-            message('error', msg)
+            message('error', `${t('lang.search')} ${t('lang.failed')}`)
             console.error(err)
           })
       }
@@ -439,8 +438,9 @@
               return
             }
             if (res && res.code === '0000') {
-              const msg = t('lang.add') + t('lang.success')
-              message('success', msg)
+
+                message('success', `${t('lang.add')} ${t('lang.success')}`)
+
               // 更新列表
               props.getList('reset')
               createProjectWindow.value = false
@@ -479,8 +479,8 @@
               return
             }
             if (res) {
-              const msg = t('lang.edit') + t('lang.success')
-              message('success', msg)
+
+                message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
               createProjectWindow.value = false
@@ -526,7 +526,6 @@
 
 <style lang="scss">
   .createBox {
-
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -570,7 +569,6 @@
     border-radius: 2px;
 
     .add-create {
-
       .be-icon {
         fill: darkgray;
       }
@@ -581,7 +579,6 @@
     border-color: $mainColor3;
 
     .add-create {
-
       .be-icon {
         fill: $mainColor3;
       }

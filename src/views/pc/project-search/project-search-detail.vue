@@ -177,7 +177,7 @@
           :page-size="pageParamsTj.pageSize"
           :page-count="pageParamsTj.total"
           :current-page="pageParamsTj.currentPage"
-          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :page-num="[{ label: 3},{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
@@ -238,7 +238,7 @@
             :page-size="pageParamsFs.pageSize"
             :page-count="pageParamsFs.total"
             :current-page="pageParamsFs.currentPage"
-            :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+            :page-num="[{ label: 5 },{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
             :pager-show-count="5"
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
@@ -906,13 +906,12 @@
   }
 
   .subscribe {
-
     .be-message-box-container {
       width: 575px;
       height: 148px;
       background: $mainColor7;
       border-radius: 4px;
-      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, .1);
+      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, 0.1);
 
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor3;
@@ -930,16 +929,13 @@
   }
 
   .subscribe--normal {
-
     .be-message-box-container {
-
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor19;
       }
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .project-search-detail .proj-detail-item {
       width: 78%;
     }

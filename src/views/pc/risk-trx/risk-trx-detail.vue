@@ -536,7 +536,6 @@
 
 <style lang="scss">
   .risk-trx-detail {
-
     .detail-copy {
       width: initial;
     }
@@ -561,6 +560,7 @@
     .detail-body {
       box-sizing: border-box;
       width: 70%;
+      min-width: 1172px;
       padding: 20px;
       margin: 40px auto 0 auto;
       background: $mainColor7-06;
@@ -620,7 +620,7 @@
       margin: 40px auto 0 auto;
       color: $textColor3;
       background: transparent;
-
+      min-width: 1172px;
       .detail-profit-body {
         height: calc(100% - 40px);
         padding: 20px;
@@ -674,25 +674,21 @@
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 92%;
+    }
     .risk-trx-detail {
-
       .detail-body {
         padding: 10px;
 
         .detail-item {
-
           .detail-item-txt {
             margin-top: 5px;
             font-size: 12px;
           }
 
-          .detail-item--hash {
-            flex: 3;
-          }
-
           .detail-item--date {
-
             .date-label {
               width: 16%;
             }
@@ -717,6 +713,20 @@
           font-size: 12px;
         }
       }
+    }
+  }
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 86%;
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 80%;
     }
   }
 </style>
