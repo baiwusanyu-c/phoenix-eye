@@ -147,8 +147,9 @@
 
     .search-area {
       width: 70%;
-      margin: 40px auto 0 auto;
       min-width: 1172px;
+      margin: 40px auto 0 auto;
+
       .risk-trx-search-input {
         display: flex;
 
@@ -209,8 +210,8 @@
     }
 
     .risk-table {
-      min-width: 1172px;
       width: 70%;
+      min-width: 1172px;
       margin: 30px auto 0 auto;
     }
   }
