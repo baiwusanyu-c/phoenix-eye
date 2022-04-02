@@ -138,7 +138,7 @@
 
     .search-area {
       @include common-container(40px);
-        min-width: 1172px;
+      min-width: 1172px;
       .risk-trx-search-input {
         display: flex;
 
@@ -199,7 +199,7 @@
 
     .risk-table {
       @include common-container(30px);
-        min-width: 1172px;
+      min-width: 1172px;
     }
   }
 
