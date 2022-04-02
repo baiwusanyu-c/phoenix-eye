@@ -279,6 +279,7 @@
   line-height: 22px;
   color: $textColor3;
   letter-spacing: 1px;
+  @include ellipsis;
 
   .table-popover{
     display: flex;
