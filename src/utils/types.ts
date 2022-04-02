@@ -152,3 +152,11 @@ export interface IAddrMonitor extends IAddrMonitorForm {
 }
 // addr-monitor-detail
 export type IAddrMonitorInfo = IAddrMonitor
+export interface IAddrMonitorDetail {
+  platform: string
+  tx_hash?: string
+  create_time?: string
+  value?: string
+  from_address?: string
+  to_address?: string
+}

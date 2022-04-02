@@ -28,6 +28,9 @@
     </div>
     <div class="addr-monitor-result eagle-table">
       <el-table :data="addrMonitorList">
+        <template #empty>
+          <empty-data></empty-data>
+        </template>
         <el-table-column prop="address">
           <template #header>
             <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.addr') }}</span>
@@ -164,10 +167,11 @@
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import createAddrMonitor from './components/create-addr-monitor.vue'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
 
   export default defineComponent({
     name: 'AddrMonitor',
-    components: { BeButton, BeIcon, BePagination, MsgDialog, createAddrMonitor },
+    components: { EmptyData, BeButton, BeIcon, BePagination, MsgDialog, createAddrMonitor },
     setup() {
       const { t } = useI18n()
       const { message } = composition()

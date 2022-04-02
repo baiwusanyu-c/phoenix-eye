@@ -29,6 +29,9 @@
     </div>
     <div class="project-manage-list eagle-table">
       <el-table :data="projectList.data">
+        <template #empty>
+          <empty-data></empty-data>
+        </template>
         <el-table-column prop="name" width="180">
           <template #header>
             <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
@@ -190,10 +193,12 @@
   import composition from '../../../utils/mixin/common-func'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { createDate, formatDate, beijing2utc, formatTimeStamp } from '../../../utils/common'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
 
   export default defineComponent({
     name: 'ProjectManageMain',
     components: {
+      EmptyData,
       BeEllipsisCopy,
       CreateProject,
       MsgDialog,
