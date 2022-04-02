@@ -13,7 +13,7 @@
       <div>
         <el-form :label-position="labelPosition" label-width="120px">
           <el-form-item :label="$t('lang.addrMonitor.form.labelAddr') + ':'">
-            <el-input v-model="form.addr"></el-input>
+            <el-input v-model="form.address"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
             <el-input v-model="form.remark" type="textarea" :rows="7"></el-input>
@@ -75,7 +75,7 @@
       }
       const labelPosition = ref<string>('right')
       const form = ref<IAddrMonitorForm>({
-        addr: '',
+          address: '',
         remark: '',
         link: '',
       })
@@ -97,7 +97,7 @@
        */
       const resetVar = (): void => {
         form.value = {
-          addr: '',
+            address: '',
           remark: '',
           link: '',
         }
