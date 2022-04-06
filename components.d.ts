@@ -4,26 +4,10 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    EllipsisCopy: typeof import('./src/components/common-components/ellipsis-copy/ellipsis-copy.vue')['default']
-    ElMenu: typeof import('element-plus/es')['ElMenu']
-    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElOption: typeof import('element-plus/es')['ElOption']
-    ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     EmptyData: typeof import('./src/components/common-components/empty-data/empty-data.vue')['default']
     FeedBack: typeof import('./src/components/feed-back.vue')['default']
-    Loading: typeof import('element-plus/es')['ElLoadingDirective']
-    MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
     PlatformCell: typeof import('./src/components/common-components/platform-cell/platform-cell.vue')['default']
-    TsgzFooter: typeof import('./src/components/tsgz-footer.vue')['default']
-    TsgzNavMenu: typeof import('./src/components/tsgz-nav-menu.vue')['default']
   }
 }
 
-export {}
+export { }
