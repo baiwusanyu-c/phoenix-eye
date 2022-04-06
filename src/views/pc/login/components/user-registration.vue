@@ -53,22 +53,17 @@
 </template>
 
 <script lang="ts">
-  import {
-    defineComponent,
-    ref,
-    reactive,
-    getCurrentInstance,
-    ComponentInternalInstance,
-  } from 'vue'
-  import { trim } from '../../../../utils/common'
-  import { BeButton } from '../../../../../public/be-ui/be-ui.es'
-  import { verifyCode, registerAccount } from '../../../../api/login'
-  import composition from '../../../../utils/mixin/common-func'
-  import { pwdReg, emailReg } from '../../../../utils/reg'
+  import { defineComponent, getCurrentInstance, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import type { ElForm } from 'element-plus'
   import { ElMessage } from 'element-plus/es'
   import { Base64 } from 'js-base64'
+  import { trim } from '../../../../utils/common'
+  import { BeButton } from '../../../../../public/be-ui/be-ui.es'
+  import { registerAccount, verifyCode } from '../../../../api/login'
+  import composition from '../../../../utils/mixin/common-func'
+  import { emailReg, pwdReg } from '../../../../utils/reg'
+  import type { ElForm } from 'element-plus'
+  import type { ComponentInternalInstance } from 'vue'
 
   type FormInstance = InstanceType<typeof ElForm>
   declare type registerType = {
@@ -136,7 +131,7 @@
                   ElMessage.success(t('lang.loginConfig.getVerCodeValid') + t('lang.success'))
                   isTip.value = true
                   num.value = 60
-                  let codeInerval = setInterval(() => {
+                  const codeInerval = setInterval(() => {
                     if (num.value > 0) {
                       num.value--
                     } else {

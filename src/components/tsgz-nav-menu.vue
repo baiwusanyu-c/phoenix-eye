@@ -133,25 +133,25 @@
 
 <script lang="ts">
   import { defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue'
+  import { useStore } from 'vuex'
+  import { useI18n } from 'vue-i18n'
+  import { useEventBus } from '@vueuse/core'
+  import { onBeforeRouteUpdate } from 'vue-router'
+  import LoginDialog from '../views/pc/login/login-dialog.vue'
+  import { getProjectListCurUser } from '../api/project-explorer'
+  import { BeButton, BeIcon, BePopover } from '../../public/be-ui/be-ui.es.js'
+  import composition from '../utils/mixin/common-func'
   import {
     clearSession,
     clearStore,
     getStore,
+    removeStore,
     setSession,
     setStore,
-    removeStore,
   } from '../utils/common'
-  import composition from '../utils/mixin/common-func'
-  import { useStore } from 'vuex'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-  import { BeIcon, BePopover, BeButton } from '../../public/be-ui/be-ui.es.js'
-  import { useI18n } from 'vue-i18n'
-  import { ILoginDialog, IOption, IPopover } from '../utils/types'
-  import LoginDialog from '../views/pc/login/login-dialog.vue'
-  import { getProjectListCurUser } from '../api/project-explorer'
-  import { useEventBus } from '@vueuse/core'
-  import { onBeforeRouteUpdate } from 'vue-router'
   import FeedBack from './feed-back.vue'
+  import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   /**
    * 头部菜单导航
    */
@@ -201,7 +201,7 @@
               children: [],
               isDisabled: false,
             },
-            RPIF: {
+            /*RPIF: {
               icon: '',
               index: '1',
               name: 'lang.subNav.navName6',
@@ -210,7 +210,7 @@
               isPush: true,
               children: [],
               isDisabled: false,
-            },
+            },*/
           }
           headerConfigMore.value = []
           setStore('language', locale.value)
@@ -378,7 +378,7 @@
         // 激活元素设置聚焦 规避bug 3825
         nextTick(() => {
           for (let i = 0; i < menuList.length; i++) {
-            let elm = menuList[Number(i)] as HTMLElement
+            const elm = menuList[Number(i)] as HTMLElement
             if (elm.className.indexOf('is-active') > -1) {
               elm.focus()
             }
@@ -408,8 +408,8 @@
             if (!res) {
               return
             }
-            let list = res.data
-            list.map((val: any) => {
+            const list = res.data
+            list.forEach((val: any) => {
               val.project_id = val.project_id.toString()
             })
             projectList.value = list

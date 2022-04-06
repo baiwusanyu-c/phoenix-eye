@@ -89,9 +89,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, computed } from 'vue'
-  import { BeDialog, BeButton } from '../../../../public/be-ui/be-ui.es.js'
+  import { computed, defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { BeButton, BeDialog } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
   import ResetPassword from './components/reset-password.vue'
   import NameLogin from './components/name-login.vue'

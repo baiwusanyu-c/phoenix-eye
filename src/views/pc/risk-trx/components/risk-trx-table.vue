@@ -171,17 +171,17 @@
     <div v-if="tableData.length > 0 && showPager" class="table-page">
       <be-pagination
         is-ordianry
-        :page-size="pageParams.data.pageSize"
-        :page-count="pageParams.data.total"
-        :current-page="pageParams.data.currentPage"
-        :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+        :page-size="pageParams.pageSize"
+        :page-count="pageParams.total"
+        :current-page="pageParams.currentPage"
+        :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
         :pager-show-count="5"
         page-unit="page"
         :layout="['prev', 'pNum', 'page']"
         @update-num="updateNum"
         @change-page="pageChange">
         <template #prev>
-          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.data.total }}</span>
+          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
         </template>
       </be-pagination>
     </div>
@@ -189,18 +189,17 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, reactive, ref, PropType, computed } from 'vue'
+  import { computed, defineComponent, onMounted, ref } from 'vue'
   import { getProjWarning } from '../../../../api/risk-trx'
-  import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
-
+  import { beijing2utc, createDate, formatDate, openWindow } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
-  import { BeIcon, BeTag, BePagination, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
+  import { BeIcon, BePagination, BeTag, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
   import PlatformCell from '../../../../components/common-components/platform-cell/platform-cell.vue'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
-
+  import type { PropType } from 'vue'
+  import type { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
@@ -243,12 +242,10 @@
       const { message, isEmpty } = composition()
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
-      const pageParams = reactive({
-        data: {
-          currentPage: 1,
-          pageSize: 10,
-          total: 0,
-        },
+      const pageParams = ref<IPageParam>({
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
       })
       /**
        * 获取表格数据
@@ -260,24 +257,24 @@
         }
         loading.value = true
         if (type === 'reset') {
-          pageParams.data = {
+          pageParams.value = {
             currentPage: 1,
             pageSize: 10,
             total: 0,
           }
         }
         const getFilterParams = (arr: Array<IFilterItem> = []): Array<string> => {
-          let res: Array<string> = []
-          arr.map((val: IFilterItem) => {
+          const res: Array<string> = []
+          arr.forEach((val: IFilterItem) => {
             if (val.isActive) {
               res.push(val.val)
             }
           })
           return res
         }
-        let params = {
-          page_num: pageParams.data.currentPage,
-          page_size: pageParams.data.pageSize,
+        const params = {
+          page_num: pageParams.value.currentPage,
+          page_size: pageParams.value.pageSize,
           project_id: props.projectId,
           platform: getFilterParams(props.filterChainItem),
           alert_level: getFilterParams(props.filterLevelItem),
@@ -293,10 +290,10 @@
             }
             if (res.data) {
               tableData.value = res.data.page_infos
-              pageParams.data.total = res.data.total
+              pageParams.value.total = res.data.total
             } else {
               tableData.value = []
-              pageParams.data = {
+              pageParams.value = {
                 currentPage: 1,
                 pageSize: 10,
                 total: 0,
@@ -317,12 +314,12 @@
        * @param {Object} item - 分页参数对象
        */
       const pageChange = (item: any): void => {
-        pageParams.data.currentPage = item.currentPage
+        pageParams.value.currentPage = item.currentPage
         getList()
       }
       const updateNum = (data: IPageParam): void => {
-        pageParams.data.currentPage = 1
-        pageParams.data.pageSize = data.pageSize!
+        pageParams.value.currentPage = 1
+        pageParams.value.pageSize = data.pageSize!
         getList()
       }
       /**
@@ -333,8 +330,8 @@
       }
 
       const screenWidth = window.screen.width
-      let tableHeader = computed(() => {
-        let headerDict: IOption = {
+      const tableHeader = computed(() => {
+        const headerDict: IOption = {
           platform: '130',
           tx_hash: '170',
           alert_level: '110',

@@ -351,25 +351,26 @@
 </template>
 
 <script lang="ts">
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { getProjWarningDetail, IProjDetail } from '../../../api/risk-trx'
-  import { webURL } from '../../../enums/link'
-  import { platformToCurrency, IPlatformToCurrency } from '../../../utils/platform-dict'
-  import { defineComponent, ref, onMounted, computed, onUnmounted } from 'vue'
-  import composition from '../../../utils/mixin/common-func'
+  import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import { getProjWarningDetail } from '../../../api/risk-trx'
+  import { webURL } from '../../../enums/link'
+  import { iconDict, platformToCurrency } from '../../../utils/platform-dict'
+  import composition from '../../../utils/mixin/common-func'
   import {
-    getUuid,
-    simulateToFixed,
-    openWindow,
     beijing2utc,
-    formatDate,
     createDate,
+    formatDate,
+    getUuid,
+    openWindow,
+    simulateToFixed,
   } from '../../../utils/common'
-  import { BeTag, BeIcon, BeTooltip } from '../../../../public/be-ui/be-ui.es'
-  import { iconDict } from '../../../utils/platform-dict'
-  import { IBaseInfoRiskInfo } from '../../../utils/types'
+  import { BeIcon, BeTag, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import type { IBaseInfoRiskInfo } from '../../../utils/types'
+  import type { IPlatformToCurrency } from '../../../utils/platform-dict'
+  import type { IProjDetail } from '../../../api/risk-trx'
 
   export default defineComponent({
     name: 'RiskTrxDetail',
@@ -449,19 +450,19 @@
                 }
                 val.addrList.push({
                   val: valRes.token_name,
-                  itemId: 'token_name' + getUuid(),
+                  itemId: `token_name${getUuid()}`,
                   tag: valRes.contract_address_tag,
                   contractAddress: valRes.contract_address,
                 })
                 val.valueList.push({
                   ordVal: valRes.token_num,
                   val: simulateToFixed(valRes.token_num, 6),
-                  itemId: 'token_profit_no_dollar' + getUuid(),
+                  itemId: `token_profit_no_dollar${getUuid()}`,
                 })
                 val.dollarList.push({
                   ordVal: valRes.dollar_money,
                   val: simulateToFixed(valRes.dollar_money, 0),
-                  itemId: 'token_profit_dollar' + getUuid(),
+                  itemId: `token_profit_dollar${getUuid()}`,
                 })
               })
             })
@@ -485,7 +486,7 @@
           params === 'matic'
         )
           return
-        let mainUrl: string = (webURL as any)[`${baseInfo.value.platform}_${type}`] as string
+        const mainUrl: string = (webURL as any)[`${baseInfo.value.platform}_${type}`] as string
         const url = `${mainUrl}${params}`
         openWindow(url)
       }
@@ -554,6 +555,7 @@
     .detail-body {
       box-sizing: border-box;
       @include common-container(40px);
+      min-width: 1172px;
       padding: 20px;
       background: $mainColor7-06;
 
@@ -609,6 +611,7 @@
 
     .detail-profit {
       @include common-container(40px);
+      min-width: 1172px;
       color: $textColor3;
       background: transparent;
 
@@ -664,6 +667,11 @@
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 92%;
+    }
+
     .risk-trx-detail {
       .detail-body {
         padding: 10px;
@@ -672,10 +680,6 @@
           .detail-item-txt {
             margin-top: 5px;
             font-size: 12px;
-          }
-
-          .detail-item--hash {
-            flex: 3;
           }
 
           .detail-item--date {
@@ -703,6 +707,22 @@
           font-size: 12px;
         }
       }
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 86%;
+    }
+  }
+
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 80%;
     }
   }
 </style>

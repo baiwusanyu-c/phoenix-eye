@@ -133,12 +133,12 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
-  import { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { createDate, beijing2utc, formatDate } from '../../../utils/common'
+  import { beijing2utc, createDate, formatDate } from '../../../utils/common'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import PlatformCell from '../../../components/common-components/platform-cell/platform-cell.vue'
+  import type { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
   export default defineComponent({
     name: 'AddrMonitorDetail',
     components: { PlatformCell, EmptyData, BeEllipsisCopy, BePagination },

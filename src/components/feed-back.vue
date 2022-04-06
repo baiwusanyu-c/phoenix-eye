@@ -42,10 +42,11 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
-  import { BeDialog, BeButton } from '../../public/be-ui/be-ui.es'
-  import { IFeedBack, createFeedBack } from '../api/feed-back'
-  import composition from '../utils/mixin/common-func'
   import { useI18n } from 'vue-i18n'
+  import { BeButton, BeDialog } from '../../public/be-ui/be-ui.es'
+  import { createFeedBack } from '../api/feed-back'
+  import composition from '../utils/mixin/common-func'
+  import type { IFeedBack } from '../api/feed-back'
   export default defineComponent({
     name: 'FeedBack',
     components: {
@@ -86,7 +87,7 @@
             message('error', err.message || err)
             console.error(err)
           })
-        console.log('handleConfirm')
+        console.error('handleConfirm')
       }
       const showDialog = ref<boolean>(false)
       const labelPosition = ref<string>('right')

@@ -177,7 +177,7 @@
           :page-size="pageParamsTj.pageSize"
           :page-count="pageParamsTj.total"
           :current-page="pageParamsTj.currentPage"
-          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :page-num="[{ label: 3 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
@@ -271,7 +271,7 @@
             :page-size="pageParamsFs.pageSize"
             :page-count="pageParamsFs.total"
             :current-page="pageParamsFs.currentPage"
-            :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+            :page-num="[{ label: 5 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
             :pager-show-count="5"
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
@@ -295,46 +295,47 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
+  import { useEventBus } from '@vueuse/core'
+  import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es'
+  import composition from '../../../utils/mixin/common-func'
   import {
+    createSubscribe,
+    deleteSubscribe,
+    getContractReportList,
+    getProjectSituation,
+    getProjectSituationStatistics,
+    getPublicOpinion,
+  } from '../../../api/project-explorer'
+  import {
+    createDate,
+    formatDate,
+    formatTimeStamp,
+    numberToCommaString,
+    openWindow,
+  } from '../../../utils/common'
+  import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
+  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import { webURL } from '../../../enums/link'
+  import config from '../../../enums/config'
+  import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
+
+  import ProjectDetailAudit from './components/project-detail-audit.vue'
+
+  import ProjectDetailTop from './components/project-detail-top.vue'
+  import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
+  import type {
     IAuditList,
     IBaseInfo,
     IContractStatistics,
     IPageParam,
     ISafetyData,
+    ITableHeader,
     ITop5QuidityPairs,
     ITop5QuiditySelect,
     ITop5TokenHolder,
     ITop5TokenHolderSelect,
   } from '../../../utils/types'
-  import { BeIcon, BeTag, BePagination, BeButton } from '../../../../public/be-ui/be-ui.es'
-  import composition from '../../../utils/mixin/common-func'
-  import { useI18n } from 'vue-i18n'
-  import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
-  import {
-    createSubscribe,
-    deleteSubscribe,
-    getProjectSituation,
-    getProjectSituationStatistics,
-    getPublicOpinion,
-    IContractReport,
-    getContractReportList,
-    IPublicOpinion,
-  } from '../../../api/project-explorer'
-  import {
-    numberToCommaString,
-    createDate,
-    formatDate,
-    formatTimeStamp,
-    openWindow,
-  } from '../../../utils/common'
-  import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
-  import ProjectDetailTop from './components/project-detail-top.vue'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { useEventBus } from '@vueuse/core'
-  import { webURL } from '../../../enums/link'
-  import ProjectDetailAudit from './components/project-detail-audit.vue'
-  import config from '../../../enums/config'
-  import { ITableHeader } from '../../../utils/types'
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
@@ -400,7 +401,7 @@
       }
       const baseLoading = ref<boolean>(false)
       const getProSituData = async () => {
-        let params: IPublicOpinion = {
+        const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
         }
         baseLoading.value = true
@@ -546,7 +547,7 @@
       const getPublicOpinionData = (): void => {
         safetyData.value = []
         loadingFs.value = true
-        let params: IPublicOpinion = {
+        const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
           page_num: pageParamsFs.value.currentPage,
           page_size: pageParamsFs.value.pageSize,
@@ -645,7 +646,7 @@
           params === 'matic'
         )
           return
-        let mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
+        const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
         const url = `${mainUrl}${params}`
         openWindow(url)
       }

@@ -158,16 +158,16 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, reactive, nextTick } from 'vue'
+  import { defineComponent, nextTick, reactive, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   //import { IProjParam } from '../../../api/project-explorer'
-  import { IPageParam, IAddrMonitor } from '../../../utils/types'
-  import { createDate, formatDate, beijing2utc, openWindow } from '../../../utils/common'
-  import { useI18n } from 'vue-i18n'
+  import { beijing2utc, createDate, formatDate, openWindow } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-  import createAddrMonitor from './components/create-addr-monitor.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import createAddrMonitor from './components/create-addr-monitor.vue'
+  import type { IAddrMonitor, IPageParam } from '../../../utils/types'
 
   export default defineComponent({
     name: 'AddrMonitor',

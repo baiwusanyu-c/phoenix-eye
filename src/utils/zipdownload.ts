@@ -1,7 +1,8 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import { getStore } from './common'
+import axios from 'axios'
 import config from '../enums/config'
-import { INavigator } from './types'
+import { getStore } from './common'
+import type { AxiosRequestConfig } from 'axios'
+import type { INavigator } from './types'
 
 const mimeMap = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -13,9 +14,9 @@ export function downLoadZip(str: string, filename: string) {
   // @ts-ignore
   const axiosConfig: AxiosRequestConfig = {
     method: 'get',
-    url: url,
+    url,
     responseType: 'blob',
-    headers: { Authorization: (!getStore('token') ? '' : 'Bearer ' + getStore('token')) as string },
+    headers: { Authorization: (!getStore('token') ? '' : `Bearer ${getStore('token')}`) as string },
   }
   return new Promise(resolve => {
     axios(axiosConfig).then(res => {

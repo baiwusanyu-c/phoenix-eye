@@ -1,6 +1,6 @@
-import type { Plugin } from 'vue'
-import { ComponentInternalInstance } from 'vue'
-import { Ref } from '@vue/reactivity'
+import type { ComponentInternalInstance, Plugin } from 'vue'
+import type { Ref } from '@vue/reactivity'
+
 // 定义插件类型，组件的引用会用到这个，然后走use、install
 export type SFCWithInstall<T> = T & Plugin
 

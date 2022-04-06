@@ -68,12 +68,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, getCurrentInstance } from 'vue'
+  import { defineComponent, getCurrentInstance, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useEventBus } from '@vueuse/core'
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
   import RiskTrxTable from './components/risk-trx-table.vue'
-  import { useEventBus } from '@vueuse/core'
-  import { IFilterItem, IRiskTable } from '../../../utils/types'
+  import type { IFilterItem, IRiskTable } from '../../../utils/types'
+
   export default defineComponent({
     name: 'RiskTrxList',
     components: { RiskTrxTable, BeButton },

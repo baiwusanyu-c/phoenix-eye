@@ -46,10 +46,10 @@
 </template>
 
 <script lang="ts">
-  import { BeDialog, BeIcon, BeTooltip, BeButton } from '../../../../../public/be-ui/be-ui.es'
   import { defineComponent, ref, watch } from 'vue'
-  import { IAddrMonitorForm } from '../../../../utils/types'
+  import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
+  import type { IAddrMonitorForm } from '../../../../utils/types'
   export default defineComponent({
     name: 'CreateAddrMonitor',
     components: { BeDialog, BeIcon, BeTooltip, BeButton },
@@ -142,7 +142,7 @@
        * 处理提交确认
        */
       const handleConfirm = () => {
-        console.log('handleConfirm')
+        console.error('handleConfirm')
       }
       return {
         handleConfirm,

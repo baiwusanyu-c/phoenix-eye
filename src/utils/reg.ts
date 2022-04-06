@@ -1,5 +1,4 @@
 //邮箱
-// eslint-disable-next-line
 // export const emailReg:RegExp = /^[\.a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
 export const emailReg = /^(\w)+((\.\w+)|(-\w+))*@(\w|-)+((\.\w+)+)$/
 //手机

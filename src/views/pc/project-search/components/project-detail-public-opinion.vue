@@ -57,16 +57,16 @@
 </template>
 
 <script lang="ts">
+  import { computed, defineComponent } from 'vue'
   import {
+    beijing2utc,
+    createDate,
+    formatDate,
+    formatTimeStamp,
     getUuid,
     openWindow,
-    beijing2utc,
-    formatDate,
-    createDate,
-    formatTimeStamp,
   } from '../../../../utils/common'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { computed, defineComponent } from 'vue'
   import { BeTag } from '../../../../../public/be-ui/be-ui.es'
   export default defineComponent({
     name: 'ProjectDetailPublicOpinion',

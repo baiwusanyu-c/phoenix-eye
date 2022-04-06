@@ -55,14 +55,14 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType, ref, watch } from 'vue'
-  import { BeTag, BeProgress } from '../../../../../public/be-ui/be-ui.es'
+  import { defineComponent, ref, watch } from 'vue'
+  import { BeProgress, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'
-  import { ITableHeader } from '../../../../utils/types'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
-
+  import type { ITableHeader } from '../../../../utils/types'
+  import type { PropType } from 'vue'
   export default defineComponent({
     name: 'ProjectDetailTop',
     components: { EmptyData, BeTag, BeEllipsisCopy, BeProgress },
@@ -108,8 +108,8 @@
        * @param {String} platform - 幣種
        */
       const handleSelect = (platform: string): void => {
-        let type: string = props.types
-        ctx.emit('select', { platform: platform, type: type })
+        const type: string = props.types
+        ctx.emit('select', { platform, type })
       }
       const windowInnerW: number = window.innerWidth
       const tableW = ref<number>(140)

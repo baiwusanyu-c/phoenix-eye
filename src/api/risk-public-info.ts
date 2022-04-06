@@ -6,8 +6,8 @@
  */
 // 获取项目合约报告
 import request from '../utils/request'
-import { IPageParam } from '../utils/types'
 import config from '../enums/config'
+import type { IPageParam } from '../utils/types'
 export interface IPOList extends IPageParam {
   param?: string
 }

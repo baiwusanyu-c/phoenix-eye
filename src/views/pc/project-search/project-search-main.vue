@@ -52,12 +52,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue'
+  import { defineComponent, onMounted, ref } from 'vue'
+  import { useEventBus } from '@vueuse/core'
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
-  import { getProjectListUser, IProjParam } from '../../../api/project-explorer'
+  import { getProjectListUser } from '../../../api/project-explorer'
   import { getStore, getUrlkey } from '../../../utils/common'
-  import { useEventBus } from '@vueuse/core'
+  import type { IProjParam } from '../../../api/project-explorer'
   declare type projListType = {
     project_id: string
     project_name: string
@@ -84,7 +85,7 @@
       const projectList = ref<Array<projListType>>([])
       const getList = () => {
         loading.value = true
-        let params: IProjParam = {
+        const params: IProjParam = {
           param: searchParams.value,
         }
         getProjectListUser(params)

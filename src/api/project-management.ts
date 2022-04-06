@@ -1,7 +1,7 @@
 // 项目管理api
 import request from '../utils/request'
 import config from '../enums/config'
-import { IPageParam } from '../utils/types' //路径配置
+import type { IPageParam } from '../utils/types' //路径配置
 // 获取项目列表 （完成） 管理员
 export interface IProjectListAdmin extends IPageParam {
   param?: string

@@ -42,10 +42,10 @@
   </div>
 </template>
 <script setup lang="tsx">
-  import { getStore, browserInfo, setStore } from './utils/common'
   import { ref } from 'vue'
-  import { BeDialog, BeButton } from '../public/be-ui/be-ui.es.js'
+  import { BeButton, BeDialog } from '../public/be-ui/be-ui.es.js'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
+  import { browserInfo, getStore, setStore } from './utils/common'
   // 設置是否手機訪問變量
   const ua = navigator.userAgent
   const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)

@@ -34,18 +34,16 @@
 </template>
 
 <script lang="ts">
+  import { defineComponent, getCurrentInstance, nextTick, ref } from 'vue'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
-  import { defineComponent, ref, getCurrentInstance, nextTick } from 'vue'
-  import { IFilterItem, IRiskTable } from '../risk-trx/risk-trx-list.vue'
   import { BeContainer, BeHeader, BeMain } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
+  import type { IFilterItem, IRiskTable } from '../risk-trx/risk-trx-list.vue'
 
   export default defineComponent({
     name: 'ExternalRiskTrx',
     components: { RiskTrxTable, BeContainer, BeHeader, BeMain },
     setup() {
-      console.log('w:', window.innerWidth)
-      console.log('h:', window.innerHeight)
       /**
        * 筛选框选择
        */

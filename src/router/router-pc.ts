@@ -1,16 +1,11 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  RouterOptions,
-  RouteLocationNormalized,
-  Router,
-} from 'vue-router'
-import { isString, getStore } from '../utils/common'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import { useEventBus } from '@vueuse/core'
+import { getStore, isString } from '../utils/common'
 import { i18n } from '../utils/i18n'
 import { getRouterInfo } from '../api/login'
 import store from '../store/store'
-import { IOption } from '../utils/types'
-import { useEventBus } from '@vueuse/core'
+import type { IOption } from '../utils/types'
+import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 const routes = [
   {
     path: '/',
@@ -118,7 +113,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
       }
       const routerConfig = initRouterConfig(res.data[0].children)
       store.commit('update', ['routeConfig', routerConfig])
-      routerConfig.map((val: any) => {
+      routerConfig.forEach((val: any) => {
         router.addRoute('layout', val)
       })
       router.addRoute({
@@ -136,7 +131,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
         next({
           path: '/riskTrx/list',
         })
-      console.log(err)
+      console.error(err)
     })
 }
 

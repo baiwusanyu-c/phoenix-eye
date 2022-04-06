@@ -7,7 +7,7 @@
 
 import request from '../utils/request'
 import config from '../enums/config'
-import { IPageParam } from '../utils/types' //路径配置
+import type { IPageParam } from '../utils/types' //路径配置
 
 export interface IProjParam extends IPageParam {
   param?: string

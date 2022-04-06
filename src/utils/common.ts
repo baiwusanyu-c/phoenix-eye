@@ -2,7 +2,7 @@ import { isArray, isObject, toRawType } from '@vue/shared'
 // @ts-ignore
 import { BeMessage } from '../../public/be-ui/be-ui.es'
 //import { ElMessage } from 'element-plus'
-import { IOption } from './types'
+import type { IOption } from './types'
 /**
  * id生成方法
  * @return {string}
@@ -103,7 +103,7 @@ export const accAdd = (arg1: number, arg2: number): number => {
   } catch (e) {
     r2 = 0
   }
-  m = Math.pow(10, Math.max(r1, r2))
+  m = 10 ** Math.max(r1, r2)
   return (arg1 * m + arg2 * m) / m
 }
 /*
@@ -133,13 +133,13 @@ export const accSub = (arg: Array<number>): number => {
   let sum = 0
   const maxDecimalLength: number = getMaxDecimalLength(arg)
   arg.forEach((x: number, index: number) => {
-    const nurVal = Math.round(x * Math.pow(10, maxDecimalLength))
+    const nurVal = Math.round(x * 10 ** maxDecimalLength)
 
     if (index === 0) sum = nurVal
     else sum -= nurVal
   })
 
-  return sum / Math.pow(10, maxDecimalLength)
+  return sum / 10 ** maxDecimalLength
 }
 
 /**
@@ -214,7 +214,7 @@ export const formatDate = (timestamp: string, formats?: string) => {
 
   const zero = function (value: any) {
     if (value < 10) {
-      return '0' + value
+      return `0${value}`
     }
     return value
   }
@@ -233,7 +233,7 @@ export const formatDate = (timestamp: string, formats?: string) => {
     const hour = zero(myDate.getHours())
     const minite = zero(myDate.getMinutes())
     const second = zero(myDate.getSeconds())
-    date = formats.replace(/Y|m|d|H|i|s/gi, function (matches) {
+    date = formats.replace(/Y|m|d|H|i|s/gi, matches => {
       return {
         Y: year,
         m: month,
@@ -412,15 +412,15 @@ export function formatTimeStamp(dateTimeStamp: number, lang: string) {
   const hourC = diffValue / hour
   const minC = diffValue / minute
   if (parseInt(dayC.toString()) > 30) {
-    result = '' + formatDD(createDate(dateTimeStamp), 'yyyy-MM-dd')
+    result = `${formatDD(createDate(dateTimeStamp), 'yyyy-MM-dd')}`
   } else if (parseInt(dayC.toString()) > 1) {
-    result = '' + parseInt(dayC.toString()) + dq
+    result = `${parseInt(dayC.toString())}${dq}`
   } else if (parseInt(dayC.toString()) == 1) {
     result = yesterday
   } else if (hourC >= 1) {
-    result = '' + parseInt(hourC.toString()) + sq
+    result = `${parseInt(hourC.toString())}${sq}`
   } else if (minC >= 1) {
-    result = '' + parseInt(minC.toString()) + fq
+    result = `${parseInt(minC.toString())}${fq}`
   }
   return result
 }
@@ -446,19 +446,19 @@ function formatDD(date: string | Date, format: string) {
     ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
   ]
   if (/(y+)/.test(format)) {
-    format = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+    format = format.replace(RegExp.$1, `${date.getFullYear()}`.substr(4 - RegExp.$1.length))
   }
   if (/(w+)/.test(format)) {
     format = format.replace(RegExp.$1, w[RegExp.$1.length - 1][date.getDay()])
   }
   for (const k in o) {
-    if (new RegExp('(' + k + ')').test(format)) {
+    if (new RegExp(`(${k})`).test(format)) {
       const oVal = o[k as 'M+' | 'd+' | 'h+' | 'm+' | 's+' | 'q+' | 'S']
       format = format.replace(
         RegExp.$1,
         RegExp.$1.length == 1
           ? oVal.toString()
-          : ('00' + oVal.toString()).substr(oVal.toString().length)
+          : `00${oVal.toString()}`.substr(oVal.toString().length)
       )
     }
   }
@@ -555,7 +555,7 @@ export const transferToNumber = (inputNumber: any) => {
   if (isNaN(inputNumber)) {
     return inputNumber
   }
-  inputNumber = '' + inputNumber
+  inputNumber = `${inputNumber}`
   inputNumber = parseFloat(inputNumber)
   const eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
   const tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
@@ -563,10 +563,10 @@ export const transferToNumber = (inputNumber: any) => {
 }
 // 數字轉都好分隔字符串 1123 =》'1,223'
 export const numberToCommaString = (nStr: number): string => {
-  const text: string = nStr + ''
+  const text = `${nStr}`
   const x: Array<string> = text.split('.') //按照小数点分隔
   let x1: string = x[0] //整数部分
-  const x2: string = x.length > 1 ? '.' + x[1] : '' //小数部分
+  const x2: string = x.length > 1 ? `.${x[1]}` : '' //小数部分
   const rgx = /(\d+)(\d{3})/ //正则式定义
   while (rgx.test(x1)) {
     //正则式匹配

@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-  import TsgzNavMenu from '../../../components/tsgz-nav-menu.vue'
   import { computed, defineComponent } from 'vue'
+  import TsgzNavMenu from '../../../components/tsgz-nav-menu.vue'
   import composition from '../../../utils/mixin/common-func'
   import TsgzFooter from '../../../components/tsgz-footer.vue'
   import { getRouterData } from '../../../router/router-pc'

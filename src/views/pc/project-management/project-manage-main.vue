@@ -146,7 +146,7 @@
           :page-size="pageParams.pageSize"
           :page-count="pageParams.total"
           :current-page="pageParams.currentPage"
-          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'pNum', 'page']"
@@ -177,23 +177,18 @@
 </template>
 
 <script lang="ts">
-  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
-  import CreateProject from './components/create-project.vue'
-  import { IPageParam } from '../../../utils/types'
-  import {
-    deleteProject,
-    getProjectListAdmin,
-    ICreateProj,
-    IProjectListAdmin,
-    IReappraise,
-  } from '../../../api/project-management'
-  import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
-  import { defineComponent, ref, reactive, onMounted, nextTick } from 'vue'
+  import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { deleteProject, getProjectListAdmin } from '../../../api/project-management'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
+  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { createDate, formatDate, beijing2utc, formatTimeStamp } from '../../../utils/common'
-  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import { beijing2utc, createDate, formatDate, formatTimeStamp } from '../../../utils/common'
+  import CreateProject from './components/create-project.vue'
+  import type { ICreateProj, IProjectListAdmin, IReappraise } from '../../../api/project-management'
+  import type { IPageParam } from '../../../utils/types'
 
   export default defineComponent({
     name: 'ProjectManageMain',
@@ -273,8 +268,7 @@
               return
             }
             if (res) {
-              const msg = t('lang.delete') + t('lang.success')
-              message('success', msg)
+              message('success', `${t('lang.delete')} ${t('lang.success')}`)
               // 更新列表
               getList('reset')
               showDelete.value = false
@@ -314,7 +308,7 @@
             total: 0,
           }
         }
-        let params: IProjectListAdmin = {
+        const params: IProjectListAdmin = {
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
           param: searchParams.value,
@@ -329,7 +323,7 @@
             pageParams.value.total = res.data.total
             // 關鍵詞字符串轉化為數組
             projectList.data.forEach((val: any) => {
-              let keyword = val.keyword.replace('；', ';')
+              const keyword = val.keyword.replace('；', ';')
               val.keywordList = keyword
                 .split(';')
                 .filter((filterVal: any) => filterVal)

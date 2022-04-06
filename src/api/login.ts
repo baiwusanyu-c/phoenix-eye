@@ -10,7 +10,7 @@ import config from '../enums/config' //路径配置
 //获取验证码
 export function getCodeImg() {
   return request({
-    url: config.baseURL + '/code',
+    url: `${config.baseURL}/code`,
     method: 'get',
   })
 }
@@ -154,7 +154,7 @@ export function getInfo() {
 //登出
 export function logout() {
   return request({
-    url: config.baseURL + '/auth/token/logout',
+    url: `${config.baseURL}/auth/token/logout`,
     method: 'delete',
   })
 }
@@ -167,7 +167,7 @@ export interface IRouterParams {
 
 export function getRouterInfo(params: IRouterParams) {
   return request({
-    url: config.baseURL + '/beosin-meta/menu/routers',
+    url: `${config.baseURL}/beosin-meta/menu/routers`,
     method: 'get',
     params,
   })

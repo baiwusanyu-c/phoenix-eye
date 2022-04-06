@@ -97,21 +97,16 @@
 </template>
 
 <script lang="ts">
-  import { forgetPasswordApi, verifyCodePassword } from '../../../../api/login'
-  import {
-    defineComponent,
-    ref,
-    reactive,
-    getCurrentInstance,
-    ComponentInternalInstance,
-  } from 'vue'
-  import { pwdReg, emailReg } from '../../../../utils/reg'
+  import { defineComponent, getCurrentInstance, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { Base64 } from 'js-base64'
+  import { forgetPasswordApi, verifyCodePassword } from '../../../../api/login'
+  import { emailReg, pwdReg } from '../../../../utils/reg'
   import composition from '../../../../utils/mixin/common-func'
   import { trim } from '../../../../utils/common'
-  import type { ElForm } from 'element-plus'
   import { BeButton } from '../../../../../public/be-ui/be-ui.es'
-  import { Base64 } from 'js-base64'
+  import type { ElForm } from 'element-plus'
+  import type { ComponentInternalInstance } from 'vue'
   type FormInstance = InstanceType<typeof ElForm>
   declare type resetPwdType = {
     name: string
@@ -154,7 +149,7 @@
                     message('success', t('lang.loginConfig.getVerCodeValid') + t('lang.success'))
                     isTip.value = true
                     num.value = 60
-                    let codeInerval = setInterval(() => {
+                    const codeInerval = setInterval(() => {
                       if (num.value > 0) {
                         num.value--
                       } else {

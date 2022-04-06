@@ -42,9 +42,10 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   import { BeButton, BePagination } from '../../../../public/be-ui/be-ui.es'
-  import { IPageParam, ISafetyData } from '../../../utils/types'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
-  import { getPublicOpinionList, IPOList } from '../../../api/risk-public-info'
+  import { getPublicOpinionList } from '../../../api/risk-public-info'
+  import type { IPageParam, ISafetyData } from '../../../utils/types'
+  import type { IPOList } from '../../../api/risk-public-info'
   export default defineComponent({
     name: 'RiskPublicInfo',
     components: { ProjectDetailPublicOpinion, BeButton, BePagination },
