@@ -80,7 +80,7 @@ export interface IContractReport extends IPageParam {
 // 获取项目合约报告
 export function getContractReportList(params: IContractReport) {
   return request({
-    url: `${config.baseURL}/ussa/project/feedback/create`,
+    url: `${config.baseURL}/ussa/project/contract/report/list`,
     method: 'post',
     params,
   })

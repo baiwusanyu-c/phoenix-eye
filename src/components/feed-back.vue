@@ -82,12 +82,13 @@
               const msg = `${t('lang.operation')} ${t('lang.success')}`
               message('success', msg)
             }
+           handleCancel()
           })
           .catch(err => {
             message('error', err.message || err)
             console.error(err)
+            handleCancel()
           })
-        console.error('handleConfirm')
       }
       const showDialog = ref<boolean>(false)
       const labelPosition = ref<string>('right')

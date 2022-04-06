@@ -191,7 +191,7 @@
       </div>
     </div>
     <!--Audit-->
-    <div v-if="auditList.length > 0" class="proj-detail-item">
+    <div v-if="auditList.length > 0" class="proj-detail-item eagle-table">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
       </div>

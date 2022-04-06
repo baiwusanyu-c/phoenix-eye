@@ -60,6 +60,7 @@
     }
 
     .project-detail-audit--name {
+        @include ellipsis;
       margin: 40px 0 10px 0;
       font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
       line-height: 24px;

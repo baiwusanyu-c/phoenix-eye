@@ -268,6 +268,7 @@
         websiteForm.value.github = ''
         websiteForm.value.telegram = ''
         websiteForm.value.twitter = ''
+        auditList.value = []
       }
       /**
        * 获取风险类型详情数据
@@ -291,8 +292,9 @@
               websiteForm.value.telegram = res.data.telegram
               websiteForm.value.twitter = res.data.twitter
               // 编辑时，如果原数据有审计就使用，否则调用获取默认审计
-              if (res.data.contract_report_list) {
+              if (res.data.contract_report_list && res.data.contract_report_list.length > 0) {
                 auditList.value = res.data.contract_report_list
+                createAuditurl()
               } else {
                 getReportDate()
               }
@@ -450,6 +452,14 @@
           return Number(val.report_id)
         })
       }
+      const createAuditurl = ():void =>{
+          const prevUrl =
+              String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+          const baseURL = config.baseURL
+          auditList.value.forEach((val: any) => {
+              val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+          })
+      }
       /**
        * 确认增加项目方法
        */
@@ -546,16 +556,20 @@
       const handleClose = (index: number): void => {
         auditList.value.splice(index, 1)
       }
-      const getReportDate = (params?: IReport): void => {
-        const prevUrl =
-          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
-        const baseURL = config.baseURL
+      const getReportDate = (params: IReport = {
+          contract_address_list: [],
+      }): void => {
         getReport(params)
           .then((res: any) => {
-            auditList.value = res.data
-            auditList.value.forEach((val: any) => {
-              val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
-            })
+              if(res.success){
+                  auditList.value = res.data
+                  createAuditurl()
+                  if(auditList.value.length === 0){
+                      message('warning', t('lang.emptyData'))
+                  }
+              }else{
+                  message('error', res.message || res)
+              }
           })
           .catch(err => {
             message('error', err.message || err)
