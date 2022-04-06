@@ -82,7 +82,7 @@
               const msg = `${t('lang.operation')} ${t('lang.success')}`
               message('success', msg)
             }
-           handleCancel()
+            handleCancel()
           })
           .catch(err => {
             message('error', err.message || err)

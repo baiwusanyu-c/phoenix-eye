@@ -452,13 +452,13 @@
           return Number(val.report_id)
         })
       }
-      const createAuditurl = ():void =>{
-          const prevUrl =
-              String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
-          const baseURL = config.baseURL
-          auditList.value.forEach((val: any) => {
-              val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
-          })
+      const createAuditurl = (): void => {
+        const prevUrl =
+          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+        const baseURL = config.baseURL
+        auditList.value.forEach((val: any) => {
+          val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+        })
       }
       /**
        * 确认增加项目方法
@@ -556,20 +556,22 @@
       const handleClose = (index: number): void => {
         auditList.value.splice(index, 1)
       }
-      const getReportDate = (params: IReport = {
+      const getReportDate = (
+        params: IReport = {
           contract_address_list: [],
-      }): void => {
+        }
+      ): void => {
         getReport(params)
           .then((res: any) => {
-              if(res.success){
-                  auditList.value = res.data
-                  createAuditurl()
-                  if(auditList.value.length === 0){
-                      message('warning', t('lang.emptyData'))
-                  }
-              }else{
-                  message('error', res.message || res)
+            if (res.success) {
+              auditList.value = res.data
+              createAuditurl()
+              if (auditList.value.length === 0) {
+                message('warning', t('lang.emptyData'))
               }
+            } else {
+              message('error', res.message || res)
+            }
           })
           .catch(err => {
             message('error', err.message || err)
