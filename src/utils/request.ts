@@ -5,16 +5,16 @@
  * @update (czh 2021/9/29)
  */
 import axios from 'axios'
-import config from '../enums/config'
-import { getStore, removeSession, removeStore, getSession, message, setSession } from './common'
 import qs from 'qs'
 import { useEventBus } from '@vueuse/core'
+import config from '../enums/config'
+import { getSession, getStore, message, removeSession, removeStore, setSession } from './common'
 
 // create an axios instance
 const service = axios.create({
   baseURL:
     String(import.meta.env.VITE_PROJECT_ENV) === 'production'
-      ? config.baseURL + '/hermit/back/'
+      ? `${config.baseURL}/hermit/back/`
       : config.baseURL,
   timeout: 50000, // request timeout
 })
@@ -24,7 +24,7 @@ service.interceptors.request.use(
   (config: any) => {
     const tokenCache = getStore('token')
     if (tokenCache) {
-      config.headers['Authorization'] = 'Bearer ' + getStore('token')
+      config.headers['Authorization'] = `Bearer ${getStore('token')}`
     }
     config.headers['Accept-Language'] = getStore('language') ? getStore('language') : 'en_US'
     if (config.method === 'post' && config.url !== '/auth/oauth/login') {
@@ -39,7 +39,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    console.log(error) // for debug
+    console.error(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -80,7 +80,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    console.error(`err${error}`) // for debug
     return Promise.reject(error)
   }
 )

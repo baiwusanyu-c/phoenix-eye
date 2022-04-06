@@ -38,8 +38,8 @@ Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
 </template>
 
 <script lang="ts">
-  import { BeDialog, BeButton } from '../../../../public/be-ui/be-ui.es.js'
-  import { defineComponent, computed } from 'vue'
+  import { computed, defineComponent } from 'vue'
+  import { BeButton, BeDialog } from '../../../../public/be-ui/be-ui.es.js'
   export default defineComponent({
     name: 'MsgDialog',
     components: { BeButton, BeDialog },
@@ -134,7 +134,6 @@ Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
 
 <style lang="scss" scoped>
   .be-msg-dialog {
-
     .img {
       display: block;
       width: 62px;
@@ -157,7 +156,6 @@ Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
 </style>
 <style lang="scss">
   #be_msg_dialog {
-
     .msg-dialog {
       top: 26vh;
       left: calc(50% - 218px);

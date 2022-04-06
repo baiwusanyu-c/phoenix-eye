@@ -68,11 +68,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, getCurrentInstance } from 'vue'
+  import { defineComponent, getCurrentInstance, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useEventBus } from '@vueuse/core'
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
   import RiskTrxTable from './components/risk-trx-table.vue'
-  import { useEventBus } from '@vueuse/core'
 
   export interface IFilterItem {
     label?: string
@@ -154,7 +154,6 @@
         display: flex;
 
         input::-webkit-input-placeholder {
-
           /* WebKit browsers */
           font-family: AlibabaPuHuiTi-Regular, sans-serif;
           font-size: 18px;
@@ -180,7 +179,7 @@
         margin-top: 36px;
         background-color: $mainColor7;
         border-radius: 4px;
-        opacity: .69;
+        opacity: 0.69;
 
         .filter-label {
           font-weight: bold;
@@ -218,7 +217,6 @@
 
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .risk-trx-list .search-area,
     .risk-trx-list .risk-table {
       width: 92%;
@@ -227,7 +225,6 @@
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-
     .risk-trx-list .search-area,
     .risk-trx-list .risk-table {
       width: 80%;

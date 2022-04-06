@@ -4,14 +4,15 @@
  * @author czh
  * @update (czh 2021/12/24)
  */
-import { Router, RouteLocationNormalizedLoaded, useRouter, useRoute } from 'vue-router'
-import { ref, computed } from 'vue'
-import { getCodeImg } from '../../api/login'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { getCodeImg } from '../../api/login'
 // @ts-ignore
 import { BeMessage, BeMsg } from '../../../public/be-ui/be-ui.es.js'
-import { Ref } from '@vue/reactivity'
 import { isNumber, isString } from '../common'
+import type { Ref } from '@vue/reactivity'
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
 export default () => {
   /**
@@ -40,7 +41,7 @@ export default () => {
   const getCode = (): void => {
     getCodeImg().then((res: any) => {
       uuid.value = res.uuid
-      codeUrl.value = 'data:image/gif;base64,' + res.img
+      codeUrl.value = `data:image/gif;base64,${res.img}`
     })
   }
   const message = (type: string, info: string, className?: string): void => {
@@ -87,10 +88,10 @@ export default () => {
       bodyRender: () => {
         return <p>{content}</p>
       },
-      footerRender: function () {
+      footerRender() {
         return <div></div>
       },
-      iconPreRender: function () {
+      iconPreRender() {
         return <div></div>
       },
     })

@@ -1,4 +1,4 @@
-import { IOption } from '../utils/types'
+import type { IOption } from '../utils/types'
 // 生产环境
 enum productionUrl {
   baseURL = 'https://eagleeye.beosin.com/eagle-eye-ussa/',
@@ -30,6 +30,6 @@ const configUrl: IOption = {
   staging: stagingUrl,
   staging02: stagingUrl02,
   development02: developmentUrl02,
-  production02: production02,
+  production02,
 }
 export default configUrl[String(import.meta.env.VITE_PROJECT_ENV)]

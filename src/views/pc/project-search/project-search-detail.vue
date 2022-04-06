@@ -260,32 +260,32 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue'
-  import { IPageParam } from '../../../utils/types'
-  import { BeIcon, BeTag, BePagination, BeButton } from '../../../../public/be-ui/be-ui.es'
-  import composition from '../../../utils/mixin/common-func'
   import { useI18n } from 'vue-i18n'
-  import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
+  import { useEventBus } from '@vueuse/core'
+  import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es'
+  import composition from '../../../utils/mixin/common-func'
   import {
     createSubscribe,
     deleteSubscribe,
     getProjectSituation,
     getProjectSituationStatistics,
     getPublicOpinion,
-    IPublicOpinion,
   } from '../../../api/project-explorer'
   import {
-    numberToCommaString,
     createDate,
     formatDate,
     formatTimeStamp,
+    numberToCommaString,
     openWindow,
-    getStore,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
-  import ProjectDetailTop, { ITableHeader } from './components/project-detail-top.vue'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
+  import ProjectDetailTop from './components/project-detail-top.vue'
+  import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
+  import type { ITableHeader } from './components/project-detail-top.vue'
+  import type { IPublicOpinion } from '../../../api/project-explorer'
+  import type { IPageParam } from '../../../utils/types'
 
   interface ISafetyData {
     negative?: string
@@ -407,7 +407,7 @@
       }
       const baseLoading = ref<boolean>(false)
       const getProSituData = async () => {
-        let params: IPublicOpinion = {
+        const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
         }
         baseLoading.value = true
@@ -525,7 +525,7 @@
       const getPublicOpinionData = (): void => {
         safetyData.value = []
         loadingFs.value = true
-        let params: IPublicOpinion = {
+        const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
           page_num: pageParamsFs.value.currentPage,
           page_size: pageParamsFs.value.pageSize,
@@ -614,7 +614,7 @@
           params === 'matic'
         )
           return
-        let mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
+        const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
         const url = `${mainUrl}${params}`
         openWindow(url)
       }
@@ -906,13 +906,12 @@
   }
 
   .subscribe {
-
     .be-message-box-container {
       width: 575px;
       height: 148px;
       background: $mainColor7;
       border-radius: 4px;
-      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, .1);
+      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, 0.1);
 
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor3;
@@ -930,16 +929,13 @@
   }
 
   .subscribe--normal {
-
     .be-message-box-container {
-
       .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
         color: $mainColor19;
       }
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .project-search-detail .proj-detail-item {
       width: 78%;
     }

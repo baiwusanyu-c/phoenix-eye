@@ -200,15 +200,16 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, reactive, ref, PropType, computed } from 'vue'
+  import { computed, defineComponent, onMounted, ref } from 'vue'
   import { getProjWarning } from '../../../../api/risk-trx'
-  import { openWindow, beijing2utc, createDate, formatDate } from '../../../../utils/common'
-  import { IFilterItem } from '../risk-trx-list.vue'
+  import { beijing2utc, createDate, formatDate, openWindow } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
-  import { BeIcon, BeTag, BePagination, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
+  import { BeIcon, BePagination, BeTag, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import { IOption, IPageParam } from '../../../../utils/types'
+  import type { IFilterItem } from '../risk-trx-list.vue'
+  import type { PropType } from 'vue'
+  import type { IOption, IPageParam } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'RiskTrxTable',
@@ -250,7 +251,7 @@
       const { message, isEmpty } = composition()
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
-      let pageParams = ref<IPageParam>({
+      const pageParams = ref<IPageParam>({
         currentPage: 1,
         pageSize: 10,
         total: 0,
@@ -272,15 +273,15 @@
           }
         }
         const getFilterParams = (arr: Array<IFilterItem> = []): Array<string> => {
-          let res: Array<string> = []
-          arr.map((val: IFilterItem) => {
+          const res: Array<string> = []
+          arr.forEach((val: IFilterItem) => {
             if (val.isActive) {
               res.push(val.val)
             }
           })
           return res
         }
-        let params = {
+        const params = {
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
           project_id: props.projectId,
@@ -338,8 +339,8 @@
       }
 
       const screenWidth = window.screen.width
-      let tableHeader = computed(() => {
-        let headerDict: IOption = {
+      const tableHeader = computed(() => {
+        const headerDict: IOption = {
           platform: '130',
           tx_hash: '170',
           alert_level: '110',

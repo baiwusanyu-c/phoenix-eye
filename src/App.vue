@@ -42,10 +42,10 @@
   </div>
 </template>
 <script setup lang="tsx">
-  import { getStore, browserInfo, setStore } from './utils/common'
   import { ref } from 'vue'
-  import { BeDialog, BeButton } from '../public/be-ui/be-ui.es.js'
+  import { BeButton, BeDialog } from '../public/be-ui/be-ui.es.js'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
+  import { browserInfo, getStore, setStore } from './utils/common'
   // 設置是否手機訪問變量
   const ua = navigator.userAgent
   const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)
@@ -76,7 +76,6 @@
   @import 'assets/style/font-style.css';
 
   #browser_msg_dialog {
-
     .browser-msg-dialog {
       top: calc(50% - 220px);
       left: calc(50% - 200px);
@@ -89,7 +88,6 @@
       background-color: white;
 
       .be-dialog-title {
-
         .be-dialog-contanter-head {
           box-sizing: border-box;
           padding: 0;
@@ -108,7 +106,6 @@
         background-color: transparent;
 
         .browser-msg-dialog__left {
-
           .browser-msg-dialog-ul {
             max-width: 320px;
             overflow-y: auto;
@@ -143,7 +140,6 @@
 
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-
     .noM {
       min-width: 1280px;
     }

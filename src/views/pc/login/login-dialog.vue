@@ -89,9 +89,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, computed } from 'vue'
-  import { BeDialog, BeButton } from '../../../../public/be-ui/be-ui.es.js'
+  import { computed, defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { BeButton, BeDialog } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
   import ResetPassword from './components/reset-password.vue'
   import NameLogin from './components/name-login.vue'
@@ -177,7 +177,6 @@
 
 <style lang="scss">
   #login_dialog {
-
     .be-dialog {
       position: absolute;
       min-width: 1280px;
@@ -273,7 +272,7 @@
           font-size: 24px;
           font-weight: 600;
           line-height: 32px;
-          color: rgba(0, 0, 0, .85);
+          color: rgba(0, 0, 0, 0.85);
           text-align: left;
         }
 
@@ -297,7 +296,7 @@
           font-size: 24px;
           font-weight: 600;
           line-height: 32px;
-          color: rgba(0, 0, 0, .85);
+          color: rgba(0, 0, 0, 0.85);
           text-align: left;
         }
 
@@ -321,7 +320,7 @@
           font-size: 24px;
           font-weight: 600;
           line-height: 32px;
-          color: rgba(0, 0, 0, .85);
+          color: rgba(0, 0, 0, 0.85);
           text-align: left;
         }
 
@@ -332,7 +331,7 @@
         }
 
         .forget-btn {
-          color: rgba(74, 74, 74, .85);
+          color: rgba(74, 74, 74, 0.85);
         }
 
         .forget-btn:hover {

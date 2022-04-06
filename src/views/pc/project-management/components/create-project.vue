@@ -119,22 +119,22 @@
 </template>
 
 <script lang="ts">
+  import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import {
     createProject,
     getProjectInfo,
-    ICreateProj,
     saveEditProject,
-    IContractInfos,
   } from '../../../../api/project-management'
-  import { platformListDict, IPlatformListItem } from '../../../../utils/platform-dict'
-  import { defineComponent, ref, reactive, watch, onMounted } from 'vue'
-  import { useI18n } from 'vue-i18n'
+  import { platformListDict } from '../../../../utils/platform-dict'
 
-  import { ceSemiSpecialCharReg, ETHaddress } from '../../../../utils/reg'
+  import { ETHaddress, ceSemiSpecialCharReg } from '../../../../utils/reg'
   import { BeButton, BeIcon } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
-  import { IOption } from '../../../../utils/types'
   import { trimStr } from '../../../../utils/common'
+  import type { IPlatformListItem } from '../../../../utils/platform-dict'
+  import type { IContractInfos, ICreateProj } from '../../../../api/project-management'
+  import type { IOption } from '../../../../utils/types'
   interface IWebsiteForm {
     website?: string
     github?: string
@@ -321,7 +321,7 @@
         }
         // 校驗中英文，分號
         if (params.keyword) {
-          let keyword = semicolonVerification(params.keyword)
+          const keyword = semicolonVerification(params.keyword)
           if (!ceSemiSpecialCharReg.test(keyword)) {
             verKeyword.value = t('lang.createProject.verCeSemicolonReg')
             return false
@@ -335,16 +335,16 @@
        */
       const verificationContractAddr = (val: any): boolean => {
         const platformReg: IOption = {
-          bsc: function (addr: string) {
+          bsc(addr: string) {
             return ETHaddress.test(addr)
           },
-          eth: function (addr: string) {
+          eth(addr: string) {
             return ETHaddress.test(addr)
           },
-          heco: function (addr: string) {
+          heco(addr: string) {
             return ETHaddress.test(addr)
           },
-          polygon: function (addr: string) {
+          polygon(addr: string) {
             return ETHaddress.test(addr)
           },
         }
@@ -369,17 +369,17 @@
         verKeyword.value = ''
         if (!verificationName(params)) return false
         if (!verificationKeyword(params)) return false
-        let contractInfos: Array<IContractInfos> = []
+        const contractInfos: Array<IContractInfos> = []
         let hasEmpty = false
-        const contract_infos: Array<IContractInfos> | undefined = params.contract_infos
-        contract_infos &&
-          contract_infos.forEach(val => {
+        const contractInfosParams: Array<IContractInfos> | undefined = params.contract_infos
+        contractInfosParams &&
+          contractInfosParams.forEach(val => {
             val.verAddr = ''
             val.verContract = ''
             hasEmpty = verificationContractAddr(val as IContractInfos)
             // 填写了合约标签，则进行校验
             if (val.label) {
-              let label = semicolonVerification(val.label)
+              const label = semicolonVerification(val.label)
               if (!ceSemiSpecialCharReg.test(label)) {
                 val.verContract = t('lang.createProject.verCeSemicolonTag')
                 hasEmpty = true
@@ -419,7 +419,7 @@
        * 确认增加项目方法
        */
       const addProject = () => {
-        let params: ICreateProj = {
+        const params: ICreateProj = {
           name: projectName.value,
           keyword: projectKeyWords.value,
           contract_infos: contractSite.data,
@@ -456,7 +456,7 @@
        * 确认编辑项目方法
        */
       const editProject = () => {
-        let params: ICreateProj = {
+        const params: ICreateProj = {
           name: projectName.value,
           keyword: projectKeyWords.value,
           contract_infos: contractSite.data,
@@ -524,7 +524,6 @@
 
 <style lang="scss">
   .createBox {
-
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -568,7 +567,6 @@
     border-radius: 2px;
 
     .add-create {
-
       .be-icon {
         fill: darkgray;
       }
@@ -579,7 +577,6 @@
     border-color: $mainColor3;
 
     .add-create {
-
       .be-icon {
         fill: $mainColor3;
       }
