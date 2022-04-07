@@ -208,8 +208,6 @@
           // 新增时
           if (props.type === 'add') {
             projectName.value = ''
-            // 新增窗口打开，获取默认的合约报告列表
-            getReportDate()
             return
           }
           // 獲取詳情信息
@@ -291,12 +289,10 @@
               websiteForm.value.github = res.data.github
               websiteForm.value.telegram = res.data.telegram
               websiteForm.value.twitter = res.data.twitter
-              // 编辑时，如果原数据有审计就使用，否则调用获取默认审计
+              // 编辑时，如果原数据有审计就使用
               if (res.data.contract_report_list && res.data.contract_report_list.length > 0) {
                 auditList.value = res.data.contract_report_list
                 createAuditurl()
-              } else {
-                getReportDate()
               }
             }
           })
