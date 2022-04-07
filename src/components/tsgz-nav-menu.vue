@@ -686,39 +686,38 @@
     }
   }
 
-
   /* 150% 适配 */
   @media screen and (max-width: 1326px) {
-      .tsgz-nav-menu .expend-logo {
-          width: 100px;
-          background-size: contain;
-      }
-      .tsgz-nav-menu .el-input__inner {
-          width: 120px;
-      }
-      /*.project-select{
+    .tsgz-nav-menu .expend-logo {
+      width: 100px;
+      background-size: contain;
+    }
+    .tsgz-nav-menu .el-input__inner {
+      width: 120px;
+    }
+    /*.project-select{
           width: 120px;
       }*/
-      .tsgz-nav-menu .el-menu-item{
-          padding: 0 5px;
-          font-size: 12px;
-      }
+    .tsgz-nav-menu .el-menu-item {
+      padding: 0 5px;
+      font-size: 12px;
+    }
   }
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-      .tsgz-nav-menu .expend-logo {
-          width: 120px;
-          background-size: contain;
-      }
-      .tsgz-nav-menu .el-input__inner {
-          width: 160px;
-      }
-      /*.project-select{
+    .tsgz-nav-menu .expend-logo {
+      width: 120px;
+      background-size: contain;
+    }
+    .tsgz-nav-menu .el-input__inner {
+      width: 160px;
+    }
+    /*.project-select{
           width: 160px;
       }*/
-      .tsgz-nav-menu .el-menu-item{
-        padding: 0 10px;
-      }
+    .tsgz-nav-menu .el-menu-item {
+      padding: 0 10px;
+    }
   }
 </style>

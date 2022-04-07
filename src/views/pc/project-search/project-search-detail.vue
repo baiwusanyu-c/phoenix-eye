@@ -980,15 +980,15 @@
   }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-      .project-search-detail .proj-detail-item {
-          width: 92%;
-      }
+    .project-search-detail .proj-detail-item {
+      width: 92%;
+    }
   }
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-      .project-search-detail .proj-detail-item {
-          width: 80%;
-      }
+    .project-search-detail .proj-detail-item {
+      width: 80%;
+    }
   }
 </style>
