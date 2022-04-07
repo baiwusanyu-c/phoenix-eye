@@ -8,25 +8,14 @@
       :data="tableData"
       @row-click="openDetail">
       <template #empty>
-        <div class="empty-data">
-          <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-          <p style="line-height: 25px">{{ $t('lang.noRisk') }}</p>
-        </div>
+        <empty-data content="lang.noRisk"></empty-data>
       </template>
       <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
         <template #default="scope">
-          <div class="flex items-center">
-            <be-icon
-              :icon="iconDict[scope.row.platform.toUpperCase()]"
-              class="mr-2"
-              width="24"
-              height="24">
-            </be-icon>
-            {{ scope.row.platform.toUpperCase() }}
-          </div>
+          <platform-cell :platform="scope.row.platform"></platform-cell>
         </template>
       </el-table-column>
       <el-table-column prop="tx_hash" :width="tableHeader('tx_hash')" align="center">
@@ -207,13 +196,15 @@
   import { BeIcon, BePagination, BeTag, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import type { IFilterItem } from '../risk-trx-list.vue'
+  import PlatformCell from '../../../../components/common-components/platform-cell/platform-cell.vue'
+  import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
   import type { PropType } from 'vue'
-  import type { IOption, IPageParam } from '../../../../utils/types'
-
+  import type { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
+      EmptyData,
+      PlatformCell,
       BeTooltip,
       BeIcon,
       BeTag,
@@ -386,23 +377,6 @@
   .risk-table-inner {
     padding: 20px;
     background-color: #fff;
-
-    .more-btn {
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      border: 1px solid $textColor9;
-      border-radius: 30px;
-
-      &:hover {
-        background-color: $mainColor3;
-        border-color: $mainColor3;
-
-        .be-icon {
-          fill: $mainColor7;
-        }
-      }
-    }
 
     /* 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸 */
 

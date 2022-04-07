@@ -41,6 +41,12 @@ const routes = [
         component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
         meta: { title: 'lang.subNav.navName2' },
       },
+      {
+        path: '/addressMonitor/detail',
+        name: 'addressMonitorDetail',
+        component: () => import('../views/pc/addr-monitor/addr-monitor-detail.vue'),
+        meta: { title: 'lang.subNav.navName2' },
+      },
     ],
   },
   {

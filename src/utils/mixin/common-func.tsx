@@ -16,15 +16,6 @@ import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
 export default () => {
   /**
-   * 打開窗口
-   */
-  const openWin = (url: string, winName: string, cb: Function): void => {
-    if (cb) {
-      cb()
-    }
-    window.open(url, winName ? winName : url)
-  }
-  /**
    * 跳转方法
    * @param path 路由地址
    */
@@ -107,6 +98,5 @@ export default () => {
     routerPush,
     router,
     route,
-    openWin,
   }
 }

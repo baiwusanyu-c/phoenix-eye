@@ -2,14 +2,13 @@ import axios from 'axios'
 import config from '../enums/config'
 import { getStore } from './common'
 import type { AxiosRequestConfig } from 'axios'
+import type { INavigator } from './types'
 
 const mimeMap = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   zip: 'application/zip',
 }
-interface INavigator {
-  msSaveBlob?: (blob: any, defaultName?: string) => boolean
-}
+
 export function downLoadZip(str: string, filename: string) {
   const url = config.baseURL + str
   // @ts-ignore

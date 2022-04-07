@@ -73,15 +73,7 @@
   import { useEventBus } from '@vueuse/core'
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
   import RiskTrxTable from './components/risk-trx-table.vue'
-
-  export interface IFilterItem {
-    label?: string
-    val: string
-    isActive: boolean
-  }
-  export interface IRiskTable {
-    getList: Function
-  }
+  import type { IFilterItem, IRiskTable } from '../../../utils/types'
 
   export default defineComponent({
     name: 'RiskTrxList',
@@ -146,10 +138,8 @@
     min-height: calc(100% - 100px);
 
     .search-area {
-      width: 70%;
+      @include common-container(40px);
       min-width: 1172px;
-      margin: 40px auto 0 auto;
-
       .risk-trx-search-input {
         display: flex;
 
@@ -209,9 +199,8 @@
     }
 
     .risk-table {
-      width: 70%;
+      @include common-container(30px);
       min-width: 1172px;
-      margin: 30px auto 0 auto;
     }
   }
 

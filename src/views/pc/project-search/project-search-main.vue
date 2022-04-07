@@ -183,8 +183,7 @@
   }
 
   .project-search-container {
-    width: 70%;
-    margin: 40px auto 0 auto;
+    @include common-container(40px);
     text-align: center;
 
     .project-manage-search-input {
@@ -208,8 +207,7 @@
   }
 
   .project-search-result {
-    width: 70%;
-    margin: 32px auto 0 auto;
+    @include common-container(32px);
 
     .project-search-eg {
       padding: 24px 24px 8px 24px;

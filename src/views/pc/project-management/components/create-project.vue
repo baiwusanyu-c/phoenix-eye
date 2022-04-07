@@ -101,6 +101,23 @@
                 class="projectKeyWordsInput"
                 :placeholder="$t('lang.createProject.createProjectEmailInput')"></el-input>
             </el-form-item>
+            <el-form-item :label="$t('lang.projectExplorer.detail.audit') + ':'">
+              <be-tag
+                v-for="(item, index) in auditList"
+                :key="item.url"
+                is-close
+                @close="handleClose(index)"
+                @click="openWindow(item.url)">
+                {{ item.report_name }}
+              </be-tag>
+              <be-button
+                custom-class="retrieval-btn"
+                prev-icon="iconRetrievalEagle"
+                title="Click to match the audit according to the contract"
+                @click="matchAudit">
+                {{ $t('lang.searchBtn') }}
+              </be-button>
+            </el-form-item>
           </el-form>
         </div>
         <template #footer>
@@ -124,26 +141,23 @@
   import {
     createProject,
     getProjectInfo,
+    getReport,
     saveEditProject,
   } from '../../../../api/project-management'
   import { platformListDict } from '../../../../utils/platform-dict'
 
   import { ETHaddress, ceSemiSpecialCharReg } from '../../../../utils/reg'
-  import { BeButton, BeIcon } from '../../../../../public/be-ui/be-ui.es'
+  import { BeButton, BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
-  import { trimStr } from '../../../../utils/common'
+  import { openWindow, trimStr } from '../../../../utils/common'
+  import config from '../../../../enums/config'
+  import type { IAuditList, IOption, IWebsiteForm } from '../../../../utils/types'
+  import type { IContractInfos, ICreateProj, IReport } from '../../../../api/project-management'
+
   import type { IPlatformListItem } from '../../../../utils/platform-dict'
-  import type { IContractInfos, ICreateProj } from '../../../../api/project-management'
-  import type { IOption } from '../../../../utils/types'
-  interface IWebsiteForm {
-    website?: string
-    github?: string
-    twitter?: string
-    telegram?: string
-  }
   export default defineComponent({
     name: 'CreateProject',
-    components: { BeIcon, BeButton },
+    components: { BeIcon, BeButton, BeTag },
     props: {
       // 操作類型
       type: {
@@ -169,7 +183,10 @@
       const projectName = ref<string>('')
       const projectKeyWords = ref<string>('')
       const emailList = ref<string>('')
-
+      // 聯係地址表單
+      const websiteForm = ref<IWebsiteForm>({})
+      // 审计列表
+      const auditList = ref<Array<IAuditList>>([])
       const labelPosition = ref<string>('right')
       const addContract = ref<number>(0)
       const contractSite = reactive({
@@ -188,6 +205,11 @@
 
       watch(createProjectWindow, nVal => {
         if (nVal) {
+          // 新增时
+          if (props.type === 'add') {
+            projectName.value = ''
+            return
+          }
           // 獲取詳情信息
           getDetailData()
         } else {
@@ -244,15 +266,12 @@
         websiteForm.value.github = ''
         websiteForm.value.telegram = ''
         websiteForm.value.twitter = ''
+        auditList.value = []
       }
       /**
        * 获取风险类型详情数据
        */
       const getDetailData = () => {
-        if (props.type === 'add') {
-          projectName.value = ''
-          return
-        }
         const params = {
           id: props.projectId,
         }
@@ -270,6 +289,11 @@
               websiteForm.value.github = res.data.github
               websiteForm.value.telegram = res.data.telegram
               websiteForm.value.twitter = res.data.twitter
+              // 编辑时，如果原数据有审计就使用
+              if (res.data.contract_report_list && res.data.contract_report_list.length > 0) {
+                auditList.value = res.data.contract_report_list
+                createAuditurl()
+              }
             }
           })
           .catch(err => {
@@ -416,6 +440,23 @@
           })
       }
       /**
+       * 处理合约数据
+       * @param auditList 合约列表
+       */
+      const handleAuditParams = (auditList: Array<IAuditList>): Array<number> => {
+        return auditList.map(val => {
+          return Number(val.report_id)
+        })
+      }
+      const createAuditurl = (): void => {
+        const prevUrl =
+          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+        const baseURL = config.baseURL
+        auditList.value.forEach((val: any) => {
+          val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+        })
+      }
+      /**
        * 确认增加项目方法
        */
       const addProject = () => {
@@ -425,6 +466,7 @@
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
+          report_id_list: [],
         }
         // 表单校验
         if (!formVerification(params)) {
@@ -432,6 +474,7 @@
           return
         }
         setParams(params.contract_infos)
+        params.report_id_list = handleAuditParams(auditList.value)
         createProject(params)
           .then((res: any) => {
             if (!res) {
@@ -462,6 +505,7 @@
           contract_infos: contractSite.data,
           ...websiteForm.value,
           email_list: emailList.value.split(';'),
+          report_id_list: [],
         }
         const pathParams = {
           id: props.projectId,
@@ -472,6 +516,7 @@
           return
         }
         setParams(params.contract_infos)
+        params.report_id_list = handleAuditParams(auditList.value)
         saveEditProject(params, pathParams)
           .then(res => {
             if (!res) {
@@ -489,9 +534,55 @@
             console.error(err)
           })
       }
-      // 聯係地址表單
-      const websiteForm = ref<IWebsiteForm>({})
+      /**
+       * 根據合約地址匹配
+       */
+      const matchAudit = (): void => {
+        const params: IReport = {
+          contract_address_list: [],
+        }
+        contractSite.data.forEach(val => {
+          val.contract_address && params.contract_address_list.push(val.contract_address.toString())
+        })
+        if (params.contract_address_list.length === 0) {
+          message('error', `${t('lang.pleaseInput')} ${t('lang.createProject.contractSite')}`)
+          return
+        }
+        getReportDate(params)
+      }
+      /**
+       * 合约报告点击关闭
+       */
+      const handleClose = (index: number): void => {
+        auditList.value.splice(index, 1)
+      }
+      const getReportDate = (
+        params: IReport = {
+          contract_address_list: [],
+        }
+      ): void => {
+        getReport(params)
+          .then((res: any) => {
+            if (res.success) {
+              auditList.value = res.data
+              createAuditurl()
+              if (auditList.value.length === 0) {
+                message('warning', t('lang.emptyData'))
+              }
+            } else {
+              message('error', res.message || res)
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
       return {
+        matchAudit,
+        openWindow,
+        handleClose,
+        auditList,
         emailList,
         createProjectWindow,
         projectName,
@@ -504,7 +595,6 @@
         verKeyword,
         websiteForm,
         resetVar,
-        getDetailData,
         semicolonVerification,
         verificationName,
         verificationKeyword,
@@ -620,5 +710,48 @@
   .contractSiteLabel {
     width: 600px;
     margin-left: 8px;
+  }
+
+  .createBox .be-tag {
+    height: 36px;
+    margin: 5px;
+    line-height: 36px;
+
+    span {
+      height: 100%;
+    }
+
+    &:hover {
+      color: $textColor3;
+      background: #e8fff0;
+      border: 1px solid #cde4df;
+      border-radius: 2px;
+
+      .be-icon use {
+        fill: $textColor3;
+      }
+    }
+  }
+
+  .retrieval-btn {
+    width: 98px;
+    height: 36px;
+    margin: 5px;
+    background: $mainColor7;
+    border: 1px solid $mainColor3;
+    border-radius: 2px;
+
+    &:hover {
+      background: $mainColor7;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    }
+
+    .be-button-body .be-button-slot {
+      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      color: #333;
+    }
   }
 </style>

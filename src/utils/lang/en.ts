@@ -36,6 +36,13 @@ export default {
   profit: 'profit',
   signUp: 'Sign Up',
   contact: 'Contact',
+  feedback: {
+    title: 'Feedback',
+    formTitle: 'Title',
+    formContract: 'Contract',
+    formContractP:
+      'If you have any questions about the information we present, or find any errors, please contact us and we will correct them in time.',
+  },
   header: {
     me: 'Me',
     language: '语言',
@@ -192,6 +199,7 @@ export default {
       top5Title1: 'Top 5 Token Holders',
       top5Title2: 'Top 5 Liquidity Pairs Holders',
       riskTrx: 'Risk Trx',
+      audit: 'Audit',
       riskPublicOpinion: 'Risk Public Opinion',
       subscribe: 'Subscribe',
       source: 'source',
@@ -209,6 +217,9 @@ export default {
   trxRetry: {
     searchP: 'Trx Hash',
     result: 'You have submitted！please check later on the risk trx page.',
+  },
+  riskPublicInfo: {
+    searchP: 'Key Words',
   },
   createProject: {
     createProjectTitle: 'Create',
@@ -363,5 +374,23 @@ export default {
     failed: 'Failure due to unknown reasons, please contact our customer service.',
     titleUn: 'Unsubscribes',
     unSubscribes: 'Unsubscribe succeeded!',
+  },
+  addrMonitor: {
+    searchP: 'Address',
+    create: 'Add the monitor',
+    title: 'Address Monitor',
+    tableHeader: {
+      addr: 'Address',
+      remark: 'Remark',
+      createTime: 'Create Time',
+      link: 'The Event Link',
+      operate: 'Operate',
+    },
+    form: {
+      labelAddr: 'Address',
+      labelRemark: 'Address',
+      labelLink: 'The Event Link',
+      linkDiscr: 'Add an associated security event link.',
+    },
   },
 }

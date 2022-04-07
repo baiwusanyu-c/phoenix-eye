@@ -17,8 +17,11 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    EmptyData: typeof import('./src/components/common-components/empty-data/empty-data.vue')['default']
+    FeedBack: typeof import('./src/components/feed-back.vue')['default']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
+    PlatformCell: typeof import('./src/components/common-components/platform-cell/platform-cell.vue')['default']
     TsgzFooter: typeof import('./src/components/tsgz-footer.vue')['default']
     TsgzNavMenu: typeof import('./src/components/tsgz-nav-menu.vue')['default']
   }

@@ -74,3 +74,14 @@ export function deleteSubscribe(params: ISubscribe) {
     method: 'post',
   })
 }
+export interface IContractReport extends IPageParam {
+  project_id: number
+}
+// 获取项目合约报告
+export function getContractReportList(params: IContractReport) {
+  return request({
+    url: `${config.baseURL}/ussa/project/contract/report/list`,
+    method: 'post',
+    params,
+  })
+}

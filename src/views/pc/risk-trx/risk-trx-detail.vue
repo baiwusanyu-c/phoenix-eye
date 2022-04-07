@@ -115,10 +115,7 @@
       <div class="detail-profit-body">
         <el-table tooltip-effect="light" :data="profitData">
           <template #empty>
-            <div class="empty-data">
-              <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-              <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-            </div>
+            <empty-data></empty-data>
           </template>
           <el-table-column prop="platform" :width="addrCellWidth" align="left">
             <template #header>
@@ -370,22 +367,18 @@
     simulateToFixed,
   } from '../../../utils/common'
   import { BeIcon, BeTag, BeTooltip } from '../../../../public/be-ui/be-ui.es'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import type { IBaseInfoRiskInfo } from '../../../utils/types'
   import type { IPlatformToCurrency } from '../../../utils/platform-dict'
   import type { IProjDetail } from '../../../api/risk-trx'
 
-  interface IBaseInfo {
-    platform?: string
-    tx_hash?: string
-    slump?: any
-  }
-
   export default defineComponent({
     name: 'RiskTrxDetail',
-    components: { BeEllipsisCopy, BeTag, BeIcon, BeTooltip },
+    components: { EmptyData, BeEllipsisCopy, BeTag, BeIcon, BeTooltip },
     setup() {
       const { message, route } = composition()
       // 基础信息
-      const baseInfo = ref<IBaseInfo>({})
+      const baseInfo = ref<IBaseInfoRiskInfo>({})
       // 收益信息
       const profitData = ref<Array<any>>([])
       // loading
@@ -561,10 +554,9 @@
 
     .detail-body {
       box-sizing: border-box;
-      width: 70%;
+      @include common-container(40px);
       min-width: 1172px;
       padding: 20px;
-      margin: 40px auto 0 auto;
       background: $mainColor7-06;
 
       .detail-item {
@@ -618,9 +610,8 @@
     }
 
     .detail-profit {
-      width: 70%;
+      @include common-container(40px);
       min-width: 1172px;
-      margin: 40px auto 0 auto;
       color: $textColor3;
       background: transparent;
 
@@ -634,8 +625,7 @@
 
     .detail-slump {
       display: flex;
-      width: 70%;
-      margin: 40px auto 0 auto;
+      @include common-container(40px);
       color: $textColor3;
 
       & .detail-slump--container:nth-child(1) {

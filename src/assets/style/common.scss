@@ -49,8 +49,8 @@
 }
 
 .el-textarea__inner:focus {
-  color: $mainColor3;
-  border: 1px solid $mainColor3;
+  color: $textColor3;
+  box-shadow: 0 0 0 1px $mainColor3 inset !important;
 }
 
 .el-input__inner {
@@ -241,12 +241,6 @@
 
 .el-table__row{
   height: 64px;
-
-  &:hover{
-    background-color: $mainColor7;
-
-    @apply shadow-md cursor-pointer
-  }
 }
 
 .el-table::before {
@@ -344,12 +338,17 @@
   border-color: $mainColor3;
 }
 
-
+.el-select .el-input .el-input__inner {
+  border: 1px solid #dcdfe6;
+}
 
 //下拉样式
-
+.el-input__inner{
+  border: 1px solid #dcdfe6;
+}
 .el-select .el-input.is-focus .el-input__inner {
   border-color: $mainColor3 !important;
+  box-shadow: none !important;
 }
 
 .el-select-dropdown__item.selected {
@@ -358,6 +357,7 @@
 
 .el-select .el-input__inner:focus{
   border-color: $mainColor3 !important;
+  box-shadow: none !important;
 }
 
 .el-select-v2__wrapper{
@@ -552,7 +552,10 @@
   }
 
 }
-
+.create-btn {
+  display: block;
+  margin: 38px 0;
+}
 .search-btn{
   width: 184px;
   height: 52px;
@@ -565,6 +568,22 @@
   &:hover,&:focus {
     box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
     opacity: 1;
+  }
+}
+.more-btn {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border: 1px solid $textColor9;
+  border-radius: 30px;
+
+  &:hover {
+    background-color: $mainColor3;
+    border-color: $mainColor3;
+
+    .be-icon {
+      fill: $mainColor7;
+    }
   }
 }
 
@@ -675,6 +694,20 @@
   height: auto;
   padding-bottom: 86px;
 }
+// be-dialog 弹窗样式
+
+.be-dialog .be-dialog-container .be-dialog-title {
+
+  .be-dialog-container-head{
+    text-align: left;
+
+    span{
+      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      color: #1CD2A9;
+    }
+  }
+}
+
 @media screen and (min-width: 1536px) and (max-width: 1830px) {
 
   .el-table td, .el-table th {

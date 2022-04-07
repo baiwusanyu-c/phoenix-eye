@@ -29,6 +29,9 @@
     </div>
     <div class="project-manage-list eagle-table">
       <el-table :data="projectList.data">
+        <template #empty>
+          <empty-data></empty-data>
+        </template>
         <el-table-column prop="name" width="180">
           <template #header>
             <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
@@ -177,6 +180,7 @@
   import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { deleteProject, getProjectListAdmin } from '../../../api/project-management'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
@@ -189,6 +193,7 @@
   export default defineComponent({
     name: 'ProjectManageMain',
     components: {
+      EmptyData,
       BeEllipsisCopy,
       CreateProject,
       MsgDialog,
@@ -377,8 +382,7 @@
     min-height: calc(100% - 100px);
 
     .project-manage-search {
-      width: 70%;
-      margin: 40px auto 0 auto;
+      @include common-container(40px);
 
       .project-manage-search-input {
         display: flex;
@@ -398,17 +402,13 @@
           color: $textColor4;
         }
       }
-
-      .create-btn {
-        margin: 38px 0;
-      }
     }
 
     .project-manage-list {
       width: 70%;
       padding: 20px;
       margin: 0 auto;
-      background-color: #fff;
+      background-color: $mainColor7;
     }
   }
 </style>

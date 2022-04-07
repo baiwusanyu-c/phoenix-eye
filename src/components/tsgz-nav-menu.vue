@@ -44,6 +44,16 @@
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
+      <!--    需求反馈   -->
+      <be-button
+        custom-class="eagle-btn feedback-btn"
+        prev-icon="iconFeedbackEagle"
+        round="4"
+        type="success"
+        @click="openFeedBack"
+        >{{ $t('lang.feedback.title') }}</be-button
+      >
+      <!--    设置菜单   -->
       <be-popover
         v-if="isLogin && headerConfigMore.length > 0"
         ref="popoverRouter"
@@ -61,6 +71,7 @@
           <span>{{ $t(item.name) }}</span>
         </div>
       </be-popover>
+      <!--    语种   -->
       <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
         <template #trigger>
           <div
@@ -85,6 +96,7 @@
           EN
         </div>
       </be-popover>
+      <!--    登出   -->
       <be-popover v-if="isLogin" placement="bottom" trigger="click" custom-class="popover-logout">
         <template #trigger>
           <span class="dropdown-link">
@@ -95,6 +107,7 @@
           {{ $t('lang.header.logout') }}
         </div>
       </be-popover>
+      <!--    登陆   -->
       <be-button
         v-if="!isLogin"
         custom-class="eagle-btn sign-up-btn"
@@ -111,7 +124,10 @@
       @confirm="confirm(true)"
       @close="confirm(false)">
     </MsgDialog>
+    <!--登錄彈窗-->
     <login-dialog ref="loginDialog"></login-dialog>
+    <!--需求反馈彈窗-->
+    <feed-back ref="feedbackDialog"></feed-back>
   </div>
 </template>
 
@@ -134,6 +150,7 @@
     setStore,
   } from '../utils/common'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
+  import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   /**
    * 头部菜单导航
@@ -141,6 +158,7 @@
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
+      FeedBack,
       LoginDialog,
       MsgDialog,
       BeIcon,
@@ -248,21 +266,16 @@
           if (loginUser.value) {
             getProjectUser()
             setSession('loginExpiredNum', 'false')
-            setHeaderConfig()
+            // 登錄了 才根據路由接口設置header
+            initHeaderConfig()
           }
+          // 設置高亮
+          setActiveNav()
         })
       }
       onMounted(() => {
         initVar()
       })
-      /**
-       * 配置头部菜单方法
-       * 这里根据权限、禁用等进行设置
-       */
-      const setHeaderConfig = (): void => {
-        initHeaderConfig()
-        setActiveNav()
-      }
 
       /**
        * 初始化菜单配置
@@ -278,7 +291,7 @@
           children: [],
           isDisabled: false,
         },
-        /*RPIF: {
+        RPIF: {
           icon: '',
           index: '1',
           name: 'lang.subNav.navName6',
@@ -287,7 +300,7 @@
           isPush: true,
           children: [],
           isDisabled: false,
-        },*/
+        },
       })
       const headerConfigMore = ref<any>([])
       const store = useStore()
@@ -431,7 +444,14 @@
         routerPush('/projectSearch/detail', { id: selectVal.value })
         selectProjBus.emit(selectVal.value)
       }
+      /**
+       * 打开需求反馈
+       */
+      const openFeedBack = (): void => {
+        ;(instanceInner?.refs.feedbackDialog as ILoginDialog).showDialog = true
+      }
       return {
+        openFeedBack,
         routerPush,
         handleProjectSelect,
         getProjectUser,
@@ -456,12 +476,17 @@
 
 <style lang="scss">
   .project-select {
-    width: 214px;
+    max-width: 214px;
     background: white;
   }
 
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
+    min-width: initial;
+  }
+
+  .tsgz-nav-menu .feedback-btn {
+    width: 120px;
     min-width: initial;
   }
 
@@ -527,7 +552,6 @@
     text-align: center;
     background-color: $mainColor7;
     box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
-
     .tsgz-slogan {
       display: flex;
       flex: 4;
@@ -541,6 +565,7 @@
       background-size: 100% 100%;
 
       .setting {
+        margin-left: 10px;
         vertical-align: middle;
         cursor: pointer;
 
@@ -660,39 +685,39 @@
       }
     }
   }
+
+  /* 150% 适配 */
+  @media screen and (max-width: 1326px) {
+    .tsgz-nav-menu .expend-logo {
+      width: 100px;
+      background-size: contain;
+    }
+    .tsgz-nav-menu .el-input__inner {
+      width: 120px;
+    }
+    /*.project-select{
+          width: 120px;
+      }*/
+    .tsgz-nav-menu .el-menu-item {
+      padding: 0 5px;
+      font-size: 12px;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .tsgz-nav-menu .expend-logo {
+      width: 120px;
+      background-size: contain;
+    }
+    .tsgz-nav-menu .el-input__inner {
+      width: 160px;
+    }
+    /*.project-select{
+          width: 160px;
+      }*/
+    .tsgz-nav-menu .el-menu-item {
+      padding: 0 10px;
+    }
+  }
 </style>
-
-<!--1080p的105% - 125%放大-->
-<!--
-<style scoped lang="scss">
-@media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
-
-}
-</style>
-&lt;!&ndash;1080p的130% - 140%放大&ndash;&gt;
-<style scoped lang="scss">
-@media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
-
-}
-</style>
-&lt;!&ndash;1080p的145% - 150%放大&ndash;&gt;
-<style scoped lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-}
-</style>-->
