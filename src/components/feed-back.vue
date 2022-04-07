@@ -9,7 +9,7 @@
       :is-drag="false"
       layout="center"
       custom-class="feed-back-dialog"
-      @close="handleClose">
+      @close="handleCancel">
       <div>
         <el-form :label-position="labelPosition" label-width="80px">
           <el-form-item :label="$t('lang.feedback.formTitle') + ':'">

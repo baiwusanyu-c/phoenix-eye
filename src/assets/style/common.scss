@@ -50,7 +50,7 @@
 
 .el-textarea__inner:focus {
   color: $textColor3;
-  border: 1px solid $mainColor3;
+  box-shadow: 0 0 0 1px $mainColor3 inset !important;
 }
 
 .el-input__inner {
@@ -344,12 +344,17 @@
   border-color: $mainColor3;
 }
 
-
+.el-select .el-input .el-input__inner {
+  border: 1px solid #dcdfe6;
+}
 
 //下拉样式
-
+.el-input__inner{
+  border: 1px solid #dcdfe6;
+}
 .el-select .el-input.is-focus .el-input__inner {
   border-color: $mainColor3 !important;
+  box-shadow: none !important;
 }
 
 .el-select-dropdown__item.selected {
@@ -358,6 +363,7 @@
 
 .el-select .el-input__inner:focus{
   border-color: $mainColor3 !important;
+  box-shadow: none !important;
 }
 
 .el-select-v2__wrapper{

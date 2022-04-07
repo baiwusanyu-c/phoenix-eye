@@ -544,6 +544,10 @@
         contractSite.data.forEach(val => {
           val.contract_address && params.contract_address_list.push(val.contract_address.toString())
         })
+        if(params.contract_address_list.length === 0){
+            message('error',`${t('lang.pleaseInput')} ${t('lang.createProject.contractSite')}`)
+            return
+        }
         getReportDate(params)
       }
       /**
