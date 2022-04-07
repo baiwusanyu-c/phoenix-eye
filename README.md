@@ -5,8 +5,8 @@
 #eagle-eye-front 态势感知 ##主要技術依賴  
 **Vue3.2 + Vue-router4 + Vite2.x + typeScript4.5**
 
-| 名称                             | 版本    | 説明                                                                               |
-| -------------------------------- | ------- | ---------------------------------------------------------------------------------- |
+| 名称                             | 版本      | 説明                                                                               |
+| -------------------------------- |---------| ---------------------------------------------------------------------------------- |
 | Vue                              | ^3.2.3  | 前端開發框架                                                                       |
 | axios                            | ^0.24.0 | Ajax 封裝庫                                                                        |
 | vite                             | ^2.9.x  | 工程化開發打包框架                                                                 |
@@ -17,7 +17,7 @@
 | windi.css                        | ^3.4.3  | css 原子化樣式庫                                                                   |
 | element-plus                     | ^2.22.0 | UI 組件庫                                                                          |
 | be-ui                            | -       | 内部 UI 組件庫                                                                     |
-| vite-plugin-svg-transform-script | 0.0.7   | svg 圖標文件處理脚本                                                               |
+| vite-plugin-svg-transform-script | 0.1.4   | svg 圖標文件處理脚本                                                               |
 
 ##package 指令
 
@@ -66,8 +66,8 @@
 `"commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .&& stylelint --fix src/**/*.{html,vue,css}"`  
 **基于 husky 和 commitlint/cli 的 git commit 钩子指令，提交时会调用该指令进行**
 
-`"preview": "vite preview --port 8080 --host"`  
-**打包预览，当年你打包后使用该指令 vite 会自动开启一个容器来运行 dist 打包结果**
+`"formatDateiew": "vite preview --port 8080 --host"`  
+**打包预览，当你打包后使用该指令 vite 会自动开启一个容器来运行 dist 打包结果**
 
 ## 目錄結構
 
