@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
-import {loadSvg}  from 'vite-plugin-svg-transform-script'
-import  svgDict  from './utils/svg-dict'
+import { loadSvg } from 'vite-plugin-svg-transform-script'
+import svgDict from './utils/svg-dict'
 import router from './router/is-mobile' //判断访问设备并引入对应路由
 import App from './App.vue'
 import 'virtual:windi.css'
