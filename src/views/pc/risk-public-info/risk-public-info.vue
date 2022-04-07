@@ -42,7 +42,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
-  import fa, { BeButton, BePagination } from '../../../../public/be-ui/be-ui.es'
+  import { BeButton, BePagination } from '../../../../public/be-ui/be-ui.es'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'
   import composition from '../../../utils/mixin/common-func'
