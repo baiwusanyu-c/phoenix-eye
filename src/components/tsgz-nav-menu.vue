@@ -476,7 +476,7 @@
 
 <style lang="scss">
   .project-select {
-    width: 214px;
+    max-width: 214px;
     background: white;
   }
 
@@ -552,7 +552,6 @@
     text-align: center;
     background-color: $mainColor7;
     box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
-
     .tsgz-slogan {
       display: flex;
       flex: 4;
@@ -686,39 +685,40 @@
       }
     }
   }
+
+
+  /* 150% 适配 */
+  @media screen and (max-width: 1326px) {
+      .tsgz-nav-menu .expend-logo {
+          width: 100px;
+          background-size: contain;
+      }
+      .tsgz-nav-menu .el-input__inner {
+          width: 120px;
+      }
+      /*.project-select{
+          width: 120px;
+      }*/
+      .tsgz-nav-menu .el-menu-item{
+          padding: 0 5px;
+          font-size: 12px;
+      }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+      .tsgz-nav-menu .expend-logo {
+          width: 120px;
+          background-size: contain;
+      }
+      .tsgz-nav-menu .el-input__inner {
+          width: 160px;
+      }
+      /*.project-select{
+          width: 160px;
+      }*/
+      .tsgz-nav-menu .el-menu-item{
+        padding: 0 10px;
+      }
+  }
 </style>
-
-<!--1080p的105% - 125%放大-->
-<!--
-<style scoped lang="scss">
-@media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
-
-}
-</style>
-&lt;!&ndash;1080p的130% - 140%放大&ndash;&gt;
-<style scoped lang="scss">
-@media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
-
-}
-</style>
-&lt;!&ndash;1080p的145% - 150%放大&ndash;&gt;
-<style scoped lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-}
-</style>-->

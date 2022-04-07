@@ -866,7 +866,7 @@
 
     .proj-detail-item {
       @include common-container(24px);
-
+      min-width: 1172px;
       .item-title {
         display: flex;
         align-items: center;
@@ -978,9 +978,17 @@
       }
     }
   }
+  /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-    .project-search-detail .proj-detail-item {
-      width: 78%;
-    }
+      .project-search-detail .proj-detail-item {
+          width: 92%;
+      }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+      .project-search-detail .proj-detail-item {
+          width: 80%;
+      }
   }
 </style>

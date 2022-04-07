@@ -241,12 +241,6 @@
 
 .el-table__row{
   height: 64px;
-
-  &:hover{
-    background-color: $mainColor7;
-
-    @apply shadow-md cursor-pointer
-  }
 }
 
 .el-table::before {
