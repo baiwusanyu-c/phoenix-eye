@@ -4,15 +4,16 @@
  * @author czh
  * @update (czh 2021/12/24)
  */
-import { Router, RouteLocationNormalizedLoaded, useRouter, useRoute } from 'vue-router'
-import { ref, computed } from 'vue'
-import { getCodeImg } from '../../api/login'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { getCodeImg } from '../../api/login'
 // @ts-ignore
-import { BeMessage } from '../../../public/be-ui/be-ui.es'
-// import { ElMessage } from 'element-plus'
-import { Ref } from '@vue/reactivity'
+import { BeMessage, BeMsg } from '../../../public/be-ui/be-ui.es.js'
 import { isNumber, isString } from '../common'
+import type { Ref } from '@vue/reactivity'
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
+
 export default () => {
   /**
    * 打開窗口
@@ -40,7 +41,7 @@ export default () => {
   const getCode = (): void => {
     getCodeImg().then((res: any) => {
       uuid.value = res.uuid
-      codeUrl.value = 'data:image/gif;base64,' + res.img
+      codeUrl.value = `data:image/gif;base64,${res.img}`
     })
   }
   const message = (type: string, info: string, className?: string): void => {
@@ -52,11 +53,6 @@ export default () => {
       offsetTop: 80,
       close: true,
     })
-    /* ElMessage({
-      showClose: true,
-      message: info,
-      type: type,
-    })*/
   }
   /**
    * 開啓定時器，進行數字滾動
@@ -85,7 +81,23 @@ export default () => {
       return emptyStr || t('lang.emptyData')
     }
   })
+  const msgBox = (title: string, content: string, className: string): void => {
+    BeMsg.service({
+      titles: title,
+      customClass: className,
+      bodyRender: () => {
+        return <p>{content}</p>
+      },
+      footerRender() {
+        return <div></div>
+      },
+      iconPreRender() {
+        return <div></div>
+      },
+    })
+  }
   return {
+    msgBox,
     isEmpty,
     startTimer,
     uuid,

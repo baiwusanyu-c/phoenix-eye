@@ -4,7 +4,7 @@
   <div class="project-search-detail">
     <!--基本信息-->
     <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
-      <div class="item-title">
+      <div class="item-title" style="position: relative; width: 100%">
         <h2>
           <be-ellipsis-copy
             :target-str="isEmpty(baseInfo.name)"
@@ -24,11 +24,21 @@
           isEmpty(baseInfo.riksTrxNum)
         }}</span>
         <span style="margin-right: 6px"
-          >{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}(24h) :
-        </span>
+          >{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}(24h) :</span
+        >
         <span style="margin-right: 16px; font-size: 14px; font-weight: bold; color: #333">{{
           isEmpty(baseInfo.riskPublicOpinion)
         }}</span>
+        <!--    订阅      -->
+        <be-button
+          :custom-class="`eagle-btn subscribe--btn ${
+            baseInfo.isSubscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
+          } `"
+          :prev-icon="baseInfo.isSubscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
+          type="success"
+          @click="handleSubscribe">
+          {{ $t('lang.projectExplorer.detail.subscribe') }}
+        </be-button>
       </div>
       <div class="base-info">
         <div class="base-info-item">
@@ -106,7 +116,10 @@
       </div>
     </div>
     <!--合约统计-->
-    <div v-loading="statisticsLoading" class="proj-detail-item eagle-table">
+    <div
+      v-if="contractStatisticsData.length > 0"
+      v-loading="statisticsLoading"
+      class="proj-detail-item eagle-table">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
       </div>
@@ -158,23 +171,27 @@
           <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
         </div>
       </div>
-      <be-pagination
-        v-if="contractStatisticsData.length > 0"
-        custom-class="table-page"
-        :page-size="pageParamsTj.pageSize"
-        :current-page="pageParamsTj.currentPage"
-        :total="pageParamsTj.total"
-        :is-front="false"
-        @update-page="pageChangeTj">
-        <template #prev>
-          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
-        </template>
-        <template #next><span></span></template>
-      </be-pagination>
+      <div class="table-page">
+        <be-pagination
+          is-ordianry
+          :page-size="pageParamsTj.pageSize"
+          :page-count="pageParamsTj.total"
+          :current-page="pageParamsTj.currentPage"
+          :page-num="[{ label: 3 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :pager-show-count="5"
+          page-unit="page"
+          :layout="['prev', 'page']"
+          @change-page="pageChangeTj">
+          <template #prev>
+            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
+          </template>
+        </be-pagination>
+      </div>
     </div>
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
       <project-detail-top
+        v-if="top5TokenHolder.length > 0"
         :token-name="top5TokenHolderName"
         :token-address="top5TokenHolderAddr"
         types="holder"
@@ -186,6 +203,7 @@
         @select="handleSelectTop5">
       </project-detail-top>
       <project-detail-top
+        v-if="top5QuidityPairs.length > 0"
         :data="top5QuidityPairs"
         types="pairs"
         :default-platfom="defaultPlatformTop5Quidity"
@@ -196,13 +214,13 @@
     </div>
     <!--风险交易-->
     <div class="proj-detail-item">
-      <div class="item-title" style="margin-bottom: 0">
+      <div class="item-title" style="margin-bottom: 32px">
         <h2>{{ $t('lang.projectExplorer.detail.riskTrx') }}</h2>
       </div>
       <risk-trx-table :project-id="projectId"></risk-trx-table>
     </div>
     <!--项目舆情安全-->
-    <div class="proj-detail-item">
+    <div v-if="safetyData.length > 0" class="proj-detail-item">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
       </div>
@@ -213,25 +231,28 @@
           'proj-detail-item-feelingSecurity': true,
           'proj-detail-item-hyaq': safetyData.length === 0,
         }">
-        <project-detail-publi-opinion v-if="safetyData.length > 0" :info-data="safetyData">
-        </project-detail-publi-opinion>
-        <be-pagination
-          v-if="safetyData.length > 0"
-          custom-class="table-page"
-          :page-size="pageParamsFs.pageSize"
-          :current-page="pageParamsFs.currentPage"
-          :total="pageParamsFs.total"
-          :is-front="false"
-          @update-page="pageChangeFs">
-          <template #prev>
-            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
-          </template>
-          <template #next><span></span></template>
-        </be-pagination>
-        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
+        <project-detail-publi-opinion :info-data="safetyData"> </project-detail-publi-opinion>
+        <div class="table-page">
+          <be-pagination
+            is-ordianry
+            :page-size="pageParamsFs.pageSize"
+            :page-count="pageParamsFs.total"
+            :current-page="pageParamsFs.currentPage"
+            :page-num="[{ label: 5 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+            :pager-show-count="5"
+            page-unit="page"
+            :layout="['prev', 'pNum', 'page']"
+            @update-num="updateNumFs"
+            @change-page="pageChangeFs">
+            <template #prev>
+              <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
+            </template>
+          </be-pagination>
+        </div>
+        <!--        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px" />
           <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -239,30 +260,32 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue'
-  import BePagination from '../../../components/common-components/pagination/be-pagination.vue'
-  import { IPageParam } from '../../../utils/types'
-  import { BeIcon, BeTag } from '../../../../public/be-ui/be-ui.es'
-  import composition from '../../../utils/mixin/common-func'
   import { useI18n } from 'vue-i18n'
-  import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
+  import { useEventBus } from '@vueuse/core'
+  import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es'
+  import composition from '../../../utils/mixin/common-func'
   import {
+    createSubscribe,
+    deleteSubscribe,
     getProjectSituation,
     getProjectSituationStatistics,
     getPublicOpinion,
-    IPublicOpinion,
   } from '../../../api/project-explorer'
   import {
-    numberToCommaString,
     createDate,
     formatDate,
     formatTimeStamp,
+    numberToCommaString,
     openWindow,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
-  import ProjectDetailTop, { ITableHeader } from './components/project-detail-top.vue'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { useEventBus } from '@vueuse/core'
   import { webURL } from '../../../enums/link'
+  import ProjectDetailTop from './components/project-detail-top.vue'
+  import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
+  import type { ITableHeader } from './components/project-detail-top.vue'
+  import type { IPublicOpinion } from '../../../api/project-explorer'
+  import type { IPageParam } from '../../../utils/types'
 
   interface ISafetyData {
     negative?: string
@@ -295,6 +318,7 @@
     twitter?: string
     website?: string
     name?: string
+    isSubscribe: boolean
   }
 
   interface ITop5TokenHolder {
@@ -328,10 +352,11 @@
       ProjectDetailPubliOpinion,
       BeIcon,
       BeTag,
+      BeButton,
       BeEllipsisCopy,
     },
     setup() {
-      const { message, route, isEmpty } = composition()
+      const { message, route, isEmpty, msgBox } = composition()
       const { t } = useI18n()
       const baseInfo = ref<IBaseInfo>({})
 
@@ -382,7 +407,7 @@
       }
       const baseLoading = ref<boolean>(false)
       const getProSituData = async () => {
-        let params: IPublicOpinion = {
+        const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
         }
         baseLoading.value = true
@@ -398,6 +423,7 @@
                 transactionsTotal: res.data.details.tx_total,
                 lastTradeData: res.data.details.latest_trading_date,
                 riksTrxNum: res.data.details.risk_tx_24,
+                isSubscribe: res.data.details.is_subscribe,
                 riskPublicOpinion: res.data.details.risk_public_opinion_24,
                 name: res.data.details.name,
                 github: res.data.social_profiles.github,
@@ -479,6 +505,7 @@
         pageParamsTj.value.currentPage = item.currentPage
         getContractStatistics()
       }
+
       /**
        * 获取项目舆情安全数据
        */
@@ -498,7 +525,7 @@
       const getPublicOpinionData = (): void => {
         safetyData.value = []
         loadingFs.value = true
-        let params: IPublicOpinion = {
+        const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
           page_num: pageParamsFs.value.currentPage,
           page_size: pageParamsFs.value.pageSize,
@@ -537,6 +564,11 @@
        */
       const pageChangeFs = (item: IPageParam): void => {
         pageParamsFs.value.currentPage = item.currentPage
+        getPublicOpinionData()
+      }
+      const updateNumFs = (data: IPageParam): void => {
+        pageParamsFs.value.currentPage = 1
+        pageParamsFs.value.pageSize = data.pageSize!
         getPublicOpinionData()
       }
       onMounted(() => {
@@ -582,12 +614,68 @@
           params === 'matic'
         )
           return
-        let mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
+        const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
         const url = `${mainUrl}${params}`
         openWindow(url)
       }
+      /**
+       * 发送订阅
+       */
+      const submitSubscribe = (): void => {
+        const params = {
+          project_id: parseInt(projectId.value),
+        }
+        createSubscribe(params)
+          .then((res: any) => {
+            if (res.success) {
+              msgBox(
+                t('lang.subscribe.titleSuccess'),
+                `${t('lang.subscribe.success')}(${res.data.email}).`,
+                'subscribe'
+              )
+              baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+            } else {
+              msgBox(
+                t('lang.subscribe.titleFailed'),
+                t('lang.subscribe.failed'),
+                'subscribe subscribe--normal'
+              )
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
+      const cancelSubscribe = (): void => {
+        const params = {
+          project_id: parseInt(projectId.value),
+        }
+        deleteSubscribe(params)
+          .then((res: any) => {
+            if (res.code === '0000') {
+              msgBox(t('lang.subscribe.titleUn'), t('lang.subscribe.unSubscribes'), 'subscribe')
+              baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+            } else {
+              message('warning', 'An unknown error has occurred in the system')
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
 
+      const handleSubscribe = (): void => {
+        if (baseInfo.value.isSubscribe) {
+          cancelSubscribe()
+        } else {
+          submitSubscribe()
+        }
+      }
       return {
+        handleSubscribe,
+        updateNumFs,
         defaultPlatformTop5Token,
         defaultPlatformTop5Quidity,
         openWeb,
@@ -634,6 +722,39 @@
     height: auto;
     min-height: calc(100% - 192px);
     padding-bottom: 86px;
+
+    .subscribe--btn {
+      position: absolute;
+      right: 0;
+      float: right;
+      width: 118px;
+      height: 40px;
+      border-radius: 4px !important;
+    }
+
+    .subscribe-btn__as {
+      background: $mainColor3;
+    }
+
+    .subscribe-btn__ed {
+      color: $textColor3;
+      background: transparent;
+      border: 1px solid $textColor3;
+
+      .be-icon use {
+        fill: $textColor3 !important;
+      }
+
+      &:hover {
+        color: $mainColor7;
+        background: $mainColor3;
+        border-color: transparent;
+
+        .be-icon use {
+          fill: $mainColor7 !important;
+        }
+      }
+    }
 
     .base-info {
       display: flex;
@@ -783,8 +904,38 @@
       }
     }
   }
-  @media screen and (min-width: 1280px) and (max-width: 1326px) {
 
+  .subscribe {
+    .be-message-box-container {
+      width: 575px;
+      height: 148px;
+      background: $mainColor7;
+      border-radius: 4px;
+      box-shadow: 0 12px 34px 0 rgba(0, 0, 0, 0.1);
+
+      .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
+        color: $mainColor3;
+      }
+
+      .be-message-box-body p {
+        margin-top: 20px;
+        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        color: #333;
+      }
+    }
+  }
+
+  .subscribe--normal {
+    .be-message-box-container {
+      .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
+        color: $mainColor19;
+      }
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-search-detail .proj-detail-item {
       width: 78%;
     }

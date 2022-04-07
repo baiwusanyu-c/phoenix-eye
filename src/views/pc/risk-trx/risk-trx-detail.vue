@@ -5,8 +5,8 @@
     <!--   基本信息     -->
     <div class="detail-body">
       <div class="detail-item">
-        <div class="detail-item-txt">
-          <span style="width: 8%">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
+        <div class="detail-item-txt detail-item--hash">
+          <span style="width: 12%">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
           <be-ellipsis-copy
             custom-class="detail-copy"
             :target-str="baseInfo.tx_hash"
@@ -25,6 +25,17 @@
               <span style="margin-left: 10px">{{ baseInfo.platform.toUpperCase() }}</span>
             </div>
           </be-tag>
+        </div>
+        <div class="detail-item-txt detail-item--date">
+          <span class="date-label">{{ $t('lang.riskConfig.tableHeader.txTime') }}：</span>
+          <el-tooltip placement="top" effect="light">
+            <template #content>
+              <span style="font-weight: 400">UTC：{{ beijing2utc(baseInfo.tx_time) }}</span>
+            </template>
+            <span style="font-weight: 400">{{
+              formatDate(createDate(baseInfo.tx_time).getTime())
+            }}</span>
+          </el-tooltip>
         </div>
       </div>
       <div class="detail-item detail-form">
@@ -99,7 +110,7 @@
       </div>
     </div>
     <!--   地址收益     -->
-    <div class="detail-profit">
+    <div v-if="profitData.length > 0" class="detail-profit">
       <h3>{{ $t('lang.riskConfig.profit') }}</h3>
       <div class="detail-profit-body">
         <el-table tooltip-effect="light" :data="profitData">
@@ -149,6 +160,9 @@
               <span class="table-head">{{
                 $t('lang.riskConfig.profitTableHeader.profitSum')
               }}</span>
+              <be-tooltip :content="$t('lang.riskConfig.amountExp')" custom-class="table-tooltip">
+                <be-icon icon="iconHelpEagle"></be-icon>
+              </be-tooltip>
             </template>
             <template #default="scope">
               <be-icon
@@ -166,6 +180,7 @@
                 disabled-tool-tip
                 icon-class="iconArrowDown"
                 style="visibility: hidden"></be-icon>
+
               <el-tooltip placement="top" effect="light">
                 <template #content>
                   <span>{{ scope.row.profit }}</span>
@@ -242,9 +257,6 @@
             </template>
           </el-table-column>
           <el-table-column prop="dollarList" align="left">
-            <template #header>
-              <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenVal') }}</span>
-            </template>
             <template #default="scope">
               <div v-if="scope.row.dollarList && scope.row.dollarList.length > 0">
                 <p v-for="item in scope.row.dollarList" :key="item.itemId">
@@ -271,27 +283,105 @@
         </el-table>
       </div>
     </div>
+    <!--   Slump 与 PrivilegedOperation   -->
+    <div class="detail-slump">
+      <div v-if="baseInfo.privileged_operation" class="detail-slump--container">
+        <h3>{{ $t('lang.riskConfig.PrivilegedOperation') }}</h3>
+        <div class="detail-slump--body">
+          <div style="display: flex">
+            <span class="label">{{ $t('lang.projectExplorer.contract') }} :</span>
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.privileged_operation.contract"
+              :is-ellipsis="false"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;">
+            </be-ellipsis-copy>
+          </div>
+          <div style="display: flex; margin-top: 20px">
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.privileged_operation.from"
+              :is-ellipsis="true"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;font-weight:bold">
+            </be-ellipsis-copy>
+            <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.privileged_operation.to"
+              :is-ellipsis="true"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;font-weight:bold">
+            </be-ellipsis-copy>
+          </div>
+        </div>
+      </div>
+      <div v-if="baseInfo.slump" class="detail-slump--container">
+        <h3>{{ $t('lang.riskConfig.slump') }}</h3>
+        <div class="detail-slump--body">
+          <div style="display: flex">
+            <span class="label">Token :</span>
+            <be-ellipsis-copy
+              custom-class="detail-copy"
+              :target-str="baseInfo.slump.token"
+              :is-ellipsis="false"
+              empty-text="/"
+              styles="color: #008EE9;cursor:pointer;">
+            </be-ellipsis-copy>
+          </div>
+          <div style="display: flex; align-items: center; margin-top: 20px">
+            <span class="label">{{ $t('lang.riskConfig.presentPrice') }} : </span>
+            <span style="width: 160px; font-weight: bold">{{
+              handleProfit(baseInfo.slump.present_price, 0)
+            }}</span>
+            <span
+              v-if="baseInfo.slump.drop_prop"
+              :class="'profit-d'"
+              style="margin-right: 6px; font-weight: bold">
+              {{ (baseInfo.slump.drop_prop * 100).toFixed(2) }} %
+            </span>
+            <be-icon
+              v-if="baseInfo.slump.drop_prop"
+              :content="$t('lang.loss')"
+              icon="iconArrowDown"
+              style="margin-right: 4px"></be-icon>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+  import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { getProjWarningDetail, IProjDetail } from '../../../api/risk-trx'
+  import { getProjWarningDetail } from '../../../api/risk-trx'
   import { webURL } from '../../../enums/link'
-  import { platformToCurrency, IPlatformToCurrency } from '../../../utils/platform-dict'
-  import { defineComponent, ref, onMounted, computed, onUnmounted } from 'vue'
+  import { iconDict, platformToCurrency } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'
-  import { getUuid, simulateToFixed, openWindow } from '../../../utils/common'
-  import { BeTag, BeIcon } from '../../../../public/be-ui/be-ui.es'
-  import { iconDict } from '../../../utils/platform-dict'
+  import {
+    beijing2utc,
+    createDate,
+    formatDate,
+    getUuid,
+    openWindow,
+    simulateToFixed,
+  } from '../../../utils/common'
+  import { BeIcon, BeTag, BeTooltip } from '../../../../public/be-ui/be-ui.es'
+  import type { IPlatformToCurrency } from '../../../utils/platform-dict'
+  import type { IProjDetail } from '../../../api/risk-trx'
+
   interface IBaseInfo {
     platform?: string
     tx_hash?: string
+    slump?: any
   }
 
   export default defineComponent({
     name: 'RiskTrxDetail',
-    components: { BeEllipsisCopy, BeTag, BeIcon },
+    components: { BeEllipsisCopy, BeTag, BeIcon, BeTooltip },
     setup() {
       const { message, route } = composition()
       // 基础信息
@@ -307,8 +397,12 @@
       // 链平台转化币种
       const platformToCurrencyInner = ref<IPlatformToCurrency>(platformToCurrency)
       const addrCellWidth = ref<string>('430')
+      const { t } = useI18n()
       const handleProfit = computed(() => {
         return function (val: number, dec: number) {
+          if (val === null) {
+            return t('lang.emptyData')
+          }
           if (val < 0) {
             return `-$${simulateToFixed(Math.abs(val), dec)}`
           }
@@ -363,19 +457,19 @@
                 }
                 val.addrList.push({
                   val: valRes.token_name,
-                  itemId: 'token_name' + getUuid(),
+                  itemId: `token_name${getUuid()}`,
                   tag: valRes.contract_address_tag,
                   contractAddress: valRes.contract_address,
                 })
                 val.valueList.push({
                   ordVal: valRes.token_num,
                   val: simulateToFixed(valRes.token_num, 6),
-                  itemId: 'token_profit_no_dollar' + getUuid(),
+                  itemId: `token_profit_no_dollar${getUuid()}`,
                 })
                 val.dollarList.push({
                   ordVal: valRes.dollar_money,
                   val: simulateToFixed(valRes.dollar_money, 0),
-                  itemId: 'token_profit_dollar' + getUuid(),
+                  itemId: `token_profit_dollar${getUuid()}`,
                 })
               })
             })
@@ -399,7 +493,7 @@
           params === 'matic'
         )
           return
-        let mainUrl: string = (webURL as any)[`${baseInfo.value.platform}_${type}`] as string
+        const mainUrl: string = (webURL as any)[`${baseInfo.value.platform}_${type}`] as string
         const url = `${mainUrl}${params}`
         openWindow(url)
       }
@@ -419,6 +513,9 @@
       })
 
       return {
+        beijing2utc,
+        formatDate,
+        createDate,
         iconDict,
         profitClass,
         baseInfo,
@@ -441,6 +538,17 @@
 
 <style lang="scss">
   .risk-trx-detail {
+    .detail-copy {
+      width: initial;
+    }
+
+    .profit-d {
+      color: $lessColor4;
+    }
+
+    .profit-x {
+      color: $mainColor3;
+    }
     position: relative;
     top: 0;
     left: 0;
@@ -453,7 +561,8 @@
 
     .detail-body {
       box-sizing: border-box;
-      width: 67.5%;
+      width: 70%;
+      min-width: 1172px;
       padding: 20px;
       margin: 40px auto 0 auto;
       background: $mainColor7-06;
@@ -475,13 +584,9 @@
           font-weight: bold;
           color: $textColor3;
 
-          .detail-copy {
-            width: initial;
-            margin-right: 16px;
-          }
-
           .be-tag {
             height: 30px;
+            margin-left: 16px;
             line-height: 30px;
             cursor: context-menu;
             background-color: $mainColor16;
@@ -496,26 +601,75 @@
             }
           }
         }
+
+        .detail-item--hash {
+          flex: 2;
+          justify-content: flex-start;
+        }
+
+        .detail-item--date {
+          flex: 1;
+
+          .date-label {
+            width: 12%;
+          }
+        }
       }
     }
 
     .detail-profit {
-      width: 67.5%;
+      width: 70%;
+      min-width: 1172px;
       margin: 40px auto 0 auto;
       color: $textColor3;
       background: transparent;
 
-      .profit-d {
-        color: $lessColor4;
-      }
-
-      .profit-x {
-        color: $mainColor3;
-      }
-
       .detail-profit-body {
         height: calc(100% - 40px);
+        padding: 20px;
         margin-top: 20px;
+        background-color: $mainColor7;
+      }
+    }
+
+    .detail-slump {
+      display: flex;
+      width: 70%;
+      margin: 40px auto 0 auto;
+      color: $textColor3;
+
+      & .detail-slump--container:nth-child(1) {
+        margin-right: 10px;
+      }
+
+      & .detail-slump--container:nth-child(2) {
+        margin-left: 10px;
+      }
+
+      .detail-slump--container {
+        flex: 1;
+
+        h3 {
+          line-height: 40px;
+        }
+
+        .detail-slump--body {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 20px;
+          margin-top: 20px;
+          background-color: $mainColor7;
+          border-radius: 4px;
+        }
+      }
+
+      .label {
+        margin-right: 20px;
+        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        color: #666;
       }
     }
   }
@@ -523,17 +677,25 @@
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 92%;
+    }
 
     .risk-trx-detail {
-
       .detail-body {
         padding: 10px;
 
         .detail-item {
-
           .detail-item-txt {
             margin-top: 5px;
             font-size: 12px;
+          }
+
+          .detail-item--date {
+            .date-label {
+              width: 16%;
+            }
           }
 
           .default {
@@ -555,6 +717,22 @@
           font-size: 12px;
         }
       }
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 86%;
+    }
+  }
+
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit {
+      width: 80%;
     }
   }
 </style>

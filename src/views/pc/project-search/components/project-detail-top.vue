@@ -58,11 +58,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType, ref, watch } from 'vue'
-  import { BeTag, BeProgress } from '../../../../../public/be-ui/be-ui.es'
+  import { defineComponent, ref, watch } from 'vue'
+  import { BeProgress, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'
+  import type { PropType } from 'vue'
   export interface ITableHeader {
     prop: string
     label: string
@@ -112,8 +113,8 @@
        * @param {String} platform - 幣種
        */
       const handleSelect = (platform: string): void => {
-        let type: string = props.types
-        ctx.emit('select', { platform: platform, type: type })
+        const type: string = props.types
+        ctx.emit('select', { platform, type })
       }
       const windowInnerW: number = window.innerWidth
       const tableW = ref<number>(140)
@@ -134,13 +135,11 @@
 
 <style lang="scss">
   .project-detail-top5 {
-
     .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
       background-color: $mainColor6;
     }
 
     .top5-list-table {
-
       .el-table__empty-block {
         width: 100% !important;
       }
@@ -182,7 +181,7 @@
       .tag {
         background-color: $mainColor15;
         border: 0;
-        opacity: .8;
+        opacity: 0.8;
 
         &:hover {
           opacity: 1;

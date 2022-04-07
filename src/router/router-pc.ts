@@ -1,16 +1,11 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  RouterOptions,
-  RouteLocationNormalized,
-  Router,
-} from 'vue-router'
-import { isString, getStore } from '../utils/common'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import { useEventBus } from '@vueuse/core'
+import { getStore, isString } from '../utils/common'
 import { i18n } from '../utils/i18n'
 import { getRouterInfo } from '../api/login'
 import store from '../store/store'
-import { IOption } from '../utils/types'
-import { useEventBus } from '@vueuse/core'
+import type { IOption } from '../utils/types'
+import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 const routes = [
   {
     path: '/',
@@ -35,6 +30,12 @@ const routes = [
         meta: { title: 'lang.subNav.navName2' },
       },
       {
+        path: '/RiskPublicInformation',
+        name: 'RiskPublicInformation',
+        component: () => import('../views/pc/risk-public-info/risk-public-info.vue'),
+        meta: { title: 'lang.subNav.navName6' },
+      },
+      {
         path: '/riskTrx/detail',
         name: 'riskTrxDetail',
         component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
@@ -53,6 +54,8 @@ const routes = [
 const metaTitleDict: any = {
   XMSS: 'lang.subNav.navName5',
   XMGL: 'lang.subNav.navName3',
+  DZJK: 'lang.subNav.navName7',
+  TRXRESET: 'lang.subNav.navName8',
 }
 // 组件字典
 // 递归路由配置对象时会使用到，其key必须和bms的组件路径一致
@@ -64,6 +67,8 @@ const routerDict: IOption = {
     import('../views/pc/project-search/project-search-main.vue'),
   'pc/project-search/project-search-detail': () =>
     import('../views/pc/project-search/project-search-detail.vue'),
+  'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
+  'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
 }
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
@@ -102,7 +107,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
       }
       const routerConfig = initRouterConfig(res.data[0].children)
       store.commit('update', ['routeConfig', routerConfig])
-      routerConfig.map((val: any) => {
+      routerConfig.forEach((val: any) => {
         router.addRoute('layout', val)
       })
       router.addRoute({
@@ -120,7 +125,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
         next({
           path: '/riskTrx/list',
         })
-      console.log(err)
+      console.error(err)
     })
 }
 
@@ -139,7 +144,8 @@ const beforeEachHandle = (router: Router) => {
           isWhitePath = true
         }
       })
-      if (store.state.routeConfig.length > 0 || !getStore('token') || isWhitePath) {
+
+      if (store.state.routeConfig.length > 0 || isWhitePath) {
         next()
         return
       } else {

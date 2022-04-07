@@ -133,7 +133,7 @@
         if (!props.isEllipsis) return str
         const frontLen = Number(props.fontLength)
         const endLen = Number(props.endLength)
-        return str.substring(0, frontLen) + '...' + str.substring(str.length - endLen)
+        return `${str.substring(0, frontLen)}...${str.substring(str.length - endLen)}`
       }
       return {
         enter,

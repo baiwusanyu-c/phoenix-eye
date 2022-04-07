@@ -4,13 +4,14 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <!--    logo    -->
     <div style="display: flex; align-items: center">
-      <div class="expend-logo"></div>
+      <div class="expend-logo" @click="routerPush('/riskTrx/list')"></div>
       <el-select
         v-if="isLogin"
         v-model="selectVal"
         filterable
         :placeholder="$t('lang.pleaseSelect')"
         clearable
+        popper-class="project-select"
         @change="handleProjectSelect">
         <el-option
           v-for="item in projectList"
@@ -116,24 +117,24 @@
 
 <script lang="ts">
   import { defineComponent, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue'
+  import { useStore } from 'vuex'
+  import { useI18n } from 'vue-i18n'
+  import { useEventBus } from '@vueuse/core'
+  import { onBeforeRouteUpdate } from 'vue-router'
+  import LoginDialog from '../views/pc/login/login-dialog.vue'
+  import { getProjectListCurUser } from '../api/project-explorer'
+  import { BeButton, BeIcon, BePopover } from '../../public/be-ui/be-ui.es.js'
+  import composition from '../utils/mixin/common-func'
   import {
     clearSession,
     clearStore,
     getStore,
+    removeStore,
     setSession,
     setStore,
-    removeStore,
   } from '../utils/common'
-  import composition from '../utils/mixin/common-func'
-  import { useStore } from 'vuex'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-  import { BeIcon, BePopover, BeButton } from '../../public/be-ui/be-ui.es.js'
-  import { useI18n } from 'vue-i18n'
-  import { ILoginDialog, IOption, IPopover } from '../utils/types'
-  import LoginDialog from '../views/pc/login/login-dialog.vue'
-  import { getProjectListCurUser } from '../api/project-explorer'
-  import { useEventBus } from '@vueuse/core'
-  import { onBeforeRouteUpdate } from 'vue-router'
+  import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   /**
    * 头部菜单导航
    */
@@ -174,7 +175,7 @@
           headerConfig.value = {
             JYFX: {
               icon: '',
-              index: 0,
+              index: '0',
               name: 'lang.subNav.navName2',
               show: true,
               path: '/riskTrx/list',
@@ -182,6 +183,16 @@
               children: [],
               isDisabled: false,
             },
+            /*RPIF: {
+              icon: '',
+              index: '1',
+              name: 'lang.subNav.navName6',
+              show: true,
+              path: '/RiskPublicInformation',
+              isPush: true,
+              children: [],
+              isDisabled: false,
+            },*/
           }
           headerConfigMore.value = []
           setStore('language', locale.value)
@@ -192,9 +203,15 @@
       }
       const bus = useEventBus<string>('loginExpired')
       bus.on(confirm)
+
       const openLogin = (): void => {
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
+      // 外部通知打開登錄窗口
+      const busLogin = useEventBus<string>('openLogin')
+      busLogin.on(() => {
+        openLogin()
+      })
       /**
        * 路由跳转方法
        * @param {any} router
@@ -261,6 +278,16 @@
           children: [],
           isDisabled: false,
         },
+        /*RPIF: {
+          icon: '',
+          index: '1',
+          name: 'lang.subNav.navName6',
+          show: true,
+          path: '/RiskPublicInformation',
+          isPush: true,
+          children: [],
+          isDisabled: false,
+        },*/
       })
       const headerConfigMore = ref<any>([])
       const store = useStore()
@@ -275,7 +302,7 @@
           '-xitongpeizhi',
         ]
         menuConfig.forEach((val: any, index: number) => {
-          if (val.perms === 'XMGL') {
+          if (val.perms === 'XMGL' || val.perms === 'TRXRESET') {
             headerConfigMore.value.push({
               index: (index + 1).toString(),
               name: val.meta.title,
@@ -338,7 +365,7 @@
         // 激活元素设置聚焦 规避bug 3825
         nextTick(() => {
           for (let i = 0; i < menuList.length; i++) {
-            let elm = menuList[Number(i)] as HTMLElement
+            const elm = menuList[Number(i)] as HTMLElement
             if (elm.className.indexOf('is-active') > -1) {
               elm.focus()
             }
@@ -368,8 +395,8 @@
             if (!res) {
               return
             }
-            let list = res.data
-            list.map((val: any) => {
+            const list = res.data
+            list.forEach((val: any) => {
               val.project_id = val.project_id.toString()
             })
             projectList.value = list
@@ -405,6 +432,7 @@
         selectProjBus.emit(selectVal.value)
       }
       return {
+        routerPush,
         handleProjectSelect,
         getProjectUser,
         projectList,
@@ -427,6 +455,11 @@
 </script>
 
 <style lang="scss">
+  .project-select {
+    width: 214px;
+    background: white;
+  }
+
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
     min-width: initial;
@@ -435,7 +468,6 @@
   .popover-logout,
   .popover-lang,
   .popover-router {
-
     .be-popover {
       z-index: 10;
     }
@@ -457,7 +489,6 @@
     }
 
     .popover-router-item {
-
       span {
         margin: 0 10px;
       }
@@ -495,7 +526,7 @@
     overflow-y: auto;
     text-align: center;
     background-color: $mainColor7;
-    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, .12);
+    box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
 
     .tsgz-slogan {
       display: flex;
@@ -536,7 +567,6 @@
         cursor: pointer;
 
         .lang-under {
-
           .be-icon {
             width: 14px;
             height: 14px;
@@ -567,6 +597,7 @@
       width: 164px;
       height: 60px;
       margin: 0 30px;
+      cursor: pointer;
       background-image: url('../assets/image/pc/logo-white.png');
       background-repeat: no-repeat;
       background-position-y: center;
@@ -581,13 +612,11 @@
     }
 
     .nav-menu-icon {
-
       /* margin-right: 10px; */
       fill: $textColor8 !important;
     }
 
     .el-menu {
-
       /* width: 100% !important; */
       background-color: transparent;
       border: 0;
@@ -613,7 +642,6 @@
     }
 
     .menu-part1 {
-
       .el-menu-item.is-active,
       .el-menu-item:focus {
         font-weight: bold;
@@ -627,7 +655,6 @@
     }
 
     .menu-fold-item {
-
       &:hover {
         background-color: $mainColor3;
       }

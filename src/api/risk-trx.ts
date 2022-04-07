@@ -1,7 +1,7 @@
 // 风险警告 api
 import request from '../utils/request'
 import config from '../enums/config'
-import { IPageParam } from '../utils/types'
+import type { IPageParam } from '../utils/types'
 // 获取项目風險列表
 interface IProjWarning extends IPageParam {
   platfrom?: string
