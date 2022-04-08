@@ -1,9 +1,9 @@
 /*
-* @header-config.ts
-* @deprecated 
-* @author czh
-* @update (czh 2022/4/8)
-*/
+ * @header-config.ts
+ * @deprecated
+ * @author czh
+ * @update (czh 2022/4/8)
+ */
 // 无需权限的功能模块菜单配置
 export const publicHeaderConfig = {
   JYFX: {
@@ -35,5 +35,5 @@ export const publicHeaderConfig = {
     isPush: true,
     children: [],
     isDisabled: false,
-  }
+  },
 }

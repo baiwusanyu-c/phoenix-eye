@@ -64,9 +64,11 @@
           <be-icon icon="iconSetting" custom-class="setting"></be-icon>
         </template>
         <div
-          v-for="(item) in headerConfigMore"
+          v-for="item in headerConfigMore"
           :key="item.path + 'router'"
-          :class="`popover-item popover-router-item ${item.index === active ? 'active-dropdown' : ''}`"
+          :class="`popover-item popover-router-item ${
+            item.index === active ? 'active-dropdown' : ''
+          }`"
           @click="routerSwitch(item, item.isPush)">
           <span>{{ $t(item.name) }}</span>
         </div>
@@ -149,10 +151,10 @@
     setSession,
     setStore,
   } from '../utils/common'
+  import { publicHeaderConfig } from '../utils/mixin/header-config'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
-  import {publicHeaderConfig} from "../utils/mixin/header-config";
   /**
    * 头部菜单导航
    */
@@ -170,7 +172,7 @@
       const { routerPush, route, message } = composition()
 
       /****************************** 登出相关 ******************************/
-          //是否登出
+      //是否登出
       const isLogout = ref<boolean>(false)
       /**
        * 登出方法
@@ -195,15 +197,15 @@
           setStore('language', locale.value)
         }
         isLogout.value = false
-        routerPush('/riskTrx/list')
-        setActiveNav()
+        // 刷新页面来重置权限菜单等
+        location.reload()
       }
       // 初始化 登录过期bus，登录过期 就调用登出方法
       const bus = useEventBus<string>('loginExpired')
       bus.on(confirm)
       /****************************** 登录相关 ******************************/
-        //是否登陆
-     const isLogin = ref<boolean>(false)
+      //是否登陆
+      const isLogin = ref<boolean>(false)
       const openLogin = (): void => {
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
@@ -213,7 +215,7 @@
         openLogin()
       })
       /****************************** 路由跳转相关 ******************************/
-        /**
+      /**
        * 路由跳转方法
        * @param {any} router
        * @param {Boolean} isPush
@@ -236,7 +238,7 @@
       })
       /****************************** 菜单初始化相关 ******************************/
       const loginUser = ref<string>('')
-     // 初始化 路由信息 bus，接口拿到路由信息就初始化相关配置
+      // 初始化 路由信息 bus，接口拿到路由信息就初始化相关配置
       const busRouterInfo = useEventBus<string>('getRouterInfo')
       busRouterInfo.on(() => {
         initVar()
@@ -324,25 +326,25 @@
                 })
               }
             })
-              // 匹配设置内的菜单
-              if(active.value === ''){
-                  matchMenu()
-              }
+            // 匹配设置内的菜单
+            if (active.value === '') {
+              matchMenu()
+            }
           } catch (e) {
             setFocusStyle(menuList)
           }
         })
       }
-      const matchMenu = ():void =>{
-          Object.keys(headerConfigMore.value).forEach(val => {
-              if (
-                  route.path.indexOf(headerConfigMore.value[val].path) > -1 ||
-                  route.meta.title === headerConfigMore.value[val].name
-              ) {
-                  active.value = `${parseInt(headerConfigMore.value[val].index)}`
-                  throw new Error('')
-              }
-          })
+      const matchMenu = (): void => {
+        Object.keys(headerConfigMore.value).forEach(val => {
+          if (
+            route.path.indexOf(headerConfigMore.value[val].path) > -1 ||
+            route.meta.title === headerConfigMore.value[val].name
+          ) {
+            active.value = `${parseInt(headerConfigMore.value[val].index)}`
+            throw new Error('')
+          }
+        })
       }
       // prettier-ignore
       const setFocusStyle = (menuList: any): void => {
