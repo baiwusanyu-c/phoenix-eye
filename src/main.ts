@@ -10,7 +10,7 @@ import store from './store/store'
 /**
  * 初始化图标，生成svgDom
  */
-new loadSvg(svgDict)
+loadSvg(svgDict)
 const app = createApp(App)
 app.use(router)
 app.use(store)
