@@ -37,7 +37,7 @@ export default {
   feedback: {
     title: '需求反馈',
     formTitle: '标题',
-    formContract: '联系方式',
+    formContent: '内容',
   },
   header: {
     me: '我',

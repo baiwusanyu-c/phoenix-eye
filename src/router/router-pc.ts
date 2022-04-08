@@ -23,32 +23,49 @@ const routes = [
         component: () => import('../views/pc/empty-page/404.vue'),
         meta: { title: '404' },
       },
+      // 风险交易
       {
         path: '/riskTrx/list',
-        name: 'riskTrx',
+        name: 'RiskTrx',
         component: () => import('../views/pc/risk-trx/risk-trx-list.vue'),
         meta: { title: 'lang.subNav.navName2' },
       },
+      {
+        path: '/riskTrx/detail',
+        name: 'RiskTrxDetail',
+        component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
+        meta: { title: 'lang.subNav.navName2' },
+      },
+      // 公共舆情
       {
         path: '/RiskPublicInformation',
         name: 'RiskPublicInformation',
         component: () => import('../views/pc/risk-public-info/risk-public-info.vue'),
         meta: { title: 'lang.subNav.navName6' },
       },
-      {
-        path: '/riskTrx/detail',
-        name: 'riskTrxDetail',
-        component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
-        meta: { title: 'lang.subNav.navName2' },
-      },
+      // 地址监控详情
       {
         path: '/addressMonitor/detail',
-        name: 'addressMonitorDetail',
+        name: 'AddressMonitorDetail',
         component: () => import('../views/pc/addr-monitor/addr-monitor-detail.vue'),
-        meta: { title: 'lang.subNav.navName2' },
+        meta: { title: 'lang.subNav.navName7' },
+      },
+      // 项目浏览器
+      {
+        path: '/projectSearch',
+        name: 'ProjectSearch',
+        component: () => import('../views/pc/project-search/project-search-main.vue'),
+        meta: { title: 'lang.subNav.navName5' },
+      },
+      {
+        path: '/projectSearch/detail',
+        name: 'ProjectSearchDetail',
+        component: () => import('../views/pc/project-search/project-search-detail.vue'),
+        meta: { title: 'lang.subNav.navName5' },
       },
     ],
   },
+  // 外部对接页面
   {
     path: '/external/riskTrx/list',
     name: 'externalRiskTrxDetail',
@@ -69,10 +86,6 @@ const metaTitleDict: any = {
 const routerDict: IOption = {
   'pc/project-management/project-manage-main': () =>
     import('../views/pc/project-management/project-manage-main.vue'),
-  'pc/project-search/project-search-main': () =>
-    import('../views/pc/project-search/project-search-main.vue'),
-  'pc/project-search/project-search-detail': () =>
-    import('../views/pc/project-search/project-search-detail.vue'),
   'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
   'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
 }
@@ -86,7 +99,6 @@ export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
     // 将meta.title 配置成国家化变量
     val.meta.title = metaTitleDict[val.perms]
     // 配置组件引入
-    //val.component = () => import(`../views/${val.componentPath}.vue`)
     val.componentPath = isString(val.component) && val.component
     val.component = routerDict[val.componentPath]
     if (val.children && val.children.length > 0) {

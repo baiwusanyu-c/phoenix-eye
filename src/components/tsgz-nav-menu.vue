@@ -64,9 +64,9 @@
           <be-icon icon="iconSetting" custom-class="setting"></be-icon>
         </template>
         <div
-          v-for="item in headerConfigMore"
+          v-for="(item ,index) in headerConfigMore"
           :key="item.path + 'router'"
-          class="popover-item popover-router-item"
+          :class="`popover-item popover-router-item ${ index === active ?'active-dropdown' : ''}`"
           @click="routerSwitch(item, item.isPush)">
           <span>{{ $t(item.name) }}</span>
         </div>
@@ -201,7 +201,7 @@
               children: [],
               isDisabled: false,
             },
-            /*RPIF: {
+            RPIF: {
               icon: '',
               index: '1',
               name: 'lang.subNav.navName6',
@@ -210,7 +210,17 @@
               isPush: true,
               children: [],
               isDisabled: false,
-            },*/
+            },
+              XMSS: {
+                icon: '',
+                index: '2',
+                name: 'lang.subNav.navName5',
+                show: true,
+                path: '/projectSearch',
+                isPush: true,
+                children: [],
+                isDisabled: false,
+            },
           }
           headerConfigMore.value = []
           setStore('language', locale.value)
@@ -301,23 +311,26 @@
           children: [],
           isDisabled: false,
         },
+          XMSS: {
+              icon: '',
+              index: '2',
+              name: 'lang.subNav.navName5',
+              show: true,
+              path: '/projectSearch',
+              isPush: true,
+              children: [],
+              isDisabled: false,
+          },
       })
       const headerConfigMore = ref<any>([])
       const store = useStore()
       const initHeaderConfig = (): void => {
         headerConfigMore.value = []
         const menuConfig = store.state.routeConfig
-        const iconList: Array<string> = [
-          '-renwu',
-          '-liulanqi',
-          '-tiaochaquzheng',
-          '-jiaoyifenxi',
-          '-xitongpeizhi',
-        ]
         menuConfig.forEach((val: any, index: number) => {
           if (val.perms === 'XMGL' || val.perms === 'TRXRESET') {
             headerConfigMore.value.push({
-              index: (index + 1).toString(),
+              index: (index + 3).toString(),
               name: val.meta.title,
               show: !val.hidden,
               path: val.path,
@@ -328,8 +341,8 @@
             return
           }
           headerConfig.value[val.perms as string] = {
-            icon: iconList[index],
-            index: (index + 1).toString(),
+
+            index: (index + 3).toString(),
             name: val.meta.title,
             show: !val.hidden,
             path: val.path,
@@ -357,6 +370,7 @@
                 route.meta.title === headerConfig.value[val].name
               ) {
                 active.value = `${parseInt(headerConfig.value[val].index)}`
+                  console.log(  active.value)
                 throw new Error('')
               }
               if (!headerConfig.value[val].path) {

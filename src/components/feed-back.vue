@@ -15,7 +15,7 @@
           <el-form-item :label="$t('lang.feedback.formTitle') + ':'">
             <el-input v-model="form.title" maxlength="50" show-word-limit></el-input>
           </el-form-item>
-          <el-form-item :label="$t('lang.feedback.formContract') + ':'">
+          <el-form-item :label="$t('lang.feedback.formContent') + ':'">
             <el-input
               v-model="form.content"
               type="textarea"
