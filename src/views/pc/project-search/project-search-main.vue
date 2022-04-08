@@ -127,9 +127,9 @@
         const urlParams = getUrlkey()
         // 来自email 打开 且有登录
         if (urlParams.from === 'email' && urlParams.id) {
-            ProjIdByEmail.value = urlParams.id
-            // 直接去态势详情页面
-            routerSwitch(ProjIdByEmail.value.toString())
+          ProjIdByEmail.value = urlParams.id
+          // 直接去态势详情页面
+          routerSwitch(ProjIdByEmail.value.toString())
         }
       }
       onMounted(() => {

@@ -308,11 +308,12 @@
     getPublicOpinion,
   } from '../../../api/project-explorer'
   import {
-      createDate,
-      formatDate,
-      formatTimeStamp, getStore,
-      numberToCommaString,
-      openWindow,
+    createDate,
+    formatDate,
+    formatTimeStamp,
+    getStore,
+    numberToCommaString,
+    openWindow,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
@@ -700,15 +701,15 @@
             console.error(err)
           })
       }
-     const busLogin = useEventBus<string>('openLogin')
+      const busLogin = useEventBus<string>('openLogin')
       const handleSubscribe = (): void => {
-         // 如果没登录就通知显示登录
-          const isLogin = !!getStore('token')
-          if(!isLogin){
-              // 开启登录窗口
-              busLogin.emit()
-              return
-          }
+        // 如果没登录就通知显示登录
+        const isLogin = !!getStore('token')
+        if (!isLogin) {
+          // 开启登录窗口
+          busLogin.emit()
+          return
+        }
         if (baseInfo.value.isSubscribe) {
           cancelSubscribe()
         } else {
