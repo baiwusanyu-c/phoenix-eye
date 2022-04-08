@@ -2,5 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run commitLint
-npm run commitPrettier
+npm run commitPrettier --staged
 
