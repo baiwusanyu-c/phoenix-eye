@@ -56,7 +56,7 @@
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import { getProjectListUser } from '../../../api/project-explorer'
-  import { getUrlkey    } from '../../../utils/common'
+  import { getUrlkey } from '../../../utils/common'
   import type { IProjParam } from '../../../api/project-explorer'
   declare type projListType = {
     project_id: string

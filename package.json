@@ -20,6 +20,13 @@
     "commitPrettier": "prettier --write .",
     "formatDateiew": "vite preview --port 8080 --host"
   },
+  "lint-staged": {
+    "*.{vue,js,ts,jsx,tsx,md,json}": [
+      "pretty-quick --staged",
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@types/qs": "^6.9.7",
     "@vueuse/core": "^7.3.0",
