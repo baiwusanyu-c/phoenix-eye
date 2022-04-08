@@ -17,7 +17,7 @@
 | windi.css                        | ^3.4.3  | css 原子化樣式庫                                                                   |
 | element-plus                     | ^2.22.0 | UI 組件庫                                                                          |
 | be-ui                            | -       | 内部 UI 組件庫                                                                     |
-| vite-plugin-svg-transform-script | 0.1.4   | svg 圖標文件處理脚本                                                               |
+| vite-plugin-svg-transform-script | 0.1.5   | svg 圖標文件處理脚本                                                               |
 
 ##package 指令
 
@@ -62,9 +62,6 @@
 
 `"prepare": "husky install",`  
 **husky 初始化**
-
-`"commit": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx && prettier --write .&& stylelint --fix src/**/*.{html,vue,css}"`  
-**基于 husky 和 commitlint/cli 的 git commit 钩子指令，提交时会调用该指令进行**
 
 `"formatDateiew": "vite preview --port 8080 --host"`  
 **打包预览，当你打包后使用该指令 vite 会自动开启一个容器来运行 dist 打包结果**
@@ -112,7 +109,7 @@
 - npx husky add .husky/pre-commit "npm run commit"
 - git add .husky/pre-commit
 - npx husky add .husky/commit-msg "npx --no -- commitlint --edit $1"
-- 在 package.json 的 script 里面配置"commit": "这里面添加 eslint、单测、stylelint 等"
+- 在 package.json 的 lint-staged 里面配置 eslint、pretty、git add
 - 提交时执行命令例如 git commit -am "feat: 项目添加 commitlint 本地校验配置" 或 git commit -m "feat: 项目添加 commitlint 本地校验配置"
 
 ### 火狐浏览器兼容汇总

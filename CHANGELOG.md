@@ -68,3 +68,21 @@ refactor:页面结构、整体风格样式重构
 ### eagle-eye-front_v2.0.0\_\_fix 发版
 
 fix: 修復了部分 bug
+
+## 2022 年 3 月 16 日
+
+### eagle-eye-front_v2.0.0\_\_fix 发版
+
+fix: 修復了部分 bug
+
+## 2022 年 4 月 7 日
+
+### eagle-eye-front_v2.0.5 发版
+
+feat:项目浏览器搜索详情增加项目订阅功能
+feat:项目风险交易增加滑点 slump 类别，详情增加相关信息展示
+
+style: 修改了部分文案
+style: 项目浏览器搜索结果布局修改为单列
+
+other: 点击 logo 能够返回 risk-trx
