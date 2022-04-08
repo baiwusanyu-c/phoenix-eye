@@ -64,9 +64,9 @@
           <be-icon icon="iconSetting" custom-class="setting"></be-icon>
         </template>
         <div
-          v-for="(item, index) in headerConfigMore"
+          v-for="(item) in headerConfigMore"
           :key="item.path + 'router'"
-          :class="`popover-item popover-router-item ${index === active ? 'active-dropdown' : ''}`"
+          :class="`popover-item popover-router-item ${item.index === active ? 'active-dropdown' : ''}`"
           @click="routerSwitch(item, item.isPush)">
           <span>{{ $t(item.name) }}</span>
         </div>
@@ -152,6 +152,7 @@
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
+  import {publicHeaderConfig} from "../utils/mixin/header-config";
   /**
    * 头部菜单导航
    */
@@ -167,10 +168,10 @@
     },
     setup() {
       const { routerPush, route, message } = composition()
-      //是否登出
+
+      /****************************** 登出相关 ******************************/
+          //是否登出
       const isLogout = ref<boolean>(false)
-      //是否登陆
-      const isLogin = ref<boolean>(false)
       /**
        * 登出方法
        * @param {String} command - 登出指令类型
@@ -181,7 +182,6 @@
           isLogout.value = true
         }
       }
-
       /**
        * 退出调用方法
        */
@@ -190,38 +190,7 @@
           clearSession()
           clearStore()
           isLogin.value = false
-          headerConfig.value = {
-            JYFX: {
-              icon: '',
-              index: '0',
-              name: 'lang.subNav.navName2',
-              show: true,
-              path: '/riskTrx/list',
-              isPush: true,
-              children: [],
-              isDisabled: false,
-            },
-            RPIF: {
-              icon: '',
-              index: '1',
-              name: 'lang.subNav.navName6',
-              show: true,
-              path: '/RiskPublicInformation',
-              isPush: true,
-              children: [],
-              isDisabled: false,
-            },
-            XMSS: {
-              icon: '',
-              index: '2',
-              name: 'lang.subNav.navName5',
-              show: true,
-              path: '/projectSearch',
-              isPush: true,
-              children: [],
-              isDisabled: false,
-            },
-          }
+          headerConfig.value = publicHeaderConfig
           headerConfigMore.value = []
           setStore('language', locale.value)
         }
@@ -229,9 +198,12 @@
         routerPush('/riskTrx/list')
         setActiveNav()
       }
+      // 初始化 登录过期bus，登录过期 就调用登出方法
       const bus = useEventBus<string>('loginExpired')
       bus.on(confirm)
-
+      /****************************** 登录相关 ******************************/
+        //是否登陆
+     const isLogin = ref<boolean>(false)
       const openLogin = (): void => {
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
@@ -240,7 +212,8 @@
       busLogin.on(() => {
         openLogin()
       })
-      /**
+      /****************************** 路由跳转相关 ******************************/
+        /**
        * 路由跳转方法
        * @param {any} router
        * @param {Boolean} isPush
@@ -261,14 +234,16 @@
           setActiveNav()
         })
       })
+      /****************************** 菜单初始化相关 ******************************/
       const loginUser = ref<string>('')
+     // 初始化 路由信息 bus，接口拿到路由信息就初始化相关配置
       const busRouterInfo = useEventBus<string>('getRouterInfo')
       busRouterInfo.on(() => {
         initVar()
       })
       // 初始化方法
       const initVar = (): void => {
-        isLogin.value = getStore('token') ? true : false
+        isLogin.value = !!getStore('token')
         const userInfo = JSON.parse(getStore('userInfo') as string)
         loginUser.value = userInfo ? userInfo.username.substring(0, 2) : ''
         computeLang.value = locale.value === 'en_US' ? 'EN' : '中文'
@@ -290,38 +265,7 @@
       /**
        * 初始化菜单配置
        */
-      const headerConfig = ref<any>({
-        JYFX: {
-          icon: '',
-          index: '0',
-          name: 'lang.subNav.navName2',
-          show: true,
-          path: '/riskTrx/list',
-          isPush: true,
-          children: [],
-          isDisabled: false,
-        },
-        RPIF: {
-          icon: '',
-          index: '1',
-          name: 'lang.subNav.navName6',
-          show: true,
-          path: '/RiskPublicInformation',
-          isPush: true,
-          children: [],
-          isDisabled: false,
-        },
-        XMSS: {
-          icon: '',
-          index: '2',
-          name: 'lang.subNav.navName5',
-          show: true,
-          path: '/projectSearch',
-          isPush: true,
-          children: [],
-          isDisabled: false,
-        },
-      })
+      const headerConfig = ref<any>(publicHeaderConfig)
       const headerConfigMore = ref<any>([])
       const store = useStore()
       const initHeaderConfig = (): void => {
@@ -369,7 +313,6 @@
                 route.meta.title === headerConfig.value[val].name
               ) {
                 active.value = `${parseInt(headerConfig.value[val].index)}`
-                console.log(active.value)
                 throw new Error('')
               }
               if (!headerConfig.value[val].path) {
@@ -381,10 +324,25 @@
                 })
               }
             })
+              // 匹配设置内的菜单
+              if(active.value === ''){
+                  matchMenu()
+              }
           } catch (e) {
             setFocusStyle(menuList)
           }
         })
+      }
+      const matchMenu = ():void =>{
+          Object.keys(headerConfigMore.value).forEach(val => {
+              if (
+                  route.path.indexOf(headerConfigMore.value[val].path) > -1 ||
+                  route.meta.title === headerConfigMore.value[val].name
+              ) {
+                  active.value = `${parseInt(headerConfigMore.value[val].index)}`
+                  throw new Error('')
+              }
+          })
       }
       // prettier-ignore
       const setFocusStyle = (menuList: any): void => {
@@ -398,11 +356,12 @@
           }
         })
       }
-
+      /****************************** 语种切换相关 ******************************/
       // 语种切换
       const { locale } = useI18n()
       const instanceInner = getCurrentInstance()
       const busLanguage = useEventBus<string>('language')
+      const computeLang = ref<string>('EN')
       const changeLanguage = (data: string): void => {
         setStore('language', data)
         locale.value = data
@@ -410,8 +369,7 @@
         ;(instanceInner?.refs.popoverLang as IPopover).close()
         busLanguage.emit(locale.value)
       }
-      const computeLang = ref<string>('EN')
-
+      /****************************** 项目选择相关 ******************************/
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
