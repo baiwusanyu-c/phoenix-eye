@@ -17,7 +17,7 @@
 | windi.css                        | ^3.4.3  | css 原子化樣式庫                                                                   |
 | element-plus                     | ^2.22.0 | UI 組件庫                                                                          |
 | be-ui                            | -       | 内部 UI 組件庫                                                                     |
-| vite-plugin-svg-transform-script | 0.1.5   | svg 圖標文件處理脚本                                                               |
+| vite-plugin-svg-transform-script | 1.1.0   | svg 圖標文件處理脚本                                                               |
 
 ##package 指令
 
