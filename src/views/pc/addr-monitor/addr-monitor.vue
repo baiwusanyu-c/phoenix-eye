@@ -110,7 +110,7 @@
                 icon="iconDeleteEagle"
                 width="24"
                 height="24"
-                @click="deleteAddressMonitor(scope.row)"></be-icon>
+                @click="deleteAddressMonitorFn(scope.row)"></be-icon>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -153,7 +153,7 @@
       @close="() => (showDelete = false)">
     </MsgDialog>
     <!--    创建、 编辑弹窗    -->
-    <create-addr-monitor ref="createDialog" :type="opType"> </create-addr-monitor>
+    <create-addr-monitor ref="createDialog" :type="opType"></create-addr-monitor>
   </div>
 </template>
 
@@ -166,8 +166,9 @@
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import { deleteAddressMonitor } from '../../../api/addr-monitor'
   import createAddrMonitor from './components/create-addr-monitor.vue'
-  import type { IAddrMonitor, IPageParam } from '../../../utils/types'
+  import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
 
   export default defineComponent({
     name: 'AddrMonitor',
@@ -201,17 +202,18 @@
         }
         loading.value = true
         /*let params: IProjParam = {
-          param: searchParams.value,
-          page_num: pageParams.value.currentPage,
-          page_size: pageParams.value.pageSize,
-        }*/
+              param: searchParams.value,
+              page_num: pageParams.value.currentPage,
+              page_size: pageParams.value.pageSize,
+            }*/
         addrMonitorList.value = [
           {
             address: '0xC1323fe4b68E9a4838168a',
             warningNum: 10,
             remark: 'hack address hack address hack address hack address hack address',
             create_time: '2022-03-31T05:53:31.000+0000',
-            link: 'https://www.baidu.com',
+            event_link: 'https://www.baidu.com',
+            address_monitor_id: 'awdhawfgaugoasdad',
           },
         ]
         pageParams.value.total = 1
@@ -244,10 +246,14 @@
         pageParams.value.pageSize = data.pageSize!
         getList()
       }
-      // 创建项目弹窗
+      // 创建、编辑项目弹窗
       const createDialog = ref<any>({})
-      const openDialog = (type: string): void => {
+      const openDialog = (type: string, item?: IAddrMonitor): void => {
         opType.value = type
+        if (type === 'edit' && item) {
+          curItem.data = item
+        }
+        // 打开弹窗
         nextTick(() => {
           createDialog.value.showDialog = true
         })
@@ -256,7 +262,7 @@
        * 删除方法
        * @param item
        */
-      const deleteAddressMonitor = (item: IAddrMonitor): void => {
+      const deleteAddressMonitorFn = (item: IAddrMonitor): void => {
         curItem.data = item
         showDelete.value = true
       }
@@ -264,26 +270,25 @@
        * 确认删除
        */
       const confirmDelete = () => {
-        message('success', `${t('lang.delete')} ${t('lang.success')}`)
-        /* const params: IReappraise = {
-            id: (curItem.data as IReappraise).project_id as string,
-        }*/
-        /*deleteProject(params)
-            .then(res => {
-                if (!res) {
-                    return
-                }
-                if (res) {
-                  message('success', `${t('lang.delete')} ${t('lang.success')}`)
-                    // 更新列表
-                    getList('reset')
-                    showDelete.value = false
-                }
-            })
-            .catch(err => {
-                message('error', err.message || err)
-                console.error(err)
-            })*/
+        const params: IAddrMonitorForm = {
+          address_monitor_id: (curItem.data as IAddrMonitorForm).address_monitor_id as string,
+        }
+        deleteAddressMonitor(params)
+          .then(res => {
+            if (!res) {
+              return
+            }
+            if (res) {
+              message('success', `${t('lang.delete')} ${t('lang.success')}`)
+              // 更新列表
+              getList('reset')
+              showDelete.value = false
+            }
+          })
+          .catch((err: any) => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
       /**
        * 打開交易分析詳情tab
@@ -298,7 +303,7 @@
         confirmDelete,
         openDetail,
         openDialog,
-        deleteAddressMonitor,
+        deleteAddressMonitorFn,
         addrMonitorList,
         pageChange,
         updateNum,
@@ -334,6 +339,7 @@
       cursor: pointer;
     }
   }
+
   .addr-monitor-search {
     @include common-container(40px);
     text-align: center;
@@ -357,19 +363,23 @@
       }
     }
   }
+
   .addr-monitor-result {
     @include common-container(32px);
     padding: 20px;
     box-sizing: border-box;
     background-color: $mainColor7;
     border-radius: 4px;
+
     .ring-btn {
       padding: 0 4px;
       border-color: $mainColor19;
       color: $mainColor19;
+
       &:hover {
         background-color: transparent;
       }
+
       .be-button-prevIcon {
         .be-icon {
           width: 12px;
@@ -377,6 +387,7 @@
         }
       }
     }
+
     .table--info {
       font-size: 14px;
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
@@ -386,6 +397,7 @@
       margin-right: 4px;
       @include ellipsis;
     }
+
     .table--link {
       @include ellipsis;
       font-size: 14px;

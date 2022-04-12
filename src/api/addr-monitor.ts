@@ -35,3 +35,10 @@ export function getAddressMonitorInfo(params: IAddrMonitorSearch) {
     params,
   })
 }
+
+export function deleteAddressMonitor(params: IAddrMonitorForm) {
+  return request({
+    url: `${config.baseURL}/ussa/public/address_monitor/delete/${params.address_monitor_id}`,
+    method: 'post',
+  })
+}
