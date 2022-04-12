@@ -1,6 +1,6 @@
 /*
  * @feed-back.ts
- * @deprecated
+ * @deprecated 需求反馈
  * @author czh
  * @update (czh 2022/4/1)
  */

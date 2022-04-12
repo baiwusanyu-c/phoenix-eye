@@ -1,6 +1,6 @@
 /*
  * @risk-public-info.ts
- * @deprecated
+ * @deprecated 公共舆情
  * @author czh
  * @update (czh 2022/4/1)
  */

@@ -26,7 +26,7 @@
                 :content="$t('lang.addrMonitor.form.linkDiscr')">
                 <be-icon icon="query" color="#333"></be-icon>
               </be-tooltip>
-              <el-input v-model="form.link" class="form--link__input"></el-input>
+              <el-input v-model="form.event_link" class="form--link__input"></el-input>
             </div>
           </el-form-item>
         </el-form>
@@ -47,8 +47,10 @@
 
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
+  import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
   import type { IAddrMonitorForm } from '../../../../utils/types'
   export default defineComponent({
     name: 'CreateAddrMonitor',
@@ -70,14 +72,12 @@
     setup(props) {
       const { message } = composition()
       const showDialog = ref<boolean>(false)
-      const handleClose = (): void => {
-        showDialog.value = false
-      }
       const labelPosition = ref<string>('right')
       const form = ref<IAddrMonitorForm>({
         address: '',
         remark: '',
-        link: '',
+        event_link: '',
+        address_monitor_id: '',
       })
       watch(showDialog, nVal => {
         if (nVal) {
@@ -93,56 +93,142 @@
         }
       })
       /**
+       * 关闭弹窗
+       */
+      const handleClose = (): void => {
+        showDialog.value = false
+        resetVar()
+      }
+      /**
        * 重置表单
        */
       const resetVar = (): void => {
         form.value = {
           address: '',
           remark: '',
-          link: '',
+          event_link: '',
+          address_monitor_id: '',
         }
       }
       /**
        * 编辑时获取旧数据
        */
-      const getDetailData = () => {
+      const getDetailData = (): void => {
         message('info', 'handleConfirm')
         /*  const params = {
-               id: props.projectId,
-           }
-           getProjectInfo(params)
-               .then(res => {
-                   if (!res) {
-                       return
-                   }
-                   if (res) {
-                       projectName.value = res.data.name
-                       projectKeyWords.value = res.data.keyword
-                       contractSite.data = res.data.contract_infos
-                       emailList.value = res.data.email_list.join(';')
-                       websiteForm.value.website = res.data.website
-                       websiteForm.value.github = res.data.github
-                       websiteForm.value.telegram = res.data.telegram
-                       websiteForm.value.twitter = res.data.twitter
-                       // 编辑时，如果原数据有审计就使用，否则调用获取默认审计
-                       if (res.data.contract_report_list) {
-                           auditList.value = res.data.contract_report_list
-                       } else {
-                           getReportDate()
+                   id: props.projectId,
+               }
+               getProjectInfo(params)
+                   .then(res => {
+                       if (!res) {
+                           return
                        }
-                   }
-               })
-               .catch(err => {
-                   const msg = t('lang.search') + t('lang.failed')
-                   message('error', msg)
-                   console.error(err)
-               })*/
+                       if (res) {
+                           projectName.value = res.data.name
+                           projectKeyWords.value = res.data.keyword
+                           contractSite.data = res.data.contract_infos
+                           emailList.value = res.data.email_list.join(';')
+                           websiteForm.value.website = res.data.website
+                           websiteForm.value.github = res.data.github
+                           websiteForm.value.telegram = res.data.telegram
+                           websiteForm.value.twitter = res.data.twitter
+                           // 编辑时，如果原数据有审计就使用，否则调用获取默认审计
+                           if (res.data.contract_report_list) {
+                               auditList.value = res.data.contract_report_list
+                           } else {
+                               getReportDate()
+                           }
+                       }
+                   })
+                   .catch(err => {
+                       const msg = t('lang.search') + t('lang.failed')
+                       message('error', msg)
+                       console.error(err)
+                   })*/
       }
       /**
        * 处理提交确认
        */
-      const handleConfirm = () => {
-        console.error('handleConfirm')
+      const handleConfirm = (): void => {
+        // 根据类别调用不同接口
+        if (props.type === 'add') {
+          createAddrMonitor()
+        } else {
+          updateAddrMonitor()
+        }
+      }
+      const { t } = useI18n()
+      /**
+       * 表单校验
+       */
+      const formVerification = (): boolean => {
+        if (!form.value.address) {
+          const msg = `${t('lang.pleaseInput')} ${t('lang.addrMonitor.form.labelAddr')}`
+          message('warning', msg)
+          return false
+        }
+        if (props.type === 'edit') {
+          if (!form.value.address_monitor_id) {
+            const msg = `${t('lang.pleaseInput')} address_monitor_id`
+            message('warning', msg)
+            return false
+          }
+        }
+        return true
+      }
+      /**
+       * 新建
+       */
+      const createAddrMonitor = () => {
+        // 校验表单
+        if (!formVerification()) {
+          return
+        }
+        addAddressMonitor(form.value)
+          .then((res: any) => {
+            if (!res) {
+              return
+            }
+            if (res && res.code === '0000') {
+              message('success', `${t('lang.add')} ${t('lang.success')}`)
+              // 更新列表
+              props.getList('reset')
+              handleClose()
+            } else {
+              message('warning', res.message || res)
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
+      /**
+       * 编辑
+       */
+      const updateAddrMonitor = () => {
+        // 校验表单
+        if (!formVerification()) {
+          return
+        }
+        updateAddressMonitor(form.value)
+          .then((res: any) => {
+            if (!res) {
+              return
+            }
+            if (res) {
+              message('success', `${t('lang.edit')} ${t('lang.success')}`)
+              // 更新列表
+              props.getList('reset')
+              handleClose()
+            } else {
+              message('warning', res.message || res)
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
       return {
         handleConfirm,
@@ -158,6 +244,7 @@
 <style lang="scss">
   #create_addr_monitor .create-dialog {
     width: 527px;
+
     .el-form-item__label {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       font-size: 14px;
@@ -180,18 +267,22 @@
       display: flex;
       align-items: center;
       width: 100%;
+
       .be-icon-container {
         margin-right: 6px;
       }
+
       .be-popover--trigger {
         height: 40px;
         line-height: 46px;
       }
     }
   }
+
   .addr-monitor--link {
     .be-popover {
       background-color: $textColor11;
+
       .be-popover--body {
         color: $mainColor7;
       }

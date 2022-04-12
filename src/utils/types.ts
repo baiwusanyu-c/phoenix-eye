@@ -142,7 +142,8 @@ export interface ITableHeader {
 export interface IAddrMonitorForm {
   address?: string
   remark?: string
-  link?: string
+  event_link?: string
+  address_monitor_id?: string
 }
 
 // addr-monitor

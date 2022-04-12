@@ -1,6 +1,6 @@
 /*
  * @project-explorer.ts
- * @deprecated
+ * @deprecated 项目浏览器
  * @author czh
  * @update (czh 2022/2/25)
  */

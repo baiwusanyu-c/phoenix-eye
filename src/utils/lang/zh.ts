@@ -361,4 +361,22 @@ export default {
     searchP: 'Trx Hash',
     result: 'You have submitted！please check later on the risk trx page.',
   },
+  addrMonitor: {
+    searchP: '地址',
+    create: '新 增 监 控',
+    title: '地 址 监 控',
+    tableHeader: {
+      addr: '地址',
+      remark: 'Remark',
+      createTime: '创建时间',
+      link: '事件链接',
+      operate: '操作',
+    },
+    form: {
+      labelAddr: '地址',
+      labelRemark: '地址',
+      labelLink: '事件链接',
+      linkDiscr: '添加关联的安全事件链接。',
+    },
+  },
 }

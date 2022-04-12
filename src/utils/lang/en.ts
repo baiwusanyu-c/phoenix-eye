@@ -214,13 +214,6 @@ export default {
       pair: 'pair',
     },
   },
-  trxRetry: {
-    searchP: 'Trx Hash',
-    result: 'You have submitted！please check later on the risk trx page.',
-  },
-  riskPublicInfo: {
-    searchP: 'Key Words',
-  },
   createProject: {
     createProjectTitle: 'Create',
     editProjectTitle: 'Edit Project',
@@ -374,6 +367,13 @@ export default {
     failed: 'Failure due to unknown reasons, please contact our customer service.',
     titleUn: 'Unsubscribes',
     unSubscribes: 'Unsubscribe succeeded!',
+  },
+  trxRetry: {
+    searchP: 'Trx Hash',
+    result: 'You have submitted！please check later on the risk trx page.',
+  },
+  riskPublicInfo: {
+    searchP: 'Key Words',
   },
   addrMonitor: {
     searchP: 'Address',
