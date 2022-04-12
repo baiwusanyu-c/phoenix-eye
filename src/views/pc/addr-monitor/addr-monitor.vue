@@ -12,7 +12,7 @@
           custom-class="eagle-btn search-btn"
           size="large"
           round="4"
-          @click="getList('reset')">
+          @click="openDetail(searchParams)">
           <span>{{ $t('lang.searchT') }}</span>
         </be-button>
       </div>
@@ -153,7 +153,10 @@
       @close="() => (showDelete = false)">
     </MsgDialog>
     <!--    创建、 编辑弹窗    -->
-    <create-addr-monitor ref="createDialog" :type="opType"></create-addr-monitor>
+    <create-addr-monitor
+      ref="createDialog"
+      :type="opType"
+      :cur-item="curItem"></create-addr-monitor>
   </div>
 </template>
 
@@ -177,7 +180,7 @@
       const { t } = useI18n()
       const { message } = composition()
       // 当前操作的项目对象
-      const curItem = reactive({ data: {} })
+      const curItem = ref<IAddrMonitor>({})
       // 当前操作类型
       const opType = ref<string>('add')
       // 删除弹窗显示
@@ -251,7 +254,7 @@
       const openDialog = (type: string, item?: IAddrMonitor): void => {
         opType.value = type
         if (type === 'edit' && item) {
-          curItem.data = item
+          curItem.value = item
         }
         // 打开弹窗
         nextTick(() => {
@@ -263,7 +266,7 @@
        * @param item
        */
       const deleteAddressMonitorFn = (item: IAddrMonitor): void => {
-        curItem.data = item
+        curItem.value = item
         showDelete.value = true
       }
       /**
@@ -271,7 +274,7 @@
        */
       const confirmDelete = () => {
         const params: IAddrMonitorForm = {
-          address_monitor_id: (curItem.data as IAddrMonitorForm).address_monitor_id as string,
+          address_monitor_id: (curItem.value as IAddrMonitorForm).address_monitor_id as string,
         }
         deleteAddressMonitor(params)
           .then(res => {
@@ -291,12 +294,13 @@
           })
       }
       /**
-       * 打開交易分析詳情tab
+       * 打開詳情页
        */
       const openDetail = (params: string) => {
         openWindow(`#/addressMonitor/detail?address=${params}`)
       }
       return {
+        curItem,
         opType,
         createDialog,
         showDelete,

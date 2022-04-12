@@ -51,6 +51,7 @@
   import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
+  import type { PropType } from 'vue'
   import type { IAddrMonitorForm } from '../../../../utils/types'
   export default defineComponent({
     name: 'CreateAddrMonitor',
@@ -66,6 +67,13 @@
         type: Function,
         default: () => {
           return Function
+        },
+      },
+      // 编辑时，当前操作的地址监控数据对象
+      curItem: {
+        type: Object as PropType<IAddrMonitorForm>,
+        default: () => {
+          return {}
         },
       },
     },
@@ -114,37 +122,7 @@
        * 编辑时获取旧数据
        */
       const getDetailData = (): void => {
-        message('info', 'handleConfirm')
-        /*  const params = {
-                   id: props.projectId,
-               }
-               getProjectInfo(params)
-                   .then(res => {
-                       if (!res) {
-                           return
-                       }
-                       if (res) {
-                           projectName.value = res.data.name
-                           projectKeyWords.value = res.data.keyword
-                           contractSite.data = res.data.contract_infos
-                           emailList.value = res.data.email_list.join(';')
-                           websiteForm.value.website = res.data.website
-                           websiteForm.value.github = res.data.github
-                           websiteForm.value.telegram = res.data.telegram
-                           websiteForm.value.twitter = res.data.twitter
-                           // 编辑时，如果原数据有审计就使用，否则调用获取默认审计
-                           if (res.data.contract_report_list) {
-                               auditList.value = res.data.contract_report_list
-                           } else {
-                               getReportDate()
-                           }
-                       }
-                   })
-                   .catch(err => {
-                       const msg = t('lang.search') + t('lang.failed')
-                       message('error', msg)
-                       console.error(err)
-                   })*/
+        form.value = props.curItem
       }
       /**
        * 处理提交确认

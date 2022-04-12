@@ -132,30 +132,46 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, onMounted, ref } from 'vue'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { beijing2utc, createDate, formatDate } from '../../../utils/common'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import PlatformCell from '../../../components/common-components/platform-cell/platform-cell.vue'
+  import { getAddressMonitorInfo } from '../../../api/addr-monitor'
+  import composition from '../../../utils/mixin/common-func'
+  import type { IAddrMonitorSearch } from '../../../api/addr-monitor'
   import type { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
   export default defineComponent({
     name: 'AddrMonitorDetail',
     components: { PlatformCell, EmptyData, BeEllipsisCopy, BePagination },
     setup() {
       const baseInfo = ref<IAddrMonitorInfo>({})
+      const addressParams = ref<string>('')
+      const { message, route } = composition()
       /**
        * 获取基本信息数据
        */
       const getBaseInfo = (): void => {
-        baseInfo.value = {
-          address: '0xC1323fe4b68E9a483awdqwasqwdddddddddasdwd8168a',
-          remark: 'hack address hack address hack address hack address hack address',
-          create_time: '2022-03-31T05:53:31.000+0000',
-          link: 'https://www.baidu.com',
+        const params: IAddrMonitorSearch = {
+          address: addressParams.value,
         }
+        getAddressMonitorInfo(params)
+          .then((res: any) => {
+            if (!res) {
+              return
+            }
+            if (res && res.code === '0000') {
+              baseInfo.value = res.data
+            } else {
+              message('warning', res.message || res)
+            }
+          })
+          .catch((err: any) => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
-      getBaseInfo()
       // 列表数据
       const list = ref<Array<IAddrMonitorDetail>>([])
       /**
@@ -196,7 +212,18 @@
         pageParams.value.pageSize = data.pageSize!
         getList()
       }
-      getList()
+      /**
+       * 初始化页面
+       */
+      const initPage = (): void => {
+        const { address } = route.query
+        addressParams.value = address as string
+        getBaseInfo()
+        getList()
+      }
+      onMounted(() => {
+        initPage()
+      })
       return {
         list,
         pageParams,
