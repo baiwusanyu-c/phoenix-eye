@@ -292,7 +292,8 @@
               :target-str="baseInfo.privileged_operation.contract"
               :is-ellipsis="false"
               empty-text="/"
-              styles="color: #008EE9;cursor:pointer;">
+              styles="color: #008EE9;cursor:pointer;"
+              @click="openWeb(baseInfo.privileged_operation.contract, 'addr')">
             </be-ellipsis-copy>
           </div>
           <div style="display: flex; margin-top: 20px">
@@ -301,7 +302,8 @@
               :target-str="baseInfo.privileged_operation.from"
               :is-ellipsis="true"
               empty-text="/"
-              styles="color: #008EE9;cursor:pointer;font-weight:bold">
+              styles="color: #008EE9;cursor:pointer;font-weight:bold"
+              @click="openWeb(baseInfo.privileged_operation.from, 'addr')">
             </be-ellipsis-copy>
             <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
             <be-ellipsis-copy
@@ -309,7 +311,8 @@
               :target-str="baseInfo.privileged_operation.to"
               :is-ellipsis="true"
               empty-text="/"
-              styles="color: #008EE9;cursor:pointer;font-weight:bold">
+              styles="color: #008EE9;cursor:pointer;font-weight:bold"
+              @click="openWeb(baseInfo.privileged_operation.to, 'addr')">
             </be-ellipsis-copy>
           </div>
         </div>
@@ -324,7 +327,8 @@
               :target-str="baseInfo.slump.token"
               :is-ellipsis="false"
               empty-text="/"
-              styles="color: #008EE9;cursor:pointer;">
+              styles="color: #008EE9;cursor:pointer;"
+              @click="openWeb(baseInfo.privileged_operation.to, 'token')">
             </be-ellipsis-copy>
           </div>
           <div style="display: flex; align-items: center; margin-top: 20px">
@@ -668,7 +672,8 @@
 <style scoped lang="scss">
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .risk-trx-detail .detail-body,
-    .risk-trx-detail .detail-profit {
+    .risk-trx-detail .detail-profit,
+    .risk-trx-detail .detail-slump {
       width: 92%;
     }
 
@@ -713,7 +718,8 @@
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .risk-trx-detail .detail-body,
-    .risk-trx-detail .detail-profit {
+    .risk-trx-detail .detail-profit,
+    .risk-trx-detail .detail-slump {
       width: 86%;
     }
   }
@@ -721,7 +727,8 @@
   /* 110% 适配 */
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .risk-trx-detail .detail-body,
-    .risk-trx-detail .detail-profit {
+    .risk-trx-detail .detail-profit,
+    .risk-trx-detail .detail-slump {
       width: 80%;
     }
   }
