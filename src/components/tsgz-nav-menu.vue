@@ -4,7 +4,7 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <!--    logo    -->
     <div style="display: flex; align-items: center">
-      <div class="expend-logo" @click="routerPush('/riskTrx/list')"></div>
+      <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
       <el-select
         v-if="isLogin"
         v-model="selectVal"
@@ -151,7 +151,7 @@
     setSession,
     setStore,
   } from '../utils/common'
-  import { publicHeaderConfig } from '../utils/mixin/header-config'
+  import { publicHeaderConfig } from '../utils/header-config'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
@@ -410,7 +410,7 @@
         // 清空時
         if (selectVal.value === '') {
           removeStore('curSelectProjId')
-          routerPush('/riskTrx/list')
+          routerPush('/projectSearch')
           return
         }
         setStore('curSelectProjId', selectVal.value)

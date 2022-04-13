@@ -9,7 +9,7 @@ import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 const routes = [
   {
     path: '/',
-    redirect: '/riskTrx/list',
+    redirect: '/ProjectSearch',
   },
   {
     path: '/',
@@ -119,7 +119,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
       if (!res || res.data.length === 0) {
         next &&
           next({
-            path: '/riskTrx/list',
+            path: '/ProjectSearch',
           })
         return
       }
@@ -141,7 +141,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
     .catch(err => {
       next &&
         next({
-          path: '/riskTrx/list',
+          path: '/ProjectSearch',
         })
       console.error(err)
     })
@@ -155,7 +155,7 @@ const beforeEachHandle = (router: Router) => {
   router.beforeEach(
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
       // 路由跳转白名单（不需要验证token,和获取路由）
-      const whiteList = ['/riskTrx/list']
+      const whiteList = ['/riskTrx/list', '/projectSearch', '/RiskPublicInformation']
       let isWhitePath = false
       whiteList.forEach(val => {
         if (val === to.path) {
