@@ -164,7 +164,6 @@
   import { defineComponent, nextTick, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
-  //import { IProjParam } from '../../../api/project-explorer'
   import { beijing2utc, createDate, formatDate, openWindow } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'

@@ -289,7 +289,13 @@
             <span class="label">{{ $t('lang.projectExplorer.contract') }} :</span>
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.privileged_operation.contract"
+              :target-str="
+                baseInfo.privileged_operation.contract_tag
+                  ? baseInfo.privileged_operation.contract_tag
+                  : baseInfo.privileged_operation.contract
+              "
+              :copy-content="baseInfo.privileged_operation.contract"
+              :tooltip-txt="baseInfo.privileged_operation.contract"
               :is-ellipsis="false"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;"
@@ -299,7 +305,13 @@
           <div style="display: flex; margin-top: 20px">
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.privileged_operation.from"
+              :target-str="
+                baseInfo.privileged_operation.from_tag
+                  ? baseInfo.privileged_operation.from_tag
+                  : baseInfo.privileged_operation.from
+              "
+              :copy-content="baseInfo.privileged_operation.from"
+              :tooltip-txt="baseInfo.privileged_operation.from"
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold"
@@ -308,7 +320,13 @@
             <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.privileged_operation.to"
+              :target-str="
+                baseInfo.privileged_operation.to_tag
+                  ? baseInfo.privileged_operation.to_tag
+                  : baseInfo.privileged_operation.to
+              "
+              :copy-content="baseInfo.privileged_operation.to"
+              :tooltip-txt="baseInfo.privileged_operation.to"
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold"
@@ -324,11 +342,13 @@
             <span class="label">Token :</span>
             <be-ellipsis-copy
               custom-class="detail-copy"
-              :target-str="baseInfo.slump.token"
+              :target-str="baseInfo.slump.token ? baseInfo.slump.token : baseInfo.slump.token"
+              :copy-content="baseInfo.slump.token"
+              :tooltip-txt="baseInfo.slump.token"
               :is-ellipsis="false"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;"
-              @click="openWeb(baseInfo.privileged_operation.to, 'token')">
+              @click="openWeb(baseInfo.slump.token, 'token')">
             </be-ellipsis-copy>
           </div>
           <div style="display: flex; align-items: center; margin-top: 20px">
