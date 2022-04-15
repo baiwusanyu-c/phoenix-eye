@@ -388,4 +388,24 @@
       box-sizing: border-box;
     }
   }
+
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .addr_monitor_detail {
+      .detail-body,
+      .addr-monitor-detail-table {
+        width: 92%;
+      }
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .addr_monitor_detail {
+      .detail-body,
+      .addr-monitor-detail-table {
+        width: 80%;
+      }
+    }
+  }
 </style>
