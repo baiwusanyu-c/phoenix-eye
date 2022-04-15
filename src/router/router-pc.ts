@@ -155,7 +155,7 @@ const beforeEachHandle = (router: Router) => {
   router.beforeEach(
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
       // 路由跳转白名单（不需要验证token,和获取路由）
-      const whiteList = ['/riskTrx/list', '/projectSearch', '/RiskPublicInformation']
+      const whiteList = ['/riskTrx/list', '/ProjectSearch', '/RiskPublicInformation']
       let isWhitePath = false
       whiteList.forEach(val => {
         if (val === to.path) {
