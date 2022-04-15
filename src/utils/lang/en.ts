@@ -388,7 +388,7 @@ export default {
     },
     form: {
       labelAddr: 'Address',
-      labelRemark: 'Address',
+      labelRemark: 'Remark',
       labelLink: 'The Event Link',
       linkDiscr: 'Add an associated security event link.',
     },

@@ -374,7 +374,7 @@ export default {
     },
     form: {
       labelAddr: '地址',
-      labelRemark: '地址',
+      labelRemark: 'Remark',
       labelLink: '事件链接',
       linkDiscr: '添加关联的安全事件链接。',
     },

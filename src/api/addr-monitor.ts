@@ -6,7 +6,7 @@
  */
 import request from '../utils/request'
 import config from '../enums/config'
-import type { IAddrMonitorForm } from '../utils/types'
+import type { IAddrMonitorForm, IPageParam } from '../utils/types'
 // 添加地址监控
 export function addAddressMonitor(params: IAddrMonitorForm) {
   return request({
@@ -35,10 +35,29 @@ export function getAddressMonitorInfo(params: IAddrMonitorSearch) {
     params,
   })
 }
-
+// 删除地址监控
 export function deleteAddressMonitor(params: IAddrMonitorForm) {
   return request({
     url: `${config.baseURL}/ussa/public/address_monitor/delete/${params.address_monitor_id}`,
     method: 'post',
+  })
+}
+// 获取地址监控列表
+export function getAddressMonitorList(params: IPageParam) {
+  return request({
+    url: `${config.baseURL}/ussa/public/address_monitor/list`,
+    method: 'post',
+    params,
+  })
+}
+export interface IAddrMonitorDetailOut extends IPageParam {
+  param?: string
+}
+// 获取地址监控转出信息列表
+export function getAddressMonitorOutList(params: IAddrMonitorDetailOut) {
+  return request({
+    url: `${config.baseURL}/ussa/public/address_monitor/transfer/list`,
+    method: 'post',
+    params,
   })
 }

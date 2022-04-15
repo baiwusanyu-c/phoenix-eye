@@ -27,29 +27,29 @@
       </be-button>
     </div>
     <div class="addr-monitor-result eagle-table">
-      <el-table :data="addrMonitorList">
+      <el-table v-loading="loading" :data="addrMonitorList" tooltip-effect="light">
         <template #empty>
           <empty-data></empty-data>
         </template>
-        <el-table-column prop="address">
+        <el-table-column prop="address" show-overflow-tooltip>
           <template #header>
             <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.addr') }}</span>
           </template>
           <template #default="scope">
             <span class="table--info">{{ scope.row.address }}</span>
             <be-button
-              v-if="scope.row.warningNum > 0"
+              v-if="scope.row.today_transfer_num > 0"
               round="4"
               type="default"
               bordered
               custom-class="ring-btn"
               prev-icon="iconRingEagle"
               size="mini">
-              {{ scope.row.warningNum }}
+              {{ scope.row.today_transfer_num }}
             </be-button>
           </template>
         </el-table-column>
-        <el-table-column prop="remark">
+        <el-table-column prop="remark" show-overflow-tooltip>
           <template #header>
             <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.remark') }}</span>
           </template>
@@ -77,12 +77,14 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="link">
+        <el-table-column prop="event_link">
           <template #header>
             <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.link') }}</span>
           </template>
           <template #default="scope">
-            <a :href="scope.row.link" target="_blank" class="table--link">{{ scope.row.link }}</a>
+            <a :href="scope.row.event_link" target="_blank" class="table--link">{{
+              scope.row.event_link
+            }}</a>
           </template>
         </el-table-column>
         <el-table-column prop="operation" width="120">
@@ -153,10 +155,8 @@
       @close="() => (showDelete = false)">
     </MsgDialog>
     <!--    创建、 编辑弹窗    -->
-    <create-addr-monitor
-      ref="createDialog"
-      :type="opType"
-      :cur-item="curItem"></create-addr-monitor>
+    <create-addr-monitor ref="createDialog" :type="opType" :get-list="getList" :cur-item="curItem">
+    </create-addr-monitor>
   </div>
 </template>
 
@@ -168,7 +168,7 @@
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
-  import { deleteAddressMonitor } from '../../../api/addr-monitor'
+  import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
   import createAddrMonitor from './components/create-addr-monitor.vue'
   import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
 
@@ -202,23 +202,26 @@
         if (type === 'reset') {
           resetVa()
         }
+        const params: IPageParam = {
+          page_num: pageParams.value.currentPage,
+          page_size: pageParams.value.pageSize,
+        }
         loading.value = true
-        /*let params: IProjParam = {
-              param: searchParams.value,
-              page_num: pageParams.value.currentPage,
-              page_size: pageParams.value.pageSize,
-            }*/
-        addrMonitorList.value = [
-          {
-            address: '0xC1323fe4b68E9a4838168a',
-            warningNum: 10,
-            remark: 'hack address hack address hack address hack address hack address',
-            create_time: '2022-03-31T05:53:31.000+0000',
-            event_link: 'https://www.baidu.com',
-            address_monitor_id: 'awdhawfgaugoasdad',
-          },
-        ]
-        pageParams.value.total = 1
+        getAddressMonitorList(params)
+          .then(res => {
+            if (!res) {
+              return
+            }
+            if (res) {
+              addrMonitorList.value = res.data.page_infos
+              pageParams.value.total = res.data.total
+            }
+          })
+          .catch((err: any) => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+          .finally(() => (loading.value = false))
       }
       getList()
       /**
@@ -273,7 +276,7 @@
        */
       const confirmDelete = () => {
         const params: IAddrMonitorForm = {
-          address_monitor_id: (curItem.value as IAddrMonitorForm).address_monitor_id as string,
+          address_monitor_id: (curItem.value as IAddrMonitorForm).id as string,
         }
         deleteAddressMonitor(params)
           .then(res => {
@@ -299,6 +302,7 @@
         openWindow(`#/addressMonitor/detail?address=${params}`)
       }
       return {
+        loading,
         curItem,
         opType,
         createDialog,

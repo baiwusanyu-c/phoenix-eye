@@ -144,6 +144,7 @@ export interface IAddrMonitorForm {
   remark?: string
   event_link?: string
   address_monitor_id?: string
+  id?: string
 }
 
 // addr-monitor

@@ -122,7 +122,8 @@
        * 编辑时获取旧数据
        */
       const getDetailData = (): void => {
-        form.value = props.curItem
+        form.value = { ...props.curItem }
+        form.value.address_monitor_id = props.curItem.id
       }
       /**
        * 处理提交确认
@@ -162,7 +163,12 @@
         if (!formVerification()) {
           return
         }
-        addAddressMonitor(form.value)
+        const params = {
+          address: form.value.address,
+          remark: form.value.remark,
+          event_link: form.value.event_link,
+        }
+        addAddressMonitor(params)
           .then((res: any) => {
             if (!res) {
               return

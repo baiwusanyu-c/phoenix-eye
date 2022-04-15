@@ -2,7 +2,7 @@
 <template>
   <div class="addr_monitor_detail">
     <!--   基本信息     -->
-    <div class="detail-body">
+    <div v-loading="baseLoading" class="detail-body">
       <div class="detail-item">
         <div class="detail-item-txt detail-item--hash">
           <span>{{ $t('lang.addrMonitor.tableHeader.addr') }}：</span>
@@ -38,17 +38,17 @@
       <div class="detail-item">
         <div class="detail-item-txt">
           <span>{{ $t('lang.addrMonitor.tableHeader.link') }}：</span>
-          <a class="link" :href="baseInfo.link" target="_blank">{{ baseInfo.link }}</a>
+          <a class="link" :href="baseInfo.event_link" target="_blank">{{ baseInfo.event_link }}</a>
         </div>
       </div>
     </div>
     <!--   表格   -->
     <div class="addr-monitor-detail-table eagle-table">
-      <el-table :data="list">
+      <el-table v-loading="listLoading" :data="list">
         <template #empty>
           <empty-data></empty-data>
         </template>
-        <el-table-column prop="platform">
+        <el-table-column prop="platform" width="140">
           <template #header>
             <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
           </template>
@@ -56,20 +56,20 @@
             <platform-cell :platform="scope.row.platform"></platform-cell>
           </template>
         </el-table-column>
-        <el-table-column prop="tx_hash">
+        <el-table-column prop="hash">
           <template #header>
             <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
           </template>
           <template #default="scope">
             <be-ellipsis-copy
-              :target-str="scope.row.tx_hash"
-              :is-show-copy-btn="false"
+              :target-str="scope.row.hash"
+              :is-show-copy-btn="true"
               font-length="7"
               end-length="7">
             </be-ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="create_time" width="120">
+        <el-table-column prop="block_time" width="120">
           <template #header>
             <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
           </template>
@@ -77,34 +77,84 @@
             <el-tooltip placement="top" effect="light">
               <template #content>
                 <span
-                  >{{ formatDate(createDate(scope.row.create_time)) }} UTC：{{
-                    beijing2utc(scope.row.create_time)
+                  >{{ formatDate(createDate(scope.row.block_time)) }} UTC：{{
+                    beijing2utc(scope.row.block_time)
                   }}</span
                 >
               </template>
               <span style="color: #888">
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[0] }}</p>
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[1] }}</p>
+                <p>{{ formatDate(createDate(scope.row.block_time)).split(' ')[0] }}</p>
+                <p>{{ formatDate(createDate(scope.row.block_time)).split(' ')[1] }}</p>
               </span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="from_address">
+
+        <el-table-column prop="from">
           <template #header>
             <span class="table-head">{{ $t('lang.riskConfig.tableHeader.from') }}</span>
           </template>
+          <template #default="scope">
+            <div
+              style="display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <be-ellipsis-copy
+                :target-str="scope.row.from_tag ? scope.row.from_tag : scope.row.from"
+                :copy-content="scope.row.from"
+                :tooltip-txt="scope.row.from"
+                :is-ellipsis="handleisEllipsis(scope.row.from, scope.row.from_tag)"
+                font-length="8"
+                end-length="8"
+                empty-text="/">
+              </be-ellipsis-copy>
+            </div>
+          </template>
         </el-table-column>
-        <el-table-column prop="to_address">
+        <el-table-column prop="to">
           <template #header>
             <span class="table-head">{{ $t('lang.riskConfig.tableHeader.to') }}</span>
           </template>
-        </el-table-column>
-        <el-table-column prop="value">
-          <template #header>
-            <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenNum') }}</span>
+          <template #default="scope">
+            <div
+              style="display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <be-ellipsis-copy
+                :target-str="scope.row.to_tag ? scope.row.to_tag : scope.row.to"
+                :copy-content="scope.row.to"
+                :tooltip-txt="scope.row.to"
+                :is-ellipsis="handleisEllipsis(scope.row.to, scope.row.to_tag)"
+                font-length="8"
+                end-length="8"
+                empty-text="/">
+              </be-ellipsis-copy>
+            </div>
           </template>
         </el-table-column>
+
         <el-table-column prop="value">
+          <template #header>
+            <span class="table-head">{{ -$t('lang.riskConfig.profitTableHeader.tokenNum') }}</span>
+          </template>
+          <template #default="scope">
+            <div v-if="scope.row.value || scope.row.value === 0">
+              <el-tooltip placement="top" effect="light">
+                <template #content>
+                  <span>{{ scope.row.value }}</span>
+                </template>
+                <span>{{ handleProfit(scope.row.value, 6) }}</span>
+              </el-tooltip>
+            </div>
+            <div
+              v-else
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+              ">
+              /
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="token_name">
           <template #header>
             <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenName') }}</span>
           </template>
@@ -132,15 +182,16 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { computed, defineComponent, onMounted, ref } from 'vue'
+  import { useI18n } from 'vue-i18n'
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { beijing2utc, createDate, formatDate } from '../../../utils/common'
+  import { beijing2utc, createDate, formatDate, simulateToFixed } from '../../../utils/common'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import PlatformCell from '../../../components/common-components/platform-cell/platform-cell.vue'
-  import { getAddressMonitorInfo } from '../../../api/addr-monitor'
+  import { getAddressMonitorInfo, getAddressMonitorOutList } from '../../../api/addr-monitor'
   import composition from '../../../utils/mixin/common-func'
-  import type { IAddrMonitorSearch } from '../../../api/addr-monitor'
+  import type { IAddrMonitorDetailOut, IAddrMonitorSearch } from '../../../api/addr-monitor'
   import type { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
   export default defineComponent({
     name: 'AddrMonitorDetail',
@@ -149,6 +200,8 @@
       const baseInfo = ref<IAddrMonitorInfo>({})
       const addressParams = ref<string>('')
       const { message, route } = composition()
+      const { t } = useI18n()
+      const baseLoading = ref<boolean>(false)
       /**
        * 获取基本信息数据
        */
@@ -156,6 +209,7 @@
         const params: IAddrMonitorSearch = {
           address: addressParams.value,
         }
+        baseLoading.value = true
         getAddressMonitorInfo(params)
           .then((res: any) => {
             if (!res) {
@@ -171,23 +225,36 @@
             message('error', err.message || err)
             console.error(err)
           })
+          .finally(() => (baseLoading.value = false))
       }
       // 列表数据
       const list = ref<Array<IAddrMonitorDetail>>([])
+      const listLoading = ref<boolean>(false)
       /**
        * 获取列表数据
        */
       const getList = (): void => {
-        list.value = [
-          {
-            platform: 'bsc',
-            tx_hash: 'hack address hack addresshack address hack addresshack address hack address',
-            create_time: '2022-03-31T05:53:31.000+0000',
-            value: '-123456',
-            from_address: '0xC1323fe4b68E9a483awdqwasqwdddddddddasdwd8168a',
-            to_address: '0xC1323fe4b68E9a483awdqwasqwdddddddddasdwd8168a',
-          },
-        ]
+        const params: IAddrMonitorDetailOut = {
+          page_num: pageParams.value.currentPage,
+          page_size: pageParams.value.pageSize,
+          param: addressParams.value,
+        }
+        listLoading.value = true
+        getAddressMonitorOutList(params)
+          .then(res => {
+            if (!res) {
+              return
+            }
+            if (res) {
+              list.value = res.data.page_infos
+              pageParams.value.total = res.data.total
+            }
+          })
+          .catch((err: any) => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+          .finally(() => (listLoading.value = false))
       }
       // 分页参数
       const pageParams = ref<IPageParam>({
@@ -221,10 +288,36 @@
         getBaseInfo()
         getList()
       }
+      /**
+       * 处理数值
+       */
+      const handleProfit = computed(() => {
+        return function (val: number, dec: number) {
+          if (val === null) {
+            return t('lang.emptyData')
+          }
+          if (val === 0) {
+            return `0`
+          }
+          return `-${simulateToFixed(val, dec)}`
+        }
+      })
+      const handleisEllipsis = computed(() => {
+        return function (addr: string, tag: string) {
+          if ((tag && tag.length > 40) || (!tag && addr.length > 40)) {
+            return true
+          }
+          return false
+        }
+      })
       onMounted(() => {
         initPage()
       })
       return {
+        handleisEllipsis,
+        baseLoading,
+        listLoading,
+        handleProfit,
         list,
         pageParams,
         pageChange,
