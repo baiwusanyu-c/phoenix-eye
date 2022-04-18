@@ -338,11 +338,11 @@ export function nFormatter(num: number, digits: number) {
  * 打开窗口
  * @param strUrl
  */
-export const openWindow = (strUrl: string): void => {
+export const openWindow = (strUrl: string, winName = '_blank'): void => {
   // 模拟a标签点击，实现无糖浏览器下的新开tab
   const aDom = document.createElement('a')
   aDom.href = strUrl
-  aDom.target = '_blank'
+  aDom.target = winName
   document.body.appendChild(aDom)
   aDom.click()
   document.body.removeChild(aDom)

@@ -161,17 +161,24 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, ref } from 'vue'
+  import { defineComponent, nextTick, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useEventBus } from '@vueuse/core'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
-  import { beijing2utc, createDate, formatDate, openWindow } from '../../../utils/common'
+  import {
+    beijing2utc,
+    createDate,
+    formatDate,
+    getStore,
+    getUrlkey,
+    openWindow,
+  } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
   import createAddrMonitor from './components/create-addr-monitor.vue'
   import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
-
   export default defineComponent({
     name: 'AddrMonitor',
     components: { EmptyData, BeButton, BeIcon, BePagination, MsgDialog, createAddrMonitor },
@@ -223,7 +230,6 @@
           })
           .finally(() => (loading.value = false))
       }
-      getList()
       /**
        * 重置参数
        */
@@ -299,8 +305,31 @@
        * 打開詳情页
        */
       const openDetail = (params: string) => {
-        openWindow(`#/addressMonitor/detail?address=${params}`)
+        openWindow(`#/addressMonitor/detail?address=${params}`, params)
       }
+      /**
+       * 处理email打开
+       */
+      const busLogin = useEventBus<string>('openLogin')
+      const initPage = (): void => {
+        const urlParams = getUrlkey()
+        // 来自email 打开
+        if (urlParams.from === 'email' && urlParams.id) {
+          // 如果没登录就通知显示登录
+          const isLogin = !!getStore('token')
+          if (!isLogin) {
+            // 开启登录窗口
+            busLogin.emit()
+            return
+          }
+          // 直接去态势详情页面
+          openDetail(urlParams.id)
+        }
+        getList()
+      }
+      onMounted(() => {
+        initPage()
+      })
       return {
         loading,
         curItem,
