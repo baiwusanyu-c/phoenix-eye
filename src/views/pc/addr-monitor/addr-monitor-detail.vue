@@ -32,13 +32,31 @@
       <div class="detail-item detail-item--remark">
         <div class="detail-item-txt">
           <span>{{ $t('lang.addrMonitor.tableHeader.remark') }}：</span>
-          <span style="font-weight: 500">{{ baseInfo.remark }}</span>
+          <be-ellipsis-copy
+            :target-str="baseInfo.remark"
+            :is-show-copy-btn="false"
+            custom-class="detail-item--ellipsis"
+            :is-ellipsis="baseInfo.remark && baseInfo.remark.length > 45"
+            styles="font-weight: 500"
+            font-length="18"
+            end-length="18"></be-ellipsis-copy>
         </div>
       </div>
       <div class="detail-item">
         <div class="detail-item-txt">
           <span>{{ $t('lang.addrMonitor.tableHeader.link') }}：</span>
-          <a class="link" :href="baseInfo.event_link" target="_blank">{{ baseInfo.event_link }}</a>
+          <be-ellipsis-copy
+            :target-str="baseInfo.event_link"
+            :is-show-copy-btn="false"
+            :is-ellipsis="baseInfo.event_link && baseInfo.event_link.length > 45"
+            styles="font-weight: 500"
+            font-length="18"
+            custom-class="detail-item--ellipsis"
+            end-length="18">
+            <template #text="slotProps">
+              <a class="link" :href="baseInfo.event_link" target="_blank">{{ slotProps.item }}</a>
+            </template>
+          </be-ellipsis-copy>
         </div>
       </div>
     </div>
@@ -366,6 +384,9 @@
           margin-top: 15px;
           font-weight: bold;
           color: $textColor3;
+          .detail-item--ellipsis {
+            width: 85%;
+          }
         }
 
         .detail-item--hash {
@@ -397,6 +418,9 @@
         width: 92%;
       }
     }
+    .addr_monitor_detail .detail-body .detail-item .detail-item-txt .detail-item--ellipsis {
+      width: 80%;
+    }
   }
 
   /* 125% 适配 */
@@ -406,6 +430,15 @@
       .addr-monitor-detail-table {
         width: 80%;
       }
+    }
+    .addr_monitor_detail .detail-body .detail-item .detail-item-txt .detail-item--ellipsis {
+      width: 83%;
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .addr_monitor_detail .detail-body .detail-item .detail-item-txt .detail-item--ellipsis {
+      width: 81%;
     }
   }
 </style>

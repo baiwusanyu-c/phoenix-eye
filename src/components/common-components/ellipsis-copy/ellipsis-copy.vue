@@ -14,7 +14,9 @@
           <span>{{ getTooltipTxt() }}</span>
         </slot>
       </template>
-      <span :style="styles">{{ changeEllipsisStr(targetStr) }} </span>
+      <slot name="text" :item="changeEllipsisStr(targetStr)">
+        <span :style="styles">{{ changeEllipsisStr(targetStr) }} </span>
+      </slot>
     </el-tooltip>
     <span v-if="isShowCopyBtn && (copyContent || targetStr)" class="copy-btn">
       <be-icon
