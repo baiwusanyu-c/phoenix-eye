@@ -1,7 +1,7 @@
 /* * @tsgz-footer.vue * @deprecated * @author czh * @update (czh 2022/2/22) */
 <template>
   <div class="tsgz-footer">
-    <div class="copy-rights">© 2022 by Beosin. All Rights Reserved.</div>
+    <div class="copy-rights">© 2022 by Beosin. All Rights Reserved sss.</div>
     <div class="contact">
       <div class="contact-logo">
         {{ $t('lang.contact') }}:
