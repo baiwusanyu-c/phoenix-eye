@@ -480,7 +480,7 @@
               auditList.value = res.data.page_infos
               pageParamsAudit.value.total = res.data.total
               auditList.value.forEach(val => {
-                val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+                val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
               })
             }
           })

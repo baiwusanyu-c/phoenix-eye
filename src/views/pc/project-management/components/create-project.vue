@@ -453,7 +453,7 @@
           String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
         const baseURL = config.baseURL
         auditList.value.forEach((val: any) => {
-          val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_id}`
+          val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
         })
       }
       /**

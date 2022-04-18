@@ -55,7 +55,6 @@
 <script lang="ts">
   import { defineComponent, getCurrentInstance, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { ElMessage } from 'element-plus/es'
   import { Base64 } from 'js-base64'
   import { trim } from '../../../../utils/common'
   import { BeButton } from '../../../../../public/be-ui/be-ui.es'
@@ -119,7 +118,7 @@
         form.value.password = trim(form.value.password)
         refsForm &&
           (refsForm.refs.registerForm as FormInstance).validateField('email', (error: any) => {
-            if (!error) {
+            if (error) {
               const params = {
                 userName: String(form.value.email),
               }
@@ -128,7 +127,10 @@
                   if (!res) {
                     return
                   }
-                  ElMessage.success(t('lang.loginConfig.getVerCodeValid') + t('lang.success'))
+                  message(
+                    'success',
+                    `${t('lang.loginConfig.getVerCodeValid')} ${t('lang.success')}`
+                  )
                   isTip.value = true
                   num.value = 60
                   const codeInerval = setInterval(() => {
