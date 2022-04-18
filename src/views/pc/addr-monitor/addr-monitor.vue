@@ -314,7 +314,7 @@
       const initPage = (): void => {
         const urlParams = getUrlkey()
         // 来自email 打开
-        if (urlParams.from === 'email' && urlParams.id) {
+        if (urlParams.from === 'email' && urlParams.address) {
           // 如果没登录就通知显示登录
           const isLogin = !!getStore('token')
           if (!isLogin) {
@@ -323,7 +323,7 @@
             return
           }
           // 直接去态势详情页面
-          openDetail(urlParams.id)
+          openDetail(urlParams.address)
         }
         getList()
       }
