@@ -37,16 +37,25 @@
           </template>
           <template #default="scope">
             <span class="table--info">{{ scope.row.address }}</span>
-            <be-button
-              v-if="scope.row.today_transfer_num > 0"
-              round="4"
-              type="default"
-              bordered
-              custom-class="ring-btn"
-              prev-icon="iconRingEagle"
-              size="mini">
-              {{ scope.row.today_transfer_num }}
-            </be-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="today_transfer_num" show-overflow-tooltip width="60">
+          <template #header>
+            <span class="table-head"></span>
+          </template>
+          <template #default="scope">
+            <div style="display: flex; justify-content: center; align-items: center">
+              <be-button
+                v-if="scope.row.today_transfer_num > 0"
+                round="4"
+                type="default"
+                bordered
+                custom-class="ring-btn"
+                prev-icon="iconRingEagle"
+                size="mini">
+                {{ scope.row.today_transfer_num }}
+              </be-button>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="remark" show-overflow-tooltip>
@@ -177,11 +186,20 @@
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
+  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import createAddrMonitor from './components/create-addr-monitor.vue'
   import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
   export default defineComponent({
     name: 'AddrMonitor',
-    components: { EmptyData, BeButton, BeIcon, BePagination, MsgDialog, createAddrMonitor },
+    components: {
+      EmptyData,
+      BeButton,
+      BeIcon,
+      BePagination,
+      MsgDialog,
+      createAddrMonitor,
+      BeEllipsisCopy,
+    },
     setup() {
       const { t } = useI18n()
       const { message } = composition()
@@ -425,6 +443,7 @@
     }
 
     .table--info {
+      width: 90%;
       font-size: 14px;
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       font-weight: 600;
