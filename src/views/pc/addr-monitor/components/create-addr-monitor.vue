@@ -13,6 +13,7 @@
       <div>
         <el-form :label-position="labelPosition" label-width="120px">
           <el-form-item :label="$t('lang.addrMonitor.form.labelAddr') + ':'">
+            <span class="reg-start feed-back--star">*</span>
             <el-input v-model="form.address" :disabled="type === 'edit'"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
@@ -260,6 +261,11 @@
         height: 40px;
         line-height: 46px;
       }
+    }
+    .feed-back--star {
+      position: absolute;
+      top: 7px;
+      left: -134px;
     }
   }
 

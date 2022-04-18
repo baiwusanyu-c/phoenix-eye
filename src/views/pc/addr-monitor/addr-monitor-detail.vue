@@ -283,8 +283,8 @@
        * 初始化页面
        */
       const initPage = (): void => {
-        const { address } = route.query
-        addressParams.value = address as string
+        const { address, id } = route.query
+        addressParams.value = (address || id) as string
         getBaseInfo()
         getList()
       }
