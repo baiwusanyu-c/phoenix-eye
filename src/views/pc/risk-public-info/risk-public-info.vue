@@ -5,7 +5,7 @@
       <div class="project-manage-search-input">
         <el-input
           v-model="searchParams"
-          :placeholder="$t('lang.trxRetry.searchP')"
+          :placeholder="$t('lang.riskPublicInfo.searchP')"
           style="margin-right: 16px" />
         <be-button
           type="success"

@@ -13,9 +13,11 @@
       <div>
         <el-form :label-position="labelPosition" label-width="80px">
           <el-form-item :label="$t('lang.feedback.formTitle') + ':'">
+            <span class="reg-start feed-back--star">*</span>
             <el-input v-model="form.title" maxlength="50" show-word-limit></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.feedback.formContent') + ':'">
+            <span class="reg-start feed-back--star">*</span>
             <el-input
               v-model="form.content"
               type="textarea"
@@ -73,9 +75,29 @@
         }
       }
       /**
+       * 表单校验
+       */
+      const formVerification = (): boolean => {
+        if (!form.value.title) {
+          const msg = `${t('lang.pleaseInput')} ${t('lang.feedback.formTitle')}`
+          message('warning', msg)
+          return false
+        }
+        if (!form.value.content) {
+          const msg = `${t('lang.pleaseInput')} ${t('lang.feedback.formContent')}`
+          message('warning', msg)
+          return false
+        }
+        return true
+      }
+      /**
        * 反饋提交
        */
       const handleConfirm = (): void => {
+        // 校验表单
+        if (!formVerification()) {
+          return
+        }
         createFeedBack(form.value)
           .then((res: any) => {
             if (res.success === true) {
@@ -129,6 +151,11 @@
 
     .el-textarea__inner {
       border-radius: 2px;
+    }
+    .feed-back--star {
+      position: absolute;
+      top: 7px;
+      left: -94px;
     }
   }
 </style>
