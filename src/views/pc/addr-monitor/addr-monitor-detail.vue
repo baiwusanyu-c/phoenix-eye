@@ -149,7 +149,7 @@
 
         <el-table-column prop="value">
           <template #header>
-            <span class="table-head">{{ -$t('lang.riskConfig.profitTableHeader.tokenNum') }}</span>
+            <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenNum') }}</span>
           </template>
           <template #default="scope">
             <div v-if="scope.row.value || scope.row.value === 0">
@@ -175,6 +175,17 @@
         <el-table-column prop="token_name">
           <template #header>
             <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenName') }}</span>
+          </template>
+          <template #default="scope">
+            <div
+              style="
+                display: flex;
+
+                align-items: center;
+                justify-content: center;
+              ">
+              {{ scope.row.token_name || scope.row.token_name === 0 ? scope.row.token_name : '/' }}
+            </div>
           </template>
         </el-table-column>
       </el-table>
