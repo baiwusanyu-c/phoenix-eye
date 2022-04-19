@@ -25,7 +25,7 @@
             :page-size="pageParams.pageSize"
             :page-count="pageParams.total"
             :current-page="pageParams.currentPage"
-            :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+            :page-num="[{ label: 5 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
             :pager-show-count="5"
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
