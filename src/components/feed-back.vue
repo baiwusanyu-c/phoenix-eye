@@ -14,7 +14,8 @@
         <el-form :label-position="labelPosition" label-width="80px">
           <el-form-item :label="$t('lang.feedback.formTitle') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.title" maxlength="50" show-word-limit></el-input>
+            <el-input v-model="form.title" maxlength="50"></el-input>
+            <p class="form-item__len">{{ form.title.length }} / 50</p>
           </el-form-item>
           <el-form-item :label="$t('lang.feedback.formContent') + ':'">
             <span class="reg-start feed-back--star">*</span>
@@ -22,9 +23,9 @@
               v-model="form.content"
               type="textarea"
               maxlength="200"
-              show-word-limit
               :rows="7"
               :placeholder="$t('lang.feedback.formContractP')"></el-input>
+            <p class="form-item__len">{{ form.content.length }} / 200</p>
           </el-form-item>
         </el-form>
       </div>
@@ -156,6 +157,18 @@
       position: absolute;
       top: 7px;
       left: -94px;
+    }
+    .form-item__len {
+      text-align: right;
+      width: 100%;
+      font-size: 12px;
+      color: $mainColor14;
+    }
+    .be-dialog-footer {
+      padding: 0 1.25rem 1rem 1.25rem;
+    }
+    .be-dialog-body {
+      height: 280px;
     }
   }
 </style>
