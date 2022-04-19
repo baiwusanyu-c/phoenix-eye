@@ -31,12 +31,14 @@
         <template #empty>
           <empty-data></empty-data>
         </template>
-        <el-table-column prop="address" show-overflow-tooltip>
+        <el-table-column prop="address">
           <template #header>
             <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.addr') }}</span>
           </template>
           <template #default="scope">
-            <span class="table--info">{{ scope.row.address }}</span>
+            <el-tooltip placement="top" effect="light" class="address" :content="scope.row.address">
+              <span class="table--info">{{ scope.row.address }}</span>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column prop="today_transfer_num" show-overflow-tooltip width="60">
@@ -58,12 +60,19 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" show-overflow-tooltip>
+        <el-table-column prop="remark">
           <template #header>
             <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.remark') }}</span>
           </template>
           <template #default="scope">
-            <span class="table--info">{{ scope.row.remark }}</span>
+            <el-tooltip
+              placement="top"
+              effect="light"
+              popper-class="addr-monitor-main--address"
+              :content="scope.row.remark">
+              <span class="table--info">{{ scope.row.remark }}</span>
+            </el-tooltip>
+            <!--            <span class="table&#45;&#45;info">{{ scope.row.remark }}</span>-->
           </template>
         </el-table-column>
         <el-table-column prop="create_time" width="120">
@@ -91,9 +100,15 @@
             <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.link') }}</span>
           </template>
           <template #default="scope">
-            <a :href="scope.row.event_link" target="_blank" class="table--link">{{
-              scope.row.event_link
-            }}</a>
+            <el-tooltip
+              placement="top"
+              effect="light"
+              popper-class="addr-monitor-main--address"
+              :content="scope.row.event_link">
+              <a :href="scope.row.event_link" target="_blank" class="table--link">{{
+                scope.row.event_link
+              }}</a>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column prop="operation" width="120">
@@ -189,6 +204,7 @@
   import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import createAddrMonitor from './components/create-addr-monitor.vue'
   import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
+
   export default defineComponent({
     name: 'AddrMonitor',
     components: {
@@ -373,6 +389,10 @@
 </script>
 
 <style lang="scss">
+  .addr-monitor-main--address {
+    width: 300px;
+  }
+
   .addr-monitor-main {
     min-height: calc(100% - 100px);
 
@@ -443,7 +463,8 @@
     }
 
     .table--info {
-      width: 90%;
+      max-width: 300px;
+      display: block;
       font-size: 14px;
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       font-weight: 600;
@@ -460,6 +481,7 @@
       font-weight: 600;
       color: #008ee9;
       line-height: 22px;
+      display: block;
     }
   }
 

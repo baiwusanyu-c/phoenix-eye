@@ -65,13 +65,15 @@ service.interceptors.response.use(
           location.reload()
           return
         }
-        window.location.href = '#/projectSearch'
         if (getSession('loginExpiredNum') === 'false' || !getSession('loginExpiredNum')) {
           bus.emit('true')
           const err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期'
           message('error', err)
           setSession('loginExpiredNum', 'true')
         }
+        setTimeout(() => {
+          window.location.href = '#/projectSearch'
+        }, 1500)
         return null
       }
       return Promise.reject(new Error(res.msg || res.message || 'Error'))
