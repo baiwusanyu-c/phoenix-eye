@@ -2,20 +2,11 @@
 <template>
   <div class="risk-public-info-main eagle-page">
     <div class="risk-public-info-container">
-      <div class="project-manage-search-input">
-        <el-input
-          v-model="searchParams"
-          :placeholder="$t('lang.riskPublicInfo.searchP')"
-          style="margin-right: 16px" />
-        <be-button
-          type="success"
-          custom-class="eagle-btn search-btn"
-          size="large"
-          round="4"
-          @click="getList">
-          <span>{{ $t('lang.searchT') }}</span>
-        </be-button>
-      </div>
+      <search-input
+        :search-btn-name="$t('lang.searchT')"
+        :placeholder="$t('lang.riskPublicInfo.searchP')"
+        @search="handleSearch">
+      </search-input>
       <div v-loading="loading" class="risk-public-info-list eagle-table">
         <empty-data v-if="list.length === 0"></empty-data>
         <project-detail-public-opinion :info-data="list"> </project-detail-public-opinion>
@@ -41,7 +32,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, nextTick, ref } from 'vue'
   import { BeButton, BePagination } from '../../../../public/be-ui/be-ui.es'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'
@@ -54,6 +45,12 @@
     setup() {
       const { message } = composition()
       const searchParams = ref<string>('')
+      const handleSearch = (data: string): void => {
+        searchParams.value = data
+        nextTick(() => {
+          getList()
+        })
+      }
       const list = ref<Array<ISafetyData>>([])
       const loading = ref<boolean>(false)
       // 项目舆情安全分页参数
@@ -108,6 +105,7 @@
       }
       getList()
       return {
+        handleSearch,
         loading,
         pageChange,
         updateNum,
@@ -135,25 +133,6 @@
   .risk-public-info-container {
     @include common-container(40px);
     text-align: center;
-
-    .project-manage-search-input {
-      display: flex;
-
-      input::-webkit-input-placeholder {
-        /* WebKit browsers */
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        color: $mainColor14;
-      }
-
-      .el-input__inner {
-        height: 52px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        line-height: 52px;
-        color: $textColor4;
-      }
-    }
   }
 
   .risk-public-info-list {

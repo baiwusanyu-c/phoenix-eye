@@ -2,20 +2,11 @@
 <template>
   <div class="addr-monitor-main eagle-page">
     <div class="addr-monitor-search">
-      <div class="addr-monitor-search--input">
-        <el-input
-          v-model="searchParams"
-          :placeholder="$t('lang.addrMonitor.searchP')"
-          style="margin-right: 16px" />
-        <be-button
-          type="success"
-          custom-class="eagle-btn search-btn"
-          size="large"
-          round="4"
-          @click="openDetail(searchParams)">
-          <span>{{ $t('lang.searchT') }}</span>
-        </be-button>
-      </div>
+      <search-input
+        :search-btn-name="$t('lang.searchT')"
+        :placeholder="$t('lang.addrMonitor.searchP')"
+        @search="handleSearch">
+      </search-input>
       <be-button
         type="success"
         custom-class="eagle-btn create-btn"
@@ -228,6 +219,12 @@
 
       // 搜索参数
       const searchParams = ref<string>('')
+      const handleSearch = (data: string): void => {
+        searchParams.value = data
+        nextTick(() => {
+          openDetail(searchParams.value)
+        })
+      }
       const loading = ref<boolean>(false)
       // 分页参数
       const pageParams = ref<IPageParam>({
@@ -379,6 +376,7 @@
         updateNum,
         pageParams,
         getList,
+        handleSearch,
         searchParams,
         createDate,
         formatDate,
@@ -417,25 +415,6 @@
   .addr-monitor-search {
     @include common-container(40px);
     text-align: center;
-
-    .addr-monitor-search--input {
-      display: flex;
-
-      input::-webkit-input-placeholder {
-        /* WebKit browsers */
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        color: $mainColor14;
-      }
-
-      .el-input__inner {
-        height: 52px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        line-height: 52px;
-        color: $textColor4;
-      }
-    }
   }
 
   .addr-monitor-result {

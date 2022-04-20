@@ -2,20 +2,11 @@
 <template>
   <div class="project-search-main eagle-page">
     <div class="project-search-container">
-      <div class="project-manage-search-input">
-        <el-input
-          v-model="searchParams"
-          :placeholder="$t('lang.projectExplorer.searchP')"
-          style="margin-right: 16px" />
-        <be-button
-          type="success"
-          custom-class="eagle-btn search-btn"
-          size="large"
-          round="4"
-          @click="getList">
-          <span>{{ $t('lang.searchT') }}</span>
-        </be-button>
-      </div>
+      <search-input
+        :search-btn-name="$t('lang.searchT')"
+        :placeholder="$t('lang.projectExplorer.searchP')"
+        @search="handleSearch">
+      </search-input>
     </div>
     <div class="project-search-result">
       <!--   示例     -->
@@ -52,7 +43,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { defineComponent, nextTick, onMounted, ref } from 'vue'
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import { getProjectListUser } from '../../../api/project-explorer'
@@ -72,6 +63,12 @@
        */
       // 搜索参数
       const searchParams = ref<string>('')
+      const handleSearch = (data: string): void => {
+        searchParams.value = data
+        nextTick(() => {
+          getList()
+        })
+      }
       // loading
       const loading = ref<boolean>(false)
       /**
@@ -135,6 +132,7 @@
         initPage()
       })
       return {
+        handleSearch,
         handleDefaultSearch,
         routerSwitch,
         projectList,
@@ -170,25 +168,6 @@
   .project-search-container {
     @include common-container(40px);
     text-align: center;
-
-    .project-manage-search-input {
-      display: flex;
-
-      input::-webkit-input-placeholder {
-        /* WebKit browsers */
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        color: $mainColor14;
-      }
-
-      .el-input__inner {
-        height: 52px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        line-height: 52px;
-        color: $textColor4;
-      }
-    }
   }
 
   .project-search-result {

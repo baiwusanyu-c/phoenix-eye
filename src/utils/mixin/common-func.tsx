@@ -35,6 +35,12 @@ export default () => {
       codeUrl.value = `data:image/gif;base64,${res.img}`
     })
   }
+  /**
+   * message 组件显示
+   * @param type 类型
+   * @param info 显示文字
+   * @param className 自定义class
+   */
   const message = (type: string, info: string, className?: string): void => {
     BeMessage.service({
       customClass: className,
@@ -61,6 +67,9 @@ export default () => {
     }, 200)
   }
   const { t } = useI18n()
+  /**
+   * 数据缺省文字处理
+   */
   const isEmpty = computed(() => {
     return function (val: string | number, emptyStr: string) {
       if (isNumber(val) && (val || val === 0)) {
@@ -72,6 +81,12 @@ export default () => {
       return emptyStr || t('lang.emptyData')
     }
   })
+  /**
+   * 消息提示弹窗
+   * @param title
+   * @param content
+   * @param className
+   */
   const msgBox = (title: string, content: string, className: string): void => {
     BeMsg.service({
       titles: title,
