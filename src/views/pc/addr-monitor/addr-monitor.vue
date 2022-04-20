@@ -192,7 +192,7 @@
     setup() {
       const { t } = useI18n()
       const { message } = composition()
-      const { pageParams, resetPageParam } = compositionPage()
+      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
       // 当前操作的项目对象
       const curItem = ref<IAddrMonitor>({})
       // 当前操作类型
@@ -252,8 +252,7 @@
        * @param data
        */
       const updateNum = (data: IPageParam): void => {
-        pageParams.value.currentPage = 1
-        pageParams.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParams)
         getList()
       }
       // 创建、编辑项目弹窗

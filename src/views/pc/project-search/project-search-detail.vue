@@ -351,7 +351,7 @@
     },
     setup() {
       const { message, route, isEmpty, msgBox } = composition()
-      const { resetPageParam, createPageParam } = compositionPage()
+      const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
       const { t } = useI18n()
       const baseInfo = ref<IBaseInfo>({})
 
@@ -581,8 +581,7 @@
         cb()
       }
       const updateNumFs = (data: IPageParam): void => {
-        pageParamsFs.value.currentPage = 1
-        pageParamsFs.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParamsFs)
         getPublicOpinionData()
       }
       onMounted(() => {

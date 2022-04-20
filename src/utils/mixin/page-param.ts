@@ -19,7 +19,7 @@ export default () => {
   /**
    * 重置分页
    */
-  const resetPageParam = (pageSize = 10, target?: Ref): void => {
+  const resetPageParam = (pageSize = 10, target?: Ref<IPageParam>): void => {
     if (target) {
       target.value = {
         currentPage: 1,
@@ -38,7 +38,7 @@ export default () => {
    * 生成分页参数，用于一个页面多个分页参数场景
    * @param pageSize
    */
-  const createPageParam = (pageSize = 10): Ref => {
+  const createPageParam = (pageSize = 10): Ref<IPageParam> => {
     const page = ref<IPageParam>({
       currentPage: 1,
       pageSize,
@@ -46,7 +46,12 @@ export default () => {
     })
     return page
   }
+  const updatePageSize = (pageSize: number, page: Ref<IPageParam>): void => {
+    page.value.currentPage = 1
+    page.value.pageSize = pageSize!
+  }
   return {
+    updatePageSize,
     createPageParam,
     resetPageParam,
     pageParams,

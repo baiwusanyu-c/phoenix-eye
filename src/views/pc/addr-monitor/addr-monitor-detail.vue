@@ -208,6 +208,7 @@
   import PlatformCell from '../../../components/common-components/platform-cell/platform-cell.vue'
   import { getAddressMonitorInfo, getAddressMonitorOutList } from '../../../api/addr-monitor'
   import composition from '../../../utils/mixin/common-func'
+  import compositionPage from '../../../utils/mixin/page-param'
   import type { IAddrMonitorDetailOut, IAddrMonitorSearch } from '../../../api/addr-monitor'
   import type { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
   export default defineComponent({
@@ -216,7 +217,8 @@
     setup() {
       const baseInfo = ref<IAddrMonitorInfo>({})
       const addressParams = ref<string>('')
-      const { message, route, pageParams } = composition()
+      const { message, route } = composition()
+      const { pageParams, updatePageSize } = compositionPage()
       const { t } = useI18n()
       const baseLoading = ref<boolean>(false)
       /**
@@ -286,8 +288,7 @@
        * @param data
        */
       const updateNum = (data: IPageParam): void => {
-        pageParams.value.currentPage = 1
-        pageParams.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParams)
         getList()
       }
       /**

@@ -231,7 +231,7 @@
     },
     setup(props) {
       const { message, isEmpty } = composition()
-      const { pageParams, resetPageParam } = compositionPage()
+      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
 
@@ -298,8 +298,7 @@
         getList()
       }
       const updateNum = (data: IPageParam): void => {
-        pageParams.value.currentPage = 1
-        pageParams.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParams)
         getList()
       }
       /**

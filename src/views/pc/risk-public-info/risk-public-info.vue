@@ -37,13 +37,15 @@
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'
   import composition from '../../../utils/mixin/common-func'
+  import compositionPage from '../../../utils/mixin/page-param'
   import type { IPageParam, ISafetyData } from '../../../utils/types'
   import type { IPOList } from '../../../api/risk-public-info'
   export default defineComponent({
     name: 'RiskPublicInfo',
     components: { ProjectDetailPublicOpinion, BeButton, BePagination },
     setup() {
-      const { message, pageParams, resetPageParam } = composition()
+      const { message } = composition()
+      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
       const searchParams = ref<string>('')
       const handleSearch = (data: string): void => {
         searchParams.value = data
@@ -92,8 +94,7 @@
           })
       }
       const updateNum = (data: IPageParam): void => {
-        pageParams.value.currentPage = 1
-        pageParams.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParams)
         getList()
       }
       const pageChange = (item: IPageParam): void => {
