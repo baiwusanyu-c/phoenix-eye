@@ -145,19 +145,7 @@
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
         </template>
         <template #default="scope">
-          <el-tooltip placement="top" effect="light">
-            <template #content>
-              <span
-                >{{ formatDate(createDate(scope.row.tx_time)) }} UTC：{{
-                  beijing2utc(scope.row.tx_time)
-                }}</span
-              >
-            </template>
-            <span style="color: #888">
-              <p>{{ formatDate(createDate(scope.row.tx_time)).split(' ')[0] }}</p>
-              <p>{{ formatDate(createDate(scope.row.tx_time)).split(' ')[1] }}</p>
-            </span>
-          </el-tooltip>
+          <date-cell :time="scope.row.tx_time"></date-cell>
         </template>
       </el-table-column>
       <el-table-column v-if="showOperation" width="50" label=" " align="center">
@@ -198,11 +186,13 @@
   import { iconDict } from '../../../../utils/platform-dict'
   import PlatformCell from '../../../../components/common-components/platform-cell/platform-cell.vue'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
+  import DateCell from '../../../../components/common-components/date-cell/date-cell.vue'
   import type { PropType } from 'vue'
   import type { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
+      DateCell,
       EmptyData,
       PlatformCell,
       BeTooltip,

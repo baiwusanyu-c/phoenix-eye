@@ -71,19 +71,7 @@
             <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
           </template>
           <template #default="scope">
-            <el-tooltip placement="top" effect="light">
-              <template #content>
-                <span
-                  >{{ formatDate(createDate(scope.row.create_time)) }} UTC：{{
-                    beijing2utc(scope.row.create_time)
-                  }}</span
-                >
-              </template>
-              <span style="color: #888">
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[0] }}</p>
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[1] }}</p>
-              </span>
-            </el-tooltip>
+            <date-cell :time="scope.row.create_time"></date-cell>
           </template>
         </el-table-column>
         <el-table-column prop="event_link">

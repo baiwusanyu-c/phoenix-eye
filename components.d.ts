@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    DateCell: typeof import('./src/components/common-components/date-cell/date-cell.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElForm: typeof import('element-plus/es')['ElForm']
@@ -28,4 +29,4 @@ declare module 'vue' {
   }
 }
 
-export { }
+export {}
