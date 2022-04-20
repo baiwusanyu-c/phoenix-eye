@@ -2,20 +2,11 @@
 <template>
   <div class="addr-monitor-main eagle-page">
     <div class="addr-monitor-search">
-      <div class="addr-monitor-search--input">
-        <el-input
-          v-model="searchParams"
-          :placeholder="$t('lang.addrMonitor.searchP')"
-          style="margin-right: 16px" />
-        <be-button
-          type="success"
-          custom-class="eagle-btn search-btn"
-          size="large"
-          round="4"
-          @click="openDetail(searchParams)">
-          <span>{{ $t('lang.searchT') }}</span>
-        </be-button>
-      </div>
+      <search-input
+        :search-btn-name="$t('lang.searchT')"
+        :placeholder="$t('lang.addrMonitor.searchP')"
+        @search="handleSearch">
+      </search-input>
       <be-button
         type="success"
         custom-class="eagle-btn create-btn"
@@ -41,7 +32,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="today_transfer_num" show-overflow-tooltip width="60">
+        <el-table-column prop="today_transfer_num" show-overflow-tooltip width="100">
           <template #header>
             <span class="table-head"></span>
           </template>
@@ -80,19 +71,7 @@
             <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
           </template>
           <template #default="scope">
-            <el-tooltip placement="top" effect="light">
-              <template #content>
-                <span
-                  >{{ formatDate(createDate(scope.row.create_time)) }} UTC：{{
-                    beijing2utc(scope.row.create_time)
-                  }}</span
-                >
-              </template>
-              <span style="color: #888">
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[0] }}</p>
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[1] }}</p>
-              </span>
-            </el-tooltip>
+            <date-cell :time="scope.row.create_time"></date-cell>
           </template>
         </el-table-column>
         <el-table-column prop="event_link">
@@ -136,7 +115,7 @@
                 icon="iconDeleteEagle"
                 width="24"
                 height="24"
-                @click="deleteAddressMonitorFn(scope.row)"></be-icon>
+                @click="openDialog('delete', scope.row)"></be-icon>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -189,19 +168,14 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
-  import {
-    beijing2utc,
-    createDate,
-    formatDate,
-    getStore,
-    getUrlkey,
-    openWindow,
-  } from '../../../utils/common'
+  import { getStore, getUrlkey, openWindow } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import compositionPage from '../../../utils/mixin/page-param'
+  import compositionDialog from '../../../utils/mixin/dialog-func'
   import createAddrMonitor from './components/create-addr-monitor.vue'
   import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
 
@@ -214,34 +188,34 @@
       BePagination,
       MsgDialog,
       createAddrMonitor,
-      BeEllipsisCopy,
+      EllipsisCopy,
     },
     setup() {
       const { t } = useI18n()
       const { message } = composition()
-      // 当前操作的项目对象
-      const curItem = ref<IAddrMonitor>({})
-      // 当前操作类型
-      const opType = ref<string>('add')
-      // 删除弹窗显示
-      const showDelete = ref<boolean>(false)
+      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
+      let { createCurItem, curItem, createDialog, opType, openDialog, showDelete } =
+        compositionDialog()
+      // 当前操作的项目对象（给curItem响应式化）
+      curItem = createCurItem<IAddrMonitor>({})
 
       // 搜索参数
       const searchParams = ref<string>('')
+      const handleSearch = (data: string): void => {
+        searchParams.value = data
+        nextTick(() => {
+          openDetail(searchParams.value)
+        })
+      }
       const loading = ref<boolean>(false)
-      // 分页参数
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
+
       const addrMonitorList = ref<Array<IAddrMonitor>>([])
       /**
        * 获取列表
        */
       const getList = (type?: string) => {
         if (type === 'reset') {
-          resetVa()
+          resetPageParam()
         }
         const params: IPageParam = {
           page_num: pageParams.value.currentPage,
@@ -265,16 +239,6 @@
           .finally(() => (loading.value = false))
       }
       /**
-       * 重置参数
-       */
-      const resetVa = (): void => {
-        pageParams.value = {
-          currentPage: 1,
-          pageSize: 10,
-          total: 0,
-        }
-      }
-      /**
        * 分页方法
        * @param item 分页参数
        */
@@ -287,29 +251,8 @@
        * @param data
        */
       const updateNum = (data: IPageParam): void => {
-        pageParams.value.currentPage = 1
-        pageParams.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParams)
         getList()
-      }
-      // 创建、编辑项目弹窗
-      const createDialog = ref<any>({})
-      const openDialog = (type: string, item?: IAddrMonitor): void => {
-        opType.value = type
-        if (type === 'edit' && item) {
-          curItem.value = item
-        }
-        // 打开弹窗
-        nextTick(() => {
-          createDialog.value.showDialog = true
-        })
-      }
-      /**
-       * 删除方法
-       * @param item
-       */
-      const deleteAddressMonitorFn = (item: IAddrMonitor): void => {
-        curItem.value = item
-        showDelete.value = true
       }
       /**
        * 确认删除
@@ -373,16 +316,13 @@
         confirmDelete,
         openDetail,
         openDialog,
-        deleteAddressMonitorFn,
         addrMonitorList,
         pageChange,
         updateNum,
         pageParams,
         getList,
+        handleSearch,
         searchParams,
-        createDate,
-        formatDate,
-        beijing2utc,
       }
     },
   })
@@ -417,25 +357,6 @@
   .addr-monitor-search {
     @include common-container(40px);
     text-align: center;
-
-    .addr-monitor-search--input {
-      display: flex;
-
-      input::-webkit-input-placeholder {
-        /* WebKit browsers */
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        color: $mainColor14;
-      }
-
-      .el-input__inner {
-        height: 52px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        line-height: 52px;
-        color: $textColor4;
-      }
-    }
   }
 
   .addr-monitor-result {

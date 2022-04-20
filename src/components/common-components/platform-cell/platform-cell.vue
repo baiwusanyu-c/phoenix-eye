@@ -3,7 +3,7 @@
   <div class="flex items-center">
     <be-icon :icon="iconDict[platform.toUpperCase()]" class="mr-2" width="24" height="24">
     </be-icon>
-    {{ platform.toUpperCase() }}
+    <span style="line-height: 24px">{{ platform.toUpperCase() }}</span>
   </div>
 </template>
 

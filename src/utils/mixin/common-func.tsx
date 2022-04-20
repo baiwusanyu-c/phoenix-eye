@@ -10,7 +10,8 @@ import { useI18n } from 'vue-i18n'
 import { getCodeImg } from '../../api/login'
 // @ts-ignore
 import { BeMessage, BeMsg } from '../../../public/be-ui/be-ui.es.js'
-import { isNumber, isString } from '../common'
+import { isNumber, isString, openWindow } from '../common'
+import { webURL } from '../../enums/link'
 import type { Ref } from '@vue/reactivity'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
@@ -35,6 +36,12 @@ export default () => {
       codeUrl.value = `data:image/gif;base64,${res.img}`
     })
   }
+  /**
+   * message 组件显示
+   * @param type 类型
+   * @param info 显示文字
+   * @param className 自定义class
+   */
   const message = (type: string, info: string, className?: string): void => {
     BeMessage.service({
       customClass: className,
@@ -61,6 +68,9 @@ export default () => {
     }, 200)
   }
   const { t } = useI18n()
+  /**
+   * 数据缺省文字处理
+   */
   const isEmpty = computed(() => {
     return function (val: string | number, emptyStr: string) {
       if (isNumber(val) && (val || val === 0)) {
@@ -72,6 +82,12 @@ export default () => {
       return emptyStr || t('lang.emptyData')
     }
   })
+  /**
+   * 消息提示弹窗
+   * @param title
+   * @param content
+   * @param className
+   */
   const msgBox = (title: string, content: string, className: string): void => {
     BeMsg.service({
       titles: title,
@@ -87,7 +103,18 @@ export default () => {
       },
     })
   }
+  /**
+   * 跳轉到第三方頁面
+   */
+  const openWeb = (params: string, type: string, platform: string): void => {
+    if (!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic')
+      return
+    const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
+    const url = `${mainUrl}${params}`
+    openWindow(url)
+  }
   return {
+    openWeb,
     msgBox,
     isEmpty,
     startTimer,

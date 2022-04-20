@@ -61,19 +61,6 @@
 .el-input__icon {
   line-height: 30px;
 }
-// 搜索框样式
-
-.search-area {
-
-  .el-input__inner {
-    height: 40px;
-    line-height: 40px;
-  }
-
-  .el-input__icon {
-    line-height: 40px;
-  }
-}
 
 //单选框样式
 
@@ -205,12 +192,12 @@
 
 .el-table{
   background-color: transparent;
-
-  .be-popover--trigger{
-    display: inline-block;
-    height: 20px;
-    vertical-align: middle;
-
+  .el-table__header{
+    .be-popover--trigger{
+      display: inline-block;
+      height: 20px;
+      vertical-align: middle;
+    }
   }
 }
 

@@ -2,20 +2,11 @@
 <template>
   <div class="risk-trx-list eagle-page">
     <div class="search-area">
-      <div class="risk-trx-search-input">
-        <el-input
-          v-model="searchParams"
-          :placeholder="$t('lang.riskConfig.searchP')"
-          style="margin-right: 16px" />
-        <be-button
-          type="success"
-          custom-class="eagle-btn search-btn"
-          size="large"
-          round="4"
-          @click="getData">
-          <span>{{ $t('lang.searchT') }}</span>
-        </be-button>
-      </div>
+      <search-input
+        :search-btn-name="$t('lang.searchT')"
+        :placeholder="$t('lang.riskConfig.searchP')"
+        @search="handleSearch">
+      </search-input>
       <div class="risk-trx-search-filter">
         <span class="filter-label">{{ $t('lang.riskConfig.filter.chain') }}:</span>
         <div v-for="item in filterChainItem" :key="item.label + 'filterChainItem'">
@@ -68,7 +59,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, getCurrentInstance, ref } from 'vue'
+  import { defineComponent, getCurrentInstance, nextTick, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
@@ -81,7 +72,12 @@
     setup() {
       const { t } = useI18n()
       const searchParams = ref<string>('')
-
+      const handleSearch = (data: string): void => {
+        searchParams.value = data
+        nextTick(() => {
+          getList()
+        })
+      }
       /**
        * 筛选框选择
        */
@@ -115,19 +111,20 @@
        */
       const handleFilterClick = (type: string, item: IFilterItem): void => {
         item.isActive = !item.isActive
-        getData()
+        getList()
       }
       const tabelInstance = getCurrentInstance()
-      const getData = (): void => {
+      const getList = (): void => {
         ;(tabelInstance?.refs.RiskTrxTable as IRiskTable).getList('reset')
       }
       return {
-        getData,
+        getList,
         filterChainItem,
         filterTypeItem,
         filterLevelItem,
         handleFilterClick,
         searchParams,
+        handleSearch,
       }
     },
   })
@@ -140,25 +137,6 @@
     .search-area {
       @include common-container(40px);
       min-width: 1172px;
-      .risk-trx-search-input {
-        display: flex;
-
-        input::-webkit-input-placeholder {
-          /* WebKit browsers */
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
-          font-size: 18px;
-          color: $mainColor14;
-        }
-
-        .el-input__inner {
-          height: 52px;
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
-          font-size: 18px;
-          line-height: 52px;
-          color: $textColor4;
-        }
-      }
-
       .risk-trx-search-filter {
         box-sizing: border-box;
         display: grid;

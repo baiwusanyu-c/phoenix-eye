@@ -2,7 +2,7 @@
   <div>
     <div class="createBox">
       <el-dialog
-        v-model="createProjectWindow"
+        v-model="showDialog"
         :close-on-click-modal="false"
         class="createProjectBox"
         :title="
@@ -145,15 +145,15 @@
     saveEditProject,
   } from '../../../../api/project-management'
   import { platformListDict } from '../../../../utils/platform-dict'
-
-  import { ETHaddress, ceSemiSpecialCharReg } from '../../../../utils/reg'
+  import { platformReg } from '../../../../utils/verification'
+  import { ceSemiSpecialCharReg } from '../../../../utils/reg'
   import { BeButton, BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import { openWindow, trimStr } from '../../../../utils/common'
   import config from '../../../../enums/config'
-  import type { IAuditList, IOption, IWebsiteForm } from '../../../../utils/types'
+  import { previewUrl } from '../../../../enums/link'
+  import type { IAuditList, IWebsiteForm } from '../../../../utils/types'
   import type { IContractInfos, ICreateProj, IReport } from '../../../../api/project-management'
-
   import type { IPlatformListItem } from '../../../../utils/platform-dict'
   export default defineComponent({
     name: 'CreateProject',
@@ -179,7 +179,7 @@
     setup(props) {
       const { t } = useI18n()
       const { message } = composition()
-      const createProjectWindow = ref<boolean>(false)
+      const showDialog = ref<boolean>(false)
       const projectName = ref<string>('')
       const projectKeyWords = ref<string>('')
       const emailList = ref<string>('')
@@ -203,7 +203,7 @@
         takePlatformListDict.value = platformListDict
       })
 
-      watch(createProjectWindow, nVal => {
+      watch(showDialog, nVal => {
         if (nVal) {
           // 新增时
           if (props.type === 'add') {
@@ -233,7 +233,7 @@
        * 弹窗取消方法
        */
       const createProjectCancel = () => {
-        createProjectWindow.value = false
+        showDialog.value = false
       }
       const addContractSite = () => {
         contractSite.data.push({
@@ -251,7 +251,7 @@
        * 重置參數變量
        */
       const resetVar = () => {
-        createProjectWindow.value = false
+        showDialog.value = false
         projectName.value = ''
         projectKeyWords.value = ''
         verKeyword.value = ''
@@ -358,20 +358,6 @@
        * 校验合约地址
        */
       const verificationContractAddr = (val: any): boolean => {
-        const platformReg: IOption = {
-          bsc(addr: string) {
-            return ETHaddress.test(addr)
-          },
-          eth(addr: string) {
-            return ETHaddress.test(addr)
-          },
-          heco(addr: string) {
-            return ETHaddress.test(addr)
-          },
-          polygon(addr: string) {
-            return ETHaddress.test(addr)
-          },
-        }
         // 没有填写合约地址
         if (!val.contract_address) {
           val.verAddr = t('lang.pleaseInput') + t('lang.createProject.contractSite')
@@ -453,7 +439,7 @@
           String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
         const baseURL = config.baseURL
         auditList.value.forEach((val: any) => {
-          val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+          val.url = `${baseURL}${prevUrl}${previewUrl}?fileUuid=${val.uuid}&reportNum=${val.report_num}`
         })
       }
       /**
@@ -470,7 +456,6 @@
         }
         // 表单校验
         if (!formVerification(params)) {
-          /*this.$forceUpdate()*/
           return
         }
         setParams(params.contract_infos)
@@ -485,7 +470,7 @@
 
               // 更新列表
               props.getList('reset')
-              createProjectWindow.value = false
+              showDialog.value = false
             } else {
               message('warning', res.message || res)
             }
@@ -512,7 +497,6 @@
         }
         // 表单校验
         if (!formVerification(params)) {
-          /*this.$forceUpdate()*/
           return
         }
         setParams(params.contract_infos)
@@ -526,7 +510,7 @@
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
-              createProjectWindow.value = false
+              showDialog.value = false
             }
           })
           .catch(err => {
@@ -584,7 +568,7 @@
         handleClose,
         auditList,
         emailList,
-        createProjectWindow,
+        showDialog,
         projectName,
         projectKeyWords,
         labelPosition,

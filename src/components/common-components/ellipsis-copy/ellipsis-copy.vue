@@ -1,11 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2021-08-26 14:06:10
- * @LastEditTime: 2021-09-27 17:49:08
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \anti-fraud-front\src\components\common-components\ellipsis-copy\ellipsis-copy.vue
--->
 <template>
   <div :class="`ellipsis-copy ${customClass}`" @mouseover="enter" @mouseout="leave">
     <el-tooltip placement="top" effect="light" class="address" :disabled="!isTooltip || !targetStr">
@@ -18,6 +10,19 @@
         <span :style="styles">{{ changeEllipsisStr(targetStr) }} </span>
       </slot>
     </el-tooltip>
+    <!-- be-popover 需要优化 这里先用 elementPlus   -->
+    <!--      <be-popover
+          :disabled="!isTooltip || !targetStr"
+          customClass="address"
+          placement="top">
+          <template #trigger>
+              <slot name="text" :item="changeEllipsisStr(targetStr)">
+                  <span :style="styles">{{ changeEllipsisStr(targetStr) }} </span>
+              </slot>
+          </template>
+          <span>{{ getTooltipTxt() }}</span>
+      </be-popover>-->
+
     <span v-if="isShowCopyBtn && (copyContent || targetStr)" class="copy-btn">
       <be-icon
         v-if="isShowCopyBtn"
@@ -37,7 +42,7 @@
   import { BeIcon } from '../../../../public/be-ui/be-ui.es'
   import { copyAddress } from '../../../utils/common'
   export default defineComponent({
-    name: 'BeEllipsisCopy',
+    name: 'EllipsisCopy',
     components: { BeIcon },
     props: {
       // 目标地址/交易
