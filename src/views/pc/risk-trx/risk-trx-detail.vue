@@ -381,7 +381,6 @@
   import { useI18n } from 'vue-i18n'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { getProjWarningDetail } from '../../../api/risk-trx'
-  import { webURL } from '../../../enums/link'
   import { iconDict, platformToCurrency } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'
   import {
