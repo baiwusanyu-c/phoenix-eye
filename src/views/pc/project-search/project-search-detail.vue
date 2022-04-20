@@ -318,7 +318,6 @@
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { webURL } from '../../../enums/link'
   import config from '../../../enums/config'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
@@ -350,7 +349,7 @@
       EllipsisCopy,
     },
     setup() {
-      const { message, route, isEmpty, msgBox } = composition()
+      const { message, route, isEmpty, msgBox, openWeb } = composition()
       const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
       const { t } = useI18n()
       const baseInfo = ref<IBaseInfo>({})
@@ -610,22 +609,6 @@
         top5QPTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
         top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
       })
-      /**
-       * 跳轉到第三方頁面
-       */
-      const openWeb = (params: string, type: string, platform: string): void => {
-        if (
-          !params ||
-          params === 'eth' ||
-          params === 'bnb' ||
-          params === 'ht' ||
-          params === 'matic'
-        )
-          return
-        const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
-        const url = `${mainUrl}${params}`
-        openWindow(url)
-      }
       /**
        * 发送订阅
        */

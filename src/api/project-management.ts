@@ -28,9 +28,9 @@ export interface IContractInfos {
   label?: string
 }
 export interface ICreateProj {
-  name: string
+  name?: string
   is_public?: boolean
-  keyword: string
+  keyword?: string
   contract_infos?: Array<IContractInfos>
   email_list?: Array<string>
   report_id_list?: Array<number>

@@ -14,7 +14,7 @@
         size="large"
         prev-icon="add"
         round="4"
-        @click="addProject">
+        @click="openDialog('add')">
         {{ $t('lang.createProject.createProjectTitle') }}
       </be-button>
     </div>
@@ -103,7 +103,7 @@
                 icon="iconEditEagle"
                 width="24"
                 height="24"
-                @click="editProject(scope.row)"></be-icon>
+                @click="openDialog('edit', scope.row)"></be-icon>
             </el-tooltip>
             <el-tooltip placement="top">
               <template #content>
@@ -114,7 +114,7 @@
                 icon="iconDeleteEagle"
                 width="24"
                 height="24"
-                @click="deleteProjects(scope.row)"></be-icon>
+                @click="openDialog('delete', scope.row)"></be-icon>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -137,18 +137,19 @@
         </be-pagination>
       </div>
     </div>
+    {{ curItem }}
     <!--    新增、编辑项目弹窗 -->
     <create-project
-      ref="createProjectDialog"
+      ref="createDialog"
       :type="opType"
-      :project-id="curItem.data.project_id"
+      :project-id="curItem.project_id"
       :get-list="getList">
     </create-project>
     <!--    删除项目弹窗    -->
     <MsgDialog
       :header-title="$t('lang.delete')"
       :is-show="showDelete"
-      :title="deleteText"
+      :title="$t('lang.systemConfig.delete') + '?'"
       @confirm="confirmDelete"
       @close="() => (showDelete = false)">
     </MsgDialog>
@@ -165,6 +166,7 @@
   import composition from '../../../utils/mixin/common-func'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import compositionPage from '../../../utils/mixin/page-param'
+  import compositionDialog from '../../../utils/mixin/dialog-func'
   import CreateProject from './components/create-project.vue'
   import type { ICreateProj, IProjectListAdmin, IReappraise } from '../../../api/project-management'
   import type { IPageParam } from '../../../utils/types'
@@ -184,14 +186,10 @@
       const { t } = useI18n()
       const { message, isEmpty } = composition()
       const { pageParams, resetPageParam, updatePageSize } = compositionPage()
+      let { createCurItem, curItem, createDialog, opType, openDialog, showDelete } =
+        compositionDialog()
       // 当前操作的项目对象
-      const curItem = reactive({ data: {} })
-      // 当前操作类型
-      const opType = ref<string>('add')
-      // 删除弹窗显示
-      const showDelete = ref<boolean>(false)
-      // 删除弹窗显示内容
-      const deleteText = ref<string>('')
+      curItem = createCurItem<ICreateProj>({})
       // 项目列表示例
       const projectList = reactive({
         data: [],
@@ -199,48 +197,15 @@
 
       // loading
       const loading = ref<boolean>(false)
-      // 创建项目弹窗
-      const createProjectDialog = ref<any>({})
       onMounted(() => {
         getList('reset')
       })
-
-      /**
-       * 新增类型方法
-       */
-      const addProject = () => {
-        opType.value = 'add'
-        nextTick(() => {
-          createProjectDialog.value.createProjectWindow = true
-        })
-      }
-
-      /**
-       * 编辑类型方法
-       */
-      const editProject = (item: ICreateProj) => {
-        opType.value = 'edit'
-        curItem.data = item
-        nextTick(() => {
-          createProjectDialog.value.createProjectWindow = true
-        })
-      }
-
-      /**
-       * 删除类型方法
-       * @param {Object} item - 项目数据对象
-       */
-      const deleteProjects = (item: ICreateProj) => {
-        curItem.data = item
-        deleteText.value = `${t('lang.systemConfig.delete')}${item.name}？`
-        showDelete.value = true
-      }
       /**
        * 确认删除项目信息
        */
       const confirmDelete = () => {
         const params: IReappraise = {
-          id: (curItem.data as IReappraise).project_id as string,
+          id: (curItem.value as IReappraise).project_id as string,
         }
         deleteProject(params)
           .then(res => {
@@ -333,14 +298,11 @@
         curItem,
         opType,
         showDelete,
-        deleteText,
         projectList,
         loading,
-        createProjectDialog,
+        createDialog,
         confirmDelete,
-        deleteProjects,
-        editProject,
-        addProject,
+        openDialog,
         getList,
         pageParams,
         pageChange,

@@ -10,7 +10,8 @@ import { useI18n } from 'vue-i18n'
 import { getCodeImg } from '../../api/login'
 // @ts-ignore
 import { BeMessage, BeMsg } from '../../../public/be-ui/be-ui.es.js'
-import { isNumber, isString } from '../common'
+import { isNumber, isString, openWindow } from '../common'
+import { webURL } from '../../enums/link'
 import type { Ref } from '@vue/reactivity'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
@@ -102,8 +103,18 @@ export default () => {
       },
     })
   }
-
+  /**
+   * 跳轉到第三方頁面
+   */
+  const openWeb = (params: string, type: string, platform: string): void => {
+    if (!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic')
+      return
+    const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
+    const url = `${mainUrl}${params}`
+    openWindow(url)
+  }
   return {
+    openWeb,
     msgBox,
     isEmpty,
     startTimer,

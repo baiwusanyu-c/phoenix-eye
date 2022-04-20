@@ -115,7 +115,7 @@
                 icon="iconDeleteEagle"
                 width="24"
                 height="24"
-                @click="deleteAddressMonitorFn(scope.row)"></be-icon>
+                @click="openDialog('delete', scope.row)"></be-icon>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -175,6 +175,7 @@
   import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import compositionPage from '../../../utils/mixin/page-param'
+  import compositionDialog from '../../../utils/mixin/dialog-func'
   import createAddrMonitor from './components/create-addr-monitor.vue'
   import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
 
@@ -193,12 +194,10 @@
       const { t } = useI18n()
       const { message } = composition()
       const { pageParams, resetPageParam, updatePageSize } = compositionPage()
-      // 当前操作的项目对象
-      const curItem = ref<IAddrMonitor>({})
-      // 当前操作类型
-      const opType = ref<string>('add')
-      // 删除弹窗显示
-      const showDelete = ref<boolean>(false)
+      let { createCurItem, curItem, createDialog, opType, openDialog, showDelete } =
+        compositionDialog()
+      // 当前操作的项目对象（给curItem响应式化）
+      curItem = createCurItem<IAddrMonitor>({})
 
       // 搜索参数
       const searchParams = ref<string>('')
@@ -254,26 +253,6 @@
       const updateNum = (data: IPageParam): void => {
         updatePageSize(data.pageSize!, pageParams)
         getList()
-      }
-      // 创建、编辑项目弹窗
-      const createDialog = ref<any>({})
-      const openDialog = (type: string, item?: IAddrMonitor): void => {
-        opType.value = type
-        if (type === 'edit' && item) {
-          curItem.value = item
-        }
-        // 打开弹窗
-        nextTick(() => {
-          createDialog.value.showDialog = true
-        })
-      }
-      /**
-       * 删除方法
-       * @param item
-       */
-      const deleteAddressMonitorFn = (item: IAddrMonitor): void => {
-        curItem.value = item
-        showDelete.value = true
       }
       /**
        * 确认删除
@@ -337,7 +316,6 @@
         confirmDelete,
         openDetail,
         openDialog,
-        deleteAddressMonitorFn,
         addrMonitorList,
         pageChange,
         updateNum,

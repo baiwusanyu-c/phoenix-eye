@@ -15,7 +15,7 @@
             styles="color: #008EE9;cursor:pointer;"
             font-length="8"
             end-length="8"
-            @click="openWeb(baseInfo.tx_hash, 'tx')">
+            @click="openWeb(baseInfo.tx_hash, 'tx', baseInfo.platform)">
           </ellipsis-copy>
           <be-tag v-if="baseInfo.platform" type="info">
             <div class="flex items-center">
@@ -58,7 +58,7 @@
             styles="color: #008EE9;cursor:pointer;font-weight:400"
             font-length="8"
             end-length="8"
-            @click="openWeb(baseInfo.from_address, 'addr')">
+            @click="openWeb(baseInfo.from_address, 'addr', baseInfo.platform)">
           </ellipsis-copy>
         </div>
         <div class="detail-item-txt">
@@ -76,7 +76,7 @@
             styles="color: #008EE9;cursor:pointer;font-weight:400"
             font-length="8"
             end-length="8"
-            @click="openWeb(baseInfo.to_address, 'addr')">
+            @click="openWeb(baseInfo.to_address, 'addr', baseInfo.platform)">
           </ellipsis-copy>
         </div>
         <div class="detail-item-txt">
@@ -137,7 +137,7 @@
                   :tooltip-txt="scope.row.address"
                   empty-text="/"
                   :is-ellipsis="false"
-                  @click="openWeb(scope.row.address, 'addr')">
+                  @click="openWeb(scope.row.address, 'addr', baseInfo.platform)">
                 </ellipsis-copy>
                 <ellipsis-copy
                   v-if="!scope.row.address_tag"
@@ -147,7 +147,7 @@
                   styles="font-weight: bold;color:#409EFF"
                   font-length="8"
                   end-length="8"
-                  @click="openWeb(scope.row.address, 'addr')">
+                  @click="openWeb(scope.row.address, 'addr', baseInfo.platform)">
                 </ellipsis-copy>
               </div>
             </template>
@@ -210,7 +210,9 @@
                   styles="color: #008EE9;cursor:pointer;font-weight:400;"
                   font-length="8"
                   end-length="8"
-                  @click="item.val ? openWeb(item.contractAddress, 'token') : null">
+                  @click="
+                    item.val ? openWeb(item.contractAddress, 'token', baseInfo.platform) : null
+                  ">
                 </ellipsis-copy>
               </div>
 
@@ -299,7 +301,7 @@
               :is-ellipsis="false"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;"
-              @click="openWeb(baseInfo.privileged_operation.contract, 'addr')">
+              @click="openWeb(baseInfo.privileged_operation.contract, 'addr', baseInfo.platform)">
             </ellipsis-copy>
           </div>
           <div style="display: flex; margin-top: 20px">
@@ -315,7 +317,7 @@
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold"
-              @click="openWeb(baseInfo.privileged_operation.from, 'addr')">
+              @click="openWeb(baseInfo.privileged_operation.from, 'addr', baseInfo.platform)">
             </ellipsis-copy>
             <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
             <ellipsis-copy
@@ -330,7 +332,7 @@
               :is-ellipsis="true"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold"
-              @click="openWeb(baseInfo.privileged_operation.to, 'addr')">
+              @click="openWeb(baseInfo.privileged_operation.to, 'addr', baseInfo.platform)">
             </ellipsis-copy>
           </div>
         </div>
@@ -348,7 +350,7 @@
               :is-ellipsis="false"
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;"
-              @click="openWeb(baseInfo.slump.token, 'token')">
+              @click="openWeb(baseInfo.slump.token, 'token', baseInfo.platform)">
             </ellipsis-copy>
           </div>
           <div style="display: flex; align-items: center; margin-top: 20px">
@@ -400,7 +402,7 @@
     name: 'RiskTrxDetail',
     components: { EmptyData, EllipsisCopy, BeTag, BeIcon, BeTooltip },
     setup() {
-      const { message, route } = composition()
+      const { message, route, openWeb } = composition()
       // 基础信息
       const baseInfo = ref<IBaseInfoRiskInfo>({})
       // 收益信息
@@ -497,22 +499,6 @@
             console.error(err)
             loading.value = false
           })
-      }
-      /**
-       * 跳轉到第三方頁面
-       */
-      const openWeb = (params: string, type: string): void => {
-        if (
-          !params ||
-          params === 'eth' ||
-          params === 'bnb' ||
-          params === 'ht' ||
-          params === 'matic'
-        )
-          return
-        const mainUrl: string = (webURL as any)[`${baseInfo.value.platform}_${type}`] as string
-        const url = `${mainUrl}${params}`
-        openWindow(url)
       }
       /**
        * 收益浮动样式夹杂
