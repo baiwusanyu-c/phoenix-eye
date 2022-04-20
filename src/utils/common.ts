@@ -466,7 +466,7 @@ function formatDD(date: string | Date, format: string) {
 }
 
 //北京时间转UTC时间
-export const beijing2utc = (now: number, formats: string) => {
+export const beijing2utc = (now: number | string, formats?: string) => {
   let timestamp
   // 处理成为时间戳
   if (typeof now == 'number') {

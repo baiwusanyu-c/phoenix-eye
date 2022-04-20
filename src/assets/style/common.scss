@@ -192,12 +192,12 @@
 
 .el-table{
   background-color: transparent;
-
-  .be-popover--trigger{
-    display: inline-block;
-    height: 20px;
-    vertical-align: middle;
-
+  .el-table__header{
+    .be-popover--trigger{
+      display: inline-block;
+      height: 20px;
+      vertical-align: middle;
+    }
   }
 }
 
