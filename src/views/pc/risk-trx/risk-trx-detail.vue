@@ -7,7 +7,7 @@
       <div class="detail-item">
         <div class="detail-item-txt detail-item--hash">
           <span style="width: 12%">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
-          <be-ellipsis-copy
+          <ellipsis-copy
             custom-class="detail-copy"
             :target-str="baseInfo.tx_hash"
             :is-ellipsis="false"
@@ -16,7 +16,7 @@
             font-length="8"
             end-length="8"
             @click="openWeb(baseInfo.tx_hash, 'tx')">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
           <be-tag v-if="baseInfo.platform" type="info">
             <div class="flex items-center">
               <be-icon
@@ -41,7 +41,7 @@
       <div class="detail-item detail-form">
         <div class="detail-item-txt">
           <span style="width: 24%">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :tooltip-txt="baseInfo.from_address"
             :target-str="
               baseInfo.from_address_tag ? baseInfo.from_address_tag : baseInfo.from_address
@@ -59,11 +59,11 @@
             font-length="8"
             end-length="8"
             @click="openWeb(baseInfo.from_address, 'addr')">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </div>
         <div class="detail-item-txt">
           <span style="width: 24%">{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :tooltip-txt="baseInfo.to_address"
             :target-str="baseInfo.to_address_tag ? baseInfo.to_address_tag : baseInfo.to_address"
             :copy-content="baseInfo.to_address"
@@ -77,7 +77,7 @@
             font-length="8"
             end-length="8"
             @click="openWeb(baseInfo.to_address, 'addr')">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </div>
         <div class="detail-item-txt">
           <span>{{ $t('lang.riskConfig.values') }}：</span>
@@ -129,7 +129,7 @@
                   justify-content: center;
                   cursor: pointer;
                 ">
-                <be-ellipsis-copy
+                <ellipsis-copy
                   v-if="scope.row.address_tag"
                   :target-str="scope.row.address_tag"
                   styles="font-weight: bold;color:#409EFF"
@@ -138,8 +138,8 @@
                   empty-text="/"
                   :is-ellipsis="false"
                   @click="openWeb(scope.row.address, 'addr')">
-                </be-ellipsis-copy>
-                <be-ellipsis-copy
+                </ellipsis-copy>
+                <ellipsis-copy
                   v-if="!scope.row.address_tag"
                   :target-str="scope.row.address"
                   empty-text="/"
@@ -148,7 +148,7 @@
                   font-length="8"
                   end-length="8"
                   @click="openWeb(scope.row.address, 'addr')">
-                </be-ellipsis-copy>
+                </ellipsis-copy>
               </div>
             </template>
           </el-table-column>
@@ -198,7 +198,7 @@
             </template>
             <template #default="scope">
               <div v-if="scope.row.addrList && scope.row.addrList.length > 0">
-                <be-ellipsis-copy
+                <ellipsis-copy
                   v-for="item in scope.row.addrList"
                   :key="item.itemId"
                   :target-str="item.val"
@@ -211,7 +211,7 @@
                   font-length="8"
                   end-length="8"
                   @click="item.val ? openWeb(item.contractAddress, 'token') : null">
-                </be-ellipsis-copy>
+                </ellipsis-copy>
               </div>
 
               <div
@@ -287,7 +287,7 @@
         <div class="detail-slump--body">
           <div style="display: flex">
             <span class="label">{{ $t('lang.projectExplorer.contract') }} :</span>
-            <be-ellipsis-copy
+            <ellipsis-copy
               custom-class="detail-copy"
               :target-str="
                 baseInfo.privileged_operation.contract_tag
@@ -300,10 +300,10 @@
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;"
               @click="openWeb(baseInfo.privileged_operation.contract, 'addr')">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </div>
           <div style="display: flex; margin-top: 20px">
-            <be-ellipsis-copy
+            <ellipsis-copy
               custom-class="detail-copy"
               :target-str="
                 baseInfo.privileged_operation.from_tag
@@ -316,9 +316,9 @@
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold"
               @click="openWeb(baseInfo.privileged_operation.from, 'addr')">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
             <be-icon icon="iconArrowRightEagle" style="width: 60px"></be-icon>
-            <be-ellipsis-copy
+            <ellipsis-copy
               custom-class="detail-copy"
               :target-str="
                 baseInfo.privileged_operation.to_tag
@@ -331,7 +331,7 @@
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;font-weight:bold"
               @click="openWeb(baseInfo.privileged_operation.to, 'addr')">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </div>
         </div>
       </div>
@@ -340,7 +340,7 @@
         <div class="detail-slump--body">
           <div style="display: flex">
             <span class="label">Token :</span>
-            <be-ellipsis-copy
+            <ellipsis-copy
               custom-class="detail-copy"
               :target-str="baseInfo.slump.token ? baseInfo.slump.token : baseInfo.slump.token"
               :copy-content="baseInfo.slump.token"
@@ -349,7 +349,7 @@
               empty-text="/"
               styles="color: #008EE9;cursor:pointer;"
               @click="openWeb(baseInfo.slump.token, 'token')">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </div>
           <div style="display: flex; align-items: center; margin-top: 20px">
             <span class="label">{{ $t('lang.riskConfig.presentPrice') }} : </span>
@@ -377,7 +377,7 @@
 <script lang="ts">
   import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { getProjWarningDetail } from '../../../api/risk-trx'
   import { webURL } from '../../../enums/link'
   import { iconDict, platformToCurrency } from '../../../utils/platform-dict'
@@ -398,7 +398,7 @@
 
   export default defineComponent({
     name: 'RiskTrxDetail',
-    components: { EmptyData, BeEllipsisCopy, BeTag, BeIcon, BeTooltip },
+    components: { EmptyData, EllipsisCopy, BeTag, BeIcon, BeTooltip },
     setup() {
       const { message, route } = composition()
       // 基础信息

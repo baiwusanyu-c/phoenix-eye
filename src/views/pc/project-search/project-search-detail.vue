@@ -6,7 +6,7 @@
     <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
       <div class="item-title" style="position: relative; width: 100%">
         <h2>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="isEmpty(baseInfo.name)"
             :is-show-copy-btn="false"
             :is-ellipsis="
@@ -15,7 +15,7 @@
             styles="color:#333"
             font-length="8"
             end-length="8">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </h2>
         <span style="margin-right: 6px"
           >{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h) :
@@ -134,7 +134,7 @@
                 <span>{{ item.platform.toUpperCase() }}</span>
               </div>
             </be-tag>
-            <be-ellipsis-copy
+            <ellipsis-copy
               :target-str="item.token_name"
               custom-class="total"
               :is-show-copy-btn="false"
@@ -142,9 +142,9 @@
               :is-ellipsis="(item.token_name && item.token_name.length) > 20 ? true : false"
               font-length="8"
               end-length="8">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </div>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="item.contract_address"
             styles="color: #008EE9;cursor:pointer;font-weight:400"
             font-length="8"
@@ -152,7 +152,7 @@
             @click="
               item.contract_address ? openWeb(item.contract_address, 'token', item.platform) : null
             ">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </div>
         <div style="flex: 1">
           <p class="contract-statistics-label">
@@ -299,6 +299,7 @@
   import { useEventBus } from '@vueuse/core'
   import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
+  import compositionPage from '../../../utils/mixin/page-param'
   import {
     createSubscribe,
     deleteSubscribe,
@@ -316,13 +317,11 @@
     openWindow,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { webURL } from '../../../enums/link'
   import config from '../../../enums/config'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
-
   import ProjectDetailAudit from './components/project-detail-audit.vue'
-
   import ProjectDetailTop from './components/project-detail-top.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
@@ -348,10 +347,11 @@
       BeIcon,
       BeTag,
       BeButton,
-      BeEllipsisCopy,
+      EllipsisCopy,
     },
     setup() {
       const { message, route, isEmpty, msgBox } = composition()
+      const { resetPageParam, createPageParam } = compositionPage()
       const { t } = useI18n()
       const baseInfo = ref<IBaseInfo>({})
 
@@ -460,11 +460,7 @@
        * 获取Audit数据
        */
       const auditList = ref<Array<IAuditList>>([])
-      const pageParamsAudit = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 4,
-        total: 0,
-      })
+      const pageParamsAudit = createPageParam(4)
       const getAuditData = (): void => {
         const params: IContractReport = {
           project_id: parseInt(projectId.value),
@@ -498,11 +494,7 @@
        * 获取项目合约统计数据
        */
       const contractStatisticsData = ref<Array<IContractStatistics>>([])
-      const pageParamsTj = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 3,
-        total: 0,
-      })
+      const pageParamsTj = createPageParam(3)
       const statisticsLoading = ref<boolean>(false)
       const getContractStatistics = (): void => {
         const params: IPublicOpinion = {
@@ -537,11 +529,7 @@
       // 项目舆情安全loading
       const loadingFs = ref<boolean>(false)
       // 项目舆情安全分页参数
-      const pageParamsFs = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 5,
-        total: 0,
-      })
+      const pageParamsFs = createPageParam(5)
       /**
        * 项目舆情安全数据获取方法
        */
@@ -606,21 +594,9 @@
       const selectProjBus = useEventBus<string>('selectProjBus')
       selectProjBus.on((id: string) => {
         projectId.value = id
-        pageParamsTj.value = {
-          currentPage: 1,
-          pageSize: 3,
-          total: 0,
-        }
-        pageParamsFs.value = {
-          currentPage: 1,
-          pageSize: 5,
-          total: 0,
-        }
-        pageParamsAudit.value = {
-          currentPage: 1,
-          pageSize: 4,
-          total: 0,
-        }
+        resetPageParam(5, pageParamsFs)
+        resetPageParam(3, pageParamsTj)
+        resetPageParam(5, pageParamsAudit)
         getProSituData()
       })
       // 语种切换重新赋值一下 解决不更新问题

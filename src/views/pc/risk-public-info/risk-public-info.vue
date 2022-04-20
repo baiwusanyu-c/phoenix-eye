@@ -43,26 +43,23 @@
     name: 'RiskPublicInfo',
     components: { ProjectDetailPublicOpinion, BeButton, BePagination },
     setup() {
-      const { message } = composition()
+      const { message, pageParams, resetPageParam } = composition()
       const searchParams = ref<string>('')
       const handleSearch = (data: string): void => {
         searchParams.value = data
         nextTick(() => {
-          getList()
+          getList('reset')
         })
       }
       const list = ref<Array<ISafetyData>>([])
       const loading = ref<boolean>(false)
-      // 项目舆情安全分页参数
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 5,
-        total: 0,
-      })
       /**
        * 获取列表数据
        */
-      const getList = (): void => {
+      const getList = (type?: string): void => {
+        if (type === 'reset') {
+          resetPageParam(5)
+        }
         const params: IPOList = {
           param: searchParams.value,
           page_num: pageParams.value.currentPage,
@@ -103,7 +100,7 @@
         pageParams.value.currentPage = item.currentPage
         getList()
       }
-      getList()
+      getList('reset')
       return {
         handleSearch,
         loading,

@@ -27,12 +27,12 @@
           <span class="table-head">{{ item.label }}</span>
         </template>
         <template #default="scope">
-          <be-ellipsis-copy
+          <ellipsis-copy
             v-if="item.prop === 'address'"
             :target-str="scope.row.address"
             font-length="6"
             end-length="6">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
           <span v-if="item.prop === 'quantity'">
             {{ simulateToFixed(scope.row.quantity) }}
           </span>
@@ -57,7 +57,7 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   import { BeProgress, BeTag } from '../../../../../public/be-ui/be-ui.es'
-  import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
@@ -65,7 +65,7 @@
   import type { PropType } from 'vue'
   export default defineComponent({
     name: 'ProjectDetailTop',
-    components: { EmptyData, BeTag, BeEllipsisCopy, BeProgress },
+    components: { EmptyData, BeTag, EllipsisCopy, BeProgress },
     props: {
       title: {
         type: String,

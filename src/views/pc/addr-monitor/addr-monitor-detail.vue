@@ -6,7 +6,7 @@
       <div class="detail-item">
         <div class="detail-item-txt detail-item--hash">
           <span>{{ $t('lang.addrMonitor.tableHeader.addr') }}：</span>
-          <be-ellipsis-copy
+          <ellipsis-copy
             custom-class="detail-copy"
             :target-str="baseInfo.address"
             :is-ellipsis="false"
@@ -15,7 +15,7 @@
             styles="font-weight:500"
             font-length="8"
             end-length="8">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </div>
         <div class="detail-item-txt detail-item--date">
           <span class="date-label">{{ $t('lang.addrMonitor.tableHeader.createTime') }}：</span>
@@ -32,20 +32,20 @@
       <div class="detail-item detail-item--remark">
         <div class="detail-item-txt">
           <span>{{ $t('lang.addrMonitor.tableHeader.remark') }}：</span>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="baseInfo.remark"
             :is-show-copy-btn="false"
             custom-class="detail-item--ellipsis"
             :is-ellipsis="baseInfo.remark && baseInfo.remark.length > 45"
             styles="font-weight: 500"
             font-length="18"
-            end-length="18"></be-ellipsis-copy>
+            end-length="18"></ellipsis-copy>
         </div>
       </div>
       <div class="detail-item">
         <div class="detail-item-txt">
           <span>{{ $t('lang.addrMonitor.tableHeader.link') }}：</span>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="baseInfo.event_link"
             :is-show-copy-btn="false"
             :is-ellipsis="baseInfo.event_link && baseInfo.event_link.length > 45"
@@ -56,7 +56,7 @@
             <template #text="slotProps">
               <a class="link" :href="baseInfo.event_link" target="_blank">{{ slotProps.item }}</a>
             </template>
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </div>
       </div>
     </div>
@@ -79,12 +79,12 @@
             <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
           </template>
           <template #default="scope">
-            <be-ellipsis-copy
+            <ellipsis-copy
               :target-str="scope.row.hash"
               :is-show-copy-btn="true"
               font-length="7"
               end-length="7">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </template>
         </el-table-column>
         <el-table-column prop="block_time" width="120">
@@ -103,7 +103,7 @@
           <template #default="scope">
             <div
               style="display: flex; align-items: center; justify-content: center; cursor: pointer">
-              <be-ellipsis-copy
+              <ellipsis-copy
                 :target-str="scope.row.from_tag ? scope.row.from_tag : scope.row.from"
                 :copy-content="scope.row.from"
                 :tooltip-txt="scope.row.from"
@@ -111,7 +111,7 @@
                 font-length="8"
                 end-length="8"
                 empty-text="/">
-              </be-ellipsis-copy>
+              </ellipsis-copy>
             </div>
           </template>
         </el-table-column>
@@ -122,7 +122,7 @@
           <template #default="scope">
             <div
               style="display: flex; align-items: center; justify-content: center; cursor: pointer">
-              <be-ellipsis-copy
+              <ellipsis-copy
                 :target-str="scope.row.to_tag ? scope.row.to_tag : scope.row.to"
                 :copy-content="scope.row.to"
                 :tooltip-txt="scope.row.to"
@@ -130,7 +130,7 @@
                 font-length="8"
                 end-length="8"
                 empty-text="/">
-              </be-ellipsis-copy>
+              </ellipsis-copy>
             </div>
           </template>
         </el-table-column>
@@ -201,7 +201,7 @@
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { beijing2utc, createDate, formatDate, simulateToFixed } from '../../../utils/common'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
@@ -212,11 +212,11 @@
   import type { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
   export default defineComponent({
     name: 'AddrMonitorDetail',
-    components: { PlatformCell, EmptyData, BeEllipsisCopy, BePagination },
+    components: { PlatformCell, EmptyData, EllipsisCopy, BePagination },
     setup() {
       const baseInfo = ref<IAddrMonitorInfo>({})
       const addressParams = ref<string>('')
-      const { message, route } = composition()
+      const { message, route, pageParams } = composition()
       const { t } = useI18n()
       const baseLoading = ref<boolean>(false)
       /**
@@ -273,12 +273,6 @@
           })
           .finally(() => (listLoading.value = false))
       }
-      // 分页参数
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
       /**
        * 分页方法
        * @param item 分页参数

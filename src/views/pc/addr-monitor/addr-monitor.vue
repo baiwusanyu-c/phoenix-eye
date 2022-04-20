@@ -32,7 +32,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="today_transfer_num" show-overflow-tooltip width="60">
+        <el-table-column prop="today_transfer_num" show-overflow-tooltip width="100">
           <template #header>
             <span class="table-head"></span>
           </template>
@@ -168,19 +168,13 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
-  import {
-    beijing2utc,
-    createDate,
-    formatDate,
-    getStore,
-    getUrlkey,
-    openWindow,
-  } from '../../../utils/common'
+  import { getStore, getUrlkey, openWindow } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import compositionPage from '../../../utils/mixin/page-param'
   import createAddrMonitor from './components/create-addr-monitor.vue'
   import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
 
@@ -193,11 +187,12 @@
       BePagination,
       MsgDialog,
       createAddrMonitor,
-      BeEllipsisCopy,
+      EllipsisCopy,
     },
     setup() {
       const { t } = useI18n()
       const { message } = composition()
+      const { pageParams, resetPageParam } = compositionPage()
       // 当前操作的项目对象
       const curItem = ref<IAddrMonitor>({})
       // 当前操作类型
@@ -214,19 +209,14 @@
         })
       }
       const loading = ref<boolean>(false)
-      // 分页参数
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
+
       const addrMonitorList = ref<Array<IAddrMonitor>>([])
       /**
        * 获取列表
        */
       const getList = (type?: string) => {
         if (type === 'reset') {
-          resetVa()
+          resetPageParam()
         }
         const params: IPageParam = {
           page_num: pageParams.value.currentPage,
@@ -248,16 +238,6 @@
             console.error(err)
           })
           .finally(() => (loading.value = false))
-      }
-      /**
-       * 重置参数
-       */
-      const resetVa = (): void => {
-        pageParams.value = {
-          currentPage: 1,
-          pageSize: 10,
-          total: 0,
-        }
       }
       /**
        * 分页方法
@@ -366,9 +346,6 @@
         getList,
         handleSearch,
         searchParams,
-        createDate,
-        formatDate,
-        beijing2utc,
       }
     },
   })

@@ -23,12 +23,12 @@
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
         </template>
         <template #default="scope">
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="scope.row.tx_hash"
             :is-show-copy-btn="false"
             font-length="7"
             end-length="7">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </template>
       </el-table-column>
       <el-table-column prop="alert_level" :width="tableHeader('alert_level')" align="center">
@@ -70,14 +70,14 @@
               :key="item + 4"
               custom-class="table-tag"
               round="4">
-              <be-ellipsis-copy
+              <ellipsis-copy
                 :target-str="item"
                 :is-show-copy-btn="false"
                 :is-ellipsis="true"
                 styles="min-width:initial !important"
                 font-length="3"
                 end-length="0">
-              </be-ellipsis-copy>
+              </ellipsis-copy>
             </be-tag>
           </div>
           <div
@@ -102,15 +102,15 @@
           </be-tooltip>
         </template>
         <template #default="scope">
-          <be-ellipsis-copy
+          <ellipsis-copy
             v-if="!scope.row.gainer_address_tag"
             :target-str="scope.row.gainer_address"
             :is-show-copy-btn="false"
             empty-text="/"
             font-length="8"
             end-length="8">
-          </be-ellipsis-copy>
-          <be-ellipsis-copy
+          </ellipsis-copy>
+          <ellipsis-copy
             v-if="scope.row.gainer_address_tag"
             :target-str="scope.row.gainer_address_tag"
             :is-show-copy-btn="false"
@@ -126,7 +126,7 @@
                 {{ scope.row.gainer_address_tag }}
               </p>
             </template>
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </template>
       </el-table-column>
       <el-table-column prop="amount" :width="tableHeader('amount')" align="center">
@@ -182,11 +182,12 @@
   import { beijing2utc, createDate, formatDate, openWindow } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
   import { BeIcon, BePagination, BeTag, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
-  import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
   import PlatformCell from '../../../../components/common-components/platform-cell/platform-cell.vue'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
   import DateCell from '../../../../components/common-components/date-cell/date-cell.vue'
+  import compositionPage from '../../../../utils/mixin/page-param'
   import type { PropType } from 'vue'
   import type { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
   export default defineComponent({
@@ -199,7 +200,7 @@
       BeIcon,
       BeTag,
       BePagination,
-      BeEllipsisCopy,
+      EllipsisCopy,
     },
     props: {
       projectId: {
@@ -230,13 +231,10 @@
     },
     setup(props) {
       const { message, isEmpty } = composition()
+      const { pageParams, resetPageParam } = compositionPage()
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
+
       /**
        * 获取表格数据
        */
@@ -247,11 +245,7 @@
         }
         loading.value = true
         if (type === 'reset') {
-          pageParams.value = {
-            currentPage: 1,
-            pageSize: 10,
-            total: 0,
-          }
+          resetPageParam()
         }
         const getFilterParams = (arr: Array<IFilterItem> = []): Array<string> => {
           const res: Array<string> = []
@@ -283,11 +277,7 @@
               pageParams.value.total = res.data.total
             } else {
               tableData.value = []
-              pageParams.value = {
-                currentPage: 1,
-                pageSize: 10,
-                total: 0,
-              }
+              resetPageParam()
               // message('error', 'system error')
             }
             loading.value = false

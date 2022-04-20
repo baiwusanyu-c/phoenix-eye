@@ -28,7 +28,7 @@
             <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
           </template>
           <template #default="scope">
-            <be-ellipsis-copy
+            <ellipsis-copy
               :target-str="scope.row.name"
               :is-ellipsis="scope.row.name.length > 8 ? true : false"
               :is-show-copy-btn="false"
@@ -36,7 +36,7 @@
               styles="color: black;font-weight: bold;font-size: 16px;"
               font-length="8"
               end-length="0">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </template>
         </el-table-column>
         <el-table-column prop="keywordList" width="180">
@@ -44,7 +44,7 @@
             <span class="table-head">{{ $t('lang.createProject.tableHeader.shortName') }}</span>
           </template>
           <template #default="scope">
-            <be-ellipsis-copy
+            <ellipsis-copy
               :target-str="scope.row.keywordList"
               :is-ellipsis="
                 scope.row.keywordList && scope.row.keywordList.length >= 14 ? true : false
@@ -54,7 +54,7 @@
               styles="color: black;font-weight: 400;font-size: 14px;"
               font-length="8"
               end-length="0">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </template>
         </el-table-column>
         <el-table-column prop="contract_num">
@@ -163,8 +163,8 @@
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { beijing2utc, createDate, formatDate, formatTimeStamp } from '../../../utils/common'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import compositionPage from '../../../utils/mixin/page-param'
   import CreateProject from './components/create-project.vue'
   import type { ICreateProj, IProjectListAdmin, IReappraise } from '../../../api/project-management'
   import type { IPageParam } from '../../../utils/types'
@@ -173,7 +173,7 @@
     name: 'ProjectManageMain',
     components: {
       EmptyData,
-      BeEllipsisCopy,
+      EllipsisCopy,
       CreateProject,
       MsgDialog,
       BeButton,
@@ -183,6 +183,7 @@
     setup() {
       const { t } = useI18n()
       const { message, isEmpty } = composition()
+      const { pageParams, resetPageParam } = compositionPage()
       // 当前操作的项目对象
       const curItem = reactive({ data: {} })
       // 当前操作类型
@@ -270,12 +271,6 @@
           getList()
         })
       }
-      // 分页参数
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
       /**
        * 获取项目列表
        * 重置：清空所有条件进行搜索
@@ -287,11 +282,7 @@
         loading.value = true
         if (type === 'reset') {
           searchParams.value = ''
-          pageParams.value = {
-            currentPage: 1,
-            pageSize: 10,
-            total: 0,
-          }
+          resetPageParam()
         }
         const params: IProjectListAdmin = {
           page_num: pageParams.value.currentPage,
@@ -339,10 +330,6 @@
         handleSearch,
         updateNum,
         isEmpty,
-        createDate,
-        formatDate,
-        beijing2utc,
-        formatTimeStamp,
         searchParams,
         curItem,
         opType,

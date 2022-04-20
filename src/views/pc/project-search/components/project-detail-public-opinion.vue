@@ -9,7 +9,7 @@
     <!--        body                -->
     <div class="safety-opinion-body">
       <div class="safety-opinion-body-msg scrollDiy">
-        <be-ellipsis-copy
+        <ellipsis-copy
           :target-str="opinion.message"
           :is-ellipsis="opinion.message.length > 300 ? true : false"
           :is-show-copy-btn="false"
@@ -17,7 +17,7 @@
           styles="font-weight: 400;font-size: 14px;line-height:1.5"
           :font-length="opinion.message.length - 200"
           :end-length="0">
-        </be-ellipsis-copy>
+        </ellipsis-copy>
       </div>
     </div>
     <!--        footer                -->
@@ -66,12 +66,12 @@
     getUuid,
     openWindow,
   } from '../../../../utils/common'
-  import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { BeTag } from '../../../../../public/be-ui/be-ui.es'
   export default defineComponent({
     name: 'ProjectDetailPublicOpinion',
     components: {
-      BeEllipsisCopy,
+      EllipsisCopy,
       BeTag,
     },
     props: {
