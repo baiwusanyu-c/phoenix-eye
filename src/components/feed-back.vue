@@ -1,46 +1,48 @@
 /* * @feed-back.vue * @deprecated 需求反饋彈窗 * @author czh * @update (czh 2022/3/28) */
 <template>
-  <div id="feed_back_dialog">
-    <be-dialog
-      ref="feedbackDialogInner"
-      :titles="$t('lang.feedback.title')"
-      :is-show="showDialog"
-      :is-open-modal="true"
-      :is-drag="false"
-      layout="center"
-      custom-class="feed-back-dialog"
-      @close="handleCancel">
-      <div>
-        <el-form :label-position="labelPosition" label-width="80px">
-          <el-form-item :label="$t('lang.feedback.formTitle') + ':'">
-            <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.title" maxlength="50"></el-input>
-            <p class="form-item__len">{{ form.title.length }} / 50</p>
-          </el-form-item>
-          <el-form-item :label="$t('lang.feedback.formContent') + ':'">
-            <span class="reg-start feed-back--star">*</span>
-            <el-input
-              v-model="form.content"
-              type="textarea"
-              maxlength="200"
-              :rows="7"
-              :placeholder="$t('lang.feedback.formContractP')"></el-input>
-            <p class="form-item__len">{{ form.content.length }} / 200</p>
-          </el-form-item>
-        </el-form>
-      </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <be-button type="success" custom-class="eagle-cancel-btn" @click="handleCancel">
-            {{ $t('lang.createProject.createProjectCancel') }}
-          </be-button>
-          <be-button type="success" custom-class="eagle-btn" @click="handleConfirm">{{
-            $t('lang.createProject.createProjectConfirm')
-          }}</be-button>
-        </span>
-      </template>
-    </be-dialog>
-  </div>
+  <teleport to="body">
+    <div id="feed_back_dialog">
+      <be-dialog
+        ref="feedbackDialogInner"
+        :titles="$t('lang.feedback.title')"
+        :is-show="showDialog"
+        :is-open-modal="true"
+        :is-drag="false"
+        layout="center"
+        custom-class="feed-back-dialog"
+        @close="handleCancel">
+        <div>
+          <el-form :label-position="labelPosition" label-width="80px">
+            <el-form-item :label="$t('lang.feedback.formTitle') + ':'">
+              <span class="reg-start feed-back--star">*</span>
+              <el-input v-model="form.title" maxlength="50"></el-input>
+              <p class="form-item__len">{{ form.title.length }} / 50</p>
+            </el-form-item>
+            <el-form-item :label="$t('lang.feedback.formContent') + ':'">
+              <span class="reg-start feed-back--star">*</span>
+              <el-input
+                v-model="form.content"
+                type="textarea"
+                maxlength="200"
+                :rows="7"
+                :placeholder="$t('lang.feedback.formContractP')"></el-input>
+              <p class="form-item__len">{{ form.content.length }} / 200</p>
+            </el-form-item>
+          </el-form>
+        </div>
+        <template #footer>
+          <span class="dialog-footer">
+            <be-button type="success" custom-class="eagle-cancel-btn" @click="handleCancel">
+              {{ $t('lang.createProject.createProjectCancel') }}
+            </be-button>
+            <be-button type="success" custom-class="eagle-btn" @click="handleConfirm">{{
+              $t('lang.createProject.createProjectConfirm')
+            }}</be-button>
+          </span>
+        </template>
+      </be-dialog>
+    </div>
+  </teleport>
 </template>
 
 <script lang="ts">

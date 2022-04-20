@@ -1,91 +1,93 @@
 /* * @login-dialog.vue * @deprecated * @author czh * @update (czh 2022/2/22) */
 <template>
-  <div id="login_dialog">
-    <be-dialog
-      ref="loginDialogInner"
-      titles=" "
-      :is-show="showDialog"
-      :is-open-modal="true"
-      :is-drag="false"
-      layout="center"
-      custom-class="login-dialog"
-      @close="handleClose">
-      <div class="login-main">
-        <img
-          class="login-logo-img"
-          src="../../../assets/image/pc/login-logo.png"
-          height="45"
-          width="200"
-          alt="" />
-        <div class="login-body">
-          <div class="login-title">
-            <div class="login-title-big">Welcome to Eagle Eye</div>
-            <div class="login-title-small">© 2022 by Beosin. All Rights Reserved.</div>
-          </div>
-          <div v-if="loginType === 'login'" class="login-input-class">
-            <div class="login-input-title">{{ $t('lang.loginConfig.titleLogin') }}</div>
-            <div>
-              <name-login></name-login>
-              <div class="change-register">
-                <el-button type="text" class="forget-btn" @click="forgetPassword">{{
-                  $t('lang.loginConfig.forget')
-                }}</el-button>
-                <el-button class="button-change" type="text" @click="loginOrSingUp">{{
-                  changeLogin
-                }}</el-button>
+  <teleport to="body">
+    <div id="login_dialog">
+      <be-dialog
+        ref="loginDialogInner"
+        titles=" "
+        :is-show="showDialog"
+        :is-open-modal="true"
+        :is-drag="false"
+        layout="center"
+        custom-class="login-dialog"
+        @close="handleClose">
+        <div class="login-main">
+          <img
+            class="login-logo-img"
+            src="../../../assets/image/pc/login-logo.png"
+            height="45"
+            width="200"
+            alt="" />
+          <div class="login-body">
+            <div class="login-title">
+              <div class="login-title-big">Welcome to Eagle Eye</div>
+              <div class="login-title-small">© 2022 by Beosin. All Rights Reserved.</div>
+            </div>
+            <div v-if="loginType === 'login'" class="login-input-class">
+              <div class="login-input-title">{{ $t('lang.loginConfig.titleLogin') }}</div>
+              <div>
+                <name-login></name-login>
+                <div class="change-register">
+                  <el-button type="text" class="forget-btn" @click="forgetPassword">{{
+                    $t('lang.loginConfig.forget')
+                  }}</el-button>
+                  <el-button class="button-change" type="text" @click="loginOrSingUp">{{
+                    changeLogin
+                  }}</el-button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div v-if="loginType === 'register' && !registerSuccess" class="register-input-class">
-            <div class="register-input-title">{{ $t('lang.loginConfig.register') }}</div>
-            <div>
-              <user-registration @register-success="registerSuc"></user-registration>
+            <div v-if="loginType === 'register' && !registerSuccess" class="register-input-class">
+              <div class="register-input-title">{{ $t('lang.loginConfig.register') }}</div>
+              <div>
+                <user-registration @register-success="registerSuc"></user-registration>
+                <div class="change-login">
+                  <el-button class="button-change" type="text" @click="loginOrSingUp">{{
+                    changeLogin
+                  }}</el-button>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="loginType === 'forget' && !resetPsSuccess" class="forget-input-class">
+              <div class="forget-input-title">{{ $t('lang.loginConfig.rember') }}</div>
+              <reset-password @reset-success="resetSuc"></reset-password>
               <div class="change-login">
-                <el-button class="button-change" type="text" @click="loginOrSingUp">{{
+                <el-button class="button-change" type="text" @click="forgetPassword">{{
                   changeLogin
                 }}</el-button>
               </div>
             </div>
-          </div>
 
-          <div v-if="loginType === 'forget' && !resetPsSuccess" class="forget-input-class">
-            <div class="forget-input-title">{{ $t('lang.loginConfig.rember') }}</div>
-            <reset-password @reset-success="resetSuc"></reset-password>
-            <div class="change-login">
-              <el-button class="button-change" type="text" @click="forgetPassword">{{
-                changeLogin
-              }}</el-button>
+            <div v-show="loginType === 'register' && registerSuccess" class="success">
+              <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt="" />
+              <div class="success-message">{{ $t('lang.loginConfig.registerSuccess') }}</div>
+              <be-button
+                style="width: 100%"
+                custom-class="eagle-btn"
+                type="success"
+                @click="loginOrSingUp">
+                {{ $t('lang.loginConfig.login') }}
+              </be-button>
             </div>
-          </div>
 
-          <div v-show="loginType === 'register' && registerSuccess" class="success">
-            <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt="" />
-            <div class="success-message">{{ $t('lang.loginConfig.registerSuccess') }}</div>
-            <be-button
-              style="width: 100%"
-              custom-class="eagle-btn"
-              type="success"
-              @click="loginOrSingUp">
-              {{ $t('lang.loginConfig.login') }}
-            </be-button>
-          </div>
-
-          <div v-show="loginType === 'forget' && resetPsSuccess" class="success">
-            <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt="" />
-            <div class="success-message">{{ $t('lang.loginConfig.resetPasswordSuccess') }}</div>
-            <be-button
-              style="width: 100%"
-              custom-class="eagle-btn"
-              type="success"
-              @click="forgetPassword">
-              {{ $t('lang.loginConfig.login') }}
-            </be-button>
+            <div v-show="loginType === 'forget' && resetPsSuccess" class="success">
+              <img src="../../../assets/image/pc/login-success.png" height="64" width="64" alt="" />
+              <div class="success-message">{{ $t('lang.loginConfig.resetPasswordSuccess') }}</div>
+              <be-button
+                style="width: 100%"
+                custom-class="eagle-btn"
+                type="success"
+                @click="forgetPassword">
+                {{ $t('lang.loginConfig.login') }}
+              </be-button>
+            </div>
           </div>
         </div>
-      </div>
-    </be-dialog>
-  </div>
+      </be-dialog>
+    </div>
+  </teleport>
 </template>
 
 <script lang="ts">
