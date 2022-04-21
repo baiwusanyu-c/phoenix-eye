@@ -6,7 +6,7 @@
     <div style="display: flex; align-items: center">
       <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
       <el-select
-        v-if="isLogin"
+        v-show="isLogin"
         v-model="selectVal"
         filterable
         :placeholder="$t('lang.pleaseSelect')"
@@ -51,28 +51,30 @@
         round="4"
         type="success"
         @click="openFeedBack"
-        >{{ $t('lang.feedback.title') }}</be-button
-      >
+        >{{ $t('lang.feedback.title') }}
+      </be-button>
       <!--    设置菜单   -->
-      <be-popover
-        v-if="isLogin && headerConfigMore.length > 0"
-        ref="popoverRouter"
-        placement="bottom"
-        trigger="click"
-        custom-class="popover-router">
-        <template #trigger>
-          <be-icon icon="iconSetting" custom-class="setting"></be-icon>
-        </template>
-        <div
-          v-for="item in headerConfigMore"
-          :key="item.path + 'router'"
-          :class="`popover-item popover-router-item ${
-            item.index === active ? 'active-dropdown' : ''
-          }`"
-          @click="routerSwitch(item, item.isPush)">
-          <span>{{ $t(item.name) }}</span>
-        </div>
-      </be-popover>
+      <div v-show="isLogin && headerConfigMore.length > 0">
+        <be-popover
+          ref="popoverRouter"
+          placement="bottom"
+          trigger="click"
+          custom-class="popover-router">
+          <template #trigger>
+            <be-icon icon="iconSetting" custom-class="setting"></be-icon>
+          </template>
+          <div
+            v-for="item in headerConfigMore"
+            :key="item.path + 'router'"
+            :class="`popover-item popover-router-item ${
+              item.index === active ? 'active-dropdown' : ''
+            }`"
+            @click="routerSwitch(item, item.isPush)">
+            <span>{{ $t(item.name) }}</span>
+          </div>
+        </be-popover>
+      </div>
+
       <!--    语种   -->
       <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
         <template #trigger>
@@ -99,25 +101,25 @@
         </div>
       </be-popover>
       <!--    登出   -->
-      <be-popover v-if="isLogin" placement="bottom" trigger="click" custom-class="popover-logout">
-        <template #trigger>
-          <span class="dropdown-link">
-            <div class="tsgz-user">{{ loginUser }}</div>
-          </span>
-        </template>
-        <div class="popover-item" @click="routerSwitch('/logout')">
-          {{ $t('lang.header.logout') }}
-        </div>
-      </be-popover>
+      <div v-show="isLogin">
+        <be-popover placement="bottom" trigger="click" custom-class="popover-logout">
+          <template #trigger>
+            <span class="dropdown-link">
+              <div class="tsgz-user">{{ loginUser }}</div>
+            </span>
+          </template>
+          <div class="popover-item" @click="routerSwitch('/logout')">
+            {{ $t('lang.header.logout') }}
+          </div>
+        </be-popover>
+      </div>
+
       <!--    登陆   -->
-      <be-button
-        v-if="!isLogin"
-        custom-class="eagle-btn sign-up-btn"
-        round="4"
-        type="success"
-        @click="openLogin"
-        >{{ $t('lang.loginConfig.login') }}</be-button
-      >
+      <div v-show="!isLogin">
+        <be-button custom-class="eagle-btn sign-up-btn" round="4" type="success" @click="openLogin"
+          >{{ $t('lang.loginConfig.login') }}
+        </be-button>
+      </div>
     </div>
     <!--退出弹窗-->
     <MsgDialog
@@ -156,6 +158,7 @@
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
+
   /**
    * 头部菜单导航
    */
@@ -190,21 +193,20 @@
        */
       const confirm = (isConfirm: boolean | string): void => {
         if (isConfirm === true || isConfirm === 'true') {
+          isLogin.value = false
+          headerConfig.value = { ...publicHeaderConfig }
+          headerConfigMore.value = []
           clearSession()
           clearStore()
-          isLogin.value = false
-          headerConfig.value = publicHeaderConfig
-          headerConfigMore.value = []
           setStore('language', locale.value)
+          // // 在白名单内的页面，刷新页面来重置权限菜单等
+          nextTick(() => {
+            if (whiteList.indexOf(route.path) < 0) {
+              window.location.href = '#/projectSearch'
+            }
+          })
         }
         isLogout.value = false
-        // 在白名单内的页面，刷新页面来重置权限菜单等
-        if (whiteList.indexOf(route.path) >= 0) {
-          location.reload()
-          return
-        } else {
-          window.location.href = '#/projectSearch'
-        }
       }
       // 初始化 登录过期bus，登录过期 就调用登出方法
       const bus = useEventBus<string>('loginExpired')
@@ -273,7 +275,7 @@
       /**
        * 初始化菜单配置
        */
-      const headerConfig = ref<any>(publicHeaderConfig)
+      const headerConfig = ref<any>({ ...publicHeaderConfig })
       const headerConfigMore = ref<any>([])
       const store = useStore()
       const initHeaderConfig = (): void => {
@@ -292,7 +294,7 @@
             })
             return
           }
-          headerConfig.value[val.perms as string] = {
+          const menu = ref<any>({
             index: (index + 3).toString(),
             name: val.meta.title,
             show: !val.hidden,
@@ -300,7 +302,8 @@
             isPush: true,
             children: [],
             isDisabled: false,
-          }
+          })
+          headerConfig.value[val.perms as string] = menu
         })
       }
       /**
@@ -354,16 +357,16 @@
       }
       // prettier-ignore
       const setFocusStyle = (menuList: any): void => {
-        // 激活元素设置聚焦 规避bug 3825
-        nextTick(() => {
-          for (let i = 0; i < menuList.length; i++) {
-            const elm = menuList[Number(i)] as HTMLElement
-            if (elm.className.indexOf('is-active') > -1) {
-              elm.focus()
-            }
-          }
-        })
-      }
+            // 激活元素设置聚焦 规避bug 3825
+            nextTick(() => {
+                for (let i = 0; i < menuList.length; i++) {
+                    const elm = menuList[Number(i)] as HTMLElement
+                    if (elm.className.indexOf('is-active') > -1) {
+                        elm.focus()
+                    }
+                }
+            })
+        }
       /****************************** 语种切换相关 ******************************/
       // 语种切换
       const { locale } = useI18n()
@@ -531,6 +534,7 @@
     text-align: center;
     background-color: $mainColor7;
     box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
+
     .tsgz-slogan {
       display: flex;
       flex: 4;
