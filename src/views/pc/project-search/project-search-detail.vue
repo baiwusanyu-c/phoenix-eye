@@ -224,11 +224,11 @@
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
       <project-detail-top
-        v-if="top5TokenHolder.length > 0"
+        v-if="top5TokenHolderSelect.length > 0"
         :token-name="top5TokenHolderName"
         :token-address="top5TokenHolderAddr"
         types="holder"
-        :default-platfom="defaultPlatformTop5Token"
+        :default-platform="defaultPlatformTop5Token"
         :data="top5TokenHolder"
         style="margin-right: 16px"
         :header="top5THTableHeader"
@@ -236,10 +236,10 @@
         @select="handleSelectTop5">
       </project-detail-top>
       <project-detail-top
-        v-if="top5QuidityPairs.length > 0"
+        v-if="top5QuiditySelect.length > 0"
         :data="top5QuidityPairs"
         types="pairs"
-        :default-platfom="defaultPlatformTop5Quidity"
+        :default-platform="defaultPlatformTop5Quidity"
         :header="top5QPTableHeader"
         :title="$t('lang.projectExplorer.detail.top5Title2')"
         @select="handleSelectTop5">
@@ -433,6 +433,7 @@
                   ? (top5TokenHolderSelect.value[0].platform as string)
                   : 'bsc'
               handleSelectTop5({ platform: defaultPlatformTop5Token.value, type: 'holder' })
+
               top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
               defaultPlatformTop5Quidity.value =
                 top5QuiditySelect.value && top5QuiditySelect.value.length > 0

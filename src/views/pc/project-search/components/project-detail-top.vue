@@ -4,6 +4,7 @@
     <div class="project-detail-top5-title">
       <span style="margin-right: 16px">{{ title }}</span>
       <be-tag v-if="tokenName" round="4" type="success" custom-class="tag">{{ tokenName }}</be-tag>
+      {{ curPlatform }}
       <el-select v-model="curPlatform" style="float: right; width: 120px" @change="handleSelect">
         <el-option
           v-for="item in platformListDict"
@@ -55,7 +56,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue'
+  import { computed, defineComponent, ref, watch } from 'vue'
   import { BeProgress, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
@@ -85,7 +86,7 @@
         type: String,
         default: '',
       },
-      defaultPlatfom: {
+      defaultPlatform: {
         type: String,
         default: 'bsc',
       },
@@ -96,9 +97,9 @@
     },
     emits: ['select'],
     setup(props, ctx) {
-      const curPlatform = ref<string>('')
+      const curPlatform = ref<string>(props.defaultPlatform)
       watch(
-        () => props.defaultPlatfom,
+        () => props.defaultPlatform,
         (nVal: string) => {
           curPlatform.value = nVal
         }

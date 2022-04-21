@@ -115,7 +115,6 @@ Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
        */
       const confirm = (): void => {
         ctx.emit('confirm')
-        // closeMsg()
       }
       /**
        * 关闭方法
