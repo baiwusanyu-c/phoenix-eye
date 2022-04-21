@@ -33,7 +33,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, nextTick, ref } from 'vue'
-  import { BeButton, BePagination } from '../../../../public/be-ui/be-ui.es'
+  import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'
   import composition from '../../../utils/mixin/common-func'
@@ -42,7 +42,7 @@
   import type { IPOList } from '../../../api/risk-public-info'
   export default defineComponent({
     name: 'RiskPublicInfo',
-    components: { ProjectDetailPublicOpinion, BeButton, BePagination },
+    components: { ProjectDetailPublicOpinion, BePagination },
     setup() {
       const { message } = composition()
       const { pageParams, resetPageParam, updatePageSize } = compositionPage()

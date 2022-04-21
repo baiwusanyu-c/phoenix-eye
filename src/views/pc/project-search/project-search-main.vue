@@ -44,7 +44,6 @@
 
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
-  import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import { getProjectListUser } from '../../../api/project-explorer'
   import { getUrlkey } from '../../../utils/common'
@@ -55,7 +54,6 @@
   }
   export default defineComponent({
     name: 'ProjectSearchMain',
-    components: { BeButton },
     setup() {
       const { message, routerPush } = composition()
       /**

@@ -173,7 +173,6 @@
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
-  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import compositionPage from '../../../utils/mixin/page-param'
   import compositionDialog from '../../../utils/mixin/dialog-func'
   import createAddrMonitor from './components/create-addr-monitor.vue'
@@ -188,7 +187,6 @@
       BePagination,
       MsgDialog,
       createAddrMonitor,
-      EllipsisCopy,
     },
     setup() {
       const { t } = useI18n()
