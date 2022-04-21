@@ -152,6 +152,7 @@
     setStore,
   } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
+  import { whiteList } from '../router/router-pc'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
@@ -197,8 +198,13 @@
           setStore('language', locale.value)
         }
         isLogout.value = false
-        // 刷新页面来重置权限菜单等
-        location.reload()
+        // 在白名单内的页面，刷新页面来重置权限菜单等
+        if (whiteList.indexOf(route.path) >= 0) {
+          location.reload()
+          return
+        } else {
+          window.location.href = '#/projectSearch'
+        }
       }
       // 初始化 登录过期bus，登录过期 就调用登出方法
       const bus = useEventBus<string>('loginExpired')

@@ -126,7 +126,7 @@
                 icon="more"
                 width="20"
                 height="21"
-                @click="openDetail(scope.row.address)"></be-icon>
+                @click="handleSearch(scope.row.address)"></be-icon>
             </div>
           </template>
         </el-table-column>
@@ -168,15 +168,20 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
-  import { getStore, getUrlkey, openWindow } from '../../../utils/common'
+  import { getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
-  import { deleteAddressMonitor, getAddressMonitorList } from '../../../api/addr-monitor'
+  import {
+    deleteAddressMonitor,
+    getAddressMonitorInfo,
+    getAddressMonitorList,
+  } from '../../../api/addr-monitor'
   import compositionPage from '../../../utils/mixin/page-param'
   import compositionDialog from '../../../utils/mixin/dialog-func'
   import createAddrMonitor from './components/create-addr-monitor.vue'
-  import type { IAddrMonitor, IAddrMonitorForm, IPageParam } from '../../../utils/types'
+  import type { IAddrMonitorSearch } from '../../../api/addr-monitor'
+  import type { IAddrMonitor, IAddrMonitorForm, IOption, IPageParam } from '../../../utils/types'
 
   export default defineComponent({
     name: 'AddrMonitor',
@@ -202,9 +207,41 @@
       const handleSearch = (data: string): void => {
         searchParams.value = data
         nextTick(() => {
-          openDetail(searchParams.value)
+          getBaseInfo()
         })
       }
+      /**
+       * 获取基本信息数据
+       */
+      const getBaseInfo = (): void => {
+        const params: IAddrMonitorSearch = {
+          address: searchParams.value,
+        }
+        getAddressMonitorInfo(params)
+          .then((res: any) => {
+            if (!res) {
+              return
+            }
+            if (res && res.code === '0000' && res.data) {
+              let resObj: IOption = {}
+              const resCache = getStore('addressMonitor')
+              if (resCache) {
+                resObj = JSON.parse(resCache)
+              }
+              resObj[searchParams.value] = res.data
+              setStore('addressMonitor', JSON.stringify(resObj))
+              openDetail(searchParams.value)
+            } else {
+              console.error(res)
+              message('warning', t('lang.emptyData'))
+            }
+          })
+          .catch((err: any) => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
+
       const loading = ref<boolean>(false)
 
       const addrMonitorList = ref<Array<IAddrMonitor>>([])
@@ -298,7 +335,7 @@
             return
           }
           // 直接去态势详情页面
-          openDetail(urlParams.address)
+          handleSearch(urlParams.address)
         }
         getList()
       }

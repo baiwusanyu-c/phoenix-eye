@@ -89,6 +89,11 @@ const routerDict: IOption = {
   'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
   'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
 }
+export const whiteList: Array<string> = [
+  '/riskTrx/list',
+  '/ProjectSearch',
+  '/RiskPublicInformation',
+]
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
   treeData.forEach((val: any) => {
@@ -155,7 +160,6 @@ const beforeEachHandle = (router: Router) => {
   router.beforeEach(
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
       // 路由跳转白名单（不需要验证token,和获取路由）
-      const whiteList = ['/riskTrx/list', '/ProjectSearch', '/RiskPublicInformation']
       let isWhitePath = false
       whiteList.forEach(val => {
         if (val === to.path) {

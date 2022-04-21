@@ -105,7 +105,7 @@
               :target-str="scope.row.from_tag ? scope.row.from_tag : scope.row.from"
               :copy-content="scope.row.from"
               :tooltip-txt="scope.row.from"
-              :is-ellipsis="handleisEllipsis(scope.row.from, scope.row.from_tag)"
+              :is-ellipsis="handleIsEllipsis(scope.row.from, scope.row.from_tag)"
               font-length="8"
               end-length="8"
               empty-text="/">
@@ -121,7 +121,7 @@
               :target-str="scope.row.to_tag ? scope.row.to_tag : scope.row.to"
               :copy-content="scope.row.to"
               :tooltip-txt="scope.row.to"
-              :is-ellipsis="handleisEllipsis(scope.row.to, scope.row.to_tag)"
+              :is-ellipsis="handleIsEllipsis(scope.row.to, scope.row.to_tag)"
               font-length="8"
               end-length="8"
               empty-text="/">
@@ -196,11 +196,17 @@
   import { computed, defineComponent, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { beijing2utc, createDate, formatDate, simulateToFixed } from '../../../utils/common'
+  import {
+    beijing2utc,
+    createDate,
+    formatDate,
+    getStore,
+    simulateToFixed,
+  } from '../../../utils/common'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import PlatformCell from '../../../components/common-components/platform-cell/platform-cell.vue'
-  import { getAddressMonitorInfo, getAddressMonitorOutList } from '../../../api/addr-monitor'
+  import { getAddressMonitorOutList } from '../../../api/addr-monitor'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
   import type { IAddrMonitorDetailOut, IAddrMonitorSearch } from '../../../api/addr-monitor'
@@ -219,26 +225,13 @@
        * 获取基本信息数据
        */
       const getBaseInfo = (): void => {
-        const params: IAddrMonitorSearch = {
-          address: addressParams.value,
-        }
         baseLoading.value = true
-        getAddressMonitorInfo(params)
-          .then((res: any) => {
-            if (!res) {
-              return
-            }
-            if (res && res.code === '0000') {
-              baseInfo.value = res.data
-            } else {
-              message('warning', res.message || res)
-            }
-          })
-          .catch((err: any) => {
-            message('error', err.message || err)
-            console.error(err)
-          })
-          .finally(() => (baseLoading.value = false))
+        // 读取上个搜索页面缓存的数据
+        const resCache = getStore('addressMonitor')
+        if (resCache) {
+          baseInfo.value = JSON.parse(resCache)[addressParams.value]
+        }
+        baseLoading.value = false
       }
       // 列表数据
       const list = ref<Array<IAddrMonitorDetail>>([])
@@ -262,12 +255,13 @@
               list.value = res.data.page_infos
               pageParams.value.total = res.data.total
             }
+            listLoading.value = false
           })
           .catch((err: any) => {
             message('error', err.message || err)
             console.error(err)
+            listLoading.value = false
           })
-          .finally(() => (listLoading.value = false))
       }
       /**
        * 分页方法
@@ -308,7 +302,7 @@
           return `-${simulateToFixed(val, dec)}`
         }
       })
-      const handleisEllipsis = computed(() => {
+      const handleIsEllipsis = computed(() => {
         return function (addr: string, tag: string) {
           if ((tag && tag.length > 40) || (!tag && addr.length > 40)) {
             return true
@@ -320,7 +314,7 @@
         initPage()
       })
       return {
-        handleisEllipsis,
+        handleIsEllipsis,
         baseLoading,
         listLoading,
         handleProfit,
