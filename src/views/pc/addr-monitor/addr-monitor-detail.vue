@@ -101,18 +101,15 @@
             <span class="table-head">{{ $t('lang.riskConfig.tableHeader.from') }}</span>
           </template>
           <template #default="scope">
-            <div
-              style="display: flex; align-items: center; justify-content: center; cursor: pointer">
-              <ellipsis-copy
-                :target-str="scope.row.from_tag ? scope.row.from_tag : scope.row.from"
-                :copy-content="scope.row.from"
-                :tooltip-txt="scope.row.from"
-                :is-ellipsis="handleisEllipsis(scope.row.from, scope.row.from_tag)"
-                font-length="8"
-                end-length="8"
-                empty-text="/">
-              </ellipsis-copy>
-            </div>
+            <ellipsis-copy
+              :target-str="scope.row.from_tag ? scope.row.from_tag : scope.row.from"
+              :copy-content="scope.row.from"
+              :tooltip-txt="scope.row.from"
+              :is-ellipsis="handleisEllipsis(scope.row.from, scope.row.from_tag)"
+              font-length="8"
+              end-length="8"
+              empty-text="/">
+            </ellipsis-copy>
           </template>
         </el-table-column>
         <el-table-column prop="to">
@@ -120,18 +117,15 @@
             <span class="table-head">{{ $t('lang.riskConfig.tableHeader.to') }}</span>
           </template>
           <template #default="scope">
-            <div
-              style="display: flex; align-items: center; justify-content: center; cursor: pointer">
-              <ellipsis-copy
-                :target-str="scope.row.to_tag ? scope.row.to_tag : scope.row.to"
-                :copy-content="scope.row.to"
-                :tooltip-txt="scope.row.to"
-                :is-ellipsis="handleisEllipsis(scope.row.to, scope.row.to_tag)"
-                font-length="8"
-                end-length="8"
-                empty-text="/">
-              </ellipsis-copy>
-            </div>
+            <ellipsis-copy
+              :target-str="scope.row.to_tag ? scope.row.to_tag : scope.row.to"
+              :copy-content="scope.row.to"
+              :tooltip-txt="scope.row.to"
+              :is-ellipsis="handleisEllipsis(scope.row.to, scope.row.to_tag)"
+              font-length="8"
+              end-length="8"
+              empty-text="/">
+            </ellipsis-copy>
           </template>
         </el-table-column>
 
