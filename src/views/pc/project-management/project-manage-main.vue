@@ -137,7 +137,6 @@
         </be-pagination>
       </div>
     </div>
-    {{ curItem }}
     <!--    新增、编辑项目弹窗 -->
     <create-project
       ref="createDialog"
