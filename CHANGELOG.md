@@ -91,9 +91,9 @@ other: 点击 logo 能够返回 risk-trx
 
 ### eagle-eye-front_v2.1.0 发版
 
-feat: 增加公共舆情模块
-feat: 地址监控模块
-feat: 增加需求反馈功能
-feat: 风险交易支持滑点
-feat: 新项目浏览器支持合约查看
-feat: 项目管理创建项目增加合约表单
+feat: 增加公共舆情模块  
+feat: 地址监控模块  
+feat: 增加需求反馈功能  
+feat: 风险交易支持滑点  
+feat: 新项目浏览器支持合约查看  
+feat: 项目管理创建项目增加合约表单  
