@@ -53,25 +53,27 @@ service.interceptors.response.use(
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
-        window.location.href = '#/riskTrx/list'
+        window.location.href = '#/projectSearch'
         bus.emit('true')
       }
       if (res.code === 401 || res.code === 920000003) {
         removeSession('CETInfo')
         removeStore('token')
         removeStore('userInfo')
-        // 如果当前路由是 /riskTrx/list 直接刷新页面
-        if (window.location.hash === '#/riskTrx/list') {
+        // 如果当前路由是 /projectSearch 直接刷新页面
+        if (window.location.hash === '#/projectSearch') {
           location.reload()
           return
         }
-        window.location.href = '#/riskTrx/list'
         if (getSession('loginExpiredNum') === 'false' || !getSession('loginExpiredNum')) {
           bus.emit('true')
           const err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期'
           message('error', err)
           setSession('loginExpiredNum', 'true')
         }
+        setTimeout(() => {
+          window.location.href = '#/projectSearch'
+        }, 1500)
         return null
       }
       return Promise.reject(new Error(res.msg || res.message || 'Error'))

@@ -6,7 +6,7 @@
     <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
       <div class="item-title" style="position: relative; width: 100%">
         <h2>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="isEmpty(baseInfo.name)"
             :is-show-copy-btn="false"
             :is-ellipsis="
@@ -15,7 +15,7 @@
             styles="color:#333"
             font-length="8"
             end-length="8">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </h2>
         <span style="margin-right: 6px"
           >{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h) :
@@ -131,10 +131,10 @@
           <div style="display: flex; margin-bottom: 6px">
             <be-tag type="info">
               <div class="flex items-center">
-                <span style="margin-left: 10px">{{ item.platform.toUpperCase() }}</span>
+                <span>{{ item.platform.toUpperCase() }}</span>
               </div>
             </be-tag>
-            <be-ellipsis-copy
+            <ellipsis-copy
               :target-str="item.token_name"
               custom-class="total"
               :is-show-copy-btn="false"
@@ -142,9 +142,9 @@
               :is-ellipsis="(item.token_name && item.token_name.length) > 20 ? true : false"
               font-length="8"
               end-length="8">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </div>
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="item.contract_address"
             styles="color: #008EE9;cursor:pointer;font-weight:400"
             font-length="8"
@@ -152,7 +152,7 @@
             @click="
               item.contract_address ? openWeb(item.contract_address, 'token', item.platform) : null
             ">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </div>
         <div style="flex: 1">
           <p class="contract-statistics-label">
@@ -181,9 +181,42 @@
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
-          @change-page="pageChangeTj">
+          @change-page="
+            item => handlePageChange(item.currentPage, pageParamsTj, getContractStatistics)
+          ">
           <template #prev>
             <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
+          </template>
+        </be-pagination>
+      </div>
+    </div>
+    <!--Audit-->
+    <div v-if="auditList.length > 0" class="proj-detail-item eagle-table">
+      <div class="item-title">
+        <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
+      </div>
+      <div class="project-detail-audit--body">
+        <project-detail-audit
+          v-for="item in auditList"
+          :key="item.report_id"
+          :url="item.url"
+          :name="item.report_name"
+          :date="formatDate(createDate(item.create_time))">
+        </project-detail-audit>
+      </div>
+      <div class="table-page">
+        <be-pagination
+          is-ordianry
+          :page-size="pageParamsAudit.pageSize"
+          :page-count="pageParamsAudit.total"
+          :current-page="pageParamsAudit.currentPage"
+          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :pager-show-count="5"
+          page-unit="page"
+          :layout="['prev', 'page']"
+          @change-page="item => handlePageChange(item.currentPage, pageParamsAudit, getAuditData)">
+          <template #prev>
+            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsAudit.total }}</span>
           </template>
         </be-pagination>
       </div>
@@ -191,11 +224,11 @@
     <!--top5 数据表格 "-->
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
       <project-detail-top
-        v-if="top5TokenHolder.length > 0"
+        v-if="top5TokenHolderSelect.length > 0"
         :token-name="top5TokenHolderName"
         :token-address="top5TokenHolderAddr"
         types="holder"
-        :default-platfom="defaultPlatformTop5Token"
+        :default-platform="defaultPlatformTop5Token"
         :data="top5TokenHolder"
         style="margin-right: 16px"
         :header="top5THTableHeader"
@@ -203,10 +236,10 @@
         @select="handleSelectTop5">
       </project-detail-top>
       <project-detail-top
-        v-if="top5QuidityPairs.length > 0"
+        v-if="top5QuiditySelect.length > 0"
         :data="top5QuidityPairs"
         types="pairs"
-        :default-platfom="defaultPlatformTop5Quidity"
+        :default-platform="defaultPlatformTop5Quidity"
         :header="top5QPTableHeader"
         :title="$t('lang.projectExplorer.detail.top5Title2')"
         @select="handleSelectTop5">
@@ -243,7 +276,9 @@
             page-unit="page"
             :layout="['prev', 'pNum', 'page']"
             @update-num="updateNumFs"
-            @change-page="pageChangeFs">
+            @change-page="
+              item => handlePageChange(item.currentPage, pageParamsFs, getPublicOpinionData)
+            ">
             <template #prev>
               <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
             </template>
@@ -264,9 +299,11 @@
   import { useEventBus } from '@vueuse/core'
   import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
+  import compositionPage from '../../../utils/mixin/page-param'
   import {
     createSubscribe,
     deleteSubscribe,
+    getContractReportList,
     getProjectSituation,
     getProjectSituationStatistics,
     getPublicOpinion,
@@ -275,77 +312,33 @@
     createDate,
     formatDate,
     formatTimeStamp,
+    getStore,
     numberToCommaString,
     openWindow,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { webURL } from '../../../enums/link'
-  import ProjectDetailTop from './components/project-detail-top.vue'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import config from '../../../enums/config'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
-  import type { ITableHeader } from './components/project-detail-top.vue'
-  import type { IPublicOpinion } from '../../../api/project-explorer'
-  import type { IPageParam } from '../../../utils/types'
-
-  interface ISafetyData {
-    negative?: string
-    negativeMsg?: string
-    sourceUrl?: string
-    title?: string
-    message?: string
-    from?: string
-    time?: string
-    label?: string
-  }
-
-  interface IContractStatistics {
-    contract_address: string
-    token_name: string
-    platform: string
-    tx_24?: number | string
-    tx_total?: number | string
-    latest_trading_date?: string
-  }
-
-  interface IBaseInfo {
-    transactions?: number | string
-    transactionsTotal?: number | string
-    lastTradeData?: string
-    riksTrxNum?: number | string
-    riskPublicOpinion?: number | string
-    github?: string
-    telegram?: string
-    twitter?: string
-    website?: string
-    name?: string
-    isSubscribe: boolean
-  }
-
-  interface ITop5TokenHolder {
-    address?: string
-    percentage?: number
-    quantity?: string
-  }
-
-  interface ITop5QuidityPairs extends ITop5TokenHolder {
-    pair?: string
-  }
-
-  interface ITop5QuiditySelect {
-    platform?: string
-    records: Array<any>
-  }
-
-  interface ITop5TokenHolderSelect {
-    token_address?: string
-    token_name?: string
-    platform?: string
-    records: Array<any>
-  }
-
+  import ProjectDetailAudit from './components/project-detail-audit.vue'
+  import ProjectDetailTop from './components/project-detail-top.vue'
+  import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
+  import type {
+    IAuditList,
+    IBaseInfo,
+    IContractStatistics,
+    IPageParam,
+    ISafetyData,
+    ITableHeader,
+    ITop5QuidityPairs,
+    ITop5QuiditySelect,
+    ITop5TokenHolder,
+    ITop5TokenHolderSelect,
+  } from '../../../utils/types'
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      ProjectDetailAudit,
       ProjectDetailTop,
       RiskTrxTable,
       BePagination,
@@ -353,10 +346,11 @@
       BeIcon,
       BeTag,
       BeButton,
-      BeEllipsisCopy,
+      EllipsisCopy,
     },
     setup() {
-      const { message, route, isEmpty, msgBox } = composition()
+      const { message, route, isEmpty, msgBox, openWeb } = composition()
+      const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
       const { t } = useI18n()
       const baseInfo = ref<IBaseInfo>({})
 
@@ -439,6 +433,7 @@
                   ? (top5TokenHolderSelect.value[0].platform as string)
                   : 'bsc'
               handleSelectTop5({ platform: defaultPlatformTop5Token.value, type: 'holder' })
+
               top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
               defaultPlatformTop5Quidity.value =
                 top5QuiditySelect.value && top5QuiditySelect.value.length > 0
@@ -453,12 +448,44 @@
             message('error', err.message || err)
             console.error(err)
           })
+        // 获取Audit数据
+        await getAuditData()
 
         // 获取合约静态检测数据
         await getContractStatistics()
         // 获取项目舆情安全数据
         await getPublicOpinionData()
       }
+      /**
+       * 获取Audit数据
+       */
+      const auditList = ref<Array<IAuditList>>([])
+      const pageParamsAudit = createPageParam(4)
+      const getAuditData = (): void => {
+        const params: IContractReport = {
+          project_id: parseInt(projectId.value),
+          page_num: pageParamsAudit.value.currentPage,
+          page_size: pageParamsAudit.value.pageSize,
+        }
+        const prevUrl =
+          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+        const baseURL = config.baseURL
+        getContractReportList(params)
+          .then((res: any) => {
+            if (res.success) {
+              auditList.value = res.data.page_infos
+              pageParamsAudit.value.total = res.data.total
+              auditList.value.forEach(val => {
+                val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+              })
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
+
       // 项目id
       const projectId = ref<string>('')
       const { param, id } = route.query
@@ -467,11 +494,7 @@
        * 获取项目合约统计数据
        */
       const contractStatisticsData = ref<Array<IContractStatistics>>([])
-      const pageParamsTj = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 3,
-        total: 0,
-      })
+      const pageParamsTj = createPageParam(3)
       const statisticsLoading = ref<boolean>(false)
       const getContractStatistics = (): void => {
         const params: IPublicOpinion = {
@@ -497,14 +520,6 @@
             console.error(err)
           })
       }
-      /**
-       * 项目舆情安全分页方法
-       * @param {IPageParam} item - 分页参数对象
-       */
-      const pageChangeTj = (item: IPageParam): void => {
-        pageParamsTj.value.currentPage = item.currentPage
-        getContractStatistics()
-      }
 
       /**
        * 获取项目舆情安全数据
@@ -514,11 +529,7 @@
       // 项目舆情安全loading
       const loadingFs = ref<boolean>(false)
       // 项目舆情安全分页参数
-      const pageParamsFs = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 5,
-        total: 0,
-      })
+      const pageParamsFs = createPageParam(5)
       /**
        * 项目舆情安全数据获取方法
        */
@@ -558,36 +569,33 @@
             console.error(err)
           })
       }
+
       /**
-       * 项目舆情安全分页方法
-       * @param {IPageParam} item - 分页参数对象
+       * 分页处理方法
+       * @param currentPage 当前页
+       * @param item 分页参数
+       * @param cb 回调方法获取数据
        */
-      const pageChangeFs = (item: IPageParam): void => {
-        pageParamsFs.value.currentPage = item.currentPage
-        getPublicOpinionData()
+      const handlePageChange = (currentPage: number, item: IPageParam, cb: Function): void => {
+        item.currentPage = currentPage
+        cb()
       }
       const updateNumFs = (data: IPageParam): void => {
-        pageParamsFs.value.currentPage = 1
-        pageParamsFs.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParamsFs)
         getPublicOpinionData()
       }
       onMounted(() => {
         getProSituData()
       })
-
+      /**
+       * 选择项目 重置变量
+       */
       const selectProjBus = useEventBus<string>('selectProjBus')
       selectProjBus.on((id: string) => {
         projectId.value = id
-        pageParamsTj.value = {
-          currentPage: 1,
-          pageSize: 3,
-          total: 0,
-        }
-        pageParamsFs.value = {
-          currentPage: 1,
-          pageSize: 5,
-          total: 0,
-        }
+        resetPageParam(5, pageParamsFs)
+        resetPageParam(3, pageParamsTj)
+        resetPageParam(5, pageParamsAudit)
         getProSituData()
       })
       // 语种切换重新赋值一下 解决不更新问题
@@ -602,22 +610,6 @@
         top5QPTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
         top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
       })
-      /**
-       * 跳轉到第三方頁面
-       */
-      const openWeb = (params: string, type: string, platform: string): void => {
-        if (
-          !params ||
-          params === 'eth' ||
-          params === 'bnb' ||
-          params === 'ht' ||
-          params === 'matic'
-        )
-          return
-        const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
-        const url = `${mainUrl}${params}`
-        openWindow(url)
-      }
       /**
        * 发送订阅
        */
@@ -647,6 +639,9 @@
             console.error(err)
           })
       }
+      /**
+       * 取消订阅
+       */
       const cancelSubscribe = (): void => {
         const params = {
           project_id: parseInt(projectId.value),
@@ -665,8 +660,15 @@
             console.error(err)
           })
       }
-
+      const busLogin = useEventBus<string>('openLogin')
       const handleSubscribe = (): void => {
+        // 如果没登录就通知显示登录
+        const isLogin = !!getStore('token')
+        if (!isLogin) {
+          // 开启登录窗口
+          busLogin.emit()
+          return
+        }
         if (baseInfo.value.isSubscribe) {
           cancelSubscribe()
         } else {
@@ -674,6 +676,11 @@
         }
       }
       return {
+        getAuditData,
+        handlePageChange,
+        pageParamsAudit,
+        auditList,
+        getContractStatistics,
         handleSubscribe,
         updateNumFs,
         defaultPlatformTop5Token,
@@ -691,9 +698,7 @@
         top5QuidityPairs,
         contractStatisticsData,
         baseInfo,
-        pageChangeFs,
         pageParamsTj,
-        pageChangeTj,
         getPublicOpinionData,
         safetyData,
         pageParamsFs,
@@ -820,10 +825,15 @@
       }
     }
 
-    .proj-detail-item {
-      width: 70%;
-      margin: 24px auto 0 auto;
+    .project-detail-audit--body {
+      display: grid;
+      grid-template-columns: 24% 24% 24% 24%;
+      grid-gap: 20px;
+    }
 
+    .proj-detail-item {
+      @include common-container(24px);
+      min-width: 1172px;
       .item-title {
         display: flex;
         align-items: center;
@@ -935,9 +945,17 @@
       }
     }
   }
+  /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-search-detail .proj-detail-item {
-      width: 78%;
+      width: 92%;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .project-search-detail .proj-detail-item {
+      width: 80%;
     }
   }
 </style>

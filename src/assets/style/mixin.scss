@@ -22,3 +22,8 @@
   transform: scale(1.2);
 }
 
+@mixin common-container($mt){
+  width: 70%;
+  margin: $mt auto 0 auto;
+}
+

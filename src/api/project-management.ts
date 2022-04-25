@@ -1,4 +1,10 @@
-// 项目管理api
+/*
+ * @project-management.ts
+ * @deprecated 项目管理
+ * @author czh
+ * @update (czh 2022/2/25)
+ */
+
 import request from '../utils/request'
 import config from '../enums/config'
 import type { IPageParam } from '../utils/types' //路径配置
@@ -22,11 +28,12 @@ export interface IContractInfos {
   label?: string
 }
 export interface ICreateProj {
-  name: string
+  name?: string
   is_public?: boolean
-  keyword: string
+  keyword?: string
   contract_infos?: Array<IContractInfos>
   email_list?: Array<string>
+  report_id_list?: Array<number>
 }
 export function createProject(params: ICreateProj) {
   return request({
@@ -62,5 +69,16 @@ export function deleteProject(params: IReappraise) {
   return request({
     url: `${config.baseURL}/ussa/project/delete/${params.id}`,
     method: 'post',
+  })
+}
+export interface IReport {
+  contract_address_list: Array<string>
+}
+// 项目创建获取合约报告
+export function getReport(params?: IReport) {
+  return request({
+    url: `${config.baseURL}/ussa/project/contract/report/search`,
+    method: 'post',
+    params,
   })
 }

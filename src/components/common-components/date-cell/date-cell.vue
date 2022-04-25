@@ -1,0 +1,42 @@
+/* * @date-cell.vue * @deprecated * @author czh * @update (czh 2022/4/20) */
+<template>
+  <be-tooltip :content="contentCompute(time)" custom-class="table-tooltip">
+    <span style="color: #888">
+      <p>{{ formatDate(createDate(time)).split(' ')[0] }}</p>
+      <p>{{ formatDate(createDate(time)).split(' ')[1] }}</p>
+    </span>
+  </be-tooltip>
+</template>
+
+<script lang="ts">
+  import { computed, defineComponent } from 'vue'
+  import { BeTooltip } from '../../../../public/be-ui/be-ui.es.js'
+  import { beijing2utc, createDate, formatDate, openWindow } from '../../../utils/common'
+
+  export default defineComponent({
+    name: 'DateCell',
+    components: { BeTooltip },
+    props: {
+      time: {
+        type: String,
+        default: '2077-04-19T06:06:40.000+0000',
+      },
+    },
+    setup() {
+      const contentCompute = computed(() => {
+        return (time: string) => {
+          return `${formatDate(createDate(time).toString())}  UTC：${beijing2utc(time)}`
+        }
+      })
+      return {
+        contentCompute,
+        beijing2utc,
+        createDate,
+        formatDate,
+        openWindow,
+      }
+    },
+  })
+</script>
+
+<style scoped></style>

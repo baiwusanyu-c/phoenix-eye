@@ -3,38 +3,32 @@
 <template>
   <div class="project-manage-main eagle-page">
     <div class="project-manage-search">
-      <div class="project-manage-search-input">
-        <el-input
-          v-model="searchParams"
-          :placeholder="$t('lang.createProject.searchP')"
-          style="margin-right: 16px" />
-        <be-button
-          type="success"
-          custom-class="eagle-btn search-btn"
-          size="large"
-          round="4"
-          @click="getList">
-          <span>{{ $t('lang.searchT') }}</span>
-        </be-button>
-      </div>
+      <search-input
+        :search-btn-name="$t('lang.searchT')"
+        :placeholder="$t('lang.createProject.searchP')"
+        @search="handleSearch">
+      </search-input>
       <be-button
         type="success"
         custom-class="eagle-btn create-btn"
         size="large"
         prev-icon="add"
         round="4"
-        @click="addProject">
+        @click="openDialog('add')">
         {{ $t('lang.createProject.createProjectTitle') }}
       </be-button>
     </div>
     <div class="project-manage-list eagle-table">
       <el-table :data="projectList.data">
+        <template #empty>
+          <empty-data></empty-data>
+        </template>
         <el-table-column prop="name" width="180">
           <template #header>
             <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
           </template>
           <template #default="scope">
-            <be-ellipsis-copy
+            <ellipsis-copy
               :target-str="scope.row.name"
               :is-ellipsis="scope.row.name.length > 8 ? true : false"
               :is-show-copy-btn="false"
@@ -42,7 +36,7 @@
               styles="color: black;font-weight: bold;font-size: 16px;"
               font-length="8"
               end-length="0">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </template>
         </el-table-column>
         <el-table-column prop="keywordList" width="180">
@@ -50,7 +44,7 @@
             <span class="table-head">{{ $t('lang.createProject.tableHeader.shortName') }}</span>
           </template>
           <template #default="scope">
-            <be-ellipsis-copy
+            <ellipsis-copy
               :target-str="scope.row.keywordList"
               :is-ellipsis="
                 scope.row.keywordList && scope.row.keywordList.length >= 14 ? true : false
@@ -60,7 +54,7 @@
               styles="color: black;font-weight: 400;font-size: 14px;"
               font-length="8"
               end-length="0">
-            </be-ellipsis-copy>
+            </ellipsis-copy>
           </template>
         </el-table-column>
         <el-table-column prop="contract_num">
@@ -92,19 +86,7 @@
             <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
           </template>
           <template #default="scope">
-            <el-tooltip placement="top" effect="light">
-              <template #content>
-                <span
-                  >{{ formatDate(createDate(scope.row.create_time)) }} UTC：{{
-                    beijing2utc(scope.row.create_time)
-                  }}</span
-                >
-              </template>
-              <span style="color: #888">
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[0] }}</p>
-                <p>{{ formatDate(createDate(scope.row.create_time)).split(' ')[1] }}</p>
-              </span>
-            </el-tooltip>
+            <date-cell :time="scope.row.create_time"></date-cell>
           </template>
         </el-table-column>
         <el-table-column prop="operation">
@@ -121,7 +103,7 @@
                 icon="iconEditEagle"
                 width="24"
                 height="24"
-                @click="editProject(scope.row)"></be-icon>
+                @click="openDialog('edit', scope.row)"></be-icon>
             </el-tooltip>
             <el-tooltip placement="top">
               <template #content>
@@ -132,7 +114,7 @@
                 icon="iconDeleteEagle"
                 width="24"
                 height="24"
-                @click="deleteProjects(scope.row)"></be-icon>
+                @click="openDialog('delete', scope.row)"></be-icon>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -157,16 +139,16 @@
     </div>
     <!--    新增、编辑项目弹窗 -->
     <create-project
-      ref="createProjectDialog"
+      ref="createDialog"
       :type="opType"
-      :project-id="curItem.data.project_id"
+      :project-id="curItem.project_id"
       :get-list="getList">
     </create-project>
     <!--    删除项目弹窗    -->
     <MsgDialog
       :header-title="$t('lang.delete')"
       :is-show="showDelete"
-      :title="deleteText"
+      :title="$t('lang.systemConfig.delete') + '?'"
       @confirm="confirmDelete"
       @close="() => (showDelete = false)">
     </MsgDialog>
@@ -177,11 +159,13 @@
   import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { deleteProject, getProjectListAdmin } from '../../../api/project-management'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
-  import BeEllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { beijing2utc, createDate, formatDate, formatTimeStamp } from '../../../utils/common'
+  import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import compositionPage from '../../../utils/mixin/page-param'
+  import compositionDialog from '../../../utils/mixin/dialog-func'
   import CreateProject from './components/create-project.vue'
   import type { ICreateProj, IProjectListAdmin, IReappraise } from '../../../api/project-management'
   import type { IPageParam } from '../../../utils/types'
@@ -189,7 +173,8 @@
   export default defineComponent({
     name: 'ProjectManageMain',
     components: {
-      BeEllipsisCopy,
+      EmptyData,
+      EllipsisCopy,
       CreateProject,
       MsgDialog,
       BeButton,
@@ -199,14 +184,11 @@
     setup() {
       const { t } = useI18n()
       const { message, isEmpty } = composition()
+      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
+      let { createCurItem, curItem, createDialog, opType, openDialog, showDelete } =
+        compositionDialog()
       // 当前操作的项目对象
-      const curItem = reactive({ data: {} })
-      // 当前操作类型
-      const opType = ref<string>('add')
-      // 删除弹窗显示
-      const showDelete = ref<boolean>(false)
-      // 删除弹窗显示内容
-      const deleteText = ref<string>('')
+      curItem = createCurItem<ICreateProj>({})
       // 项目列表示例
       const projectList = reactive({
         data: [],
@@ -214,48 +196,15 @@
 
       // loading
       const loading = ref<boolean>(false)
-      // 创建项目弹窗
-      const createProjectDialog = ref<any>({})
       onMounted(() => {
         getList('reset')
       })
-
-      /**
-       * 新增类型方法
-       */
-      const addProject = () => {
-        opType.value = 'add'
-        nextTick(() => {
-          createProjectDialog.value.createProjectWindow = true
-        })
-      }
-
-      /**
-       * 编辑类型方法
-       */
-      const editProject = (item: ICreateProj) => {
-        opType.value = 'edit'
-        curItem.data = item
-        nextTick(() => {
-          createProjectDialog.value.createProjectWindow = true
-        })
-      }
-
-      /**
-       * 删除类型方法
-       * @param {Object} item - 项目数据对象
-       */
-      const deleteProjects = (item: ICreateProj) => {
-        curItem.data = item
-        deleteText.value = `${t('lang.systemConfig.delete')}${item.name}？`
-        showDelete.value = true
-      }
       /**
        * 确认删除项目信息
        */
       const confirmDelete = () => {
         const params: IReappraise = {
-          id: (curItem.data as IReappraise).project_id as string,
+          id: (curItem.value as IReappraise).project_id as string,
         }
         deleteProject(params)
           .then(res => {
@@ -280,12 +229,12 @@
        */
       // 搜索参数
       const searchParams = ref<string>('')
-      // 分页参数
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
+      const handleSearch = (data: string): void => {
+        searchParams.value = data
+        nextTick(() => {
+          getList()
+        })
+      }
       /**
        * 获取项目列表
        * 重置：清空所有条件进行搜索
@@ -297,11 +246,7 @@
         loading.value = true
         if (type === 'reset') {
           searchParams.value = ''
-          pageParams.value = {
-            currentPage: 1,
-            pageSize: 10,
-            total: 0,
-          }
+          resetPageParam()
         }
         const params: IProjectListAdmin = {
           page_num: pageParams.value.currentPage,
@@ -340,30 +285,23 @@
         getList()
       }
       const updateNum = (data: IPageParam): void => {
-        pageParams.value.currentPage = 1
-        pageParams.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParams)
         getList()
       }
 
       return {
+        handleSearch,
         updateNum,
         isEmpty,
-        createDate,
-        formatDate,
-        beijing2utc,
-        formatTimeStamp,
         searchParams,
         curItem,
         opType,
         showDelete,
-        deleteText,
         projectList,
         loading,
-        createProjectDialog,
+        createDialog,
         confirmDelete,
-        deleteProjects,
-        editProject,
-        addProject,
+        openDialog,
         getList,
         pageParams,
         pageChange,
@@ -377,38 +315,29 @@
     min-height: calc(100% - 100px);
 
     .project-manage-search {
-      width: 70%;
-      margin: 40px auto 0 auto;
-
-      .project-manage-search-input {
-        display: flex;
-
-        input::-webkit-input-placeholder {
-          /* WebKit browsers */
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
-          font-size: 18px;
-          color: $mainColor14;
-        }
-
-        .el-input__inner {
-          height: 52px;
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
-          font-size: 18px;
-          line-height: 52px;
-          color: $textColor4;
-        }
-      }
-
-      .create-btn {
-        margin: 38px 0;
-      }
+      @include common-container(40px);
     }
 
     .project-manage-list {
       width: 70%;
       padding: 20px;
       margin: 0 auto;
-      background-color: #fff;
+      background-color: $mainColor7;
+    }
+  }
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .project-manage-main .project-manage-list,
+    .project-manage-main .project-manage-search {
+      width: 92%;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .project-manage-main .project-manage-list,
+    .project-manage-main .project-manage-search {
+      width: 80%;
     }
   }
 </style>

@@ -1,6 +1,6 @@
 /*
  * @login.ts
- * @deprecated
+ * @deprecated 登录
  * @author czh
  * @update (czh 2021/9/29)
  */

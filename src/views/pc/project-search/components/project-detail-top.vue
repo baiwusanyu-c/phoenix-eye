@@ -4,6 +4,7 @@
     <div class="project-detail-top5-title">
       <span style="margin-right: 16px">{{ title }}</span>
       <be-tag v-if="tokenName" round="4" type="success" custom-class="tag">{{ tokenName }}</be-tag>
+      {{ curPlatform }}
       <el-select v-model="curPlatform" style="float: right; width: 120px" @change="handleSelect">
         <el-option
           v-for="item in platformListDict"
@@ -15,10 +16,7 @@
     </div>
     <el-table ref="Top5List" tooltip-effect="light" :data="data" class="top5-list-table">
       <template #empty>
-        <div class="empty-data" style="width: 100%">
-          <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-          <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-        </div>
+        <empty-data style="width: 100%"></empty-data>
       </template>
       <el-table-column
         v-for="item in header"
@@ -30,12 +28,12 @@
           <span class="table-head">{{ item.label }}</span>
         </template>
         <template #default="scope">
-          <be-ellipsis-copy
+          <ellipsis-copy
             v-if="item.prop === 'address'"
             :target-str="scope.row.address"
             font-length="6"
             end-length="6">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
           <span v-if="item.prop === 'quantity'">
             {{ simulateToFixed(scope.row.quantity) }}
           </span>
@@ -58,19 +56,17 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue'
+  import { computed, defineComponent, ref, watch } from 'vue'
   import { BeProgress, BeTag } from '../../../../../public/be-ui/be-ui.es'
-  import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'
+  import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
+  import type { ITableHeader } from '../../../../utils/types'
   import type { PropType } from 'vue'
-  export interface ITableHeader {
-    prop: string
-    label: string
-  }
   export default defineComponent({
     name: 'ProjectDetailTop',
-    components: { BeTag, BeEllipsisCopy, BeProgress },
+    components: { EmptyData, BeTag, EllipsisCopy, BeProgress },
     props: {
       title: {
         type: String,
@@ -90,7 +86,7 @@
         type: String,
         default: '',
       },
-      defaultPlatfom: {
+      defaultPlatform: {
         type: String,
         default: 'bsc',
       },
@@ -101,9 +97,9 @@
     },
     emits: ['select'],
     setup(props, ctx) {
-      const curPlatform = ref<string>('')
+      const curPlatform = ref<string>(props.defaultPlatform)
       watch(
-        () => props.defaultPlatfom,
+        () => props.defaultPlatform,
         (nVal: string) => {
           curPlatform.value = nVal
         }

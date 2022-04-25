@@ -34,6 +34,11 @@ export default {
   profit: '收益',
   signUp: '注册',
   contact: '联系我们',
+  feedback: {
+    title: '需求反馈',
+    formTitle: '标题',
+    formContent: '内容',
+  },
   header: {
     me: '我',
     language: 'language',
@@ -217,6 +222,7 @@ export default {
       riskPublicOpinion: '风险公共舆情',
       subscribe: '订阅',
       source: '來源',
+      audit: '审计报告',
       contractStatistics: '合约统计',
       transactionsTotal: '交易量(总共)',
       lastDate: '最新交易日期',
@@ -347,5 +353,30 @@ export default {
     failed: '由于未知原因导致订阅失败，请联系我们的客服',
     titleUn: '订阅取消',
     unSubscribes: '取消订阅成功！',
+  },
+  riskPublicInfo: {
+    searchP: '关键词',
+  },
+  trxRetry: {
+    searchP: 'Trx Hash',
+    result: 'You have submitted！please check later on the risk trx page.',
+  },
+  addrMonitor: {
+    searchP: '地址',
+    create: '新 增 监 控',
+    title: '地 址 监 控',
+    tableHeader: {
+      addr: '地址',
+      remark: 'Remark',
+      createTime: '创建时间',
+      link: '事件链接',
+      operate: '操作',
+    },
+    form: {
+      labelAddr: '地址',
+      labelRemark: 'Remark',
+      labelLink: '事件链接',
+      linkDiscr: '添加关联的安全事件链接。',
+    },
   },
 }

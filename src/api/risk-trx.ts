@@ -1,4 +1,10 @@
-// 风险警告 api
+/*
+ * @risk-trx.ts
+ * @deprecated 交易风险
+ * @author czh
+ * @update (czh 2022/2/25)
+ */
+
 import request from '../utils/request'
 import config from '../enums/config'
 import type { IPageParam } from '../utils/types'

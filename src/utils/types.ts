@@ -40,3 +40,125 @@ export interface IPopover {
 export interface ILoginDialog {
   showDialog: boolean
 }
+
+// project-search-detail
+export interface ISafetyData {
+  negative?: string
+  negativeMsg?: string
+  sourceUrl?: string
+  title?: string
+  message?: string
+  from?: string
+  time?: string
+  label?: Array<string>
+}
+
+export interface IContractStatistics {
+  contract_address: string
+  token_name: string
+  platform: string
+  tx_24?: number | string
+  tx_total?: number | string
+  latest_trading_date?: string
+}
+
+export interface IBaseInfo {
+  transactions?: number | string
+  transactionsTotal?: number | string
+  lastTradeData?: string
+  riksTrxNum?: number | string
+  riskPublicOpinion?: number | string
+  github?: string
+  telegram?: string
+  twitter?: string
+  website?: string
+  isSubscribe?: boolean
+  name?: string
+}
+
+export interface ITop5TokenHolder {
+  address?: string
+  percentage?: number
+  quantity?: string
+}
+
+export interface ITop5QuidityPairs extends ITop5TokenHolder {
+  pair?: string
+}
+
+export interface ITop5QuiditySelect {
+  platform?: string
+  records: Array<any>
+}
+
+export interface ITop5TokenHolderSelect {
+  token_address?: string
+  token_name?: string
+  platform?: string
+  records: Array<any>
+}
+
+export interface IAuditList {
+  uuid: string
+  report_num: string
+  report_id: string
+  report_name: string
+  url: string
+  create_time: string
+}
+// create-project
+
+export interface IWebsiteForm {
+  website?: string
+  github?: string
+  twitter?: string
+  telegram?: string
+}
+// risk-trx-list
+export interface IFilterItem {
+  label?: string
+  val: string
+  isActive: boolean
+}
+export interface IRiskTable {
+  getList: Function
+}
+// risk-trx-detail
+export interface IBaseInfoRiskInfo {
+  platform?: string
+  tx_hash?: string
+  slump?: any
+}
+// zipdownload.ts
+export interface INavigator {
+  msSaveBlob?: (blob: any, defaultName?: string) => boolean
+}
+// project-search-detail/project-detail-top
+export interface ITableHeader {
+  prop: string
+  label: string
+}
+// create-addr-monitor
+export interface IAddrMonitorForm {
+  address?: string
+  remark?: string
+  event_link?: string
+  address_monitor_id?: string
+  id?: string
+}
+
+// addr-monitor
+export interface IAddrMonitor extends IAddrMonitorForm {
+  warningNum?: number
+  create_time?: string
+}
+// addr-monitor-detail
+export type IAddrMonitorInfo = IAddrMonitor
+export interface IAddrMonitorDetail {
+  platform: string
+  tx_hash?: string
+  create_time?: string
+  value?: string
+  from_address?: string
+  to_address?: string
+}

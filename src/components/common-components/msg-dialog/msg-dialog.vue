@@ -1,7 +1,7 @@
 /* * @Author: yinian430 * @desc: 基于element的消息小弹窗 * @Date: 2020-07-21 17:06:49 * @Last
 Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
 <template>
-  <div id="be_msg_dialog" class="be-msg-dialog" :class="customClass">
+  <div keyVal="be_msg_dialog" class="be-msg-dialog" :class="customClass">
     <be-dialog
       ref="beMsgDialog"
       :is-show="isShow"
@@ -115,7 +115,6 @@ Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
        */
       const confirm = (): void => {
         ctx.emit('confirm')
-        closeMsg()
       }
       /**
        * 关闭方法
@@ -155,7 +154,7 @@ Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
   }
 </style>
 <style lang="scss">
-  #be_msg_dialog {
+  div[keyVal$='be_msg_dialog'] {
     .msg-dialog {
       top: 26vh;
       left: calc(50% - 218px);

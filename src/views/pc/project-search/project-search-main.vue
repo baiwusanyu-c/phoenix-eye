@@ -2,20 +2,11 @@
 <template>
   <div class="project-search-main eagle-page">
     <div class="project-search-container">
-      <div class="project-manage-search-input">
-        <el-input
-          v-model="searchParams"
-          :placeholder="$t('lang.projectExplorer.searchP')"
-          style="margin-right: 16px" />
-        <be-button
-          type="success"
-          custom-class="eagle-btn search-btn"
-          size="large"
-          round="4"
-          @click="getList">
-          <span>{{ $t('lang.searchT') }}</span>
-        </be-button>
-      </div>
+      <search-input
+        :search-btn-name="$t('lang.searchT')"
+        :placeholder="$t('lang.projectExplorer.searchP')"
+        @search="handleSearch">
+      </search-input>
     </div>
     <div class="project-search-result">
       <!--   示例     -->
@@ -52,12 +43,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
-  import { useEventBus } from '@vueuse/core'
-  import { BeButton } from '../../../../public/be-ui/be-ui.es'
+  import { defineComponent, nextTick, onMounted, ref } from 'vue'
   import composition from '../../../utils/mixin/common-func'
   import { getProjectListUser } from '../../../api/project-explorer'
-  import { getStore, getUrlkey } from '../../../utils/common'
+  import { getUrlkey } from '../../../utils/common'
   import type { IProjParam } from '../../../api/project-explorer'
   declare type projListType = {
     project_id: string
@@ -65,7 +54,6 @@
   }
   export default defineComponent({
     name: 'ProjectSearchMain',
-    components: { BeButton },
     setup() {
       const { message, routerPush } = composition()
       /**
@@ -73,6 +61,12 @@
        */
       // 搜索参数
       const searchParams = ref<string>('')
+      const handleSearch = (data: string): void => {
+        searchParams.value = data
+        nextTick(() => {
+          getList()
+        })
+      }
       // loading
       const loading = ref<boolean>(false)
       /**
@@ -122,34 +116,21 @@
         getList()
       }
 
-      const busLogin = useEventBus<string>('openLogin')
       const ProjIdByEmail = ref<number>(-1)
-      // http://192.168.0.30:3010/#/projectSearch?from=email&id=7
       const initPage = (): void => {
         const urlParams = getUrlkey()
-        const isLogin = getStore('token')
-        // 来自email 打开 且没有登录
-        if (urlParams.from === 'email' && !isLogin) {
-          // 开启登录窗口
-          busLogin.emit()
-          if (urlParams.id) {
-            ProjIdByEmail.value = urlParams.id
-          }
-        }
         // 来自email 打开 且有登录
-        if (urlParams.from === 'email' && isLogin) {
-          // 开启登录窗口
-          if (urlParams.id) {
-            ProjIdByEmail.value = urlParams.id
-            // 直接去态势详情页面
-            routerSwitch(ProjIdByEmail.value.toString())
-          }
+        if (urlParams.from === 'email' && urlParams.id) {
+          ProjIdByEmail.value = urlParams.id
+          // 直接去态势详情页面
+          routerSwitch(ProjIdByEmail.value.toString())
         }
       }
       onMounted(() => {
         initPage()
       })
       return {
+        handleSearch,
         handleDefaultSearch,
         routerSwitch,
         projectList,
@@ -183,33 +164,12 @@
   }
 
   .project-search-container {
-    width: 70%;
-    margin: 40px auto 0 auto;
+    @include common-container(40px);
     text-align: center;
-
-    .project-manage-search-input {
-      display: flex;
-
-      input::-webkit-input-placeholder {
-        /* WebKit browsers */
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        color: $mainColor14;
-      }
-
-      .el-input__inner {
-        height: 52px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
-        font-size: 18px;
-        line-height: 52px;
-        color: $textColor4;
-      }
-    }
   }
 
   .project-search-result {
-    width: 70%;
-    margin: 32px auto 0 auto;
+    @include common-container(32px);
 
     .project-search-eg {
       padding: 24px 24px 8px 24px;

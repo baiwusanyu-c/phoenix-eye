@@ -2,3 +2,4 @@ node_modules
 /src/**/*.scss
 /src/**/svg-dict.ts
 public
+package.json

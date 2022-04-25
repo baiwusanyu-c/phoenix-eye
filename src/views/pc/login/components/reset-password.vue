@@ -135,36 +135,33 @@
       const getCode = (): void => {
         form.value.name = trim(form.value.name)
         refsForm &&
-          (refsForm.refs.resetPwdForm as FormInstance).validateField(
-            'name',
-            (error: string | undefined) => {
-              if (!error) {
-                verifyCodePassword({
-                  userName: form.value.name,
-                })
-                  .then((res: any) => {
-                    if (!res) {
-                      return
+          (refsForm.refs.resetPwdForm as FormInstance).validateField('name', (error: boolean) => {
+            if (error) {
+              verifyCodePassword({
+                userName: form.value.name,
+              })
+                .then((res: any) => {
+                  if (!res) {
+                    return
+                  }
+                  message('success', t('lang.loginConfig.getVerCodeValid') + t('lang.success'))
+                  isTip.value = true
+                  num.value = 60
+                  const codeInerval = setInterval(() => {
+                    if (num.value > 0) {
+                      num.value--
+                    } else {
+                      clearInterval(codeInerval)
+                      isTip.value = false
                     }
-                    message('success', t('lang.loginConfig.getVerCodeValid') + t('lang.success'))
-                    isTip.value = true
-                    num.value = 60
-                    const codeInerval = setInterval(() => {
-                      if (num.value > 0) {
-                        num.value--
-                      } else {
-                        clearInterval(codeInerval)
-                        isTip.value = false
-                      }
-                    }, 1000)
-                  })
-                  .catch(err => {
-                    message('error', err.message || err)
-                    console.error(err)
-                  })
-              }
+                  }, 1000)
+                })
+                .catch(err => {
+                  message('error', err.message || err)
+                  console.error(err)
+                })
             }
-          )
+          })
       }
       // 重置密碼
       const isLogin = ref<boolean>(false)

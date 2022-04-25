@@ -8,25 +8,14 @@
       :data="tableData"
       @row-click="openDetail">
       <template #empty>
-        <div class="empty-data">
-          <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-          <p style="line-height: 25px">{{ $t('lang.noRisk') }}</p>
-        </div>
+        <empty-data content="lang.noRisk"></empty-data>
       </template>
       <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
         <template #default="scope">
-          <div class="flex items-center">
-            <be-icon
-              :icon="iconDict[scope.row.platform.toUpperCase()]"
-              class="mr-2"
-              width="24"
-              height="24">
-            </be-icon>
-            {{ scope.row.platform.toUpperCase() }}
-          </div>
+          <platform-cell :platform="scope.row.platform"></platform-cell>
         </template>
       </el-table-column>
       <el-table-column prop="tx_hash" :width="tableHeader('tx_hash')" align="center">
@@ -34,12 +23,12 @@
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
         </template>
         <template #default="scope">
-          <be-ellipsis-copy
+          <ellipsis-copy
             :target-str="scope.row.tx_hash"
             :is-show-copy-btn="false"
             font-length="7"
             end-length="7">
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </template>
       </el-table-column>
       <el-table-column prop="alert_level" :width="tableHeader('alert_level')" align="center">
@@ -81,14 +70,14 @@
               :key="item + 4"
               custom-class="table-tag"
               round="4">
-              <be-ellipsis-copy
+              <ellipsis-copy
                 :target-str="item"
                 :is-show-copy-btn="false"
                 :is-ellipsis="true"
                 styles="min-width:initial !important"
                 font-length="3"
                 end-length="0">
-              </be-ellipsis-copy>
+              </ellipsis-copy>
             </be-tag>
           </div>
           <div
@@ -113,15 +102,15 @@
           </be-tooltip>
         </template>
         <template #default="scope">
-          <be-ellipsis-copy
+          <ellipsis-copy
             v-if="!scope.row.gainer_address_tag"
             :target-str="scope.row.gainer_address"
             :is-show-copy-btn="false"
             empty-text="/"
             font-length="8"
             end-length="8">
-          </be-ellipsis-copy>
-          <be-ellipsis-copy
+          </ellipsis-copy>
+          <ellipsis-copy
             v-if="scope.row.gainer_address_tag"
             :target-str="scope.row.gainer_address_tag"
             :is-show-copy-btn="false"
@@ -137,7 +126,7 @@
                 {{ scope.row.gainer_address_tag }}
               </p>
             </template>
-          </be-ellipsis-copy>
+          </ellipsis-copy>
         </template>
       </el-table-column>
       <el-table-column prop="amount" :width="tableHeader('amount')" align="center">
@@ -156,19 +145,7 @@
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
         </template>
         <template #default="scope">
-          <el-tooltip placement="top" effect="light">
-            <template #content>
-              <span
-                >{{ formatDate(createDate(scope.row.tx_time)) }} UTC：{{
-                  beijing2utc(scope.row.tx_time)
-                }}</span
-              >
-            </template>
-            <span style="color: #888">
-              <p>{{ formatDate(createDate(scope.row.tx_time)).split(' ')[0] }}</p>
-              <p>{{ formatDate(createDate(scope.row.tx_time)).split(' ')[1] }}</p>
-            </span>
-          </el-tooltip>
+          <date-cell :time="scope.row.tx_time"></date-cell>
         </template>
       </el-table-column>
       <el-table-column v-if="showOperation" width="50" label=" " align="center">
@@ -205,20 +182,25 @@
   import { beijing2utc, createDate, formatDate, openWindow } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
   import { BeIcon, BePagination, BeTag, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
-  import BeEllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
-  import type { IFilterItem } from '../risk-trx-list.vue'
+  import PlatformCell from '../../../../components/common-components/platform-cell/platform-cell.vue'
+  import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
+  import DateCell from '../../../../components/common-components/date-cell/date-cell.vue'
+  import compositionPage from '../../../../utils/mixin/page-param'
   import type { PropType } from 'vue'
-  import type { IOption, IPageParam } from '../../../../utils/types'
-
+  import type { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
+      DateCell,
+      EmptyData,
+      PlatformCell,
       BeTooltip,
       BeIcon,
       BeTag,
       BePagination,
-      BeEllipsisCopy,
+      EllipsisCopy,
     },
     props: {
       projectId: {
@@ -249,13 +231,10 @@
     },
     setup(props) {
       const { message, isEmpty } = composition()
+      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
-      const pageParams = ref<IPageParam>({
-        currentPage: 1,
-        pageSize: 10,
-        total: 0,
-      })
+
       /**
        * 获取表格数据
        */
@@ -266,11 +245,7 @@
         }
         loading.value = true
         if (type === 'reset') {
-          pageParams.value = {
-            currentPage: 1,
-            pageSize: 10,
-            total: 0,
-          }
+          resetPageParam()
         }
         const getFilterParams = (arr: Array<IFilterItem> = []): Array<string> => {
           const res: Array<string> = []
@@ -302,11 +277,7 @@
               pageParams.value.total = res.data.total
             } else {
               tableData.value = []
-              pageParams.value = {
-                currentPage: 1,
-                pageSize: 10,
-                total: 0,
-              }
+              resetPageParam()
               // message('error', 'system error')
             }
             loading.value = false
@@ -327,8 +298,7 @@
         getList()
       }
       const updateNum = (data: IPageParam): void => {
-        pageParams.value.currentPage = 1
-        pageParams.value.pageSize = data.pageSize!
+        updatePageSize(data.pageSize!, pageParams)
         getList()
       }
       /**
@@ -386,23 +356,6 @@
   .risk-table-inner {
     padding: 20px;
     background-color: #fff;
-
-    .more-btn {
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      border: 1px solid $textColor9;
-      border-radius: 30px;
-
-      &:hover {
-        background-color: $mainColor3;
-        border-color: $mainColor3;
-
-        .be-icon {
-          fill: $mainColor7;
-        }
-      }
-    }
 
     /* 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸 */
 

@@ -4,9 +4,9 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <!--    logo    -->
     <div style="display: flex; align-items: center">
-      <div class="expend-logo" @click="routerPush('/riskTrx/list')"></div>
+      <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
       <el-select
-        v-if="isLogin"
+        v-show="isLogin"
         v-model="selectVal"
         filterable
         :placeholder="$t('lang.pleaseSelect')"
@@ -44,23 +44,38 @@
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
-      <be-popover
-        v-if="isLogin && headerConfigMore.length > 0"
-        ref="popoverRouter"
-        placement="bottom"
-        trigger="click"
-        custom-class="popover-router">
-        <template #trigger>
-          <be-icon icon="iconSetting" custom-class="setting"></be-icon>
-        </template>
-        <div
-          v-for="item in headerConfigMore"
-          :key="item.path + 'router'"
-          class="popover-item popover-router-item"
-          @click="routerSwitch(item, item.isPush)">
-          <span>{{ $t(item.name) }}</span>
-        </div>
-      </be-popover>
+      <!--    需求反馈   -->
+      <be-button
+        custom-class="eagle-btn feedback-btn"
+        prev-icon="iconFeedbackEagle"
+        round="4"
+        type="success"
+        @click="openFeedBack"
+        >{{ $t('lang.feedback.title') }}
+      </be-button>
+      <!--    设置菜单   -->
+      <div v-show="isLogin && headerConfigMore.length > 0">
+        <be-popover
+          ref="popoverRouter"
+          placement="bottom"
+          trigger="click"
+          custom-class="popover-router">
+          <template #trigger>
+            <be-icon icon="iconSetting" custom-class="setting"></be-icon>
+          </template>
+          <div
+            v-for="item in headerConfigMore"
+            :key="item.path + 'router'"
+            :class="`popover-item popover-router-item ${
+              item.index === active ? 'active-dropdown' : ''
+            }`"
+            @click="routerSwitch(item, item.isPush)">
+            <span>{{ $t(item.name) }}</span>
+          </div>
+        </be-popover>
+      </div>
+
+      <!--    语种   -->
       <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
         <template #trigger>
           <div
@@ -85,24 +100,26 @@
           EN
         </div>
       </be-popover>
-      <be-popover v-if="isLogin" placement="bottom" trigger="click" custom-class="popover-logout">
-        <template #trigger>
-          <span class="dropdown-link">
-            <div class="tsgz-user">{{ loginUser }}</div>
-          </span>
-        </template>
-        <div class="popover-item" @click="routerSwitch('/logout')">
-          {{ $t('lang.header.logout') }}
-        </div>
-      </be-popover>
-      <be-button
-        v-if="!isLogin"
-        custom-class="eagle-btn sign-up-btn"
-        round="4"
-        type="success"
-        @click="openLogin"
-        >{{ $t('lang.loginConfig.login') }}</be-button
-      >
+      <!--    登出   -->
+      <div v-show="isLogin">
+        <be-popover placement="bottom" trigger="click" custom-class="popover-logout">
+          <template #trigger>
+            <span class="dropdown-link">
+              <div class="tsgz-user">{{ loginUser }}</div>
+            </span>
+          </template>
+          <div class="popover-item" @click="routerSwitch('/logout')">
+            {{ $t('lang.header.logout') }}
+          </div>
+        </be-popover>
+      </div>
+
+      <!--    登陆   -->
+      <div v-show="!isLogin">
+        <be-button custom-class="eagle-btn sign-up-btn" round="4" type="success" @click="openLogin"
+          >{{ $t('lang.loginConfig.login') }}
+        </be-button>
+      </div>
     </div>
     <!--退出弹窗-->
     <MsgDialog
@@ -111,7 +128,10 @@
       @confirm="confirm(true)"
       @close="confirm(false)">
     </MsgDialog>
+    <!--登錄彈窗-->
     <login-dialog ref="loginDialog"></login-dialog>
+    <!--需求反馈彈窗-->
+    <feed-back ref="feedbackDialog"></feed-back>
   </div>
 </template>
 
@@ -133,14 +153,19 @@
     setSession,
     setStore,
   } from '../utils/common'
+  import { publicHeaderConfig } from '../utils/header-config'
+  import { whiteList } from '../router/router-pc'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
+  import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
+
   /**
    * 头部菜单导航
    */
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
+      FeedBack,
       LoginDialog,
       MsgDialog,
       BeIcon,
@@ -149,10 +174,10 @@
     },
     setup() {
       const { routerPush, route, message } = composition()
+
+      /****************************** 登出相关 ******************************/
       //是否登出
       const isLogout = ref<boolean>(false)
-      //是否登陆
-      const isLogin = ref<boolean>(false)
       /**
        * 登出方法
        * @param {String} command - 登出指令类型
@@ -163,47 +188,32 @@
           isLogout.value = true
         }
       }
-
       /**
        * 退出调用方法
        */
       const confirm = (isConfirm: boolean | string): void => {
         if (isConfirm === true || isConfirm === 'true') {
+          isLogin.value = false
+          headerConfig.value = { ...publicHeaderConfig }
+          headerConfigMore.value = []
           clearSession()
           clearStore()
-          isLogin.value = false
-          headerConfig.value = {
-            JYFX: {
-              icon: '',
-              index: '0',
-              name: 'lang.subNav.navName2',
-              show: true,
-              path: '/riskTrx/list',
-              isPush: true,
-              children: [],
-              isDisabled: false,
-            },
-            /*RPIF: {
-              icon: '',
-              index: '1',
-              name: 'lang.subNav.navName6',
-              show: true,
-              path: '/RiskPublicInformation',
-              isPush: true,
-              children: [],
-              isDisabled: false,
-            },*/
-          }
-          headerConfigMore.value = []
           setStore('language', locale.value)
+          // // 在白名单内的页面，刷新页面来重置权限菜单等
+          nextTick(() => {
+            if (whiteList.indexOf(route.path) < 0) {
+              window.location.href = '#/projectSearch'
+            }
+          })
         }
         isLogout.value = false
-        routerPush('/riskTrx/list')
-        setActiveNav()
       }
+      // 初始化 登录过期bus，登录过期 就调用登出方法
       const bus = useEventBus<string>('loginExpired')
       bus.on(confirm)
-
+      /****************************** 登录相关 ******************************/
+      //是否登陆
+      const isLogin = ref<boolean>(false)
       const openLogin = (): void => {
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
@@ -212,6 +222,7 @@
       busLogin.on(() => {
         openLogin()
       })
+      /****************************** 路由跳转相关 ******************************/
       /**
        * 路由跳转方法
        * @param {any} router
@@ -233,14 +244,16 @@
           setActiveNav()
         })
       })
+      /****************************** 菜单初始化相关 ******************************/
       const loginUser = ref<string>('')
+      // 初始化 路由信息 bus，接口拿到路由信息就初始化相关配置
       const busRouterInfo = useEventBus<string>('getRouterInfo')
       busRouterInfo.on(() => {
         initVar()
       })
       // 初始化方法
       const initVar = (): void => {
-        isLogin.value = getStore('token') ? true : false
+        isLogin.value = !!getStore('token')
         const userInfo = JSON.parse(getStore('userInfo') as string)
         loginUser.value = userInfo ? userInfo.username.substring(0, 2) : ''
         computeLang.value = locale.value === 'en_US' ? 'EN' : '中文'
@@ -248,63 +261,30 @@
           if (loginUser.value) {
             getProjectUser()
             setSession('loginExpiredNum', 'false')
-            setHeaderConfig()
+            // 登錄了 才根據路由接口設置header
+            initHeaderConfig()
           }
+          // 設置高亮
+          setActiveNav()
         })
       }
       onMounted(() => {
         initVar()
       })
-      /**
-       * 配置头部菜单方法
-       * 这里根据权限、禁用等进行设置
-       */
-      const setHeaderConfig = (): void => {
-        initHeaderConfig()
-        setActiveNav()
-      }
 
       /**
        * 初始化菜单配置
        */
-      const headerConfig = ref<any>({
-        JYFX: {
-          icon: '',
-          index: '0',
-          name: 'lang.subNav.navName2',
-          show: true,
-          path: '/riskTrx/list',
-          isPush: true,
-          children: [],
-          isDisabled: false,
-        },
-        /*RPIF: {
-          icon: '',
-          index: '1',
-          name: 'lang.subNav.navName6',
-          show: true,
-          path: '/RiskPublicInformation',
-          isPush: true,
-          children: [],
-          isDisabled: false,
-        },*/
-      })
+      const headerConfig = ref<any>({ ...publicHeaderConfig })
       const headerConfigMore = ref<any>([])
       const store = useStore()
       const initHeaderConfig = (): void => {
         headerConfigMore.value = []
         const menuConfig = store.state.routeConfig
-        const iconList: Array<string> = [
-          '-renwu',
-          '-liulanqi',
-          '-tiaochaquzheng',
-          '-jiaoyifenxi',
-          '-xitongpeizhi',
-        ]
         menuConfig.forEach((val: any, index: number) => {
           if (val.perms === 'XMGL' || val.perms === 'TRXRESET') {
             headerConfigMore.value.push({
-              index: (index + 1).toString(),
+              index: (index + 3).toString(),
               name: val.meta.title,
               show: !val.hidden,
               path: val.path,
@@ -314,16 +294,16 @@
             })
             return
           }
-          headerConfig.value[val.perms as string] = {
-            icon: iconList[index],
-            index: (index + 1).toString(),
+          const menu = ref<any>({
+            index: (index + 3).toString(),
             name: val.meta.title,
             show: !val.hidden,
             path: val.path,
             isPush: true,
             children: [],
             isDisabled: false,
-          }
+          })
+          headerConfig.value[val.perms as string] = menu
         })
       }
       /**
@@ -355,28 +335,44 @@
                 })
               }
             })
+            // 匹配设置内的菜单
+            if (active.value === '') {
+              matchMenu()
+            }
           } catch (e) {
             setFocusStyle(menuList)
           }
         })
       }
-      // prettier-ignore
-      const setFocusStyle = (menuList: any): void => {
-        // 激活元素设置聚焦 规避bug 3825
-        nextTick(() => {
-          for (let i = 0; i < menuList.length; i++) {
-            const elm = menuList[Number(i)] as HTMLElement
-            if (elm.className.indexOf('is-active') > -1) {
-              elm.focus()
-            }
+      const matchMenu = (): void => {
+        Object.keys(headerConfigMore.value).forEach(val => {
+          if (
+            route.path.indexOf(headerConfigMore.value[val].path) > -1 ||
+            route.meta.title === headerConfigMore.value[val].name
+          ) {
+            active.value = `${parseInt(headerConfigMore.value[val].index)}`
+            throw new Error('')
           }
         })
       }
-
+      // prettier-ignore
+      const setFocusStyle = (menuList: any): void => {
+            // 激活元素设置聚焦 规避bug 3825
+            nextTick(() => {
+                for (let i = 0; i < menuList.length; i++) {
+                    const elm = menuList[Number(i)] as HTMLElement
+                    if (elm.className.indexOf('is-active') > -1) {
+                        elm.focus()
+                    }
+                }
+            })
+        }
+      /****************************** 语种切换相关 ******************************/
       // 语种切换
       const { locale } = useI18n()
       const instanceInner = getCurrentInstance()
       const busLanguage = useEventBus<string>('language')
+      const computeLang = ref<string>('EN')
       const changeLanguage = (data: string): void => {
         setStore('language', data)
         locale.value = data
@@ -384,8 +380,7 @@
         ;(instanceInner?.refs.popoverLang as IPopover).close()
         busLanguage.emit(locale.value)
       }
-      const computeLang = ref<string>('EN')
-
+      /****************************** 项目选择相关 ******************************/
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
@@ -424,14 +419,21 @@
         // 清空時
         if (selectVal.value === '') {
           removeStore('curSelectProjId')
-          routerPush('/riskTrx/list')
+          routerPush('/projectSearch')
           return
         }
         setStore('curSelectProjId', selectVal.value)
         routerPush('/projectSearch/detail', { id: selectVal.value })
         selectProjBus.emit(selectVal.value)
       }
+      /**
+       * 打开需求反馈
+       */
+      const openFeedBack = (): void => {
+        ;(instanceInner?.refs.feedbackDialog as ILoginDialog).showDialog = true
+      }
       return {
+        openFeedBack,
         routerPush,
         handleProjectSelect,
         getProjectUser,
@@ -456,12 +458,17 @@
 
 <style lang="scss">
   .project-select {
-    width: 214px;
+    max-width: 214px;
     background: white;
   }
 
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
+    min-width: initial;
+  }
+
+  .tsgz-nav-menu .feedback-btn {
+    width: 120px;
     min-width: initial;
   }
 
@@ -541,6 +548,7 @@
       background-size: 100% 100%;
 
       .setting {
+        margin-left: 10px;
         vertical-align: middle;
         cursor: pointer;
 
@@ -660,39 +668,39 @@
       }
     }
   }
+
+  /* 150% 适配 */
+  @media screen and (max-width: 1326px) {
+    .tsgz-nav-menu .expend-logo {
+      width: 100px;
+      background-size: contain;
+    }
+    .tsgz-nav-menu .el-input__inner {
+      width: 120px;
+    }
+    /*.project-select{
+          width: 120px;
+      }*/
+    .tsgz-nav-menu .el-menu-item {
+      padding: 0 5px;
+      font-size: 12px;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .tsgz-nav-menu .expend-logo {
+      width: 120px;
+      background-size: contain;
+    }
+    .tsgz-nav-menu .el-input__inner {
+      width: 160px;
+    }
+    /*.project-select{
+          width: 160px;
+      }*/
+    .tsgz-nav-menu .el-menu-item {
+      padding: 0 10px;
+    }
+  }
 </style>
-
-<!--1080p的105% - 125%放大-->
-<!--
-<style scoped lang="scss">
-@media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1536px) and (max-height: 880px) and (max-width: 1830px) {
-
-}
-</style>
-&lt;!&ndash;1080p的130% - 140%放大&ndash;&gt;
-<style scoped lang="scss">
-@media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1326px) and (max-height: 710px) and (max-width: 1478px) {
-
-}
-</style>
-&lt;!&ndash;1080p的145% - 150%放大&ndash;&gt;
-<style scoped lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-}
-</style>
-<style lang="scss">
-@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
-
-}
-</style>-->

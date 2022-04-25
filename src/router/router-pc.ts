@@ -9,7 +9,7 @@ import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 const routes = [
   {
     path: '/',
-    redirect: '/riskTrx/list',
+    redirect: '/ProjectSearch',
   },
   {
     path: '/',
@@ -23,26 +23,49 @@ const routes = [
         component: () => import('../views/pc/empty-page/404.vue'),
         meta: { title: '404' },
       },
+      // 风险交易
       {
         path: '/riskTrx/list',
-        name: 'riskTrx',
+        name: 'RiskTrx',
         component: () => import('../views/pc/risk-trx/risk-trx-list.vue'),
         meta: { title: 'lang.subNav.navName2' },
       },
+      {
+        path: '/riskTrx/detail',
+        name: 'RiskTrxDetail',
+        component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
+        meta: { title: 'lang.subNav.navName2' },
+      },
+      // 公共舆情
       {
         path: '/RiskPublicInformation',
         name: 'RiskPublicInformation',
         component: () => import('../views/pc/risk-public-info/risk-public-info.vue'),
         meta: { title: 'lang.subNav.navName6' },
       },
+      // 地址监控详情
       {
-        path: '/riskTrx/detail',
-        name: 'riskTrxDetail',
-        component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
-        meta: { title: 'lang.subNav.navName2' },
+        path: '/addressMonitor/detail',
+        name: 'AddressMonitorDetail',
+        component: () => import('../views/pc/addr-monitor/addr-monitor-detail.vue'),
+        meta: { title: 'lang.subNav.navName7' },
+      },
+      // 项目浏览器
+      {
+        path: '/projectSearch',
+        name: 'ProjectSearch',
+        component: () => import('../views/pc/project-search/project-search-main.vue'),
+        meta: { title: 'lang.subNav.navName5' },
+      },
+      {
+        path: '/projectSearch/detail',
+        name: 'ProjectSearchDetail',
+        component: () => import('../views/pc/project-search/project-search-detail.vue'),
+        meta: { title: 'lang.subNav.navName5' },
       },
     ],
   },
+  // 外部对接页面
   {
     path: '/external/riskTrx/list',
     name: 'externalRiskTrxDetail',
@@ -63,13 +86,14 @@ const metaTitleDict: any = {
 const routerDict: IOption = {
   'pc/project-management/project-manage-main': () =>
     import('../views/pc/project-management/project-manage-main.vue'),
-  'pc/project-search/project-search-main': () =>
-    import('../views/pc/project-search/project-search-main.vue'),
-  'pc/project-search/project-search-detail': () =>
-    import('../views/pc/project-search/project-search-detail.vue'),
   'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
   'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
 }
+export const whiteList: Array<string> = [
+  '/riskTrx/list',
+  '/ProjectSearch',
+  '/RiskPublicInformation',
+]
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
   treeData.forEach((val: any) => {
@@ -80,7 +104,6 @@ export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
     // 将meta.title 配置成国家化变量
     val.meta.title = metaTitleDict[val.perms]
     // 配置组件引入
-    //val.component = () => import(`../views/${val.componentPath}.vue`)
     val.componentPath = isString(val.component) && val.component
     val.component = routerDict[val.componentPath]
     if (val.children && val.children.length > 0) {
@@ -101,7 +124,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
       if (!res || res.data.length === 0) {
         next &&
           next({
-            path: '/riskTrx/list',
+            path: '/ProjectSearch',
           })
         return
       }
@@ -123,7 +146,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
     .catch(err => {
       next &&
         next({
-          path: '/riskTrx/list',
+          path: '/ProjectSearch',
         })
       console.error(err)
     })
@@ -137,7 +160,6 @@ const beforeEachHandle = (router: Router) => {
   router.beforeEach(
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
       // 路由跳转白名单（不需要验证token,和获取路由）
-      const whiteList = ['/riskTrx/list']
       let isWhitePath = false
       whiteList.forEach(val => {
         if (val === to.path) {

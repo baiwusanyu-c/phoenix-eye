@@ -1,6 +1,6 @@
 /*
  * @project-explorer.ts
- * @deprecated
+ * @deprecated 项目浏览器
  * @author czh
  * @update (czh 2022/2/25)
  */
@@ -72,5 +72,16 @@ export function deleteSubscribe(params: ISubscribe) {
   return request({
     url: `${config.baseURL}/ussa/project/subscription/delete/${params.project_id}`,
     method: 'post',
+  })
+}
+export interface IContractReport extends IPageParam {
+  project_id: number
+}
+// 获取项目合约报告
+export function getContractReportList(params: IContractReport) {
+  return request({
+    url: `${config.baseURL}/ussa/project/contract/report/list`,
+    method: 'post',
+    params,
   })
 }

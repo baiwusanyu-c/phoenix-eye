@@ -25,3 +25,4 @@ export enum webURL {
   contact_telegram = 'https://t.me/+dD8Bnqd133RmNWNl',
   contact_discord = 'https://discord.gg/B4QJxhStV4',
 }
+export const previewUrl = '/website/common/preview/single'

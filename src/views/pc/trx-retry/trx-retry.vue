@@ -23,7 +23,7 @@
           custom-class="eagle-btn search-btn"
           size="large"
           round="4"
-          @click="getList">
+          @click="reTry">
           <span>{{ $t('lang.reTry') }}</span>
         </be-button>
       </div>
@@ -38,8 +38,6 @@
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'
-  // import { message } from '../../../utils/common'
-
   export default defineComponent({
     name: 'TrxRetry',
     components: {
@@ -81,8 +79,7 @@
   }
 
   .trx-retry-container {
-    width: 70%;
-    margin: 40px auto 0 auto;
+    @include common-container(40px);
     text-align: center;
 
     .project-manage-search-input {
