@@ -63,6 +63,7 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
+  import { debounce } from '../../../utils/common'
   import RiskTrxTable from './components/risk-trx-table.vue'
   import type { IFilterItem, IRiskTable } from '../../../utils/types'
 
@@ -109,15 +110,16 @@
       /**
        * 处理过滤点击
        */
-      const handleFilterClick = (type: string, item: IFilterItem): void => {
+      const handleFilterClick = debounce((type: string, item: IFilterItem) => {
         item.isActive = !item.isActive
         getList()
-      }
+      }, 500)
       const tabelInstance = getCurrentInstance()
       const getList = (): void => {
         ;(tabelInstance?.refs.RiskTrxTable as IRiskTable).getList('reset')
       }
       return {
+        debounce,
         getList,
         filterChainItem,
         filterTypeItem,
