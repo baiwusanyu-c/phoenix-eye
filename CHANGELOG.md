@@ -86,3 +86,14 @@ style: 修改了部分文案
 style: 项目浏览器搜索结果布局修改为单列
 
 other: 点击 logo 能够返回 risk-trx
+
+## 2022 年 4 月 25 日
+
+### eagle-eye-front_v2.1.0 发版
+
+feat: 增加公共舆情模块  
+feat: 地址监控模块  
+feat: 增加需求反馈功能  
+feat: 风险交易支持滑点  
+feat: 新项目浏览器支持合约查看  
+feat: 项目管理创建项目增加合约表单  

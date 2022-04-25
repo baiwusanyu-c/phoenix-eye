@@ -2,7 +2,8 @@
   <img width="144px" src="https://lianantech.com/commonImg/mail/hermit-logo.png" />
 </p>
 
-#eagle-eye-front 态势感知 ##主要技術依賴  
+#eagle-eye-front 态势感知  
+##主要技術依賴  
 **Vue3.2 + Vue-router4 + Vite2.x + typeScript4.5**
 
 | 名称                             | 版本    | 説明                                                                               |
@@ -44,12 +45,6 @@
 
 `"build:pretest": "vite build --mode pretest",`  
 **以正式發佈環境後臺打包項目**
-
-`"lint:style": "stylelint src/**/*.{html,vue,css}",`  
-**styleLint 校驗**
-
-`"lint:style-fix": "stylelint --fix src/**/*.{html,vue,css}"`  
-**styleLint 樣式代碼修復**
 
 `"lint:ts": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",`  
 **esLint 代碼校验**
