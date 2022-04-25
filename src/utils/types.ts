@@ -122,6 +122,7 @@ export interface IFilterItem {
 }
 export interface IRiskTable {
   getList: Function
+  loading: Ref<boolean>
 }
 // risk-trx-detail
 export interface IBaseInfoRiskInfo {
