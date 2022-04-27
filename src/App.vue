@@ -88,7 +88,7 @@
       background-color: white;
 
       .be-dialog-title {
-        .be-dialog-contanter-head {
+        .be-dialog-container-head {
           box-sizing: border-box;
           padding: 0;
         }

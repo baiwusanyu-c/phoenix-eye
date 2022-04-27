@@ -916,18 +916,18 @@
   }
 
   .subscribe {
-    .be-message-box-container {
+    .be-message-box--container {
       width: 575px;
       height: 148px;
       background: $mainColor7;
       border-radius: 4px;
       box-shadow: 0 12px 34px 0 rgba(0, 0, 0, 0.1);
 
-      .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
+      .be-message-box--title .be-message-box--head div:nth-child(1) .text-info {
         color: $mainColor3;
       }
 
-      .be-message-box-body p {
+      .be-message-box--body p {
         margin-top: 20px;
         font-family: AlibabaPuHuiTi-Medium, sans-serif;
         font-size: 14px;
@@ -939,8 +939,8 @@
   }
 
   .subscribe--normal {
-    .be-message-box-container {
-      .be-message-box-title .be-message-box-head div:nth-child(1) .text-info {
+    .be-message-box--container {
+      .be-message-box--title .be-message-box--head div:nth-child(1) .text-info {
         color: $mainColor19;
       }
     }
