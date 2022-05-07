@@ -35,6 +35,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
+  // @ts-ignore
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'

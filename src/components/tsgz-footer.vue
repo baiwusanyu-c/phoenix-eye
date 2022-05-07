@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts">
+  // @ts-ignore
   import { BeIcon } from '../../public/be-ui/be-ui.es'
   import { openWindow } from '../utils/common'
   import { webURL } from '../enums/link'

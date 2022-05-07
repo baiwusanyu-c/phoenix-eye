@@ -143,6 +143,7 @@
   import { onBeforeRouteUpdate } from 'vue-router'
   import LoginDialog from '../views/pc/login/login-dialog.vue'
   import { getProjectListCurUser } from '../api/project-explorer'
+  // @ts-ignore
   import { BeButton, BeIcon, BePopover } from '../../public/be-ui/be-ui.es.js'
   import composition from '../utils/mixin/common-func'
   import {

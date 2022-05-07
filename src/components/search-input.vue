@@ -15,6 +15,7 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
+  // @ts-ignore
   import { BeButton } from '../../public/be-ui/be-ui.es'
   export default defineComponent({
     name: 'SearchInput',

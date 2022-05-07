@@ -43,6 +43,7 @@
 </template>
 <script setup lang="tsx">
   import { ref } from 'vue'
+  // @ts-ignore
   import { BeButton, BeDialog } from '../public/be-ui/be-ui.es.js'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
   import { browserInfo, getStore, setStore } from './utils/common'

@@ -77,7 +77,7 @@
   import { loginName } from '../../../../api/login'
   import { clearStore, getStore, setSession, setStore, trim } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
-
+  // @ts-ignore
   import { BeButton, BeIcon } from '../../../../../public/be-ui/be-ui.es.js'
   import type { ComponentInternalInstance } from 'vue'
   import type { ElForm } from 'element-plus'

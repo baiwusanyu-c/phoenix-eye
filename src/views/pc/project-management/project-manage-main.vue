@@ -161,6 +161,7 @@
   import { deleteProject, getProjectListAdmin } from '../../../api/project-management'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
+  // @ts-ignore
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import composition from '../../../utils/mixin/common-func'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'

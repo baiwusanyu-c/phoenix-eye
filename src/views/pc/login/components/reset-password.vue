@@ -104,6 +104,7 @@
   import { emailReg, pwdReg } from '../../../../utils/reg'
   import composition from '../../../../utils/mixin/common-func'
   import { trim } from '../../../../utils/common'
+  // @ts-ignore
   import { BeButton } from '../../../../../public/be-ui/be-ui.es'
   import type { ElForm } from 'element-plus'
   import type { ComponentInternalInstance } from 'vue'

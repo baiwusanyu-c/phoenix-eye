@@ -36,9 +36,10 @@
 <script lang="ts">
   import { defineComponent, getCurrentInstance, nextTick, ref } from 'vue'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
+  // @ts-ignore
   import { BeContainer, BeHeader, BeMain } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
-  import type { IFilterItem, IRiskTable } from '../risk-trx/risk-trx-list.vue'
+  import type { IFilterItem, IRiskTable } from '../../../utils/types'
 
   export default defineComponent({
     name: 'ExternalRiskTrx',

@@ -48,6 +48,7 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  // @ts-ignore
   import { BeButton, BeDialog } from '../../public/be-ui/be-ui.es'
   import { createFeedBack } from '../api/feed-back'
   import composition from '../utils/mixin/common-func'

@@ -93,6 +93,7 @@
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  // @ts-ignore
   import { BeButton, BeDialog } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
   import ResetPassword from './components/reset-password.vue'

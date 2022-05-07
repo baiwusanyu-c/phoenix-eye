@@ -10,6 +10,7 @@
 
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
+  // @ts-ignore
   import { BeTooltip } from '../../../../public/be-ui/be-ui.es.js'
   import { beijing2utc, createDate, formatDate, openWindow } from '../../../utils/common'
 

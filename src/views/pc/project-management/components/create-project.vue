@@ -147,6 +147,7 @@
   import { platformListDict } from '../../../../utils/platform-dict'
   import { platformReg } from '../../../../utils/verification'
   import { ceSemiSpecialCharReg } from '../../../../utils/reg'
+  // @ts-ignore
   import { BeButton, BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import { openWindow, trimStr } from '../../../../utils/common'

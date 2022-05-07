@@ -39,6 +39,7 @@
 <script lang="ts">
   // 地址/交易 中间省略显示，鼠标移入显示复制按钮
   import { computed, defineComponent, ref } from 'vue'
+  // @ts-ignore
   import { BeIcon } from '../../../../public/be-ui/be-ui.es'
   import { copyAddress } from '../../../utils/common'
   export default defineComponent({

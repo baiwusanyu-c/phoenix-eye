@@ -167,7 +167,8 @@
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
-  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
+  // @ig
+  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es.js'
   import { getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
