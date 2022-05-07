@@ -137,7 +137,6 @@
 <style lang="scss">
   #feed_back_dialog .feed-back-dialog {
     width: 527px;
-    height: 390px;
 
     .el-form-item__label {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;

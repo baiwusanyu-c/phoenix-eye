@@ -193,11 +193,11 @@
       background-size: 100%;
       border: 4px;
 
-      .be-dialog-title {
+      .be-dialog--title {
         background-color: transparent;
       }
 
-      .be-dialog-body__inner {
+      .be-dialog--body__inner {
         background-color: transparent;
       }
 
@@ -210,7 +210,7 @@
         padding-left: 40px;
       }
 
-      .be-dialog-footer__center {
+      .be-dialog--footer__center {
         display: none;
       }
 

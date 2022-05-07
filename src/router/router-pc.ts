@@ -79,15 +79,21 @@ const metaTitleDict: any = {
   XMGL: 'lang.subNav.navName3',
   DZJK: 'lang.subNav.navName7',
   TRXRESET: 'lang.subNav.navName8',
+  YYTJ: 'lang.subNav.navName9',
+  EYWZGL: 'lang.subNav.navName10',
 }
 // 组件字典
 // 递归路由配置对象时会使用到，其key必须和bms的组件路径一致
 // 有这个字典是为了保持对组建的引用，否则在打包时会被vite的tree shaking掉
 const routerDict: IOption = {
   'pc/project-management/project-manage-main': () =>
-    import('../views/pc/project-management/project-manage-main.vue'),
+    import('../views/pc/manage/project-management/project-manage-main.vue'),
   'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
   'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
+  'pc/manage/malicious-site-management/malicious-site-management': () =>
+    import('../views/pc/manage/malicious-site-management/malicious-site-management.vue'),
+  'pc/manage/operational-statistics/operational-statistics': () =>
+    import('../views/pc/manage/operational-statistics/operational-statistics.vue'),
 }
 export const whiteList: Array<string> = [
   '/riskTrx/list',

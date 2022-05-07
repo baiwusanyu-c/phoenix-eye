@@ -159,7 +159,13 @@
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
-
+  // 管理頁的相關頁面匹配標識
+  const MANAGEMENT_DICT = {
+    XMGL: true,
+    TRXRESET: true,
+    YYTJ: true,
+    EYWZGL: true,
+  }
   /**
    * 头部菜单导航
    */
@@ -283,7 +289,7 @@
         headerConfigMore.value = []
         const menuConfig = store.state.routeConfig
         menuConfig.forEach((val: any, index: number) => {
-          if (val.perms === 'XMGL' || val.perms === 'TRXRESET') {
+          if (MANAGEMENT_DICT[val.perms as keyof typeof MANAGEMENT_DICT]) {
             headerConfigMore.value.push({
               index: (index + 3).toString(),
               name: val.meta.title,

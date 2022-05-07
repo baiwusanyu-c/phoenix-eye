@@ -115,6 +115,8 @@ export default {
     navName6: 'Risk Public Information',
     navName7: 'Address Monitor',
     navName8: 'Trx Retry',
+    navName9: 'Operational Statistics',
+    navName10: 'Malicious Website',
   },
   subNav: {
     navName0: 'On-chain situation',
@@ -128,6 +130,8 @@ export default {
     navName6: 'Risk Public Information',
     navName7: 'Address Monitor',
     navName8: 'Trx Retry',
+    navName9: 'Operational Statistics',
+    navName10: 'Malicious Website',
     navName4s1: 'Risk type configuration',
     navName4s2: 'Risk score configuration',
   },
