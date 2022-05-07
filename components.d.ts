@@ -23,6 +23,7 @@ declare module 'vue' {
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
     PlatformCell: typeof import('./src/components/common-components/platform-cell/platform-cell.vue')['default']
+    ProjectRankingRadar: typeof import('./src/components/project-ranking-radar.vue')['default']
     SearchInput: typeof import('./src/components/search-input.vue')['default']
     TsgzFooter: typeof import('./src/components/tsgz-footer.vue')['default']
     TsgzNavMenu: typeof import('./src/components/tsgz-nav-menu.vue')['default']

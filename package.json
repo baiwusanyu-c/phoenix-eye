@@ -25,6 +25,8 @@
     ]
   },
   "dependencies": {
+    "@antv/data-set": "^0.11.8",
+    "@antv/g2": "^4.2.0",
     "@types/qs": "^6.9.7",
     "@vueuse/core": "^7.3.0",
     "axios": "^0.24.0",
