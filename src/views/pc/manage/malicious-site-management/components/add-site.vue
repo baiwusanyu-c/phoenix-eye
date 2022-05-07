@@ -1,6 +1,6 @@
-/* * @create-addr-monitor.vue * @deprecated * @author czh * @update (czh 2022/4/2) */
+/* * @add-site.vue * @deprecated * @author czh * @update (czh 2022/5/7) */
 <template>
-  <div id="create_addr_monitor">
+  <div id="create_site">
     <be-dialog
       ref="loginDialogInner"
       :titles="$t('lang.addrMonitor.title')"
@@ -50,13 +50,13 @@
   import { defineComponent, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
-  import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
-  import composition from '../../../../utils/mixin/common-func'
-  import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
+  import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../../public/be-ui/be-ui.es.js'
+  import composition from '../../../../../utils/mixin/common-func'
+  // import { addAddressMonitor, updateAddressMonitor } from '../../../../../api/addr-monitor'
   import type { PropType } from 'vue'
-  import type { IAddrMonitorForm } from '../../../../utils/types'
+  import type { IAddrMonitorForm } from '../../../../../utils/types'
   export default defineComponent({
-    name: 'CreateAddrMonitor',
+    name: 'AddSite',
     components: { BeDialog, BeIcon, BeTooltip, BeButton },
     props: {
       // 操作類型
@@ -71,7 +71,7 @@
           return Function
         },
       },
-      // 编辑时，当前操作的地址监控数据对象
+      // 编辑时，当前操作的数据对象
       curItem: {
         type: Object as PropType<IAddrMonitorForm>,
         default: () => {
@@ -170,24 +170,24 @@
           remark: form.value.remark,
           event_link: form.value.event_link,
         }
-        addAddressMonitor(params)
-          .then((res: any) => {
-            if (!res) {
-              return
-            }
-            if (res && res.code === '0000') {
-              message('success', `${t('lang.add')} ${t('lang.success')}`)
-              // 更新列表
-              props.getList('reset')
-              handleClose()
-            } else {
-              message('warning', res.message || res)
-            }
-          })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+        // addAddressMonitor(params)
+        //     .then((res: any) => {
+        //         if (!res) {
+        //             return
+        //         }
+        //         if (res && res.code === '0000') {
+        //             message('success', `${t('lang.add')} ${t('lang.success')}`)
+        //             // 更新列表
+        //             props.getList('reset')
+        //             handleClose()
+        //         } else {
+        //             message('warning', res.message || res)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         message('error', err.message || err)
+        //         console.error(err)
+        //     })
       }
       /**
        * 编辑
@@ -197,24 +197,24 @@
         if (!formVerification()) {
           return
         }
-        updateAddressMonitor(form.value)
-          .then((res: any) => {
-            if (!res) {
-              return
-            }
-            if (res) {
-              message('success', `${t('lang.edit')} ${t('lang.success')}`)
-              // 更新列表
-              props.getList('reset')
-              handleClose()
-            } else {
-              message('warning', res.message || res)
-            }
-          })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+        // updateAddressMonitor(form.value)
+        //     .then((res: any) => {
+        //         if (!res) {
+        //             return
+        //         }
+        //         if (res) {
+        //             message('success', `${t('lang.edit')} ${t('lang.success')}`)
+        //             // 更新列表
+        //             props.getList('reset')
+        //             handleClose()
+        //         } else {
+        //             message('warning', res.message || res)
+        //         }
+        //     })
+        //     .catch(err => {
+        //         message('error', err.message || err)
+        //         console.error(err)
+        //     })
       }
       return {
         handleConfirm,
@@ -228,7 +228,7 @@
 </script>
 
 <style lang="scss">
-  #create_addr_monitor .create-dialog {
+  #create_site .create-dialog {
     width: 527px;
 
     .el-form-item__label {

@@ -88,8 +88,8 @@
       padding-left: 40px;
       background-color: white;
 
-      .be-dialog-title {
-        .be-dialog-container-head {
+      .be-dialog--title {
+        .be-dialog--container__head {
           box-sizing: border-box;
           padding: 0;
         }
