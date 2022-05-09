@@ -132,6 +132,7 @@ export default {
     navName8: 'Trx Retry',
     navName9: 'Operational Statistics',
     navName10: 'Malicious Website',
+    navName11: 'Security Incident',
     navName4s1: 'Risk type configuration',
     navName4s2: 'Risk score configuration',
   },

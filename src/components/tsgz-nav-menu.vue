@@ -165,6 +165,7 @@
     TRXRESET: true,
     YYTJ: true,
     EYWZGL: true,
+    AQSJ: true,
   }
   /**
    * 头部菜单导航

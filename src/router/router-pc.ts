@@ -81,6 +81,7 @@ const metaTitleDict: any = {
   TRXRESET: 'lang.subNav.navName8',
   YYTJ: 'lang.subNav.navName9',
   EYWZGL: 'lang.subNav.navName10',
+  AQSJ: 'lang.subNav.navName11',
 }
 // 组件字典
 // 递归路由配置对象时会使用到，其key必须和bms的组件路径一致
@@ -92,6 +93,8 @@ const routerDict: IOption = {
   'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
   'pc/manage/malicious-site-management/malicious-site-management': () =>
     import('../views/pc/manage/malicious-site-management/malicious-site-management.vue'),
+  'pc/manage/security-incident/security-incident': () =>
+    import('../views/pc/manage/security-incident/security-incident.vue'),
   'pc/manage/operational-statistics/operational-statistics': () =>
     import('../views/pc/manage/operational-statistics/operational-statistics.vue'),
 }

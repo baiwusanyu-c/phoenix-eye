@@ -122,6 +122,7 @@ export default {
     navName8: '重启交易风险',
     navName9: '运营统计',
     navName10: '恶意网站管理',
+    navName11: '安全事件管理',
     navName4s1: '风险类型配置',
     navName4s2: '风险评分配置',
   },
