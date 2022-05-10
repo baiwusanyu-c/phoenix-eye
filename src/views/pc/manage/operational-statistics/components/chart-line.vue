@@ -24,13 +24,13 @@
       })
       // 雷达图实例对象
       const chart = ref<any>()
-      watch(chart.value, () => {
-        renderChart(true)
-      })
-      const renderChart = (isUpdate?: boolean) => {
-        if (!props.lineData || (props.lineData && props.lineData?.length == 0)) {
-          return
+      watch(
+        () => props.lineData,
+        () => {
+          renderChart(true)
         }
+      )
+      const renderChart = (isUpdate?: boolean) => {
         // 更新
         if (isUpdate) {
           chart.value.data(props.lineData)

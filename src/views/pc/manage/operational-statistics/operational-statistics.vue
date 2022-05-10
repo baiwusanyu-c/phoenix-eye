@@ -22,7 +22,7 @@
       </search-input>
     </div>
     <div class="operational-statistics-list eagle-table">
-      <el-table :data="projectList.data">
+      <el-table :data="ipLogList.data">
         <template #empty>
           <empty-data></empty-data>
         </template>
@@ -107,7 +107,7 @@
     setup() {
       const { message, isEmpty } = composition()
       const { pageParams, resetPageParam, updatePageSize } = compositionPage()
-      const projectList = reactive({
+      const ipLogList = reactive({
         data: [],
       })
       const searchParams = ref<string>('')
@@ -160,7 +160,7 @@
               return
             }
             // log列表
-            projectList.data = res.data.page_infos
+            ipLogList.data = res.data.page_infos
             pageParams.value.total = res.data.total
             loading.value = false
           })
@@ -173,20 +173,8 @@
       /**
        * 获取图标数据
        */
-      const lineData = ref<Array<IStatisticsLine>>([
-        { day: '1991', num: 15468 },
-        { day: '1992', num: 16100 },
-        { day: '1993', num: 15900 },
-        { day: '1994', num: 17409 },
-        { day: '1995', num: 17000 },
-        { day: '1996', num: 31056 },
-        { day: '1997', num: 31982 },
-        { day: '1998', num: 32040 },
-        { day: '1999', num: 33233 },
-      ])
-      const pieData = ref<Array<IStatisticsPie>>([
-        { country: 'jtjc-staticDetection', num: 10, ratio: 1 },
-      ])
+      const lineData = ref<Array<IStatisticsLine>>()
+      const pieData = ref<Array<IStatisticsPie>>()
       const getChartData = (): void => {
         getIpStatistics()
           .then(res => {
@@ -206,7 +194,7 @@
         updateNum,
         isEmpty,
         searchParams,
-        projectList,
+        ipLogList,
         loading,
         getList,
         pageParams,
