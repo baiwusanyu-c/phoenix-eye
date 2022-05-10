@@ -18,7 +18,7 @@
       </be-button>
     </div>
     <div class="security-incident-list eagle-table">
-      <el-table :data="projectList.data">
+      <el-table :data="incidentList.data">
         <template #empty>
           <empty-data></empty-data>
         </template>
@@ -78,6 +78,22 @@
           </template>
           <template #default="scope">
             <span>{{ isEmpty(scope.row.opinion_num, '/') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="create_time">
+          <template #header>
+            <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
+          </template>
+          <template #default="scope">
+            <date-cell :time="scope.row.create_time"></date-cell>
+          </template>
+        </el-table-column>
+        <el-table-column prop="create_time">
+          <template #header>
+            <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
+          </template>
+          <template #default="scope">
+            <date-cell :time="scope.row.create_time"></date-cell>
           </template>
         </el-table-column>
         <el-table-column prop="create_time">
@@ -165,7 +181,7 @@
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'
-  // import { deleteProject, getProjectListAdmin } from '../../../../api/project-management'
+  // import { deleteProject, getincidentListAdmin } from '../../../../api/project-management'
   import addSite from './components/add-incident.vue'
   import type {
     ICreateProj,
@@ -193,7 +209,7 @@
       // 当前操作的项目对象
       curItem = createCurItem<ICreateProj>({})
       // 项目列表示例
-      const projectList = reactive({
+      const incidentList = reactive({
         data: [],
       })
 
@@ -241,7 +257,7 @@
         })
       }
       /**
-       * 获取项目列表
+       * 获取列表
        * 重置：清空所有条件进行搜索
        * 翻页：带上所有现有条件搜索
        * 排序：只清空翻页搜索
@@ -253,22 +269,22 @@
           searchParams.value = ''
           resetPageParam()
         }
-        const params: IProjectListAdmin = {
+        const params: IincidentListAdmin = {
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
           param: searchParams.value,
         }
         message('error', 'get')
-        // getProjectListAdmin(params)
+        // getincidentListAdmin(params)
         //     .then(res => {
         //         if (!res) {
         //             return
         //         }
         //         // 项目列表
-        //         projectList.data = res.data.page_infos
+        //         incidentList.data = res.data.page_infos
         //         pageParams.value.total = res.data.total
         //         // 關鍵詞字符串轉化為數組
-        //         projectList.data.forEach((val: any) => {
+        //         incidentList.data.forEach((val: any) => {
         //             const keyword = val.keyword.replace('；', ';')
         //             val.keywordList = keyword
         //                 .split(';')
@@ -303,7 +319,7 @@
         curItem,
         opType,
         showDelete,
-        projectList,
+        incidentList,
         loading,
         createDialog,
         confirmDelete,
@@ -321,11 +337,11 @@
     min-height: calc(100% - 100px);
 
     .security-incident-search {
-      @include common-container(40px);
+      @include common-container(40px, 80%);
     }
 
     .security-incident-list {
-      width: 70%;
+      width: 80%;
       padding: 20px;
       margin: 0 auto;
       background-color: $mainColor7;
