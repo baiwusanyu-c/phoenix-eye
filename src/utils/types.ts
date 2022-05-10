@@ -163,3 +163,15 @@ export interface IAddrMonitorDetail {
   from_address?: string
   to_address?: string
 }
+// chart-pie
+export interface IStatisticsPie {
+  country: string
+  num: number
+  ratio: number
+}
+
+// chart-pie
+export interface IStatisticsLine {
+  day: string
+  num: number
+}

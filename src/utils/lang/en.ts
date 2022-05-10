@@ -399,6 +399,9 @@ export default {
     },
   },
   operationalStatistics: {
+    title: 'Visits',
+    titleDesc: 'Count the IP addresses accessing the system',
+    lineTitle: '30 day data statistics',
     searchP: 'Enter the Ip Address',
     days: 'day',
     weeks: 'week',

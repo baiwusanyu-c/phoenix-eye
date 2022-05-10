@@ -2,10 +2,18 @@
 <template>
   <div class="operational-statistics-main eagle-page">
     <div class="operational-statistics-title">
-      <h2>访问量</h2>
-      <span>统计访问本系统的IP</span>
+      <h2>{{ $t('lang.operationalStatistics.title') }}</h2>
+      <span>{{ $t('lang.operationalStatistics.titleDesc') }}</span>
     </div>
-    <div class="operational-statistics-chart"></div>
+    <div class="operational-statistics-chart">
+      <div class="operational-statistics--chart">
+        <span>{{ $t('lang.operationalStatistics.lineTitle') }}:</span>
+        <chart-line :line-data="lineData"></chart-line>
+      </div>
+      <div class="operational-statistics--chart">
+        <chart-pie :pie-data="pieData"></chart-pie>
+      </div>
+    </div>
     <div class="operational-statistics-search">
       <search-input
         :search-btn-name="$t('lang.searchT')"
@@ -83,25 +91,30 @@
 
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
-  import { useI18n } from 'vue-i18n'
   import compositionPage from '../../../../utils/mixin/page-param'
   import composition from '../../../../utils/mixin/common-func'
-  import { getLogList } from '../../../../api/operational-statistics'
-  import { BePagination } from '../../../../../public/be-ui/be-ui.es.js'
-  import type { IPageParam } from '../../../../utils/types'
-  import type { ILogParam } from '../../../../api/operational-statistics'
+  import { getIpStatistics, getLogList } from '../../../../api/operational-statistics'
   // @ts-ignore
+  import { BePagination } from '../../../../../public/be-ui/be-ui.es.js'
+  import ChartLine from './components/chart-line.vue'
+  import ChartPie from './components/chart-pie.vue'
+  import type { ILogParam } from '../../../../api/operational-statistics'
+  import type { IPageParam, IStatisticsLine, IStatisticsPie } from '../../../../utils/types'
+
   export default defineComponent({
     name: 'OperationalStatistics',
-    components: { BePagination },
+    components: { ChartPie, ChartLine, BePagination },
     setup() {
-      const { t } = useI18n()
       const { message, isEmpty } = composition()
       const { pageParams, resetPageParam, updatePageSize } = compositionPage()
       const projectList = reactive({
         data: [],
       })
       const searchParams = ref<string>('')
+      /**
+       * 搜索方法
+       * @param data
+       */
       const handleSearch = (data: string): void => {
         searchParams.value = data
         nextTick(() => {
@@ -124,7 +137,12 @@
       const loading = ref<boolean>(false)
       onMounted(() => {
         getList('reset')
+        getChartData()
       })
+      /**
+       * 获取列表数据
+       * @param type
+       */
       const getList = (type?: string) => {
         loading.value = true
         if (type === 'reset') {
@@ -152,6 +170,37 @@
             console.error(err)
           })
       }
+      /**
+       * 获取图标数据
+       */
+      const lineData = ref<Array<IStatisticsLine>>([
+        { day: '1991', num: 15468 },
+        { day: '1992', num: 16100 },
+        { day: '1993', num: 15900 },
+        { day: '1994', num: 17409 },
+        { day: '1995', num: 17000 },
+        { day: '1996', num: 31056 },
+        { day: '1997', num: 31982 },
+        { day: '1998', num: 32040 },
+        { day: '1999', num: 33233 },
+      ])
+      const pieData = ref<Array<IStatisticsPie>>([
+        { country: 'jtjc-staticDetection', num: 10, ratio: 1 },
+      ])
+      const getChartData = (): void => {
+        getIpStatistics()
+          .then(res => {
+            if (!res) {
+              return
+            }
+            lineData.value = res.data.history_stat
+            pieData.value = res.data.country_stat
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
       return {
         handleSearch,
         updateNum,
@@ -162,6 +211,8 @@
         getList,
         pageParams,
         pageChange,
+        lineData,
+        pieData,
       }
     },
   })
@@ -176,29 +227,49 @@
     .operational-statistics-search {
       @include common-container(40px);
     }
+
     .operational-statistics-title {
       display: flex;
       align-items: end;
+
       h2 {
-        margin-right: 6px;
+        margin-right: 12px;
+        line-height: 1;
       }
+
       span {
         font-size: 14px;
         font-weight: 400;
         color: $textColor12;
-        line-height: 1.8;
+        line-height: 1.3;
       }
     }
+
     .operational-statistics-list {
       width: 70%;
       padding: 20px;
       margin: 36px auto 0 auto;
       background-color: $mainColor7;
     }
+
+    .operational-statistics-chart {
+      padding: 20px;
+      height: 400px;
+      display: flex;
+      box-sizing: border-box;
+      background-color: $mainColor7;
+    }
+
+    .operational-statistics--chart {
+      flex: 1;
+    }
   }
+
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .operational-statistics-main .operational-statistics-list,
+    .operational-statistics-main .operational-statistics-chart,
+    .operational-statistics-main .operational-statistics-title,
     .operational-statistics-main .operational-statistics-search {
       width: 92%;
     }
@@ -207,6 +278,8 @@
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .operational-statistics-main .operational-statistics-list,
+    .operational-statistics-main .operational-statistics-chart,
+    .operational-statistics-main .operational-statistics-title,
     .operational-statistics-main .operational-statistics-search {
       width: 80%;
     }

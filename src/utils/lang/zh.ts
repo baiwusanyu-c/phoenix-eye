@@ -385,6 +385,9 @@ export default {
     },
   },
   operationalStatistics: {
+    title: '访问量',
+    titleDesc: '统计访问本系统的IP',
+    lineTitle: '30天数据统计',
     searchP: '请输入IP地址搜索',
     days: '天',
     weeks: '周',
