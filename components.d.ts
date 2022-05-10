@@ -20,6 +20,7 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     EmptyData: typeof import('./src/components/common-components/empty-data/empty-data.vue')['default']
     FeedBack: typeof import('./src/components/feed-back.vue')['default']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
