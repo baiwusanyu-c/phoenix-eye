@@ -310,7 +310,8 @@ export const trim = (str: string): string => {
   return str.replace(/^(\s|\xA0)+|(\s|\xA0)+$/g, '')
 }
 // 去收尾看看
-export function trimStr(str: string): string {
+export function trimStr(str: string | undefined): string {
+  if (str === undefined) return ''
   return str.replace(/(^\s*)|(\s*$)/g, '')
 }
 // 数字转百万M 100M

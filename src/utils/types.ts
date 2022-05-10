@@ -1,3 +1,4 @@
+import { getProjectListAdmin } from '../api/project-management'
 import type { ComponentInternalInstance, Plugin } from 'vue'
 import type { Ref } from '@vue/reactivity'
 
@@ -174,4 +175,19 @@ export interface IStatisticsPie {
 export interface IStatisticsLine {
   day: string
   num: number
+}
+// getProjectListAdmin
+export interface IProjectInfo {
+  project_id: string
+  name: string
+  keyword: string
+  contract_num: number
+  risk_tx_num: number
+  opinion_num: number
+  contract_infos: {
+    platform: string
+    contract_address: string
+    label: string
+  }
+  create_time: string
 }

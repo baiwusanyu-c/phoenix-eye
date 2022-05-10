@@ -156,6 +156,7 @@
   import type { IAuditList, IWebsiteForm } from '../../../../../utils/types'
   import type { IContractInfos, ICreateProj, IReport } from '../../../../../api/project-management'
   import type { IPlatformListItem } from '../../../../../utils/platform-dict'
+
   export default defineComponent({
     name: 'CreateProject',
     components: { BeIcon, BeButton, BeTag },
@@ -164,6 +165,11 @@
       type: {
         type: String,
         default: 'add',
+      },
+      // tab标识
+      tabType: {
+        type: String, // sys / usr
+        default: 'sys',
       },
       // 项目id
       projectId: {
@@ -206,23 +212,47 @@
 
       watch(showDialog, nVal => {
         if (nVal) {
-          // 新增时
-          if (props.type === 'add') {
-            projectName.value = ''
-            return
-          }
-          // 獲取詳情信息
-          getDetailData()
+          handleDialogOpen()
         } else {
           // 重置表單
           resetVar()
         }
       })
+      /**
+       * 弹窗开启处理，根据不同情况处理
+       */
+      const handleDialogOpen = (): void => {
+        // TODO 待重构，后端可能用的同一个接口，可以参数区分，不需要这么多分支判断
+        // 用户新增用户项目
+        if (props.type === 'add' && props.tabType === 'usr') {
+          projectName.value = ''
+          return
+        }
+        // 管理员新增系统项目
+        if (props.type === 'add' && props.tabType === 'sys') {
+          projectName.value = ''
+          return
+        }
 
+        // 管理员编辑用户项目
+        // 这里是在管理员才有的页面，project-manage，且 props.tabType === 'usr'
+        if (props.type === 'edit' && props.tabType === 'usr') {
+          // 獲取詳情信息
+          getDetailData()
+          return
+        }
+        // 管理员编辑系统项目
+        if (props.type === 'edit' && props.tabType === 'sys') {
+          // 獲取詳情信息
+          getDetailData()
+          return
+        }
+      }
       /**
        * 弹窗确认方法
        */
       const createProjectConfirm = async function () {
+        // TODO 待重构，后端可能用的同一个接口，可以参数区分
         if (props.type === 'add') {
           await addProject()
         }
@@ -320,16 +350,12 @@
        * @param {Object} params - 搜索参数
        */
       const verificationName = (params: ICreateProj) => {
-        params.name = trimStr(params.name)
+        params.name = trimStr(params.name!)
         if (!params.name) {
           verName.value =
             t('lang.pleaseInput') + t('lang.createProject.createProjectName').toLocaleLowerCase()
           return false
         }
-        // if(params.name && !ceReg.test(params.name)){
-        //     verName.value = t('lang.createProject.verCE')
-        //     return false
-        // }
         return true
       }
       /**
@@ -337,7 +363,7 @@
        * @param {Object} params - 搜索参数
        */
       const verificationKeyword = (params: ICreateProj) => {
-        params.keyword = trimStr(params.keyword)
+        params.keyword = trimStr(params.keyword!)
         if (!params.keyword) {
           verKeyword.value =
             t('lang.pleaseInput') +
@@ -702,9 +728,9 @@
     margin: 5px;
     line-height: 36px;
 
-    span {
-      height: 100%;
-    }
+    /*span {
+        height: 100%;
+    }*/
 
     &:hover {
       color: $textColor3;
