@@ -237,6 +237,7 @@
       const handleSearch = (data: string): void => {
         searchParams.value = data
         nextTick(() => {
+          resetPageParam()
           getList()
         })
       }

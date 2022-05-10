@@ -250,7 +250,7 @@ export default {
       riskTrx: 'RiskTrx(24h)',
       publicOpinion: 'Public Opinion(24h)',
       createTime: 'Create Time',
-      operation: 'operation',
+      operation: 'Operation',
     },
   },
   addRiskWindow: {
@@ -411,6 +411,22 @@ export default {
       IPAttribution: 'IP Attribution',
       accessTime: 'Access Time',
       accessModule: 'Access Module',
+    },
+  },
+  siteManage: {
+    searchP: 'Enter the Url Address',
+    tableHeader: {
+      url: 'Url',
+      tag: 'Tag',
+      source: 'Source',
+      createTime: 'Create Time',
+      operation: 'Operation',
+    },
+    form: {
+      title: 'Create Malicious Site',
+      url: 'Url',
+      tag: 'Tag',
+      inputP: "Please use English ';' when entering multiple URL addresses division",
     },
   },
 }

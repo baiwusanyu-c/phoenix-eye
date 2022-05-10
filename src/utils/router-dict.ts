@@ -25,7 +25,7 @@ export const WHITE_LIST: Array<string> = [
 // 递归路由配置对象时会使用到，其key必须和bms的组件路径一致
 // 有这个字典是为了保持对组建的引用，否则在打包时会被vite的tree shaking掉
 export const ROUTER_COMPONENT_DICT: IOption = {
-  'pc/project-management/project-manage-main': () =>
+  'pc/manage/project-management/project-manage-main': () =>
     import('../views/pc/manage/project-management/project-manage-main.vue'),
   'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
   'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),

@@ -399,4 +399,20 @@ export default {
       accessModule: '访问模块',
     },
   },
+  siteManage: {
+    searchP: '请输入Url地址搜索',
+    tableHeader: {
+      url: '域名',
+      tag: '标签',
+      source: '来源',
+      createTime: '创建时间',
+      operation: '操作',
+    },
+    form: {
+      title: '创建恶意网站信息',
+      url: '域名',
+      tag: '标签',
+      inputP: '输入多个 Url 时，请使用英文 ; 分隔',
+    },
+  },
 }
