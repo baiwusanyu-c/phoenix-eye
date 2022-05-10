@@ -4,6 +4,13 @@ import { getStore, isString } from '../utils/common'
 import { i18n } from '../utils/i18n'
 import { getRouterInfo } from '../api/login'
 import store from '../store/store'
+import { addIpLog, getIpStatistics } from '../api/operational-statistics'
+import {
+  META_TITLE_DICT,
+  ROUTER_COMPONENT_DICT,
+  STATISTICS_ROUTER,
+  WHITE_LIST,
+} from '../utils/router-dict'
 import type { IOption } from '../utils/types'
 import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 const routes = [
@@ -73,36 +80,6 @@ const routes = [
     meta: { title: 'lang.subNav.navName2' },
   },
 ]
-// 路由的metaTitle字典
-const metaTitleDict: any = {
-  XMSS: 'lang.subNav.navName5',
-  XMGL: 'lang.subNav.navName3',
-  DZJK: 'lang.subNav.navName7',
-  TRXRESET: 'lang.subNav.navName8',
-  YYTJ: 'lang.subNav.navName9',
-  EYWZGL: 'lang.subNav.navName10',
-  AQSJ: 'lang.subNav.navName11',
-}
-// 组件字典
-// 递归路由配置对象时会使用到，其key必须和bms的组件路径一致
-// 有这个字典是为了保持对组建的引用，否则在打包时会被vite的tree shaking掉
-const routerDict: IOption = {
-  'pc/project-management/project-manage-main': () =>
-    import('../views/pc/manage/project-management/project-manage-main.vue'),
-  'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
-  'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
-  'pc/manage/malicious-site-management/malicious-site-management': () =>
-    import('../views/pc/manage/malicious-site-management/malicious-site-management.vue'),
-  'pc/manage/security-incident/security-incident': () =>
-    import('../views/pc/manage/security-incident/security-incident.vue'),
-  'pc/manage/operational-statistics/operational-statistics': () =>
-    import('../views/pc/manage/operational-statistics/operational-statistics.vue'),
-}
-export const whiteList: Array<string> = [
-  '/riskTrx/list',
-  '/ProjectSearch',
-  '/RiskPublicInformation',
-]
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
   treeData.forEach((val: any) => {
@@ -111,10 +88,10 @@ export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
       Reflect.deleteProperty(val, 'redirect')
     }
     // 将meta.title 配置成国家化变量
-    val.meta.title = metaTitleDict[val.perms]
+    val.meta.title = META_TITLE_DICT[val.perms]
     // 配置组件引入
     val.componentPath = isString(val.component) && val.component
-    val.component = routerDict[val.componentPath]
+    val.component = ROUTER_COMPONENT_DICT[val.componentPath]
     if (val.children && val.children.length > 0) {
       initRouterConfig(val.children)
     }
@@ -168,9 +145,16 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
 const beforeEachHandle = (router: Router) => {
   router.beforeEach(
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
+      // 匹配运营统计路由
+      if (STATISTICS_ROUTER[to.path]) {
+        addIpLog({ module: STATISTICS_ROUTER[to.path] }).catch(err => {
+          console.error(err)
+        })
+      }
+
       // 路由跳转白名单（不需要验证token,和获取路由）
       let isWhitePath = false
-      whiteList.forEach(val => {
+      WHITE_LIST.forEach(val => {
         if (val === to.path) {
           isWhitePath = true
         }

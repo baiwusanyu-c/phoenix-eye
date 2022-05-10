@@ -384,4 +384,16 @@ export default {
       linkDiscr: '添加关联的安全事件链接。',
     },
   },
+  operationalStatistics: {
+    searchP: '请输入IP地址搜索',
+    days: '天',
+    weeks: '周',
+    month: '月',
+    tableHeader: {
+      IPAddress: 'IP地址',
+      IPAttribution: 'IP归属地',
+      accessTime: '访问时间',
+      accessModule: '访问模块',
+    },
+  },
 }

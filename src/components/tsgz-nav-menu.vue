@@ -155,11 +155,19 @@
     setStore,
   } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
-  import { whiteList } from '../router/router-pc'
+
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
+  // XMSS: Project Explorer
+  // XMGL: Project Management
+  // DZJK: Address Monitor
+  // YYTJ: 'Operational Statistics
+  // EYWZGL: Malicious Website
+  // AQSJ: Security Incident,
+  // FXJY:Risk Trx
+  // FXGGYQ:Risk Public Information
   const MANAGEMENT_DICT = {
     XMGL: true,
     TRXRESET: true,
@@ -209,7 +217,7 @@
           setStore('language', locale.value)
           // // 在白名单内的页面，刷新页面来重置权限菜单等
           nextTick(() => {
-            if (whiteList.indexOf(route.path) < 0) {
+            if (WHITE_LIST.indexOf(route.path) < 0) {
               window.location.href = '#/projectSearch'
             }
           })

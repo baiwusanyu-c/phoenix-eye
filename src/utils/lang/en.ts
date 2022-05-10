@@ -398,4 +398,16 @@ export default {
       linkDiscr: 'Add an associated security event link.',
     },
   },
+  operationalStatistics: {
+    searchP: 'Enter the Ip Address',
+    days: 'day',
+    weeks: 'week',
+    month: 'month',
+    tableHeader: {
+      IPAddress: 'IP Address',
+      IPAttribution: 'IP Attribution',
+      accessTime: 'Access Time',
+      accessModule: 'Access Module',
+    },
+  },
 }
