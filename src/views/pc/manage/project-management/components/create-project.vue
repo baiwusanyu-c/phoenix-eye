@@ -244,7 +244,6 @@
 
   // TODO 逻辑（接口对接）、重构
   // TODO 字段还差  logo_url
-  // TODO 用户搜索下拉任务
   export default defineComponent({
     name: 'CreateProject',
     components: { BeIcon, BeButton, BeTag },

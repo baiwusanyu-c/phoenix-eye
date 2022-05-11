@@ -47,10 +47,11 @@ export function getProjectSituationStatistics(params: IPublicOpinion) {
   })
 }
 
-export function getProjectListCurUser() {
+export function getProjectListCurUser(params: IProjParam) {
   return request({
-    url: `${config.baseURL}/ussa/project/user/list`,
-    method: 'get',
+    url: `${config.baseURL}/ussa/project/user/search`,
+    method: 'post',
+    params,
   })
 }
 

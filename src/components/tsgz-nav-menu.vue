@@ -7,13 +7,15 @@
     <!--    logo    -->
     <div style="display: flex; align-items: center">
       <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
-      <div @click="openDialog()">test</div>
+      <div @click="openDialog()">createProject</div>
       <el-select
         v-show="isLogin"
         v-model="selectVal"
         filterable
+        remote
         :placeholder="$t('lang.pleaseSelect')"
         clearable
+        :remote-method="getProjectUser"
         popper-class="project-select"
         @change="handleProjectSelect">
         <el-option
@@ -282,7 +284,6 @@
         computeLang.value = locale.value === 'en_US' ? 'EN' : '中文'
         nextTick(() => {
           if (loginUser.value) {
-            getProjectUser()
             setSession('loginExpiredNum', 'false')
             // 登錄了 才根據路由接口設置header
             initHeaderConfig()
@@ -407,8 +408,9 @@
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-      const getProjectUser = (): void => {
-        getProjectListCurUser()
+
+      const getProjectUser = (params: string): void => {
+        getProjectListCurUser({ param: params })
           .then(res => {
             if (!res) {
               return
@@ -459,11 +461,10 @@
       return {
         openDialog,
         createDialog,
-
+        getProjectUser,
         openFeedBack,
         routerPush,
         handleProjectSelect,
-        getProjectUser,
         projectList,
         selectVal,
         headerConfigMore,
