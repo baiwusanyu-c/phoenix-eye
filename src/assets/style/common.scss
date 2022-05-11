@@ -44,10 +44,11 @@
   border: none;
 }
 
-.el-input__inner:focus {
-  border: 1px solid $mainColor3;
-}
 
+.el-input__wrapper.is-focus {
+  border: 0;
+  box-shadow: 0 0 0 1px $mainColor3 inset !important;
+}
 .el-textarea__inner:focus {
   color: $textColor3;
   box-shadow: 0 0 0 1px $mainColor3 inset !important;
@@ -89,7 +90,7 @@
 
 //多选框样式
 
-.el-input-group--prepend .el-input__inner,
+.el-input-group--prepend .el-input__wrapper,
 .el-input-group__append {
   background-color: $mainColor7;
   border: none;
@@ -325,24 +326,28 @@
   border-color: $mainColor3;
 }
 
-.el-select .el-input .el-input__inner {
+.el-select .el-input .el-input__wrapper {
   border: 1px solid #dcdfe6;
 }
 
 //下拉样式
-.el-input__inner{
-  border: 1px solid #dcdfe6;
+.el-select .el-input .el-input__wrapper,
+.el-input__wrapper{
+  border: 0
 }
-.el-select .el-input.is-focus .el-input__inner {
-  border-color: $mainColor3 !important;
-  box-shadow: none !important;
+.el-select .el-input.is-focus .el-input__wrapper {
+  border: 0;
+  box-shadow: 0 0 0 1px $mainColor3 inset !important;
 }
-
+.el-select .el-input__wrapper.is-focus {
+  border: 0;
+  box-shadow: 0 0 0 1px $mainColor3 inset !important;
+}
 .el-select-dropdown__item.selected {
   color: $mainColor3;
 }
 
-.el-select .el-input__inner:focus{
+.el-select .el-input__wrapper:focus{
   border-color: $mainColor3 !important;
   box-shadow: none !important;
 }

@@ -12,20 +12,20 @@
         "
         width="1000px">
         <div>
-          <el-form :label-position="labelPosition" label-width="160px" class="projectForm">
-            <h2>
+          <el-form :label-position="labelPosition" label-width="154px" class="projectForm">
+            <h2 class="create--label">
               Contact
-              <span
+              <span class="sub--title"
                 >Please leave your contact information, we will give you the latest status
                 feedback.</span
               >
             </h2>
             <el-form-item label=" ">
-              <span class="reg-start project-star">*</span>
+              <span class="reg-start project-star project-star__contract">*</span>
               <div class="contractSiteBox">
                 <el-select
                   v-model="contractType"
-                  class="contractSiteClass"
+                  class="contract-type--select"
                   :placeholder="$t('lang.createProject.selectContractClass')">
                   <el-option
                     v-for="item in takePlatformListDict"
@@ -49,7 +49,7 @@
                 :rows="7"
                 :placeholder="$t('lang.feedback.formContractP')"></el-input>
             </el-form-item>
-            <h2>1.Basic information</h2>
+            <h2 class="create--label">1.Basic information</h2>
             <!--      ***************        -->
             <el-form-item :label="$t('lang.createProject.createProjectName') + ':'">
               <span class="reg-start project-star">*</span>
@@ -142,17 +142,16 @@
                 :limit="3"
                 :on-exceed="handleExceed"
                 :file-list="fileList">
-                <template #trigger>
-                  <be-button
-                    custom-class="retrieval-btn"
-                    title="Click to match the audit according to the contract">
-                    select file
-                  </be-button>
-                </template>
+                <be-button
+                  prev-icon="upload"
+                  custom-class="retrieval-btn"
+                  title="Click to match the audit according to the contract">
+                  select file
+                </be-button>
               </el-upload>
             </el-form-item>
 
-            <h2>
+            <h2 class="create--label">
               2.Social information
               <be-button
                 custom-class="retrieval-btn"
@@ -179,7 +178,7 @@
               <el-input v-model="websiteForm.telegram" class="projectKeyWordsInput"></el-input>
             </el-form-item>
 
-            <h2>3.Operating information</h2>
+            <h2 class="create--label">3.Operating information</h2>
             <el-form-item :label="'address markup:'">
               <el-input v-model="websiteForm.telegram" class="projectKeyWordsInput"></el-input>
             </el-form-item>
@@ -196,7 +195,7 @@
               <el-input v-model="websiteForm.telegram" class="projectKeyWordsInput"></el-input>
             </el-form-item>
 
-            <h2>
+            <h2 class="create--label">
               4.{{ $t('lang.projectExplorer.detail.audit') }}
               <be-button
                 custom-class="retrieval-btn"
@@ -345,7 +344,7 @@
   import type { IAuditList, IWebsiteForm } from '../../../../../utils/types'
   import type { IContractInfos, ICreateProj, IReport } from '../../../../../api/project-management'
   import type { IPlatformListItem } from '../../../../../utils/platform-dict'
-  // TODO 样式、国际化(label、placeholder)、字段、逻辑（接口对接、权限判断）、重构
+  // TODO 国际化(label、placeholder)、字段、逻辑（接口对接、权限判断）、重构
   export default defineComponent({
     name: 'CreateProject',
     components: { BeIcon, BeButton, BeTag },
@@ -819,6 +818,8 @@
         console.log(111)
       }
       return {
+        handlePreview,
+        handleRemove,
         fileList,
         handleExceed,
         beforeRemove,
@@ -857,6 +858,26 @@
 
 <style lang="scss">
   .createBox {
+    .sub--title {
+      font-size: 14px;
+      font-weight: 400;
+      color: $textColor12;
+    }
+    .create--label {
+      margin-bottom: 20px;
+      line-height: 46px;
+    }
+    .el-dialog__body {
+      padding: 30px;
+    }
+    .contract-type--select {
+      margin-right: 10px;
+    }
+    .el-form--label-left .el-form-item__label {
+      text-align: right;
+      line-height: 40px;
+    }
+
     .el-dialog__title {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
       color: $mainColor3;
@@ -869,10 +890,13 @@
 
     .project-star {
       position: absolute;
-      top: 4px;
-      left: -152px;
+      top: 7px;
+      left: -14px;
     }
-
+    .project-star__contract {
+      left: -20px;
+      top: 5px;
+    }
     .project-Ver {
       position: absolute;
       top: 34px;
@@ -930,7 +954,6 @@
     display: flex;
     align-items: center;
     width: 800px;
-    margin-top: 8px;
   }
 
   .contract-site-box-item {
@@ -973,7 +996,7 @@
   }
 
   .retrieval-btn {
-    width: 98px;
+    width: 120px;
     height: 36px;
     margin: 5px;
     background: $mainColor7;
@@ -991,6 +1014,11 @@
       font-weight: 400;
       line-height: 22px;
       color: #333;
+    }
+    .be-icon--container {
+      use {
+        fill: $mainColor3 !important;
+      }
     }
   }
 </style>
