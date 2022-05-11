@@ -185,7 +185,6 @@
       // 搜索参数
       const searchParams = ref<string>('')
       const handleSearch = (data: string): void => {
-        debugger
         searchParams.value = data
         nextTick(() => {
           resetPageParam()

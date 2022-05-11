@@ -28,12 +28,10 @@
               <div>
                 <name-login></name-login>
                 <div class="change-register">
-                  <el-button type="text" class="forget-btn" @click="forgetPassword">{{
+                  <span class="forget-btn" @click="forgetPassword">{{
                     $t('lang.loginConfig.forget')
-                  }}</el-button>
-                  <el-button class="button-change" type="text" @click="loginOrSingUp">{{
-                    changeLogin
-                  }}</el-button>
+                  }}</span>
+                  <span class="button-change" @click="loginOrSingUp">{{ changeLogin }}</span>
                 </div>
               </div>
             </div>
@@ -43,9 +41,7 @@
               <div>
                 <user-registration @register-success="registerSuc"></user-registration>
                 <div class="change-login">
-                  <el-button class="button-change" type="text" @click="loginOrSingUp">{{
-                    changeLogin
-                  }}</el-button>
+                  <span class="button-change" @click="loginOrSingUp">{{ changeLogin }}</span>
                 </div>
               </div>
             </div>
@@ -54,9 +50,9 @@
               <div class="forget-input-title">{{ $t('lang.loginConfig.rember') }}</div>
               <reset-password @reset-success="resetSuc"></reset-password>
               <div class="change-login">
-                <el-button class="button-change" type="text" @click="forgetPassword">{{
+                <span class="button-change" type="text" @click="forgetPassword">{{
                   changeLogin
-                }}</el-button>
+                }}</span>
               </div>
             </div>
 
@@ -282,6 +278,10 @@
         .change-login {
           display: flex;
           flex-direction: row-reverse;
+          span {
+            line-height: 40px;
+            cursor: pointer;
+          }
         }
       }
 
@@ -306,6 +306,10 @@
         .change-login {
           display: flex;
           flex-direction: row-reverse;
+          span {
+            line-height: 40px;
+            cursor: pointer;
+          }
         }
       }
 
@@ -331,6 +335,13 @@
           display: flex;
           flex-direction: row;
           justify-content: space-between;
+        }
+        .change-register,
+        .change-login {
+          span {
+            line-height: 40px;
+            cursor: pointer;
+          }
         }
 
         .forget-btn {

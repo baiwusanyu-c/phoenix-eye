@@ -2,9 +2,12 @@
 2021/8/2) */
 <template>
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
+    <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
+    </create-project>
     <!--    logo    -->
     <div style="display: flex; align-items: center">
       <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
+      <div @click="openDialog()">test</div>
       <el-select
         v-show="isLogin"
         v-model="selectVal"
@@ -156,6 +159,9 @@
   } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
 
+  import { WHITE_LIST } from '../utils/router-dict'
+  import compositionDialog from '../utils/mixin/dialog-func'
+  import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
@@ -181,6 +187,7 @@
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
+      CreateProject,
       FeedBack,
       LoginDialog,
       MsgDialog,
@@ -448,7 +455,11 @@
       const openFeedBack = (): void => {
         ;(instanceInner?.refs.feedbackDialog as ILoginDialog).showDialog = true
       }
+      const { createDialog, openDialog } = compositionDialog()
       return {
+        openDialog,
+        createDialog,
+
         openFeedBack,
         routerPush,
         handleProjectSelect,

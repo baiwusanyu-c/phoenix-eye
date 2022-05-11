@@ -7,37 +7,29 @@
 
 import request from '../utils/request'
 import config from '../enums/config'
-import type { IPageParam } from '../utils/types' //路径配置
+import { IWebsiteForm } from '../utils/types' //路径配置
+import type { ICreateProj, IPageParam } from '../utils/types'
 // 获取项目列表 （完成） 管理员
 export interface IProjectListAdmin extends IPageParam {
   param?: string
+  type: string
 }
 export function getProjectListAdmin(params: IProjectListAdmin) {
   return request({
-    url: `${config.baseURL}/ussa/project/admin/list`,
+    url: `${config.baseURL}/ussa/project/list`,
     method: 'post',
     params,
   })
 }
 //创建项目 （完成）
 export interface IContractInfos {
-  verAddr?: string
   verContract?: string
   contract_address?: string
-  platform?: string
-  label?: string
 }
-export interface ICreateProj {
-  name?: string
-  is_public?: boolean
-  keyword?: string
-  contract_infos?: Array<IContractInfos>
-  email_list?: Array<string>
-  report_id_list?: Array<number>
-}
+
 export function createProject(params: ICreateProj) {
   return request({
-    url: `${config.baseURL}/ussa/project/create`,
+    url: `${config.baseURL}/ussa/project/add`,
     method: 'post',
     params,
   })
@@ -52,14 +44,14 @@ export interface IReappraise {
 //项目编辑-获取项目详情 （完成）
 export function getProjectInfo(params: IReappraise) {
   return request({
-    url: `${config.baseURL}/ussa/project/edit/${params.id}`,
+    url: `${config.baseURL}/ussa/project/info/${params.id}`,
     method: 'get',
   })
 }
 //项目编辑-保存编辑项目 （完成）
 export function saveEditProject(params: ICreateProj, pathParams: IReappraise) {
   return request({
-    url: `${config.baseURL}/ussa/project/edit/${pathParams.id}`,
+    url: `${config.baseURL}/ussa/project/update/${pathParams.id}`,
     method: 'post',
     params,
   })
@@ -79,6 +71,19 @@ export function getReport(params?: IReport) {
   return request({
     url: `${config.baseURL}/ussa/project/contract/report/search`,
     method: 'post',
+    params,
+  })
+}
+
+export interface IMatchSocial {
+  platform: string
+  token_address: string
+}
+
+export function getMatchSocial(params?: IMatchSocial) {
+  return request({
+    url: `${config.baseURL}/ussa/project/search/contact`,
+    method: 'get',
     params,
   })
 }

@@ -10,8 +10,8 @@
       </template>
       <template #default="scope">
         <ellipsis-copy
-          :target-str="scope.row.name"
-          :is-ellipsis="scope.row.name.length > 8 ? true : false"
+          :target-str="scope.row.project_name"
+          :is-ellipsis="scope.row.project_name.length > 8 ? true : false"
           :is-show-copy-btn="false"
           :is-tooltip="true"
           styles="color: black;font-weight: bold;font-size: 16px;"
@@ -44,20 +44,12 @@
         <span>{{ scope.row.contract_num }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="risk_tx_num">
+    <el-table-column prop="audit_report_num">
       <template #header>
-        <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
+        <span class="table-head">{{ $t('lang.createProject.tableHeader.auditNum') }}</span>
       </template>
       <template #default="scope">
-        <span>{{ isEmpty(scope.row.risk_tx_num, '/') }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column prop="opinion_num">
-      <template #header>
-        <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
-      </template>
-      <template #default="scope">
-        <span>{{ isEmpty(scope.row.opinion_num, '/') }}</span>
+        <span>{{ isEmpty(scope.row.audit_report_num, '/') }}</span>
       </template>
     </el-table-column>
     <el-table-column prop="create_time">
@@ -103,7 +95,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
   // @ts-ignore
-  import { BeButton, BeIcon, BePagination } from '../../../../../../public/be-ui/be-ui.es.js'
+  import { BeIcon } from '../../../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../../../utils/mixin/common-func'
   import EllipsisCopy from '../../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import EmptyData from '../../../../../components/common-components/empty-data/empty-data.vue'
@@ -114,16 +106,15 @@
     components: {
       EmptyData,
       EllipsisCopy,
-      BeButton,
+
       BeIcon,
-      BePagination,
     },
-    emits: ['operation'],
     props: {
       list: {
         type: Array as PropType<Array<IProjectInfo>>,
       },
     },
+    emits: ['operation'],
     setup(props, ctx) {
       const { isEmpty } = composition()
       const handleOperation = (type: string, data: IProjectInfo): void => {

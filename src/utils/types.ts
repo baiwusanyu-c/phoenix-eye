@@ -1,6 +1,5 @@
 import { getProjectListAdmin } from '../api/project-management'
-import type { ComponentInternalInstance, Plugin } from 'vue'
-import type { Ref } from '@vue/reactivity'
+import type { ComponentInternalInstance, Plugin, Ref } from 'vue'
 
 // 定义插件类型，组件的引用会用到这个，然后走use、install
 export type SFCWithInstall<T> = T & Plugin
@@ -115,12 +114,40 @@ export interface IWebsiteForm {
   twitter?: string
   telegram?: string
 }
+export interface ICreateProjContact {
+  contact_type?: string
+  contact?: string
+  message_board?: string
+}
+export interface ICreateProjBase {
+  project_name?: string
+  platform?: string
+  keyword?: string
+  token_address?: string
+  logo_url?: string
+  contract_address_arr?: Array<string>
+}
+export interface ICreateProjOperating {
+  address_markup?: string
+  white_paper?: string
+  operation_manual?: string
+  exchange_board?: string
+  test_chain?: string
+}
+export declare type ICreateProj =
+  | { type?: string; report_id_list?: Array<string> }
+  | ICreateProjOperating
+  | ICreateProjBase
+  | ICreateProjContact
+  | IWebsiteForm
+
 // risk-trx-list
 export interface IFilterItem {
   label?: string
   val: string
   isActive: boolean
 }
+
 export interface IRiskTable {
   getList: Function
   loading: Ref<boolean>
