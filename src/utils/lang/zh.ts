@@ -19,6 +19,8 @@ export default {
   add: '新增',
   edit: '编辑',
   delete: '删除',
+  upload: '上传',
+  maxUpload: '文件最大上传100MB',
   search: '查询',
   operation: '操作',
   pleaseInput: '请输入',

@@ -134,12 +134,15 @@ export interface ICreateProjOperating {
   exchange_board?: string
   test_chain?: string
 }
-export declare type ICreateProj =
-  | { type?: string; report_id_list?: Array<string> }
-  | ICreateProjOperating
-  | ICreateProjBase
-  | ICreateProjContact
-  | IWebsiteForm
+export interface ICreateProjExt {
+  type?: string
+  report_id_list?: Array<number>
+}
+export declare type ICreateProj = ICreateProjExt &
+  ICreateProjOperating &
+  ICreateProjBase &
+  ICreateProjContact &
+  IWebsiteForm
 
 // risk-trx-list
 export interface IFilterItem {
@@ -218,3 +221,13 @@ export interface IProjectInfo {
   }
   create_time: string
 }
+
+interface ITest1 {
+  foo?: string
+}
+interface ITest2 {
+  bar?: string
+}
+export declare type TestType = keyof ITest1 | ITest2
+const testVar: TestType = {}
+testVar.bar = 'foo'

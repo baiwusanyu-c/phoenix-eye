@@ -107,13 +107,10 @@
             <!--      ***************        -->
             <el-form-item :label="$t('lang.createProject.logo') + ':'">
               <el-upload
-                class="upload-demo"
-                action="http://192.168.0.2:9527/website/article/admin/uploadMultiImg"
-                :on-remove="handleRemove"
-                :on-success="handleSuccess"
+                action=""
+                :before-upload="handleBeforeUpLoad"
                 :show-file-list="false"
-                :limit="1"
-                :file-list="fileList">
+                :headers="uploadHeader">
                 <be-button
                   prev-icon="upload"
                   custom-class="retrieval-btn"
@@ -122,7 +119,12 @@
                 </be-button>
               </el-upload>
             </el-form-item>
-
+            <el-form-item>
+              <img
+                v-show="formBasic.logo_url"
+                style="background-color: #dfe4ea; width: 100px; height: 100px; object-fit: fill"
+                :src="formBasic.logo_url" />
+            </el-form-item>
             <h2 class="create--label">
               2.{{ $t('lang.createProject.label2') }}
               <be-button
@@ -219,6 +221,7 @@
     getProjectInfo,
     getReport,
     saveEditProject,
+    uploadFile,
   } from '../../../../../api/project-management'
   import { platformListDict } from '../../../../../utils/platform-dict'
   import { platformReg } from '../../../../../utils/verification'
@@ -226,7 +229,7 @@
   // @ts-ignore
   import { BeButton, BeIcon, BeTag } from '../../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../../utils/mixin/common-func'
-  import { openWindow, trimStr } from '../../../../../utils/common'
+  import { getStore, openWindow, trimStr } from '../../../../../utils/common'
   import config from '../../../../../enums/config'
   import { previewUrl } from '../../../../../enums/link'
   import type { Ref } from 'vue'
@@ -242,8 +245,7 @@
   import type { IContractInfos, IReport } from '../../../../../api/project-management'
   import type { IPlatformListItem } from '../../../../../utils/platform-dict'
 
-  // TODO 逻辑（接口对接）、重构
-  // TODO 字段还差  logo_url
+  // TODO 重构
   export default defineComponent({
     name: 'CreateProject',
     components: { BeIcon, BeButton, BeTag },
@@ -464,9 +466,10 @@
       }
       /**
        * 校驗必填
-       * @param {Object} params - 搜索参数
+       * @param params
+       * @param target
+       * @param tip
        */
-
       const verificationRequire = (params: string, target: Ref<string>, tip: string) => {
         params = trimStr(params!)
         if (!params) {
@@ -529,18 +532,19 @@
 
         // 校验非空
         if (
-          !verificationRequire(params.contact, verTipContact, 'contact') &&
+          !verificationRequire(params.contact!, verTipContact, 'contact') &&
           dialogType.value === 1
         )
           return false
-        if (!verificationRequire(params.project_name, verTipName, 'createProjectName')) return false
-        if (!verificationRequire(params.keyword, verTipKeyword, 'createProjectKeyWords'))
+        if (!verificationRequire(params.project_name!, verTipName, 'createProjectName'))
+          return false
+        if (!verificationRequire(params.keyword!, verTipKeyword, 'createProjectKeyWords'))
           return false
         // 校验 Keyword
         if (!verificationKeyword(params)) return false
         // 校验非空
-        if (!verificationRequire(params.platform, verTipChain, 'chain')) return false
-        if (!verificationRequire(params.token_address, verTipToken, 'tokenAddress')) return false
+        if (!verificationRequire(params.platform!, verTipChain, 'chain')) return false
+        if (!verificationRequire(params.token_address!, verTipToken, 'tokenAddress')) return false
         // 校验 合约地址格式
         const contractInfos: Array<string> = []
         let hasEmptyOrErr = false
@@ -577,8 +581,7 @@
         if (!formVerification(params)) {
           return
         }
-        // TODO 填写 logo
-        params.logo_url = 'https://staging-cn.vuejs.org/'
+
         // 填写 report_id_list
         params.report_id_list = handleAuditParams(auditList.value)
         //  填写 type
@@ -616,7 +619,7 @@
         if (!formVerification(params)) {
           return
         }
-        // TODO 填写 logo
+
         // params.logo_url = ''
         // 填写 report_id_list
         params.report_id_list = handleAuditParams(auditList.value)
@@ -737,22 +740,46 @@
         })
       }
       /**************************************************************************** logo 上传相关  ***************************************************************/
-      const fileList = ref<UploadUserFile[]>([])
-      const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
-        debugger
-        console.log(file, uploadFiles)
-      }
-      const handleSuccess: UploadProps['onSuccess'] = (file, uploadFiles) => {
-        debugger
-        console.log(file, uploadFiles)
+      const uploadHeader = {
+        Authorization: `Bearer ${getStore('token')}`,
       }
 
+      const handleBeforeUpLoad: UploadProps['beforeUpload'] = (file): boolean => {
+        if (file.size / 1024 / 1024 > 100) {
+          message('warning', `${t('lang.maxUpload')}`)
+          return false
+        }
+        const reader = new FileReader()
+        //转base64
+        reader.onload = function (e) {
+          const fileData = e.target?.result as string
+          const newFile = fileData.split(',')[1]
+          const params = {
+            base64File: newFile,
+            filename: file.name,
+          }
+          uploadFile(params)
+            .then((res: any) => {
+              if (res.code === 200) {
+                formBasic.value.logo_url = res.data
+                message('success', `${t('lang.upload')} ${t('lang.success')}`)
+              } else {
+                message('error', res.message || res)
+              }
+            })
+            .catch(err => {
+              message('error', err.message || err)
+              console.error(err)
+            })
+        }
+        reader.readAsDataURL(file)
+        return false
+      }
       return {
-        handleSuccess,
+        handleBeforeUpLoad,
+        uploadHeader,
         matchSocial,
         dialogType,
-        handleRemove,
-        fileList,
         matchAudit,
         openWindow,
         handleClose,

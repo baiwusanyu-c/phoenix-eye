@@ -20,8 +20,8 @@
         @change="handleProjectSelect">
         <el-option
           v-for="item in projectList"
-          :key="item.project_id + item.name"
-          :label="item.name"
+          :key="item.project_id + item.project_name"
+          :label="item.project_name"
           :value="item.project_id">
         </el-option>
       </el-select>

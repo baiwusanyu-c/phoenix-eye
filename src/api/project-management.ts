@@ -87,3 +87,15 @@ export function getMatchSocial(params?: IMatchSocial) {
     params,
   })
 }
+
+export interface IUpLoad {
+  base64File: string
+  filename: string
+}
+export function uploadFile(params?: IUpLoad) {
+  return request({
+    url: `${config.baseURL}/website/article/admin/uploadImg`,
+    method: 'post',
+    params,
+  })
+}
