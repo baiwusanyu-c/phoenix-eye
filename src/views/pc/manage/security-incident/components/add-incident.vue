@@ -3,7 +3,7 @@
   <div id="create_incident">
     <be-dialog
       ref="loginDialogInner"
-      :titles="$t('lang.addrMonitor.title')"
+      :titles="$t('lang.securityIncident.title')"
       :is-show="showDialog"
       :is-open-modal="true"
       :is-drag="false"
@@ -11,24 +11,42 @@
       custom-class="create-dialog"
       @close="handleClose">
       <div>
-        <el-form :label-position="labelPosition" label-width="120px">
-          <el-form-item :label="$t('lang.addrMonitor.form.labelAddr') + ':'">
+        <el-form label-position="right" label-width="140px">
+          <el-form-item :label="$t('lang.securityIncident.form.project') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.address" :disabled="type === 'edit'"></el-input>
+            <el-input v-model="form.project"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
-            <el-input v-model="form.remark" type="textarea" :rows="7"></el-input>
+          <el-form-item :label="$t('lang.securityIncident.form.attack_type') + ':'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-input v-model="form.attack_type"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('lang.addrMonitor.form.labelLink') + ':'">
-            <div class="form--link">
-              <be-tooltip
-                placement="top"
-                custom-class="addr-monitor--link"
-                :content="$t('lang.addrMonitor.form.linkDiscr')">
-                <be-icon icon="query" color="#333"></be-icon>
-              </be-tooltip>
-              <el-input v-model="form.event_link" class="form--link__input"></el-input>
-            </div>
+          <el-form-item :label="$t('lang.securityIncident.form.loss_amount') + ':'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-input v-model="form.loss_amount" @input="limitInput()">
+              <template #prefix>
+                <span style="width: 30px">$</span>
+              </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item :label="$t('lang.securityIncident.form.abstract_content') + ':'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-input v-model="form.abstract_content" type="textarea" :rows="7"></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('lang.securityIncident.form.event_link') + ':'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-input v-model="form.event_link"></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('lang.securityIncident.form.attack_address_arr') + ':'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-input v-model="form.attack_address_arr" type="textarea" :rows="7"></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('lang.securityIncident.form.attacked_address_arr') + ':'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-input v-model="form.attacked_address_arr" type="textarea" :rows="7"></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('lang.securityIncident.form.attack_trx_arr') + ':'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-input v-model="form.attack_trx_arr" type="textarea" :rows="7"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -52,9 +70,10 @@
   // @ts-ignore
   import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../../../utils/mixin/common-func'
-  // import { addAddressMonitor, updateAddressMonitor } from '../../../../../api/addr-monitor'
+  import { addIncidentInfo, editIncidentInfo } from '../../../../../api/security-incident'
+  import type { IIncident } from '../../../../../api/security-incident'
   import type { PropType } from 'vue'
-  import type { IAddrMonitorForm } from '../../../../../utils/types'
+
   export default defineComponent({
     name: 'AddIncident',
     components: { BeDialog, BeIcon, BeTooltip, BeButton },
@@ -73,7 +92,7 @@
       },
       // 编辑时，当前操作的数据对象
       curItem: {
-        type: Object as PropType<IAddrMonitorForm>,
+        type: Object as PropType<IIncident>,
         default: () => {
           return {}
         },
@@ -82,12 +101,16 @@
     setup(props) {
       const { message } = composition()
       const showDialog = ref<boolean>(false)
-      const labelPosition = ref<string>('right')
-      const form = ref<IAddrMonitorForm>({
-        address: '',
-        remark: '',
+      const form = ref<IIncident>({
+        event_id: '',
+        project: '',
+        attack_type: '',
+        loss_amount: '',
+        abstract_content: '',
         event_link: '',
-        address_monitor_id: '',
+        attack_address_arr: '',
+        attacked_address_arr: '',
+        attack_trx_arr: '',
       })
       watch(showDialog, nVal => {
         if (nVal) {
@@ -114,10 +137,15 @@
        */
       const resetVar = (): void => {
         form.value = {
-          address: '',
-          remark: '',
+          event_id: '',
+          project: '',
+          attack_type: '',
+          loss_amount: '',
+          abstract_content: '',
           event_link: '',
-          address_monitor_id: '',
+          attack_address_arr: '',
+          attacked_address_arr: '',
+          attack_trx_arr: '',
         }
       }
       /**
@@ -125,7 +153,12 @@
        */
       const getDetailData = (): void => {
         form.value = { ...props.curItem }
-        form.value.address_monitor_id = props.curItem.id
+        form.value.event_id = props.curItem.event_id
+        form.value.attack_address_arr = (form.value.attack_address_arr as Array<string>).join(';')
+        form.value.attacked_address_arr = (form.value?.attacked_address_arr as Array<string>).join(
+          ';'
+        )
+        form.value.attack_trx_arr = (form.value?.attack_trx_arr as Array<string>).join(';')
       }
       /**
        * 处理提交确认
@@ -133,9 +166,9 @@
       const handleConfirm = (): void => {
         // 根据类别调用不同接口
         if (props.type === 'add') {
-          createAddrMonitor()
+          createSecurityIncident()
         } else {
-          updateAddrMonitor()
+          updateSecurityIncident()
         }
       }
       const { t } = useI18n()
@@ -143,13 +176,17 @@
        * 表单校验
        */
       const formVerification = (): boolean => {
-        if (!form.value.address) {
-          const msg = `${t('lang.pleaseInput')} ${t('lang.addrMonitor.form.labelAddr')}`
-          message('warning', msg)
-          return false
+        for (const key in form.value) {
+          if (key !== 'event_id') {
+            if (!form.value[key as keyof typeof form.value]) {
+              const msg = `${t('lang.pleaseInput')} ${t(`lang.securityIncident.form.${key}`)}`
+              message('warning', msg)
+              return false
+            }
+          }
         }
         if (props.type === 'edit') {
-          if (!form.value.address_monitor_id) {
+          if (!form.value.event_id) {
             const msg = `${t('lang.pleaseInput')} address_monitor_id`
             message('warning', msg)
             return false
@@ -157,69 +194,77 @@
         }
         return true
       }
+
       /**
        * 新建
        */
-      const createAddrMonitor = () => {
+      const createSecurityIncident = () => {
         // 校验表单
         if (!formVerification()) {
           return
         }
         const params = {
-          address: form.value.address,
-          remark: form.value.remark,
-          event_link: form.value.event_link,
+          ...form.value,
         }
-        // addAddressMonitor(params)
-        //     .then((res: any) => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         if (res && res.code === '0000') {
-        //             message('success', `${t('lang.add')} ${t('lang.success')}`)
-        //             // 更新列表
-        //             props.getList('reset')
-        //             handleClose()
-        //         } else {
-        //             message('warning', res.message || res)
-        //         }
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
+        params.attack_address_arr = (params.attack_address_arr as string).split(';')
+        params.attacked_address_arr = (params.attacked_address_arr as string).split(';')
+        params.attack_trx_arr = (params.attack_trx_arr as string).split(';')
+        addIncidentInfo(params)
+          .then((res: any) => {
+            if (!res) {
+              return
+            }
+            if (res && res.code === '0000') {
+              message('success', `${t('lang.add')} ${t('lang.success')}`)
+              // 更新列表
+              props.getList('reset')
+              handleClose()
+            } else {
+              message('warning', res.message || res)
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
       /**
        * 编辑
        */
-      const updateAddrMonitor = () => {
+      const updateSecurityIncident = () => {
         // 校验表单
         if (!formVerification()) {
           return
         }
-        // updateAddressMonitor(form.value)
-        //     .then((res: any) => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         if (res) {
-        //             message('success', `${t('lang.edit')} ${t('lang.success')}`)
-        //             // 更新列表
-        //             props.getList('reset')
-        //             handleClose()
-        //         } else {
-        //             message('warning', res.message || res)
-        //         }
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
+        form.value.attack_address_arr = (form.value.attack_address_arr as string).split(';')
+        form.value.attacked_address_arr = (form.value.attacked_address_arr as string).split(';')
+        form.value.attack_trx_arr = (form.value.attack_trx_arr as string).split(';')
+        editIncidentInfo(form.value, form.value.event_id as string)
+          .then((res: any) => {
+            if (!res) {
+              return
+            }
+            if (res) {
+              message('success', `${t('lang.edit')} ${t('lang.success')}`)
+              // 更新列表
+              props.getList('reset')
+              handleClose()
+            } else {
+              message('warning', res.message || res)
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
+      }
+      const limitInput = (): void => {
+        form.value.loss_amount = form.value.loss_amount.replace(/[^0-9]/g, '')
       }
       return {
+        limitInput,
         handleConfirm,
         form,
-        labelPosition,
         handleClose,
         showDialog,
       }
@@ -228,8 +273,17 @@
 </script>
 
 <style lang="scss">
+  #create_incident {
+    .be-dialog {
+      overflow-y: auto;
+    }
+  }
+
   #create_incident .create-dialog {
-    width: 527px;
+    position: relative !important;
+    margin-bottom: 50px;
+    margin-top: 26%;
+    width: 800px;
 
     .el-form-item__label {
       font-family: AlibabaPuHuiTi-Regular, sans-serif;
@@ -263,10 +317,11 @@
         line-height: 46px;
       }
     }
+
     .feed-back--star {
       position: absolute;
       top: 7px;
-      left: -134px;
+      left: -150px;
     }
   }
 

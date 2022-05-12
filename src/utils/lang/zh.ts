@@ -428,4 +428,27 @@ export default {
       inputP: '输入多个 Url 时，请使用英文 ; 分隔',
     },
   },
+  securityIncident: {
+    title: 'Security Incident',
+    tableHeader: {
+      project: 'Project',
+      attackType: 'Attack Type',
+      amount: 'Amount Of Loss',
+      link: 'Event Link',
+      attackAddr: 'Attack Address',
+      attackedAddr: 'Attacked Address',
+      attackedTrx: 'Attack Trx',
+      operation: 'Operation',
+    },
+    form: {
+      project: 'Project',
+      attack_type: 'Attack Type',
+      loss_amount: 'Amount Of Loss',
+      abstract_content: 'Abstract',
+      event_link: 'Event Link',
+      attack_address_arr: 'Attack Address',
+      attacked_address_arr: 'Attacked Address',
+      attack_trx_arr: 'Attack Trx',
+    },
+  },
 }

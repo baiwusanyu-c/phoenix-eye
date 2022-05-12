@@ -268,6 +268,7 @@ export default {
       operation: 'Operation',
     },
   },
+
   addRiskWindow: {
     addRiskWindowTitle: 'Add risk type identification rules',
     addRiskWindowClassName: 'Type name',
@@ -442,6 +443,30 @@ export default {
       url: 'Url',
       tag: 'Tag',
       inputP: "Please use English ';' when entering multiple URL addresses division",
+    },
+  },
+  securityIncident: {
+    title: 'Security Incident',
+    searchP: 'project / address /trx hash',
+    tableHeader: {
+      project: 'Project',
+      attackType: 'Attack Type',
+      amount: 'Amount Of Loss',
+      link: 'Event Link',
+      attackAddr: 'Attack Address',
+      attackedAddr: 'Attacked Address',
+      attackedTrx: 'Attack Trx',
+      operation: 'Operation',
+    },
+    form: {
+      project: 'Project',
+      attack_type: 'Attack Type',
+      loss_amount: 'Amount Of Loss',
+      abstract_content: 'Abstract',
+      event_link: 'Event Link',
+      attack_address_arr: 'Attack Address',
+      attacked_address_arr: 'Attacked Address',
+      attack_trx_arr: 'Attack Trx',
     },
   },
 }

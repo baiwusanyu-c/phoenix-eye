@@ -10,7 +10,7 @@ import config from '../enums/config'
 import type { IPageParam } from '../utils/types'
 // 获取项目風險列表
 interface IProjWarning extends IPageParam {
-  platfrom?: string
+  platform?: string
   param?: string
   contract_address?: string
 }

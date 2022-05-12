@@ -12,7 +12,7 @@ import { getCodeImg } from '../../api/login'
 import { BeMessage, BeMsg } from '../../../public/be-ui/be-ui.es.js'
 import { isNumber, isString, openWindow } from '../common'
 import { webURL } from '../../enums/link'
-import type { Ref } from '@vue/reactivity'
+import type { Ref } from 'vue'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
 export default () => {

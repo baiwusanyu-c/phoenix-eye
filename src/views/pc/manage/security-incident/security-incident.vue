@@ -4,7 +4,7 @@
     <div class="security-incident-search">
       <search-input
         :search-btn-name="$t('lang.searchT')"
-        :placeholder="$t('lang.createProject.searchP')"
+        :placeholder="$t('lang.securityIncident.searchP')"
         @search="handleSearch">
       </search-input>
       <be-button
@@ -18,18 +18,18 @@
       </be-button>
     </div>
     <div class="security-incident-list eagle-table">
-      <el-table :data="incidentList.data">
+      <el-table v-loading="loading" :data="incidentList.data">
         <template #empty>
           <empty-data></empty-data>
         </template>
-        <el-table-column prop="name" width="180">
+        <el-table-column prop="project" width="180">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
+            <span class="table-head">{{ $t('lang.securityIncident.tableHeader.project') }}</span>
           </template>
           <template #default="scope">
             <ellipsis-copy
-              :target-str="scope.row.name"
-              :is-ellipsis="scope.row.name.length > 8 ? true : false"
+              :target-str="scope.row.project"
+              :is-ellipsis="scope.row.project.length > 8 ? true : false"
               :is-show-copy-btn="false"
               :is-tooltip="true"
               styles="color: black;font-weight: bold;font-size: 16px;"
@@ -38,15 +38,15 @@
             </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="keywordList" width="180">
+        <el-table-column prop="attack_type" width="180">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.shortName') }}</span>
+            <span class="table-head">{{ $t('lang.securityIncident.tableHeader.attackType') }}</span>
           </template>
           <template #default="scope">
             <ellipsis-copy
-              :target-str="scope.row.keywordList"
+              :target-str="scope.row.attack_type"
               :is-ellipsis="
-                scope.row.keywordList && scope.row.keywordList.length >= 14 ? true : false
+                scope.row.attack_type && scope.row.attack_type.length >= 14 ? true : false
               "
               :is-show-copy-btn="false"
               :is-tooltip="true"
@@ -56,57 +56,91 @@
             </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="contract_num">
+        <el-table-column prop="loss_amount">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
+            <span class="table-head">{{ $t('lang.securityIncident.tableHeader.amount') }}</span>
           </template>
           <template #default="scope">
-            <span>{{ scope.row.contract_num }}</span>
+            {{ isEmpty(scope.row.contract_num, '/') === '/' ? '/' : `$ ${scope.row.contract_num}` }}
           </template>
         </el-table-column>
-        <el-table-column prop="risk_tx_num">
+        <el-table-column prop="event_link">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
+            <span class="table-head">{{ $t('lang.securityIncident.tableHeader.link') }}</span>
           </template>
           <template #default="scope">
-            <span>{{ isEmpty(scope.row.risk_tx_num, '/') }}</span>
+            <ellipsis-copy
+              :target-str="scope.row.event_link"
+              :is-ellipsis="scope.row.event_link.length > 16 ? true : false"
+              :is-show-copy-btn="false"
+              :is-tooltip="true"
+              styles="color:#008EE9;font-weight: bold;font-size: 16px;cursor:pointer"
+              font-length="8"
+              end-length="0"
+              @click="openWindow(`https://${scope.row.event_link}`)">
+            </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="opinion_num">
+        <el-table-column prop="attack_address_arr">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
+            <span class="table-head">{{ $t('lang.securityIncident.tableHeader.attackAddr') }}</span>
           </template>
           <template #default="scope">
-            <span>{{ isEmpty(scope.row.opinion_num, '/') }}</span>
+            <ellipsis-copy
+              v-for="item in scope.row.attack_address_arr"
+              :key="item + 'attack_address_arr'"
+              :target-str="item"
+              :is-ellipsis="item.length > 25 ? true : false"
+              :is-show-copy-btn="false"
+              :is-tooltip="true"
+              font-length="8"
+              end-length="8">
+            </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="create_time">
+        <el-table-column prop="attacked_address_arr">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
+            <span class="table-head">{{
+              $t('lang.securityIncident.tableHeader.attackedAddr')
+            }}</span>
           </template>
           <template #default="scope">
-            <date-cell :time="scope.row.create_time"></date-cell>
+            <ellipsis-copy
+              v-for="item in scope.row.attacked_address_arr"
+              :key="item + 'attacked_address_arr'"
+              :target-str="item"
+              :is-ellipsis="item.length > 25 ? true : false"
+              :is-show-copy-btn="false"
+              :is-tooltip="true"
+              font-length="8"
+              end-length="8">
+            </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="create_time">
+        <el-table-column prop="attack_trx_arr">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
+            <span class="table-head">{{
+              $t('lang.securityIncident.tableHeader.attackedTrx')
+            }}</span>
           </template>
           <template #default="scope">
-            <date-cell :time="scope.row.create_time"></date-cell>
-          </template>
-        </el-table-column>
-        <el-table-column prop="create_time">
-          <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
-          </template>
-          <template #default="scope">
-            <date-cell :time="scope.row.create_time"></date-cell>
+            <ellipsis-copy
+              v-for="item in scope.row.attack_trx_arr"
+              :key="item + 'attack_trx_arr'"
+              :target-str="item"
+              :is-ellipsis="item.length > 25 ? true : false"
+              :is-show-copy-btn="false"
+              :is-tooltip="true"
+              styles="color:#008EE9;font-weight: bold;font-size: 16px;cursor:pointer"
+              font-length="8"
+              end-length="8"
+              @click="openWindow(`https://${item}`)">
+            </ellipsis-copy>
           </template>
         </el-table-column>
         <el-table-column prop="operation">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.operation') }}</span>
+            <span class="table-head">{{ $t('lang.securityIncident.tableHeader.operation') }}</span>
           </template>
           <template #default="scope">
             <el-tooltip placement="top">
@@ -153,12 +187,7 @@
       </div>
     </div>
     <!--    新增、编辑项目弹窗 -->
-    <add-site
-      ref="createDialog"
-      :type="opType"
-      :project-id="curItem.project_id"
-      :get-list="getList">
-    </add-site>
+    <add-site ref="createDialog" :type="opType" :cur-item="curItem" :get-list="getList"> </add-site>
     <!--    删除项目弹窗    -->
     <MsgDialog
       :header-title="$t('lang.delete')"
@@ -181,14 +210,11 @@
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'
-  // import { deleteProject, getincidentListAdmin } from '../../../../api/project-management'
+  import { openWindow } from '../../../../utils/common'
+  import { deleteIncidentInfo, getIncidentList } from '../../../../api/security-incident'
   import addSite from './components/add-incident.vue'
-  import type {
-    ICreateProj,
-    IProjectListAdmin,
-    IReappraise,
-  } from '../../../../api/project-management'
   import type { IPageParam } from '../../../../utils/types'
+  import type { IIncident, IIncidentList } from '../../../../api/security-incident'
   export default defineComponent({
     name: 'SecurityIncident',
     components: {
@@ -207,41 +233,36 @@
       let { createCurItem, curItem, createDialog, opType, openDialog, showDelete } =
         compositionDialog()
       // 当前操作的项目对象
-      curItem = createCurItem<ICreateProj>({})
+      curItem = createCurItem<IIncident>({})
       // 项目列表示例
       const incidentList = reactive({
         data: [],
       })
-
       // loading
       const loading = ref<boolean>(false)
       onMounted(() => {
         getList('reset')
       })
       /**
-       * 确认删除项目信息
+       * 确认删除
        */
       const confirmDelete = () => {
-        message('success', `${t('lang.delete')} ${t('lang.success')}`)
-        // const params: IReappraise = {
-        //     id: (curItem.value as IReappraise).project_id as string,
-        // }
-        // deleteProject(params)
-        //     .then(res => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         if (res) {
-        //             message('success', `${t('lang.delete')} ${t('lang.success')}`)
-        //             // 更新列表
-        //             getList('reset')
-        //             showDelete.value = false
-        //         }
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
+        deleteIncidentInfo(curItem.value.event_id as string)
+          .then(res => {
+            if (!res) {
+              return
+            }
+            if (res) {
+              message('success', `${t('lang.delete')} ${t('lang.success')}`)
+              // 更新列表
+              getList('reset')
+              showDelete.value = false
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
 
       /**
@@ -269,34 +290,25 @@
           searchParams.value = ''
           resetPageParam()
         }
-        const params: IincidentListAdmin = {
+        const params: IIncidentList = {
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
           param: searchParams.value,
         }
-        message('error', 'get')
-        // getincidentListAdmin(params)
-        //     .then(res => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         // 项目列表
-        //         incidentList.data = res.data.page_infos
-        //         pageParams.value.total = res.data.total
-        //         // 關鍵詞字符串轉化為數組
-        //         incidentList.data.forEach((val: any) => {
-        //             const keyword = val.keyword.replace('；', ';')
-        //             val.keywordList = keyword
-        //                 .split(';')
-        //                 .filter((filterVal: any) => filterVal)
-        //                 .join(',')
-        //         })
-        //         loading.value = false
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
+        getIncidentList(params)
+          .then(res => {
+            if (!res) {
+              return
+            }
+            // 项目列表
+            incidentList.data = res.data.page_infos
+            pageParams.value.total = res.data.total
+            loading.value = false
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
       /**
        * 分页方法
@@ -312,6 +324,7 @@
       }
 
       return {
+        openWindow,
         handleSearch,
         updateNum,
         isEmpty,
