@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../enums/config'
-import { getStore, setHeader } from './common'
+import { setHeader } from './request'
 import type { AxiosRequestConfig } from 'axios'
 import type { INavigator } from './types'
 

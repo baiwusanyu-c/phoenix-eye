@@ -229,9 +229,10 @@
   // @ts-ignore
   import { BeButton, BeIcon, BeTag } from '../../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../../utils/mixin/common-func'
-  import { getStore, openWindow, setHeader, trimStr } from '../../../../../utils/common'
+  import { openWindow, trimStr } from '../../../../../utils/common'
   import config from '../../../../../enums/config'
   import { previewUrl } from '../../../../../enums/link'
+  import { setHeader, setPrevUrl } from '../../../../../utils/request'
   import type { Ref } from 'vue'
   import type { UploadProps, UploadUserFile } from 'element-plus'
   import type {
@@ -726,8 +727,7 @@
           })
       }
       const createAuditUrl = (): void => {
-        const prevUrl =
-          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+        const prevUrl = setPrevUrl()
         const baseURL = config.baseURL
         auditList.value.forEach((val: any) => {
           val.url = `${baseURL}${prevUrl}${previewUrl}?fileUuid=${val.uuid}&reportNum=${val.report_num}`

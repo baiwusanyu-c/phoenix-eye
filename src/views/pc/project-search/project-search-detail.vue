@@ -319,6 +319,7 @@
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import config from '../../../enums/config'
+  import { setPrevUrl } from '../../../utils/request'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -467,8 +468,7 @@
           page_num: pageParamsAudit.value.currentPage,
           page_size: pageParamsAudit.value.pageSize,
         }
-        const prevUrl =
-          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+        const prevUrl = setPrevUrl()
         const baseURL = config.baseURL
         getContractReportList(params)
           .then((res: any) => {

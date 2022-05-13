@@ -575,10 +575,3 @@ export const numberToCommaString = (nStr: number): string => {
   }
   return x1 + x2
 }
-
-export const setHeader = (): string => {
-  return !getStore('token') ? '' : `Bearer ${getStore('token')}`
-}
-export const setPrevUrl = (): string => {
-  return !getStore('token') ? '' : `Bearer ${getStore('token')}`
-}

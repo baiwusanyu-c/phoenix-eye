@@ -8,25 +8,23 @@ import axios from 'axios'
 import qs from 'qs'
 import { useEventBus } from '@vueuse/core'
 import config from '../enums/config'
-import {
-  getSession,
-  getStore,
-  message,
-  removeSession,
-  removeStore,
-  setHeader,
-  setSession,
-} from './common'
-
+import { getSession, getStore, message, removeSession, removeStore, setSession } from './common'
+export const setHeader = (): string => {
+  return !getStore('token') ? '' : `Bearer ${getStore('token')}`
+}
+/**
+ * 设置url前缀
+ */
+export const setPrevUrl = (baseUrl = ''): string => {
+  return String(import.meta.env.VITE_PROJECT_ENV) === 'production'
+    ? `${baseUrl}/hermit/back`
+    : `${baseUrl}`
+}
 // create an axios instance
 const service = axios.create({
-  baseURL:
-    String(import.meta.env.VITE_PROJECT_ENV) === 'production'
-      ? `${config.baseURL}/hermit/back/`
-      : config.baseURL,
+  baseURL: setPrevUrl(config.baseURL),
   timeout: 50000, // request timeout
 })
-
 // request interceptor
 service.interceptors.request.use(
   (config: any) => {
