@@ -16,6 +16,7 @@ export const setHeader = (): string => {
 export declare interface IAxiosRes extends AxiosResponse {
   message?: string
   code?: string | number
+  success?: boolean
 }
 /**
  * 设置url前缀

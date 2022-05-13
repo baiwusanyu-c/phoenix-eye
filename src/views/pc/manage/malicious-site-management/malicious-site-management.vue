@@ -117,7 +117,7 @@
   // @ts-ignore
   import { BeButton, BeIcon, BePagination } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
-  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'
 
@@ -129,7 +129,7 @@
     name: 'MaliciousSiteManagement',
     components: {
       EmptyData,
-      EllipsisCopy,
+
       addSite,
       MsgDialog,
       BeButton,

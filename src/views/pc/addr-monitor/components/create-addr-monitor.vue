@@ -175,7 +175,7 @@
             if (!res) {
               return
             }
-            if (res && res.code === '0000') {
+            if (res.success && res.data) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')

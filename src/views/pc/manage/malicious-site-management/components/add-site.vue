@@ -47,13 +47,13 @@
   import { defineComponent, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
-  import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../../public/be-ui/be-ui.es.js'
+  import { BeButton, BeDialog } from '../../../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../../../utils/mixin/common-func'
   import { addRiskUrl } from '../../../../../api/malicious-site'
   import type { IRiskUrl } from '../../../../../api/malicious-site'
   export default defineComponent({
     name: 'AddSite',
-    components: { BeDialog, BeIcon, BeTooltip, BeButton },
+    components: { BeDialog, BeButton },
     props: {
       getList: {
         type: Function,
@@ -133,7 +133,7 @@
             if (!res) {
               return
             }
-            if (res && res.code === '0000') {
+            if (res.success && res.data) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')

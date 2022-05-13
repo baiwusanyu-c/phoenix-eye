@@ -61,7 +61,7 @@
   import { deleteProject, getProjectListAdmin } from '../../../../api/project-management'
   import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
   // @ts-ignore
-  import { BeButton, BeIcon, BePagination } from '../../../../../public/be-ui/be-ui.es'
+  import { BeButton, BePagination } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'

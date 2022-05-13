@@ -4,7 +4,7 @@
  * @author czh
  * @update (czh 2022/5/10)
  */
-import qs from 'qs'
+
 import request from '../utils/request'
 import config from '../enums/config'
 import type { IPageParam } from '../utils/types' //路径配置

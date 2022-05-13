@@ -24,8 +24,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
-  import { useI18n } from 'vue-i18n'
+  import { defineComponent, ref } from 'vue'
+
   import composition from '../../../../utils/mixin/common-func'
   import ProjectManageSys from './project-manage-sys.vue'
   import ProjectManageUsr from './project-manage-usr.vue'
@@ -37,8 +37,7 @@
       ProjectManageSys,
     },
     setup() {
-      const { t } = useI18n()
-      const { message, isEmpty } = composition()
+      const { isEmpty } = composition()
       const tabType = ref<string>('sys')
       const handleClick = (type: string): void => {
         tabType.value = type

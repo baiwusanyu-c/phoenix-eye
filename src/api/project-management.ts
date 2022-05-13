@@ -7,7 +7,7 @@
 
 import request from '../utils/request'
 import config from '../enums/config'
-import { IWebsiteForm } from '../utils/types' //路径配置
+
 import type { ICreateProj, IPageParam } from '../utils/types'
 // 获取项目列表 （完成） 管理员
 export interface IProjectListAdmin extends IPageParam {

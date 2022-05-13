@@ -4,14 +4,14 @@ import { getStore, isString } from '../utils/common'
 import { i18n } from '../utils/i18n'
 import { getRouterInfo } from '../api/login'
 import store from '../store/store'
-import { addIpLog, getIpStatistics } from '../api/operational-statistics'
+import { addIpLog } from '../api/operational-statistics'
 import {
   META_TITLE_DICT,
   ROUTER_COMPONENT_DICT,
   STATISTICS_ROUTER,
   WHITE_LIST,
 } from '../utils/router-dict'
-import type { IOption } from '../utils/types'
+
 import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 const routes = [
   {
