@@ -229,10 +229,12 @@
   // @ts-ignore
   import { BeButton, BeIcon, BeTag } from '../../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../../utils/mixin/common-func'
-  import { openWindow, trimStr } from '../../../../../utils/common'
+  import useUpload from '../../../../../utils/mixin/upload-func'
+  import { catchErr, openWindow, trimStr } from '../../../../../utils/common'
   import config from '../../../../../enums/config'
   import { previewUrl } from '../../../../../enums/link'
-  import { setHeader, setPrevUrl } from '../../../../../utils/request'
+  import { setPrevUrl } from '../../../../../utils/request'
+  import type { IAxiosRes } from '../../../../../utils/request'
   import type { Ref } from 'vue'
   import type { UploadProps, UploadUserFile } from 'element-plus'
   import type {
@@ -607,10 +609,7 @@
               message('warning', res.message || res)
             }
           })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+          .catch(catchErr)
       }
       /**
        * 确认编辑项目方法
@@ -649,10 +648,7 @@
               message('warning', res.message || res)
             }
           })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+          .catch(catchErr)
       }
       /**
        * 匹配社交
@@ -676,10 +672,7 @@
               message('error', res.message || res)
             }
           })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+          .catch(catchErr)
       }
       /**************************************************************************** 合约审计报告相关逻辑  ***************************************************************/
       /**
@@ -721,10 +714,7 @@
               message('error', res.message || res)
             }
           })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+          .catch(catchErr)
       }
       const createAuditUrl = (): void => {
         const prevUrl = setPrevUrl()
@@ -743,40 +733,12 @@
         })
       }
       /**************************************************************************** logo 上传相关  ***************************************************************/
-      const uploadHeader = {
-        Authorization: setHeader(),
-      }
 
-      const handleBeforeUpLoad: UploadProps['beforeUpload'] = (file): boolean => {
-        if (file.size / 1024 / 1024 > 100) {
-          message('warning', `${t('lang.maxUpload')}`)
-          return false
-        }
-        const reader = new FileReader()
-        //转base64
-        reader.onload = function (e) {
-          const fileData = e.target?.result as string
-          const newFile = fileData.split(',')[1]
-          const params = {
-            base64File: newFile,
-            filename: file.name,
-          }
-          uploadFile(params)
-            .then((res: any) => {
-              if (res.code === 200) {
-                formBasic.value.logo_url = res.data
-                message('success', `${t('lang.upload')} ${t('lang.success')}`)
-              } else {
-                message('error', res.message || res)
-              }
-            })
-            .catch(err => {
-              message('error', err.message || err)
-              console.error(err)
-            })
-        }
-        reader.readAsDataURL(file)
-        return false
+      const { uploadHeader, upLoadSingleFile } = useUpload()
+      const handleBeforeUpLoad: UploadProps['beforeUpload'] = file => {
+        return upLoadSingleFile(file, 100, (res: IAxiosRes) => {
+          formBasic.value.logo_url = res.data
+        })
       }
       return {
         handleBeforeUpLoad,

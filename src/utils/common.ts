@@ -495,11 +495,6 @@ export const message = (type: string, info: string, className?: string): void =>
     offsetTop: 80,
     close: true,
   })
-  /* ElMessage({
-    showClose: true,
-    message: info,
-    type: type,
-  })*/
 }
 /**
  * 文本复制
@@ -574,4 +569,9 @@ export const numberToCommaString = (nStr: number): string => {
     x1 = x1.replace(rgx, '$1' + ',' + '$2') //正则式替换
   }
   return x1 + x2
+}
+
+export const catchErr = (err?: any): void => {
+  message('error', err.message || err)
+  console.error(err)
 }

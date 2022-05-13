@@ -11,7 +11,7 @@
  * @update (czh 2022/4/20)
  */
 import { nextTick, ref } from 'vue'
-import type { Ref } from '@vue/reactivity'
+import type { Ref } from 'vue'
 export default () => {
   let curItem: any = null
   function createCurItem<T>(initVal: T): Ref {

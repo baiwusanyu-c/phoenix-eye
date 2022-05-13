@@ -169,7 +169,7 @@
   import { useEventBus } from '@vueuse/core'
   // @ts-ignore
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es.js'
-  import { getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
+  import { catchErr, getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
@@ -237,10 +237,7 @@
               message('warning', t('lang.emptyData'))
             }
           })
-          .catch((err: any) => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+          .catch(catchErr)
       }
 
       const loading = ref<boolean>(false)

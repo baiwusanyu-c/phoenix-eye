@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n'
 import { getCodeImg } from '../../api/login'
 // @ts-ignore
 import { BeMessage, BeMsg } from '../../../public/be-ui/be-ui.es.js'
-import { isNumber, isString, openWindow } from '../common'
+import { isNumber, isString, message, openWindow } from '../common'
 import { webURL } from '../../enums/link'
 import type { Ref } from 'vue'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
@@ -34,22 +34,6 @@ export default () => {
     getCodeImg().then((res: any) => {
       uuid.value = res.uuid
       codeUrl.value = `data:image/gif;base64,${res.img}`
-    })
-  }
-  /**
-   * message 组件显示
-   * @param type 类型
-   * @param info 显示文字
-   * @param className 自定义class
-   */
-  const message = (type: string, info: string, className?: string): void => {
-    BeMessage.service({
-      customClass: className,
-      titles: info,
-      msgType: type,
-      duration: 2500,
-      offsetTop: 80,
-      close: true,
     })
   }
   /**

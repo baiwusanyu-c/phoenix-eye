@@ -9,8 +9,13 @@ import qs from 'qs'
 import { useEventBus } from '@vueuse/core'
 import config from '../enums/config'
 import { getSession, getStore, message, removeSession, removeStore, setSession } from './common'
+import type { AxiosResponse } from 'axios'
 export const setHeader = (): string => {
   return !getStore('token') ? '' : `Bearer ${getStore('token')}`
+}
+export declare interface IAxiosRes extends AxiosResponse {
+  message?: string
+  code?: string | number
 }
 /**
  * 设置url前缀
