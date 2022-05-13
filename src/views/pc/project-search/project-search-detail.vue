@@ -297,7 +297,8 @@
   import { defineComponent, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
-  import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es'
+  // @ts-ignore
+  import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
   import {

@@ -33,6 +33,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, nextTick, ref } from 'vue'
+  // @ts-ignore
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'

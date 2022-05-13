@@ -62,6 +62,7 @@
   import { defineComponent, getCurrentInstance, nextTick, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
+  // @ts-ignore
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
   import { debounce } from '../../../utils/common'
   import RiskTrxTable from './components/risk-trx-table.vue'

@@ -67,6 +67,7 @@
     openWindow,
   } from '../../../../utils/common'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  // @ts-ignore
   import { BeTag } from '../../../../../public/be-ui/be-ui.es'
   export default defineComponent({
     name: 'ProjectDetailPublicOpinion',

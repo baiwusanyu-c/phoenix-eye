@@ -167,7 +167,7 @@
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
-  // @ig
+  // @ts-ignore
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es.js'
   import { getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'

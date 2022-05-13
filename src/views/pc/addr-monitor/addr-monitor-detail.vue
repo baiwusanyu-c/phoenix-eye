@@ -204,6 +204,7 @@
     simulateToFixed,
   } from '../../../utils/common'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  // @ts-ignore
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import PlatformCell from '../../../components/common-components/platform-cell/platform-cell.vue'
   import { getAddressMonitorOutList } from '../../../api/addr-monitor'

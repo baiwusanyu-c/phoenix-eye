@@ -52,9 +52,6 @@
 `"lint:ts-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx",`  
 **esLint 代碼校验修復**
 
-`"prettier:fix": "prettier --write ."`,  
-**prettier 格式修復**
-
 `"prepare": "husky install",`  
 **husky 初始化**
 

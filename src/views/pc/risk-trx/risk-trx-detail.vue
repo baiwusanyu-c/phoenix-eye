@@ -391,6 +391,7 @@
     openWindow,
     simulateToFixed,
   } from '../../../utils/common'
+  // @ts-ignore
   import { BeIcon, BeTag, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import type { IBaseInfoRiskInfo } from '../../../utils/types'
