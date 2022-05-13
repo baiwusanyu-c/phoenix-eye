@@ -8,7 +8,15 @@ import axios from 'axios'
 import qs from 'qs'
 import { useEventBus } from '@vueuse/core'
 import config from '../enums/config'
-import { getSession, getStore, message, removeSession, removeStore, setSession } from './common'
+import {
+  getSession,
+  getStore,
+  message,
+  removeSession,
+  removeStore,
+  setHeader,
+  setSession,
+} from './common'
 
 // create an axios instance
 const service = axios.create({
@@ -24,7 +32,7 @@ service.interceptors.request.use(
   (config: any) => {
     const tokenCache = getStore('token')
     if (tokenCache) {
-      config.headers['Authorization'] = `Bearer ${getStore('token')}`
+      config.headers['Authorization'] = setHeader()
     }
     config.headers['Accept-Language'] = getStore('language') ? getStore('language') : 'en_US'
     if (config.method === 'post' && config.url !== '/auth/oauth/login') {

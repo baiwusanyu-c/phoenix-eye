@@ -229,7 +229,7 @@
   // @ts-ignore
   import { BeButton, BeIcon, BeTag } from '../../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../../utils/mixin/common-func'
-  import { getStore, openWindow, trimStr } from '../../../../../utils/common'
+  import { getStore, openWindow, setHeader, trimStr } from '../../../../../utils/common'
   import config from '../../../../../enums/config'
   import { previewUrl } from '../../../../../enums/link'
   import type { Ref } from 'vue'
@@ -361,12 +361,18 @@
       const createProjectCancel = () => {
         showDialog.value = false
       }
+      /**
+       * 增加合约表单项
+       */
       const addContractSite = () => {
         contractSite.data.push({
           contract_address: '',
           verContract: '',
         })
       }
+      /**
+       * 删除合约表单项
+       */
       const deleteContractSite = (i: number) => {
         contractSite.data.splice(i, 1)
       }
@@ -664,10 +670,7 @@
         getMatchSocial(params)
           .then((res: any) => {
             if (res.success && res.data) {
-              websiteForm.value.website = res.data.website
-              websiteForm.value.github = res.data.github
-              websiteForm.value.telegram = res.data.telegram
-              websiteForm.value.twitter = res.data.twitter
+              websiteForm.value = res.data
             } else {
               message('error', res.message || res)
             }
@@ -741,7 +744,7 @@
       }
       /**************************************************************************** logo 上传相关  ***************************************************************/
       const uploadHeader = {
-        Authorization: `Bearer ${getStore('token')}`,
+        Authorization: setHeader(),
       }
 
       const handleBeforeUpLoad: UploadProps['beforeUpload'] = (file): boolean => {

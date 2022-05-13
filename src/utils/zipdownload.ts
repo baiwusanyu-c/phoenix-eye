@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../enums/config'
-import { getStore } from './common'
+import { getStore, setHeader } from './common'
 import type { AxiosRequestConfig } from 'axios'
 import type { INavigator } from './types'
 
@@ -16,7 +16,7 @@ export function downLoadZip(str: string, filename: string) {
     method: 'get',
     url,
     responseType: 'blob',
-    headers: { Authorization: (!getStore('token') ? '' : `Bearer ${getStore('token')}`) as string },
+    headers: { Authorization: setHeader() as string },
   }
   return new Promise(resolve => {
     axios(axiosConfig).then(res => {
