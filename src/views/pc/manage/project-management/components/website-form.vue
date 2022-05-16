@@ -42,10 +42,10 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
+  // @ts-ignore
   import { BeButton } from '../../../../../../public/be-ui/be-ui.es.js'
   import type { PropType } from 'vue'
   import type { IWebsiteForm } from '../../../../../utils/types'
-  // @ts-ignore
 
   export default defineComponent({
     name: 'WebsiteForm',

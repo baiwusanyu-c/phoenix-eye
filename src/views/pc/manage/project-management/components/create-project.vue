@@ -13,71 +13,11 @@
         width="1000px">
         <div>
           <el-form label-position="left" label-width="170px" class="projectForm">
-            <h2 v-if="dialogType !== 3" class="create--label">
-              {{ $t('lang.createProject.contact') }}
-              <span class="sub--title">{{ $t('lang.createProject.contactDesc') }}</span>
-            </h2>
-            <el-form-item v-if="dialogType !== 3" label=" ">
-              <span class="reg-start project-star project-star__contract">*</span>
-              <div class="contractSiteBox">
-                <el-select
-                  v-model="formContact.contact_type"
-                  class="contract-type--select"
-                  :placeholder="$t('lang.createProject.selectContractClass')">
-                  <el-option label="others" value="others"></el-option>
-                  <el-option label="email" value="email"></el-option>
-                  <el-option label="twitter" value="twitter"></el-option>
-                </el-select>
-                <el-input v-model="formContact.contact" class="projectKeyWordsInput"></el-input>
-              </div>
-              <span id="cp_contact" class="reg-start project-Ver">{{ verTipContact }}</span>
-            </el-form-item>
-            <el-form-item
+            <contact-form
               v-if="dialogType !== 3"
-              :label="$t('lang.createProject.messageBoard') + ':'">
-              <el-input
-                v-model="formContact.message_board"
-                type="textarea"
-                maxlength="200"
-                :rows="7"></el-input>
-            </el-form-item>
-
-            <h2 class="create--label">1.{{ $t('lang.createProject.label1') }}</h2>
-            <!--      ***************        -->
-            <el-form-item :label="$t('lang.createProject.createProjectName') + ':'">
-              <span class="reg-start project-star">*</span>
-              <el-input
-                v-model="formBasic.project_name"
-                class="projectKeyWordsInput"
-                :placeholder="$t('lang.createProject.createProjectNameInput')"></el-input>
-              <span id="cp_project_name" class="reg-start project-Ver">{{ verTipName }}</span>
-            </el-form-item>
-            <el-form-item :label="$t('lang.createProject.createProjectKeyWords') + ':'">
-              <span class="reg-start project-star">*</span>
-              <el-input
-                v-model="formBasic.keyword"
-                class="projectKeyWordsInput"
-                :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"></el-input>
-              <span id="cp_keyword" class="reg-start project-Ver">{{ verTipKeyword }}</span>
-            </el-form-item>
-            <!--      ***************        -->
-            <el-form-item :label="$t('lang.createProject.chain') + ':'">
-              <span class="reg-start project-star">*</span>
-              <el-select v-model="formBasic.platform" placeholder="Select">
-                <el-option
-                  v-for="item in takePlatformListDict"
-                  :key="item.id + 'chain'"
-                  :label="item.label"
-                  :value="item.value"></el-option>
-              </el-select>
-              <span id="cp_platform" class="reg-start project-Ver">{{ verTipChain }}</span>
-            </el-form-item>
-            <!--      ***************        -->
-            <el-form-item :label="$t('lang.createProject.tokenAddress') + ':'">
-              <span class="reg-start project-star">*</span>
-              <el-input v-model="formBasic.token_address" class="projectKeyWordsInput"></el-input>
-              <span id="cp_token_address" class="reg-start project-Ver">{{ verTipToken }}</span>
-            </el-form-item>
+              v-model="formContact"
+              :ver-tip-contact="verTipContact"></contact-form>
+            <base-form v-model="formBasic"></base-form>
             <!--      ***************        -->
             <el-form-item :label="$t('lang.createProject.contractSite') + ':'">
               <span class="reg-start project-star">*</span>
@@ -125,56 +65,8 @@
                 style="background-color: #dfe4ea; width: 100px; height: 100px; object-fit: fill"
                 :src="formBasic.logo_url" />
             </el-form-item>
-            <h2 class="create--label">
-              2.{{ $t('lang.createProject.label2') }}
-              <be-button
-                custom-class="retrieval-btn"
-                prev-icon="iconRetrievalEagle"
-                title="Click to match the audit according to the contract"
-                @click="matchSocial">
-                {{ $t('lang.searchBtn') }}
-              </be-button>
-            </h2>
-            <!--        聯係地址 - WebSite    -->
-            <el-form-item :label="'WebSite:'">
-              <el-input v-model="websiteForm.website" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <!--        聯係地址 - GitHub    -->
-            <el-form-item :label="'GitHub:'">
-              <el-input v-model="websiteForm.github" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <!--        聯係地址 - Twitter    -->
-            <el-form-item :label="'Twitter:'">
-              <el-input v-model="websiteForm.twitter" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <!--        聯係地址 - Telegram    -->
-            <el-form-item :label="'Telegram:'">
-              <el-input v-model="websiteForm.telegram" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-
-            <h2 class="create--label">3.{{ $t('lang.createProject.label3') }}</h2>
-            <el-form-item :label="`${$t('lang.createProject.markup')}:`">
-              <el-input
-                v-model="formOperating.address_markup"
-                class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <el-form-item :label="`${$t('lang.createProject.whitePaper')}:`">
-              <el-input v-model="formOperating.white_paper" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <el-form-item :label="`${$t('lang.createProject.operation')}:`">
-              <el-input
-                v-model="formOperating.operation_manual"
-                class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <el-form-item :label="`${$t('lang.createProject.boardExchange')}:`">
-              <el-input
-                v-model="formOperating.exchange_board"
-                class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <el-form-item :label="`${$t('lang.createProject.testChain')}:`">
-              <el-input v-model="formOperating.test_chain" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-
+            <website-form v-model="websiteForm" @match="matchSocial"></website-form>
+            <operating-form v-model="formOperating"></operating-form>
             <h2 v-if="dialogType === 3" class="create--label">
               4.{{ $t('lang.projectExplorer.detail.audit') }}
               <be-button
@@ -213,7 +105,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
+  import { defineComponent, reactive, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import {
     createProject,
@@ -221,9 +113,7 @@
     getProjectInfo,
     getReport,
     saveEditProject,
-    uploadFile,
   } from '../../../../../api/project-management'
-  import { platformListDict } from '../../../../../utils/platform-dict'
   import { platformReg } from '../../../../../utils/verification'
   import { ceSemiSpecialCharReg } from '../../../../../utils/reg'
   // @ts-ignore
@@ -234,9 +124,13 @@
   import config from '../../../../../enums/config'
   import { previewUrl } from '../../../../../enums/link'
   import { setPrevUrl } from '../../../../../utils/request'
+  import ContactForm from './contact-form.vue'
+  import WebsiteForm from './website-form.vue'
+  import OperatingForm from './operating-form.vue'
+  import BaseForm from './base-form.vue'
   import type { IAxiosRes } from '../../../../../utils/request'
   import type { Ref } from 'vue'
-  import type { UploadProps, UploadUserFile } from 'element-plus'
+  import type { UploadProps } from 'element-plus'
   import type {
     IAuditList,
     ICreateProj,
@@ -246,12 +140,11 @@
     IWebsiteForm,
   } from '../../../../../utils/types'
   import type { IContractInfos, IReport } from '../../../../../api/project-management'
-  import type { IPlatformListItem } from '../../../../../utils/platform-dict'
 
   // TODO 重构
   export default defineComponent({
     name: 'CreateProject',
-    components: { BeIcon, BeButton, BeTag },
+    components: { BaseForm, OperatingForm, WebsiteForm, ContactForm, BeIcon, BeButton, BeTag },
     props: {
       // 操作類型
       type: {
@@ -285,15 +178,13 @@
       const contractSite = reactive({
         data: [{ contract_address: '', verContract: '' }],
       })
-      // 下拉平台字典
-      const takePlatformListDict = ref<Array<IPlatformListItem>>([])
+
       // 校验信息
       const verTipName = ref<string>('')
       const verTipKeyword = ref<string>('')
       const verTipChain = ref<string>('')
       const verTipToken = ref<string>('')
       const verTipContact = ref<string>('')
-
       // 表单 contact
       const formContact = ref<ICreateProjContact>({
         contact_type: 'email',
@@ -304,9 +195,7 @@
       const websiteForm = ref<IWebsiteForm>({})
       // 表单 contact
       const formOperating = ref<ICreateProjOperating>({})
-      onMounted(() => {
-        takePlatformListDict.value = platformListDict
-      })
+
       /**************************************************************************** 视图交互逻辑   ***************************************************************/
       watch(showDialog, nVal => {
         if (nVal) {
@@ -414,11 +303,11 @@
           id: props.projectId,
         }
         getProjectInfo(params)
-          .then(res => {
+          .then((res: IAxiosRes) => {
             if (!res) {
               return
             }
-            if (res) {
+            if (res.success && res.data) {
               formBasic.value.project_name = res.data.project_name
               formBasic.value.keyword = res.data.keyword
               formBasic.value.platform = res.data.platform
@@ -428,10 +317,12 @@
               contractSite.data = res.data.contract_address_arr.map((val: string) => {
                 return { contract_address: val, verContract: '' }
               })
-              websiteForm.value.website = res.data.website
-              websiteForm.value.github = res.data.github
-              websiteForm.value.telegram = res.data.telegram
-              websiteForm.value.twitter = res.data.twitter
+              contractSite.data = res.data.contract_address_arr.map((val: string) => {
+                return { contract_address: val, verContract: '' }
+              })
+
+              const { website, github, telegram, twitter } = res.data
+              websiteForm.value = { website, github, telegram, twitter }
 
               formOperating.value.address_markup = res.data.address_markup
               formOperating.value.white_paper = res.data.white_paper
@@ -453,6 +344,8 @@
                 formContact.value.contact = res.data.contact
                 formContact.value.message_board = res.data.message_board
               }
+            } else {
+              catchErr(res)
             }
           })
           .catch(err => {
@@ -596,20 +489,20 @@
         //  填写 type
         params.type = dialogType.value === 1 ? 'user' : 'system'
         createProject(params)
-          .then((res: any) => {
+          .then((res: IAxiosRes) => {
             if (!res) {
               return
             }
-            if (res && res.code === '0000') {
+            if (res.success && res.data) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
-              showDialog.value = false
             } else {
-              message('warning', res.message || res)
+              catchErr(res)
             }
           })
           .catch(catchErr)
+          .finally(createProjectCancel)
       }
       /**
        * 确认编辑项目方法
@@ -635,25 +528,27 @@
           id: props.projectId,
         }
         saveEditProject(params, pathParams)
-          .then((res: any) => {
+          .then((res: IAxiosRes) => {
             if (!res) {
               return
             }
-            if (res && res.code === '0000') {
+            if (res.success && res.data) {
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
-              showDialog.value = false
             } else {
-              message('warning', res.message || res)
+              catchErr(res)
             }
           })
           .catch(catchErr)
+          .finally(createProjectCancel)
       }
       /**
        * 匹配社交
        */
       const matchSocial = () => {
+        verTipChain.value = ''
+        verTipToken.value = ''
         if (!verificationRequire(formBasic.value.platform as string, verTipChain, 'chain'))
           return false
         if (
@@ -665,11 +560,11 @@
           token_address: formBasic.value.token_address as string,
         }
         getMatchSocial(params)
-          .then((res: any) => {
+          .then((res: IAxiosRes) => {
             if (res.success && res.data) {
               websiteForm.value = res.data
             } else {
-              message('error', res.message || res)
+              catchErr(res)
             }
           })
           .catch(catchErr)
@@ -703,19 +598,22 @@
         }
       ): void => {
         getReport(params)
-          .then((res: any) => {
-            if (res.success) {
+          .then((res: IAxiosRes) => {
+            if (res.success && res.data) {
               auditList.value = res.data
               createAuditUrl()
               if (auditList.value.length === 0) {
                 message('warning', t('lang.emptyData'))
               }
             } else {
-              message('error', res.message || res)
+              catchErr(res)
             }
           })
           .catch(catchErr)
       }
+      /**
+       * 拼接生成预览url字段
+       */
       const createAuditUrl = (): void => {
         const prevUrl = setPrevUrl()
         const baseURL = config.baseURL
@@ -752,13 +650,11 @@
         showDialog,
         addContract,
         contractSite,
-        takePlatformListDict,
         verTipContact,
         verTipName,
         verTipKeyword,
         verTipChain,
         verTipToken,
-
         websiteForm,
         resetVar,
         semicolonVerification,
