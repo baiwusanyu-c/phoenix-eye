@@ -449,6 +449,7 @@ export default {
       attack_address_arr: 'Attack Address',
       attacked_address_arr: 'Attacked Address',
       attack_trx_arr: 'Attack Trx',
+      attack_time: 'Attack Time',
     },
   },
 }

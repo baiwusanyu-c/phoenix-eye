@@ -48,6 +48,10 @@
             <span class="reg-start feed-back--star">*</span>
             <el-input v-model="form.attack_trx_arr" type="textarea" :rows="7"></el-input>
           </el-form-item>
+          <el-form-item :label="$t('lang.securityIncident.form.attack_time') + '    :'">
+            <span class="reg-start feed-back--star">*</span>
+            <el-date-picker v-model="form.attack_time" type="date" placeholder="Pick a day" />
+          </el-form-item>
         </el-form>
       </div>
       <template #footer>
@@ -71,6 +75,7 @@
   import { BeButton, BeDialog } from '../../../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../../../utils/mixin/common-func'
   import { addIncidentInfo, editIncidentInfo } from '../../../../../api/security-incident'
+  import { formatDate } from '../../../../../utils/common'
   import type { IIncident } from '../../../../../api/security-incident'
   import type { PropType } from 'vue'
 
@@ -209,6 +214,8 @@
         params.attack_address_arr = (params.attack_address_arr as string).split(';')
         params.attacked_address_arr = (params.attacked_address_arr as string).split(';')
         params.attack_trx_arr = (params.attack_trx_arr as string).split(';')
+        const attackTime = (params.attack_time as string).toString()
+        params.attack_time = formatDate(attackTime).split(' ')[0]
         addIncidentInfo(params)
           .then((res: any) => {
             if (!res) {
@@ -259,7 +266,7 @@
           })
       }
       const limitInput = (): void => {
-        form.value.loss_amount = form.value.loss_amount.replace(/[^0-9]/g, '')
+        form.value.loss_amount = (form.value.loss_amount as string).replace(/[^0-9]/g, '')
       }
       return {
         limitInput,

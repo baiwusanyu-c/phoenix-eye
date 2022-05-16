@@ -13,12 +13,14 @@
         width="1000px">
         <div>
           <el-form label-position="left" label-width="170px" class="projectForm">
+            <!--      ****** contact *********        -->
             <contact-form
               v-if="dialogType !== 3"
               v-model="formContact"
               :ver-tip-contact="verTipContact"></contact-form>
+            <!--      ****** base information *********        -->
             <base-form v-model="formBasic"></base-form>
-            <!--      ***************        -->
+            <!--      ****** contact *********        -->
             <el-form-item :label="$t('lang.createProject.contractSite') + ':'">
               <span class="reg-start project-star">*</span>
               <div
@@ -65,8 +67,11 @@
                 style="background-color: #dfe4ea; width: 100px; height: 100px; object-fit: fill"
                 :src="formBasic.logo_url" />
             </el-form-item>
+            <!--      ****** social information *********        -->
             <website-form v-model="websiteForm" @match="matchSocial"></website-form>
+            <!--      ****** operating information *********        -->
             <operating-form v-model="formOperating"></operating-form>
+            <!--      ****** audit match *********        -->
             <h2 v-if="dialogType === 3" class="create--label">
               4.{{ $t('lang.projectExplorer.detail.audit') }}
               <be-button
@@ -518,8 +523,6 @@
         if (!formVerification(params)) {
           return
         }
-
-        // params.logo_url = ''
         // 填写 report_id_list
         params.report_id_list = handleAuditParams(auditList.value)
         //  填写 type

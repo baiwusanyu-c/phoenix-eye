@@ -33,6 +33,7 @@ export interface IIncident {
   event_id?: string
   project?: string
   attack_type?: string
+  attack_time?: string
   loss_amount?: number | string
   abstract_content?: string
   event_link?: string
