@@ -11,7 +11,6 @@
     <span id="cp_project_name" class="reg-start project-Ver">{{ verTipName }}</span>
   </el-form-item>
   <el-form-item :label="$t('lang.createProject.createProjectKeyWords') + ':'">
-    <span class="reg-start project-star">*</span>
     <el-input
       v-model="modelValueInner.keyword"
       class="projectKeyWordsInput"
@@ -20,7 +19,6 @@
   </el-form-item>
   <!--      ***************        -->
   <el-form-item :label="$t('lang.createProject.chain') + ':'">
-    <span class="reg-start project-star">*</span>
     <el-select v-model="modelValueInner.platform" placeholder="Select">
       <el-option
         v-for="item in takePlatformListDict"
@@ -32,7 +30,6 @@
   </el-form-item>
   <!--      ***************        -->
   <el-form-item :label="$t('lang.createProject.tokenAddress') + ':'">
-    <span class="reg-start project-star">*</span>
     <el-input v-model="modelValueInner.token_address" class="projectKeyWordsInput"></el-input>
     <span id="cp_token_address" class="reg-start project-Ver">{{ verTipToken }}</span>
   </el-form-item>
@@ -70,7 +67,9 @@
     },
     emits: ['update:modelValue'],
     setup(props, ctx) {
-      const modelValueInner = ref<ICreateProjBase>({})
+      const modelValueInner = ref<ICreateProjBase>({
+        platform: 'eth',
+      })
       const handleChange = (): void => {
         ctx.emit('update:modelValue', modelValueInner.value)
       }

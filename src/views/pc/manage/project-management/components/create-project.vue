@@ -22,7 +22,6 @@
             <base-form v-model="formBasic"></base-form>
             <!--      ****** contact *********        -->
             <el-form-item :label="$t('lang.createProject.contractSite') + ':'">
-              <span class="reg-start project-star">*</span>
               <div
                 v-for="(o, index) in contractSite.data"
                 :key="index"
@@ -195,7 +194,9 @@
         contact_type: 'email',
       })
       // 表单 Basic
-      const formBasic = ref<ICreateProjBase>({})
+      const formBasic = ref<ICreateProjBase>({
+        platform: 'eth',
+      })
       // 聯係地址表單
       const websiteForm = ref<IWebsiteForm>({})
       // 表单 contact
@@ -293,7 +294,9 @@
           contact_type: 'email',
         }
         // 表单 Basic
-        formBasic.value = {}
+        formBasic.value = {
+          platform: 'eth',
+        }
         // 聯係地址表單
         websiteForm.value = {}
         // 表单 contact
