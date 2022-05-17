@@ -6,6 +6,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     DateCell: typeof import('./src/components/common-components/date-cell/date-cell.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -21,6 +22,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     EmptyData: typeof import('./src/components/common-components/empty-data/empty-data.vue')['default']
     FeedBack: typeof import('./src/components/feed-back.vue')['default']
+    Loading: typeof import('element-plus/es')['ElLoadingDirective']
     MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
     PlatformCell: typeof import('./src/components/common-components/platform-cell/platform-cell.vue')['default']
     ProjectRankingRadar: typeof import('./src/components/project-ranking-radar.vue')['default']

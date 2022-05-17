@@ -19,7 +19,12 @@
               v-model="formContact"
               :ver-tip-contact="verTipContact"></contact-form>
             <!--      ****** base information *********        -->
-            <base-form v-model="formBasic"></base-form>
+            <base-form
+              v-model="formBasic"
+              :ver-tip-name="verTipName"
+              :ver-tip-keyword="verTipKeyword"
+              :ver-tip-chain="verTipChain"
+              :ver-tip-token="verTipToken"></base-form>
             <!--      ****** contact *********        -->
             <el-form-item :label="$t('lang.createProject.contractSite') + ':'">
               <div
@@ -315,20 +320,18 @@
             if (!res) {
               return
             }
-            if (res.success && res.data) {
+            if (res.success) {
               formBasic.value.project_name = res.data.project_name
               formBasic.value.keyword = res.data.keyword
               formBasic.value.platform = res.data.platform
               formBasic.value.token_address = res.data.token_address
               formBasic.value.contract_address_arr = res.data.contract_address_arr
               formBasic.value.logo_url = res.data.logo_url
-              contractSite.data = res.data.contract_address_arr.map((val: string) => {
-                return { contract_address: val, verContract: '' }
-              })
-              contractSite.data = res.data.contract_address_arr.map((val: string) => {
-                return { contract_address: val, verContract: '' }
-              })
-
+              if (res.data.contract_address_arr.length > 0) {
+                contractSite.data = res.data.contract_address_arr.map((val: string) => {
+                  return { contract_address: val, verContract: '' }
+                })
+              }
               const { website, github, telegram, twitter } = res.data
               websiteForm.value = { website, github, telegram, twitter }
 
@@ -412,14 +415,20 @@
         return true
       }
       /**
-       * 校验合约地址
+       * 校验合约地址非空
        */
-      const verificationContractAddr = (val: any): boolean => {
+      const verContractAddrEmpty = (val: any): boolean => {
         // 没有填写合约地址
         if (!val.contract_address) {
           val.verAddr = t('lang.pleaseInput') + t('lang.createProject.contractSite')
           return true
         }
+        return false
+      }
+      /**
+       * 校验合约地址格式
+       */
+      const verContractAddrErr = (val: any): boolean => {
         // 校验地址格式
         if (
           !platformReg[formBasic.value.platform as keyof typeof platformReg](val.contract_address)
@@ -439,7 +448,6 @@
         verTipKeyword.value = ''
         verTipChain.value = ''
         verTipToken.value = ''
-
         // 校验非空
         if (
           !verificationRequire(params.contact!, verTipContact, 'contact') &&
@@ -461,20 +469,24 @@
         contractSite.data &&
           contractSite.data.forEach(val => {
             val.verContract = ''
-            hasEmptyOrErr = verificationContractAddr(val as IContractInfos)
+            // hasEmptyOrErr = verContractAddrEmpty(val as IContractInfos)
             if (val.contract_address) {
+              hasEmptyOrErr = verContractAddrErr(val as IContractInfos)
+              console.log(val.verContract)
               contractInfos.push(val.contract_address)
             }
           })
+        // 验证非空、格式结果
         if (hasEmptyOrErr) {
           return false
         }
-        if (contractInfos.length === 0) {
-          const msg = t('lang.createProject.verInfo')
-          message('warning', msg)
-          return false
-        }
+        // if (contractInfos.length === 0) {
+        //   const msg = t('lang.createProject.verInfo')
+        //   message('warning', msg)
+        //   return false
+        // }
         contractInfos && (params.contract_address_arr = contractInfos)
+        debugger
         return true
       }
       /**
@@ -501,7 +513,7 @@
             if (!res) {
               return
             }
-            if (res.success && res.data) {
+            if (res.success) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
@@ -538,7 +550,7 @@
             if (!res) {
               return
             }
-            if (res.success && res.data) {
+            if (res.success) {
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
@@ -567,7 +579,7 @@
         }
         getMatchSocial(params)
           .then((res: IAxiosRes) => {
-            if (res.success && res.data) {
+            if (res.success) {
               websiteForm.value = res.data
             } else {
               catchErr(res)
@@ -605,7 +617,7 @@
       ): void => {
         getReport(params)
           .then((res: IAxiosRes) => {
-            if (res.success && res.data) {
+            if (res.success) {
               auditList.value = res.data
               createAuditUrl()
               if (auditList.value.length === 0) {
@@ -665,7 +677,6 @@
         resetVar,
         semicolonVerification,
         verificationKeyword,
-        verificationContractAddr,
         formVerification,
         addProject,
         editProject,

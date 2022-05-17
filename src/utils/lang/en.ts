@@ -224,7 +224,7 @@ export default {
   createProject: {
     createProjectTitle: 'Create',
     editProjectTitle: 'Edit Project',
-    createProjectName: 'Project name',
+    createProjectName: 'Project Name',
     createProjectNameInput: 'e.g. PancakeSwap',
     createProjectCancel: 'Cancel',
     createProjectConfirm: 'Confirm',

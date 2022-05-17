@@ -7,19 +7,21 @@
     <el-input
       v-model="modelValueInner.project_name"
       class="projectKeyWordsInput"
-      :placeholder="$t('lang.createProject.createProjectNameInput')"></el-input>
+      :placeholder="$t('lang.createProject.createProjectNameInput')"
+      @change="handleChange"></el-input>
     <span id="cp_project_name" class="reg-start project-Ver">{{ verTipName }}</span>
   </el-form-item>
   <el-form-item :label="$t('lang.createProject.createProjectKeyWords') + ':'">
     <el-input
       v-model="modelValueInner.keyword"
       class="projectKeyWordsInput"
-      :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"></el-input>
+      :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"
+      @change="handleChange"></el-input>
     <span id="cp_keyword" class="reg-start project-Ver">{{ verTipKeyword }}</span>
   </el-form-item>
   <!--      ***************        -->
   <el-form-item :label="$t('lang.createProject.chain') + ':'">
-    <el-select v-model="modelValueInner.platform" placeholder="Select">
+    <el-select v-model="modelValueInner.platform" placeholder="Select" @change="handleChange">
       <el-option
         v-for="item in takePlatformListDict"
         :key="item.id + 'chain'"
@@ -30,13 +32,16 @@
   </el-form-item>
   <!--      ***************        -->
   <el-form-item :label="$t('lang.createProject.tokenAddress') + ':'">
-    <el-input v-model="modelValueInner.token_address" class="projectKeyWordsInput"></el-input>
+    <el-input
+      v-model="modelValueInner.token_address"
+      class="projectKeyWordsInput"
+      @change="handleChange"></el-input>
     <span id="cp_token_address" class="reg-start project-Ver">{{ verTipToken }}</span>
   </el-form-item>
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { defineComponent, onMounted, ref, watch } from 'vue'
   import { platformListDict } from '../../../../../utils/platform-dict'
   import type { PropType } from 'vue'
   import type { ICreateProjBase } from '../../../../../utils/types'
@@ -78,6 +83,13 @@
       onMounted(() => {
         takePlatformListDict.value = platformListDict
       })
+      watch(
+        () => props.modelValue,
+        nVal => {
+          props.modelValue && (modelValueInner.value = props.modelValue)
+        },
+        { deep: true, immediate: true }
+      )
       return {
         takePlatformListDict,
         modelValueInner,

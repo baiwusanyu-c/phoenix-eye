@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, ref, watch } from 'vue'
   // @ts-ignore
   import { BeButton } from '../../../../../../public/be-ui/be-ui.es.js'
   import type { PropType } from 'vue'
@@ -64,6 +64,13 @@
       const handleMatch = (): void => {
         ctx.emit('match')
       }
+      watch(
+        () => props.modelValue,
+        nVal => {
+          props.modelValue && (modelValueInner.value = props.modelValue)
+        },
+        { deep: true, immediate: true }
+      )
       return {
         handleMatch,
         modelValueInner,

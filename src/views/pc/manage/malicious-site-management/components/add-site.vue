@@ -133,7 +133,7 @@
             if (!res) {
               return
             }
-            if (res.success && res.data) {
+            if (res.success) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')

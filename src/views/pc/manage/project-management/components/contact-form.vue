@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, ref, watch } from 'vue'
   import type { PropType } from 'vue'
   import type { ICreateProjContact } from '../../../../../utils/types'
 
@@ -43,11 +43,6 @@
     props: {
       modelValue: {
         type: Object as PropType<ICreateProjContact>,
-        default() {
-          return {
-            contact_type: 'email',
-          }
-        },
       },
       verTipContact: {
         type: String,
@@ -62,6 +57,13 @@
       const handleChange = (): void => {
         ctx.emit('update:modelValue', modelValueInner.value)
       }
+      watch(
+        () => props.modelValue,
+        nVal => {
+          props.modelValue && (modelValueInner.value = props.modelValue)
+        },
+        { deep: true, immediate: true }
+      )
       return {
         modelValueInner,
         handleChange,
