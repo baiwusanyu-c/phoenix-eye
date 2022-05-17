@@ -445,13 +445,13 @@
           return false
         if (!verificationRequire(params.project_name!, verTipName, 'createProjectName'))
           return false
-        if (!verificationRequire(params.keyword!, verTipKeyword, 'createProjectKeyWords'))
-          return false
-        // 校验 Keyword
-        if (!verificationKeyword(params)) return false
-        // 校验非空
-        if (!verificationRequire(params.platform!, verTipChain, 'chain')) return false
-        if (!verificationRequire(params.token_address!, verTipToken, 'tokenAddress')) return false
+        // if (!verificationRequire(params.keyword!, verTipKeyword, 'createProjectKeyWords'))
+        //   return false
+        // // 校验 Keyword
+        // if (!verificationKeyword(params)) return false
+        // // 校验非空
+        // if (!verificationRequire(params.platform!, verTipChain, 'chain')) return false
+        // if (!verificationRequire(params.token_address!, verTipToken, 'tokenAddress')) return false
         // 校验 合约地址格式
         const contractInfos: Array<string> = []
         let hasEmptyOrErr = false
