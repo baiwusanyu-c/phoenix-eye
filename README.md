@@ -1,8 +1,3 @@
-<p align="center">
-  <img width="144px" src="https://lianantech.com/commonImg/mail/hermit-logo.png" />
-</p>
-
-#eagle-eye-front 态势感知  
 ##主要技術依賴  
 **Vue3.2 + Vue-router4 + Vite2.x + typeScript4.5**
 
