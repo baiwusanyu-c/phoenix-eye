@@ -23,6 +23,10 @@
           :key="item.project_id + item.project_name"
           :label="item.project_name"
           :value="item.project_id">
+          <div class="project-select--option">
+            <project-name-cell :url="item.logo_url" :name="item.project_name"> </project-name-cell>
+            <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+          </div>
         </el-option>
       </el-select>
       <!--    菜单    -->
@@ -164,8 +168,10 @@
   import { WHITE_LIST } from '../utils/router-dict'
   import compositionDialog from '../utils/mixin/dialog-func'
   import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
+  import { platformToCurrency } from '../utils/platform-dict'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
+  import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
   // XMSS: Project Explorer
@@ -189,6 +195,7 @@
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
+      ProjectNameCell,
       CreateProject,
       FeedBack,
       LoginDialog,
@@ -412,12 +419,15 @@
       const getProjectUser = (params: string): void => {
         getProjectListCurUser({ param: params })
           .then(res => {
-            if (!res) {
+            if (!res.data) {
+              projectList.value = []
               return
             }
             const list = res.data
             list.forEach((val: any) => {
               val.project_id = val.project_id.toString()
+              val.logo_url = 'https://avatars.githubusercontent.com/u/32354856?v=4'
+              val.platform = 'eth'
             })
             projectList.value = list
             if (route.path === '/projectSearch/detail') {
@@ -479,6 +489,7 @@
         confirm,
         isLogout,
         openLogin,
+        platformToCurrency,
       }
     },
   })
@@ -486,8 +497,24 @@
 
 <style lang="scss">
   .project-select {
-    max-width: 214px;
+    /*max-width: 214px;*/
     background: white;
+    .el-select-dropdown__item {
+      height: 48px;
+      line-height: 48px;
+    }
+    .project-select--option {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      line-height: 48px;
+      .project-select--platform {
+        font-weight: bold;
+        color: $textColor13;
+        line-height: 17px;
+        margin-left: 4px;
+      }
+    }
   }
 
   .tsgz-nav-menu .sign-up-btn {
