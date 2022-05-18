@@ -231,7 +231,8 @@ export default {
     createProjectNameInput: 'e.g. PancakeSwap',
     createProjectCancel: 'Cancel',
     createProjectConfirm: 'Confirm',
-
+    notFound: 'Project not found',
+    createOne: 'Create one',
     selectContractClass: 'Please select',
     verInfo: 'Please fill in at least one valid contract address',
     verCE: 'Input is illegal, please input English letters, Chinese characters, number only',

@@ -89,9 +89,6 @@
       width: 164px;
       height: 60px;
       margin: 0 30px;
-      background-image: url('../../../assets/image/pc/logo-white.png');
-      background-repeat: no-repeat;
-      background-position-y: center;
     }
 
     .external-header {

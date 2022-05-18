@@ -4,7 +4,10 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <div style="display: flex; align-items: center">
       <!--    logo    -->
-      <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
+      <div class="expend-logo" @click="routerPush('/projectSearch')">
+        <img src="../assets/image/pc/logo.png" />
+        <span>Eagle Eye</span>
+      </div>
       <!--    菜单    -->
       <div class="tsgz-nav-menu-container">
         <el-menu
@@ -29,6 +32,7 @@
       <!--  <div @click="openDialog()">createProject</div>-->
       <el-select
         v-show="isLogin"
+        ref="projectSelect"
         v-model="selectVal"
         filterable
         remote
@@ -36,6 +40,7 @@
         clearable
         :remote-method="getProjectUser"
         popper-class="project-select"
+        @click="insertAddDom"
         @change="handleProjectSelect">
         <el-option
           v-for="item in projectList"
@@ -61,50 +66,50 @@
       </be-button>
       <!--    设置菜单   -->
       <!--            <div v-show="isLogin && headerConfigMore.length > 0">
-                <be-popover
-                    ref="popoverRouter"
-                    placement="bottom"
-                    trigger="click"
-                    custom-class="popover-router">
-                    <template #trigger>
-                        <be-icon icon="iconSetting" custom-class="setting"></be-icon>
-                    </template>
-                    <div
-                        v-for="item in headerConfigMore"
-                        :key="item.path + 'router'"
-                        :class="`popover-item popover-router-item ${
-              item.index === active ? 'active-dropdown' : ''
-            }`"
-                        @click="routerSwitch(item, item.isPush)">
-                        <span>{{ $t(item.name) }}</span>
-                    </div>
-                </be-popover>
-            </div>-->
+                      <be-popover
+                          ref="popoverRouter"
+                          placement="bottom"
+                          trigger="click"
+                          custom-class="popover-router">
+                          <template #trigger>
+                              <be-icon icon="iconSetting" custom-class="setting"></be-icon>
+                          </template>
+                          <div
+                              v-for="item in headerConfigMore"
+                              :key="item.path + 'router'"
+                              :class="`popover-item popover-router-item ${
+                    item.index === active ? 'active-dropdown' : ''
+                  }`"
+                              @click="routerSwitch(item, item.isPush)">
+                              <span>{{ $t(item.name) }}</span>
+                          </div>
+                      </be-popover>
+                  </div>-->
       <!--    语种   -->
       <!--      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
-              <template #trigger>
-                <div
-                  class="dropdown-link dropdown-lang"
-                  style="display: flex; align-items: center; margin: 0 18px">
-                  {{ computeLang }}
-                  <be-icon
-                    icon="under"
-                    style="margin-left: 5px"
-                    color="#777"
-                    custom-class="lang-under"></be-icon>
-                </div>
-              </template>
-              <div
-                :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
-                @click="changeLanguage('zh_CN')">
-                中文
-              </div>
-              <div
-                :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
-                @click="changeLanguage('en_US')">
-                EN
-              </div>
-            </be-popover>-->
+                    <template #trigger>
+                      <div
+                        class="dropdown-link dropdown-lang"
+                        style="display: flex; align-items: center; margin: 0 18px">
+                        {{ computeLang }}
+                        <be-icon
+                          icon="under"
+                          style="margin-left: 5px"
+                          color="#777"
+                          custom-class="lang-under"></be-icon>
+                      </div>
+                    </template>
+                    <div
+                      :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
+                      @click="changeLanguage('zh_CN')">
+                      中文
+                    </div>
+                    <div
+                      :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
+                      @click="changeLanguage('en_US')">
+                      EN
+                    </div>
+                  </be-popover>-->
       <!--    登出   -->
       <div v-show="isLogin">
         <be-popover placement="bottom" trigger="click" custom-class="popover-logout">
@@ -170,6 +175,7 @@
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
+  import type { ElSelect } from 'element-plus'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
   // XMSS: Project Explorer
@@ -187,6 +193,7 @@
     EYWZGL: true,
     AQSJ: true,
   }
+  type SelectInstance = InstanceType<typeof ElSelect>
   /**
    * 头部菜单导航
    */
@@ -398,7 +405,7 @@
         }
       /****************************** 语种切换相关 ******************************/
       // 语种切换
-      const { locale } = useI18n()
+      const { locale, t } = useI18n()
       const instanceInner = getCurrentInstance()
       const busLanguage = useEventBus<string>('language')
       const computeLang = ref<string>('EN')
@@ -427,7 +434,18 @@
               val.logo_url = 'https://avatars.githubusercontent.com/u/32354856?v=4'
               val.platform = 'eth'
             })
-            projectList.value = list
+            projectList.value = [
+              { project_id: 9922, project_name: '1aleph.im v2 (ALEPH)' },
+              { project_id: 9932, project_name: '2aleph.im v2 (ALEPH)' },
+              { project_id: 994, project_name: '3aleph.im v2 (ALEPH)' },
+              { project_id: 9192, project_name: '4aleph.im v2 (ALEPH)' },
+              { project_id: 99232, project_name: 'aleph.im v2 (ALEPH)' },
+              { project_id: 91192, project_name: '5aleph.im v2 (ALEPH)' },
+              { project_id: 94592, project_name: '6aleph.im v2 (ALEPH)' },
+              { project_id: 99232, project_name: '12aleph.im v2 (ALEPH)' },
+              { project_id: 99452, project_name: '23aleph.im v2 (ALEPH)' },
+              { project_id: 99652, project_name: '1aleph.im v2 (ALEPH)' },
+            ]
             if (route.path === '/projectSearch/detail') {
               selectVal.value = getStore('curSelectProjId')!
             }
@@ -466,7 +484,40 @@
         ;(instanceInner?.refs.feedbackDialog as ILoginDialog).showDialog = true
       }
       const { createDialog, openDialog } = compositionDialog()
+      /**
+       * 用户选择项目，动态插入’增加项目‘的dom
+       */
+      const selectRef = getCurrentInstance()
+      const insertAddDom = (): void => {
+        nextTick(() => {
+          let createOneBody = document.getElementById('create_one_body')
+          const container = document.querySelector('.el-select-dropdown.project-select')
+          if (container && !createOneBody) {
+            createOneBody = document.createElement('div')
+            createOneBody.setAttribute('id', 'create_one_body')
+            createOneBody.setAttribute('class', 'create-one--body')
+            const createOneSpan = document.createElement('span')
+            createOneSpan.innerText = `${t('lang.createProject.notFound')}?`
+            createOneBody.append(createOneSpan)
+            // 创建按钮
+            const createOneBtn = document.createElement('div')
+            createOneBtn.setAttribute('role', 'button')
+            createOneBtn.setAttribute('class', 'create-one eagle-btn')
+            createOneBtn.addEventListener('click', () => {
+              // 关闭下拉
+              ;(selectRef?.refs.projectSelect as SelectInstance).blur()
+              openDialog('add')
+            })
+
+            createOneBtn.innerText = t('lang.createProject.notFound')
+            createOneBody.append(createOneBtn)
+
+            container?.append(createOneBody)
+          }
+        })
+      }
       return {
+        insertAddDom,
         openDialog,
         createDialog,
         getProjectUser,
@@ -497,7 +548,6 @@
   .project-select {
     /*max-width: 214px;*/
     background: white;
-
     .el-select-dropdown__item {
       height: 48px;
       line-height: 48px;
@@ -516,6 +566,31 @@
         margin-left: 4px;
       }
     }
+    .create-one--body {
+      width: 100%;
+      background-color: #ecf3f9;
+      display: flex;
+      height: 48px;
+      padding: 15px 24px;
+      align-items: center;
+      span {
+        font-family: BarlowSemi-R, sans-serif;
+        font-weight: 400;
+        color: $textColor3;
+        line-height: 17px;
+        font-size: 14px;
+      }
+      .create-one {
+        color: $mainColor7;
+        border-radius: 4px;
+        height: 24px;
+        line-height: 24px;
+        margin-left: 6px;
+        font-family: BarlowSemi-R, sans-serif;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
   }
 
   .tsgz-nav-menu {
@@ -532,6 +607,7 @@
     height: 40px;
     min-width: initial;
     margin-right: 20px;
+
     .be-button-slot {
       font-size: 16px;
       margin: 0;
@@ -660,7 +736,7 @@
 
       h3 {
         margin: 0 10px;
-        font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
+        font-family: BarlowSemi-R, sans-serif;
         font-size: 20px;
         font-weight: 500;
         color: $textColor4;
@@ -668,12 +744,25 @@
     }
 
     .expend-logo {
-      width: 200px;
+      width: 160px;
       height: 60px;
+      line-height: 52px;
       cursor: pointer;
-      background-image: url('../assets/image/pc/login-logo-dark.png');
-      background-repeat: no-repeat;
-      background-position-y: center;
+      img {
+        display: inline;
+        width: 32px;
+        height: 32px;
+      }
+
+      span {
+        font-family: BarlowSemi-R, sans-serif;
+        color: $mainColor7;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 29px;
+        margin-left: 8px;
+        vertical-align: middle;
+      }
     }
 
     .el-menu-item {
