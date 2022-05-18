@@ -38,6 +38,9 @@ export default {
   profit: 'profit',
   signUp: 'Sign Up',
   contact: 'Contact',
+  request: {
+    title: 'Request Audit',
+  },
   feedback: {
     title: 'Feedback',
     formTitle: 'Title',

@@ -2,33 +2,9 @@
 2021/8/2) */
 <template>
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
-    <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
-    </create-project>
-    <!--    logo    -->
     <div style="display: flex; align-items: center">
+      <!--    logo    -->
       <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
-      <div @click="openDialog()">createProject</div>
-      <el-select
-        v-show="isLogin"
-        v-model="selectVal"
-        filterable
-        remote
-        :placeholder="$t('lang.pleaseSelect')"
-        clearable
-        :remote-method="getProjectUser"
-        popper-class="project-select"
-        @change="handleProjectSelect">
-        <el-option
-          v-for="item in projectList"
-          :key="item.project_id + item.project_name"
-          :label="item.project_name"
-          :value="item.project_id">
-          <div class="project-select--option">
-            <project-name-cell :url="item.logo_url" :name="item.project_name"> </project-name-cell>
-            <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
-          </div>
-        </el-option>
-      </el-select>
       <!--    菜单    -->
       <div class="tsgz-nav-menu-container">
         <el-menu
@@ -50,65 +26,85 @@
           </div>
         </el-menu>
       </div>
+      <!--  <div @click="openDialog()">createProject</div>-->
+      <el-select
+        v-show="isLogin"
+        v-model="selectVal"
+        filterable
+        remote
+        :placeholder="$t('lang.pleaseSelect')"
+        clearable
+        :remote-method="getProjectUser"
+        popper-class="project-select"
+        @change="handleProjectSelect">
+        <el-option
+          v-for="item in projectList"
+          :key="item.project_id + item.project_name"
+          :label="item.project_name"
+          :value="item.project_id">
+          <div class="project-select--option">
+            <project-name-cell :url="item.logo_url" :name="item.project_name"></project-name-cell>
+            <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+          </div>
+        </el-option>
+      </el-select>
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
       <!--    需求反馈   -->
       <be-button
         custom-class="eagle-btn feedback-btn"
-        prev-icon="iconFeedbackEagle"
         round="4"
         type="success"
         @click="openFeedBack"
-        >{{ $t('lang.feedback.title') }}
+        >{{ $t('lang.request.title') }}
       </be-button>
       <!--    设置菜单   -->
-      <div v-show="isLogin && headerConfigMore.length > 0">
-        <be-popover
-          ref="popoverRouter"
-          placement="bottom"
-          trigger="click"
-          custom-class="popover-router">
-          <template #trigger>
-            <be-icon icon="iconSetting" custom-class="setting"></be-icon>
-          </template>
-          <div
-            v-for="item in headerConfigMore"
-            :key="item.path + 'router'"
-            :class="`popover-item popover-router-item ${
+      <!--            <div v-show="isLogin && headerConfigMore.length > 0">
+                <be-popover
+                    ref="popoverRouter"
+                    placement="bottom"
+                    trigger="click"
+                    custom-class="popover-router">
+                    <template #trigger>
+                        <be-icon icon="iconSetting" custom-class="setting"></be-icon>
+                    </template>
+                    <div
+                        v-for="item in headerConfigMore"
+                        :key="item.path + 'router'"
+                        :class="`popover-item popover-router-item ${
               item.index === active ? 'active-dropdown' : ''
             }`"
-            @click="routerSwitch(item, item.isPush)">
-            <span>{{ $t(item.name) }}</span>
-          </div>
-        </be-popover>
-      </div>
-
+                        @click="routerSwitch(item, item.isPush)">
+                        <span>{{ $t(item.name) }}</span>
+                    </div>
+                </be-popover>
+            </div>-->
       <!--    语种   -->
-      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
-        <template #trigger>
-          <div
-            class="dropdown-link dropdown-lang"
-            style="display: flex; align-items: center; margin: 0 18px">
-            {{ computeLang }}
-            <be-icon
-              icon="under"
-              style="margin-left: 5px"
-              color="#777"
-              custom-class="lang-under"></be-icon>
-          </div>
-        </template>
-        <div
-          :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
-          @click="changeLanguage('zh_CN')">
-          中文
-        </div>
-        <div
-          :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
-          @click="changeLanguage('en_US')">
-          EN
-        </div>
-      </be-popover>
+      <!--      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
+              <template #trigger>
+                <div
+                  class="dropdown-link dropdown-lang"
+                  style="display: flex; align-items: center; margin: 0 18px">
+                  {{ computeLang }}
+                  <be-icon
+                    icon="under"
+                    style="margin-left: 5px"
+                    color="#777"
+                    custom-class="lang-under"></be-icon>
+                </div>
+              </template>
+              <div
+                :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
+                @click="changeLanguage('zh_CN')">
+                中文
+              </div>
+              <div
+                :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
+                @click="changeLanguage('en_US')">
+                EN
+              </div>
+            </be-popover>-->
       <!--    登出   -->
       <div v-show="isLogin">
         <be-popover placement="bottom" trigger="click" custom-class="popover-logout">
@@ -122,7 +118,6 @@
           </div>
         </be-popover>
       </div>
-
       <!--    登陆   -->
       <div v-show="!isLogin">
         <be-button custom-class="eagle-btn sign-up-btn" round="4" type="success" @click="openLogin"
@@ -141,6 +136,9 @@
     <login-dialog ref="loginDialog"></login-dialog>
     <!--需求反馈彈窗-->
     <feed-back ref="feedbackDialog"></feed-back>
+    <!--项目创建弹窗-->
+    <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
+    </create-project>
   </div>
 </template>
 
@@ -499,15 +497,18 @@
   .project-select {
     /*max-width: 214px;*/
     background: white;
+
     .el-select-dropdown__item {
       height: 48px;
       line-height: 48px;
     }
+
     .project-select--option {
       display: flex;
       align-items: center;
       height: 48px;
       line-height: 48px;
+
       .project-select--platform {
         font-weight: bold;
         color: $textColor13;
@@ -517,14 +518,24 @@
     }
   }
 
+  .tsgz-nav-menu {
+    padding: 0 17.4%;
+  }
+
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
     min-width: initial;
   }
 
   .tsgz-nav-menu .feedback-btn {
-    width: 120px;
+    width: 135px;
+    height: 40px;
     min-width: initial;
+    margin-right: 20px;
+    .be-button-slot {
+      font-size: 16px;
+      margin: 0;
+    }
   }
 
   .popover-logout,
@@ -587,7 +598,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     text-align: center;
-    background-color: $mainColor7;
+    background-color: $mainColor20;
     box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
 
     .tsgz-slogan {
@@ -641,9 +652,9 @@
         width: 28px;
         height: 28px;
         line-height: 28px;
-        color: $mainColor7;
+        color: $textColor3;
         text-align: center;
-        background-color: $textColor4;
+        background-color: $textColor21;
         border-radius: 30px;
       }
 
@@ -657,11 +668,10 @@
     }
 
     .expend-logo {
-      width: 164px;
+      width: 200px;
       height: 60px;
-      margin: 0 30px;
       cursor: pointer;
-      background-image: url('../assets/image/pc/logo-white.png');
+      background-image: url('../assets/image/pc/login-logo-dark.png');
       background-repeat: no-repeat;
       background-position-y: center;
     }
@@ -684,6 +694,10 @@
       background-color: transparent;
       border: 0;
 
+      .el-menu-item {
+        padding: 0 18px;
+      }
+
       .el-menu-item,
       .el-submenu__title {
         position: relative;
@@ -691,9 +705,13 @@
         margin-bottom: 10px;
         font-weight: bold;
         line-height: 40px;
-        color: $textColor3;
+        color: $mainColor7;
         white-space: nowrap;
         list-style: none;
+
+        span {
+          font-family: BarlowSemi-R, sans-serif;
+        }
       }
 
       .el-submenu__title:hover,

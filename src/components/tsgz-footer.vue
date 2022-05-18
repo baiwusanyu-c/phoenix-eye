@@ -54,7 +54,7 @@
     align-items: center;
     width: 100%;
     height: 60px;
-    background-color: $mainColor7;
+    background-color: $mainColor20;
 
     .copy-rights {
       display: flex;
@@ -64,7 +64,7 @@
       font-size: 14px;
       font-weight: 400;
       line-height: 60px;
-      color: $textColor12;
+      color: $textColor13;
     }
 
     .contact {
@@ -78,13 +78,13 @@
         font-family: BarlowSemi-R, sans-serif;
         font-size: 14px;
         font-weight: 400;
-        color: $textColor12;
+        color: $textColor13;
 
         .be-icon {
-          fill: $textColor12;
+          fill: $textColor13;
 
           &:hover {
-            fill: $mainColor11;
+            fill: $mainColor17;
           }
         }
       }
