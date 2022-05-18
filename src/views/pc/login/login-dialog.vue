@@ -239,7 +239,7 @@
         .login-title-small {
           width: 490px;
           height: 20px;
-          font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
+          font-family: BarlowSemi-R, sans-serif;
           font-size: 14px;
           font-weight: 400;
           line-height: 40px;

@@ -146,14 +146,14 @@
     min-height: calc(100% - 100px);
 
     .subTitle {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: $textColor12;
     }
 
     .item {
-      font-family: AlibabaPuHuiTi-Medium, sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 22px;
@@ -178,7 +178,7 @@
 
       p {
         margin-bottom: 16px;
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-family: BarlowSemi-B, sans-serif;
         font-size: 14px;
         font-weight: bold;
         line-height: 22px;

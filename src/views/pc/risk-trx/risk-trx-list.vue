@@ -164,7 +164,7 @@
         background-color: transparent;
 
         .be-button-slot {
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
+          font-family: BarlowSemi-R, sans-serif;
         }
 
         &:hover {

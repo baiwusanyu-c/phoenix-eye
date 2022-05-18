@@ -74,7 +74,7 @@
 </script>
 
 <style lang="scss">
-  @import 'assets/style/font-style.css';
+  @import 'assets/style/font-style';
 
   #browser_msg_dialog {
     .browser-msg-dialog {

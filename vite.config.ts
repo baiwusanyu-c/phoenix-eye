@@ -83,6 +83,7 @@ export default defineConfig({
                 @import "./src/assets/style/transition.scss";
                 @import "./src/assets/style/variable.scss";
                 @import "./src/assets/style/common.scss";
+                @import "./src/assets/style/font-style.scss";
                 @import "./src/assets/style/theme-dark.scss";`, // 添加公共样式
       },
     },

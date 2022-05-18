@@ -293,7 +293,7 @@
     width: 800px;
 
     .el-form-item__label {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 40px;

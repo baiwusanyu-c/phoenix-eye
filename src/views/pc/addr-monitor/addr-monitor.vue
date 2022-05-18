@@ -370,14 +370,14 @@
     min-height: calc(100% - 100px);
 
     .subTitle {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: $textColor12;
     }
 
     .item {
-      font-family: AlibabaPuHuiTi-Medium, sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 22px;
@@ -420,7 +420,7 @@
       max-width: 300px;
       display: block;
       font-size: 14px;
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-weight: 600;
       color: $textColor3;
       line-height: 22px;
@@ -431,7 +431,7 @@
     .table--link {
       @include ellipsis;
       font-size: 14px;
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-weight: 600;
       color: #008ee9;
       line-height: 22px;

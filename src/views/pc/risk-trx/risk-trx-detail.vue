@@ -596,7 +596,7 @@
             border-radius: 0;
 
             span {
-              font-family: AlibabaPuHuiTi-Regular, sans-serif;
+              font-family: BarlowSemi-R, sans-serif;
               font-size: 14px;
               font-weight: 500;
               color: $textColor3;
@@ -665,7 +665,7 @@
 
       .label {
         margin-right: 20px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-family: BarlowSemi-R, sans-serif;
         font-size: 14px;
         font-weight: 400;
         line-height: 22px;

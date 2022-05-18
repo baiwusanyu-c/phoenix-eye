@@ -158,7 +158,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    font-family: AlibabaPuHuiTi-Medium, sans-serif;
+    font-family: BarlowSemi-B, sans-serif;
     color: $textColor3;
   }
 

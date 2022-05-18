@@ -771,7 +771,7 @@
         background: linear-gradient(90deg, #fff 0%, #e5f3f2 100%);
 
         span {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           font-size: 36px;
           font-weight: bold;
           color: $textColor3;
@@ -784,14 +784,14 @@
         margin-right: 20px;
 
         .total {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           font-size: 24px;
           font-weight: bold;
           color: $textColor3;
         }
 
         .date {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           font-size: 18px;
           font-weight: bold;
           color: $textColor3;
@@ -820,7 +820,7 @@
 
         p {
           margin-bottom: 12px;
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           color: $textColor4;
         }
       }
@@ -842,12 +842,12 @@
 
         h2 {
           margin-right: 15px;
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           color: $textColor3;
         }
 
         span {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           color: $textColor4;
         }
       }
@@ -871,7 +871,7 @@
           border-radius: 0;
 
           span {
-            font-family: AlibabaPuHuiTi-Regular, sans-serif;
+            font-family: BarlowSemi-R, sans-serif;
             font-size: 14px;
             font-weight: 500;
             color: $textColor3;
@@ -884,13 +884,13 @@
 
         .contract-statistics-label {
           margin-bottom: 12px;
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           color: $textColor4;
         }
 
         span,
         .date {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
+          font-family: BarlowSemi-B, sans-serif;
           font-size: 16px;
           font-weight: bold;
           color: $textColor3;
@@ -930,7 +930,7 @@
 
       .be-message-box--body p {
         margin-top: 20px;
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-family: BarlowSemi-B, sans-serif;
         font-size: 14px;
         font-weight: 400;
         line-height: 22px;

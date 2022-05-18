@@ -170,7 +170,7 @@
     }
 
     .project-detail-top5-title {
-      font-family: AlibabaPuHuiTi-Medium, sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
       font-size: 18px;
       font-weight: bold;
       color: $textColor3;

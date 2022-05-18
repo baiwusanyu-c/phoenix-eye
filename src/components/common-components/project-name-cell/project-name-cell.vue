@@ -1,8 +1,8 @@
 /* * @project-name-cell.vue * @deprecated * @author czh * @update (czh 2022/5/18) */
 <template>
-  <div class="flex items-center">
-    <el-avatar :size="40" :src="url" />
-    <span style="line-height: 24px; margin-left: 6px; font-weight: bold">{{ name }}</span>
+  <div class="flex items-center project-name-cell">
+    <el-avatar :size="size" :src="url" />
+    <span>{{ name }}</span>
   </div>
 </template>
 
@@ -15,6 +15,10 @@
       name: {
         type: String,
       },
+      size: {
+        type: Number,
+        default: 40,
+      },
       url: {
         type: String,
         default: 'https://avatars.githubusercontent.com/u/32354856?v=4',
@@ -23,4 +27,14 @@
   })
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+  .project-name-cell {
+    span {
+      line-height: 24px;
+      margin-left: 6px;
+      font-weight: bold;
+      font-size: 14px;
+      color: $textColor3;
+    }
+  }
+</style>

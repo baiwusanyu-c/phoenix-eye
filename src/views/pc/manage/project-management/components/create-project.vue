@@ -719,7 +719,7 @@
     }
 
     .el-dialog__title {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       color: $mainColor3;
     }
 
@@ -841,7 +841,7 @@
     }
 
     .be-button-body .be-button-slot {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
       font-weight: 400;
       line-height: 22px;
