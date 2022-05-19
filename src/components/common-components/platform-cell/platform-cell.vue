@@ -3,9 +3,15 @@
   <div class="flex items-center">
     <be-icon :icon="iconDict[platform.toUpperCase()]" class="mr-2" width="24" height="24">
     </be-icon>
-    <span style="line-height: 24px; margin-left: 6px; font-weight: bold">{{
-      platform.toUpperCase()
-    }}</span>
+    <span
+      style="
+        line-height: 24px;
+        margin-left: 6px;
+        font-weight: bold;
+        font-family: BarlowSemi-B sans-serif;
+      "
+      >{{ platform.toUpperCase() }}</span
+    >
   </div>
 </template>
 

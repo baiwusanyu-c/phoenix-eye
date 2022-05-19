@@ -1,43 +1,88 @@
 /* * @project-search-main.vue * @deprecated 项目搜索 * @author czh * @update (czh 2022/2/22) */
 <template>
   <div class="project-search-main eagle-page">
-    <div class="project-search-container">
-      <search-input
-        :search-btn-name="$t('lang.searchT')"
-        :placeholder="$t('lang.projectExplorer.searchP')"
-        @search="handleSearch">
-      </search-input>
-    </div>
-    <div class="project-search-result">
-      <!--   示例     -->
-      <div v-if="projectList.length === 0" class="project-search-eg">
-        <p>{{ $t('lang.projectExplorer.example') }}</p>
-        <p>
-          {{ $t('lang.projectExplorer.project') }}:
-          <span class="item ml-4" @click="handleDefaultSearch('AAVE')">AAVE</span>
-        </p>
-        <p>
-          {{ $t('lang.projectExplorer.contract') }}:
-          <span
-            class="item ml-4"
-            @click="handleDefaultSearch('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">
-            0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9
-          </span>
-        </p>
-      </div>
-      <div v-if="projectList.length > 1">
-        <p class="subTitle">{{ $t('lang.projectExplorer.MultipleResults') }}:</p>
-        <div style="margin-top: 18px" class="res">
-          <div v-for="item in projectList" :key="item.project_id">
-            <p class="subTitle" style="font-size: 12px">{{ $t('lang.projectExplorer.name') }}:</p>
-            <p class="subTitle mt-4">
-              <span class="item" style="font-size: 18px" @click="routerSwitch(item.project_id)">
-                {{ item.project_name }}
-              </span>
-            </p>
-          </div>
+    <div class="project-base--container">
+      <h1>
+        {{ $t('lang.projectExplorer.base.title') }}
+        <span>{{ $t('lang.projectExplorer.base.title2') }}</span>
+      </h1>
+      <p>{{ $t('lang.projectExplorer.base.subTitle') }}</p>
+      <div class="project-base-body">
+        <div class="project-base-item">
+          <p>{{ $t('lang.projectExplorer.base.item1') }}</p>
+          <span>{{ isEmpty(1234, '/') === '/' ? '/' : `$${formatMoney(1234)}B` }}</span>
+        </div>
+        <div class="project-base-item">
+          <p>{{ $t('lang.projectExplorer.base.item2') }}</p>
+          <span>{{ isEmpty(1234, '/') === '/' ? '/' : `${formatMoney(1234)}` }}</span>
+        </div>
+        <div class="project-base-item">
+          <p>{{ $t('lang.projectExplorer.base.item3') }}</p>
+          <be-icon width="24" height="24" icon="iconHecoEagleG"></be-icon>
+          <be-icon width="24" height="24" icon="iconBnbEagleG"></be-icon>
+          <be-icon width="24" height="24" icon="iconEthEagleG"></be-icon>
+          <be-icon width="24" height="24" icon="iconPolygonEagleG"></be-icon>
         </div>
       </div>
+    </div>
+
+    <div class="project-alert--container">
+      <div class="risk-alert">
+        <div class="project-alert--title">
+          <title-cell
+            url="../src/assets/image/pc/alert.png"
+            :name="$t('lang.projectExplorer.alert.title')">
+          </title-cell>
+        </div>
+      </div>
+      <div class="hot-project">
+        <div class="project-alert--title">
+          <title-cell
+            url="../src/assets/image/pc/hot.png"
+            :name="$t('lang.projectExplorer.alert.title2')">
+          </title-cell>
+        </div>
+      </div>
+      <div class="get-plugin">
+        <div class="plugin">
+          <img
+            alt=""
+            src="../../../assets/image/pc/plugin-logo.png"
+            style="width: 48px; height: 48px" />
+          <p>
+            {{ $t('lang.projectExplorer.alert.plugin') }}
+          </p>
+          <be-button custom-class="eagle-btn install-btn" round="4" type="success">
+            {{ $t('lang.projectExplorer.alert.install') }}
+          </be-button>
+        </div>
+        <div class="question">
+          <h1>{{ $t('lang.projectExplorer.alert.quesTitle') }}</h1>
+          <p>{{ $t('lang.projectExplorer.alert.quesTitle2') }}</p>
+          <img
+            alt=""
+            src="../../../assets/image/pc/telegram.png"
+            style="width: 36px; height: 36px" />
+        </div>
+      </div>
+    </div>
+
+    <div class="project-explorer--container">
+      <div class="project-explorer-tb--body">
+        <!--      TODO: Project Explorer Filter & Search         -->
+        <div class="project-explorer-tb--search"></div>
+        <!--      TODO: Project Explorer Table         -->
+        <div class="project-explorer--table"></div>
+      </div>
+      <div class="project-explorer--guard">
+        <div class="project-explorer--guard--title"></div>
+        <!--      TODO: New Guard Projects List         -->
+      </div>
+    </div>
+
+    <div class="project-risk--container">
+      <div class="project-risk--search"></div>
+      <div class="project-risk--card"></div>
     </div>
   </div>
 </template>
@@ -46,16 +91,25 @@
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
   import composition from '../../../utils/mixin/common-func'
   import { getProjectListUser } from '../../../api/project-explorer'
-  import { getUrlkey } from '../../../utils/common'
+  import { formatMoney, getUrlkey } from '../../../utils/common'
+  // @ts-ignore
+  import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
+  import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import type { IProjParam } from '../../../api/project-explorer'
+
   declare type projListType = {
     project_id: string
     project_name: string
   }
   export default defineComponent({
     name: 'ProjectSearchMain',
+    components: {
+      TitleCell,
+      BeIcon,
+      BeButton,
+    },
     setup() {
-      const { message, routerPush } = composition()
+      const { message, routerPush, isEmpty } = composition()
       /**
        * 获取项目列表
        */
@@ -130,12 +184,14 @@
         initPage()
       })
       return {
+        isEmpty,
         handleSearch,
         handleDefaultSearch,
         routerSwitch,
         projectList,
         searchParams,
         getList,
+        formatMoney,
       }
     },
   })
@@ -144,59 +200,188 @@
 <style lang="scss">
   .project-search-main {
     min-height: calc(100% - 100px);
+  }
 
-    .subTitle {
-      font-family: BarlowSemi-R, sans-serif;
-      font-size: 18px;
-      font-weight: 400;
-      color: $textColor12;
-    }
-
-    .item {
+  .project-base--container {
+    @include common-container(32px, 65.2%);
+    height: 280px;
+    background-image: url('../src/assets/image/pc/bg-base-info.png');
+    background-repeat: round;
+    border-radius: 4px;
+    padding: 40px 60px;
+    box-sizing: border-box;
+    h1 {
+      font-size: 48px;
       font-family: BarlowSemi-B, sans-serif;
-      font-size: 14px;
       font-weight: bold;
-      line-height: 22px;
-      color: $lessColor3;
-      word-break: break-all;
-      cursor: pointer;
+      color: $mainColor7;
+      line-height: 58px;
+      span {
+        color: $mainColor3;
+      }
+    }
+    p {
+      font-size: 24px;
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: 400;
+      color: $textColor13;
+      line-height: 30px;
+      margin-top: 10px;
+    }
+    .project-base-body {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: 200px 200px 200px;
+      grid-gap: 20px;
+      .project-base-item {
+        p {
+          font-size: 16px;
+          line-height: 20px;
+        }
+        span {
+          font-size: 28px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $mainColor3;
+          line-height: 34px;
+          margin-top: 6px;
+          display: inline-block;
+        }
+        .be-icon--container {
+          margin-top: 12px;
+          margin-right: 8px;
+          cursor: pointer;
+        }
+      }
     }
   }
 
-  .project-search-container {
-    @include common-container(40px);
-    text-align: center;
-  }
+  .project-alert--container {
+    @include common-container(32px, 65.2%);
+    height: 500px;
+    display: flex;
 
-  .project-search-result {
-    @include common-container(32px);
-
-    .project-search-eg {
-      padding: 24px 24px 8px 24px;
+    .risk-alert {
+      width: 36%;
+      height: 100%;
       background-color: $mainColor7;
       border-radius: 4px;
+      padding: 24px 20px;
+      box-sizing: border-box;
+    }
 
-      p {
-        margin-bottom: 16px;
-        font-family: BarlowSemi-B, sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 22px;
-        color: $textColor3;
+    .hot-project {
+      width: 36%;
+      background-color: $mainColor7;
+      height: 100%;
+      border-radius: 4px;
+      margin: 0 20px;
+      padding: 24px 20px;
+      box-sizing: border-box;
+    }
+    .project-alert--title {
+      border-radius: 4px;
+      background-color: $mainColor22;
+      height: 68px;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
+    .get-plugin {
+      width: calc(28% - 40px);
+      height: 100%;
+
+      .plugin {
+        padding: 28px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        height: calc(60% - 20px);
+        margin-bottom: 20px;
+        background-image: url('../src/assets/image/pc/bg-plugin.png');
+        background-repeat: round;
+        p {
+          font-size: 28px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $mainColor7;
+          line-height: 34px;
+          margin-top: 20px;
+          margin-bottom: 44px;
+        }
+        .install-btn {
+          height: 36px;
+        }
+      }
+
+      .question {
+        padding: 28px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background: linear-gradient(360deg, #e3f8fa 0%, #c8e3e9 100%);
+        height: 40%;
+        position: relative;
+        left: 0;
+        top: 0;
+        h1 {
+          font-size: 22px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 28px;
+        }
+        p {
+          font-size: 14px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 30px;
+          margin-bottom: 28px;
+        }
+      }
+    }
+  }
+
+  .project-explorer--container {
+    @include common-container(32px, 65.2%);
+    text-align: center;
+    height: 1440px;
+    display: flex;
+    .project-explorer-tb--body {
+      width: calc(75% - 20px);
+      margin-right: 20px;
+      .project-explorer-tb--search {
+        height: 46px;
+        background-color: $mainColor7;
+      }
+
+      .project-explorer--table {
+        background-color: $mainColor7;
       }
     }
 
-    .res {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-gap: 22px;
-
-      div {
-        box-sizing: border-box;
-        padding: 20px;
-        background-color: $mainColor7;
+    .project-explorer--guard {
+      width: 25%;
+      background-color: $mainColor7;
+      border-radius: 4px;
+      padding: 20px 16px;
+      box-sizing: border-box;
+      .project-explorer--guard--title {
         border-radius: 4px;
+        background-color: $mainColor22;
+        height: 40px;
       }
+    }
+  }
+
+  .project-risk--container {
+    @include common-container(32px, 65.2%);
+    text-align: center;
+    height: 400px;
+    .project-risk--search {
+      height: 46px;
+      background-color: #303133;
+    }
+    .project-risk--card {
     }
   }
 </style>

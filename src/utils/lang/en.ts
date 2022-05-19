@@ -204,6 +204,22 @@ export default {
     contract: 'Contract',
     MultipleResults: 'Multiple results are matched. Select one of them',
     name: 'Project Name',
+    base: {
+      title: 'Security Checker on ',
+      title2: 'Web3',
+      subTitle: 'Project evaluation, contract check, risk warning',
+      item1: 'Total Market Cap',
+      item2: 'Project',
+      item3: 'Chains',
+    },
+    alert: {
+      title: 'Risk Alert',
+      title2: 'Hot Projects',
+      plugin: 'Website security Detection.',
+      install: 'To install the plug-in',
+      quesTitle: 'Have questions about the results?',
+      quesTitle2: 'Join in channel to discuss.',
+    },
     detail: {
       title: 'Project Details',
       top5Title1: 'Top 5 Token Holders',

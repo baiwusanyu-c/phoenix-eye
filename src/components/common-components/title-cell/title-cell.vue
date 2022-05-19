@@ -1,8 +1,8 @@
-/* * @project-name-cell.vue * @deprecated * @author czh * @update (czh 2022/5/18) */
+/* * @title-cell.vue * @deprecated * @author czh * @update (czh 2022/5/19) */
 <template>
-  <div class="flex items-center project-name-cell">
-    <el-avatar :size="size" :src="url" />
-    <span>{{ name }}</span>
+  <div class="flex items-center title-cell">
+    <img :src="url" alt="" :style="`width:${size}px;height:${size}px`" />
+    <span :style="`fontSize:${fontSize}px`">{{ name }}</span>
   </div>
 </template>
 
@@ -10,14 +10,18 @@
   import { defineComponent } from 'vue'
 
   export default defineComponent({
-    name: 'ProjectNameCell',
+    name: 'TitleCell',
     props: {
       name: {
         type: String,
       },
       size: {
         type: Number,
-        default: 40,
+        default: 36,
+      },
+      fontSize: {
+        type: Number,
+        default: 24,
       },
       url: {
         type: String,
@@ -26,14 +30,12 @@
     },
   })
 </script>
-
-<style scoped lang="scss">
-  .project-name-cell {
+<style lang="scss">
+  .title-cell {
     span {
       line-height: 24px;
-      margin-left: 6px;
+      margin-left: 8px;
       font-weight: bold;
-      font-size: 14px;
       color: $textColor3;
       font-family: BarlowSemi-B sans-serif;
     }

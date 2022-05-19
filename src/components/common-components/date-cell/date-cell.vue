@@ -2,8 +2,12 @@
 <template>
   <be-tooltip :content="contentCompute(time)" custom-class="table-tooltip">
     <span style="color: #888">
-      <p>{{ formatDate(createDate(time)).split(' ')[0] }}</p>
-      <p>{{ formatDate(createDate(time)).split(' ')[1] }}</p>
+      <p style="font-family: BarlowSemi-B sans-serif">
+        {{ formatDate(createDate(time)).split(' ')[0] }}
+      </p>
+      <p style="font-family: BarlowSemi-B sans-serif">
+        {{ formatDate(createDate(time)).split(' ')[1] }}
+      </p>
     </span>
   </be-tooltip>
 </template>

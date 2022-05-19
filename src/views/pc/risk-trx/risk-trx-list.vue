@@ -143,7 +143,7 @@
       .risk-trx-search-filter {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: 100px 160px 140px 200px 100px;
+        grid-template-columns: 100px 160px 140px 210px 100px;
         grid-gap: 20px;
         width: 100%;
         padding: 20px;

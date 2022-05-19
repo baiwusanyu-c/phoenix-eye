@@ -730,7 +730,7 @@
         line-height: 28px;
         color: $textColor3;
         text-align: center;
-        background-color: $textColor21;
+        background-color: $mainColor21;
         border-radius: 30px;
       }
 

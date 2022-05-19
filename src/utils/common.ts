@@ -575,3 +575,15 @@ export const catchErr = (err?: any): void => {
   message('error', err.message || err)
   console.error(err)
 }
+export function formatMoney(n: number): string {
+  const regex = /\d{1,3}(?=(\d{3})+(\.|$))/g // 替换规则
+  const num = String(Math.round(n * 10 ** 2)) // 乘100 四舍五入
+  const integer = num.substr(0, num.length - 2).replace(regex, '$&,') // 最后两位前的为整数
+  const decimal = num.substr(num.length - 2) // 最后两位为小数
+  return decimal === '00' ? `${integer || 0}` : `${integer || 0}.${decimal}`
+}
+// 还原金额
+export function restoreMoney(s: string): number {
+  const regex = /[^\d.-]/g
+  return Number(String(s).replace(regex, ''))
+}
