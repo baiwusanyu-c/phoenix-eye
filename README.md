@@ -93,7 +93,7 @@
 - npm install husky --save-dev
 - npm set-script prepare "husky install"
 - npm run prepare
-- npx husky add .husky/pre-commit "npm exec lint-staged"
+- npx husky add .husky/pre-commit "npm exec lint-staged --allow-empty"
 - git add .husky/pre-commit
 - npx husky add .husky/commit-msg "npx --no -- commitlint --edit $1"
 - 在 package.json 配置

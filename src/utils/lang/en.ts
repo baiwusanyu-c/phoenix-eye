@@ -220,6 +220,23 @@ export default {
       quesTitle: 'Have questions about the results?',
       quesTitle2: 'Join in channel to discuss.',
     },
+    exp: {
+      addTitle: 'New Project Added',
+      title: 'Project Explorer',
+      tableHeader: {
+        project_name: 'Projects',
+        security_score: 'Security Score',
+        trx_24: 'trx/24h',
+        market_cap: 'Market Cap',
+        token_price: 'Token Price',
+        create_time: 'Added on',
+        platform: 'Chain',
+        audit_report_num: 'Beosin Audit',
+      },
+    },
+    security: {
+      title: 'Security News',
+    },
     detail: {
       title: 'Project Details',
       top5Title1: 'Top 5 Token Holders',

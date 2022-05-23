@@ -5,7 +5,7 @@
     <div style="display: flex; align-items: center">
       <!--    logo    -->
       <div class="expend-logo" @click="routerPush('/projectSearch')">
-        <img src="../assets/image/pc/logo.png" />
+        <img src="../assets/image/pc/logo.png" alt="Beosin-Eagle-Eye" />
         <span>Eagle Eye</span>
       </div>
       <!--    菜单    -->

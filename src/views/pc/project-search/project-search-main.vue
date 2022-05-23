@@ -25,7 +25,6 @@
         </div>
       </div>
     </div>
-
     <div class="project-alert--container">
       <div class="risk-alert">
         <div class="project-alert--title">
@@ -63,26 +62,71 @@
             alt=""
             src="../../../assets/image/pc/telegram.png"
             style="width: 36px; height: 36px" />
+          <img
+            alt=""
+            src="../../../assets/image/pc/questions-bg.png"
+            style="position: absolute; right: 0; bottom: 0" />
         </div>
       </div>
     </div>
 
     <div class="project-explorer--container">
-      <div class="project-explorer-tb--body">
-        <!--      TODO: Project Explorer Filter & Search         -->
-        <div class="project-explorer-tb--search"></div>
-        <!--      TODO: Project Explorer Table         -->
-        <div class="project-explorer--table"></div>
-      </div>
+      <project-explorer></project-explorer>
       <div class="project-explorer--guard">
-        <div class="project-explorer--guard--title"></div>
-        <!--      TODO: New Guard Projects List         -->
+        <div class="project-explorer--guard--title">
+          <title-cell
+            :name="$t('lang.projectExplorer.exp.addTitle')"
+            :size="24"
+            :font-size="18"
+            url="../src/assets/image/pc/add-proj.png">
+          </title-cell>
+        </div>
+        <div class="project-explorer--guard--proj">
+          <title-cell :name="$t('lang.projectExplorer.exp.addTitle')" :size="24" :font-size="12">
+          </title-cell>
+          <p class="date">2022-11-11</p>
+        </div>
+        <div class="project-explorer--guard--proj">
+          <title-cell :name="$t('lang.projectExplorer.exp.addTitle')" :size="24" :font-size="12">
+          </title-cell>
+          <p class="date">2022-11-11</p>
+        </div>
+        <div class="project-explorer--guard--proj">
+          <title-cell :name="$t('lang.projectExplorer.exp.addTitle')" :size="24" :font-size="12">
+          </title-cell>
+          <p class="date">2022-11-11</p>
+        </div>
       </div>
     </div>
 
     <div class="project-risk--container">
-      <div class="project-risk--search"></div>
-      <div class="project-risk--card"></div>
+      <div class="project-risk--search">
+        <title-cell
+          :name="$t('lang.projectExplorer.security.title')"
+          url="../src/assets/image/pc/security.png">
+        </title-cell>
+      </div>
+      <div class="project-risk--card">
+        <security-card></security-card>
+        <security-card></security-card>
+        <security-card></security-card>
+        <security-card></security-card>
+      </div>
+      <div style="float: right">
+        <be-pagination
+          is-ordianry
+          :page-size="pageParams.pageSize"
+          :page-count="pageParams.total"
+          :current-page="pageParams.currentPage"
+          :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :pager-show-count="5"
+          page-unit="page"
+          :layout="['prev', 'page']"
+          @update-num="updateNum"
+          @change-page="pageChange">
+          <template #prev> </template>
+        </be-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -93,8 +137,12 @@
   import { getProjectListUser } from '../../../api/project-explorer'
   import { formatMoney, getUrlkey } from '../../../utils/common'
   // @ts-ignore
-  import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
+  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
+  import compositionPage from '../../../utils/mixin/page-param'
+  import SecurityCard from './components/security-card.vue'
+  import ProjectExplorer from './components/project-explorer.vue'
+  import type { IPageParam } from '../../../utils/types'
   import type { IProjParam } from '../../../api/project-explorer'
 
   declare type projListType = {
@@ -104,11 +152,15 @@
   export default defineComponent({
     name: 'ProjectSearchMain',
     components: {
+      ProjectExplorer,
+      SecurityCard,
       TitleCell,
+      BePagination,
       BeIcon,
       BeButton,
     },
     setup() {
+      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
       const { message, routerPush, isEmpty } = composition()
       /**
        * 获取项目列表
@@ -180,6 +232,18 @@
           routerSwitch(ProjIdByEmail.value.toString())
         }
       }
+      /**
+       * 分页方法
+       * @param item 分页参数
+       */
+      const pageChange = (item: IPageParam): void => {
+        pageParams.value.currentPage = item.currentPage
+        //getList()
+      }
+      const updateNum = (data: IPageParam): void => {
+        updatePageSize(data.pageSize!, pageParams)
+        // getList()
+      }
       onMounted(() => {
         initPage()
       })
@@ -192,6 +256,9 @@
         searchParams,
         getList,
         formatMoney,
+        pageParams,
+        pageChange,
+        updateNum,
       }
     },
   })
@@ -210,16 +277,19 @@
     border-radius: 4px;
     padding: 40px 60px;
     box-sizing: border-box;
+
     h1 {
       font-size: 48px;
       font-family: BarlowSemi-B, sans-serif;
       font-weight: bold;
       color: $mainColor7;
       line-height: 58px;
+
       span {
         color: $mainColor3;
       }
     }
+
     p {
       font-size: 24px;
       font-family: BarlowSemi-R, sans-serif;
@@ -228,16 +298,19 @@
       line-height: 30px;
       margin-top: 10px;
     }
+
     .project-base-body {
       margin-top: 34px;
       display: grid;
       grid-template-columns: 200px 200px 200px;
       grid-gap: 20px;
+
       .project-base-item {
         p {
           font-size: 16px;
           line-height: 20px;
         }
+
         span {
           font-size: 28px;
           font-family: BarlowSemi-B, sans-serif;
@@ -247,6 +320,7 @@
           margin-top: 6px;
           display: inline-block;
         }
+
         .be-icon--container {
           margin-top: 12px;
           margin-right: 8px;
@@ -279,6 +353,7 @@
       padding: 24px 20px;
       box-sizing: border-box;
     }
+
     .project-alert--title {
       border-radius: 4px;
       background-color: $mainColor22;
@@ -299,6 +374,7 @@
         margin-bottom: 20px;
         background-image: url('../src/assets/image/pc/bg-plugin.png');
         background-repeat: round;
+
         p {
           font-size: 28px;
           font-family: BarlowSemi-B, sans-serif;
@@ -308,6 +384,7 @@
           margin-top: 20px;
           margin-bottom: 44px;
         }
+
         .install-btn {
           height: 36px;
         }
@@ -322,13 +399,19 @@
         position: relative;
         left: 0;
         top: 0;
+
         h1 {
           font-size: 22px;
           font-family: BarlowSemi-B, sans-serif;
           font-weight: bold;
           color: $textColor3;
           line-height: 28px;
+          position: relative;
+          left: 0;
+          top: 0;
+          z-index: 1;
         }
+
         p {
           font-size: 14px;
           font-family: BarlowSemi-B, sans-serif;
@@ -336,6 +419,10 @@
           color: $textColor3;
           line-height: 30px;
           margin-bottom: 28px;
+          position: relative;
+          left: 0;
+          top: 0;
+          z-index: 1;
         }
       }
     }
@@ -344,14 +431,19 @@
   .project-explorer--container {
     @include common-container(32px, 65.2%);
     text-align: center;
-    height: 1440px;
+    max-height: 1440px;
     display: flex;
+
     .project-explorer-tb--body {
       width: calc(75% - 20px);
       margin-right: 20px;
+
       .project-explorer-tb--search {
         height: 46px;
-        background-color: $mainColor7;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
       }
 
       .project-explorer--table {
@@ -365,10 +457,39 @@
       border-radius: 4px;
       padding: 20px 16px;
       box-sizing: border-box;
+      height: fit-content;
+
       .project-explorer--guard--title {
         border-radius: 4px;
         background-color: $mainColor22;
         height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        margin-bottom: 10px;
+      }
+
+      .project-explorer--guard--proj {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 32px;
+        border-radius: 4px;
+        padding: 4px 8px;
+        margin-top: 20px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $mainColor22;
+        }
+
+        .date {
+          font-size: 12px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 14px;
+        }
       }
     }
   }
@@ -376,12 +497,17 @@
   .project-risk--container {
     @include common-container(32px, 65.2%);
     text-align: center;
-    height: 400px;
+    min-height: 480px;
+    height: auto;
+
     .project-risk--search {
-      height: 46px;
-      background-color: #303133;
+      height: 60px;
     }
+
     .project-risk--card {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
   }
 </style>

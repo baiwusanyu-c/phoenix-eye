@@ -202,8 +202,10 @@ export interface IStatisticsPie {
 
 // chart-pie
 export interface IStatisticsLine {
-  day: string
-  num: number
+  day?: string
+  num?: number
+  create_time?: string
+  token_price?: string
 }
 // getProjectListAdmin
 export interface IProjectInfo {

@@ -1,8 +1,8 @@
 /* * @title-cell.vue * @deprecated * @author czh * @update (czh 2022/5/19) */
 <template>
   <div class="flex items-center title-cell">
-    <img :src="url" alt="" :style="`width:${size}px;height:${size}px`" />
-    <span :style="`fontSize:${fontSize}px`">{{ name }}</span>
+    <img :src="url" alt="Beosin-eagleEye-title" :style="`width:${size}px;height:${size}px`" />
+    <span :style="`font-size:${fontSize}px`">{{ name }}</span>
   </div>
 </template>
 

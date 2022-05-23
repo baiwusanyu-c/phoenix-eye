@@ -1,12 +1,11 @@
 /* * @platform-cell.vue * @deprecated * @author czh * @update (czh 2022/4/2) */
 <template>
   <div class="flex items-center">
-    <be-icon :icon="iconDict[platform.toUpperCase()]" class="mr-2" width="24" height="24">
-    </be-icon>
+    <be-icon :icon="iconDict[platform.toUpperCase()]" width="24" height="24"> </be-icon>
     <span
       style="
         line-height: 24px;
-        margin-left: 6px;
+        margin-left: 4px;
         font-weight: bold;
         font-family: BarlowSemi-B sans-serif;
       "

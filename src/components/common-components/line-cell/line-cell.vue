@@ -39,13 +39,13 @@
       )
       const renderChart = (isUpdate?: boolean) => {
         const data = [
-          { day: '1991', num: 3 },
-          { day: '1992', num: 4 },
-          { day: '1993', num: 3.5 },
-          { day: '1994', num: 5 },
-          { day: '1995', num: 4.9 },
-          { day: '1996', num: 2 },
-          { day: '1997', num: 7 },
+          { create_time: '1991', token_price: 3 },
+          { create_time: '1992', token_price: 4 },
+          { create_time: '1993', token_price: 3.5 },
+          { create_time: '1994', token_price: 5 },
+          { create_time: '1995', token_price: 4.9 },
+          { create_time: '1996', token_price: 2 },
+          { create_time: '1997', token_price: 7 },
         ]
         // 更新
         if (isUpdate) {
@@ -57,28 +57,28 @@
           container: props.domId,
           autoFit: true,
           height: 40,
-          width: 120,
+          width: 76,
           padding: 10,
         })
 
         chart.value.data(data)
         chart.value.scale({
-          num: {
+          token_price: {
             min: 10000,
             nice: true,
           },
-          day: {
+          create_time: {
             range: [0, 1],
           },
         })
 
         chart.value
           .line()
-          .position('day*num')
+          .position('create_time*token_price')
           .shape('smooth')
           .style({ stroke: props.type === 'up' ? '#11CABE' : '#F32F2F' })
-        chart.value.axis('day', false)
-        chart.value.axis('num', false)
+        chart.value.axis('create_time', false)
+        chart.value.axis('token_price', false)
         chart.value.tooltip(false)
         chart.value.render()
       }

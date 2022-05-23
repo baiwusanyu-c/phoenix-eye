@@ -3,14 +3,14 @@
   <div class="score-cell">
     <be-progress
       type="circle"
-      :percent="score"
+      :percent="scoreInner"
       :color="color"
       status="normal"
       trail-color="#E0E0E0"
       stroke-linecap="square"
       stroke-width="20">
       <template #center>
-        <span class="score">{{ score === 0 ? 'N/A' : score }}</span>
+        <span class="score">{{ scoreInner === 0 ? 'N/A' : score }}</span>
       </template>
     </be-progress>
   </div>
@@ -28,7 +28,7 @@
     },
     props: {
       score: {
-        type: Number,
+        type: [Number, String],
         default: 0,
       },
       level: {
@@ -51,7 +51,9 @@
       if (props.score === 0) {
         hiddenPath.value = 'none'
       }
+      const scoreInner = ref<number>(Number(props.score))
       return {
+        scoreInner,
         color,
         hiddenPath,
       }

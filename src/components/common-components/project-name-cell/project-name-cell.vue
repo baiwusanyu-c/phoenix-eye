@@ -17,7 +17,7 @@
       },
       size: {
         type: Number,
-        default: 40,
+        default: 32,
       },
       url: {
         type: String,
@@ -31,7 +31,7 @@
   .project-name-cell {
     span {
       line-height: 24px;
-      margin-left: 6px;
+      margin-left: 4px;
       font-weight: bold;
       font-size: 14px;
       color: $textColor3;

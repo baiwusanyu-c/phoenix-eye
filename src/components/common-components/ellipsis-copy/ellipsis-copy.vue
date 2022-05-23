@@ -182,5 +182,8 @@
       width: 24px;
       height: 24px;
     }
+    span {
+      font-family: BarlowSemi-B, sans-serif;
+    }
   }
 </style>
