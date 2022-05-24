@@ -107,8 +107,12 @@
           v-for="item in guardProjectList"
           :key="item.create_time + item.logo_url"
           class="project-explorer--guard--proj">
-          <title-cell :name="item.project_name" :url="item.logo_url" :size="24" :font-size="12">
-          </title-cell>
+          <project-name-cell
+            :name="item.project_name"
+            :url="item.logo_url"
+            :size="24"
+            :font-size="12">
+          </project-name-cell>
           <p class="date">{{ formatDate(createDate(item.create_time), 'Y-m-d') }}</p>
         </div>
       </div>
@@ -168,6 +172,7 @@
   import compositionPage from '../../../utils/mixin/page-param'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'
+  import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
   import SecurityCard from './components/security-card.vue'
   import ProjectExplorer from './components/project-explorer.vue'
   import RiskAlertItem from './components/risk-alert-item.vue'
@@ -190,6 +195,7 @@
   export default defineComponent({
     name: 'ProjectSearchMain',
     components: {
+      ProjectNameCell,
       HotProjectItem,
       RiskAlertItem,
       EmptyData,
@@ -618,6 +624,26 @@
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
+    }
+  }
+
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-risk--container,
+    .project-search-main .project-explorer--container {
+      width: 92%;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-risk--container,
+    .project-search-main .project-explorer--container {
+      width: 80%;
     }
   }
 </style>
