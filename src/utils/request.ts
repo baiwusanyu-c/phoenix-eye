@@ -74,7 +74,7 @@ service.interceptors.response.use(
         removeStore('userInfo')
         // 如果当前路由是 /projectSearch 直接刷新页面
         if (window.location.hash === '#/projectSearch') {
-          location.reload()
+          // location.reload()
           return
         }
         if (getSession('loginExpiredNum') === 'false' || !getSession('loginExpiredNum')) {

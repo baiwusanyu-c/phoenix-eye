@@ -125,7 +125,7 @@
       </div>
       <!--    登陆   -->
       <div v-show="!isLogin">
-        <be-button custom-class="eagle-btn sign-up-btn" round="4" type="success" @click="openLogin"
+        <be-button custom-class="sign-up-btn" round="4" type="success" @click="openLogin"
           >{{ $t('lang.loginConfig.login') }}
         </be-button>
       </div>
@@ -600,6 +600,8 @@
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
     min-width: initial;
+    background-color: #162e47;
+    height: 40px;
   }
 
   .tsgz-nav-menu .feedback-btn {

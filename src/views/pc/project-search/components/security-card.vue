@@ -31,14 +31,16 @@
           end-length="0">
         </ellipsis-copy>
       </div>
-      <div class="security-card--body--foo">
-        <span>
-          Source:
-          <a :href="sourceUrl" target="_blank">
-            {{ sourceName }}
-          </a>
-        </span>
-        <span>2 hour ago</span>
+      <div style="position: absolute; left: 20px; bottom: 20px; width: calc(100% - 40px)">
+        <div class="security-card--body--foo">
+          <span>
+            Source:
+            <a :href="sourceUrl" target="_blank">
+              {{ sourceName }}
+            </a>
+          </span>
+          <span>{{ formatTimeStamp(createDate(create_time).getTime(), $i18n.locale) }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -48,6 +50,9 @@
   import { defineComponent, ref } from 'vue'
   // @ts-ignore
   import { BeTag } from '../../../../../public/be-ui/be-ui.es'
+  import { createDate, formatTimeStamp } from '../../../../utils/common'
+  import type { PropType } from 'vue'
+
   export default defineComponent({
     name: 'SecurityCard',
     components: { BeTag },
@@ -75,14 +80,18 @@
         default: 'twitter',
       },
       tagList: {
-        type: String,
-        default: 'PHISHING,ETH',
+        type: Array as PropType<Array<string>>,
+        default: () => ['PHISHING', 'ETH'],
       },
     },
     setup(props) {
       const tagListArr = ref<Array<string>>([])
-      tagListArr.value = props.tagList?.split(',').map(val => val.toUpperCase())
-      return { tagListArr }
+      tagListArr.value = props.tagList?.map(val => val.toUpperCase())
+      return {
+        tagListArr,
+        createDate,
+        formatTimeStamp,
+      }
     },
   })
 </script>
@@ -90,28 +99,32 @@
 <style lang="scss">
   .security-card {
     width: 300px;
-    min-height: 373px;
-
+    height: 373px;
+    margin-bottom: 26px;
     .security-card--head {
       height: 160px;
       padding: 20px;
       box-sizing: border-box;
       background-image: url('../src/assets/image/pc/security-card-bg.png');
       background-repeat: round;
+
       .ellipsis-copy {
         word-break: break-all;
         text-align: left;
       }
+
       .security-card--tag {
         margin-top: 10px;
         display: flex;
       }
+
       .be-tag {
         margin: 5px;
         background: $mainColor3;
         border-radius: 2px;
         border: 0;
         height: 24px;
+
         span {
           color: $textColor3;
           font-size: 14px;
@@ -128,6 +141,11 @@
       text-align: left;
       background-color: $mainColor7;
       border-radius: 4px;
+      height: 213px;
+      position: relative;
+      left: 0;
+      top: 0;
+
       .security-card--body--foo {
         margin-top: 10px;
         display: flex;
@@ -139,6 +157,7 @@
           color: $textColor13;
           line-height: 17px;
         }
+
         a {
           color: $mainColor3;
         }

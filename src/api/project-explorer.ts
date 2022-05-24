@@ -86,3 +86,10 @@ export function getContractReportList(params: IContractReport) {
     params,
   })
 }
+
+export function getExploreInfo() {
+  return request({
+    url: `${config.baseURL}/ussa/project/explore/info`,
+    method: 'get',
+  })
+}

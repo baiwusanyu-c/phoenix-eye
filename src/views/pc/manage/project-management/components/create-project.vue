@@ -472,7 +472,6 @@
             // hasEmptyOrErr = verContractAddrEmpty(val as IContractInfos)
             if (val.contract_address) {
               hasEmptyOrErr = verContractAddrErr(val as IContractInfos)
-              console.log(val.verContract)
               contractInfos.push(val.contract_address)
             }
           })

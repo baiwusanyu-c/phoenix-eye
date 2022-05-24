@@ -216,7 +216,7 @@ export default {
       title: 'Risk Alert',
       title2: 'Hot Projects',
       plugin: 'Website security Detection.',
-      install: 'To install the plug-in',
+      install: 'Install the extension',
       quesTitle: 'Have questions about the results?',
       quesTitle2: 'Join in channel to discuss.',
     },

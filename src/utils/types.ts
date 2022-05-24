@@ -223,12 +223,22 @@ export interface IProjectInfo {
   create_time: string
 }
 
-interface ITest1 {
-  foo?: string
+// project-search-main
+export type IExploreInfo = {
+  market_cap_total?: number
+  project_total?: number
 }
-interface ITest2 {
-  bar?: string
+export type IGuardProjectList = {
+  logo_url?: string
+  project_name?: string
+  create_time?: string
 }
-export declare type TestType = keyof ITest1 | ITest2
-const testVar: TestType = {}
-testVar.bar = 'foo'
+
+export type IRiskInfoList = {
+  title?: string
+  url?: string
+  content?: string
+  tag?: Array<string>
+  source?: string
+  pub_time?: string
+}

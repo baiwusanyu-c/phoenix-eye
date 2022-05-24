@@ -10,11 +10,19 @@
       <div class="project-base-body">
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item1') }}</p>
-          <span>{{ isEmpty(1234, '/') === '/' ? '/' : `$${formatMoney(1234)}B` }}</span>
+          <span>{{
+            isEmpty(baseInfo.market_cap_total, '/') === '/'
+              ? '/'
+              : `$${marketCapBaseInfo(baseInfo.market_cap_total)}`
+          }}</span>
         </div>
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item2') }}</p>
-          <span>{{ isEmpty(1234, '/') === '/' ? '/' : `${formatMoney(1234)}` }}</span>
+          <span>{{
+            isEmpty(baseInfo.project_total, '/') === '/'
+              ? '/'
+              : `${formatMoney(baseInfo.project_total)}`
+          }}</span>
         </div>
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item3') }}</p>
@@ -81,25 +89,19 @@
             url="../src/assets/image/pc/add-proj.png">
           </title-cell>
         </div>
-        <div class="project-explorer--guard--proj">
-          <title-cell :name="$t('lang.projectExplorer.exp.addTitle')" :size="24" :font-size="12">
+        <empty-data v-if="guardProjectList.length === 0"></empty-data>
+        <div
+          v-for="item in guardProjectList"
+          :key="item.create_time + item.logo_url"
+          class="project-explorer--guard--proj">
+          <title-cell :name="item.project_name" :url="item.logo_url" :size="24" :font-size="12">
           </title-cell>
-          <p class="date">2022-11-11</p>
-        </div>
-        <div class="project-explorer--guard--proj">
-          <title-cell :name="$t('lang.projectExplorer.exp.addTitle')" :size="24" :font-size="12">
-          </title-cell>
-          <p class="date">2022-11-11</p>
-        </div>
-        <div class="project-explorer--guard--proj">
-          <title-cell :name="$t('lang.projectExplorer.exp.addTitle')" :size="24" :font-size="12">
-          </title-cell>
-          <p class="date">2022-11-11</p>
+          <p class="date">{{ formatDate(createDate(item.create_time), 'Y-m-d') }}</p>
         </div>
       </div>
     </div>
 
-    <div class="project-risk--container">
+    <div v-if="riskInfoList.length > 0" class="project-risk--container">
       <div class="project-risk--search">
         <title-cell
           :name="$t('lang.projectExplorer.security.title')"
@@ -107,10 +109,16 @@
         </title-cell>
       </div>
       <div class="project-risk--card">
-        <security-card></security-card>
-        <security-card></security-card>
-        <security-card></security-card>
-        <security-card></security-card>
+        <security-card
+          v-for="item in riskInfoList"
+          :key="item.content"
+          :source-url="item.url"
+          :title="item.title"
+          :info="item.content"
+          :create_time="item.pub_time"
+          :source-name="item.source"
+          :tag-list="item.tag">
+        </security-card>
       </div>
       <div style="float: right">
         <be-pagination
@@ -122,7 +130,6 @@
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'page']"
-          @update-num="updateNum"
           @change-page="pageChange">
           <template #prev> </template>
         </be-pagination>
@@ -132,18 +139,35 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, ref } from 'vue'
+  import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
   import composition from '../../../utils/mixin/common-func'
-  import { getProjectListUser } from '../../../api/project-explorer'
-  import { formatMoney, getUrlkey } from '../../../utils/common'
+  import { getExploreInfo, getProjectListUser } from '../../../api/project-explorer'
+  import {
+    catchErr,
+    createDate,
+    formatDate,
+    formatMoney,
+    getUrlkey,
+    nFormatter,
+  } from '../../../utils/common'
   // @ts-ignore
   import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import compositionPage from '../../../utils/mixin/page-param'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import { getPublicOpinionList } from '../../../api/risk-public-info'
   import SecurityCard from './components/security-card.vue'
   import ProjectExplorer from './components/project-explorer.vue'
-  import type { IPageParam } from '../../../utils/types'
+  import type { IAxiosRes } from '../../../utils/request'
+  import type {
+    IExploreInfo,
+    IGuardProjectList,
+    IPageParam,
+    IRiskInfoList,
+  } from '../../../utils/types'
   import type { IProjParam } from '../../../api/project-explorer'
+
+  import type { IPOList } from '../../../api/risk-public-info'
 
   declare type projListType = {
     project_id: string
@@ -152,6 +176,7 @@
   export default defineComponent({
     name: 'ProjectSearchMain',
     components: {
+      EmptyData,
       ProjectExplorer,
       SecurityCard,
       TitleCell,
@@ -160,7 +185,6 @@
       BeButton,
     },
     setup() {
-      const { pageParams, resetPageParam, updatePageSize } = compositionPage()
       const { message, routerPush, isEmpty } = composition()
       /**
        * 获取项目列表
@@ -232,20 +256,64 @@
           routerSwitch(ProjIdByEmail.value.toString())
         }
       }
+
+      /******************************* 基本信息、热门项目、风险警告 ***********************************/
+      const baseInfo = ref<IExploreInfo>({
+        market_cap_total: 0,
+        project_total: 0,
+      })
+      const guardProjectList = ref<Array<IGuardProjectList>>([])
+      // hot_project_list、risk_alert_list
+      const getInfoData = (): void => {
+        getExploreInfo()
+          .then((res: IAxiosRes) => {
+            if (res.success) {
+              baseInfo.value.market_cap_total = res.data.market_cap_total
+              baseInfo.value.project_total = res.data.project_total
+              guardProjectList.value = res.data.guard_project_list
+            } else {
+              catchErr(res)
+            }
+          })
+          .catch(catchErr)
+      }
+      const marketCapBaseInfo = computed(() => {
+        return function (val: number) {
+          return formatMoney(val) + nFormatter(val, 0, true)
+        }
+      })
+      /******************************* 公共舆情 ***********************************/
+      const { pageParams, resetPageParam } = compositionPage()
+      resetPageParam(4, pageParams)
+      const riskInfoList = ref<Array<IRiskInfoList>>([])
+      const getRiskInfo = (): void => {
+        const params: IPOList = {
+          page_num: pageParams.value.currentPage,
+          page_size: pageParams.value.pageSize,
+        }
+        getPublicOpinionList(params)
+          .then((res: IAxiosRes) => {
+            if (res.success) {
+              riskInfoList.value = res.data.page_infos
+              pageParams.value.total = res.data.total
+            } else {
+              catchErr(res)
+            }
+          })
+          .catch(catchErr)
+      }
       /**
        * 分页方法
        * @param item 分页参数
        */
       const pageChange = (item: IPageParam): void => {
         pageParams.value.currentPage = item.currentPage
-        //getList()
-      }
-      const updateNum = (data: IPageParam): void => {
-        updatePageSize(data.pageSize!, pageParams)
-        // getList()
+        getRiskInfo()
       }
       onMounted(() => {
         initPage()
+        getInfoData()
+        getRiskInfo()
       })
       return {
         isEmpty,
@@ -258,7 +326,12 @@
         formatMoney,
         pageParams,
         pageChange,
-        updateNum,
+        baseInfo,
+        guardProjectList,
+        riskInfoList,
+        createDate,
+        formatDate,
+        marketCapBaseInfo,
       }
     },
   })

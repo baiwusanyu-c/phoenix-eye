@@ -315,15 +315,15 @@ export function trimStr(str: string | undefined): string {
   return str.replace(/(^\s*)|(\s*$)/g, '')
 }
 // 数字转百万M 100M
-export function nFormatter(num: number, digits: number) {
+export function nFormatter(num: number, digits: number, getS = false) {
   const si = [
     { value: 1, symbol: '' },
     { value: 1e3, symbol: 'K' },
     { value: 1e6, symbol: 'M' },
-    /* { value: 1E9, symbol: "G" },
-         { value: 1E12, symbol: "T" },
-         { value: 1E15, symbol: "P" },
-         { value: 1E18, symbol: "E" }*/
+    { value: 1e9, symbol: 'B' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e18, symbol: 'E' },
   ]
   const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
   let i
@@ -331,6 +331,9 @@ export function nFormatter(num: number, digits: number) {
     if (num >= si[i].value) {
       break
     }
+  }
+  if (getS) {
+    return si[i].symbol
   }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
@@ -580,7 +583,9 @@ export function formatMoney(n: number): string {
   const num = String(Math.round(n * 10 ** 2)) // 乘100 四舍五入
   const integer = num.substr(0, num.length - 2).replace(regex, '$&,') // 最后两位前的为整数
   const decimal = num.substr(num.length - 2) // 最后两位为小数
-  return decimal === '00' ? `${integer || 0}` : `${integer || 0}.${decimal}`
+  return decimal === '00' || Number(decimal) === 0
+    ? `${integer || 0}`
+    : `${integer || 0}.${decimal}`
 }
 // 还原金额
 export function restoreMoney(s: string): number {
