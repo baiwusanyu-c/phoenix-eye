@@ -219,6 +219,7 @@ export default {
       install: 'Install the extension',
       quesTitle: 'Have questions about the results?',
       quesTitle2: 'Join in channel to discuss.',
+      more: 'Learn More',
     },
     exp: {
       addTitle: 'New Project Added',

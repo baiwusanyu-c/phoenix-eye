@@ -40,8 +40,16 @@
             url="../src/assets/image/pc/alert.png"
             :name="$t('lang.projectExplorer.alert.title')">
           </title-cell>
+          <be-button custom-class="eagle-btn more-alert-btn" round="4" type="success">
+            {{ $t('lang.projectExplorer.alert.more') }}
+          </be-button>
         </div>
+        <risk-alert-item
+          v-if="riskAlertList.length > 0"
+          :data-list="riskAlertList"></risk-alert-item>
+        <empty-data v-if="riskAlertList.length === 0" content="lang.noRisk"> </empty-data>
       </div>
+
       <div class="hot-project">
         <div class="project-alert--title">
           <title-cell
@@ -49,7 +57,12 @@
             :name="$t('lang.projectExplorer.alert.title2')">
           </title-cell>
         </div>
+        <hot-project-item
+          v-if="hotProjectList.length > 0"
+          :data-list="hotProjectList"></hot-project-item>
+        <empty-data v-if="hotProjectList.length === 0" content="lang.noRisk"> </empty-data>
       </div>
+
       <div class="get-plugin">
         <div class="plugin">
           <img
@@ -77,8 +90,8 @@
         </div>
       </div>
     </div>
-
     <div class="project-explorer--container">
+      <!--  TODO: project-explorer  -->
       <project-explorer></project-explorer>
       <div class="project-explorer--guard">
         <div class="project-explorer--guard--title">
@@ -100,7 +113,6 @@
         </div>
       </div>
     </div>
-
     <div v-if="riskInfoList.length > 0" class="project-risk--container">
       <div class="project-risk--search">
         <title-cell
@@ -158,6 +170,8 @@
   import { getPublicOpinionList } from '../../../api/risk-public-info'
   import SecurityCard from './components/security-card.vue'
   import ProjectExplorer from './components/project-explorer.vue'
+  import RiskAlertItem from './components/risk-alert-item.vue'
+  import HotProjectItem from './components/hot-project-item.vue'
   import type { IAxiosRes } from '../../../utils/request'
   import type {
     IExploreInfo,
@@ -176,6 +190,8 @@
   export default defineComponent({
     name: 'ProjectSearchMain',
     components: {
+      HotProjectItem,
+      RiskAlertItem,
       EmptyData,
       ProjectExplorer,
       SecurityCard,
@@ -263,14 +279,21 @@
         project_total: 0,
       })
       const guardProjectList = ref<Array<IGuardProjectList>>([])
-      // hot_project_list、risk_alert_list
+      const riskAlertList = ref<Array<string>>([])
+      const hotProjectList = ref<Array<string>>([])
       const getInfoData = (): void => {
         getExploreInfo()
           .then((res: IAxiosRes) => {
             if (res.success) {
+              // 基本信息
               baseInfo.value.market_cap_total = res.data.market_cap_total
               baseInfo.value.project_total = res.data.project_total
+              // New Project Added
               guardProjectList.value = res.data.guard_project_list
+              // 风险警告
+              riskAlertList.value = res.data.risk_alert_list
+              // 风险警告
+              hotProjectList.value = res.data.hot_project_list
             } else {
               catchErr(res)
             }
@@ -332,6 +355,8 @@
         createDate,
         formatDate,
         marketCapBaseInfo,
+        riskAlertList,
+        hotProjectList,
       }
     },
   })
@@ -415,6 +440,9 @@
       border-radius: 4px;
       padding: 24px 20px;
       box-sizing: border-box;
+      position: relative;
+      left: 0;
+      top: 0;
     }
 
     .hot-project {
@@ -425,6 +453,9 @@
       margin: 0 20px;
       padding: 24px 20px;
       box-sizing: border-box;
+      position: relative;
+      left: 0;
+      top: 0;
     }
 
     .project-alert--title {
@@ -433,6 +464,12 @@
       height: 68px;
       padding: 16px;
       box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      .more-alert-btn {
+        height: 36px;
+        color: $mainColor7;
+      }
     }
 
     .get-plugin {

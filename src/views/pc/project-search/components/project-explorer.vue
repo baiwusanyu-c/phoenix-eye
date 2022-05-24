@@ -67,7 +67,7 @@
           </template>
           <template #default="scope">
             <span>{{
-              isEmpty(scope.row.trx_24, '/') === '/' ? '/' : `${formatMoney(scope.row.market_cap)}`
+              isEmpty(scope.row.trx_24, '/') === '/' ? '/' : `${formatMoney(scope.row.trx_24)}`
             }}</span>
           </template>
         </el-table-column>

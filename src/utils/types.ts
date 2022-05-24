@@ -242,3 +242,10 @@ export type IRiskInfoList = {
   source?: string
   pub_time?: string
 }
+
+export type IHotProjectList = {
+  logo_url?: string
+  project_name?: string
+  security_score?: string
+  tx_24?: number
+}

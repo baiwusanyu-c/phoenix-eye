@@ -13,7 +13,7 @@
           end-length="0">
         </ellipsis-copy>
       </div>
-      <div class="security-card--tag">
+      <div class="security-card--tag scroll-diy">
         <be-tag v-for="item in tagListArr" :key="item" :round="2">
           {{ item }}
         </be-tag>
@@ -116,6 +116,7 @@
       .security-card--tag {
         margin-top: 10px;
         display: flex;
+        overflow-x: auto;
       }
 
       .be-tag {

@@ -10,7 +10,7 @@
       stroke-linecap="square"
       stroke-width="20">
       <template #center>
-        <span class="score">{{ scoreInner === 0 ? 'N/A' : score }}</span>
+        <span class="score">{{ Number(scoreInner) === 0 ? 'N/A' : score }}</span>
       </template>
     </be-progress>
   </div>
@@ -48,7 +48,7 @@
         color.value = '#F32F2F'
       }
       const hiddenPath = ref<string>('')
-      if (props.score === 0) {
+      if (Number(props.score) === 0) {
         hiddenPath.value = 'none'
       }
       const scoreInner = ref<number>(Number(props.score))
