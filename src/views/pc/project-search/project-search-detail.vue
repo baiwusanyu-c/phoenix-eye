@@ -77,7 +77,7 @@
     </div>
     <!--  TODO:project-detail-market    -->
     <div class="project-detail-market">
-      <div>
+      <div class="market-line--container">
         <div class="project-detail-header">
           <title-cell
             :sub-content="$t('lang.projectExplorer.detail.titleMarketSub')"
@@ -87,11 +87,13 @@
         </div>
         <div class="market-line"></div>
       </div>
+      <market-govern></market-govern>
     </div>
     <!--  TODO:project-detail-risk    -->
     <div class="project-detail-risk">
       <div class="project-detail-header">
         <title-cell
+          :sub-content="$t('lang.projectExplorer.detail.titleRiskSub')"
           url="../src/assets/image/pc/risk-logo.png"
           :name="$t('lang.projectExplorer.detail.titleRisk')">
         </title-cell>
@@ -442,6 +444,7 @@
   import ProjectDetailTop from './components/project-detail-top.vue'
   import SecurityList from './components/security-list.vue'
   import SecurityInfoCard from './components/security-info-card.vue'
+  import MarketGovern from './components/market-govern.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
@@ -459,6 +462,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      MarketGovern,
       SecurityInfoCard,
       SecurityList,
       TitleCell,
@@ -948,6 +952,20 @@
       text-align: center;
       min-height: 480px;
       height: auto;
+    }
+    .project-detail-market {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .market-line--container {
+        .market-line {
+          margin: 12px 0;
+          background-color: $mainColor7;
+          width: 843px;
+          height: 477px;
+          border-radius: 8px;
+        }
+      }
     }
 
     .base-info {

@@ -1,3 +1,4 @@
+import websiteForm from '../views/pc/manage/project-management/components/website-form.vue'
 import type { ComponentInternalInstance, Plugin, Ref } from 'vue'
 
 // 定义插件类型，组件的引用会用到这个，然后走use、install
@@ -271,3 +272,4 @@ export type securityInfoList = {
   amount?: number
   abstract?: string
 }
+export type IGovern = ICreateProjOperating & IWebsiteForm
