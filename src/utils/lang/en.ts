@@ -264,6 +264,10 @@ export default {
       titleRisk: 'Risk Transacions',
       titleInfo: 'Project information',
       titleSecurity: 'Securtity Event',
+      securtityEventLabel1: 'Allect project:',
+      securtityEventLabel2: 'Abstract:',
+      securtityEventLabel3: 'Attect type:',
+      securtityEventLabel4: 'Amount of loss:',
     },
   },
   createProject: {

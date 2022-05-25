@@ -3,6 +3,7 @@
 <template>
   <div class="project-search-detail eagle-page">
     <!--基本信息-->
+    <!--  TODO:project-detail-base    -->
     <div class="project-detail-base">
       <div class="project-detail-header">
         <div class="title">
@@ -64,6 +65,7 @@
       </div>
       <div class="project-detail-base--body"></div>
     </div>
+    <!--  TODO:project-detail-decent    -->
     <div class="project-detail-decent">
       <div class="project-detail-header">
         <title-cell
@@ -73,15 +75,20 @@
         </title-cell>
       </div>
     </div>
+    <!--  TODO:project-detail-market    -->
     <div class="project-detail-market">
-      <div class="project-detail-header">
-        <title-cell
-          :sub-content="$t('lang.projectExplorer.detail.titleMarketSub')"
-          url="../src/assets/image/pc/market-logo.png"
-          :name="$t('lang.projectExplorer.detail.titleMarket')">
-        </title-cell>
+      <div>
+        <div class="project-detail-header">
+          <title-cell
+            :sub-content="$t('lang.projectExplorer.detail.titleMarketSub')"
+            url="../src/assets/image/pc/market-logo.png"
+            :name="$t('lang.projectExplorer.detail.titleMarket')">
+          </title-cell>
+        </div>
+        <div class="market-line"></div>
       </div>
     </div>
+    <!--  TODO:project-detail-risk    -->
     <div class="project-detail-risk">
       <div class="project-detail-header">
         <title-cell
@@ -90,6 +97,7 @@
         </title-cell>
       </div>
     </div>
+
     <div class="project-detail-public-info">
       <div class="project-detail-header">
         <title-cell

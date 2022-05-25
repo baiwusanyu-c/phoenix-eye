@@ -264,3 +264,10 @@ export type projListType = {
   create_time?: string
   audit_report_num?: number
 }
+
+export type securityInfoList = {
+  project_name?: string
+  attect_type?: string
+  amount?: number
+  abstract?: string
+}
