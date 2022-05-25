@@ -10,7 +10,7 @@
       stroke-linecap="square"
       stroke-width="20">
       <template #center>
-        <span class="score">{{ Number(scoreInner) === 0 ? 'N/A' : score }}</span>
+        <span class="score">{{ Number(scoreInner) === 0 ? 'N/A' : scoreInner }}</span>
       </template>
     </be-progress>
   </div>
@@ -38,13 +38,13 @@
     },
     setup(props) {
       const color = ref<string>('')
-      if (props.level === '1') {
+      if (Number(props.score) >= 90) {
         color.value = '#0ED9AC'
       }
-      if (props.level === '2') {
+      if (Number(props.score) < 90 && Number(props.score) > 60) {
         color.value = '#F4CC29'
       }
-      if (props.level === '3') {
+      if (Number(props.score) <= 60) {
         color.value = '#F32F2F'
       }
       const hiddenPath = ref<string>('')

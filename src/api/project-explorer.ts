@@ -11,6 +11,7 @@ import type { IPageParam } from '../utils/types' //路径配置
 
 export interface IProjParam extends IPageParam {
   param?: string
+  platform?: string
 }
 export function getProjectListUser(params: IProjParam) {
   return request({
@@ -91,5 +92,13 @@ export function getExploreInfo() {
   return request({
     url: `${config.baseURL}/ussa/project/explore/info`,
     method: 'get',
+  })
+}
+
+export function getExploreList(params: IProjParam) {
+  return request({
+    url: `${config.baseURL}/ussa/project/explore/list`,
+    method: 'post',
+    params,
   })
 }

@@ -72,13 +72,6 @@ const routes = [
       },
     ],
   },
-  // 外部对接页面
-  {
-    path: '/external/riskTrx/list',
-    name: 'externalRiskTrxDetail',
-    component: () => import('../views/pc/external-page/external-risk-trx.vue'),
-    meta: { title: 'lang.subNav.navName2' },
-  },
 ]
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {

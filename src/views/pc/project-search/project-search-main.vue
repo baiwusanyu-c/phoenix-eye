@@ -131,7 +131,7 @@
           :source-url="item.url"
           :title="item.title"
           :info="item.content"
-          :create_time="item.pub_time"
+          :create-time="item.pub_time"
           :source-name="item.source"
           :tag-list="item.tag">
         </security-card>
@@ -177,13 +177,15 @@
   import ProjectExplorer from './components/project-explorer.vue'
   import RiskAlertItem from './components/risk-alert-item.vue'
   import HotProjectItem from './components/hot-project-item.vue'
-  import type { IAxiosRes } from '../../../utils/request'
   import type {
     IExploreInfo,
     IGuardProjectList,
+    IHotProjectList,
     IPageParam,
     IRiskInfoList,
   } from '../../../utils/types'
+  import type { IAxiosRes } from '../../../utils/request'
+
   import type { IProjParam } from '../../../api/project-explorer'
 
   import type { IPOList } from '../../../api/risk-public-info'
@@ -286,7 +288,7 @@
       })
       const guardProjectList = ref<Array<IGuardProjectList>>([])
       const riskAlertList = ref<Array<string>>([])
-      const hotProjectList = ref<Array<string>>([])
+      const hotProjectList = ref<Array<IHotProjectList>>([])
       const getInfoData = (): void => {
         getExploreInfo()
           .then((res: IAxiosRes) => {
@@ -298,8 +300,11 @@
               guardProjectList.value = res.data.guard_project_list
               // 风险警告
               riskAlertList.value = res.data.risk_alert_list
-              // 风险警告
+              // 热门项目
               hotProjectList.value = res.data.hot_project_list
+              hotProjectList.value.forEach((val, index) => {
+                val.index = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`
+              })
             } else {
               catchErr(res)
             }

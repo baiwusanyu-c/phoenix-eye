@@ -39,7 +39,7 @@
               {{ sourceName }}
             </a>
           </span>
-          <span>{{ formatTimeStamp(createDate(create_time).getTime(), $i18n.locale) }}</span>
+          <span>{{ formatTimeStamp(createDate(createTime).getTime(), $i18n.locale) }}</span>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
         default:
           '#PeckShieldAlert #phishing Peck#PeckShieldAlert #phishing PeckShield has detected sudoswap.claimeth[.]xyz is a phishing site. Do *NOT* claim $ETH! @sudoswap community share to raise awareness. Add "PeckShieldAlert" free extension to detect phishing sites or Report to us. https://t.co/7LjYgCK3gd https://t.co/gURa0lVmsO#PeckShieldAlert #phishing PeckShield has detected sudoswap.claimeth[.]xyz is a phishing site. Do *NOT* claim $ETH! @sudoswap community share to raise awareness. Add "PeckShieldAlert" free extension to detect phishing sites or Report to us. https://t.co/7LjYgCK3gd https://t.co/gURa0lVmsOShield has detected sudoswap.claimeth[.]xyz is a phishing site. Do *NOT* claim $ETH! @sudoswap community share to raise awareness. Add "PeckShieldAlert" free extension to detect phishing sites or Report to us. https://t.co/7LjYgCK3gd https://t.co/gURa0lVmsO',
       },
-      create_time: {
+      createTime: {
         type: String,
         default: '',
       },

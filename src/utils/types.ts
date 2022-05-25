@@ -248,4 +248,19 @@ export type IHotProjectList = {
   project_name?: string
   security_score?: string
   tx_24?: number
+  index: string
+}
+export type projListType = {
+  project_id?: string
+  project_name?: string
+  logo_url?: string
+  platform?: string
+  tx_24?: string
+  market_cap?: number
+  token_price?: number
+  security_score?: string
+  token_price_up_down?: string // up 涨 down 跌
+  token_price_history?: Array<{ token_price: number; create_time: string }>
+  create_time?: string
+  audit_report_num?: number
 }

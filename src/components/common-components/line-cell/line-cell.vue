@@ -76,7 +76,7 @@
           .line()
           .position('create_time*token_price')
           .shape('smooth')
-          .style({ stroke: props.type === 'up' ? '#11CABE' : '#F32F2F' })
+          .style({ stroke: props.type === 'up' || !props.type ? '#11CABE' : '#F32F2F' })
         chart.value.axis('create_time', false)
         chart.value.axis('token_price', false)
         chart.value.tooltip(false)

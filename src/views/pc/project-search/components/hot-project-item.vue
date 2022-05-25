@@ -4,7 +4,12 @@
     <template #empty>
       <empty-data content="lang.noRisk"></empty-data>
     </template>
-
+    <el-table-column align="center" width="60">
+      <template #header></template>
+      <template #default="scope">
+        <span class="tx24">{{ scope.row.index }}</span>
+      </template>
+    </el-table-column>
     <el-table-column prop="project_name" align="center">
       <template #header></template>
       <template #default="scope">

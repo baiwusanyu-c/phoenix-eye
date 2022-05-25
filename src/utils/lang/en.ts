@@ -227,7 +227,7 @@ export default {
       tableHeader: {
         project_name: 'Projects',
         security_score: 'Security Score',
-        trx_24: 'trx/24h',
+        tx_24: 'trx/24h',
         market_cap: 'Market Cap',
         token_price: 'Token Price',
         create_time: 'Added on',
