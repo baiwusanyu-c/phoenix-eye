@@ -91,7 +91,6 @@
       </div>
     </div>
     <div class="project-explorer--container">
-      <!--  TODO: project-explorer  -->
       <project-explorer></project-explorer>
       <div class="project-explorer--guard">
         <div class="project-explorer--guard--title">
@@ -117,39 +116,14 @@
         </div>
       </div>
     </div>
-    <div v-if="riskInfoList.length > 0" class="project-risk--container">
+    <div class="project-risk--container">
       <div class="project-risk--search">
         <title-cell
           :name="$t('lang.projectExplorer.security.title')"
           url="../src/assets/image/pc/security.png">
         </title-cell>
       </div>
-      <div class="project-risk--card">
-        <security-card
-          v-for="item in riskInfoList"
-          :key="item.content"
-          :source-url="item.url"
-          :title="item.title"
-          :info="item.content"
-          :create-time="item.pub_time"
-          :source-name="item.source"
-          :tag-list="item.tag">
-        </security-card>
-      </div>
-      <div style="float: right">
-        <be-pagination
-          is-ordianry
-          :page-size="pageParams.pageSize"
-          :page-count="pageParams.total"
-          :current-page="pageParams.currentPage"
-          :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-          :pager-show-count="5"
-          page-unit="page"
-          :layout="['prev', 'page']"
-          @change-page="pageChange">
-          <template #prev> </template>
-        </be-pagination>
-      </div>
+      <security-list></security-list>
     </div>
   </div>
 </template>
@@ -167,28 +141,19 @@
     nFormatter,
   } from '../../../utils/common'
   // @ts-ignore
-  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
+  import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
-  import compositionPage from '../../../utils/mixin/page-param'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
-  import { getPublicOpinionList } from '../../../api/risk-public-info'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
-  import SecurityCard from './components/security-card.vue'
+
   import ProjectExplorer from './components/project-explorer.vue'
   import RiskAlertItem from './components/risk-alert-item.vue'
   import HotProjectItem from './components/hot-project-item.vue'
-  import type {
-    IExploreInfo,
-    IGuardProjectList,
-    IHotProjectList,
-    IPageParam,
-    IRiskInfoList,
-  } from '../../../utils/types'
+  import SecurityList from './components/security-list.vue'
+  import type { IExploreInfo, IGuardProjectList, IHotProjectList } from '../../../utils/types'
   import type { IAxiosRes } from '../../../utils/request'
 
   import type { IProjParam } from '../../../api/project-explorer'
-
-  import type { IPOList } from '../../../api/risk-public-info'
 
   declare type projListType = {
     project_id: string
@@ -197,14 +162,15 @@
   export default defineComponent({
     name: 'ProjectSearchMain',
     components: {
+      SecurityList,
       ProjectNameCell,
       HotProjectItem,
       RiskAlertItem,
       EmptyData,
       ProjectExplorer,
-      SecurityCard,
+
       TitleCell,
-      BePagination,
+
       BeIcon,
       BeButton,
     },
@@ -316,38 +282,9 @@
           return formatMoney(val) + nFormatter(val, 0, true)
         }
       })
-      /******************************* 公共舆情 ***********************************/
-      const { pageParams, resetPageParam } = compositionPage()
-      resetPageParam(4, pageParams)
-      const riskInfoList = ref<Array<IRiskInfoList>>([])
-      const getRiskInfo = (): void => {
-        const params: IPOList = {
-          page_num: pageParams.value.currentPage,
-          page_size: pageParams.value.pageSize,
-        }
-        getPublicOpinionList(params)
-          .then((res: IAxiosRes) => {
-            if (res.success) {
-              riskInfoList.value = res.data.page_infos
-              pageParams.value.total = res.data.total
-            } else {
-              catchErr(res)
-            }
-          })
-          .catch(catchErr)
-      }
-      /**
-       * 分页方法
-       * @param item 分页参数
-       */
-      const pageChange = (item: IPageParam): void => {
-        pageParams.value.currentPage = item.currentPage
-        getRiskInfo()
-      }
       onMounted(() => {
         initPage()
         getInfoData()
-        getRiskInfo()
       })
       return {
         isEmpty,
@@ -358,11 +295,8 @@
         searchParams,
         getList,
         formatMoney,
-        pageParams,
-        pageChange,
         baseInfo,
         guardProjectList,
-        riskInfoList,
         createDate,
         formatDate,
         marketCapBaseInfo,
@@ -379,11 +313,11 @@
   }
 
   .project-base--container {
-    @include common-container(32px, 65.2%);
     height: 280px;
     background-image: url('../src/assets/image/pc/bg-base-info.png');
     background-repeat: round;
     border-radius: 4px;
+    @include common-container(32px, 65.2%);
     padding: 40px 60px;
     box-sizing: border-box;
 
@@ -615,28 +549,10 @@
     }
   }
 
-  .project-risk--container {
-    @include common-container(32px, 65.2%);
-    text-align: center;
-    min-height: 480px;
-    height: auto;
-
-    .project-risk--search {
-      height: 60px;
-    }
-
-    .project-risk--card {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-  }
-
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
-    .project-search-main .project-risk--container,
     .project-search-main .project-explorer--container {
       width: 92%;
     }
@@ -646,7 +562,6 @@
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
-    .project-search-main .project-risk--container,
     .project-search-main .project-explorer--container {
       width: 80%;
     }

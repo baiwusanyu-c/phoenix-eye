@@ -1,9 +1,115 @@
 /* * @project-search-detail.vue * @deprecated 項目瀏覽器搜索詳情 - 項目態勢頁面 * @author czh *
 @update (czh 2022/2/25) */
 <template>
-  <div class="project-search-detail">
+  <div class="project-search-detail eagle-page">
     <!--基本信息-->
-    <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
+    <div class="project-detail-base">
+      <div class="project-detail-header">
+        <div class="title">
+          <icon-cell content="Project name" is-platform icon="eth" size="46" font-size="30">
+          </icon-cell>
+          <img alt=" " src="../../../assets/image/pc/audit-c.png" style="margin: 0 20px" />
+          <!--            <img
+                style="margin: 0 20px;"
+                alt=" "
+                src="../../../assets/image/pc/audit.png" />-->
+          <be-tag type="info" custom-class="platform-tag-g">
+            <div class="flex items-center">
+              <span>BSC</span>
+            </div>
+          </be-tag>
+          <el-select v-model="selectContract" placeholder="Select">
+            <template #prefix>123</template>
+            <el-option
+              v-for="item in contractList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+          <be-button
+            :custom-class="`eagle-btn subscribe--btn ${
+              baseInfo.isSubscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
+            } `"
+            :prev-icon="baseInfo.isSubscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
+            type="success"
+            @click="handleSubscribe">
+          </be-button>
+        </div>
+        <div>
+          <be-icon
+            role="button"
+            width="50"
+            height="60"
+            icon="iconWebsiteEagle"
+            @click="openWindow(baseInfo.website)"></be-icon>
+          <be-icon
+            role="button"
+            width="60"
+            height="60"
+            icon="iconTwitterEagle"
+            @click="openWindow(baseInfo.twitter)"></be-icon>
+          <be-icon
+            role="button"
+            width="60"
+            height="60"
+            icon="iconTelegramEagle"
+            @click="openWindow(baseInfo.telegram)"></be-icon>
+          <be-icon
+            role="button"
+            width="50"
+            height="60"
+            icon="iconGithubEagle"
+            @click="openWindow(baseInfo.github)"></be-icon>
+        </div>
+      </div>
+      <div class="project-detail-base--body"></div>
+    </div>
+    <div class="project-detail-decent">
+      <div class="project-detail-header">
+        <title-cell
+          url="../src/assets/image/pc/decent-logo.png"
+          :sub-content="$t('lang.projectExplorer.detail.titleDecentSub')"
+          :name="$t('lang.projectExplorer.detail.titleDecent')">
+        </title-cell>
+      </div>
+    </div>
+    <div class="project-detail-market">
+      <div class="project-detail-header">
+        <title-cell
+          :sub-content="$t('lang.projectExplorer.detail.titleMarketSub')"
+          url="../src/assets/image/pc/market-logo.png"
+          :name="$t('lang.projectExplorer.detail.titleMarket')">
+        </title-cell>
+      </div>
+    </div>
+    <div class="project-detail-risk">
+      <div class="project-detail-header">
+        <title-cell
+          url="../src/assets/image/pc/risk-logo.png"
+          :name="$t('lang.projectExplorer.detail.titleRisk')">
+        </title-cell>
+      </div>
+    </div>
+    <div class="project-detail-public-info">
+      <div class="project-detail-header">
+        <title-cell
+          url="../src/assets/image/pc/security.png"
+          :name="$t('lang.projectExplorer.detail.titleInfo')">
+        </title-cell>
+      </div>
+      <security-list></security-list>
+    </div>
+    <div class="project-detail-security">
+      <div class="project-detail-header">
+        <title-cell
+          url="../src/assets/image/pc/security2.png"
+          :name="$t('lang.projectExplorer.detail.titleSecurity')">
+        </title-cell>
+      </div>
+      <security-info-card></security-info-card>
+    </div>
+
+    <!--    <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
       <div class="item-title" style="position: relative; width: 100%">
         <h2>
           <ellipsis-copy
@@ -29,9 +135,9 @@
         <span style="margin-right: 16px; font-size: 14px; font-weight: bold; color: #333">{{
           isEmpty(baseInfo.riskPublicOpinion)
         }}</span>
-        <!--    订阅      -->
+        &lt;!&ndash;    订阅      &ndash;&gt;
         <be-button
-          :custom-class="`eagle-btn subscribe--btn ${
+          :custom-class="`eagle-btn subscribe&#45;&#45;btn ${
             baseInfo.isSubscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
           } `"
           :prev-icon="baseInfo.isSubscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
@@ -115,7 +221,7 @@
         </div>
       </div>
     </div>
-    <!--合约统计-->
+    &lt;!&ndash;合约统计&ndash;&gt;
     <div
       v-if="contractStatisticsData.length > 0"
       v-loading="statisticsLoading"
@@ -190,12 +296,12 @@
         </be-pagination>
       </div>
     </div>
-    <!--Audit-->
+    &lt;!&ndash;Audit&ndash;&gt;
     <div v-if="auditList.length > 0" class="proj-detail-item eagle-table">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
       </div>
-      <div class="project-detail-audit--body">
+      <div class="project-detail-audit&#45;&#45;body">
         <project-detail-audit
           v-for="item in auditList"
           :key="item.report_id"
@@ -221,7 +327,7 @@
         </be-pagination>
       </div>
     </div>
-    <!--top5 数据表格 "-->
+    &lt;!&ndash;top5 数据表格 "&ndash;&gt;
     <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
       <project-detail-top
         v-if="top5TokenHolderSelect.length > 0"
@@ -245,14 +351,14 @@
         @select="handleSelectTop5">
       </project-detail-top>
     </div>
-    <!--风险交易-->
+    &lt;!&ndash;风险交易&ndash;&gt;
     <div class="proj-detail-item">
       <div class="item-title" style="margin-bottom: 32px">
         <h2>{{ $t('lang.projectExplorer.detail.riskTrx') }}</h2>
       </div>
       <risk-trx-table :project-id="projectId"></risk-trx-table>
     </div>
-    <!--项目舆情安全-->
+    &lt;!&ndash;项目舆情安全&ndash;&gt;
     <div v-if="safetyData.length > 0" class="proj-detail-item">
       <div class="item-title">
         <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
@@ -284,12 +390,12 @@
             </template>
           </be-pagination>
         </div>
-        <!--        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
+        &lt;!&ndash;        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px" />
           <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-        </div>-->
+        </div>&ndash;&gt;
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -321,14 +427,19 @@
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import config from '../../../enums/config'
   import { setPrevUrl } from '../../../utils/request'
+  import IconCell from '../../../components/common-components/icon-cell/icon-cell.vue'
+  import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
+  import SecurityList from './components/security-list.vue'
+  import SecurityInfoCard from './components/security-info-card.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
     IBaseInfo,
     IContractStatistics,
+    IOption,
     IPageParam,
     ISafetyData,
     ITableHeader,
@@ -340,6 +451,10 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      SecurityInfoCard,
+      SecurityList,
+      TitleCell,
+      IconCell,
       ProjectDetailAudit,
       ProjectDetailTop,
       RiskTrxTable,
@@ -354,6 +469,30 @@
       const { message, route, isEmpty, msgBox, openWeb } = composition()
       const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
       const { t } = useI18n()
+      const selectContract = ref<string>('')
+      const contractList = ref<Array<IOption>>([
+        {
+          value: 'Option1',
+          label: 'Option1',
+        },
+        {
+          value: 'Option2',
+          label: 'Option2',
+        },
+        {
+          value: 'Option3',
+          label: 'Option3',
+        },
+        {
+          value: 'Option4',
+          label: 'Option4',
+        },
+        {
+          value: 'Option5',
+          label: 'Option5',
+        },
+      ])
+
       const baseInfo = ref<IBaseInfo>({})
 
       const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
@@ -586,7 +725,7 @@
         getPublicOpinionData()
       }
       onMounted(() => {
-        getProSituData()
+        // getProSituData()
       })
       /**
        * 选择项目 重置变量
@@ -712,6 +851,9 @@
         formatDate,
         openWindow,
         formatTimeStamp,
+
+        selectContract,
+        contractList,
       }
     },
   })
@@ -719,23 +861,55 @@
 
 <style lang="scss">
   .project-search-detail {
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    box-sizing: border-box;
-    width: 100%;
-    height: auto;
-    min-height: calc(100% - 192px);
-    padding-bottom: 86px;
+    min-height: calc(100% - 92px);
+
+    .project-detail-base,
+    .project-detail-decent,
+    .project-detail-public-info,
+    .project-detail-security,
+    .project-detail-risk,
+    .project-detail-market {
+      @include common-container(32px, 65.2%);
+    }
+    .project-detail-header {
+      height: 60px;
+      line-height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .title {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .project-detail-base {
+      .platform-tag-g {
+        border: 0;
+        padding: 4px 8px;
+        height: 26px;
+        border-radius: 4px;
+      }
+      .el-input {
+        margin: 0 16px;
+        line-height: 26px;
+        .el-input__wrapper {
+          flex-grow: initial;
+        }
+        .el-input__inner {
+          height: 26px;
+          line-height: 26px;
+        }
+      }
+    }
 
     .subscribe--btn {
-      position: absolute;
-      right: 0;
-      float: right;
-      width: 118px;
+      width: 40px;
       height: 40px;
+      min-width: initial;
       border-radius: 4px !important;
+      .be-button-slot {
+        display: none;
+      }
     }
 
     .subscribe-btn__as {
@@ -760,6 +934,12 @@
           fill: $mainColor7 !important;
         }
       }
+    }
+
+    .project-detail-public-info {
+      text-align: center;
+      min-height: 480px;
+      height: auto;
     }
 
     .base-info {

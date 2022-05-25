@@ -11,7 +11,7 @@
         <div class="select">
           <img alt="beosin-select" src="../../../../assets/image/pc/select-all.png" />
           <el-select v-model="selectValue" @change="handleSelect">
-            <el-option label="All Chains" value="all"></el-option>
+            <el-option label="All Chains" value=""></el-option>
             <el-option
               v-for="item in platformListDict"
               :key="item.id"
@@ -29,7 +29,12 @@
     </div>
     <!--      TODO: Project Explorer Table         -->
     <div class="project-explorer--table eagle-table">
-      <el-table ref="riskTrxList" v-loading="loading" tooltip-effect="light" :data="projectList">
+      <el-table
+        ref="riskTrxList"
+        v-loading="loading"
+        tooltip-effect="light"
+        :data="projectList"
+        @row-click="routerSwitch">
         <template #empty>
           <empty-data content="lang.noRisk"></empty-data>
         </template>
@@ -204,7 +209,7 @@
        */
       // 搜索参数
       const searchParams = ref<string>('')
-      const selectValue = ref<string>('all')
+      const selectValue = ref<string>('')
       const handleSearch = (data: string): void => {
         searchParams.value = data
         nextTick(() => {
@@ -260,8 +265,8 @@
       /**
        * 路由跳轉
        */
-      const routerSwitch = (id: string): void => {
-        routerPush('/projectSearch/detail', { id })
+      const routerSwitch = (row: any): void => {
+        routerPush('/projectSearch/detail', { id: row.project_id })
       }
       /**
        * 分页方法

@@ -256,6 +256,14 @@ export default {
       percentage: 'percentage',
       quantity: 'quantity',
       pair: 'pair',
+
+      titleDecent: 'Decentralization',
+      titleDecentSub: 'Price and transaction status.',
+      titleMarket: 'Market Volatility',
+      titleMarketSub: 'On-chain performance and social performance.',
+      titleRisk: 'Risk Transacions',
+      titleInfo: 'Project information',
+      titleSecurity: 'Securtity Event',
     },
   },
   createProject: {

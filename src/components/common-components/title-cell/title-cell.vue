@@ -3,6 +3,7 @@
   <div class="flex items-center title-cell">
     <img v-if="url" :src="url" alt=" " :style="`width:${size}px;height:${size}px`" />
     <span :style="`font-size:${fontSize}px`">{{ name }}</span>
+    <span :style="`font-size:${20}px;color:#8A96A3;font-weight:400`">{{ subContent }}</span>
   </div>
 </template>
 
@@ -13,6 +14,9 @@
     name: 'TitleCell',
     props: {
       name: {
+        type: String,
+      },
+      subContent: {
         type: String,
       },
       size: {

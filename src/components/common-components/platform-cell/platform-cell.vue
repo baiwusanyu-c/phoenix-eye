@@ -1,7 +1,7 @@
 /* * @platform-cell.vue * @deprecated * @author czh * @update (czh 2022/4/2) */
 <template>
   <div class="flex items-center">
-    <be-icon :icon="iconDict[platform.toUpperCase()]" width="24" height="24"> </be-icon>
+    <be-icon :icon="iconDict[platform.toUpperCase()]" :width="size" :height="size"> </be-icon>
     <span
       style="
         line-height: 24px;
@@ -27,6 +27,10 @@
     props: {
       platform: {
         type: String,
+      },
+      size: {
+        type: Number,
+        default: 24,
       },
     },
     setup() {
