@@ -85,7 +85,9 @@
             :name="$t('lang.projectExplorer.detail.titleMarket')">
           </title-cell>
         </div>
-        <div class="market-line"></div>
+        <div class="market-line">
+          <market-line></market-line>
+        </div>
       </div>
       <market-govern></market-govern>
     </div>
@@ -445,6 +447,7 @@
   import SecurityList from './components/security-list.vue'
   import SecurityInfoCard from './components/security-info-card.vue'
   import MarketGovern from './components/market-govern.vue'
+  import MarketLine from './components/market-line.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
@@ -462,6 +465,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      MarketLine,
       MarketGovern,
       SecurityInfoCard,
       SecurityList,
@@ -964,6 +968,8 @@
           width: 843px;
           height: 477px;
           border-radius: 8px;
+          padding: 24px;
+          box-sizing: border-box;
         }
       }
     }

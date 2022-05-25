@@ -282,6 +282,10 @@ export default {
       governSubLabel5: 'white paper',
       view: 'view',
       unknows: 'unknown',
+      marketTab1: 'Token Price',
+      marketTab2: 'Transfer volume',
+      marketTab3: 'Liquidity',
+      marketTab4: 'Market Cap',
     },
   },
   createProject: {
