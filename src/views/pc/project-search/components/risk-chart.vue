@@ -18,6 +18,7 @@
     </div>
     <div class="risk-chart--bar">
       <p>{{ $t('lang.projectExplorer.detail.riskTrx') }}</p>
+      <bar-cell></bar-cell>
     </div>
   </div>
 </template>
@@ -25,10 +26,11 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   import PieCell from '../../../../components/common-components/pie-cell/pie-cell.vue'
+  import BarCell from '../../../../components/common-components/bar-cell/bar-cell.vue'
 
   export default defineComponent({
     name: 'RiskChart',
-    components: { PieCell },
+    components: { BarCell, PieCell },
     setup() {
       const selectVal = ref<string>('24')
       const handleSelectChange = (data: string): void => {
@@ -69,6 +71,7 @@
         font-weight: bold;
         color: $textColor3;
         line-height: 17px;
+        margin-bottom: 16px;
       }
     }
   }

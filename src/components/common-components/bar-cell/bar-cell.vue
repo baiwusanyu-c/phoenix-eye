@@ -1,4 +1,4 @@
-/* * @area-line-cell.vue * @deprecated * @author czh * @update (czh 2022/5/25) */
+/* * @bar-cell.vue * @deprecated * @author czh * @update (czh 2022/5/26) */
 <template>
   <div :id="domId"></div>
 </template>
@@ -7,10 +7,11 @@
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
   import { formatMoney } from '../../../utils/common'
-  import type { PropType } from 'vue'
   import type { IStatisticsLine } from '../../../utils/types'
+  import type { PropType } from 'vue'
+
   export default defineComponent({
-    name: 'AreaLineCell',
+    name: 'BarCell',
     props: {
       domId: {
         type: String,
@@ -23,7 +24,7 @@
       lineData: {
         type: Array as PropType<Array<IStatisticsLine>>,
       },
-      smooth: {
+      showAxis: {
         type: Boolean,
         default: true,
       },
@@ -52,6 +53,7 @@
       )
       const renderChart = (isUpdate?: boolean) => {
         const data = [
+          { create_time: '1990', token_price: 3 },
           { create_time: '1991', token_price: 3 },
           { create_time: '1992', token_price: 4 },
           { create_time: '1993', token_price: 3.5 },
@@ -75,7 +77,7 @@
           { create_time: '2011', token_price: 7 },
           { create_time: '2012', token_price: 7 },
           { create_time: '2013', token_price: 7 },
-          { create_time: '2014', token_price: 7 },
+          { create_time: '2014', token_price: 17 },
           { create_time: '2015', token_price: 7 },
           { create_time: '2016', token_price: 7 },
           { create_time: '2017', token_price: 7 },
@@ -92,19 +94,9 @@
         chart.value = new Chart({
           container: props.domId,
           autoFit: true,
-          height: 360,
+          height: 120,
         })
-
         chart.value.data(data)
-        chart.value.scale({
-          token_price: {
-            min: 10000,
-            nice: true,
-          },
-          create_time: {
-            range: [0, 1],
-          },
-        })
         chart.value.tooltip({
           showCrosshairs: true,
           showTitle: false,
@@ -128,7 +120,7 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token">$ ${formatMoney(item.value)}</p>
+                  <p class="g2-tooltip-list-token"> ${formatMoney(item.value)}</p>
                    <p>${item.title}</p>
               </li>`
             })
@@ -136,71 +128,44 @@
             return container
           },
         })
+        const axisLabel = props.showAxis
+          ? {
+              style: {
+                fill: '#8A96A3',
+              },
+            }
+          : null
+        const axisGrid = props.showAxis
+          ? {
+              line: {
+                type: 'line',
+                style: {
+                  lineDash: [4],
+                },
+              },
+            }
+          : null
         chart.value.axis(props.y, {
-          label: {
-            style: {
-              fill: '#8A96A3',
-            },
-          },
+          label: axisLabel,
           line: null,
           tickLine: null,
         })
         chart.value.axis(props.x, {
-          label: {
-            style: {
-              fill: '#8A96A3',
-            },
-          },
-          grid: {
-            line: {
-              type: 'line',
-              style: {
-                lineDash: [4],
-              },
-            },
-          },
+          label: axisLabel,
+          grid: axisGrid,
         })
 
         chart.value
-          .line()
+          .interval()
           .position(`${props.y}*${props.x}`)
-          .shape(props.smooth ? 'smooth' : '')
-          .style({ stroke: '#1A589B' })
-        chart.value
-          .area()
-          .position(`${props.y}*${props.x}`)
-          .style({ fill: 'l(270) 0:rgba(39, 114, 240, 0) 1:#1A589B' })
-          .shape(props.smooth ? 'smooth' : '')
+          .style({
+            fill: '#18304E',
+            radius: [20, 20, 0, 0],
+          })
         chart.value.render()
       }
     },
   })
 </script>
 
-<style lang="scss">
-  .g2-tooltip {
-    background-color: $textColor3 !important;
-    border-radius: 8px !important;
-    min-width: 110px !important;
-    .g2-tooltip-marker {
-      display: none !important;
-    }
-    .g2-tooltip-list-item {
-      p {
-        text-align: left !important;
-        font-family: BarlowSemi-R, sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        color: $textColor7 !important;
-        line-height: 16px;
-      }
-      .g2-tooltip-list-token {
-        font-size: 14px;
-        font-family: BarlowSemi-B, sans-serif;
-        font-weight: bold;
-        line-height: 20px;
-        color: $mainColor7 !important;
-      }
-    }
-  }
-</style>
+<style scoped></style>
