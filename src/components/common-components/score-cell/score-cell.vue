@@ -31,10 +31,6 @@
         type: [Number, String],
         default: 0,
       },
-      level: {
-        type: String,
-        default: '3',
-      },
     },
     setup(props) {
       const color = ref<string>('')

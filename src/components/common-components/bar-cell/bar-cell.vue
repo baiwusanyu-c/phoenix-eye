@@ -19,7 +19,7 @@
       },
       height: {
         type: Number,
-        default: 300,
+        default: 120,
       },
       lineData: {
         type: Array as PropType<Array<IStatisticsLine>>,
@@ -94,7 +94,7 @@
         chart.value = new Chart({
           container: props.domId,
           autoFit: true,
-          height: 120,
+          height: props.height,
         })
         chart.value.data(data)
         chart.value.tooltip({

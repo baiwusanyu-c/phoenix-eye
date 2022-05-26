@@ -273,3 +273,11 @@ export type securityInfoList = {
   abstract?: string
 }
 export type IGovern = ICreateProjOperating & IWebsiteForm
+
+export interface IScoreItems {
+  market_volatility_score?: string
+  diaphaneity_score?: string
+  decentralization_score?: string
+  risk_tx_score?: string
+  audit_report_score?: string
+}

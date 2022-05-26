@@ -3,7 +3,6 @@
 <template>
   <div class="project-search-detail eagle-page">
     <!--基本信息-->
-
     <div class="project-detail-base">
       <div class="project-detail--header">
         <div class="title">
@@ -83,7 +82,7 @@
               </div>
               <div class="token-price-left">
                 <p>{{ $t('lang.projectExplorer.detail.tokenPrice1') }}</p>
-                <area-line-cell dom-id="token_price" :height="200"></area-line-cell>
+                <area-line-cell dom-id="token_price" :height="234"></area-line-cell>
               </div>
             </div>
             <div class="user-active-market">
@@ -152,7 +151,60 @@
             </div>
           </div>
         </div>
-        <div class="body-right"></div>
+        <div class="body-right">
+          <div class="score-report">
+            <div class="score-report--chart">
+              <div style="display: flex; justify-content: center; position: relative">
+                <be-progress
+                  type="dashboard"
+                  stroke-width="12"
+                  width="222"
+                  :color="handleScoreColor(80)"
+                  stroke-linecap="square"
+                  percent="80"
+                  status="normal"
+                  gap="50">
+                  <template #center>
+                    <div class="progress-score">
+                      <p>80</p>
+                      <span>
+                        {{ $t('lang.projectExplorer.detail.securityScore') }}
+                      </span>
+                    </div>
+                  </template>
+                </be-progress>
+              </div>
+              <div class="low-high-score">
+                <p class="score">
+                  {{ $t('lang.projectExplorer.detail.scoreH') }}
+                  <span class="score-high">98</span>
+                </p>
+                <p class="score">
+                  {{ $t('lang.projectExplorer.detail.scoreL') }}
+                  <span class="score-low">64</span>
+                </p>
+              </div>
+              <bar-cell :show-axis="false" dom-id="score_report__chart" :height="80"></bar-cell>
+              <p class="descr">{{ $t('lang.projectExplorer.detail.scoreItemDisc') }}</p>
+            </div>
+            <div class="score-report--list">
+              <p class="score-report__title">{{ $t('lang.projectExplorer.detail.scoreItem1') }}</p>
+              <div>
+                <!--                <report-item></report-item>
+                <report-item></report-item>
+                <report-item></report-item>-->
+              </div>
+              <div class="score-report--body">
+                <img alt="" src="../../../assets/image/pc/report-empty.png" />
+                <p>{{ $t('lang.projectExplorer.detail.noAudit') }}</p>
+                <be-button custom-class="eagle-btn" round="4" type="success"
+                  >{{ $t('lang.request.title') }}
+                </be-button>
+              </div>
+            </div>
+          </div>
+          <score-item></score-item>
+        </div>
       </div>
     </div>
     <!--  TODO:project-detail-decent    -->
@@ -212,294 +264,6 @@
       </div>
       <security-info-card></security-info-card>
     </div>
-
-    <!--    <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
-      <div class="item-title" style="position: relative; width: 100%">
-        <h2>
-          <ellipsis-copy
-            :target-str="isEmpty(baseInfo.name)"
-            :is-show-copy-btn="false"
-            :is-ellipsis="
-              isEmpty(baseInfo.name) && isEmpty(baseInfo.name).length > 20 ? true : false
-            "
-            styles="color:#333"
-            font-length="8"
-            end-length="8">
-          </ellipsis-copy>
-        </h2>
-        <span style="margin-right: 6px"
-          >{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h) :
-        </span>
-        <span style="margin-right: 30px; font-size: 14px; font-weight: bold; color: #333">{{
-          isEmpty(baseInfo.riksTrxNum)
-        }}</span>
-        <span style="margin-right: 6px"
-          >{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}(24h) :</span
-        >
-        <span style="margin-right: 16px; font-size: 14px; font-weight: bold; color: #333">{{
-          isEmpty(baseInfo.riskPublicOpinion)
-        }}</span>
-        &lt;!&ndash;    订阅      &ndash;&gt;
-        <be-button
-          :custom-class="`eagle-btn subscribe&#45;&#45;btn ${
-            baseInfo.isSubscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
-          } `"
-          :prev-icon="baseInfo.isSubscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
-          type="success"
-          @click="handleSubscribe">
-          {{ $t('lang.projectExplorer.detail.subscribe') }}
-        </be-button>
-      </div>
-      <div class="base-info">
-        <div class="base-info-item">
-          <p>{{ $t('lang.projectExplorer.detail.transactions') }}(24h)</p>
-          <span v-if="baseInfo.transactions || baseInfo.transactions === 0">{{
-            numberToCommaString(isEmpty(baseInfo.transactions))
-          }}</span>
-          <span v-if="!baseInfo.transactions && baseInfo.transactions !== 0">{{
-            $t('lang.emptyData')
-          }}</span>
-        </div>
-        <div class="base-info-item">
-          <div style="flex: 1">
-            <p>{{ $t('lang.projectExplorer.detail.transactionsTotal') }}</p>
-            <span
-              v-if="baseInfo.transactionsTotal || baseInfo.transactionsTotal === 0"
-              class="total"
-              >{{ numberToCommaString(isEmpty(baseInfo.transactionsTotal)) }}</span
-            >
-            <span
-              v-if="!baseInfo.transactionsTotal && baseInfo.transactionsTotal !== 0"
-              class="total"
-              >{{ $t('lang.emptyData') }}</span
-            >
-          </div>
-          <div style="flex: 1">
-            <p>{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
-            <p v-if="baseInfo.lastTradeData || baseInfo.lastTradeData === 0" class="date">
-              {{ formatDate(createDate(baseInfo.lastTradeData)) }}
-            </p>
-            <p v-if="!baseInfo.lastTradeData && baseInfo.lastTradeData !== 0" class="date">
-              {{ $t('lang.emptyData') }}
-            </p>
-            <p v-if="baseInfo.lastTradeData || baseInfo.lastTradeData === 0" class="time">
-              {{ formatTimeStamp(createDate(baseInfo.lastTradeData).getTime(), $i18n.locale) }}
-            </p>
-          </div>
-        </div>
-        <div class="base-info-item">
-          <p>{{ $t('lang.projectExplorer.detail.socialProfiles') }}:</p>
-          <be-icon
-            v-if="baseInfo.website"
-            role="button"
-            width="50"
-            height="60"
-            icon="iconWebsiteEagle"
-            @click="openWindow(baseInfo.website)"></be-icon>
-          <be-icon
-            v-if="baseInfo.twitter"
-            role="button"
-            width="60"
-            height="60"
-            icon="iconTwitterEagle"
-            @click="openWindow(baseInfo.twitter)"></be-icon>
-          <be-icon
-            v-if="baseInfo.telegram"
-            role="button"
-            width="60"
-            height="60"
-            icon="iconTelegramEagle"
-            @click="openWindow(baseInfo.telegram)"></be-icon>
-          <be-icon
-            v-if="baseInfo.github"
-            role="button"
-            width="50"
-            height="60"
-            icon="iconGithubEagle"
-            @click="openWindow(baseInfo.github)"></be-icon>
-          <span
-            v-if="!baseInfo.website && !baseInfo.twitter && !baseInfo.telegram && !baseInfo.github"
-            class="total">
-            {{ $t('lang.emptyData') }}
-          </span>
-        </div>
-      </div>
-    </div>
-    &lt;!&ndash;合约统计&ndash;&gt;
-    <div
-      v-if="contractStatisticsData.length > 0"
-      v-loading="statisticsLoading"
-      class="proj-detail-item eagle-table">
-      <div class="item-title">
-        <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
-      </div>
-      <div
-        v-for="item in contractStatisticsData"
-        :key="item.contract_address"
-        class="contract-statistics">
-        <div style="flex: 1">
-          <div style="display: flex; margin-bottom: 6px">
-            <be-tag type="info">
-              <div class="flex items-center">
-                <span>{{ item.platform.toUpperCase() }}</span>
-              </div>
-            </be-tag>
-            <ellipsis-copy
-              :target-str="item.token_name"
-              custom-class="total"
-              :is-show-copy-btn="false"
-              :empty-text="' '"
-              :is-ellipsis="(item.token_name && item.token_name.length) > 20 ? true : false"
-              font-length="8"
-              end-length="8">
-            </ellipsis-copy>
-          </div>
-          <ellipsis-copy
-            :target-str="item.contract_address"
-            styles="color: #008EE9;cursor:pointer;font-weight:400"
-            font-length="8"
-            end-length="8"
-            @click="
-              item.contract_address ? openWeb(item.contract_address, 'token', item.platform) : null
-            ">
-          </ellipsis-copy>
-        </div>
-        <div style="flex: 1">
-          <p class="contract-statistics-label">
-            {{ $t('lang.projectExplorer.detail.transactions') }}(24h)
-          </p>
-          <span>{{ numberToCommaString(isEmpty(item.tx_24)) }}</span>
-        </div>
-        <div style="flex: 1">
-          <p class="contract-statistics-label">
-            {{ $t('lang.projectExplorer.detail.transactionsTotal') }}
-          </p>
-          <span class="total">{{ numberToCommaString(isEmpty(item.tx_total)) }}</span>
-        </div>
-        <div style="flex: 1">
-          <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
-          <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
-        </div>
-      </div>
-      <div class="table-page">
-        <be-pagination
-          is-ordianry
-          :page-size="pageParamsTj.pageSize"
-          :page-count="pageParamsTj.total"
-          :current-page="pageParamsTj.currentPage"
-          :page-num="[{ label: 3 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-          :pager-show-count="5"
-          page-unit="page"
-          :layout="['prev', 'page']"
-          @change-page="
-            item => handlePageChange(item.currentPage, pageParamsTj, getContractStatistics)
-          ">
-          <template #prev>
-            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
-          </template>
-        </be-pagination>
-      </div>
-    </div>
-    &lt;!&ndash;Audit&ndash;&gt;
-    <div v-if="auditList.length > 0" class="proj-detail-item eagle-table">
-      <div class="item-title">
-        <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
-      </div>
-      <div class="project-detail-audit&#45;&#45;body">
-        <project-detail-audit
-          v-for="item in auditList"
-          :key="item.report_id"
-          :url="item.url"
-          :name="item.report_name"
-          :date="formatDate(createDate(item.create_time))">
-        </project-detail-audit>
-      </div>
-      <div class="table-page">
-        <be-pagination
-          is-ordianry
-          :page-size="pageParamsAudit.pageSize"
-          :page-count="pageParamsAudit.total"
-          :current-page="pageParamsAudit.currentPage"
-          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-          :pager-show-count="5"
-          page-unit="page"
-          :layout="['prev', 'page']"
-          @change-page="item => handlePageChange(item.currentPage, pageParamsAudit, getAuditData)">
-          <template #prev>
-            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsAudit.total }}</span>
-          </template>
-        </be-pagination>
-      </div>
-    </div>
-    &lt;!&ndash;top5 数据表格 "&ndash;&gt;
-    <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
-      <project-detail-top
-        v-if="top5TokenHolderSelect.length > 0"
-        :token-name="top5TokenHolderName"
-        :token-address="top5TokenHolderAddr"
-        types="holder"
-        :default-platform="defaultPlatformTop5Token"
-        :data="top5TokenHolder"
-        style="margin-right: 16px"
-        :header="top5THTableHeader"
-        :title="$t('lang.projectExplorer.detail.top5Title1')"
-        @select="handleSelectTop5">
-      </project-detail-top>
-      <project-detail-top
-        v-if="top5QuiditySelect.length > 0"
-        :data="top5QuidityPairs"
-        types="pairs"
-        :default-platform="defaultPlatformTop5Quidity"
-        :header="top5QPTableHeader"
-        :title="$t('lang.projectExplorer.detail.top5Title2')"
-        @select="handleSelectTop5">
-      </project-detail-top>
-    </div>
-    &lt;!&ndash;风险交易&ndash;&gt;
-    <div class="proj-detail-item">
-      <div class="item-title" style="margin-bottom: 32px">
-        <h2>{{ $t('lang.projectExplorer.detail.riskTrx') }}</h2>
-      </div>
-      <risk-trx-table :project-id="projectId"></risk-trx-table>
-    </div>
-    &lt;!&ndash;项目舆情安全&ndash;&gt;
-    <div v-if="safetyData.length > 0" class="proj-detail-item">
-      <div class="item-title">
-        <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
-      </div>
-      <div
-        v-loading="loadingFs"
-        :class="{
-          'eagle-table': true,
-          'proj-detail-item-feelingSecurity': true,
-          'proj-detail-item-hyaq': safetyData.length === 0,
-        }">
-        <project-detail-publi-opinion :info-data="safetyData"> </project-detail-publi-opinion>
-        <div class="table-page">
-          <be-pagination
-            is-ordianry
-            :page-size="pageParamsFs.pageSize"
-            :page-count="pageParamsFs.total"
-            :current-page="pageParamsFs.currentPage"
-            :page-num="[{ label: 5 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-            :pager-show-count="5"
-            page-unit="page"
-            :layout="['prev', 'pNum', 'page']"
-            @update-num="updateNumFs"
-            @change-page="
-              item => handlePageChange(item.currentPage, pageParamsFs, getPublicOpinionData)
-            ">
-            <template #prev>
-              <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
-            </template>
-          </be-pagination>
-        </div>
-        &lt;!&ndash;        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
-          <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px" />
-          <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-        </div>&ndash;&gt;
-      </div>
-    </div>-->
   </div>
 </template>
 
@@ -508,7 +272,13 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   // @ts-ignore
-  import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es.js'
+  import {
+    BeButton,
+    BeIcon,
+    BePagination,
+    BeProgress,
+    BeTag,
+  } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
   import {
@@ -538,6 +308,7 @@
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import AreaLineCell from '../../../components/common-components/area-line-cell/area-line-cell.vue'
   import UpDown from '../../../components/common-components/up-down/up-down.vue'
+  import BarCell from '../../../components/common-components/bar-cell/bar-cell.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -547,6 +318,8 @@
   import MarketLine from './components/market-line.vue'
   import RiskList from './components/risk-list.vue'
   import RiskChart from './components/risk-chart.vue'
+  import ScoreItem from './components/score-item.vue'
+  import ReportItem from './components/report-item.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
@@ -564,6 +337,9 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      BarCell,
+      ReportItem,
+      ScoreItem,
       UpDown,
       AreaLineCell,
       RiskChart,
@@ -582,6 +358,7 @@
       BeIcon,
       BeTag,
       BeButton,
+      BeProgress,
       EllipsisCopy,
     },
     setup() {
@@ -846,29 +623,8 @@
       onMounted(() => {
         // getProSituData()
       })
-      /**
-       * 选择项目 重置变量
-       */
-      const selectProjBus = useEventBus<string>('selectProjBus')
-      selectProjBus.on((id: string) => {
-        projectId.value = id
-        resetPageParam(5, pageParamsFs)
-        resetPageParam(3, pageParamsTj)
-        resetPageParam(5, pageParamsAudit)
-        getProSituData()
-      })
-      // 语种切换重新赋值一下 解决不更新问题
-      const busLanguage = useEventBus<string>('language')
-      busLanguage.on(() => {
-        top5THTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
-        top5THTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
-        top5THTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
 
-        top5QPTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
-        top5QPTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
-        top5QPTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
-        top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
-      })
+      /*******************************   订阅  ******************************/
       /**
        * 发送订阅
        */
@@ -934,13 +690,50 @@
           submitSubscribe()
         }
       }
+      /*******************************   其他杂项逻辑  ******************************/
+      /**
+       * 选择项目 重置变量
+       */
+      const selectProjBus = useEventBus<string>('selectProjBus')
+      selectProjBus.on((id: string) => {
+        projectId.value = id
+        resetPageParam(5, pageParamsFs)
+        resetPageParam(3, pageParamsTj)
+        resetPageParam(5, pageParamsAudit)
+        getProSituData()
+      })
+      // 语种切换重新赋值一下 解决不更新问题
+      const busLanguage = useEventBus<string>('language')
+      busLanguage.on(() => {
+        top5THTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
+        top5THTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
+        top5THTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
 
+        top5QPTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
+        top5QPTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
+        top5QPTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
+        top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
+      })
       const marketCapBaseInfo = computed(() => {
         return function (val: number) {
           return formatMoney(val) + nFormatter(val, 0, true)
         }
       })
+      const handleScoreColor = computed(() => {
+        return function (val: number) {
+          if (Number(val) >= 90) {
+            return '#0ED9AC'
+          }
+          if (Number(val) < 90 && Number(val) > 60) {
+            return '#F4CC29'
+          }
+          if (Number(val) <= 60) {
+            return '#F32F2F'
+          }
+        }
+      })
       return {
+        handleScoreColor,
         marketCapBaseInfo,
         getAuditData,
         handlePageChange,
@@ -988,7 +781,6 @@
 <style lang="scss">
   .project-search-detail {
     min-height: calc(100% - 92px);
-
     .project-detail-base,
     .project-detail-decent,
     .project-detail-public-info,
@@ -1032,7 +824,7 @@
       margin-top: 16px;
       .body-left,
       .body-right {
-        width: 50%;
+        width: calc(50% - 10px);
       }
       .token-price-area {
         display: flex;
@@ -1061,7 +853,7 @@
             background: rgba(167, 199, 214, 0.3);
             border-radius: 2px;
             margin-top: 16px;
-            margin-bottom: 36px;
+            margin-bottom: 72px;
           }
           .token-price-val {
             font-size: 48px;
@@ -1082,14 +874,14 @@
             color: $textColor3;
             line-height: 24px;
             text-align: right;
-            margin-bottom: 16px;
+            margin: 32px 0;
           }
         }
       }
 
       .user-active-market {
         display: flex;
-        margin-top: 28px;
+        margin-top: 32px;
         justify-content: space-between;
         .active,
         .market,
@@ -1173,8 +965,103 @@
           margin-bottom: 16px;
         }
       }
-    }
 
+      .body-right {
+        padding: 24px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: $mainColor7;
+        margin-left: 20px;
+        .score-report {
+          display: flex;
+          margin-bottom: 12px;
+          .score-report--list {
+            background-color: $mainColor22;
+            border-radius: 4px;
+            padding: 20px 12px;
+            box-sizing: border-box;
+            width: 226px;
+            .score-report__title {
+              font-size: 18px;
+              font-family: BarlowSemi-B, sans-serif;
+              font-weight: bold;
+              color: $textColor3;
+              line-height: 22px;
+              margin-bottom: 16px;
+            }
+            .score-report--body {
+              height: 80%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              p {
+                margin: 10px 0 15px 0;
+              }
+            }
+          }
+          .score-report--chart {
+            width: calc(100% - 226px);
+            padding: 20px;
+            box-sizing: border-box;
+            .low-high-score {
+              display: flex;
+              justify-content: space-around;
+              margin-bottom: 28px;
+              margin-top: 20px;
+            }
+            .score {
+              font-size: 14px;
+              font-family: BarlowSemi-B, sans-serif;
+              font-weight: bold;
+              color: $textColor3;
+              line-height: 18px;
+            }
+            .score-high {
+              margin-left: 6px;
+              color: $mainColor3;
+            }
+            .score-low {
+              margin-left: 6px;
+              color: $mainColor19;
+            }
+            .descr {
+              font-size: 12px;
+              font-family: BarlowSemi-R, sans-serif;
+              font-weight: 400;
+              color: $textColor2;
+              line-height: 20px;
+              text-align: center;
+              margin-top: 8px;
+            }
+            .be-progress-body {
+              height: 112px !important;
+              svg {
+                position: absolute;
+                top: -22px;
+              }
+            }
+            .progress-score {
+              text-align: center;
+              p {
+                font-size: 48px;
+                font-family: BarlowSemi-B, sans-serif;
+                font-weight: bold;
+                color: $textColor3;
+                line-height: 58px;
+              }
+              span {
+                font-size: 16px;
+                font-family: BarlowSemi-R, sans-serif;
+                font-weight: 400;
+                color: #444444;
+                line-height: 18px;
+              }
+            }
+          }
+        }
+      }
+    }
     .subscribe--btn {
       width: 40px;
       height: 40px;
@@ -1184,11 +1071,9 @@
         display: none;
       }
     }
-
     .subscribe-btn__as {
       background: $mainColor3;
     }
-
     .subscribe-btn__ed {
       color: $textColor3;
       background: transparent;
@@ -1208,7 +1093,6 @@
         }
       }
     }
-
     .project-detail-public-info {
       text-align: center;
       min-height: 480px;
@@ -1237,161 +1121,7 @@
       border-radius: 8px;
       display: flex;
     }
-    /*******************************************/
-    .base-info {
-      display: flex;
-      width: 100%;
-
-      .base-info-item:nth-child(1) {
-        margin-right: 20px;
-        background: linear-gradient(90deg, #fff 0%, #e5f3f2 100%);
-
-        span {
-          font-family: BarlowSemi-B, sans-serif;
-          font-size: 36px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-      }
-
-      .base-info-item:nth-child(2) {
-        display: flex;
-        flex: 2;
-        margin-right: 20px;
-
-        .total {
-          font-family: BarlowSemi-B, sans-serif;
-          font-size: 24px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-
-        .date {
-          font-family: BarlowSemi-B, sans-serif;
-          font-size: 18px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-      }
-
-      .base-info-item {
-        box-sizing: border-box;
-        flex: 1;
-        min-height: 126px;
-        padding: 24px;
-        background-color: $mainColor7-06;
-        border-radius: 4px;
-
-        &:hover {
-          @apply shadow-xl;
-        }
-
-        .be-icon {
-          fill: $textColor12;
-
-          &:hover {
-            fill: $mainColor11;
-          }
-        }
-
-        p {
-          margin-bottom: 12px;
-          font-family: BarlowSemi-B, sans-serif;
-          color: $textColor4;
-        }
-      }
-    }
-
-    .project-detail-audit--body {
-      display: grid;
-      grid-template-columns: 24% 24% 24% 24%;
-      grid-gap: 20px;
-    }
-
-    .proj-detail-item {
-      @include common-container(24px);
-      min-width: 1172px;
-      .item-title {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-
-        h2 {
-          margin-right: 15px;
-          font-family: BarlowSemi-B, sans-serif;
-          color: $textColor3;
-        }
-
-        span {
-          font-family: BarlowSemi-B, sans-serif;
-          color: $textColor4;
-        }
-      }
-
-      .contract-statistics {
-        box-sizing: border-box;
-        display: flex;
-        width: 100%;
-        min-height: 88px;
-        padding: 16px;
-        margin-bottom: 12px;
-        background-color: $mainColor7;
-        border-radius: 4px;
-
-        .be-tag {
-          height: 30px;
-          margin-right: 14px;
-          line-height: 30px;
-          background-color: $mainColor16;
-          border-width: 0;
-          border-radius: 0;
-
-          span {
-            font-family: BarlowSemi-R, sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: $textColor3;
-          }
-
-          &:hover {
-            @apply shadow;
-          }
-        }
-
-        .contract-statistics-label {
-          margin-bottom: 12px;
-          font-family: BarlowSemi-B, sans-serif;
-          color: $textColor4;
-        }
-
-        span,
-        .date {
-          font-family: BarlowSemi-B, sans-serif;
-          font-size: 16px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-
-        &:hover {
-          @apply shadow-md;
-        }
-      }
-
-      .proj-detail-item-hyaq {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 300px;
-        background-color: $mainColor7;
-      }
-
-      .proj-detail-item-feelingSecurity {
-        box-sizing: border-box;
-        padding-bottom: 15px;
-      }
-    }
   }
-
   .subscribe {
     .be-message-box--container {
       width: 575px;
@@ -1424,15 +1154,29 @@
   }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-    .project-search-detail .proj-detail-item {
-      width: 92%;
+    .project-search-detail {
+      .project-detail-base,
+      .project-detail-decent,
+      .project-detail-public-info,
+      .project-detail-security,
+      .project-detail-risk,
+      .project-detail-market {
+        width: 92%;
+      }
     }
   }
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-    .project-search-detail .proj-detail-item {
-      width: 80%;
+    .project-search-detail {
+      .project-detail-base,
+      .project-detail-decent,
+      .project-detail-public-info,
+      .project-detail-security,
+      .project-detail-risk,
+      .project-detail-market {
+        width: 80%;
+      }
     }
   }
 </style>
