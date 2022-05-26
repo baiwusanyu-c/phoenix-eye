@@ -18,7 +18,7 @@
       },
       height: {
         type: Number,
-        default: 300,
+        default: 360,
       },
       lineData: {
         type: Array as PropType<Array<IStatisticsLine>>,
@@ -92,19 +92,11 @@
         chart.value = new Chart({
           container: props.domId,
           autoFit: true,
-          height: 360,
+          height: props.height,
         })
 
         chart.value.data(data)
-        chart.value.scale({
-          token_price: {
-            min: 10000,
-            nice: true,
-          },
-          create_time: {
-            range: [0, 1],
-          },
-        })
+
         chart.value.tooltip({
           showCrosshairs: true,
           showTitle: false,

@@ -39,6 +39,7 @@ declare module 'vue' {
     TitleCell: typeof import('./src/components/common-components/title-cell/title-cell.vue')['default']
     TsgzFooter: typeof import('./src/components/tsgz-footer.vue')['default']
     TsgzNavMenu: typeof import('./src/components/tsgz-nav-menu.vue')['default']
+    UpDown: typeof import('./src/components/common-components/up-down/up-down.vue')['default']
   }
 }
 

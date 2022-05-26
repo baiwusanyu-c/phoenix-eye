@@ -3,7 +3,7 @@
 <template>
   <div class="project-search-detail eagle-page">
     <!--基本信息-->
-    <!--  TODO:project-detail-base    -->
+
     <div class="project-detail-base">
       <div class="project-detail--header">
         <div class="title">
@@ -63,7 +63,97 @@
             @click="openWindow(baseInfo.github)"></be-icon>
         </div>
       </div>
-      <div class="project-detail-base--body"></div>
+      <div class="project-detail-base--body">
+        <div class="body-left">
+          <div class="token-price">
+            <div class="token-price-area">
+              <div class="token-price-right">
+                <p class="token-price--title">
+                  {{ $t('lang.projectExplorer.detail.tokenPrice') }}
+                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                </p>
+                <p role="button">
+                  Dai Stablecoin (DAI)
+                  <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
+                </p>
+                <p class="token-price-val">
+                  {{ isEmpty(1234, '/') === '/' ? '/' : `$${formatMoney(1234)}` }}
+                </p>
+                <up-down :data="12.34"></up-down>
+              </div>
+              <div class="token-price-left">
+                <p>{{ $t('lang.projectExplorer.detail.tokenPrice1') }}</p>
+                <area-line-cell dom-id="token_price" :height="200"></area-line-cell>
+              </div>
+            </div>
+            <div class="user-active-market">
+              <div class="user">
+                <div class="uam-item">
+                  <span class="user-active-market--title">
+                    {{ $t('lang.projectExplorer.detail.user') }}
+                  </span>
+                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                </div>
+                <p class="uam-item-val">
+                  {{ isEmpty(1234, '/') === '/' ? '/' : `${marketCapBaseInfo(1234)}` }}
+                </p>
+                <up-down :data="12.34"></up-down>
+              </div>
+              <div class="active">
+                <div class="uam-item">
+                  <span class="user-active-market--title">
+                    {{ $t('lang.projectExplorer.detail.activity') }}</span
+                  >
+                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                </div>
+                <p class="uam-item-val">
+                  {{ isEmpty(1234, '/') === '/' ? '/' : `${marketCapBaseInfo(1234)}` }}
+                </p>
+                <up-down :data="12.34" type="down"></up-down>
+              </div>
+              <div class="market">
+                <div class="uam-item">
+                  <span class="user-active-market--title">
+                    {{ $t('lang.projectExplorer.detail.MarketCap') }}</span
+                  >
+                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                </div>
+                <p class="uam-item-val">
+                  {{ isEmpty(1234, '/') === '/' ? '/' : `$${marketCapBaseInfo(1234)}` }}
+                </p>
+                <up-down :data="12.34"></up-down>
+              </div>
+            </div>
+          </div>
+          <div class="twitter-analysis">
+            <div class="twitter-analysis-right">
+              <p class="twitter-analysis--title">
+                {{ $t('lang.projectExplorer.detail.twitterAnalysis') }}
+              </p>
+              <img
+                alt=""
+                style="width: 40px; height: 40px"
+                src="../../../assets/image/pc/follow.png" />
+              <p class="following">
+                {{ $t('lang.projectExplorer.detail.follow') }}
+                <span>
+                  {{ $t('lang.projectExplorer.detail.total') }}
+                </span>
+              </p>
+              <p class="twitter-analysis-val">
+                {{ isEmpty(123456, '/') === '/' ? '/' : `${formatMoney(123456)}` }}
+              </p>
+              <up-down :data="12.34"></up-down>
+            </div>
+            <div class="twitter-analysis-left">
+              <p>{{ $t('lang.projectExplorer.detail.twitterAnalysis1') }}</p>
+              <area-line-cell dom-id="twitter_analysis" :smooth="false" :height="180">
+              </area-line-cell>
+            </div>
+          </div>
+        </div>
+        <div class="body-right"></div>
+      </div>
     </div>
     <!--  TODO:project-detail-decent    -->
     <div class="project-detail-decent">
@@ -91,7 +181,6 @@
       </div>
       <market-govern></market-govern>
     </div>
-    <!--  TODO:project-detail-risk    -->
     <div class="project-detail-risk">
       <div class="project-detail--header">
         <title-cell
@@ -105,7 +194,6 @@
         <risk-list></risk-list>
       </div>
     </div>
-
     <div class="project-detail-public-info">
       <div class="project-detail--header">
         <title-cell
@@ -416,7 +504,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { computed, defineComponent, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   // @ts-ignore
@@ -434,8 +522,11 @@
   import {
     createDate,
     formatDate,
+    formatMoney,
     formatTimeStamp,
     getStore,
+    isEmpty,
+    nFormatter,
     numberToCommaString,
     openWindow,
   } from '../../../utils/common'
@@ -445,6 +536,8 @@
   import { setPrevUrl } from '../../../utils/request'
   import IconCell from '../../../components/common-components/icon-cell/icon-cell.vue'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
+  import AreaLineCell from '../../../components/common-components/area-line-cell/area-line-cell.vue'
+  import UpDown from '../../../components/common-components/up-down/up-down.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -471,6 +564,8 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      UpDown,
+      AreaLineCell,
       RiskChart,
       RiskList,
       MarketLine,
@@ -490,7 +585,7 @@
       EllipsisCopy,
     },
     setup() {
-      const { message, route, isEmpty, msgBox, openWeb } = composition()
+      const { message, route, msgBox, openWeb } = composition()
       const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
       const { t } = useI18n()
       const selectContract = ref<string>('')
@@ -839,7 +934,14 @@
           submitSubscribe()
         }
       }
+
+      const marketCapBaseInfo = computed(() => {
+        return function (val: number) {
+          return formatMoney(val) + nFormatter(val, 0, true)
+        }
+      })
       return {
+        marketCapBaseInfo,
         getAuditData,
         handlePageChange,
         pageParamsAudit,
@@ -875,7 +977,7 @@
         formatDate,
         openWindow,
         formatTimeStamp,
-
+        formatMoney,
         selectContract,
         contractList,
       }
@@ -914,14 +1016,161 @@
         border-radius: 4px;
       }
       .el-input {
+        width: 160px;
         margin: 0 16px;
         line-height: 26px;
-        .el-input__wrapper {
-          flex-grow: initial;
-        }
         .el-input__inner {
           height: 26px;
           line-height: 26px;
+        }
+      }
+    }
+    .project-detail-base--body {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      .body-left,
+      .body-right {
+        width: 50%;
+      }
+      .token-price-area {
+        display: flex;
+
+        .token-price-right {
+          width: 200px;
+
+          .token-price--title {
+            font-size: 18px;
+            font-family: BarlowSemi-B, sans-serif;
+            font-weight: bold;
+            color: $textColor3;
+            line-height: 22px;
+            display: flex;
+            align-items: center;
+          }
+          p[role='button'] {
+            color: $textColor3;
+            padding: 0 10px;
+            height: 24px;
+            line-height: 24px;
+            cursor: pointer;
+            display: flex;
+            font-family: BarlowSemi-B, sans-serif;
+            align-items: center;
+            background: rgba(167, 199, 214, 0.3);
+            border-radius: 2px;
+            margin-top: 16px;
+            margin-bottom: 36px;
+          }
+          .token-price-val {
+            font-size: 48px;
+            font-family: BarlowSemi-B, sans-serif;
+            font-weight: bold;
+            color: $textColor3;
+            line-height: 58px;
+            margin-bottom: 10px;
+          }
+        }
+        .token-price-left {
+          padding-left: 30px;
+          width: calc(100% - 200px);
+          p {
+            font-size: 14px;
+            font-family: BarlowSemi-R, sans-serif;
+            font-weight: 400;
+            color: $textColor3;
+            line-height: 24px;
+            text-align: right;
+            margin-bottom: 16px;
+          }
+        }
+      }
+
+      .user-active-market {
+        display: flex;
+        margin-top: 28px;
+        justify-content: space-between;
+        .active,
+        .market,
+        .user {
+          flex: 1;
+        }
+        .uam-item {
+          display: flex;
+          align-items: center;
+        }
+        .user-active-market--title {
+          text-align: left;
+          font-size: 14px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 17px;
+        }
+        .uam-item-val {
+          font-size: 24px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 29px;
+          margin-top: 8px;
+          margin-bottom: 20px;
+        }
+      }
+
+      .twitter-analysis {
+        margin-top: 38px;
+        background: $mainColor7;
+        border-radius: 8px;
+        padding: 24px 32px;
+        display: flex;
+        .twitter-analysis-right {
+          width: 200px;
+          img {
+            margin-top: 56px;
+            margin-bottom: 10px;
+          }
+          .twitter-analysis--title {
+            font-size: 20px;
+            font-family: BarlowSemi-B, sans-serif;
+            font-weight: bold;
+            color: $textColor3;
+            line-height: 24px;
+          }
+        }
+        .twitter-analysis-left {
+          width: calc(100% - 200px);
+          p {
+            font-size: 14px;
+            font-family: BarlowSemi-R, sans-serif;
+            font-weight: 400;
+            color: $textColor3;
+            line-height: 24px;
+            text-align: right;
+            margin-bottom: 16px;
+            margin-top: 20px;
+          }
+        }
+        .following {
+          font-size: 20px;
+          font-family: BarlowSemi-R, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 24px;
+          span {
+            font-size: 14px;
+            color: $textColor2;
+          }
+        }
+        .twitter-analysis-val {
+          font-size: 24px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 34px;
+          margin-top: 10px;
+          margin-bottom: 16px;
         }
       }
     }
