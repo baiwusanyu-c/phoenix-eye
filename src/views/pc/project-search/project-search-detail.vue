@@ -216,6 +216,7 @@
           :name="$t('lang.projectExplorer.detail.titleDecent')">
         </title-cell>
       </div>
+      <whale-holders></whale-holders>
     </div>
 
     <div class="project-detail-market">
@@ -320,6 +321,7 @@
   import RiskChart from './components/risk-chart.vue'
   import ScoreItem from './components/score-item.vue'
   import ReportItem from './components/report-item.vue'
+  import WhaleHolders from './components/whale-holders.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
@@ -337,6 +339,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      WhaleHolders,
       BarCell,
       ReportItem,
       ScoreItem,

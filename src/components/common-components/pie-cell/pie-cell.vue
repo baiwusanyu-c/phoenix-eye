@@ -55,7 +55,6 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
-        const colorArr = ['#8A96A3', '#1A589B', '#18304E', '#84a5c5']
         // 更新
         if (isUpdate) {
           chart.value.data(props.pieData)
@@ -65,8 +64,8 @@
         chart.value = new Chart({
           container: props.domId,
           autoFit: true,
-          height: 180,
-          width: 180,
+          height: 300,
+          width: 300,
         })
 
         chart.value.legend(false)
@@ -105,7 +104,13 @@
           .interval()
           .adjust('stack')
           .position('percent')
-          .color('item', colorArr)
+          .color('item', (item: string) => {
+            for (let i = 0; i < props.pieData?.length; i++) {
+              if (props.pieData[i].item === item) {
+                return props.pieData[i].color
+              }
+            }
+          })
           .label('percent', (percent: any) => {
             return {
               content: () => {
@@ -144,7 +149,7 @@
     display: flex;
     .pie-cell-legend {
       width: 50%;
-      height: 180px;
+      height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -152,7 +157,7 @@
     }
     .pie-cell--chart {
       width: 50%;
-      height: 180px;
+      height: 200px;
     }
     .pie-cell-legend--item {
       display: flex;

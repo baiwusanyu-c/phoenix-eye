@@ -312,6 +312,13 @@ export default {
       scoreH: '30day High',
       securityScore: 'Security Score',
       noAudit: 'Not have a audit report?',
+      whaleTitle: 'Whale Holders',
+      whaleTitle1: 'Token holders Distribution',
+      whaleTitle2: 'TOP 10 Token Holders',
+      whaleTitle3: 'Privileges',
+      whaleTitle4: 'Liquidity Pairs Holders',
+      whaleTab1: 'Token',
+      whaleTab2: 'Liquidity',
     },
   },
   createProject: {
