@@ -263,7 +263,7 @@ export default {
       titleMarketSub: 'Price and transaction status.',
       titleRisk: 'Risk Transacions',
       titleRiskSub: 'On-chain performance and social performance.',
-      titleInfo: 'Project information',
+      titleInfo: 'Project News',
       titleSecurity: 'Securtity Event',
       titleGovern: 'Diaphaneity & Governance',
       securtityEventLabel1: 'Allect project:',
@@ -286,6 +286,7 @@ export default {
       marketTab2: 'Transfer volume',
       marketTab3: 'Liquidity',
       marketTab4: 'Market Cap',
+      riskChartTitle: 'Risk Type Distribution',
     },
   },
   createProject: {

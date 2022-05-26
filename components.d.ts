@@ -29,6 +29,7 @@ declare module 'vue' {
     LineCell: typeof import('./src/components/common-components/line-cell/line-cell.vue')['default']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     MsgDialog: typeof import('./src/components/common-components/msg-dialog/msg-dialog.vue')['default']
+    PieCell: typeof import('./src/components/common-components/pie-cell/pie-cell.vue')['default']
     PlatformCell: typeof import('./src/components/common-components/platform-cell/platform-cell.vue')['default']
     ProjectNameCell: typeof import('./src/components/common-components/project-name-cell/project-name-cell.vue')['default']
     ProjectRankingRadar: typeof import('./src/components/project-ranking-radar.vue')['default']

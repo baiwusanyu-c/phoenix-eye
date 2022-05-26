@@ -33,11 +33,18 @@
       </div>
       <div style="position: absolute; left: 20px; bottom: 20px; width: calc(100% - 40px)">
         <div class="security-card--body--foo">
-          <span>
+          <span style="display: flex; align-items: center">
             Source:
-            <a :href="sourceUrl" target="_blank">
+            <a v-if="sourceName !== 'twitter'" :href="sourceUrl" target="_blank">
               {{ sourceName }}
             </a>
+            <be-icon
+              v-if="sourceName === 'twitter'"
+              width="18"
+              height="19"
+              icon="iconTwitterBlu"
+              @click="openWindow(sourceUrl)">
+            </be-icon>
           </span>
           <span>{{ formatTimeStamp(createDate(createTime).getTime(), $i18n.locale) }}</span>
         </div>
@@ -49,27 +56,25 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   // @ts-ignore
-  import { BeTag } from '../../../../../public/be-ui/be-ui.es'
-  import { createDate, formatTimeStamp } from '../../../../utils/common'
+  import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
+  import { createDate, formatTimeStamp, openWindow } from '../../../../utils/common'
   import type { PropType } from 'vue'
 
   export default defineComponent({
     name: 'SecurityCard',
-    components: { BeTag },
+    components: { BeTag, BeIcon },
     props: {
       sourceUrl: {
         type: String,
-        default: 'https://wwww.baidu.com',
+        default: '',
       },
       title: {
         type: String,
-        default:
-          'https://lanhuapp.com/web/#/item/project/detailDetach?pid=6fb5db57-99f4-4b7d-aeb4-ae74648f12fc&project_id=6fb5db57-99f4-4b7d-aeb4-ae74648f12fc&image_id=e195d4ba-0c06-4b59-af79-7c7be7bffcc8&fromEditor=true',
+        default: '',
       },
       info: {
         type: String,
-        default:
-          '#PeckShieldAlert #phishing Peck#PeckShieldAlert #phishing PeckShield has detected sudoswap.claimeth[.]xyz is a phishing site. Do *NOT* claim $ETH! @sudoswap community share to raise awareness. Add "PeckShieldAlert" free extension to detect phishing sites or Report to us. https://t.co/7LjYgCK3gd https://t.co/gURa0lVmsO#PeckShieldAlert #phishing PeckShield has detected sudoswap.claimeth[.]xyz is a phishing site. Do *NOT* claim $ETH! @sudoswap community share to raise awareness. Add "PeckShieldAlert" free extension to detect phishing sites or Report to us. https://t.co/7LjYgCK3gd https://t.co/gURa0lVmsOShield has detected sudoswap.claimeth[.]xyz is a phishing site. Do *NOT* claim $ETH! @sudoswap community share to raise awareness. Add "PeckShieldAlert" free extension to detect phishing sites or Report to us. https://t.co/7LjYgCK3gd https://t.co/gURa0lVmsO',
+        default: '',
       },
       createTime: {
         type: String,
@@ -77,7 +82,7 @@
       },
       sourceName: {
         type: String,
-        default: 'twitter',
+        default: '',
       },
       tagList: {
         type: Array as PropType<Array<string>>,
@@ -89,6 +94,7 @@
       tagListArr.value = props.tagList?.map(val => val.toUpperCase())
       return {
         tagListArr,
+        openWindow,
         createDate,
         formatTimeStamp,
       }

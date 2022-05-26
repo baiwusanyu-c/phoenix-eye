@@ -42,7 +42,7 @@
           renderChart()
         })
       })
-      // 雷达图实例对象
+      // 实例对象
       const chart = ref<any>()
       watch(
         () => props.lineData,

@@ -29,11 +29,21 @@
           <span v-if="scope.row.alert_level === 'MEDIUM'" class="level-medium">Medium</span>
         </template>
       </el-table-column>
-      <el-table-column prop="risk_features" align="left">
+      <el-table-column prop="tag_list" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.warningType') }}</span>
         </template>
-        <template #default="scope">{{ scope.row.tx_time }} </template>
+        <template #default="scope">
+          <be-icon
+            v-for="item in scope.row.tag_list"
+            :key="item + scope.row.tx_hash"
+            width="24"
+            height="24"
+            :title="item"
+            style="margin-right: 8px"
+            :icon="setTypeIcon(item)">
+          </be-icon>
+        </template>
       </el-table-column>
       <el-table-column prop="tx_time" align="right">
         <template #header>
@@ -57,21 +67,37 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { computed, defineComponent, onMounted, ref } from 'vue'
   import compositionPage from '../../../../utils/mixin/page-param'
-
+  // @ts-ignore
+  import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import { getProjWarning } from '../../../../api/risk-trx'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  // @ts-ignore
-  import { BeTag } from '../../../../../public/be-ui/be-ui.es'
 
   export default defineComponent({
     name: 'RiskList',
     components: {
       EllipsisCopy,
+      BeIcon,
     },
     setup() {
+      const setTypeIcon = computed(() => {
+        return function (data: string) {
+          if (data === 'Large outflow') {
+            return 'iconLargeOutflow'
+          }
+          if (data === 'Slump') {
+            return 'iconSlump'
+          }
+          if (data === 'Flash loan') {
+            return 'iconFlash'
+          }
+          if (data === 'Privileged operation') {
+            return 'iconPrivileged'
+          }
+        }
+      })
       /* const filterTypeItem = ref<Array<IFilterItem>>([
             { label: 'Large outflow', val: 'Large outflow', isActive: false },
             { label: 'Flash loan', val: 'Flash loan', isActive: false },
@@ -94,7 +120,7 @@
         }
         getList()
       }
-      const { message, isEmpty } = composition()
+      const { message } = composition()
       const tableData = ref<object>([])
       const loading = ref<boolean>(false)
 
@@ -144,6 +170,7 @@
         prevPage,
         nextPage,
         pageParams,
+        setTypeIcon,
       }
     },
   })

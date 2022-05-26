@@ -101,6 +101,7 @@
         </title-cell>
       </div>
       <div class="project-detail-risk--body">
+        <risk-chart></risk-chart>
         <risk-list></risk-list>
       </div>
     </div>
@@ -452,6 +453,7 @@
   import MarketGovern from './components/market-govern.vue'
   import MarketLine from './components/market-line.vue'
   import RiskList from './components/risk-list.vue'
+  import RiskChart from './components/risk-chart.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
@@ -469,6 +471,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      RiskChart,
       RiskList,
       MarketLine,
       MarketGovern,
