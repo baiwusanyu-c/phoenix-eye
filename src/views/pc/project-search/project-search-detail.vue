@@ -5,7 +5,7 @@
     <!--基本信息-->
     <!--  TODO:project-detail-base    -->
     <div class="project-detail-base">
-      <div class="project-detail-header">
+      <div class="project-detail--header">
         <div class="title">
           <icon-cell content="Project name" is-platform icon="eth" size="46" font-size="30">
           </icon-cell>
@@ -67,7 +67,7 @@
     </div>
     <!--  TODO:project-detail-decent    -->
     <div class="project-detail-decent">
-      <div class="project-detail-header">
+      <div class="project-detail--header">
         <title-cell
           url="../src/assets/image/pc/decent-logo.png"
           :sub-content="$t('lang.projectExplorer.detail.titleDecentSub')"
@@ -75,10 +75,10 @@
         </title-cell>
       </div>
     </div>
-    <!--  TODO:project-detail-market    -->
+
     <div class="project-detail-market">
       <div class="market-line--container">
-        <div class="project-detail-header">
+        <div class="project-detail--header">
           <title-cell
             :sub-content="$t('lang.projectExplorer.detail.titleMarketSub')"
             url="../src/assets/image/pc/market-logo.png"
@@ -93,17 +93,20 @@
     </div>
     <!--  TODO:project-detail-risk    -->
     <div class="project-detail-risk">
-      <div class="project-detail-header">
+      <div class="project-detail--header">
         <title-cell
           :sub-content="$t('lang.projectExplorer.detail.titleRiskSub')"
           url="../src/assets/image/pc/risk-logo.png"
           :name="$t('lang.projectExplorer.detail.titleRisk')">
         </title-cell>
       </div>
+      <div class="project-detail-risk--body">
+        <risk-list></risk-list>
+      </div>
     </div>
 
     <div class="project-detail-public-info">
-      <div class="project-detail-header">
+      <div class="project-detail--header">
         <title-cell
           url="../src/assets/image/pc/security.png"
           :name="$t('lang.projectExplorer.detail.titleInfo')">
@@ -112,7 +115,7 @@
       <security-list></security-list>
     </div>
     <div class="project-detail-security">
-      <div class="project-detail-header">
+      <div class="project-detail--header">
         <title-cell
           url="../src/assets/image/pc/security2.png"
           :name="$t('lang.projectExplorer.detail.titleSecurity')">
@@ -448,6 +451,7 @@
   import SecurityInfoCard from './components/security-info-card.vue'
   import MarketGovern from './components/market-govern.vue'
   import MarketLine from './components/market-line.vue'
+  import RiskList from './components/risk-list.vue'
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
@@ -465,6 +469,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      RiskList,
       MarketLine,
       MarketGovern,
       SecurityInfoCard,
@@ -887,7 +892,7 @@
     .project-detail-market {
       @include common-container(32px, 65.2%);
     }
-    .project-detail-header {
+    .project-detail--header {
       height: 60px;
       line-height: 60px;
       display: flex;
@@ -973,7 +978,14 @@
         }
       }
     }
-
+    .project-detail-risk--body {
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: $mainColor7;
+      border-radius: 8px;
+      display: flex;
+    }
+    /*******************************************/
     .base-info {
       display: flex;
       width: 100%;

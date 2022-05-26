@@ -40,7 +40,10 @@
         <p>30d:&nbsp;&nbsp;<span>10.53%</span></p>
       </div>
     </div>
-    <div class="area-container"></div>
+    <div class="area-container">
+      <p>Token Price History From 4.26-5.25</p>
+      <area-line-cell dom-id="market_line_tab"></area-line-cell>
+    </div>
   </div>
 </template>
 
@@ -48,9 +51,12 @@
   import { defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { formatMoney, isEmpty } from '../../../../utils/common'
+  import AreaLineCell from '../../../../components/common-components/area-line-cell/area-line-cell.vue'
 
   export default defineComponent({
     name: 'MarketLine',
+    components: { AreaLineCell },
+
     setup() {
       const { t } = useI18n()
       const activeTab = ref<string>('token_price_data')
@@ -142,6 +148,20 @@
       }
     }
     .area-container {
+      height: 100%;
+      display: inline-block;
+      width: calc(100% - 200px);
+      float: right;
+      p {
+        width: 100%;
+        text-align: right;
+        margin-bottom: 10px;
+        font-size: 14px;
+        font-family: BarlowSemi-R, sans-serif;
+        font-weight: 400;
+        color: $textColor3;
+        line-height: 20px;
+      }
     }
   }
 </style>

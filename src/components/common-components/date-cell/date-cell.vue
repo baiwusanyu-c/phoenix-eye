@@ -4,8 +4,9 @@
     <span style="color: #888">
       <p style="font-family: BarlowSemi-B sans-serif">
         {{ formatDate(createDate(time)).split(' ')[0] }}
+        <span v-if="!isBreak"> {{ formatDate(createDate(time)).split(' ')[1] }}</span>
       </p>
-      <p style="font-family: BarlowSemi-B sans-serif">
+      <p v-if="isBreak" style="font-family: BarlowSemi-B sans-serif">
         {{ formatDate(createDate(time)).split(' ')[1] }}
       </p>
     </span>
@@ -25,6 +26,10 @@
       time: {
         type: String,
         default: '2077-04-19T06:06:40.000+0000',
+      },
+      isBreak: {
+        type: Boolean,
+        default: true,
       },
     },
     setup() {

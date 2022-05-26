@@ -38,15 +38,6 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
-        const data = [
-          { create_time: '1991', token_price: 3 },
-          { create_time: '1992', token_price: 4 },
-          { create_time: '1993', token_price: 3.5 },
-          { create_time: '1994', token_price: 5 },
-          { create_time: '1995', token_price: 4.9 },
-          { create_time: '1996', token_price: 2 },
-          { create_time: '1997', token_price: 7 },
-        ]
         // 更新
         if (isUpdate) {
           chart.value.data(props.lineData)
@@ -61,7 +52,7 @@
           padding: 10,
         })
 
-        chart.value.data(data)
+        chart.value.data(props.lineData)
         chart.value.scale({
           token_price: {
             min: 10000,

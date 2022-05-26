@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AreaLineCell: typeof import('./src/components/common-components/area-line-cell/area-line-cell.vue')['default']
     DateCell: typeof import('./src/components/common-components/date-cell/date-cell.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']

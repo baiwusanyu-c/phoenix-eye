@@ -35,11 +35,7 @@
     props: {
       dataList: {
         type: Array as PropType<Array<string>>,
-        default: () => [
-          '#LargeOutflow$21878843.041 (7253.200 $eth) flow out from 0xddfa',
-          '#LargeOutflow$21878843.041 (7253.200 $eth) flow out from 0xddfa',
-          '#LargeOutflow$21878843.041 (7253.200 $eth) flow out from 0xddfa',
-        ],
+        default: () => [],
       },
     },
     setup(props) {
