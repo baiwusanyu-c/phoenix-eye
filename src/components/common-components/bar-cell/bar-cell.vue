@@ -1,5 +1,7 @@
 /* * @bar-cell.vue * @deprecated * @author czh * @update (czh 2022/5/26) */
 <template>
+  {{ x }}
+  {{ y }}
   <div :id="domId"></div>
 </template>
 
@@ -23,6 +25,7 @@
       },
       lineData: {
         type: Array as PropType<Array<IStatisticsLine>>,
+        default: () => [],
       },
       showAxis: {
         type: Boolean,
@@ -47,8 +50,12 @@
       const chart = ref<any>()
       watch(
         () => props.lineData,
-        () => {
-          renderChart(true)
+        (nVal, oVal) => {
+          if (nVal && !oVal) {
+            renderChart()
+          } else {
+            renderChart(true)
+          }
         }
       )
       const renderChart = (isUpdate?: boolean) => {
@@ -87,8 +94,7 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token"> ${formatMoney(item.value)}</p>
-                   <p>${item.title}</p>
+                  <p class="g2-tooltip-list-token">score: ${item.title}</p>
               </li>`
             })
             container.innerHTML = listItem
@@ -112,19 +118,19 @@
               },
             }
           : null
-        chart.value.axis(props.yAxis, {
+        chart.value.axis(props.xAxis, {
           label: axisLabel,
           line: null,
           tickLine: null,
         })
-        chart.value.axis(props.xAxis, {
+        chart.value.axis(props.yAxis, {
           label: axisLabel,
           grid: axisGrid,
         })
 
         chart.value
           .interval()
-          .position(`${props.yAxis}*${props.xAxis}`)
+          .position(`${props.xAxis}*${props.yAxis}`)
           .style({
             fill: '#18304E',
             radius: [20, 20, 0, 0],

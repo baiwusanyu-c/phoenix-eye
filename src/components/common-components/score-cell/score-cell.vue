@@ -36,10 +36,7 @@
       const computedPropsScore = computed(() => {
         return Number(props.score)
       })
-      watch(computedPropsScore.value, nVal => {
-        setScoreColor()
-        scoreInner.value = nVal
-      })
+      const scoreInner = ref<number>(computedPropsScore.value)
       const hiddenPath = ref<string>('')
       const color = ref<string>('')
       const setScoreColor = (): void => {
@@ -57,8 +54,16 @@
           hiddenPath.value = 'none'
         }
       }
+      watch(
+        () => computedPropsScore.value,
+        nVal => {
+          scoreInner.value = nVal
+          setScoreColor()
+        },
+        { immediate: true }
+      )
       setScoreColor()
-      const scoreInner = ref<number>(computedPropsScore.value)
+
       return {
         scoreInner,
         color,

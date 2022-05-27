@@ -195,12 +195,16 @@
             </div>
             <div class="score-report--list">
               <p class="score-report__title">{{ $t('lang.projectExplorer.detail.scoreItem1') }}</p>
-              <div>
-                <!--                <report-item></report-item>
-                <report-item></report-item>
-                <report-item></report-item>-->
+              <div v-if="auditList.length > 0">
+                <report-item
+                  v-for="item in auditList"
+                  :key="item.url + item.report_id"
+                  :time="item.create_time"
+                  :name="item.report_name"
+                  :url="item.url">
+                </report-item>
               </div>
-              <div class="score-report--body">
+              <div v-if="auditList.length === 0" class="score-report--body">
                 <img alt="" src="../../../assets/image/pc/report-empty.png" />
                 <p>{{ $t('lang.projectExplorer.detail.noAudit') }}</p>
                 <be-button custom-class="eagle-btn" round="4" type="success"
@@ -209,7 +213,7 @@
               </div>
             </div>
           </div>
-          <score-item :data="scoreItemDetail"></score-item>
+          <component :is="scoreItemComp" :data="scoreItemDetail"></component>
         </div>
       </div>
     </div>
@@ -473,6 +477,7 @@
         risk_tx_score: '',
         audit_report_score: '',
       })
+      const scoreItemComp = ref<string>('')
       const getProSituData = async () => {
         const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
@@ -489,6 +494,7 @@
               governData.value = res.data.social_profiles
               riskChartData.value = res.data.risk_tx_info
               projectScoreData.value = res.data.project_score
+
               scoreItemDetail.value = {
                 market_volatility_score: res.data.project_score.market_volatility_score,
                 diaphaneity_score: res.data.project_score.diaphaneity_score,
@@ -496,7 +502,9 @@
                 risk_tx_score: res.data.project_score.risk_tx_score,
                 audit_report_score: res.data.project_score.audit_report_score,
               }
-              debugger
+              // 加载 scoreItemComp 组件
+              scoreItemComp.value = 'ScoreItem'
+
               // 获取项目详情数据
               /* baseInfo.value = {
                 transactions: res.data.details.tx_24,
@@ -535,7 +543,7 @@
             console.error(err)
           })
         // 获取Audit数据
-        // await getAuditData()
+        await getAuditData()
 
         // 获取合约静态检测数据
         //  await getContractStatistics()
@@ -558,7 +566,7 @@
         getContractReportList(params)
           .then((res: any) => {
             if (res.success) {
-              auditList.value = res.data.page_infos
+              auditList.value = res.data.page_infos || []
               pageParamsAudit.value.total = res.data.total
               auditList.value.forEach(val => {
                 val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
@@ -828,6 +836,7 @@
         riskChartData,
         projectScoreData,
         scoreItemDetail,
+        scoreItemComp,
       }
     },
   })

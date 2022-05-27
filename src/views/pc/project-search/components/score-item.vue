@@ -34,7 +34,6 @@
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc5') }}</span>
     </div>
     <score-cell :score="data.risk_tx_score"></score-cell>
-    {{ data.risk_tx_score }}
   </div>
 </template>
 
@@ -50,19 +49,7 @@
     props: {
       data: {
         type: Object as PropType<IScoreItems>,
-        default() {
-          return {
-            market_volatility_score: 68,
-            diaphaneity_score: 92,
-            decentralization_score: 68,
-            risk_tx_score: 68,
-            audit_report_score: 80,
-          }
-        },
       },
-    },
-    setup() {
-      return {}
     },
   })
 </script>

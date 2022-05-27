@@ -1,9 +1,17 @@
 /* * @report-item.vue * @deprecated * @author czh * @update (czh 2022/5/26) */
 <template>
-  <div class="report-item">
-    <div></div>
-    <div>
-      <p>{{ name }}</p>
+  <div class="report-item" @click="openWindow(url)">
+    <be-icon width="40" height="40" icon="iconAudit"></be-icon>
+    <div style="margin-left: 10px">
+      <ellipsis-copy
+        :target-str="name"
+        :is-ellipsis="name.length > 14 ? true : false"
+        :is-show-copy-btn="false"
+        :is-tooltip="true"
+        styles="color: black;font-weight: bold;font-size: 16px;"
+        font-length="10"
+        end-length="0">
+      </ellipsis-copy>
       <span>{{ formatDate(createDate(time), 'Y-m-d') }}</span>
     </div>
   </div>
@@ -11,10 +19,15 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import { createDate, formatDate } from '../../../../utils/common'
+  import { createDate, formatDate, openWindow } from '../../../../utils/common'
+  // @ts-ignore
+  import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
 
   export default defineComponent({
     name: 'ReportItem',
+    components: {
+      BeIcon,
+    },
     props: {
       url: {
         type: String,
@@ -22,7 +35,7 @@
       },
       name: {
         type: String,
-        default: 'Report name',
+        default: 'Report name ddddddddddddd',
       },
       time: {
         type: String,
@@ -33,6 +46,7 @@
       return {
         formatDate,
         createDate,
+        openWindow,
       }
     },
   })
