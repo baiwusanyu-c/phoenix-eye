@@ -1,14 +1,12 @@
 /* * @bar-cell.vue * @deprecated * @author czh * @update (czh 2022/5/26) */
 <template>
-  {{ x }}
-  {{ y }}
   <div :id="domId"></div>
 </template>
 
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
-  import { formatMoney } from '../../../utils/common'
+
   import type { IStatisticsLine } from '../../../utils/types'
   import type { PropType } from 'vue'
 
@@ -94,7 +92,7 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token">score: ${item.title}</p>
+                  <p class="g2-tooltip-list-token">score: ${item.value}</p>
               </li>`
             })
             container.innerHTML = listItem

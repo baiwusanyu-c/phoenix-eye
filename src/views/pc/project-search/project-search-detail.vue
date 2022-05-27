@@ -6,60 +6,69 @@
     <div class="project-detail-base">
       <div class="project-detail--header">
         <div class="title">
-          <icon-cell content="Project name" is-platform icon="eth" size="46" font-size="30">
+          <icon-cell
+            :content="baseInfo.project_name"
+            is-platform
+            :icon="baseInfo.platform"
+            size="46"
+            font-size="30">
           </icon-cell>
-          <img alt=" " src="../../../assets/image/pc/audit-c.png" style="margin: 0 20px" />
-          <!--            <img
-                style="margin: 0 20px;"
-                alt=" "
-                src="../../../assets/image/pc/audit.png" />-->
+          <img
+            v-if="auditList.length > 0"
+            alt=" "
+            src="../../../assets/image/pc/audit-c.png"
+            style="margin: 0 20px" />
           <be-tag type="info" custom-class="platform-tag-g">
             <div class="flex items-center">
-              <span>BSC</span>
+              <span>{{ baseInfo.platform?.toUpperCase() }}</span>
             </div>
           </be-tag>
           <el-select v-model="selectContract" placeholder="Select">
-            <template #prefix>123</template>
+            <!--            <template #prefix>123</template>-->
             <el-option
-              v-for="item in contractList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value" />
+              v-for="item in baseInfo.contract_address_list"
+              :key="item.contract_address"
+              :label="item.contract_address_tag"
+              :value="item.contract_address" />
           </el-select>
           <be-button
             :custom-class="`eagle-btn subscribe--btn ${
-              baseInfo.isSubscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
+              baseInfo.is_subscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
             } `"
-            :prev-icon="baseInfo.isSubscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
+            :prev-icon="baseInfo.is_subscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
             type="success"
             @click="handleSubscribe">
           </be-button>
         </div>
         <div>
           <be-icon
+            v-if="governData.website"
             role="button"
             width="50"
             height="60"
-            icon="iconWebsiteEagle"
-            @click="openWindow(baseInfo.website)"></be-icon>
+            icon="iconEmailEagle"
+            @click="openWindow(governData.website)"></be-icon>
           <be-icon
+            v-if="governData.twitter"
             role="button"
             width="60"
             height="60"
             icon="iconTwitterEagle"
-            @click="openWindow(baseInfo.twitter)"></be-icon>
+            @click="openWindow(governData.twitter)"></be-icon>
           <be-icon
+            v-if="governData.telegram"
             role="button"
             width="60"
             height="60"
             icon="iconTelegramEagle"
-            @click="openWindow(baseInfo.telegram)"></be-icon>
+            @click="openWindow(governData.telegram)"></be-icon>
           <be-icon
+            v-if="governData.github"
             role="button"
             width="50"
             height="60"
             icon="iconGithubEagle"
-            @click="openWindow(baseInfo.github)"></be-icon>
+            @click="openWindow(governData.github)"></be-icon>
         </div>
       </div>
       <div class="project-detail-base--body">
@@ -69,58 +78,101 @@
               <div class="token-price-right">
                 <p class="token-price--title">
                   {{ $t('lang.projectExplorer.detail.tokenPrice') }}
-                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  <el-tooltip placement="top" content="123">
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
                 </p>
-                <p role="button">
-                  Dai Stablecoin (DAI)
+                <p
+                  v-if="baseInfo.token_address_name"
+                  role="button"
+                  @click="
+                    openWindow(`${webURL[baseInfo.platform + '_token']}${baseInfo.token_address}`)
+                  ">
+                  {{ baseInfo.token_address_name }}
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
                 </p>
+
                 <p class="token-price-val">
-                  {{ isEmpty(1234, '/') === '/' ? '/' : `$${formatMoney(1234)}` }}
+                  {{
+                    isEmpty(onChainData.token_price, '/') === '/'
+                      ? '/'
+                      : `$${formatMoney(onChainData.token_price)}`
+                  }}
                 </p>
-                <up-down :data="12.34"></up-down>
+                <up-down :data="onChainData.token_price_ratio"></up-down>
               </div>
-              <div class="token-price-left">
+              <div
+                v-if="
+                  marketVolatilityData.token_price_data &&
+                  marketVolatilityData.token_price_data.every_day_data
+                "
+                class="token-price-left">
                 <p>{{ $t('lang.projectExplorer.detail.tokenPrice1') }}</p>
-                <area-line-cell dom-id="token_price" :height="234"></area-line-cell>
+                <area-line-cell
+                  dom-id="token_price"
+                  :height="234"
+                  y-axis="value"
+                  x-axis="date"
+                  :line-data="
+                    marketVolatilityData.token_price_data.every_day_data
+                  "></area-line-cell>
               </div>
             </div>
+
             <div class="user-active-market">
               <div class="user">
                 <div class="uam-item">
                   <span class="user-active-market--title">
                     {{ $t('lang.projectExplorer.detail.user') }}
                   </span>
-                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  <el-tooltip placement="top" content="123">
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
                 </div>
                 <p class="uam-item-val">
-                  {{ isEmpty(1234, '/') === '/' ? '/' : `${marketCapBaseInfo(1234)}` }}
+                  {{
+                    isEmpty(onChainData.holders, '/') === '/'
+                      ? '/'
+                      : `${marketCapBaseInfo(onChainData.holders)}`
+                  }}
                 </p>
-                <up-down :data="12.34"></up-down>
+                <up-down :data="onChainData.holders_ratio"></up-down>
               </div>
               <div class="active">
                 <div class="uam-item">
                   <span class="user-active-market--title">
                     {{ $t('lang.projectExplorer.detail.activity') }}</span
                   >
-                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  <el-tooltip placement="top" content="123">
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
                 </div>
                 <p class="uam-item-val">
-                  {{ isEmpty(1234, '/') === '/' ? '/' : `${marketCapBaseInfo(1234)}` }}
+                  {{
+                    isEmpty(onChainData.transactions, '/') === '/'
+                      ? '/'
+                      : `${marketCapBaseInfo(onChainData.transactions)}`
+                  }}
                 </p>
-                <up-down :data="12.34" type="down"></up-down>
+                <up-down :data="onChainData.transactions_ratio" type="down"></up-down>
               </div>
               <div class="market">
                 <div class="uam-item">
                   <span class="user-active-market--title">
                     {{ $t('lang.projectExplorer.detail.MarketCap') }}</span
                   >
-                  <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  <el-tooltip placement="top" content="123">
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
                 </div>
                 <p class="uam-item-val">
-                  {{ isEmpty(1234, '/') === '/' ? '/' : `$${marketCapBaseInfo(1234)}` }}
+                  {{
+                    isEmpty(onChainData.market_cap, '/') === '/'
+                      ? '/'
+                      : `$${marketCapBaseInfo(onChainData.market_cap)}`
+                  }}
                 </p>
-                <up-down :data="12.34"></up-down>
+                <up-down :data="onChainData.market_cap_ratio"></up-down>
               </div>
             </div>
           </div>
@@ -140,13 +192,23 @@
                 </span>
               </p>
               <p class="twitter-analysis-val">
-                {{ isEmpty(123456, '/') === '/' ? '/' : `${formatMoney(123456)}` }}
+                {{
+                  isEmpty(twitterAnalysisData.value, '/') === '/'
+                    ? '/'
+                    : `${formatMoney(twitterAnalysisData.value)}`
+                }}
               </p>
-              <up-down :data="12.34"></up-down>
+              <up-down :data="twitterAnalysisData.radio"></up-down>
             </div>
             <div class="twitter-analysis-left">
               <p>{{ $t('lang.projectExplorer.detail.twitterAnalysis1') }}</p>
-              <area-line-cell dom-id="twitter_analysis" :smooth="false" :height="180">
+              <area-line-cell
+                dom-id="twitter_analysis"
+                :line-data="twitterAnalysisData.every_day_data"
+                x-axis="value"
+                y-axis="date"
+                :smooth="false"
+                :height="180">
               </area-line-cell>
             </div>
           </div>
@@ -282,13 +344,13 @@
   import { computed, defineComponent, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
-  // @ts-ignore
   import {
     BeButton,
     BeIcon,
     BePagination,
     BeProgress,
     BeTag,
+    // @ts-ignore
   } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
@@ -319,6 +381,7 @@
   import AreaLineCell from '../../../components/common-components/area-line-cell/area-line-cell.vue'
   import UpDown from '../../../components/common-components/up-down/up-down.vue'
   import BarCell from '../../../components/common-components/bar-cell/bar-cell.vue'
+  import { webURL } from '../../../enums/link'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -334,6 +397,7 @@
   import type {
     IAuditList,
     IBaseInfo,
+    IChainData,
     IContractStatistics,
     IGovern,
     IMarketVolatility,
@@ -349,6 +413,7 @@
     ITop5QuiditySelect,
     ITop5TokenHolder,
     ITop5TokenHolderSelect,
+    ITwitterAnalysis,
   } from '../../../utils/types'
 
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
@@ -409,8 +474,6 @@
           label: 'Option5',
         },
       ])
-
-      const baseInfo = ref<IBaseInfo>({})
 
       const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
       const top5TokenHolderAddr = ref<string>('')
@@ -477,7 +540,22 @@
         risk_tx_score: '',
         audit_report_score: '',
       })
+      const twitterAnalysisData = ref<ITwitterAnalysis>({
+        ratio: 0,
+        every_day_data: [],
+      })
+      const onChainData = ref<IChainData>({
+        token_price: 0,
+        token_price_ratio: 0,
+        market_cap: 0,
+        market_cap_ratio: 0,
+        holders: 0,
+        holders_ratio: 0,
+        transactions: 0,
+        transactions_ratio: 0,
+      })
       const scoreItemComp = ref<string>('')
+      const baseInfo = ref<IBaseInfo>({})
       const getProSituData = async () => {
         const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
@@ -490,10 +568,18 @@
             }
             if (res) {
               securityEventList.value = res.data.security_event_list
-              marketVolatilityData.value = res.data.market_volatility
+              if (res.data.market_volatility) {
+                marketVolatilityData.value = res.data.market_volatility
+              }
+
               governData.value = res.data.social_profiles
               riskChartData.value = res.data.risk_tx_info
               projectScoreData.value = res.data.project_score
+              if (res.data.twitter_analysis.following_info) {
+                twitterAnalysisData.value = res.data.twitter_analysis.following_info
+              }
+              onChainData.value = res.data.on_chain
+              baseInfo.value = res.data.details
 
               scoreItemDetail.value = {
                 market_volatility_score: res.data.project_score.market_volatility_score,
@@ -502,7 +588,7 @@
                 risk_tx_score: res.data.project_score.risk_tx_score,
                 audit_report_score: res.data.project_score.audit_report_score,
               }
-              // 加载 scoreItemComp 组件
+              // scoreItemDetail数据拿到后，加载 scoreItemComp 组件
               scoreItemComp.value = 'ScoreItem'
 
               // 获取项目详情数据
@@ -697,7 +783,7 @@
                 `${t('lang.subscribe.success')}(${res.data.email}).`,
                 'subscribe'
               )
-              baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+              baseInfo.value.is_subscribe = !baseInfo.value.is_subscribe
             } else {
               msgBox(
                 t('lang.subscribe.titleFailed'),
@@ -722,7 +808,7 @@
           .then((res: any) => {
             if (res.code === '0000') {
               msgBox(t('lang.subscribe.titleUn'), t('lang.subscribe.unSubscribes'), 'subscribe')
-              baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+              baseInfo.value.is_subscribe = !baseInfo.value.is_subscribe
             } else {
               message('warning', 'An unknown error has occurred in the system')
             }
@@ -741,7 +827,7 @@
           busLogin.emit()
           return
         }
-        if (baseInfo.value.isSubscribe) {
+        if (baseInfo.value.is_subscribe) {
           cancelSubscribe()
         } else {
           submitSubscribe()
@@ -837,6 +923,9 @@
         projectScoreData,
         scoreItemDetail,
         scoreItemComp,
+        twitterAnalysisData,
+        onChainData,
+        webURL,
       }
     },
   })
@@ -870,10 +959,16 @@
         padding: 4px 8px;
         height: 26px;
         border-radius: 4px;
+        margin: 0 20px;
+        background-color: rgba(167, 199, 214, 0.29);
+        font-size: 14px;
+        font-family: BarlowSemi-B, sans-serif;
+        font-weight: bold;
+        color: #18304e;
+        line-height: 17px;
       }
       .el-input {
         width: 160px;
-        margin: 0 16px;
         line-height: 26px;
         .el-input__inner {
           height: 26px;
@@ -906,6 +1001,7 @@
             align-items: center;
           }
           p[role='button'] {
+            width: min-content;
             color: $textColor3;
             padding: 0 10px;
             height: 24px;
@@ -1130,6 +1226,7 @@
       width: 40px;
       height: 40px;
       min-width: initial;
+      margin-left: 16px;
       border-radius: 4px !important;
       .be-button-slot {
         display: none;
@@ -1141,7 +1238,7 @@
     .subscribe-btn__ed {
       color: $textColor3;
       background: transparent;
-      border: 1px solid $textColor3;
+      border: 1px solid $textColor7;
 
       .be-icon use {
         fill: $textColor3 !important;

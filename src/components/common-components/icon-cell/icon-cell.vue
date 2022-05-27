@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { defineComponent, ref, watch } from 'vue'
   import { iconDict } from '../../../utils/platform-dict'
   // @ts-ignore
   import { BeIcon } from '../../../../public/be-ui/be-ui.es'
@@ -50,9 +50,19 @@
     },
     setup(props) {
       const innerIcon = ref<string>(props.icon)
-      if (props.isPlatform) {
-        innerIcon.value = iconDict[props.icon.toUpperCase() as keyof typeof iconDict] || ''
+      const setIcon = (): void => {
+        if (props.isPlatform) {
+          innerIcon.value = iconDict[props.icon.toUpperCase() as keyof typeof iconDict] || ''
+        }
       }
+      watch(
+        () => props.icon,
+        () => {
+          setIcon()
+        }
+      )
+      setIcon()
+
       return {
         innerIcon,
       }

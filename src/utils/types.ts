@@ -63,17 +63,13 @@ export interface IContractStatistics {
 }
 
 export interface IBaseInfo {
-  transactions?: number | string
-  transactionsTotal?: number | string
-  lastTradeData?: string
-  riksTrxNum?: number | string
-  riskPublicOpinion?: number | string
-  github?: string
-  telegram?: string
-  twitter?: string
-  website?: string
-  isSubscribe?: boolean
-  name?: string
+  contract_address_list?: Array<{ contract_address: string; contract_address_tag: string }>
+  token_address_name?: string
+  token_address?: string
+  grade_score?: string
+  platform?: string
+  is_subscribe?: boolean
+  project_name?: string
 }
 
 export interface ITop5TokenHolder {
@@ -133,6 +129,7 @@ export interface ICreateProjOperating {
   operation_manual?: string
   exchange_board?: string
   test_chain?: string
+  social_media?: string
 }
 export interface ICreateProjExt {
   type?: string
@@ -319,3 +316,18 @@ export type IProjectScore = {
   low_total_score?: number
   every_day_data?: Array<{ date: string; score: number }>
 } & IScoreItems
+
+export type ITwitterAnalysis = {
+  ratio?: number
+  every_day_data?: Array<{ date: string; value: number }>
+}
+export type IChainData = {
+  token_price?: number
+  token_price_ratio?: number
+  market_cap?: number
+  market_cap_ratio?: number
+  holders?: number
+  holders_ratio?: number
+  transactions?: number
+  transactions_ratio?: number
+}

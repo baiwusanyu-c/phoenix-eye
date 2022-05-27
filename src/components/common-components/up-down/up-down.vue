@@ -1,10 +1,9 @@
 /* * @up-down.vue * @deprecated * @author czh * @update (czh 2022/5/26) */
 <template>
   <div class="up-down">
-    <be-icon :icon="type === 'up' ? 'iconArrowUp' : 'iconArrowDown'" width="24" height="24">
-    </be-icon>
-    <span :class="type === 'up' ? 'up-down__up' : 'up-down__down'" style="margin-left: 6px">
-      {{ formatMoney(data) }} %
+    <be-icon :icon="data >= 0 ? 'iconArrowUp' : 'iconArrowDown'" width="24" height="24"> </be-icon>
+    <span :class="data >= 0 ? 'up-down__up' : 'up-down__down'" style="margin-left: 6px">
+      {{ formatMoney(data * 100) }} %
     </span>
   </div>
 </template>
@@ -22,11 +21,7 @@
     props: {
       data: {
         type: Number,
-        default: 1234,
-      },
-      type: {
-        type: String,
-        default: 'up',
+        default: 0,
       },
     },
     setup() {

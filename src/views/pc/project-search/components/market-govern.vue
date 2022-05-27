@@ -17,7 +17,7 @@
       <be-button
         :custom-class="setBtnClass(data.github)"
         :disabled="!data.github"
-        @click="handleClick('github')">
+        @click="openWindow(data.github)">
         {{ $t('lang.projectExplorer.detail.view') }}
       </be-button>
     </div>
@@ -32,7 +32,7 @@
       <be-button
         :custom-class="setBtnClass(data.website)"
         :disabled="!data.website"
-        @click="handleClick('website')">
+        @click="openWindow(data.website)">
         {{ $t('lang.projectExplorer.detail.view') }}
       </be-button>
     </div>
@@ -41,9 +41,9 @@
         {{ $t('lang.projectExplorer.detail.governSubLabel3') }}
       </span>
       <be-button
-        :disabled="!(data.twitter || data.telegram)"
-        :custom-class="setBtnClass(data.twitter || data.telegram)"
-        @click="handleClick('social')">
+        :disabled="!data.social_media"
+        :custom-class="setBtnClass(data.social_media)"
+        @click="openWindow(data.social_media)">
         {{ $t('lang.projectExplorer.detail.view') }}
       </be-button>
     </div>
@@ -54,7 +54,7 @@
       <be-button
         :custom-class="setBtnClass(data.address_markup)"
         :disabled="!data.address_markup"
-        @click="handleClick('address_markup')">
+        @click="openWindow(data.address_markup)">
         {{ $t('lang.projectExplorer.detail.view') }}
       </be-button>
     </div>
@@ -69,7 +69,7 @@
       <be-button
         :custom-class="setBtnClass(data.white_paper)"
         :disabled="!data.white_paper"
-        @click="handleClick('white_paper')">
+        @click="openWindow(data.white_paper)">
         {{ $t('lang.projectExplorer.detail.view') }}
       </be-button>
     </div>
@@ -81,7 +81,7 @@
       <be-button
         :custom-class="setBtnClass(data.exchange_board)"
         :disabled="!data.exchange_board"
-        @click="handleClick('exchange_board')">
+        @click="openWindow(data.exchange_board)">
         {{ $t('lang.projectExplorer.detail.view') }}
       </be-button>
     </div>
@@ -93,7 +93,7 @@
       <be-button
         :custom-class="setBtnClass(data.test_chain)"
         :disabled="!data.test_chain"
-        @click="handleClick('test_chain')">
+        @click="openWindow(data.test_chain)">
         {{ $t('lang.projectExplorer.detail.view') }}
       </be-button>
     </div>
@@ -106,8 +106,10 @@
   import TitleCell from '../../../../components/common-components/title-cell/title-cell.vue'
   // @ts-ignore
   import { BeButton } from '../../../../../public/be-ui/be-ui.es'
+  import { openWindow } from '../../../../utils/common'
   import type { PropType } from 'vue'
   import type { IGovern } from '../../../../utils/types'
+
   export default defineComponent({
     name: 'MarketGovern',
     components: { TitleCell, BeButton },
@@ -139,11 +141,9 @@
           }
         }
       })
-      const handleClick = (): void => {
-        debugger
-      }
+
       return {
-        handleClick,
+        openWindow,
         setBtnText,
         setBtnClass,
       }

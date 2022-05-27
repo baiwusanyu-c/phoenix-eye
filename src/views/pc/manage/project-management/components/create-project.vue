@@ -485,7 +485,6 @@
         //   return false
         // }
         contractInfos && (params.contract_address_arr = contractInfos)
-        debugger
         return true
       }
       /**
