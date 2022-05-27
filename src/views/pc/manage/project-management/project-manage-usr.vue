@@ -58,11 +58,11 @@
   import composition from '../../../../utils/mixin/common-func'
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'
+  import searchInput from '../../../../components/search-input.vue'
   import CreateProject from './components/create-project.vue'
   import ProjectManageTable from './components/project-manage-table.vue'
   import type { IProjectListAdmin, IReappraise } from '../../../../api/project-management'
   import type { ICreateProj, IPageParam } from '../../../../utils/types'
-
   export default defineComponent({
     name: 'ProjectManageUsr',
     components: {
@@ -70,6 +70,7 @@
       CreateProject,
       MsgDialog,
       BePagination,
+      searchInput,
     },
     setup() {
       const { t } = useI18n()

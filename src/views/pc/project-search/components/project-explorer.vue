@@ -4,10 +4,7 @@
     <!--      TODO: Project Explorer Filter & Search         -->
     <div class="project-explorer-tb--search">
       <div class="title">
-        <title-cell
-          :name="$t('lang.projectExplorer.exp.title')"
-          url="../src/assets/image/pc/add-proj.png">
-        </title-cell>
+        <title-cell :name="$t('lang.projectExplorer.exp.title')" :url="explorerProj"> </title-cell>
         <div class="select">
           <img alt="beosin-select" src="../../../../assets/image/pc/select-all.png" />
           <el-select v-model="selectValue" @change="handleSelect">
@@ -191,8 +188,10 @@
   import { platformListDict } from '../../../../utils/platform-dict'
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'
+  import explorerProj from '../../../../assets/image/pc/explorer-proj.png'
   import type { IOption, IPageParam, projListType } from '../../../../utils/types'
   import type { IProjParam } from '../../../../api/project-explorer'
+
   export default defineComponent({
     name: 'ProjectExplorer',
     components: {
@@ -321,6 +320,7 @@
         handleSelect,
         createDate,
         formatDate,
+        explorerProj,
       }
     },
   })

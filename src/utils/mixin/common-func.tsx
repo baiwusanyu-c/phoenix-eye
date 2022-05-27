@@ -23,6 +23,7 @@ export default () => {
   const router: Router = useRouter()
   const route: RouteLocationNormalizedLoaded = useRoute()
   const routerPush = (path: string, query?: any): void => {
+    debugger
     router.push({ path, query })
   }
   /**

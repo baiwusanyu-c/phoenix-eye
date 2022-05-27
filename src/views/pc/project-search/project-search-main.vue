@@ -36,10 +36,7 @@
     <div class="project-alert--container">
       <div class="risk-alert">
         <div class="project-alert--title">
-          <title-cell
-            url="../src/assets/image/pc/alert.png"
-            :name="$t('lang.projectExplorer.alert.title')">
-          </title-cell>
+          <title-cell :url="alert" :name="$t('lang.projectExplorer.alert.title')"> </title-cell>
           <be-button custom-class="eagle-btn more-alert-btn" round="4" type="success">
             {{ $t('lang.projectExplorer.alert.more') }}
           </be-button>
@@ -52,10 +49,7 @@
 
       <div class="hot-project">
         <div class="project-alert--title">
-          <title-cell
-            url="../src/assets/image/pc/hot.png"
-            :name="$t('lang.projectExplorer.alert.title2')">
-          </title-cell>
+          <title-cell :url="hot" :name="$t('lang.projectExplorer.alert.title2')"> </title-cell>
         </div>
         <hot-project-item
           v-if="hotProjectList.length > 0"
@@ -98,7 +92,7 @@
             :name="$t('lang.projectExplorer.exp.addTitle')"
             :size="24"
             :font-size="18"
-            url="../src/assets/image/pc/add-proj.png">
+            :url="addProj">
           </title-cell>
         </div>
         <empty-data v-if="guardProjectList.length === 0"></empty-data>
@@ -118,10 +112,7 @@
     </div>
     <div class="project-risk--container">
       <div class="project-risk--search">
-        <title-cell
-          :name="$t('lang.projectExplorer.security.title')"
-          url="../src/assets/image/pc/security.png">
-        </title-cell>
+        <title-cell :name="$t('lang.projectExplorer.security.title')" :url="security"> </title-cell>
       </div>
       <security-list></security-list>
     </div>
@@ -146,6 +137,10 @@
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
 
+  import security from '../../../assets/image/pc/security.png'
+  import addProj from '../../../assets/image/pc/add-proj.png'
+  import hot from '../../../assets/image/pc/hot.png'
+  import alert from '../../../assets/image/pc/alert.png'
   import ProjectExplorer from './components/project-explorer.vue'
   import RiskAlertItem from './components/risk-alert-item.vue'
   import HotProjectItem from './components/hot-project-item.vue'
@@ -159,6 +154,7 @@
     project_id: string
     project_name: string
   }
+
   export default defineComponent({
     name: 'ProjectSearchMain',
     components: {
@@ -302,6 +298,10 @@
         marketCapBaseInfo,
         riskAlertList,
         hotProjectList,
+        security,
+        addProj,
+        hot,
+        alert,
       }
     },
   })
@@ -314,7 +314,7 @@
 
   .project-base--container {
     height: 280px;
-    background-image: url('../src/assets/image/pc/bg-base-info.png');
+    background-image: url('../../../assets/image/pc/bg-base-info.png');
     background-repeat: round;
     border-radius: 4px;
     @include common-container(32px, 65.2%);
@@ -427,7 +427,7 @@
         border-radius: 4px;
         height: calc(60% - 20px);
         margin-bottom: 20px;
-        background-image: url('../src/assets/image/pc/bg-plugin.png');
+        background-image: url('../../../assets/image/pc/bg-plugin.png');
         background-repeat: round;
 
         p {

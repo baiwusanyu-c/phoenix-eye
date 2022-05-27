@@ -65,6 +65,7 @@
   import composition from '../../../../utils/mixin/common-func'
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'
+  import searchInput from '../../../../components/search-input.vue'
   import CreateProject from './components/create-project.vue'
   import ProjectManageTable from './components/project-manage-table.vue'
   import type { IProjectListAdmin, IReappraise } from '../../../../api/project-management'
@@ -78,6 +79,7 @@
       MsgDialog,
       BeButton,
       BePagination,
+      searchInput,
     },
     setup() {
       const { t } = useI18n()

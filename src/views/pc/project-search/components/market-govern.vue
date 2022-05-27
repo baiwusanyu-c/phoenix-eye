@@ -2,7 +2,7 @@
 <template>
   <div class="market-govern">
     <title-cell
-      url="../src/assets/image/pc/govern-logo.png"
+      :url="governLogo"
       font-size="20"
       :name="$t('lang.projectExplorer.detail.titleGovern')">
     </title-cell>
@@ -107,9 +107,9 @@
   // @ts-ignore
   import { BeButton } from '../../../../../public/be-ui/be-ui.es'
   import { openWindow } from '../../../../utils/common'
+  import governLogo from '../../../../assets/image/pc/govern-logo.png'
   import type { PropType } from 'vue'
   import type { IGovern } from '../../../../utils/types'
-
   export default defineComponent({
     name: 'MarketGovern',
     components: { TitleCell, BeButton },
@@ -146,6 +146,7 @@
         openWindow,
         setBtnText,
         setBtnClass,
+        governLogo,
       }
     },
   })

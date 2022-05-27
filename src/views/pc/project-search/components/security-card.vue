@@ -111,7 +111,7 @@
       height: 160px;
       padding: 20px;
       box-sizing: border-box;
-      background-image: url('../src/assets/image/pc/security-card-bg.png');
+      background-image: url('../../../../assets/image/pc/security-card-bg.png');
       background-repeat: round;
 
       .ellipsis-copy {
