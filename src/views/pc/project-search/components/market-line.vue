@@ -34,52 +34,108 @@
     <div class="info-data">
       <div>
         <p>{{ titles }}</p>
-        <p class="info-val">{{ isEmpty(1234, '/') === '/' ? '/' : `$${formatMoney(1234)}` }}</p>
-        <p>24h:&nbsp;&nbsp;<span>10.53%</span></p>
-        <p>7d:&nbsp;&nbsp;<span>10.53%</span></p>
-        <p>30d:&nbsp;&nbsp;<span>10.53%</span></p>
+        <p class="info-val">
+          {{ isEmpty(innerData.value, '/') === '/' ? '/' : `$${formatMoney(innerData.value)}` }}
+        </p>
+        <p>
+          24h:&nbsp;&nbsp;<span>{{
+            isEmpty(innerData.day_1_ratio, '/') === '/'
+              ? '/'
+              : `${formatMoney(innerData.day_1_ratio * 100)}%`
+          }}</span>
+        </p>
+        <p>
+          7d:&nbsp;&nbsp;<span>{{
+            isEmpty(innerData.day_7_ratio, '/') === '/'
+              ? '/'
+              : `${formatMoney(innerData.day_7_ratio * 100)}%`
+          }}</span>
+        </p>
+        <p>
+          30d:&nbsp;&nbsp;<span>{{
+            isEmpty(innerData.day_30_ratio, '/') === '/'
+              ? '/'
+              : `${formatMoney(innerData.day_30_ratio * 100)}%`
+          }}</span>
+        </p>
       </div>
     </div>
     <div class="area-container">
-      <p>Token Price History From 4.26-5.25</p>
-      <area-line-cell dom-id="market_line_tab"></area-line-cell>
+      <p>{{ titles }} for the past 30 days</p>
+      <area-line-cell
+        v-if="innerData.every_day_data && innerData.every_day_data.length > 0"
+        dom-id="market_line_tab"
+        :line-data="innerData.every_day_data"
+        y-axis="value"
+        x-axis="date">
+      </area-line-cell>
+      <empty-data
+        v-if="!innerData.every_day_data || innerData.every_day_data.length === 0"></empty-data>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { computed, defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { formatMoney, isEmpty } from '../../../../utils/common'
+  import { formatMoney } from '../../../../utils/common'
   import AreaLineCell from '../../../../components/common-components/area-line-cell/area-line-cell.vue'
+  import composition from '../../../../utils/mixin/common-func'
+  import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
+  import type { PropType } from 'vue'
+  import type { IMarketItem, IMarketVolatility } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'MarketLine',
-    components: { AreaLineCell },
-
-    setup() {
+    components: { EmptyData, AreaLineCell },
+    props: {
+      data: {
+        type: Object as PropType<IMarketVolatility>,
+      },
+    },
+    setup(props) {
       const { t } = useI18n()
+      const { isEmpty } = composition()
       const activeTab = ref<string>('token_price_data')
       const handleTabClick = (type: string): void => {
         activeTab.value = type
         setTitle(type)
       }
       const titles = ref<string>(t('lang.projectExplorer.detail.marketTab1'))
+      const innerData = ref<IMarketItem>({})
+      const computePropsData = computed(() => {
+        return props.data
+          ? props.data
+          : {
+              token_price_data: {},
+              token_transfer_data: {},
+              liquidity_data: {},
+              market_cap_data: {},
+            }
+      })
       const setTitle = (type: string): void => {
         if (type === 'liquidity_data') {
           titles.value = t('lang.projectExplorer.detail.marketTab3')
+          props.data && (innerData.value = computePropsData.value.liquidity_data)
         }
         if (type === 'market_cap_data') {
           titles.value = t('lang.projectExplorer.detail.marketTab4')
+          props.data && (innerData.value = computePropsData.value.market_cap_data)
         }
         if (type === 'token_transfer_data') {
           titles.value = t('lang.projectExplorer.detail.marketTab2')
+          props.data && (innerData.value = computePropsData.value.token_transfer_data)
         }
         if (type === 'token_price_data') {
           titles.value = t('lang.projectExplorer.detail.marketTab1')
+          props.data && (innerData.value = computePropsData.value.token_price_data)
         }
       }
+
+      innerData.value = computePropsData.value.token_price_data
+
       return {
+        innerData,
         activeTab,
         titles,
         handleTabClick,

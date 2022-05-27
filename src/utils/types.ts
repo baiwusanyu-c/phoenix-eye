@@ -281,3 +281,24 @@ export interface IScoreItems {
   risk_tx_score?: string
   audit_report_score?: string
 }
+
+export interface ISecurityEventList {
+  project_name?: string
+  abstract_content?: string
+  attack_type?: string
+  attack_time?: string
+  loss_amount?: number
+}
+export interface IMarketItem {
+  every_day_data?: Array<{ date: string; value: number }>
+  day_1_ratio?: number
+  day_7_ratio?: number
+  day_30_ratio?: number
+  value?: number
+}
+export interface IMarketVolatility {
+  token_price_data: IMarketItem
+  token_transfer_data: IMarketItem
+  liquidity_data: IMarketItem
+  market_cap_data: IMarketItem
+}

@@ -41,7 +41,8 @@ export function isEmpty(val: unknown) {
   if (
     (!val && val !== 0) ||
     (isArray(val) && !Array(val).length) ||
-    (isObject(val) && !Object.keys(Object(val)).length)
+    (isObject(val) && !Object.keys(Object(val)).length) ||
+    isNaN(Number(val))
   )
     return true
 

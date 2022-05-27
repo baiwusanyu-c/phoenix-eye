@@ -229,10 +229,10 @@
           </title-cell>
         </div>
         <div class="market-line">
-          <market-line></market-line>
+          <market-line :data="marketVolatilityData"></market-line>
         </div>
       </div>
-      <market-govern></market-govern>
+      <market-govern :data="governData"></market-govern>
     </div>
     <div class="project-detail-risk">
       <div class="project-detail--header">
@@ -256,14 +256,14 @@
       </div>
       <security-list></security-list>
     </div>
-    <div class="project-detail-security">
+    <div v-if="securityEventList.length > 0" class="project-detail-security">
       <div class="project-detail--header">
         <title-cell
           url="../src/assets/image/pc/security2.png"
           :name="$t('lang.projectExplorer.detail.titleSecurity')">
         </title-cell>
       </div>
-      <security-info-card></security-info-card>
+      <security-info-card :data-list="securityEventList"></security-info-card>
     </div>
   </div>
 </template>
@@ -296,7 +296,6 @@
     formatMoney,
     formatTimeStamp,
     getStore,
-    isEmpty,
     nFormatter,
     numberToCommaString,
     openWindow,
@@ -322,20 +321,25 @@
   import ScoreItem from './components/score-item.vue'
   import ReportItem from './components/report-item.vue'
   import WhaleHolders from './components/whale-holders.vue'
-  import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
   import type {
     IAuditList,
     IBaseInfo,
     IContractStatistics,
+    IGovern,
+    IMarketVolatility,
     IOption,
     IPageParam,
     ISafetyData,
+    ISecurityEventList,
     ITableHeader,
     ITop5QuidityPairs,
     ITop5QuiditySelect,
     ITop5TokenHolder,
     ITop5TokenHolderSelect,
   } from '../../../utils/types'
+
+  import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
+
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
@@ -365,7 +369,8 @@
       EllipsisCopy,
     },
     setup() {
-      const { message, route, msgBox, openWeb } = composition()
+      const { message, route, msgBox, openWeb, isEmpty } = composition()
+
       const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
       const { t } = useI18n()
       const selectContract = ref<string>('')
@@ -439,7 +444,16 @@
             })
         }
       }
+
       const baseLoading = ref<boolean>(false)
+      const securityEventList = ref<Array<ISecurityEventList>>([])
+      const marketVolatilityData = ref<IMarketVolatility>({
+        token_price_data: {},
+        token_transfer_data: {},
+        liquidity_data: {},
+        market_cap_data: {},
+      })
+      const governData = ref<IGovern>({})
       const getProSituData = async () => {
         const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
@@ -451,8 +465,12 @@
               return
             }
             if (res) {
+              debugger
+              securityEventList.value = res.data.security_event_list
+              marketVolatilityData.value = res.data.market_volatility
+              governData.value = res.data.social_profiles
               // 获取项目详情数据
-              baseInfo.value = {
+              /* baseInfo.value = {
                 transactions: res.data.details.tx_24,
                 transactionsTotal: res.data.details.tx_total,
                 lastTradeData: res.data.details.latest_trading_date,
@@ -464,9 +482,9 @@
                 telegram: res.data.social_profiles.telegram,
                 twitter: res.data.social_profiles.twitter,
                 website: res.data.social_profiles.website,
-              }
+              }*/
               // top5数据
-              top5TokenHolderSelect.value = res.data.top_5_token_holders
+              /* top5TokenHolderSelect.value = res.data.top_5_token_holders
               // 默认取第一个币种
               defaultPlatformTop5Token.value =
                 top5TokenHolderSelect.value && top5TokenHolderSelect.value.length > 0
@@ -479,7 +497,7 @@
                 top5QuiditySelect.value && top5QuiditySelect.value.length > 0
                   ? (top5QuiditySelect.value[0].platform as string)
                   : 'bsc'
-              handleSelectTop5({ platform: defaultPlatformTop5Quidity.value, type: 'pairs' })
+              handleSelectTop5({ platform: defaultPlatformTop5Quidity.value, type: 'pairs' })*/
             }
             baseLoading.value = false
           })
@@ -489,12 +507,12 @@
             console.error(err)
           })
         // 获取Audit数据
-        await getAuditData()
+        // await getAuditData()
 
         // 获取合约静态检测数据
-        await getContractStatistics()
+        //  await getContractStatistics()
         // 获取项目舆情安全数据
-        await getPublicOpinionData()
+        //  await getPublicOpinionData()
       }
       /**
        * 获取Audit数据
@@ -624,7 +642,7 @@
         getPublicOpinionData()
       }
       onMounted(() => {
-        // getProSituData()
+        getProSituData()
       })
 
       /*******************************   订阅  ******************************/
@@ -776,6 +794,9 @@
         formatMoney,
         selectContract,
         contractList,
+        securityEventList,
+        marketVolatilityData,
+        governData,
       }
     },
   })

@@ -51,7 +51,8 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { formatMoney, isEmpty } from '../../../../utils/common'
+  import { formatMoney } from '../../../../utils/common'
+  import composition from '../../../../utils/mixin/common-func'
   import type { PropType } from 'vue'
   import type { IHotProjectList } from '../../../../utils/types'
 
@@ -65,6 +66,7 @@
       },
     },
     setup(props) {
+      const { isEmpty } = composition()
       const pageNum = ref<number>(0)
       const pageSize = 3
       const currentPage = ref<number>(1)

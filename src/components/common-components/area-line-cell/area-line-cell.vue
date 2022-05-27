@@ -27,11 +27,11 @@
         type: Boolean,
         default: true,
       },
-      x: {
+      xAxis: {
         type: String,
         default: 'token_price',
       },
-      y: {
+      yAxis: {
         type: String,
         default: 'create_time',
       },
@@ -128,7 +128,7 @@
             return container
           },
         })
-        chart.value.axis(props.y, {
+        chart.value.axis(props.yAxis, {
           label: {
             style: {
               fill: '#8A96A3',
@@ -137,7 +137,7 @@
           line: null,
           tickLine: null,
         })
-        chart.value.axis(props.x, {
+        chart.value.axis(props.xAxis, {
           label: {
             style: {
               fill: '#8A96A3',
@@ -155,12 +155,12 @@
 
         chart.value
           .line()
-          .position(`${props.y}*${props.x}`)
+          .position(`${props.yAxis}*${props.xAxis}`)
           .shape(props.smooth ? 'smooth' : '')
           .style({ stroke: '#1A589B' })
         chart.value
           .area()
-          .position(`${props.y}*${props.x}`)
+          .position(`${props.yAxis}*${props.xAxis}`)
           .style({ fill: 'l(270) 0:rgba(39, 114, 240, 0) 1:#1A589B' })
           .shape(props.smooth ? 'smooth' : '')
         chart.value.render()

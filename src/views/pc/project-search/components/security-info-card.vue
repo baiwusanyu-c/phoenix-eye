@@ -3,7 +3,7 @@
   <div class="security-info-card">
     <el-descriptions
       v-for="item in dataList"
-      :key="item.project_name + item.abstract"
+      :key="item.project_name + item.abstract_content"
       style="width: 49%; margin-bottom: 16px"
       :column="1">
       <el-descriptions-item
@@ -20,7 +20,7 @@
         align="left"
         label-class-name="security-info-label"
         class-name="security-info-content scroll-diy"
-        >{{ item.abstract }}
+        >{{ item.abstract_content }}
       </el-descriptions-item>
       <el-descriptions-item
         :label="$t('lang.projectExplorer.detail.securtityEventLabel3')"
@@ -28,7 +28,7 @@
         align="left"
         label-class-name="security-info-label"
         class-name="security-info-content scroll-diy"
-        >{{ item.attect_type }}
+        >{{ item.attack_type }}
       </el-descriptions-item>
       <el-descriptions-item
         :label="$t('lang.projectExplorer.detail.securtityEventLabel4')"
@@ -36,7 +36,9 @@
         align="left"
         label-class-name="security-info-label"
         class-name="security-info-content scroll-diy"
-        ><span>{{ isEmpty(item.amount, '/') === '/' ? '/' : `$${formatMoney(item.amount)}` }}</span>
+        ><span>{{
+          isEmpty(item.loss_amount, '/') === '/' ? '/' : `$${formatMoney(item.loss_amount)}`
+        }}</span>
       </el-descriptions-item>
     </el-descriptions>
   </div>

@@ -2,7 +2,15 @@
 <template>
   <div class="empty-data">
     <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
-    <p style="line-height: 25px">{{ $t(content) }}</p>
+    <p
+      style="
+        line-height: 25px;
+        text-align: center;
+        font-family: BarlowSemi-R, sans-serif;
+        color: #bababa;
+      ">
+      {{ $t(content) }}
+    </p>
   </div>
 </template>
 
