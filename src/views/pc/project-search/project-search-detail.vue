@@ -243,7 +243,7 @@
         </title-cell>
       </div>
       <div class="project-detail-risk--body">
-        <risk-chart></risk-chart>
+        <risk-chart :data="riskChartData"></risk-chart>
         <risk-list></risk-list>
       </div>
     </div>
@@ -329,6 +329,7 @@
     IMarketVolatility,
     IOption,
     IPageParam,
+    IRiskChartData,
     ISafetyData,
     ISecurityEventList,
     ITableHeader,
@@ -454,6 +455,7 @@
         market_cap_data: {},
       })
       const governData = ref<IGovern>({})
+      const riskChartData = ref<IRiskChartData>({})
       const getProSituData = async () => {
         const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
@@ -469,6 +471,7 @@
               securityEventList.value = res.data.security_event_list
               marketVolatilityData.value = res.data.market_volatility
               governData.value = res.data.social_profiles
+              riskChartData.value = res.data.risk_tx_info
               // 获取项目详情数据
               /* baseInfo.value = {
                 transactions: res.data.details.tx_24,
@@ -797,6 +800,7 @@
         securityEventList,
         marketVolatilityData,
         governData,
+        riskChartData,
       }
     },
   })

@@ -302,3 +302,13 @@ export interface IMarketVolatility {
   liquidity_data: IMarketItem
   market_cap_data: IMarketItem
 }
+export type IRiskPie = {
+  feature?: string
+  ratio?: number
+}
+export type IRiskChartData = {
+  every_day_data?: Array<{ date: string; num: number }>
+  stat_30_day_data?: Array<IRiskPie>
+  stat_7_day_data?: Array<IRiskPie>
+  stat_1_day_data?: Array<IRiskPie>
+}

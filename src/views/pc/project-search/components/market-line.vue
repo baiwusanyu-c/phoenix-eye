@@ -60,15 +60,18 @@
         </p>
       </div>
     </div>
-    <div class="area-container">
+    <div
+      v-if="innerData.every_day_data && innerData.every_day_data.length > 0"
+      class="area-container">
       <p>{{ titles }} for the past 30 days</p>
       <area-line-cell
-        v-if="innerData.every_day_data && innerData.every_day_data.length > 0"
         dom-id="market_line_tab"
         :line-data="innerData.every_day_data"
         y-axis="value"
         x-axis="date">
       </area-line-cell>
+    </div>
+    <div class="area-container">
       <empty-data
         v-if="!innerData.every_day_data || innerData.every_day_data.length === 0"></empty-data>
     </div>

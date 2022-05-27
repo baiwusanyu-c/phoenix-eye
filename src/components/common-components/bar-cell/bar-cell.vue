@@ -28,11 +28,11 @@
         type: Boolean,
         default: true,
       },
-      x: {
+      xAxis: {
         type: String,
         default: 'token_price',
       },
-      y: {
+      yAxis: {
         type: String,
         default: 'create_time',
       },
@@ -145,19 +145,19 @@
               },
             }
           : null
-        chart.value.axis(props.y, {
+        chart.value.axis(props.yAxis, {
           label: axisLabel,
           line: null,
           tickLine: null,
         })
-        chart.value.axis(props.x, {
+        chart.value.axis(props.xAxis, {
           label: axisLabel,
           grid: axisGrid,
         })
 
         chart.value
           .interval()
-          .position(`${props.y}*${props.x}`)
+          .position(`${props.yAxis}*${props.xAxis}`)
           .style({
             fill: '#18304E',
             radius: [20, 20, 0, 0],

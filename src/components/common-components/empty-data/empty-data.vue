@@ -8,6 +8,8 @@
         text-align: center;
         font-family: BarlowSemi-R, sans-serif;
         color: #bababa;
+        font-weight: 400;
+        font-size: 14px;
       ">
       {{ $t(content) }}
     </p>

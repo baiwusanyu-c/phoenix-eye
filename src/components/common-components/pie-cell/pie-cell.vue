@@ -17,8 +17,7 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
-  import { formatMoney } from '../../../utils/common'
-  import type { IStatisticsLine } from '../../../utils/types'
+  import type { IOption } from '../../../utils/types'
   import type { PropType } from 'vue'
 
   export default defineComponent({
@@ -29,7 +28,7 @@
         default: 'pie-cell_domId',
       },
       pieData: {
-        type: Array as PropType<Array<IStatisticsLine>>,
+        type: Array as PropType<Array<IOption>>,
         default() {
           return [
             { color: '#8A96A3', item: 'Large outflow', count: 40, percent: 0.4 },
@@ -38,6 +37,14 @@
             { color: '#84a5c5', item: 'Slump', count: 13, percent: 0.13 },
           ]
         },
+      },
+      item: {
+        type: String,
+        default: 'item',
+      },
+      percent: {
+        type: String,
+        default: 'percent',
       },
     },
     setup(props) {
@@ -55,90 +62,92 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
-        // 更新
-        if (isUpdate) {
-          chart.value.data(props.pieData)
-          chart.value.render(isUpdate)
-          return
-        }
-        chart.value = new Chart({
-          container: props.domId,
-          autoFit: true,
-          height: 300,
-          width: 300,
-        })
+        if (props.pieData) {
+          // 更新
+          if (isUpdate) {
+            chart.value.data(props.pieData)
+            chart.value.render(isUpdate)
+            return
+          }
+          chart.value = new Chart({
+            container: props.domId,
+            autoFit: true,
+            height: 300,
+            width: 300,
+          })
 
-        chart.value.legend(false)
-        chart.value.data(props.pieData)
-        chart.value.scale('percent', {
-          formatter: (val: any) => {
-            val = `${val * 100}%`
-            return val
-          },
-        })
-        chart.value.coordinate('theta', {
-          radius: 0.75,
-          innerRadius: 0.6,
-        })
-        chart.value.tooltip({
-          showCrosshairs: false,
-          marker: null,
-          showTitle: false,
-          showContent: true,
-          customContent: (name: any, items: Array<{ name: string; value: number }>) => {
-            const container = document.createElement('div')
-            container.className = 'g2-tooltip'
-            let listItem = ''
-            items.forEach((item: { name: string; value: number }) => {
-              listItem += `
+          chart.value.legend(false)
+          chart.value.data(props.pieData)
+          chart.value.scale(props.percent, {
+            formatter: (val: any) => {
+              val = `${val * 100}%`
+              return val
+            },
+          })
+          chart.value.coordinate('theta', {
+            radius: 0.75,
+            innerRadius: 0.6,
+          })
+          chart.value.tooltip({
+            showCrosshairs: false,
+            marker: null,
+            showTitle: false,
+            showContent: true,
+            customContent: (name: any, items: Array<{ name: string; value: number }>) => {
+              const container = document.createElement('div')
+              container.className = 'g2-tooltip'
+              let listItem = ''
+              items.forEach((item: { name: string; value: number }) => {
+                listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
                   <p class="g2-tooltip-list-token">${item.value}</p>
                    <p>${item.name}</p>
               </li>`
-            })
-            container.innerHTML = listItem
-            return container
-          },
-        })
-        chart.value
-          .interval()
-          .adjust('stack')
-          .position('percent')
-          .color('item', (item: string) => {
-            for (let i = 0; i < props.pieData?.length; i++) {
-              if (props.pieData[i].item === item) {
-                return props.pieData[i].color
-              }
-            }
-          })
-          .label('percent', (percent: any) => {
-            return {
-              content: () => {
-                return `${percent * 100}%`
-              },
-            }
-          })
-          .tooltip('item*percent', (item: any, percent: any) => {
-            percent = `${percent * 100}%`
-            return {
-              name: item,
-              value: percent,
-            }
-          })
-          .state({
-            active: {
-              style: (element: any) => {
-                const shape = element.shape
-                return {
-                  lineWidth: 10,
-                  stroke: shape.attr('fill'),
-                }
-              },
+              })
+              container.innerHTML = listItem
+              return container
             },
           })
+          chart.value
+            .interval()
+            .adjust('stack')
+            .position(props.percent)
+            .color(props.item, (item: string) => {
+              for (let i = 0; i < props.pieData?.length!; i++) {
+                if (props.pieData![i].item === item) {
+                  return props.pieData![i]!.color
+                }
+              }
+            })
+            .label(props.percent, (percent: any) => {
+              return {
+                content: () => {
+                  return `${percent * 100}%`
+                },
+              }
+            })
+            .tooltip(`${props.item}*${props.percent}`, (item: any, percent: any) => {
+              percent = `${percent * 100}%`
+              return {
+                name: item,
+                value: percent,
+              }
+            })
+            .state({
+              active: {
+                style: (element: any) => {
+                  const shape = element.shape
+                  return {
+                    lineWidth: 10,
+                    stroke: shape.attr('fill'),
+                  }
+                },
+              },
+            })
 
-        chart.value.interaction('element-active')
-        chart.value.render()
+          chart.value.interaction('element-active')
+          chart.value.render()
+        }
       }
     },
   })
