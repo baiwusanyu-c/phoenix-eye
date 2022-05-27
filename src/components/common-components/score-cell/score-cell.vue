@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
+  import { computed, defineComponent, ref, watch } from 'vue'
   // @ts-ignore
   import { BeProgress } from '../../../../public/be-ui/be-ui.es'
 
@@ -33,21 +33,32 @@
       },
     },
     setup(props) {
-      const color = ref<string>('')
-      if (Number(props.score) >= 90) {
-        color.value = '#0ED9AC'
-      }
-      if (Number(props.score) < 90 && Number(props.score) > 60) {
-        color.value = '#F4CC29'
-      }
-      if (Number(props.score) <= 60) {
-        color.value = '#F32F2F'
-      }
+      const computedPropsScore = computed(() => {
+        return Number(props.score)
+      })
+      watch(computedPropsScore.value, nVal => {
+        setScoreColor()
+        scoreInner.value = nVal
+      })
       const hiddenPath = ref<string>('')
-      if (Number(props.score) === 0) {
-        hiddenPath.value = 'none'
+      const color = ref<string>('')
+      const setScoreColor = (): void => {
+        if (Number(computedPropsScore.value) >= 90) {
+          color.value = '#0ED9AC'
+        }
+        if (Number(computedPropsScore.value) < 90 && Number(computedPropsScore.value) > 60) {
+          color.value = '#F4CC29'
+        }
+        if (Number(computedPropsScore.value) <= 60) {
+          color.value = '#F32F2F'
+        }
+
+        if (Number(computedPropsScore.value) === 0) {
+          hiddenPath.value = 'none'
+        }
       }
-      const scoreInner = ref<number>(Number(props.score))
+      setScoreColor()
+      const scoreInner = ref<number>(computedPropsScore.value)
       return {
         scoreInner,
         color,

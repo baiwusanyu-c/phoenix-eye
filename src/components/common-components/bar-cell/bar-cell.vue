@@ -52,39 +52,6 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
-        const data = [
-          { create_time: '1990', token_price: 3 },
-          { create_time: '1991', token_price: 3 },
-          { create_time: '1992', token_price: 4 },
-          { create_time: '1993', token_price: 3.5 },
-          { create_time: '1994', token_price: 5 },
-          { create_time: '1995', token_price: 4.9 },
-          { create_time: '1996', token_price: 2 },
-          { create_time: '1997', token_price: 7 },
-          { create_time: '1998', token_price: 3 },
-          { create_time: '1999', token_price: 4 },
-          { create_time: '2000', token_price: 3.5 },
-          { create_time: '2001', token_price: 5 },
-          { create_time: '2002', token_price: 4.9 },
-          { create_time: '2003', token_price: 2 },
-          { create_time: '2004', token_price: 7 },
-          { create_time: '2005', token_price: 3 },
-          { create_time: '2006', token_price: 4 },
-          { create_time: '2007', token_price: 3.5 },
-          { create_time: '2008', token_price: 5 },
-          { create_time: '2009', token_price: 4.9 },
-          { create_time: '2010', token_price: 2 },
-          { create_time: '2011', token_price: 7 },
-          { create_time: '2012', token_price: 7 },
-          { create_time: '2013', token_price: 7 },
-          { create_time: '2014', token_price: 17 },
-          { create_time: '2015', token_price: 7 },
-          { create_time: '2016', token_price: 7 },
-          { create_time: '2017', token_price: 7 },
-          { create_time: '2018', token_price: 7 },
-          { create_time: '2019', token_price: 7 },
-          { create_time: '2020', token_price: 17 },
-        ]
         // 更新
         if (isUpdate) {
           chart.value.data(props.lineData)
@@ -96,7 +63,7 @@
           autoFit: true,
           height: props.height,
         })
-        chart.value.data(data)
+        chart.value.data(props.lineData)
         chart.value.tooltip({
           showCrosshairs: true,
           showTitle: false,

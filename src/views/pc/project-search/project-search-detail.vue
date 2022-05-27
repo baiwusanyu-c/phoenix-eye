@@ -159,14 +159,14 @@
                   type="dashboard"
                   stroke-width="12"
                   width="222"
-                  :color="handleScoreColor(80)"
+                  :color="handleScoreColor(projectScoreData.current_total_score)"
                   stroke-linecap="square"
-                  percent="80"
+                  :percent="projectScoreData.current_total_score"
                   status="normal"
                   gap="50">
                   <template #center>
                     <div class="progress-score">
-                      <p>80</p>
+                      <p>{{ projectScoreData.current_total_score }}</p>
                       <span>
                         {{ $t('lang.projectExplorer.detail.securityScore') }}
                       </span>
@@ -177,14 +177,20 @@
               <div class="low-high-score">
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreH') }}
-                  <span class="score-high">98</span>
+                  <span class="score-high">{{ projectScoreData.high_total_score }}</span>
                 </p>
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreL') }}
-                  <span class="score-low">64</span>
+                  <span class="score-low">{{ projectScoreData.low_total_score }}</span>
                 </p>
               </div>
-              <bar-cell :show-axis="false" dom-id="score_report__chart" :height="80"></bar-cell>
+              <bar-cell
+                :show-axis="false"
+                :line-data="projectScoreData.every_day_data"
+                x-axis="date"
+                y-axis="score"
+                dom-id="score_report__chart"
+                :height="80"></bar-cell>
               <p class="descr">{{ $t('lang.projectExplorer.detail.scoreItemDisc') }}</p>
             </div>
             <div class="score-report--list">
@@ -203,7 +209,7 @@
               </div>
             </div>
           </div>
-          <score-item></score-item>
+          <score-item :data="scoreItemDetail"></score-item>
         </div>
       </div>
     </div>
@@ -329,8 +335,10 @@
     IMarketVolatility,
     IOption,
     IPageParam,
+    IProjectScore,
     IRiskChartData,
     ISafetyData,
+    IScoreItems,
     ISecurityEventList,
     ITableHeader,
     ITop5QuidityPairs,
@@ -417,6 +425,7 @@
         { prop: 'quantity', label: t('lang.projectExplorer.detail.quantity') },
         { prop: 'pair', label: t('lang.projectExplorer.detail.pair') },
       ])
+
       const top5QuidityPairs = ref<Array<ITop5QuidityPairs>>([])
       const top5QuiditySelect = ref<Array<ITop5QuiditySelect>>([])
       const top5TokenHolderSelect = ref<Array<ITop5TokenHolderSelect>>([])
@@ -456,6 +465,14 @@
       })
       const governData = ref<IGovern>({})
       const riskChartData = ref<IRiskChartData>({})
+      const projectScoreData = ref<IProjectScore>({})
+      const scoreItemDetail = ref<IScoreItems>({
+        market_volatility_score: '',
+        diaphaneity_score: '',
+        decentralization_score: '',
+        risk_tx_score: '',
+        audit_report_score: '',
+      })
       const getProSituData = async () => {
         const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
@@ -467,11 +484,19 @@
               return
             }
             if (res) {
-              debugger
               securityEventList.value = res.data.security_event_list
               marketVolatilityData.value = res.data.market_volatility
               governData.value = res.data.social_profiles
               riskChartData.value = res.data.risk_tx_info
+              projectScoreData.value = res.data.project_score
+              scoreItemDetail.value = {
+                market_volatility_score: res.data.project_score.market_volatility_score,
+                diaphaneity_score: res.data.project_score.diaphaneity_score,
+                decentralization_score: res.data.project_score.decentralization_score,
+                risk_tx_score: res.data.project_score.risk_tx_score,
+                audit_report_score: res.data.project_score.audit_report_score,
+              }
+              debugger
               // 获取项目详情数据
               /* baseInfo.value = {
                 transactions: res.data.details.tx_24,
@@ -801,6 +826,8 @@
         marketVolatilityData,
         governData,
         riskChartData,
+        projectScoreData,
+        scoreItemDetail,
       }
     },
   })

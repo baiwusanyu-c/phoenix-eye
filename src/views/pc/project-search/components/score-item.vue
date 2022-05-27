@@ -34,6 +34,7 @@
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc5') }}</span>
     </div>
     <score-cell :score="data.risk_tx_score"></score-cell>
+    {{ data.risk_tx_score }}
   </div>
 </template>
 

@@ -312,3 +312,10 @@ export type IRiskChartData = {
   stat_7_day_data?: Array<IRiskPie>
   stat_1_day_data?: Array<IRiskPie>
 }
+
+export type IProjectScore = {
+  current_total_score?: number
+  high_total_score?: number
+  low_total_score?: number
+  every_day_data?: Array<{ date: string; score: number }>
+} & IScoreItems
