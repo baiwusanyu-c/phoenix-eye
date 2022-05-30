@@ -40,6 +40,7 @@
         clearable
         :remote-method="getProjectUser"
         popper-class="project-select"
+        class="project-select-remote"
         @click="insertAddDom"
         @change="handleProjectSelect">
         <el-option
@@ -48,11 +49,17 @@
           :label="item.project_name"
           :value="item.project_id">
           <div class="project-select--option">
-            <project-name-cell :url="item.logo_url" :name="item.project_name"></project-name-cell>
+            <project-name-cell
+              :url="item.logo_url"
+              :name="item.project_name"
+              :is-ell="false"></project-name-cell>
             <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
           </div>
         </el-option>
       </el-select>
+      <div class="project-select-remote--btn">
+        <be-icon icon="search"></be-icon>
+      </div>
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
@@ -545,9 +552,33 @@
 </script>
 
 <style lang="scss">
+  #xnhb_nav_menu .project-select-remote {
+    .el-input.is-focus .el-input__wrapper {
+      box-shadow: none !important;
+    }
+    .el-input__wrapper.is-focus {
+      box-shadow: none !important;
+    }
+    .el-input__wrapper {
+      background: $mainColor1;
+      box-shadow: none;
+      .el-input__inner {
+        color: $mainColor7;
+      }
+    }
+  }
+  .project-select-remote--btn {
+    background-color: $mainColor3;
+    height: 32px;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 4px 4px 0;
+  }
   .project-select {
     /*max-width: 214px;*/
-    background: white;
+    background: $mainColor7;
     .el-select-dropdown__item {
       height: 48px;
       line-height: 48px;
@@ -558,7 +589,9 @@
       align-items: center;
       height: 48px;
       line-height: 48px;
-
+      .ellipsis-copy {
+        min-width: 200px !important;
+      }
       .project-select--platform {
         font-weight: bold;
         color: $textColor13;
@@ -573,6 +606,7 @@
       height: 48px;
       padding: 15px 24px;
       align-items: center;
+      justify-content: space-between;
       span {
         font-family: BarlowSemi-R, sans-serif;
         font-weight: 400;

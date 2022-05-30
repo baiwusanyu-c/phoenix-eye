@@ -5,35 +5,35 @@
       <p>{{ $t('lang.projectExplorer.detail.scoreItem1') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc1') }}</span>
     </div>
-    <score-cell :score="data.audit_report_score"></score-cell>
+    <score-cell :score="data.audit_report_score" nan-val="0"></score-cell>
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem2') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc2') }}</span>
     </div>
-    <score-cell :score="data.decentralization_score"></score-cell>
+    <score-cell :score="data.decentralization_score" nan-val="0"></score-cell>
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem3') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc3') }}</span>
     </div>
-    <score-cell :score="data.market_volatility_score"></score-cell>
+    <score-cell :score="data.market_volatility_score" nan-val="0"></score-cell>
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem4') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc4') }}</span>
     </div>
-    <score-cell :score="data.diaphaneity_score"></score-cell>
+    <score-cell :score="data.diaphaneity_score" nan-val="0"></score-cell>
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem5') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc5') }}</span>
     </div>
-    <score-cell :score="data.risk_tx_score"></score-cell>
+    <score-cell :score="data.risk_tx_score" nan-val="0"></score-cell>
   </div>
 </template>
 

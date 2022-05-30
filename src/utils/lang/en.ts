@@ -117,7 +117,7 @@ export default {
     navName2: 'Risk trx',
     navName3: 'Project management',
     navName4: 'System configuration',
-    navName6: 'Risk Public Information',
+    navName6: 'News',
     navName7: 'Address Monitor',
     navName8: 'Trx Retry',
     navName9: 'Operational Statistics',
@@ -132,7 +132,7 @@ export default {
     navName3: 'Project Management',
     navName4: 'System Configuration',
     navName5: 'Project Explorer',
-    navName6: 'Risk Public Information',
+    navName6: 'News',
     navName7: 'Address Monitor',
     navName8: 'Trx Retry',
     navName9: 'Operational Statistics',
@@ -217,11 +217,14 @@ export default {
       title2: 'Hot Projects',
       plugin: 'Website security Detection.',
       install: 'Install the extension',
-      quesTitle: 'Have questions about the results?',
-      quesTitle2: 'Join in channel to discuss.',
+      quesTitle: 'Identification of Malicious Websites',
+      quesTitle2: 'Not Audited by Beosin?',
+      quesTitle3: 'Join the community to discuss.',
+      quoteBtn: 'Request Quote',
       more: 'Learn More',
     },
     exp: {
+      searchP: 'Project name / Contract',
       addTitle: 'New Project Added',
       title: 'Project Explorer',
       tableHeader: {
@@ -256,7 +259,15 @@ export default {
       percentage: 'percentage',
       quantity: 'quantity',
       pair: 'pair',
-
+      descr1: '● Price UTC 00:00.',
+      descr2:
+        '● Users is measured by the number of token addresses. It represents the number of address who hold this token.',
+      descr3:
+        '● Activity is measured by the number of on-chain token transactions. It represents whether the project is active recently.',
+      descr4:
+        '● The total circulation market value of a cryptocurrency. It is analogous to the free-float capitalization in the stock market.',
+      descr5: '● Market Cap = Current Price x Supply.',
+      descr6: '● Change is for the past 24 hours.',
       tokenPrice: 'Token Price',
       tokenPrice1: 'Token price for the past 30 days',
       user: 'Users (Total)',
@@ -319,6 +330,9 @@ export default {
       whaleTitle4: 'Liquidity Pairs Holders',
       whaleTab1: 'Token',
       whaleTab2: 'Liquidity',
+      whalePie1: '0-10 Holders proportion',
+      whalePie2: '11-50 Holders proportion',
+      whalePie3: '51-100 Holders proportion',
       tableHeader1: {
         address: 'Address',
         proportion: 'Proportion',

@@ -23,8 +23,10 @@
               <span>{{ baseInfo.platform?.toUpperCase() }}</span>
             </div>
           </be-tag>
-          <el-select v-model="selectContract" placeholder="Select">
-            <!--            <template #prefix>123</template>-->
+          <el-select v-model="selectContract" placeholder="Select" class="contract-select">
+            <template #prefix>
+              <be-icon color="#fff" icon="text"></be-icon>
+            </template>
             <el-option
               v-for="item in baseInfo.contract_address_list"
               :key="item.contract_address"
@@ -78,7 +80,12 @@
               <div class="token-price-right">
                 <p class="token-price--title">
                   {{ $t('lang.projectExplorer.detail.tokenPrice') }}
-                  <el-tooltip placement="top" content="123">
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr1') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </p>
@@ -125,7 +132,12 @@
                   <span class="user-active-market--title">
                     {{ $t('lang.projectExplorer.detail.user') }}
                   </span>
-                  <el-tooltip placement="top" content="123">
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr2') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </div>
@@ -143,7 +155,12 @@
                   <span class="user-active-market--title">
                     {{ $t('lang.projectExplorer.detail.activity') }}</span
                   >
-                  <el-tooltip placement="top" content="123">
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr3') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </div>
@@ -161,7 +178,14 @@
                   <span class="user-active-market--title">
                     {{ $t('lang.projectExplorer.detail.MarketCap') }}</span
                   >
-                  <el-tooltip placement="top" content="123">
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr4') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr5') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </div>
@@ -288,7 +312,7 @@
           :name="$t('lang.projectExplorer.detail.titleDecent')">
         </title-cell>
       </div>
-      <whale-holders :project-id="projectId"></whale-holders>
+      <whale-holders :project-id="projectId" :pie-data="pieData"></whale-holders>
     </div>
 
     <div class="project-detail-market">
@@ -415,6 +439,7 @@
     ITop5TokenHolder,
     ITop5TokenHolderSelect,
     ITwitterAnalysis,
+    IWhalePieData,
   } from '../../../utils/types'
 
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
@@ -541,6 +566,7 @@
         risk_tx_score: '',
         audit_report_score: '',
       })
+      const whalePieData = ref<IWhalePieData>({})
       const twitterAnalysisData = ref<ITwitterAnalysis>({
         ratio: 0,
         every_day_data: [],
@@ -581,7 +607,26 @@
               }
               onChainData.value = res.data.on_chain
               baseInfo.value = res.data.details
-
+              if (res.data.decentralization) {
+                whalePieData.value.total = res.data.decentralization.token_info.total_supply
+                whalePieData.value.chartData = [
+                  {
+                    feature: t('lang.projectExplorer.detail.whalePie1'),
+                    color: '#1A589B',
+                    ratio: res.data.decentralization.token_info.top_1_10_ratio,
+                  },
+                  {
+                    feature: t('lang.projectExplorer.detail.whalePie2'),
+                    color: '#F3BA2F',
+                    ratio: res.data.decentralization.token_info.top_11_50_ratio,
+                  },
+                  {
+                    feature: t('lang.projectExplorer.detail.whalePie3'),
+                    color: '#0ED9AC',
+                    ratio: res.data.decentralization.token_info.top_51_100_ratio,
+                  },
+                ]
+              }
               scoreItemDetail.value = {
                 market_volatility_score: res.data.project_score.market_volatility_score,
                 diaphaneity_score: res.data.project_score.diaphaneity_score,
@@ -591,36 +636,6 @@
               }
               // scoreItemDetail数据拿到后，加载 scoreItemComp 组件
               scoreItemComp.value = 'ScoreItem'
-
-              // 获取项目详情数据
-              /* baseInfo.value = {
-                transactions: res.data.details.tx_24,
-                transactionsTotal: res.data.details.tx_total,
-                lastTradeData: res.data.details.latest_trading_date,
-                riksTrxNum: res.data.details.risk_tx_24,
-                isSubscribe: res.data.details.is_subscribe,
-                riskPublicOpinion: res.data.details.risk_public_opinion_24,
-                name: res.data.details.name,
-                github: res.data.social_profiles.github,
-                telegram: res.data.social_profiles.telegram,
-                twitter: res.data.social_profiles.twitter,
-                website: res.data.social_profiles.website,
-              }*/
-              // top5数据
-              /* top5TokenHolderSelect.value = res.data.top_5_token_holders
-              // 默认取第一个币种
-              defaultPlatformTop5Token.value =
-                top5TokenHolderSelect.value && top5TokenHolderSelect.value.length > 0
-                  ? (top5TokenHolderSelect.value[0].platform as string)
-                  : 'bsc'
-              handleSelectTop5({ platform: defaultPlatformTop5Token.value, type: 'holder' })
-
-              top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
-              defaultPlatformTop5Quidity.value =
-                top5QuiditySelect.value && top5QuiditySelect.value.length > 0
-                  ? (top5QuiditySelect.value[0].platform as string)
-                  : 'bsc'
-              handleSelectTop5({ platform: defaultPlatformTop5Quidity.value, type: 'pairs' })*/
             }
             baseLoading.value = false
           })
@@ -957,6 +972,21 @@
       .title {
         display: flex;
         align-items: center;
+      }
+      .contract-select {
+        .el-input.is-focus .el-input__wrapper {
+          box-shadow: none !important;
+        }
+        .el-input__wrapper.is-focus {
+          box-shadow: none !important;
+        }
+        .el-input__wrapper {
+          background-color: $textColor3;
+          box-shadow: none;
+          .el-input__inner {
+            color: $mainColor7;
+          }
+        }
       }
     }
     .project-detail-base {

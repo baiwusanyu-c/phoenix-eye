@@ -10,7 +10,7 @@
       stroke-linecap="square"
       stroke-width="20">
       <template #center>
-        <span class="score">{{ Number(scoreInner) === 0 ? 'N/A' : scoreInner }}</span>
+        <span class="score">{{ Number(scoreInner) === 0 ? nanVal : scoreInner }}</span>
       </template>
     </be-progress>
   </div>
@@ -30,6 +30,10 @@
       score: {
         type: [Number, String],
         default: 0,
+      },
+      nanVal: {
+        type: String,
+        default: 'N/A',
       },
     },
     setup(props) {

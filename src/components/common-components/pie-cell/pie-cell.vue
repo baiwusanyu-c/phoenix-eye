@@ -156,6 +156,7 @@
 <style lang="scss">
   .pie-cell {
     display: flex;
+    align-items: center;
     .pie-cell-legend {
       width: 50%;
       height: 200px;

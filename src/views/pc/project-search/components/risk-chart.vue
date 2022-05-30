@@ -8,6 +8,9 @@
         class="contract-type--select"
         :placeholder="$t('lang.createProject.selectContractClass')"
         @change="handleSelectChange">
+        <template #prefix>
+          <img alt="beosin-select" src="../../../../assets/image/pc/select-all.png" />
+        </template>
         <el-option label="24h" value="1"></el-option>
         <el-option label="7d" value="7"></el-option>
         <el-option label="30d" value="30"></el-option>
@@ -103,7 +106,7 @@
         margin-right: 20px;
       }
       .el-input {
-        width: 80px;
+        width: 120px;
       }
     }
     .risk-chart--pie {

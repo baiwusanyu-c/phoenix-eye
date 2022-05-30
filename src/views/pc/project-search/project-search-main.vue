@@ -33,28 +33,32 @@
         </div>
       </div>
     </div>
-    <div class="project-alert--container">
-      <div class="risk-alert">
-        <div class="project-alert--title">
-          <title-cell :url="alert" :name="$t('lang.projectExplorer.alert.title')"> </title-cell>
-          <be-button custom-class="eagle-btn more-alert-btn" round="4" type="success">
-            {{ $t('lang.projectExplorer.alert.more') }}
-          </be-button>
+    <div class="project-alert--container project-explorer--container">
+      <div class="alert-hot">
+        <div class="alert">
+          <div class="risk-alert">
+            <div class="project-alert--title">
+              <title-cell :url="alert" :name="$t('lang.projectExplorer.alert.title')"> </title-cell>
+              <be-button custom-class="eagle-btn more-alert-btn" round="4" type="success">
+                {{ $t('lang.projectExplorer.alert.more') }}
+              </be-button>
+            </div>
+            <risk-alert-item
+              v-if="riskAlertList.length > 0"
+              :data-list="riskAlertList"></risk-alert-item>
+            <empty-data v-if="riskAlertList.length === 0" content="lang.noRisk"> </empty-data>
+          </div>
+          <div class="hot-project">
+            <div class="project-alert--title">
+              <title-cell :url="hot" :name="$t('lang.projectExplorer.alert.title2')"> </title-cell>
+            </div>
+            <hot-project-item
+              v-if="hotProjectList.length > 0"
+              :data-list="hotProjectList"></hot-project-item>
+            <empty-data v-if="hotProjectList.length === 0" content="lang.noRisk"> </empty-data>
+          </div>
         </div>
-        <risk-alert-item
-          v-if="riskAlertList.length > 0"
-          :data-list="riskAlertList"></risk-alert-item>
-        <empty-data v-if="riskAlertList.length === 0" content="lang.noRisk"> </empty-data>
-      </div>
-
-      <div class="hot-project">
-        <div class="project-alert--title">
-          <title-cell :url="hot" :name="$t('lang.projectExplorer.alert.title2')"> </title-cell>
-        </div>
-        <hot-project-item
-          v-if="hotProjectList.length > 0"
-          :data-list="hotProjectList"></hot-project-item>
-        <empty-data v-if="hotProjectList.length === 0" content="lang.noRisk"> </empty-data>
+        <project-explorer></project-explorer>
       </div>
 
       <div class="get-plugin">
@@ -67,27 +71,61 @@
             {{ $t('lang.projectExplorer.alert.plugin') }}
           </p>
           <be-button custom-class="eagle-btn install-btn" round="4" type="success">
+            <img src="../../../assets/image/pc/download-mini.png" alt="" />
             {{ $t('lang.projectExplorer.alert.install') }}
           </be-button>
         </div>
+        <div class="computer">
+          <h1>{{ $t('lang.projectExplorer.alert.quesTitle2') }}</h1>
+          <be-button custom-class="eagle-btn request-btn" round="4" type="success">
+            <img src="../../../assets/image/pc/request-q.png" alt="" />
+            {{ $t('lang.projectExplorer.alert.quoteBtn') }}
+          </be-button>
+          <img
+            alt=""
+            src="../../../assets/image/pc/computer.png"
+            style="position: absolute; right: 0; bottom: 8px" />
+        </div>
         <div class="question">
-          <h1>{{ $t('lang.projectExplorer.alert.quesTitle') }}</h1>
-          <p>{{ $t('lang.projectExplorer.alert.quesTitle2') }}</p>
+          <h1>{{ $t('lang.projectExplorer.alert.quesTitle3') }}</h1>
           <img
             alt=""
             src="../../../assets/image/pc/telegram.png"
-            style="width: 36px; height: 36px" />
+            style="width: 36px; height: 36px; margin-top: 20px" />
           <img
             alt=""
             src="../../../assets/image/pc/questions-bg.png"
             style="position: absolute; right: 0; bottom: 0" />
         </div>
+        <div class="project-explorer--guard">
+          <div class="project-explorer--guard--title">
+            <title-cell
+              :name="$t('lang.projectExplorer.exp.addTitle')"
+              :size="24"
+              :font-size="18"
+              :url="addProj">
+            </title-cell>
+          </div>
+          <empty-data v-if="guardProjectList.length === 0"></empty-data>
+          <div
+            v-for="item in guardProjectList"
+            :key="item.create_time + item.logo_url"
+            class="project-explorer--guard--proj">
+            <project-name-cell
+              :name="item.project_name"
+              :url="item.logo_url"
+              :size="24"
+              :font-size="12">
+            </project-name-cell>
+            <p class="date">{{ formatDate(createDate(item.create_time), 'Y-m-d') }}</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="project-explorer--container">
-      <project-explorer></project-explorer>
-      <div class="project-explorer--guard">
-        <div class="project-explorer--guard--title">
+      <!--      <project-explorer></project-explorer>-->
+      <!--      <div class="project-explorer&#45;&#45;guard">
+        <div class="project-explorer&#45;&#45;guard&#45;&#45;title">
           <title-cell
             :name="$t('lang.projectExplorer.exp.addTitle')"
             :size="24"
@@ -99,7 +137,7 @@
         <div
           v-for="item in guardProjectList"
           :key="item.create_time + item.logo_url"
-          class="project-explorer--guard--proj">
+          class="project-explorer&#45;&#45;guard&#45;&#45;proj">
           <project-name-cell
             :name="item.project_name"
             :url="item.logo_url"
@@ -108,7 +146,7 @@
           </project-name-cell>
           <p class="date">{{ formatDate(createDate(item.create_time), 'Y-m-d') }}</p>
         </div>
-      </div>
+      </div>-->
     </div>
     <div class="project-risk--container">
       <div class="project-risk--search">
@@ -116,6 +154,7 @@
       </div>
       <security-list></security-list>
     </div>
+    <contact-bar></contact-bar>
   </div>
 </template>
 
@@ -141,6 +180,7 @@
   import addProj from '../../../assets/image/pc/add-proj.png'
   import hot from '../../../assets/image/pc/hot.png'
   import alert from '../../../assets/image/pc/alert.png'
+  import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
   import ProjectExplorer from './components/project-explorer.vue'
   import RiskAlertItem from './components/risk-alert-item.vue'
   import HotProjectItem from './components/hot-project-item.vue'
@@ -158,6 +198,7 @@
   export default defineComponent({
     name: 'ProjectSearchMain',
     components: {
+      ContactBar,
       SecurityList,
       ProjectNameCell,
       HotProjectItem,
@@ -375,11 +416,17 @@
 
   .project-alert--container {
     @include common-container(32px, 65.2%);
-    height: 500px;
     display: flex;
-
+    .alert-hot {
+      width: calc(75% - 20px);
+      margin-right: 20px;
+      .alert {
+        display: flex;
+        margin-bottom: 20px;
+      }
+    }
     .risk-alert {
-      width: 36%;
+      flex: 1;
       height: 100%;
       background-color: $mainColor7;
       border-radius: 4px;
@@ -391,11 +438,11 @@
     }
 
     .hot-project {
-      width: 36%;
+      flex: 1;
       background-color: $mainColor7;
       height: 100%;
       border-radius: 4px;
-      margin: 0 20px;
+      margin-left: 20px;
       padding: 24px 20px;
       box-sizing: border-box;
       position: relative;
@@ -429,7 +476,7 @@
         margin-bottom: 20px;
         background-image: url('../../../assets/image/pc/bg-plugin.png');
         background-repeat: round;
-
+        text-align: left;
         p {
           font-size: 28px;
           font-family: BarlowSemi-B, sans-serif;
@@ -442,9 +489,56 @@
 
         .install-btn {
           height: 36px;
+          .be-button-slot {
+            display: flex;
+            align-items: center;
+            line-height: 14px;
+            font-size: 12px;
+            img {
+              height: 16px;
+              margin-right: 4px;
+            }
+          }
         }
       }
-
+      .computer {
+        padding: 28px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background: $mainColor3;
+        height: 40%;
+        position: relative;
+        left: 0;
+        top: 0;
+        margin-bottom: 20px;
+        text-align: left;
+        h1 {
+          font-size: 22px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 28px;
+          position: relative;
+          left: 0;
+          top: 0;
+          z-index: 1;
+        }
+        .request-btn {
+          height: 36px;
+          background: $mainColor7;
+          margin-top: 20px;
+          font-size: 14px;
+          .be-button-slot {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            img {
+              height: 16px;
+              margin-right: 4px;
+            }
+          }
+        }
+      }
       .question {
         padding: 28px;
         box-sizing: border-box;
@@ -454,7 +548,8 @@
         position: relative;
         left: 0;
         top: 0;
-
+        margin-bottom: 20px;
+        text-align: left;
         h1 {
           font-size: 22px;
           font-family: BarlowSemi-B, sans-serif;
@@ -484,15 +579,9 @@
   }
 
   .project-explorer--container {
-    @include common-container(32px, 65.2%);
     text-align: center;
-    max-height: 1440px;
     display: flex;
-
     .project-explorer-tb--body {
-      width: calc(75% - 20px);
-      margin-right: 20px;
-
       .project-explorer-tb--search {
         height: 46px;
         justify-content: space-between;
@@ -507,7 +596,6 @@
     }
 
     .project-explorer--guard {
-      width: 25%;
       background-color: $mainColor7;
       border-radius: 4px;
       padding: 20px 16px;

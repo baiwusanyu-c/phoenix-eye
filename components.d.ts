@@ -6,11 +6,10 @@ declare module 'vue' {
   export interface GlobalComponents {
     AreaLineCell: typeof import('./src/components/common-components/area-line-cell/area-line-cell.vue')['default']
     BarCell: typeof import('./src/components/common-components/bar-cell/bar-cell.vue')['default']
+    ContactBar: typeof import('./src/components/common-components/contact-bar/contact-bar.vue')['default']
     DateCell: typeof import('./src/components/common-components/date-cell/date-cell.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
-    ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']

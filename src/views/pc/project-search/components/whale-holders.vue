@@ -22,15 +22,19 @@
     </div>
     <div v-if="activeTab === 'Token'">
       <div class="token-holders-distribution">
-        <div style="width: 50%">
+        <div v-if="pieData" style="width: 50%">
           <p class="whale-sub-title" style="margin-bottom: 22px">
             {{ $t('lang.projectExplorer.detail.whaleTitle1') }}
           </p>
-          <pie-cell dom-id="whale_chart__pie"></pie-cell>
+          <pie-cell
+            dom-id="whale_chart__pie"
+            :pie-data="pieData.chartData"
+            item="feature"
+            percent="ratio"></pie-cell>
         </div>
         <div style="width: 50%">
           <p class="whale-sub-title">{{ $t('lang.projectExplorer.detail.whaleTitle2') }}</p>
-          <el-table :data="top10HolderList">
+          <el-table v-loading="loading" :data="top10HolderList" row-class-name="top-10-row">
             <template #empty>
               <empty-data></empty-data>
             </template>
@@ -47,7 +51,7 @@
                 <span v-else></span>
               </template>
             </el-table-column>
-            <el-table-column prop="address" width="180">
+            <el-table-column prop="address" width="140">
               <template #header>
                 <span class="table-head">{{
                   $t('lang.projectExplorer.detail.tableHeader1.address')
@@ -56,7 +60,7 @@
               <template #default="scope">
                 <ellipsis-copy
                   :target-str="scope.row.showVal"
-                  :is-ellipsis="scope.row.showVal.length > 14 ? true : false"
+                  :is-ellipsis="scope.row.showVal && scope.row.showVal.length > 14 ? true : false"
                   :is-show-copy-btn="false"
                   :is-tooltip="true"
                   styles="color: #18304E;font-weight: bold;font-size: 14px;"
@@ -65,14 +69,25 @@
                 </ellipsis-copy>
               </template>
             </el-table-column>
-            <el-table-column prop="percentage" width="180">
+            <el-table-column prop="percentage">
               <template #header>
                 <span class="table-head">{{
                   $t('lang.projectExplorer.detail.tableHeader1.proportion')
                 }}</span>
               </template>
               <template #default="scope">
-                {{ scope.row.percentage }}
+                <div class="token-val token-percentage">
+                  <be-progress
+                    :percent="scope.row.showPercentage"
+                    status="normal"
+                    color="#18304E"
+                    :show-info="false"
+                    :success="{ percent: scope.row.showPercentagePrev, color: '#f5f5f5' }">
+                  </be-progress>
+                  <span style="color: #18304e; font-weight: bold; font-size: 14px">
+                    {{ simulateToFixed(scope.row.percentage, 2) }} %
+                  </span>
+                </div>
               </template>
             </el-table-column>
             <el-table-column prop="quantity" width="180">
@@ -101,7 +116,7 @@
       </div>
       <div style="margin-top: 22px">
         <p class="whale-sub-title">{{ $t('lang.projectExplorer.detail.whaleTitle3') }}</p>
-        <el-table :data="privilegesList">
+        <el-table v-loading="loadingPrivileges" :data="privilegesList" row-class-name="top-10-row">
           <template #empty>
             <empty-data></empty-data>
           </template>
@@ -114,7 +129,9 @@
             <template #default="scope">
               <ellipsis-copy
                 :target-str="scope.row.showValHold"
-                :is-ellipsis="scope.row.showValHold.length > 14 ? true : false"
+                :is-ellipsis="
+                  scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
+                "
                 :is-show-copy-btn="false"
                 :is-tooltip="true"
                 styles="color: #18304E;font-weight: bold;font-size: 14px;"
@@ -142,7 +159,9 @@
             <template #default="scope">
               <ellipsis-copy
                 :target-str="scope.row.showValHold"
-                :is-ellipsis="scope.row.showValHold.length > 14 ? true : false"
+                :is-ellipsis="
+                  scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
+                "
                 :is-show-copy-btn="false"
                 :is-tooltip="true"
                 styles="color: #18304E;font-weight: bold;font-size: 14px;"
@@ -160,7 +179,7 @@
             <template #default="scope">
               <ellipsis-copy
                 :target-str="scope.row.hash"
-                :is-ellipsis="scope.row.hash.length > 14 ? true : false"
+                :is-ellipsis="scope.row.hash && scope.row.hash.length > 14 ? true : false"
                 :is-show-copy-btn="false"
                 :is-tooltip="true"
                 styles="color: #0ED9AC;font-weight: bold;font-size: 14px;"
@@ -191,9 +210,9 @@
         </div>
       </div>
     </div>
-    <div v-if="activeTab === 'Liquidity'">
+    <div v-if="activeTab === 'Liquidity'" class="liquidity">
       <p class="whale-sub-title">{{ $t('lang.projectExplorer.detail.whaleTitle4') }}</p>
-      <el-table :data="LiquidityList">
+      <el-table v-loading="loadingLiquidity" :data="LiquidityList">
         <template #empty>
           <empty-data></empty-data>
         </template>
@@ -209,7 +228,12 @@
                 empty-text=" "
                 :target-str="scope.row.token_1_address_token_name"
                 :tooltip-txt="scope.row.token_1_address"
-                :is-ellipsis="scope.row.token_1_address_token_name.length > 14 ? true : false"
+                :is-ellipsis="
+                  scope.row.token_1_address_token_name &&
+                  scope.row.token_1_address_token_name.length > 14
+                    ? true
+                    : false
+                "
                 :is-show-copy-btn="false"
                 :is-tooltip="true"
                 styles="color: #1CD2A9;font-weight: bold;font-size: 14px;"
@@ -221,7 +245,12 @@
                 empty-text=" "
                 :target-str="scope.row.token_2_address_token_name"
                 :tooltip-txt="scope.row.token_2_address"
-                :is-ellipsis="scope.row.token_2_address_token_name.length > 14 ? true : false"
+                :is-ellipsis="
+                  scope.row.token_2_address_token_name &&
+                  scope.row.token_2_address_token_name.length > 14
+                    ? true
+                    : false
+                "
                 :is-show-copy-btn="false"
                 :is-tooltip="true"
                 styles="color: #1CD2A9;font-weight: bold;font-size: 14px;"
@@ -232,17 +261,27 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="percentage" width="180">
+        <el-table-column prop="percentage" width="300" align="center">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.detail.tableHeader1.proportion')
             }}</span>
           </template>
           <template #default="scope">
-            {{ scope.row.percentage }}
+            <div class="token-val">
+              <be-progress
+                :percent="scope.row.percentage"
+                status="normal"
+                color="#18304E"
+                :show-info="false">
+              </be-progress>
+              <span style="color: #18304e; font-weight: bold; font-size: 14px; width: 60px">
+                {{ simulateToFixed(scope.row.percentage, 2) }} %
+              </span>
+            </div>
           </template>
         </el-table-column>
-        <el-table-column prop="quantity" width="180">
+        <el-table-column prop="quantity" align="center">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.detail.tableHeader1.amount')
@@ -254,7 +293,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="address" width="100">
+        <el-table-column prop="address" width="180">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.detail.tableHeader1.address')
@@ -263,7 +302,7 @@
           <template #default="scope">
             <ellipsis-copy
               :target-str="scope.row.showVal"
-              :is-ellipsis="scope.row.showVal.length > 14 ? true : false"
+              :is-ellipsis="scope.row.showVal && scope.row.showVal.length > 14 ? true : false"
               :is-show-copy-btn="false"
               :is-tooltip="true"
               styles="color: #18304E;font-weight: bold;font-size: 14px;"
@@ -303,22 +342,31 @@
   import composition from '../../../../utils/mixin/common-func'
   import { createDate, formatTimeStamp, simulateToFixed } from '../../../../utils/common'
   // @ts-ignore
-  import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
-  import type { ILiquidity, IPrivilege, ITop10Holder } from '../../../../utils/types'
-
+  import { BeIcon, BeProgress } from '../../../../../public/be-ui/be-ui.es'
+  import type { ILiquidity, IPrivilege, ITop10Holder, IWhalePieData } from '../../../../utils/types'
+  import type { PropType } from 'vue'
   export default defineComponent({
     name: 'WhaleHolders',
-    components: { BeIcon },
+    components: { BeIcon, BeProgress },
     props: {
       projectId: {
         type: String,
         default: '',
+      },
+      pieData: {
+        type: Object as PropType<IWhalePieData>,
       },
     },
     setup(props) {
       const activeTab = ref<string>('Token')
       const handleTabClick = (type: string): void => {
         activeTab.value = type
+        if (type === 'Token') {
+          getTop10Holder('reset')
+          getPrivilegesList('reset')
+        } else {
+          getLiquidityList('reset')
+        }
       }
       const { message } = composition()
       const { pageParams, resetPageParam, createPageParam } = compositionPage()
@@ -360,9 +408,7 @@
               top10HolderList.value = res.data.page_infos
               pageParams.value.total = res.data.total
               pageNum.value = Math.ceil(res.data.total / pageParams.value.pageSize!)
-              top10HolderList.value.forEach(val => {
-                val.showVal = val.address_tag ? val.address_tag : val.address
-              })
+              handlePercentage(top10HolderList.value)
             } else {
               top10HolderList.value = []
               resetPageParam()
@@ -487,10 +533,20 @@
             console.error(err)
           })
       }
+      const handlePercentage = (dataList: Array<any>): void => {
+        dataList.forEach((val, index) => {
+          val.showVal = val.address_tag ? val.address_tag : val.address
+          if (index > 0) {
+            val.showPercentage = val.percentage! + dataList[index - 1].showPercentage!
+            val.showPercentagePrev = dataList[index - 1].showPercentage!
+          } else {
+            val.showPercentage = val.percentage
+          }
+        })
+      }
       onMounted(() => {
         getTop10Holder('reset')
         getPrivilegesList('reset')
-        getLiquidityList('reset')
       })
       return {
         simulateToFixed,
@@ -512,6 +568,8 @@
         LiquidityList,
         pageLiquidity,
         pageNumLiquidity,
+        loadingLiquidity,
+        loadingPrivileges,
         formatTimeStamp,
         createDate,
       }
@@ -562,6 +620,9 @@
         font-weight: bold;
       }
     }
+    .top-10-row {
+      height: 44px;
+    }
     .whale-sub-title {
       font-size: 16px;
       font-family: BarlowSemi-B, sans-serif;
@@ -593,6 +654,34 @@
       }
       .link-span {
         margin: 0 10px;
+      }
+    }
+    .token-percentage .be-progress {
+      width: 136px;
+    }
+
+    .be-progress .be-progress-line .be-progress-line-path__success {
+      box-shadow: 0 0 0 1px rgb(245, 245, 245);
+      -webkit-box-shadow: 0 0 0 1px rgb(245, 245, 245);
+      -moz-box-shadow: 0 0 0 1px rgb(245, 245, 245);
+      &:after {
+        width: 8px;
+        height: 8px;
+        content: ' ';
+        background-color: $textColor3;
+        position: absolute;
+        right: 0;
+        top: 0;
+        border-radius: 30px;
+        box-shadow: 2px 0 0 0 $textColor3;
+        -webkit-box-shadow: 2px 0 0 0 $textColor3;
+        -moz-box-shadow: 2px 0 0 0 $textColor3;
+      }
+    }
+
+    .be-progress {
+      .be-progress-line-path {
+        height: 8px !important;
       }
     }
   }

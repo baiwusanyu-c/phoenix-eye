@@ -5,22 +5,26 @@
     <div class="project-explorer-tb--search">
       <div class="title">
         <title-cell :name="$t('lang.projectExplorer.exp.title')" :url="explorerProj"> </title-cell>
-        <div class="select">
-          <img alt="beosin-select" src="../../../../assets/image/pc/select-all.png" />
-          <el-select v-model="selectValue" @change="handleSelect">
-            <el-option label="All Chains" value=""></el-option>
-            <el-option
-              v-for="item in platformListDict"
-              :key="item.id"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
+        <el-select v-model="selectValue" @change="handleSelect">
+          <template #prefix>
+            <img alt="beosin-select" src="../../../../assets/image/pc/select-all.png" />
+          </template>
+
+          <el-option label="All Chains" value=""></el-option>
+          <el-option
+            v-for="item in platformListDict"
+            :key="item.id"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </div>
-      <el-input v-model="searchParams" placeholder="请输入内容" class="input-with-select">
+      <el-input
+        v-model="searchParams"
+        :placeholder="$t('lang.projectExplorer.exp.searchP')"
+        class="input-with-select">
         <template #append>
-          <be-icon icon="search"></be-icon>
+          <be-icon icon="search" @click="handleSearch"></be-icon>
         </template>
       </el-input>
     </div>
@@ -42,7 +46,7 @@
             }}</span>
           </template>
           <template #default="scope">
-            <project-name-cell size="24" :name="scope.row.project_name" :url="scope.row.logo_url">
+            <project-name-cell :size="32" :name="scope.row.project_name" :url="scope.row.logo_url">
             </project-name-cell>
           </template>
         </el-table-column>
@@ -209,8 +213,7 @@
       // 搜索参数
       const searchParams = ref<string>('')
       const selectValue = ref<string>('')
-      const handleSearch = (data: string): void => {
-        searchParams.value = data
+      const handleSearch = (): void => {
         nextTick(() => {
           getList('reset')
         })
@@ -331,17 +334,9 @@
     .title {
       display: flex;
       align-items: center;
-      .select {
-        display: flex;
-        align-items: center;
-        margin-left: 20px;
-        background-color: $mainColor7;
-        border-radius: 2px;
-        padding: 0 6px;
-        box-sizing: border-box;
-      }
+
       .el-select {
-        width: 120px;
+        width: 160px;
         .el-input__wrapper,
         .el-input.is-focus .el-input__wrapper {
           box-shadow: none !important;

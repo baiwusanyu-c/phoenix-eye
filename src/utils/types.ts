@@ -337,6 +337,8 @@ export type ITop10Holder = {
   percentage?: string
   quantity?: string
   showVal?: string
+  showPercentage?: string
+  showPercentagePrev?: string
 }
 export type IPrivilege = {
   hold_address?: string
@@ -355,3 +357,8 @@ export type ILiquidity = {
   token_2_address?: string
   token_2_address_token_name?: string
 } & ITop10Holder
+
+export type IWhalePieData = {
+  chartData?: Array<{ ratio: number; feature: string; color: string }>
+  total?: number
+}
