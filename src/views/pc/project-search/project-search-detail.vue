@@ -288,7 +288,7 @@
           :name="$t('lang.projectExplorer.detail.titleDecent')">
         </title-cell>
       </div>
-      <whale-holders></whale-holders>
+      <whale-holders :project-id="projectId"></whale-holders>
     </div>
 
     <div class="project-detail-market">

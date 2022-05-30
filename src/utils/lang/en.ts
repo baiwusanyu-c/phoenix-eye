@@ -319,6 +319,21 @@ export default {
       whaleTitle4: 'Liquidity Pairs Holders',
       whaleTab1: 'Token',
       whaleTab2: 'Liquidity',
+      tableHeader1: {
+        address: 'Address',
+        proportion: 'Proportion',
+        amount: 'Amount',
+      },
+      tableHeader2: {
+        contract: 'Contract',
+        function: 'Function',
+        holdAddress: 'Hold address',
+        txHash: 'Tx Hash',
+        age: 'Age',
+      },
+      tableHeader3: {
+        liquidityPair: 'Liquidity Pair',
+      },
     },
   },
   createProject: {

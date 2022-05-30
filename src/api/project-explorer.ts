@@ -7,7 +7,8 @@
 
 import request from '../utils/request'
 import config from '../enums/config'
-import type { IPageParam } from '../utils/types' //路径配置
+import { ITop10Holder } from '../utils/types' //路径配置
+import type { IPageParam } from '../utils/types'
 
 export interface IProjParam extends IPageParam {
   param?: string
@@ -98,6 +99,28 @@ export function getExploreInfo() {
 export function getExploreList(params: IProjParam) {
   return request({
     url: `${config.baseURL}/ussa/project/explore/list`,
+    method: 'post',
+    params,
+  })
+}
+
+export function getTop10HolderList(params: IContractReport) {
+  return request({
+    url: `${config.baseURL}/ussa/project/decentralization/token/list`,
+    method: 'post',
+    params,
+  })
+}
+export function getPrivilege(params: IContractReport) {
+  return request({
+    url: `${config.baseURL}/ussa/project/decentralization/privilege/list`,
+    method: 'post',
+    params,
+  })
+}
+export function getLiquidity(params: IContractReport) {
+  return request({
+    url: `${config.baseURL}/ussa/project/decentralization/liquidity/list`,
     method: 'post',
     params,
   })

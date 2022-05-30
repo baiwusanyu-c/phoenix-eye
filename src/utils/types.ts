@@ -336,4 +336,22 @@ export type ITop10Holder = {
   address_tag?: string
   percentage?: string
   quantity?: string
+  showVal?: string
 }
+export type IPrivilege = {
+  hold_address?: string
+  hold_address_tag?: string
+  type?: string
+  contract_address?: string
+  contract_address_tag?: string
+  block_time?: string
+  hash?: string
+  showValHold?: string
+  showValContract?: string
+}
+export type ILiquidity = {
+  token_1_address?: string
+  token_1_address_token_name?: string
+  token_2_address?: string
+  token_2_address_token_name?: string
+} & ITop10Holder
