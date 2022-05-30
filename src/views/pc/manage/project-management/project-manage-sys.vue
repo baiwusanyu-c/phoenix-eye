@@ -11,7 +11,6 @@
       type="success"
       custom-class="eagle-btn create-btn"
       size="large"
-      prev-icon="add"
       round="4"
       @click="openDialog('add')">
       {{ $t('lang.createProject.createProjectTitle') }}

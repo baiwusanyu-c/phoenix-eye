@@ -11,7 +11,7 @@
       custom-class="create-dialog"
       @close="handleClose">
       <div>
-        <el-form label-position="right" label-width="140px">
+        <el-form label-position="right" label-width="142px">
           <el-form-item :label="$t('lang.securityIncident.form.project') + ':'">
             <span class="reg-start feed-back--star">*</span>
             <el-input v-model="form.project"></el-input>
