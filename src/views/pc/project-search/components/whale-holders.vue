@@ -30,6 +30,29 @@
         </div>
         <div style="width: 50%">
           <p class="whale-sub-title">{{ $t('lang.projectExplorer.detail.whaleTitle2') }}</p>
+          <el-table :data="list">
+            <template #empty>
+              <empty-data></empty-data>
+            </template>
+            <el-table-column prop="name" width="180">
+              <template #header>
+                <span class="table-head">{{
+                  $t('lang.createProject.tableHeader.projectName')
+                }}</span>
+              </template>
+              <template #default="scope">
+                <ellipsis-copy
+                  :target-str="scope.row.project_name"
+                  :is-ellipsis="scope.row.project_name.length > 8 ? true : false"
+                  :is-show-copy-btn="false"
+                  :is-tooltip="true"
+                  styles="color: black;font-weight: bold;font-size: 16px;"
+                  font-length="8"
+                  end-length="0">
+                </ellipsis-copy>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
       <div style="margin-top: 22px">
@@ -44,6 +67,7 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
+  import type { ITop10Holder } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'WhaleHolders',
@@ -57,6 +81,10 @@
       const activeTab = ref<string>('Token')
       const handleTabClick = (type: string): void => {
         activeTab.value = type
+      }
+      const top10HolderList = ref<Array<ITop10Holder>>([])
+      const getTop10Holder = (): void => {
+        console.log(111)
       }
       return {
         activeTab,

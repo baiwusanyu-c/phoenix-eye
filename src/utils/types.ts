@@ -331,3 +331,9 @@ export type IChainData = {
   transactions?: number
   transactions_ratio?: number
 }
+export type ITop10Holder = {
+  address?: string
+  address_tag?: string
+  percentage?: string
+  quantity?: string
+}

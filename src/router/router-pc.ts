@@ -93,7 +93,6 @@ export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
 }
 
 export function getRouterData(router: Router, next?: Function, to?: RouteLocationNormalized) {
-  debugger
   const params = {
     systemCode: 'beosin-eye',
     userId: getStore('userId'),
