@@ -1,8 +1,12 @@
 /* * @contact-bar.vue * @deprecated * @author czh * @update (czh 2022/5/30) */
 <template>
   <div class="contact-bar">
-    <be-icon icon="iconTelegramEagleG" width="78" height="78"></be-icon>
-    <be-icon icon="iconEmailEagle" width="78" height="78"></be-icon>
+    <div class="icon-body">
+      <be-icon icon="iconTelegramG" width="25" height="25"></be-icon>
+    </div>
+    <div class="icon-body">
+      <be-icon icon="iconEmailG" width="25" height="25"></be-icon>
+    </div>
   </div>
 </template>
 
@@ -36,12 +40,31 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    .be-icon {
-      use {
-        width: 28px;
-        height: 28px;
-      }
-      /* background-color: $mainColor3;*/
+    .icon-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .contact-bar {
+      right: 10px;
+      width: 45px;
+      height: 100px;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .contact-bar {
+      right: 6%;
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .contact-bar {
+      right: 10%;
     }
   }
 </style>

@@ -30,8 +30,10 @@
         </el-menu>
       </div>
       <!--  <div @click="openDialog()">createProject</div>-->
+    </div>
+    <!--    语种、设置菜单等    -->
+    <div class="tsgz-slogan">
       <el-select
-        v-show="isLogin"
         ref="projectSelect"
         v-model="selectVal"
         filterable
@@ -60,9 +62,6 @@
       <div class="project-select-remote--btn">
         <be-icon icon="search"></be-icon>
       </div>
-    </div>
-    <!--    语种、设置菜单等    -->
-    <div class="tsgz-slogan">
       <!--    需求反馈   -->
       <be-button
         custom-class="eagle-btn feedback-btn"
@@ -71,27 +70,7 @@
         @click="openFeedBack"
         >{{ $t('lang.request.title') }}
       </be-button>
-      <!--    设置菜单   -->
-      <!--            <div v-show="isLogin && headerConfigMore.length > 0">
-                      <be-popover
-                          ref="popoverRouter"
-                          placement="bottom"
-                          trigger="click"
-                          custom-class="popover-router">
-                          <template #trigger>
-                              <be-icon icon="iconSetting" custom-class="setting"></be-icon>
-                          </template>
-                          <div
-                              v-for="item in headerConfigMore"
-                              :key="item.path + 'router'"
-                              :class="`popover-item popover-router-item ${
-                    item.index === active ? 'active-dropdown' : ''
-                  }`"
-                              @click="routerSwitch(item, item.isPush)">
-                              <span>{{ $t(item.name) }}</span>
-                          </div>
-                      </be-popover>
-                  </div>-->
+
       <!--    语种   -->
       <!--      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
                     <template #trigger>
@@ -130,10 +109,36 @@
           </div>
         </be-popover>
       </div>
+      <!--    设置菜单   -->
+      <div v-show="isLogin && headerConfigMore.length > 0">
+        <be-popover
+          ref="popoverRouter"
+          placement="bottom"
+          trigger="click"
+          custom-class="popover-router">
+          <template #trigger>
+            <be-icon icon="iconSetting" custom-class="setting" width="28" height="28"></be-icon>
+          </template>
+          <div
+            v-for="item in headerConfigMore"
+            :key="item.path + 'router'"
+            :class="`popover-item popover-router-item ${
+              item.index === active ? 'active-dropdown' : ''
+            }`"
+            @click="routerSwitch(item, item.isPush)">
+            <span>{{ $t(item.name) }}</span>
+          </div>
+        </be-popover>
+      </div>
       <!--    登陆   -->
       <div v-show="!isLogin">
-        <be-button custom-class="sign-up-btn" round="4" type="success" @click="openLogin"
+        <be-button custom-class="login-btn" round="4" type="success" @click="openLogin"
           >{{ $t('lang.loginConfig.login') }}
+        </be-button>
+      </div>
+      <div v-show="!isLogin">
+        <be-button custom-class="sign-up-btn" round="4" type="success" @click="openLogin"
+          >{{ $t('lang.signUp') }}
         </be-button>
       </div>
     </div>
@@ -575,6 +580,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 0 4px 4px 0;
+    margin-right: 20px;
   }
   .project-select {
     /*max-width: 214px;*/
@@ -636,16 +642,31 @@
     min-width: initial;
     background-color: #162e47;
     height: 40px;
+    .be-button-slot {
+      font-size: 14px;
+      margin: 0;
+    }
   }
-
+  .tsgz-nav-menu .login-btn {
+    width: 90px;
+    min-width: initial;
+    background-color: transparent;
+    height: 40px;
+    .be-button-slot {
+      font-size: 14px;
+      font-weight: normal !important;
+      margin: 0;
+      color: $textColor13;
+    }
+  }
   .tsgz-nav-menu .feedback-btn {
-    width: 135px;
+    width: 125px;
     height: 40px;
     min-width: initial;
     margin-right: 20px;
 
     .be-button-slot {
-      font-size: 16px;
+      font-size: 14px;
       margin: 0;
     }
   }
@@ -720,7 +741,6 @@
       align-items: center;
       justify-content: flex-end;
       height: 100%;
-      margin-right: 30px;
       background-repeat: no-repeat;
       background-position: right;
       background-size: 100% 100%;
@@ -869,10 +889,10 @@
 
   /* 150% 适配 */
   @media screen and (max-width: 1326px) {
-    .tsgz-nav-menu .expend-logo {
-      width: 100px;
-      background-size: contain;
+    .tsgz-nav-menu {
+      padding: 0 2%;
     }
+
     .tsgz-nav-menu .el-input__inner {
       width: 120px;
     }
@@ -887,10 +907,10 @@
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-    .tsgz-nav-menu .expend-logo {
-      width: 120px;
-      background-size: contain;
+    .tsgz-nav-menu {
+      padding: 0 10%;
     }
+
     .tsgz-nav-menu .el-input__inner {
       width: 160px;
     }

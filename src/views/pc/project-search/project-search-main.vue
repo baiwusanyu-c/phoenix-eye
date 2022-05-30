@@ -81,10 +81,7 @@
             <img src="../../../assets/image/pc/request-q.png" alt="" />
             {{ $t('lang.projectExplorer.alert.quoteBtn') }}
           </be-button>
-          <img
-            alt=""
-            src="../../../assets/image/pc/computer.png"
-            style="position: absolute; right: 0; bottom: 8px" />
+          <img alt="" src="../../../assets/image/pc/computer.png" class="computer-bg" />
         </div>
         <div class="question">
           <h1>{{ $t('lang.projectExplorer.alert.quesTitle3') }}</h1>
@@ -523,6 +520,12 @@
           top: 0;
           z-index: 1;
         }
+        .computer-bg {
+          position: absolute;
+          right: 0;
+          bottom: 8px;
+          width: 50%;
+        }
         .request-btn {
           height: 36px;
           background: $mainColor7;
@@ -644,6 +647,12 @@
     .project-search-main .project-explorer--container {
       width: 92%;
     }
+    .computer-bg {
+      position: absolute;
+      right: 0;
+      bottom: 8px;
+      width: 45%;
+    }
   }
 
   /* 125% 适配 */
@@ -652,6 +661,14 @@
     .project-search-main .project-alert--container,
     .project-search-main .project-explorer--container {
       width: 80%;
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-explorer--container {
+      width: 72%;
     }
   }
 </style>
