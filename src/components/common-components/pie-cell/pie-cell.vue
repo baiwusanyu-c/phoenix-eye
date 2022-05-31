@@ -67,7 +67,6 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
-        debugger
         if (props.pieData) {
           // 更新
           if (isUpdate) {
