@@ -26,10 +26,30 @@
         </div>
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item3') }}</p>
-          <be-icon width="24" height="24" icon="iconHecoEagleG"></be-icon>
-          <be-icon width="24" height="24" icon="iconBnbEagleG"></be-icon>
-          <be-icon width="24" height="24" icon="iconEthEagleG"></be-icon>
-          <be-icon width="24" height="24" icon="iconPolygonEagleG"></be-icon>
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconHecoEagleG"
+            @click="openWindow(webURL.chains_heco)"></be-icon>
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconBnbEagleG"
+            @click="openWindow(webURL.chains_bsc)"></be-icon>
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconEthEagleG"
+            @click="openWindow(webURL.chains_eth)"></be-icon>
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconPolygonEagleG"
+            @click="openWindow(webURL.chains_polygon)"></be-icon>
         </div>
       </div>
     </div>
@@ -39,7 +59,11 @@
           <div class="risk-alert">
             <div class="project-alert--title">
               <title-cell :url="alert" :name="$t('lang.projectExplorer.alert.title')"> </title-cell>
-              <be-button custom-class="eagle-btn more-alert-btn" round="4" type="success">
+              <be-button
+                custom-class="eagle-btn more-alert-btn"
+                round="4"
+                type="success"
+                @click="openWindow(webURL.twitter_alert)">
                 {{ $t('lang.projectExplorer.alert.more') }}
               </be-button>
             </div>
@@ -86,9 +110,11 @@
         <div class="question">
           <h1>{{ $t('lang.projectExplorer.alert.quesTitle3') }}</h1>
           <img
+            role="link"
             alt=""
             src="../../../assets/image/pc/telegram.png"
-            style="width: 36px; height: 36px; margin-top: 20px" />
+            style="width: 36px; height: 36px; margin-top: 20px; cursor: pointer"
+            @click="openWindow(webURL.contact_telegram)" />
           <img
             alt=""
             src="../../../assets/image/pc/questions-bg.png"
@@ -166,6 +192,7 @@
     formatMoney,
     getUrlkey,
     nFormatter,
+    openWindow,
   } from '../../../utils/common'
   // @ts-ignore
   import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
@@ -178,6 +205,7 @@
   import hot from '../../../assets/image/pc/hot.png'
   import alert from '../../../assets/image/pc/alert.png'
   import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
+  import { webURL } from '../../../enums/link'
   import ProjectExplorer from './components/project-explorer.vue'
   import RiskAlertItem from './components/risk-alert-item.vue'
   import HotProjectItem from './components/hot-project-item.vue'
@@ -186,7 +214,6 @@
   import type { IAxiosRes } from '../../../utils/request'
 
   import type { IProjParam } from '../../../api/project-explorer'
-
   declare type projListType = {
     project_id: string
     project_name: string
@@ -340,6 +367,8 @@
         addProj,
         hot,
         alert,
+        openWindow,
+        webURL,
       }
     },
   })

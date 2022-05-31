@@ -95,6 +95,7 @@
     box-sizing: border-box;
     border-radius: 4px;
     margin-top: 10px;
+    text-align: left;
     &:hover {
       background-color: $mainColor22;
     }

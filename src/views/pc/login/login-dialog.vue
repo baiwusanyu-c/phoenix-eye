@@ -14,7 +14,7 @@
         <div class="login-main">
           <img
             class="login-logo-img"
-            src="../../../assets/image/pc/logo.png"
+            src="../../../assets/image/pc/login-logo.png"
             height="45"
             width="200"
             alt="" />

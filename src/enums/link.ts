@@ -24,5 +24,13 @@ export enum webURL {
   contact_twitter = 'https://twitter.com/Beosin_com',
   contact_telegram = 'https://t.me/+dD8Bnqd133RmNWNl',
   contact_discord = 'https://discord.gg/B4QJxhStV4',
+
+  chains_eth = 'https://etherscan.io/',
+  chains_bsc = 'https://bscscan.com/',
+  chains_heco = 'https://hecoinfo.com/',
+  chains_polygon = 'https://polygonscan.com/',
+
+  twitter_alert = 'https://twitter.com/BeosinAlert',
+  feedback = 'https://forms.gle/uL5KMAQFK3XaSWur6',
 }
 export const previewUrl = '/website/common/preview/single'

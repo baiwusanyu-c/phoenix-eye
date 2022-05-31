@@ -35,10 +35,17 @@
         type: String,
         default: 'N/A',
       },
+      size: {
+        type: Number,
+        default: 40,
+      },
     },
     setup(props) {
       const computedPropsScore = computed(() => {
         return Number(props.score)
+      })
+      const computedPropsSize = computed(() => {
+        return `${props.size}px`
       })
       const scoreInner = ref<number>(computedPropsScore.value)
       const hiddenPath = ref<string>('')
@@ -72,6 +79,7 @@
         scoreInner,
         color,
         hiddenPath,
+        computedPropsSize,
       }
     },
   })
@@ -80,9 +88,10 @@
 <style lang="scss">
   .score-cell {
     .be-progress-body {
-      width: 40px !important;
-      height: 40px !important;
+      width: v-bind(computedPropsSize) !important;
+      height: v-bind(computedPropsSize) !important;
     }
+
     .be-progress-circle--text {
       width: 100%;
     }

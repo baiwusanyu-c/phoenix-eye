@@ -4,7 +4,7 @@
     <template #empty>
       <empty-data content="lang.noRisk"></empty-data>
     </template>
-    <el-table-column align="center" width="60">
+    <el-table-column align="center" width="48">
       <template #header></template>
       <template #default="scope">
         <span class="tx24">{{ scope.row.index }}</span>
@@ -13,7 +13,7 @@
     <el-table-column prop="project_name" align="center">
       <template #header></template>
       <template #default="scope">
-        <project-name-cell size="32" :name="scope.row.project_name" :url="scope.row.logo_url">
+        <project-name-cell :size="28" :name="scope.row.project_name" :url="scope.row.logo_url">
         </project-name-cell>
       </template>
     </el-table-column>
@@ -68,7 +68,7 @@
     setup(props) {
       const { isEmpty } = composition()
       const pageNum = ref<number>(0)
-      const pageSize = 3
+      const pageSize = 5
       const currentPage = ref<number>(1)
       const currentPageData = ref<Array<string>>([])
       // 分页切片
@@ -122,29 +122,6 @@
 </script>
 
 <style lang="scss">
-  .project-alert--item {
-    display: flex;
-    align-items: center;
-    padding: 16px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    margin-top: 10px;
-    &:hover {
-      background-color: $mainColor22;
-    }
-    img {
-      width: 64px;
-      height: 64px;
-      margin-right: 12px;
-    }
-    p {
-      font-size: 16px;
-      font-family: BarlowSemi-B, sans-serif;
-      font-weight: bold;
-      color: $textColor3;
-      line-height: 24px;
-    }
-  }
   .hot-project {
     .tx24 {
       font-size: 14px;
