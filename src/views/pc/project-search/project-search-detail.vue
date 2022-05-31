@@ -303,7 +303,6 @@
         </div>
       </div>
     </div>
-    <!--  TODO:project-detail-decent    -->
     <div class="project-detail-decent">
       <div class="project-detail--header">
         <title-cell
@@ -343,12 +342,12 @@
         <risk-list></risk-list>
       </div>
     </div>
-    <div class="project-detail-public-info">
+    <div v-show="showSecurityList" class="project-detail-public-info">
       <div class="project-detail--header">
         <title-cell :url="security" :name="$t('lang.projectExplorer.detail.titleInfo')">
         </title-cell>
       </div>
-      <security-list></security-list>
+      <security-list @show="handleShowSecurityList"></security-list>
     </div>
     <div v-if="securityEventList.length > 0" class="project-detail-security">
       <div class="project-detail--header">
@@ -891,7 +890,13 @@
           }
         }
       })
+      const showSecurityList = ref<boolean>(true)
+      const handleShowSecurityList = (data: boolean) => {
+        showSecurityList.value = data
+      }
       return {
+        showSecurityList,
+        handleShowSecurityList,
         handleScoreColor,
         marketCapBaseInfo,
         getAuditData,

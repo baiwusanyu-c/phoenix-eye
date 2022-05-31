@@ -138,6 +138,7 @@
           font-family: BarlowSemi-B, sans-serif;
           font-weight: 400;
           line-height: 17px;
+          width: max-content;
         }
       }
     }

@@ -39,7 +39,7 @@
         <template #empty>
           <empty-data content="lang.noRisk"></empty-data>
         </template>
-        <el-table-column prop="project_name" :width="tableHeader('project_name')" align="center">
+        <el-table-column prop="project_name" :width="tableHeader('project_name')" align="left">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.exp.tableHeader.project_name')
@@ -292,7 +292,7 @@
           market_cap: '120',
           token_price: '160',
           create_time: '80',
-          platform: '70',
+          platform: '110',
           audit_report_num: '100',
         }
         /* if (1280 <= screenWidth && 1326 <= screenWidth) {

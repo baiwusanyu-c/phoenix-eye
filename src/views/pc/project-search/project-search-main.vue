@@ -145,37 +145,11 @@
         </div>
       </div>
     </div>
-    <div class="project-explorer--container">
-      <!--      <project-explorer></project-explorer>-->
-      <!--      <div class="project-explorer&#45;&#45;guard">
-        <div class="project-explorer&#45;&#45;guard&#45;&#45;title">
-          <title-cell
-            :name="$t('lang.projectExplorer.exp.addTitle')"
-            :size="24"
-            :font-size="18"
-            :url="addProj">
-          </title-cell>
-        </div>
-        <empty-data v-if="guardProjectList.length === 0"></empty-data>
-        <div
-          v-for="item in guardProjectList"
-          :key="item.create_time + item.logo_url"
-          class="project-explorer&#45;&#45;guard&#45;&#45;proj">
-          <project-name-cell
-            :name="item.project_name"
-            :url="item.logo_url"
-            :size="24"
-            :font-size="12">
-          </project-name-cell>
-          <p class="date">{{ formatDate(createDate(item.create_time), 'Y-m-d') }}</p>
-        </div>
-      </div>-->
-    </div>
-    <div class="project-risk--container">
+    <div v-show="showSecurityList" class="project-risk--container">
       <div class="project-risk--search">
         <title-cell :name="$t('lang.projectExplorer.security.title')" :url="security"> </title-cell>
       </div>
-      <security-list></security-list>
+      <security-list @show="handleShowSecurityList"></security-list>
     </div>
     <contact-bar></contact-bar>
   </div>
@@ -237,6 +211,7 @@
     },
     setup() {
       const { message, routerPush, isEmpty } = composition()
+
       /**
        * 获取项目列表
        */
@@ -307,7 +282,10 @@
           routerSwitch(ProjIdByEmail.value.toString())
         }
       }
-
+      const showSecurityList = ref<boolean>(true)
+      const handleShowSecurityList = (data: boolean) => {
+        showSecurityList.value = data
+      }
       /******************************* 基本信息、热门项目、风险警告 ***********************************/
       const baseInfo = ref<IExploreInfo>({
         market_cap_total: 0,
@@ -348,6 +326,8 @@
         getInfoData()
       })
       return {
+        showSecurityList,
+        handleShowSecurityList,
         isEmpty,
         handleSearch,
         handleDefaultSearch,
@@ -441,7 +421,7 @@
   }
 
   .project-alert--container {
-    @include common-container(32px, 65.2%);
+    @include common-container(32px, 67.2%);
     display: flex;
     .alert-hot {
       width: calc(75% - 20px);
@@ -453,7 +433,7 @@
     }
     .risk-alert {
       flex: 1;
-      height: 100%;
+      height: 492px;
       background-color: $mainColor7;
       border-radius: 4px;
       padding: 24px 20px;
@@ -466,7 +446,7 @@
     .hot-project {
       flex: 1;
       background-color: $mainColor7;
-      height: 100%;
+      height: 492px;
       border-radius: 4px;
       margin-left: 20px;
       padding: 24px 20px;

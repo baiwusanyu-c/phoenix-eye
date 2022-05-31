@@ -45,20 +45,24 @@
       BePagination,
       SecurityCard,
     },
-    setup() {
+    emits: ['show'],
+    setup(props, { emit }) {
       const { pageParams, resetPageParam } = compositionPage()
       resetPageParam(4, pageParams)
       const riskInfoList = ref<Array<IRiskInfoList>>([])
+      const show = ref<boolean>(false)
       const getRiskInfo = (): void => {
         const params: IPOList = {
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
         }
+        emit('show', false)
         getPublicOpinionList(params)
           .then((res: IAxiosRes) => {
             if (res.success) {
               riskInfoList.value = res.data.page_infos
               pageParams.value.total = res.data.total
+              emit('show', true)
             } else {
               catchErr(res)
             }

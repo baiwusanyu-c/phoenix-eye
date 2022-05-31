@@ -1,17 +1,19 @@
 /* * @risk-alert-item.vue * @deprecated * @author czh * @update (czh 2022/5/24) */
 <template>
-  <div v-for="item in currentPageData" :key="item" class="project-alert--item">
-    <img alt="" src="../../../../assets/image/pc/alert-logo.png" />
-    <ellipsis-copy
-      :target-str="`🔥🔥${item}`"
-      :is-show-copy-btn="false"
-      custom-class="detail-item--ellipsis"
-      :is-ellipsis="item.length > 45"
-      styles="font-weight: 500"
-      font-length="100"
-      :is-tooltip="false"
-      end-length="0">
-    </ellipsis-copy>
+  <div style="height: calc(100% - 112px)">
+    <div v-for="item in currentPageData" :key="item" class="project-alert--item">
+      <img alt="" src="../../../../assets/image/pc/alert-logo.png" />
+      <ellipsis-copy
+        :target-str="`🔥🔥${item.replace(/[\r\n]/g, '')}`"
+        :is-show-copy-btn="false"
+        custom-class="detail-item--ellipsis"
+        :is-ellipsis="item.length > 40"
+        styles="font-weight: 500"
+        font-length="80"
+        :is-tooltip="false"
+        end-length="0">
+      </ellipsis-copy>
+    </div>
   </div>
   <div class="front-page">
     <div class="front-page--body">
@@ -110,6 +112,9 @@
       font-weight: bold;
       color: $textColor3;
       line-height: 24px;
+    }
+    .el-tooltip__trigger {
+      word-break: break-all;
     }
   }
 </style>

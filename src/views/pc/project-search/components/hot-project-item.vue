@@ -1,6 +1,10 @@
 /* * @risk-alert-item.vue * @deprecated * @author czh * @update (czh 2022/5/24) */
 <template>
-  <el-table v-loading="loading" tooltip-effect="light" :data="currentPageData">
+  <el-table
+    v-loading="loading"
+    tooltip-effect="light"
+    :data="currentPageData"
+    row-class-name="risk-alert-row">
     <template #empty>
       <empty-data content="lang.noRisk"></empty-data>
     </template>
@@ -13,7 +17,11 @@
     <el-table-column prop="project_name" align="center">
       <template #header></template>
       <template #default="scope">
-        <project-name-cell :size="28" :name="scope.row.project_name" :url="scope.row.logo_url">
+        <project-name-cell
+          :size="32"
+          :name="scope.row.project_name"
+          :url="scope.row.logo_url"
+          :ellipsis-len="10">
         </project-name-cell>
       </template>
     </el-table-column>
@@ -22,7 +30,7 @@
       <template #header></template>
       <template #default="scope">
         <div style="display: flex; justify-content: center">
-          <score-cell :score="scope.row.security_score"></score-cell>
+          <score-cell :score="scope.row.security_score" :size="32"></score-cell>
         </div>
       </template>
     </el-table-column>
@@ -140,6 +148,12 @@
       span {
         font-weight: 400;
       }
+    }
+    .risk-alert-row {
+      height: 64px;
+    }
+    .el-table__header-wrapper {
+      display: none;
     }
   }
 </style>

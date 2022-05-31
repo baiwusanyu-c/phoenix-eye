@@ -7,7 +7,7 @@
     <ellipsis-copy
       v-if="isEll"
       :target-str="name"
-      :is-ellipsis="(name && name.length) >= 14 ? true : false"
+      :is-ellipsis="(name && name.length) >= ellipsisLen ? true : false"
       :is-show-copy-btn="false"
       :is-tooltip="true"
       styles="color: #18304E;font-weight: bold;font-size: 14px;"
@@ -38,6 +38,10 @@
       isEll: {
         type: Boolean,
         default: true,
+      },
+      ellipsisLen: {
+        type: Number,
+        default: 12,
       },
     },
   })

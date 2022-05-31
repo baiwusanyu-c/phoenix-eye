@@ -40,7 +40,7 @@
     width: 60px;
     height: 180px;
     position: fixed;
-    right: 13.5%;
+    right: 13%;
     top: 50%;
     background-color: $mainColor20;
     z-index: 20;
