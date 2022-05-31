@@ -142,7 +142,26 @@ export const accSub = (arg: Array<number>): number => {
 
   return sum / 10 ** maxDecimalLength
 }
-
+export function floatMultiply(arg1: number, arg2: number) {
+  if (arg1 == null || arg2 == null) {
+    return null
+  }
+  let n1: number, n2: number
+  let r1: number, r2: number // 小数位数
+  try {
+    r1 = arg1.toString().split('.')[1].length
+  } catch (e) {
+    r1 = 0
+  }
+  try {
+    r2 = arg2.toString().split('.')[1].length
+  } catch (e) {
+    r2 = 0
+  }
+  n1 = Number(arg1.toString().replace('.', ''))
+  n2 = Number(arg2.toString().replace('.', ''))
+  return (n1 * n2) / 10 ** (r1 + r2)
+}
 /**
  * 存储
  */

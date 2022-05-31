@@ -261,7 +261,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="percentage" width="300" align="center">
+        <el-table-column prop="percentage" width="320" align="center">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.detail.tableHeader1.proportion')
@@ -275,7 +275,7 @@
                 color="#18304E"
                 :show-info="false">
               </be-progress>
-              <span style="color: #18304e; font-weight: bold; font-size: 14px; width: 60px">
+              <span style="color: #18304e; font-weight: bold; font-size: 14px; width: 80px">
                 {{ simulateToFixed(scope.row.percentage, 2) }} %
               </span>
             </div>

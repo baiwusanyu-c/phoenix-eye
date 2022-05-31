@@ -2,12 +2,17 @@
 <template>
   <div class="pie-cell">
     <div class="pie-cell-legend">
-      <div v-for="item in pieData" :key="item.color + item.item" class="pie-cell-legend--item">
-        <div>
-          <span class="item-marker" :style="`background-color: ${item.color}`"></span>
-          <span class="item-name">{{ item.item }}</span>
+      <div class="pie-cell-body">
+        <div
+          v-for="pieItems in pieData"
+          :key="pieItems.color + pieItems.item"
+          class="pie-cell-legend--item">
+          <div>
+            <span class="item-marker" :style="`background-color: ${pieItems.color}`"></span>
+            <span class="item-name">{{ pieItems[item] }}</span>
+          </div>
+          <span class="item-value">{{ `${floatMultiply(pieItems[percent], 100)}%` }}</span>
         </div>
-        <span class="item-value">{{ `${item.percent * 100}%` }}</span>
       </div>
     </div>
     <div :id="domId" class="pie-cell--chart"></div>
@@ -17,9 +22,9 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
+  import { floatMultiply } from '../../../utils/common'
   import type { IOption } from '../../../utils/types'
   import type { PropType } from 'vue'
-
   export default defineComponent({
     name: 'PieCell',
     props: {
@@ -62,6 +67,7 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
+        debugger
         if (props.pieData) {
           // 更新
           if (isUpdate) {
@@ -72,8 +78,6 @@
           chart.value = new Chart({
             container: props.domId,
             autoFit: true,
-            height: 300,
-            width: 300,
           })
 
           chart.value.legend(false)
@@ -114,7 +118,7 @@
             .position(props.percent)
             .color(props.item, (item: string) => {
               for (let i = 0; i < props.pieData?.length!; i++) {
-                if (props.pieData![i].item === item) {
+                if (props.pieData![i][props.item] === item) {
                   return props.pieData![i]!.color
                 }
               }
@@ -122,12 +126,12 @@
             .label(props.percent, (percent: any) => {
               return {
                 content: () => {
-                  return `${percent * 100}%`
+                  return `${floatMultiply(percent, 100)}%`
                 },
               }
             })
             .tooltip(`${props.item}*${props.percent}`, (item: any, percent: any) => {
-              percent = `${percent * 100}%`
+              percent = `${floatMultiply(percent, 100)}%`
               return {
                 name: item,
                 value: percent,
@@ -149,6 +153,9 @@
           chart.value.render()
         }
       }
+      return {
+        floatMultiply,
+      }
     },
   })
 </script>
@@ -164,6 +171,10 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      position: relative;
+    }
+    .pie-cell-body {
+      position: absolute;
     }
     .pie-cell--chart {
       width: 50%;
@@ -173,7 +184,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 80%;
       margin-top: 16px;
       .item-name {
         font-size: 14px;

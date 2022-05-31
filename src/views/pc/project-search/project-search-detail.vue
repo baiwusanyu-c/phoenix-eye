@@ -311,7 +311,7 @@
           :name="$t('lang.projectExplorer.detail.titleDecent')">
         </title-cell>
       </div>
-      <whale-holders :project-id="projectId" :pie-data="pieData"></whale-holders>
+      <whale-holders :project-id="projectId" :pie-data="whalePieData"></whale-holders>
     </div>
 
     <div class="project-detail-market">
@@ -382,6 +382,8 @@
     getPublicOpinion,
   } from '../../../api/project-explorer'
   import {
+    accAdd,
+    accSub,
     createDate,
     formatDate,
     formatMoney,
@@ -608,21 +610,36 @@
               baseInfo.value = res.data.details
               if (res.data.decentralization) {
                 whalePieData.value.total = res.data.decentralization.token_info.total_supply
+                const radio1To10 = Number(
+                  res.data.decentralization.token_info.top_1_10_ratio.toFixed(4)
+                )
+                const radio11To50 = Number(
+                  res.data.decentralization.token_info.top_11_50_ratio.toFixed(4)
+                )
+                const radio51To100 = Number(
+                  res.data.decentralization.token_info.top_51_100_ratio.toFixed(4)
+                )
+                const sum = accAdd(accAdd(radio1To10, radio11To50), radio51To100)
                 whalePieData.value.chartData = [
                   {
                     feature: t('lang.projectExplorer.detail.whalePie1'),
                     color: '#1A589B',
-                    ratio: res.data.decentralization.token_info.top_1_10_ratio,
+                    ratio: radio1To10,
                   },
                   {
                     feature: t('lang.projectExplorer.detail.whalePie2'),
                     color: '#F3BA2F',
-                    ratio: res.data.decentralization.token_info.top_11_50_ratio,
+                    ratio: radio11To50,
                   },
                   {
                     feature: t('lang.projectExplorer.detail.whalePie3'),
                     color: '#0ED9AC',
-                    ratio: res.data.decentralization.token_info.top_51_100_ratio,
+                    ratio: radio51To100,
+                  },
+                  {
+                    feature: 'other',
+                    color: '#15263A',
+                    ratio: accSub([1, sum]),
                   },
                 ]
               }
@@ -952,6 +969,7 @@
         riskLogo,
         security,
         security2,
+        whalePieData,
       }
     },
   })

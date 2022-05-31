@@ -440,24 +440,13 @@
               projectList.value = []
               return
             }
-            const list = res.data
+            /* const list = res.data
             list.forEach((val: any) => {
               val.project_id = val.project_id.toString()
               val.logo_url = 'https://avatars.githubusercontent.com/u/32354856?v=4'
               val.platform = 'eth'
-            })
-            projectList.value = [
-              { project_id: 9922, project_name: '1aleph.im v2 (ALEPH)' },
-              { project_id: 9932, project_name: '2aleph.im v2 (ALEPH)' },
-              { project_id: 994, project_name: '3aleph.im v2 (ALEPH)' },
-              { project_id: 9192, project_name: '4aleph.im v2 (ALEPH)' },
-              { project_id: 99232, project_name: 'aleph.im v2 (ALEPH)' },
-              { project_id: 91192, project_name: '5aleph.im v2 (ALEPH)' },
-              { project_id: 94592, project_name: '6aleph.im v2 (ALEPH)' },
-              { project_id: 99232, project_name: '12aleph.im v2 (ALEPH)' },
-              { project_id: 99452, project_name: '23aleph.im v2 (ALEPH)' },
-              { project_id: 99652, project_name: '1aleph.im v2 (ALEPH)' },
-            ]
+            })*/
+            projectList.value = res.data
             if (route.path === '/projectSearch/detail') {
               selectVal.value = getStore('curSelectProjId')!
             }
