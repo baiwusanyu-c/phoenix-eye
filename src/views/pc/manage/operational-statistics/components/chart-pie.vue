@@ -6,6 +6,7 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
+  import { floatMultiply } from '../../../../../utils/common'
   import type { PropType } from 'vue'
   import type { IStatisticsPie } from '../../../../../utils/types'
   export default defineComponent({
@@ -50,7 +51,7 @@
 
         chart.value.scale('ratio', {
           formatter: (val: number) => {
-            return `${val * 100}%`
+            return `${floatMultiply(val, 100)}%`
           },
         })
 
@@ -65,7 +66,7 @@
           .color('country')
           .label('ratio', {
             content: (data: IStatisticsPie) => {
-              return `${data.country}: ${data.ratio * 100}%`
+              return `${data.country}: ${floatMultiply(data.ratio, 100)}%`
             },
           })
           .adjust('stack')
@@ -73,6 +74,9 @@
         chart.value.interaction('element-active')
 
         chart.value.render()
+      }
+      return {
+        floatMultiply,
       }
     },
   })

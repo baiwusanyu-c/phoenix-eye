@@ -362,7 +362,7 @@
               v-if="baseInfo.slump.drop_prop"
               :class="'profit-d'"
               style="margin-right: 6px; font-weight: bold">
-              {{ (baseInfo.slump.drop_prop * 100).toFixed(2) }} %
+              {{ floatMultiply(baseInfo.slump.drop_prop, 100).toFixed(2) }} %
             </span>
             <be-icon
               v-if="baseInfo.slump.drop_prop"
@@ -386,6 +386,7 @@
   import {
     beijing2utc,
     createDate,
+    floatMultiply,
     formatDate,
     getUuid,
     openWindow,
@@ -534,6 +535,7 @@
         openWeb,
         getUuid,
         openWindow,
+        floatMultiply,
       }
     },
   })

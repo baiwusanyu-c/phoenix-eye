@@ -2,6 +2,7 @@
 @update (czh 2022/2/25) */
 <template>
   <div class="project-search-detail eagle-page">
+    <contact-bar></contact-bar>
     <!--基本信息-->
     <div class="project-detail-base">
       <div class="project-detail--header">
@@ -329,7 +330,7 @@
       </div>
       <market-govern :data="governData"></market-govern>
     </div>
-    <div class="project-detail-risk">
+    <div v-show="showRiskList" class="project-detail-risk">
       <div class="project-detail--header">
         <title-cell
           :sub-content="$t('lang.projectExplorer.detail.titleRiskSub')"
@@ -339,7 +340,7 @@
       </div>
       <div class="project-detail-risk--body">
         <risk-chart :data="riskChartData"></risk-chart>
-        <risk-list></risk-list>
+        <risk-list @show="handleShowRiskList"></risk-list>
       </div>
     </div>
     <div v-show="showSecurityList" class="project-detail-public-info">
@@ -347,7 +348,7 @@
         <title-cell :url="security" :name="$t('lang.projectExplorer.detail.titleInfo')">
         </title-cell>
       </div>
-      <security-list @show="handleShowSecurityList"></security-list>
+      <security-list :param="keywordParam" @show="handleShowSecurityList"></security-list>
     </div>
     <div v-if="securityEventList.length > 0" class="project-detail-security">
       <div class="project-detail--header">
@@ -408,6 +409,7 @@
   import riskLogo from '../../../assets/image/pc/risk-logo.png'
   import security from '../../../assets/image/pc/security.png'
   import security2 from '../../../assets/image/pc/security2.png'
+  import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -448,6 +450,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      ContactBar,
       WhaleHolders,
       BarCell,
       ReportItem,
@@ -699,8 +702,10 @@
 
       // 项目id
       const projectId = ref<string>('')
-      const { param, id } = route.query
+      const { param, id, keyword } = route.query
+      const keywordParam = ref<string>('')
       projectId.value = (param || id) as string
+      keywordParam.value = keyword as string
       /**
        * 获取项目合约统计数据
        */
@@ -911,7 +916,13 @@
       const handleShowSecurityList = (data: boolean) => {
         showSecurityList.value = data
       }
+      const showRiskList = ref<boolean>(true)
+      const handleShowRiskList = (data: boolean) => {
+        showRiskList.value = data
+      }
       return {
+        showRiskList,
+        handleShowRiskList,
         showSecurityList,
         handleShowSecurityList,
         handleScoreColor,
@@ -970,6 +981,7 @@
         security,
         security2,
         whalePieData,
+        keywordParam,
       }
     },
   })
@@ -1060,7 +1072,7 @@
             align-items: center;
           }
           p[role='button'] {
-            width: min-content;
+            width: max-content;
             color: $textColor3;
             padding: 0 10px;
             height: 24px;

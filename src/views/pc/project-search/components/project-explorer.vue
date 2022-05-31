@@ -133,7 +133,7 @@
             }}</span>
           </template>
           <template #default="scope">
-            <platform-cell :platform="scope.row.platform"></platform-cell>
+            <platform-cell :platform="scope.row.platform" :show-platform="false"></platform-cell>
           </template>
         </el-table-column>
 
@@ -268,7 +268,7 @@
        * 路由跳轉
        */
       const routerSwitch = (row: any): void => {
-        routerPush('/projectSearch/detail', { id: row.project_id })
+        routerPush('/projectSearch/detail', { id: row.project_id, keyword: row.keyword })
       }
       /**
        * 分页方法
@@ -286,13 +286,14 @@
       // const screenWidth = window.screen.width
       const tableHeader = computed(() => {
         const headerDict: IOption = {
+          //project_name: '160',
           project_name: '',
           security_score: '110',
           tx_24: '70',
           market_cap: '120',
           token_price: '160',
           create_time: '80',
-          platform: '110',
+          platform: '50',
           audit_report_num: '100',
         }
         /* if (1280 <= screenWidth && 1326 <= screenWidth) {

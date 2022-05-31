@@ -83,7 +83,7 @@
           chart.value.data(props.pieData)
           chart.value.scale(props.percent, {
             formatter: (val: any) => {
-              val = `${val * 100}%`
+              val = `${floatMultiply(val, 100)}%`
               return val
             },
           })

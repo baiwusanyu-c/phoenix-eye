@@ -45,14 +45,20 @@
       BePagination,
       SecurityCard,
     },
+    props: {
+      param: {
+        type: String,
+        default: '',
+      },
+    },
     emits: ['show'],
     setup(props, { emit }) {
       const { pageParams, resetPageParam } = compositionPage()
       resetPageParam(4, pageParams)
       const riskInfoList = ref<Array<IRiskInfoList>>([])
-      const show = ref<boolean>(false)
       const getRiskInfo = (): void => {
         const params: IPOList = {
+          param: props.param,
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
         }
@@ -103,7 +109,7 @@
   }
   .project-risk--card {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
   }
   /* 150% 适配 */

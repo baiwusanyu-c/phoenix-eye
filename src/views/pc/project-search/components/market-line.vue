@@ -41,21 +41,21 @@
           24h:&nbsp;&nbsp;<span>{{
             isEmpty(innerData.day_1_ratio, '/') === '/'
               ? '/'
-              : `${formatMoney(innerData.day_1_ratio * 100)}%`
+              : `${formatMoney(floatMultiply(innerData.day_1_ratio, 100))}%`
           }}</span>
         </p>
         <p>
           7d:&nbsp;&nbsp;<span>{{
             isEmpty(innerData.day_7_ratio, '/') === '/'
               ? '/'
-              : `${formatMoney(innerData.day_7_ratio * 100)}%`
+              : `${formatMoney(floatMultiply(innerData.day_7_ratio, 100))}%`
           }}</span>
         </p>
         <p>
           30d:&nbsp;&nbsp;<span>{{
             isEmpty(innerData.day_30_ratio, '/') === '/'
               ? '/'
-              : `${formatMoney(innerData.day_30_ratio * 100)}%`
+              : `${formatMoney(floatMultiply(innerData.day_30_ratio, 100))}%`
           }}</span>
         </p>
       </div>
@@ -81,7 +81,7 @@
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { formatMoney } from '../../../../utils/common'
+  import { floatMultiply, formatMoney } from '../../../../utils/common'
   import AreaLineCell from '../../../../components/common-components/area-line-cell/area-line-cell.vue'
   import composition from '../../../../utils/mixin/common-func'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
@@ -144,6 +144,7 @@
         handleTabClick,
         isEmpty,
         formatMoney,
+        floatMultiply,
       }
     },
   })

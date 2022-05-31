@@ -81,7 +81,8 @@
       EllipsisCopy,
       BeIcon,
     },
-    setup() {
+    emits: ['show'],
+    setup(props, { emit }) {
       const setTypeIcon = computed(() => {
         return function (data: string) {
           if (data === 'Large outflow') {
@@ -132,6 +133,7 @@
         if (loading.value) {
           return
         }
+        emit('show', false)
         loading.value = true
         if (type === 'reset') {
           resetPageParam(5, pageParams)
@@ -146,6 +148,7 @@
               tableData.value = res.data.page_infos
               pageParams.value.total = res.data.total
               pageNum.value = Math.ceil(res.data.total / pageParams.value.pageSize!)
+              emit('show', true)
             } else {
               tableData.value = []
               resetPageParam()

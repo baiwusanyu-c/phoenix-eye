@@ -30,7 +30,7 @@
       <template #header></template>
       <template #default="scope">
         <div style="display: flex; justify-content: center">
-          <score-cell :score="scope.row.security_score" :size="32"></score-cell>
+          <score-cell :score="scope.row.security_score"></score-cell>
         </div>
       </template>
     </el-table-column>

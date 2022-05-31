@@ -22,7 +22,7 @@
     </div>
     <div v-if="activeTab === 'Token'">
       <div class="token-holders-distribution">
-        <div v-if="pieData" style="width: 50%">
+        <div style="width: 50%">
           <p class="whale-sub-title" style="margin-bottom: 22px">
             {{ $t('lang.projectExplorer.detail.whaleTitle1') }}
           </p>
@@ -114,7 +114,7 @@
           </div>
         </div>
       </div>
-      <div style="margin-top: 22px">
+      <div v-if="privilegesList.length > 0" style="margin-top: 22px">
         <p class="whale-sub-title">{{ $t('lang.projectExplorer.detail.whaleTitle3') }}</p>
         <el-table v-loading="loadingPrivileges" :data="privilegesList" row-class-name="top-10-row">
           <template #empty>
@@ -199,7 +199,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div v-if="privilegesList.length > 0" class="front-page">
+        <div class="front-page">
           <div class="front-page--body">
             <span>{{ pagePrivileges.currentPage }} / {{ pageNumPrivileges }}</span>
             <div class="page-btn-group">
