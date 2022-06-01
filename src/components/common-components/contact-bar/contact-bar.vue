@@ -41,7 +41,7 @@
     height: 180px;
     position: fixed;
     right: 13%;
-    top: 50%;
+    top: 65%;
     background-color: $mainColor20;
     z-index: 20;
     border-radius: 8px;

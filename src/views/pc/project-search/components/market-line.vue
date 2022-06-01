@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
+  import { computed, defineComponent, nextTick, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { floatMultiply, formatMoney } from '../../../../utils/common'
   import AreaLineCell from '../../../../components/common-components/area-line-cell/area-line-cell.vue'

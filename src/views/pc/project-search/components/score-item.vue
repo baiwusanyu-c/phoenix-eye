@@ -5,35 +5,46 @@
       <p>{{ $t('lang.projectExplorer.detail.scoreItem1') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc1') }}</span>
     </div>
-    <score-cell :score="data.audit_report_score" nan-val="0"></score-cell>
+    <score-cell v-if="hasTokenAddress" :score="data.audit_report_score" nan-val="0"></score-cell>
+    <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token4.png" />
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem2') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc2') }}</span>
     </div>
-    <score-cell :score="data.decentralization_score" nan-val="0"></score-cell>
+    <score-cell
+      v-if="hasTokenAddress"
+      :score="data.decentralization_score"
+      nan-val="0"></score-cell>
+    <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token4.png" />
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem3') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc3') }}</span>
     </div>
-    <score-cell :score="data.market_volatility_score" nan-val="0"></score-cell>
+    <score-cell
+      v-if="hasTokenAddress"
+      :score="data.market_volatility_score"
+      nan-val="0"></score-cell>
+    <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token5.png" />
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem4') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc4') }}</span>
     </div>
-    <score-cell :score="data.diaphaneity_score" nan-val="0"></score-cell>
+    <score-cell v-if="hasTokenAddress" :score="data.diaphaneity_score" nan-val="0"></score-cell>
+    <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token4.png" />
   </div>
   <div class="score-item">
     <div>
       <p>{{ $t('lang.projectExplorer.detail.scoreItem5') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc5') }}</span>
     </div>
-    <score-cell :score="data.risk_tx_score" nan-val="0"></score-cell>
+    <score-cell v-if="hasTokenAddress" :score="data.risk_tx_score" nan-val="0"></score-cell>
+    <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token5.png" />
   </div>
 </template>
 
@@ -50,6 +61,10 @@
       data: {
         type: Object as PropType<IScoreItems>,
       },
+      hasTokenAddress: {
+        type: Boolean,
+        default: false,
+      },
     },
   })
 </script>
@@ -60,8 +75,7 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 4px;
-    padding: 8px 20px;
-    margin-bottom: 12px;
+    padding: 0 20px;
     &:hover {
       background: $mainColor22;
     }

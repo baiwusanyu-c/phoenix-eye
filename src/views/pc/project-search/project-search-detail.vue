@@ -25,6 +25,7 @@
             </div>
           </be-tag>
           <el-select
+            v-if="hasTokenAddress"
             v-model="selectContract"
             placeholder="contract"
             class="contract-select"
@@ -39,6 +40,7 @@
               :value="item.contract_address" />
           </el-select>
           <be-button
+            v-if="hasTokenAddress"
             :custom-class="`eagle-btn subscribe--btn ${
               baseInfo.is_subscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
             } `"
@@ -80,7 +82,7 @@
       </div>
       <div class="project-detail-base--body">
         <div class="body-left">
-          <div class="token-price">
+          <div v-if="hasTokenAddress" class="token-price">
             <div class="token-price-area">
               <div class="token-price-right">
                 <p class="token-price--title">
@@ -103,7 +105,6 @@
                   {{ baseInfo.token_address_name }}
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
                 </p>
-
                 <p class="token-price-val">
                   {{
                     isEmpty(onChainData.token_price, '/') === '/'
@@ -130,7 +131,6 @@
                   "></area-line-cell>
               </div>
             </div>
-
             <div class="user-active-market">
               <div class="user">
                 <div class="uam-item">
@@ -205,8 +205,11 @@
               </div>
             </div>
           </div>
+          <div v-if="!hasTokenAddress" class="token-price">
+            <img alt="" src="../../../assets/image/pc/no-token1.png" />
+          </div>
           <div class="twitter-analysis">
-            <div class="twitter-analysis-right">
+            <div v-if="hasTokenAddress" class="twitter-analysis-right">
               <p class="twitter-analysis--title">
                 {{ $t('lang.projectExplorer.detail.twitterAnalysis') }}
               </p>
@@ -229,7 +232,7 @@
               </p>
               <up-down :data="twitterAnalysisData.radio"></up-down>
             </div>
-            <div class="twitter-analysis-left">
+            <div v-if="hasTokenAddress" class="twitter-analysis-left">
               <p>{{ $t('lang.projectExplorer.detail.twitterAnalysis1') }}</p>
               <area-line-cell
                 dom-id="twitter_analysis"
@@ -240,11 +243,17 @@
                 :height="180">
               </area-line-cell>
             </div>
+            <div v-if="!hasTokenAddress">
+              <p class="twitter-analysis--title">
+                {{ $t('lang.projectExplorer.detail.twitterAnalysis') }}
+              </p>
+              <img alt="" src="../../../assets/image/pc/no-token2.png" />
+            </div>
           </div>
         </div>
         <div class="body-right">
           <div class="score-report">
-            <div class="score-report--chart">
+            <div v-if="hasTokenAddress" class="score-report--chart">
               <div style="display: flex; justify-content: center; position: relative">
                 <be-progress
                   type="dashboard"
@@ -284,6 +293,12 @@
                 :height="80"></bar-cell>
               <p class="descr">{{ $t('lang.projectExplorer.detail.scoreItemDisc') }}</p>
             </div>
+            <div v-if="!hasTokenAddress" class="score-report--chart">
+              <img
+                alt=""
+                src="../../../assets/image/pc/no-token3.png"
+                style="height: 284px; margin: 0 auto" />
+            </div>
             <div class="score-report--list">
               <p class="score-report__title">{{ $t('lang.projectExplorer.detail.scoreItem1') }}</p>
               <div v-if="auditList.length > 0">
@@ -304,11 +319,15 @@
               </div>
             </div>
           </div>
-          <component :is="scoreItemComp" :data="scoreItemDetail"></component>
+          <component
+            :is="scoreItemComp"
+            :data="scoreItemDetail"
+            :has-token-address="hasTokenAddress"></component>
         </div>
       </div>
     </div>
-    <div class="project-detail-decent">
+
+    <div v-if="hasTokenAddress" class="project-detail-decent">
       <div class="project-detail--header">
         <title-cell
           :url="decentLogo"
@@ -318,8 +337,7 @@
       </div>
       <whale-holders :project-id="projectId" :pie-data="whalePieData"></whale-holders>
     </div>
-
-    <div class="project-detail-market">
+    <div v-if="hasTokenAddress" class="project-detail-market">
       <div class="market-line--container">
         <div class="project-detail--header">
           <title-cell
@@ -334,7 +352,7 @@
       </div>
       <market-govern :data="governData"></market-govern>
     </div>
-    <div v-show="showRiskList" class="project-detail-risk">
+    <div v-show="showRiskList && hasTokenAddress" class="project-detail-risk">
       <div class="project-detail--header">
         <title-cell
           :sub-content="$t('lang.projectExplorer.detail.titleRiskSub')"
@@ -347,14 +365,14 @@
         <risk-list @show="handleShowRiskList"></risk-list>
       </div>
     </div>
-    <div v-show="showSecurityList" class="project-detail-public-info">
+    <div v-show="showSecurityList && hasTokenAddress" class="project-detail-public-info">
       <div class="project-detail--header">
         <title-cell :url="security" :name="$t('lang.projectExplorer.detail.titleInfo')">
         </title-cell>
       </div>
       <security-list :param="keywordParam" @show="handleShowSecurityList"></security-list>
     </div>
-    <div v-if="securityEventList.length > 0" class="project-detail-security">
+    <div v-if="securityEventList.length > 0 && hasTokenAddress" class="project-detail-security">
       <div class="project-detail--header">
         <title-cell :url="security2" :name="$t('lang.projectExplorer.detail.titleSecurity')">
         </title-cell>
@@ -383,8 +401,6 @@
     deleteSubscribe,
     getContractReportList,
     getProjectSituation,
-    getProjectSituationStatistics,
-    getPublicOpinion,
   } from '../../../api/project-explorer'
   import {
     accAdd,
@@ -430,20 +446,12 @@
     IAuditList,
     IBaseInfo,
     IChainData,
-    IContractStatistics,
     IGovern,
     IMarketVolatility,
-    IPageParam,
     IProjectScore,
     IRiskChartData,
-    ISafetyData,
     IScoreItems,
     ISecurityEventList,
-    ITableHeader,
-    ITop5QuidityPairs,
-    ITop5QuiditySelect,
-    ITop5TokenHolder,
-    ITop5TokenHolderSelect,
     ITwitterAnalysis,
     IWhalePieData,
   } from '../../../utils/types'
@@ -482,7 +490,7 @@
     setup() {
       const { message, route, msgBox, openWeb, isEmpty } = composition()
 
-      const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
+      const { resetPageParam, createPageParam } = compositionPage()
       const { t } = useI18n()
       const selectContract = ref<string>('')
       const handleContractSelect = (data: string): void => {
@@ -523,6 +531,7 @@
       })
       const scoreItemComp = ref<string>('')
       const baseInfo = ref<IBaseInfo>({})
+      const hasTokenAddress = ref<boolean>(false)
       const getProSituData = async () => {
         const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
@@ -547,6 +556,10 @@
               }
               onChainData.value = res.data.on_chain
               baseInfo.value = res.data.details
+              //  token_address 有值，开启显示开关
+              if (baseInfo.value.token_address) {
+                hasTokenAddress.value = true
+              }
               if (res.data.decentralization) {
                 whalePieData.value.total = res.data.decentralization.token_info.total_supply
                 const radio1To10 = Number(
@@ -642,100 +655,6 @@
       const keywordParam = ref<string>('')
       projectId.value = (param || id) as string
       keywordParam.value = keyword as string
-      /**
-       * 获取项目合约统计数据
-       */
-      const contractStatisticsData = ref<Array<IContractStatistics>>([])
-      const pageParamsTj = createPageParam(3)
-      const statisticsLoading = ref<boolean>(false)
-      const getContractStatistics = (): void => {
-        const params: IPublicOpinion = {
-          project_id: projectId.value,
-          page_num: pageParamsTj.value.currentPage,
-          page_size: pageParamsTj.value.pageSize,
-        }
-        statisticsLoading.value = true
-        getProjectSituationStatistics(params)
-          .then(res => {
-            if (!res) {
-              return
-            }
-            if (res) {
-              contractStatisticsData.value = res.data.page_infos
-              pageParamsTj.value.total = res.data.total
-            }
-            statisticsLoading.value = false
-          })
-          .catch(err => {
-            statisticsLoading.value = false
-            message('error', err.message || err)
-            console.error(err)
-          })
-      }
-
-      /**
-       * 获取项目舆情安全数据
-       */
-      // 项目舆情安全数据
-      const safetyData = ref<Array<ISafetyData>>([])
-      // 项目舆情安全loading
-      const loadingFs = ref<boolean>(false)
-      // 项目舆情安全分页参数
-      const pageParamsFs = createPageParam(5)
-      /**
-       * 项目舆情安全数据获取方法
-       */
-      const getPublicOpinionData = (): void => {
-        safetyData.value = []
-        loadingFs.value = true
-        const params: IPublicOpinion = {
-          project_id: parseInt(projectId.value),
-          page_num: pageParamsFs.value.currentPage,
-          page_size: pageParamsFs.value.pageSize,
-        }
-        getPublicOpinion(params)
-          .then(res => {
-            if (!res) {
-              return
-            }
-            if (res) {
-              res.data.page_infos.forEach((val: any) => {
-                safetyData.value.push({
-                  negative: val.is_negative_news,
-                  negativeMsg: '经自动识别，该资讯为负面信息',
-                  sourceUrl: val.url,
-                  title: val.title,
-                  message: val.content,
-                  from: val.source,
-                  time: val.pub_time,
-                  label: val.tag,
-                })
-              })
-              pageParamsFs.value.total = res.data.total
-              loadingFs.value = false
-            }
-          })
-          .catch(err => {
-            loadingFs.value = false
-            message('error', err.message || err)
-            console.error(err)
-          })
-      }
-
-      /**
-       * 分页处理方法
-       * @param currentPage 当前页
-       * @param item 分页参数
-       * @param cb 回调方法获取数据
-       */
-      const handlePageChange = (currentPage: number, item: IPageParam, cb: Function): void => {
-        item.currentPage = currentPage
-        cb()
-      }
-      const updateNumFs = (data: IPageParam): void => {
-        updatePageSize(data.pageSize!, pageParamsFs)
-        getPublicOpinionData()
-      }
       onMounted(() => {
         getProSituData()
       })
@@ -813,8 +732,6 @@
       const selectProjBus = useEventBus<string>('selectProjBus')
       selectProjBus.on((id: string) => {
         projectId.value = id
-        resetPageParam(5, pageParamsFs)
-        resetPageParam(3, pageParamsTj)
         resetPageParam(5, pageParamsAudit)
         getProSituData()
       })
@@ -855,27 +772,14 @@
         handleScoreColor,
         marketCapBaseInfo,
         getAuditData,
-        handlePageChange,
         pageParamsAudit,
         auditList,
-        getContractStatistics,
         handleSubscribe,
-        updateNumFs,
-
         openWeb,
         projectId,
-        statisticsLoading,
         baseLoading,
         isEmpty,
-
-        contractStatisticsData,
         baseInfo,
-        pageParamsTj,
-        getPublicOpinionData,
-        safetyData,
-        pageParamsFs,
-        loadingFs,
-
         numberToCommaString,
         createDate,
         formatDate,
@@ -901,6 +805,7 @@
         whalePieData,
         keywordParam,
         handleContractSelect,
+        hasTokenAddress,
       }
     },
   })
@@ -1067,18 +972,18 @@
         border-radius: 8px;
         padding: 24px 32px;
         display: flex;
+        .twitter-analysis--title {
+          font-size: 20px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 24px;
+        }
         .twitter-analysis-right {
           width: 200px;
           img {
             margin-top: 56px;
             margin-bottom: 10px;
-          }
-          .twitter-analysis--title {
-            font-size: 20px;
-            font-family: BarlowSemi-B, sans-serif;
-            font-weight: bold;
-            color: $textColor3;
-            line-height: 24px;
           }
         }
         .twitter-analysis-left {

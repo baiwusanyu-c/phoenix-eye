@@ -7,6 +7,7 @@
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
 
+  import DataSet from '@antv/data-set'
   import type { IStatisticsLine } from '../../../utils/types'
   import type { PropType } from 'vue'
 
@@ -57,9 +58,16 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
+        const { DataView } = DataSet
+        const dv = new DataView().source(props.lineData!)
+        dv.transform({
+          type: 'sort-by',
+          fields: [props.yAxis], // 根据指定的字段集进行排序，与lodash的sortBy行为一致
+          order: 'ASC', // 默认为 ASC，DESC 则为逆序
+        })
         // 更新
         if (isUpdate) {
-          chart.value.data(props.lineData)
+          chart.value.data(dv.rows)
           chart.value.render(isUpdate)
           return
         }
@@ -68,7 +76,7 @@
           autoFit: true,
           height: props.height,
         })
-        chart.value.data(props.lineData)
+        chart.value.data(dv.rows)
         chart.value.tooltip({
           showCrosshairs: true,
           showTitle: false,

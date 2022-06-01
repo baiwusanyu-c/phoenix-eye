@@ -28,7 +28,6 @@
         </template>
       </el-input>
     </div>
-    <!--      TODO: Project Explorer Table         -->
     <div class="project-explorer--table eagle-table">
       <el-table
         ref="riskTrxList"
