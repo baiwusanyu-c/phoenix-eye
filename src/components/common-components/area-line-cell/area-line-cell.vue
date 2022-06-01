@@ -38,53 +38,27 @@
     },
     setup(props) {
       onMounted(() => {
-        nextTick(() => {
-          renderChart()
-        })
+        renderChart()
       })
       // 实例对象
       const chart = ref<any>()
       watch(
         () => props.lineData,
         () => {
-          renderChart(true)
-        }
+          nextTick(() => {
+            if (chart.value) {
+              renderChart(true)
+            }
+          })
+        },
+        { deep: true, immediate: true }
       )
       const renderChart = (isUpdate?: boolean) => {
-        const data = [
-          { create_time: '1991', token_price: 3 },
-          { create_time: '1992', token_price: 4 },
-          { create_time: '1993', token_price: 3.5 },
-          { create_time: '1994', token_price: 5 },
-          { create_time: '1995', token_price: 4.9 },
-          { create_time: '1996', token_price: 2 },
-          { create_time: '1997', token_price: 7 },
-          { create_time: '1998', token_price: 3 },
-          { create_time: '1999', token_price: 4 },
-          { create_time: '2000', token_price: 3.5 },
-          { create_time: '2001', token_price: 5 },
-          { create_time: '2002', token_price: 4.9 },
-          { create_time: '2003', token_price: 2 },
-          { create_time: '2004', token_price: 7 },
-          { create_time: '2005', token_price: 3 },
-          { create_time: '2006', token_price: 4 },
-          { create_time: '2007', token_price: 3.5 },
-          { create_time: '2008', token_price: 5 },
-          { create_time: '2009', token_price: 4.9 },
-          { create_time: '2010', token_price: 2 },
-          { create_time: '2011', token_price: 7 },
-          { create_time: '2012', token_price: 7 },
-          { create_time: '2013', token_price: 7 },
-          { create_time: '2014', token_price: 7 },
-          { create_time: '2015', token_price: 7 },
-          { create_time: '2016', token_price: 7 },
-          { create_time: '2017', token_price: 7 },
-          { create_time: '2018', token_price: 7 },
-          { create_time: '2019', token_price: 7 },
-          { create_time: '2020', token_price: 17 },
-        ]
         // 更新
-        if (isUpdate) {
+        if (isUpdate && (!props.lineData || (props.lineData && props.lineData?.length === 0))) {
+          return
+        }
+        if (isUpdate && props.lineData && props.lineData?.length > 0) {
           chart.value.data(props.lineData)
           chart.value.render(isUpdate)
           return
@@ -95,7 +69,7 @@
           height: props.height,
         })
 
-        chart.value.data(data)
+        chart.value.data(props.lineData)
 
         chart.value.tooltip({
           showCrosshairs: true,
@@ -128,7 +102,7 @@
             return container
           },
         })
-        chart.value.axis(props.yAxis, {
+        chart.value.axis(props.xAxis, {
           label: {
             style: {
               fill: '#8A96A3',
@@ -137,7 +111,7 @@
           line: null,
           tickLine: null,
         })
-        chart.value.axis(props.xAxis, {
+        chart.value.axis(props.yAxis, {
           label: {
             style: {
               fill: '#8A96A3',

@@ -197,6 +197,7 @@
         font-weight: bold;
         color: $textColor3;
         line-height: 24px;
+        margin-left: 16px;
       }
       .item-marker {
         width: 16px;

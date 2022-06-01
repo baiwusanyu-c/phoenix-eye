@@ -1,6 +1,6 @@
 /* * @platform-cell.vue * @deprecated * @author czh * @update (czh 2022/4/2) */
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center justify-center">
     <be-icon
       :icon="iconDict[platform.toUpperCase()]"
       :width="size"

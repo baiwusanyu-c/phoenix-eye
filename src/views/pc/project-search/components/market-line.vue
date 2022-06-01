@@ -9,6 +9,7 @@
       {{ $t('lang.projectExplorer.detail.marketTab1') }}
     </div>
     <div
+      v-if="showTabList[0]"
       class="tab-item"
       role="button"
       :class="{ 'tab-item__active': activeTab === 'token_transfer_data' }"
@@ -16,6 +17,7 @@
       {{ $t('lang.projectExplorer.detail.marketTab2') }}
     </div>
     <div
+      v-if="showTabList[1]"
       class="tab-item"
       role="button"
       :class="{ 'tab-item__active': activeTab === 'liquidity_data' }"
@@ -23,6 +25,7 @@
       {{ $t('lang.projectExplorer.detail.marketTab3') }}
     </div>
     <div
+      v-if="showTabList[2]"
       class="tab-item"
       role="button"
       :class="{ 'tab-item__active': activeTab === 'market_cap_data' }"
@@ -67,19 +70,20 @@
       <area-line-cell
         dom-id="market_line_tab"
         :line-data="innerData.every_day_data"
-        y-axis="value"
-        x-axis="date">
+        y-axis="date"
+        x-axis="value">
       </area-line-cell>
     </div>
-    <div class="area-container">
-      <empty-data
-        v-if="!innerData.every_day_data || innerData.every_day_data.length === 0"></empty-data>
+    <div
+      v-if="!innerData.every_day_data || innerData.every_day_data.length === 0"
+      class="area-container">
+      <empty-data></empty-data>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref } from 'vue'
+  import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { floatMultiply, formatMoney } from '../../../../utils/common'
   import AreaLineCell from '../../../../components/common-components/area-line-cell/area-line-cell.vue'
@@ -116,6 +120,11 @@
               market_cap_data: {},
             }
       })
+      watch(computePropsData, () => {
+        nextTick(() => {
+          innerData.value = computePropsData.value.token_price_data
+        })
+      })
       const setTitle = (type: string): void => {
         if (type === 'liquidity_data') {
           titles.value = t('lang.projectExplorer.detail.marketTab3')
@@ -134,10 +143,21 @@
           props.data && (innerData.value = computePropsData.value.token_price_data)
         }
       }
-
-      innerData.value = computePropsData.value.token_price_data
-
+      const showTabList = ref<Array<boolean>>(new Array<boolean>(true, true, true))
+      const showTab = (): void => {
+        if (!computePropsData.value.token_transfer_data.every_day_data) {
+          showTabList.value[0] = false
+        }
+        if (!computePropsData.value.liquidity_data.every_day_data) {
+          showTabList.value[1] = false
+        }
+        if (!computePropsData.value.market_cap_data.every_day_data) {
+          showTabList.value[2] = false
+        }
+      }
+      showTab()
       return {
+        showTabList,
         innerData,
         activeTab,
         titles,

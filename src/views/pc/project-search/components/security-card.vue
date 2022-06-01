@@ -104,7 +104,7 @@
 
 <style lang="scss">
   .security-card {
-    width: 300px;
+    width: 290px;
     height: 373px;
     margin: 10px;
     .security-card--head {

@@ -11,7 +11,7 @@
       custom-class="create-dialog"
       @close="handleClose">
       <div>
-        <el-form :label-position="labelPosition" label-width="120px">
+        <el-form :label-position="labelPosition" label-width="124px">
           <el-form-item :label="$t('lang.addrMonitor.form.labelAddr') + ':'">
             <span class="reg-start feed-back--star">*</span>
             <el-input v-model="form.address" :disabled="type === 'edit'"></el-input>

@@ -35,7 +35,7 @@
       </template>
     </el-table-column>
 
-    <el-table-column prop="project_name" align="center">
+    <el-table-column prop="project_name" align="right">
       <template #header></template>
       <template #default="scope">
         <span class="tx24">

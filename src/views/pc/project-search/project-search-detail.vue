@@ -119,8 +119,8 @@
                 <area-line-cell
                   dom-id="token_price"
                   :height="234"
-                  y-axis="value"
-                  x-axis="date"
+                  y-axis="date"
+                  x-axis="value"
                   :line-data="
                     marketVolatilityData.token_price_data.every_day_data
                   "></area-line-cell>

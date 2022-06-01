@@ -68,7 +68,9 @@
             if (res.success) {
               riskInfoList.value = res.data.page_infos
               pageParams.value.total = res.data.total
-              emit('show', true)
+              if (riskInfoList.value.length > 0) {
+                emit('show', true)
+              }
             } else {
               catchErr(res)
             }

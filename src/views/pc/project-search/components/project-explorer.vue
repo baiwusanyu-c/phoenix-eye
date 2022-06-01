@@ -46,7 +46,11 @@
             }}</span>
           </template>
           <template #default="scope">
-            <project-name-cell :size="32" :name="scope.row.project_name" :url="scope.row.logo_url">
+            <project-name-cell
+              :size="32"
+              :name="scope.row.project_name"
+              :url="scope.row.logo_url"
+              :ellipsis-len="20">
             </project-name-cell>
           </template>
         </el-table-column>
