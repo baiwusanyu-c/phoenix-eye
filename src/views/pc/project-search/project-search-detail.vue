@@ -205,8 +205,16 @@
               </div>
             </div>
           </div>
-          <div v-if="!hasTokenAddress" class="token-price">
+          <div v-if="!hasTokenAddress" class="token-price" style="position: relative">
             <img alt="" src="../../../assets/image/pc/no-token1.png" />
+            <div class="join">
+              <p>
+                {{ $t('lang.projectExplorer.detail.owner') }}
+              </p>
+              <p>
+                {{ $t('lang.projectExplorer.detail.join') }}
+              </p>
+            </div>
           </div>
           <div class="twitter-analysis">
             <div v-if="hasTokenAddress" class="twitter-analysis-right">
@@ -889,6 +897,25 @@
       .body-left,
       .body-right {
         width: calc(50% - 10px);
+      }
+      .join {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        p {
+          font-size: 32px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 38px;
+          margin-bottom: 10px;
+        }
       }
       .token-price-area {
         display: flex;

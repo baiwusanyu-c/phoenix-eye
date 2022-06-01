@@ -353,6 +353,8 @@ export default {
       whalePie1: '0-10 Holders proportion',
       whalePie2: '11-50 Holders proportion',
       whalePie3: '51-100 Holders proportion',
+      owner: 'Project Owner?',
+      join: 'Join EagleEye.',
       tableHeader1: {
         address: 'Address',
         proportion: 'Proportion',
