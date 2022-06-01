@@ -489,7 +489,14 @@
         ;(instanceInner?.refs.requestAudit as ILoginDialog).showDialog = true
       }
       busRequestAudit.on(openRequestAudit)
+      /**
+       * 打开用户创建项目
+       */
       const { createDialog, openDialog } = compositionDialog()
+      const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
+      busCreateProjectUser.on(() => {
+        openDialog('add')
+      })
       /**
        * 用户选择项目，动态插入’增加项目‘的dom
        */

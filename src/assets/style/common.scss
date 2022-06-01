@@ -529,7 +529,14 @@
   justify-content: center;
   color: $textColor5;
 }
-
+.enable-eagle-btn{
+  width: 320px;
+  height: 56px;
+  border-radius: 4px;
+  .be-button-slot{
+    font-size: 20px;
+  }
+}
 .eagle-btn {
   box-sizing: border-box;
   min-width: 120px;

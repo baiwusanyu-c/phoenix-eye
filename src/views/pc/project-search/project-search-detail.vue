@@ -214,6 +214,12 @@
               <p>
                 {{ $t('lang.projectExplorer.detail.join') }}
               </p>
+              <be-button
+                type="success"
+                custom-class="eagle-btn enable-eagle-btn"
+                @click="openCreateProject"
+                >{{ $t('lang.projectExplorer.detail.enableEagleEye') }}</be-button
+              >
             </div>
           </div>
           <div class="twitter-analysis">
@@ -781,7 +787,12 @@
       const openRequestAudit = (): void => {
         busRequestAudit.emit()
       }
+      const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
+      const openCreateProject = (): void => {
+        busCreateProjectUser.emit()
+      }
       return {
+        openCreateProject,
         openRequestAudit,
         showRiskList,
         handleShowRiskList,
@@ -914,7 +925,7 @@
           font-weight: bold;
           color: $textColor3;
           line-height: 38px;
-          margin-bottom: 10px;
+          margin-bottom: 14px;
         }
       }
       .token-price-area {
