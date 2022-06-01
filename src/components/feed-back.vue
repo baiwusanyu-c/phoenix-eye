@@ -23,6 +23,7 @@
               <el-input
                 v-model="form.content"
                 type="textarea"
+                resize="none"
                 maxlength="200"
                 :rows="7"
                 :placeholder="$t('lang.feedback.formContractP')"></el-input>

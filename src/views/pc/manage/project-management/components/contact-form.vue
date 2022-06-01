@@ -27,6 +27,7 @@
     <el-input
       v-model="modelValueInner.message_board"
       type="textarea"
+      resize="none"
       maxlength="200"
       :rows="7"
       @change="handleChange"></el-input>

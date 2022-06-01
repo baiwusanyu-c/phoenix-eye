@@ -59,7 +59,7 @@
       )
       const renderChart = (isUpdate?: boolean) => {
         const { DataView } = DataSet
-        const dv = new DataView().source(props.lineData!)
+        const dv = new DataView().source(props.lineData ? props.lineData : [])
         dv.transform({
           type: 'sort-by',
           fields: [props.yAxis], // 根据指定的字段集进行排序，与lodash的sortBy行为一致

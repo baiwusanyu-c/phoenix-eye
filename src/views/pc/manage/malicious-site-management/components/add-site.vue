@@ -16,6 +16,7 @@
             <el-input
               v-model="form.risk_url_list"
               type="textarea"
+              resize="none"
               :autosize="{ minRows: 10, maxRows: 15 }"
               :placeholder="$t('lang.siteManage.form.inputP')" />
           </el-form-item>

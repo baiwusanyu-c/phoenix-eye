@@ -67,7 +67,7 @@
         custom-class="eagle-btn feedback-btn"
         round="4"
         type="success"
-        @click="openFeedBack"
+        @click="openRequestAudit"
         >{{ $t('lang.request.title') }}
       </be-button>
 
@@ -151,8 +151,9 @@
     </MsgDialog>
     <!--登錄彈窗-->
     <login-dialog ref="loginDialog"></login-dialog>
-    <!--需求反馈彈窗-->
-    <feed-back ref="feedbackDialog"></feed-back>
+    <!--合约请求彈窗-->
+
+    <request-audit ref="requestAudit"></request-audit>
     <!--项目创建弹窗-->
     <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
     </create-project>
@@ -187,6 +188,7 @@
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import FeedBack from './feed-back.vue'
   import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
+  import RequestAudit from './request-audit.vue'
   import type { ElSelect } from 'element-plus'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
@@ -212,6 +214,7 @@
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
+      RequestAudit,
       ProjectNameCell,
       CreateProject,
       FeedBack,
@@ -481,9 +484,11 @@
       /**
        * 打开需求反馈
        */
-      const openFeedBack = (): void => {
-        ;(instanceInner?.refs.feedbackDialog as ILoginDialog).showDialog = true
+      const busRequestAudit = useEventBus<string>('openRequestAudit')
+      const openRequestAudit = (): void => {
+        ;(instanceInner?.refs.requestAudit as ILoginDialog).showDialog = true
       }
+      busRequestAudit.on(openRequestAudit)
       const { createDialog, openDialog } = compositionDialog()
       /**
        * 用户选择项目，动态插入’增加项目‘的dom
@@ -522,7 +527,7 @@
         openDialog,
         createDialog,
         getProjectUser,
-        openFeedBack,
+        openRequestAudit,
         routerPush,
         handleProjectSelect,
         projectList,

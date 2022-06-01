@@ -48,6 +48,26 @@ export default {
     formContractP:
       'If you have any questions about the information we present, or find any errors, please contact us and we will correct them in time.',
   },
+  requestAudit: {
+    tipProject: 'Please select Project',
+    tipAccount: 'Please select Project',
+    tipErrEmail: 'Invalid email address',
+    tipVerCode: 'Please enter the verification code',
+    project1: 'Smart contract audit',
+    project2: 'Blockchain platform audit',
+    project3: 'VaaS',
+    project4: 'EagleEye',
+    project5: 'Trace',
+    title: 'Reqeust a Quote',
+    projectName: 'PROJECT NAME',
+    yourName: 'YOUR NAME',
+    email: 'YOUR EMAIL ADDRESS',
+    phone: 'YOU CONTACT',
+    message: 'MESSAGE',
+    verify: 'VERIFICATION CODE',
+    messageP:
+      'Please input the content you wish to consult, e.g. cooperation process, cooperation price, others...',
+  },
   header: {
     me: 'Me',
     language: '语言',

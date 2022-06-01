@@ -313,7 +313,11 @@
               <div v-if="auditList.length === 0" class="score-report--body">
                 <img alt="" src="../../../assets/image/pc/report-empty.png" />
                 <p>{{ $t('lang.projectExplorer.detail.noAudit') }}</p>
-                <be-button custom-class="eagle-btn" round="4" type="success"
+                <be-button
+                  custom-class="eagle-btn"
+                  round="4"
+                  type="success"
+                  @click="openRequestAudit"
                   >{{ $t('lang.request.title') }}
                 </be-button>
               </div>
@@ -764,7 +768,13 @@
       const handleShowRiskList = (data: boolean) => {
         showRiskList.value = data
       }
+      // 打开审计请求弹窗
+      const busRequestAudit = useEventBus<string>('openRequestAudit')
+      const openRequestAudit = (): void => {
+        busRequestAudit.emit()
+      }
       return {
+        openRequestAudit,
         showRiskList,
         handleShowRiskList,
         showSecurityList,

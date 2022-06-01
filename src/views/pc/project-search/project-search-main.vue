@@ -101,7 +101,11 @@
         </div>
         <div class="computer">
           <h1>{{ $t('lang.projectExplorer.alert.quesTitle2') }}</h1>
-          <be-button custom-class="eagle-btn request-btn" round="4" type="success">
+          <be-button
+            custom-class="eagle-btn request-btn"
+            round="4"
+            type="success"
+            @click="openRequestAudit">
             <img src="../../../assets/image/pc/request-q.png" alt="" />
             {{ $t('lang.projectExplorer.alert.quoteBtn') }}
           </be-button>
@@ -157,6 +161,7 @@
 
 <script lang="ts">
   import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
+  import { useEventBus } from '@vueuse/core'
   import composition from '../../../utils/mixin/common-func'
   import { getExploreInfo, getProjectListUser } from '../../../api/project-explorer'
   import {
@@ -286,6 +291,11 @@
       const handleShowSecurityList = (data: boolean) => {
         showSecurityList.value = data
       }
+      // 打开审计请求弹窗
+      const busRequestAudit = useEventBus<string>('openRequestAudit')
+      const openRequestAudit = (): void => {
+        busRequestAudit.emit()
+      }
       /******************************* 基本信息、热门项目、风险警告 ***********************************/
       const baseInfo = ref<IExploreInfo>({
         market_cap_total: 0,
@@ -349,6 +359,7 @@
         alert,
         openWindow,
         webURL,
+        openRequestAudit,
       }
     },
   })

@@ -30,7 +30,11 @@
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.abstract_content') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.abstract_content" type="textarea" :rows="7"></el-input>
+            <el-input
+              v-model="form.abstract_content"
+              type="textarea"
+              :rows="7"
+              resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.event_link') + ':'">
             <span class="reg-start feed-back--star">*</span>
@@ -38,15 +42,27 @@
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_address_arr') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.attack_address_arr" type="textarea" :rows="7"></el-input>
+            <el-input
+              v-model="form.attack_address_arr"
+              type="textarea"
+              :rows="7"
+              resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attacked_address_arr') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.attacked_address_arr" type="textarea" :rows="7"></el-input>
+            <el-input
+              v-model="form.attacked_address_arr"
+              type="textarea"
+              :rows="7"
+              resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_trx_arr') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.attack_trx_arr" type="textarea" :rows="7"></el-input>
+            <el-input
+              v-model="form.attack_trx_arr"
+              type="textarea"
+              :rows="7"
+              resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_time') + '    :'">
             <span class="reg-start feed-back--star">*</span>

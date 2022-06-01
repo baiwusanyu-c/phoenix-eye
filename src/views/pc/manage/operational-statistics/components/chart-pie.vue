@@ -47,7 +47,7 @@
           radius: 0.75,
         })
 
-        chart.value.data(props.pieData)
+        chart.value.data(props.pieData ? props.pieData : [])
 
         chart.value.scale('ratio', {
           formatter: (val: number) => {
