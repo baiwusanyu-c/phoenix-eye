@@ -3,7 +3,7 @@
   <div class="project-detail-decent--body">
     <div class="project-detail-decent--title">
       <p>{{ $t('lang.projectExplorer.detail.whaleTitle') }}</p>
-      <div class="project-detail-decent-tab">
+      <div v-if="showLiquidityTab" class="project-detail-decent-tab">
         <div
           class="tab-item"
           :class="{ 'tab-item__active': activeTab === 'Token' }"
@@ -212,7 +212,7 @@
     </div>
     <div v-if="activeTab === 'Liquidity'" class="liquidity">
       <p class="whale-sub-title">{{ $t('lang.projectExplorer.detail.whaleTitle4') }}</p>
-      <el-table v-loading="loadingLiquidity" :data="LiquidityList">
+      <el-table v-loading="loadingLiquidity" :data="liquidityList">
         <template #empty>
           <empty-data></empty-data>
         </template>
@@ -321,7 +321,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div v-if="LiquidityList.length > 0" class="front-page">
+      <div class="front-page">
         <div class="front-page--body">
           <span>{{ pageLiquidity.currentPage }} / {{ pageNumLiquidity }}</span>
           <div class="page-btn-group">
@@ -361,12 +361,6 @@
       const activeTab = ref<string>('Token')
       const handleTabClick = (type: string): void => {
         activeTab.value = type
-        if (type === 'Token') {
-          getTop10Holder('reset')
-          getPrivilegesList('reset')
-        } else {
-          getLiquidityList('reset')
-        }
       }
       const { message } = composition()
       const { pageParams, resetPageParam, createPageParam } = compositionPage()
@@ -482,6 +476,7 @@
       /**************************** Liquidity 数据获取、翻页 **************************************/
       const pageLiquidity = createPageParam(5)
       const pageNumLiquidity = ref<number>(0)
+      const showLiquidityTab = ref<boolean>(true)
       const nextPageLiquidity = (): void => {
         pageLiquidity.value.currentPage!++
         if (pageLiquidity.value.currentPage! > pageNumLiquidity.value) {
@@ -497,13 +492,14 @@
         getLiquidityList()
       }
       const loadingLiquidity = ref<boolean>(false)
-      const LiquidityList = ref<Array<ILiquidity>>([])
+      const liquidityList = ref<Array<ILiquidity>>([])
       const getLiquidityList = (type?: string): void => {
         // 使用loading变量防抖
         if (loadingLiquidity.value) {
           return
         }
         loadingLiquidity.value = true
+        showLiquidityTab.value = false
         if (type === 'reset') {
           resetPageParam(5, pageParams)
         }
@@ -515,15 +511,18 @@
         getLiquidity(params)
           .then((res: any) => {
             if (res && res.success) {
-              LiquidityList.value = res.data.page_infos
+              liquidityList.value = res.data.page_infos
               pageLiquidity.value.total = res.data.total
               pageNumLiquidity.value = Math.ceil(res.data.total / pageLiquidity.value.pageSize!)
-              LiquidityList.value.forEach(val => {
+              liquidityList.value.forEach(val => {
                 val.showVal = val.address_tag ? val.address_tag : val.address
               })
             } else {
-              LiquidityList.value = []
+              liquidityList.value = []
               resetPageParam()
+            }
+            if (liquidityList.value.length > 0) {
+              showLiquidityTab.value = true
             }
             loadingLiquidity.value = false
           })
@@ -547,6 +546,7 @@
       onMounted(() => {
         getTop10Holder('reset')
         getPrivilegesList('reset')
+        getLiquidityList('reset')
       })
       return {
         simulateToFixed,
@@ -565,13 +565,14 @@
         pageNumPrivileges,
         prevPageLiquidity,
         nextPageLiquidity,
-        LiquidityList,
+        liquidityList,
         pageLiquidity,
         pageNumLiquidity,
         loadingLiquidity,
         loadingPrivileges,
         formatTimeStamp,
         createDate,
+        showLiquidityTab,
       }
     },
   })

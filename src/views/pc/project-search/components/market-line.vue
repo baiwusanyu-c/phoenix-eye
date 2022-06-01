@@ -1,6 +1,6 @@
 /* * @market-line.vue * @deprecated * @author czh * @update (czh 2022/5/25) */
 <template>
-  <div class="market-line-tab">
+  <div v-if="!(!showTabList[0] && !showTabList[1] && !showTabList[2])" class="market-line-tab">
     <div
       class="tab-item"
       :class="{ 'tab-item__active': activeTab === 'token_price_data' }"

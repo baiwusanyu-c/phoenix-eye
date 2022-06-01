@@ -24,7 +24,11 @@
               <span>{{ baseInfo.platform?.toUpperCase() }}</span>
             </div>
           </be-tag>
-          <el-select v-model="selectContract" placeholder="Select" class="contract-select">
+          <el-select
+            v-model="selectContract"
+            placeholder="contract"
+            class="contract-select"
+            @change="handleContractSelect">
             <template #prefix>
               <be-icon color="#fff" icon="text"></be-icon>
             </template>
@@ -429,7 +433,6 @@
     IContractStatistics,
     IGovern,
     IMarketVolatility,
-    IOption,
     IPageParam,
     IProjectScore,
     IRiskChartData,
@@ -482,76 +485,9 @@
       const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
       const { t } = useI18n()
       const selectContract = ref<string>('')
-      const contractList = ref<Array<IOption>>([
-        {
-          value: 'Option1',
-          label: 'Option1',
-        },
-        {
-          value: 'Option2',
-          label: 'Option2',
-        },
-        {
-          value: 'Option3',
-          label: 'Option3',
-        },
-        {
-          value: 'Option4',
-          label: 'Option4',
-        },
-        {
-          value: 'Option5',
-          label: 'Option5',
-        },
-      ])
-
-      const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
-      const top5TokenHolderAddr = ref<string>('')
-      const top5TokenHolderName = ref<string>('')
-      const defaultPlatformTop5Token = ref<string>('')
-      const defaultPlatformTop5Quidity = ref<string>('')
-      // top5表格header
-      const top5THTableHeader = ref<Array<ITableHeader>>([
-        { prop: 'address', label: t('lang.projectExplorer.detail.address') },
-        { prop: 'percentage', label: t('lang.projectExplorer.detail.percentage') },
-        { prop: 'quantity', label: t('lang.projectExplorer.detail.quantity') },
-      ])
-      const top5QPTableHeader = ref<Array<ITableHeader>>([
-        { prop: 'address', label: t('lang.projectExplorer.detail.address') },
-        { prop: 'percentage', label: t('lang.projectExplorer.detail.percentage') },
-        { prop: 'quantity', label: t('lang.projectExplorer.detail.quantity') },
-        { prop: 'pair', label: t('lang.projectExplorer.detail.pair') },
-      ])
-
-      const top5QuidityPairs = ref<Array<ITop5QuidityPairs>>([])
-      const top5QuiditySelect = ref<Array<ITop5QuiditySelect>>([])
-      const top5TokenHolderSelect = ref<Array<ITop5TokenHolderSelect>>([])
-      const handleSelectTop5 = (params: { platform: string; type: string }): void => {
-        // top5数据
-        if (params.type === 'holder') {
-          top5TokenHolder.value = []
-          top5TokenHolderAddr.value = ''
-          top5TokenHolderName.value = ''
-          top5TokenHolderSelect.value &&
-            top5TokenHolderSelect.value.forEach((val: any) => {
-              if (val.platform === params.platform) {
-                top5TokenHolder.value = val.records
-                top5TokenHolderAddr.value = val.token_address
-                top5TokenHolderName.value = val.token_name
-              }
-            })
-        }
-        if (params.type === 'pairs') {
-          top5QuidityPairs.value = []
-          top5QuiditySelect.value &&
-            top5QuiditySelect.value.forEach((val: any) => {
-              if (val.platform === params.platform) {
-                top5QuidityPairs.value = val.records
-              }
-            })
-        }
+      const handleContractSelect = (data: string): void => {
+        openWindow(`${webURL[`${baseInfo.value.platform}_addr` as keyof typeof webURL]}${data}`)
       }
-
       const baseLoading = ref<boolean>(false)
       const securityEventList = ref<Array<ISecurityEventList>>([])
       const marketVolatilityData = ref<IMarketVolatility>({
@@ -883,17 +819,8 @@
         getProSituData()
       })
       // 语种切换重新赋值一下 解决不更新问题
-      const busLanguage = useEventBus<string>('language')
-      busLanguage.on(() => {
-        top5THTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
-        top5THTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
-        top5THTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
-
-        top5QPTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
-        top5QPTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
-        top5QPTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
-        top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
-      })
+      // const busLanguage = useEventBus<string>('language')
+      // busLanguage.on(() => {})
       const marketCapBaseInfo = computed(() => {
         return function (val: number) {
           return formatMoney(val) + nFormatter(val, 0, true)
@@ -934,19 +861,13 @@
         getContractStatistics,
         handleSubscribe,
         updateNumFs,
-        defaultPlatformTop5Token,
-        defaultPlatformTop5Quidity,
+
         openWeb,
         projectId,
         statisticsLoading,
         baseLoading,
         isEmpty,
-        top5QPTableHeader,
-        top5THTableHeader,
-        top5TokenHolderAddr,
-        top5TokenHolderName,
-        top5TokenHolder,
-        top5QuidityPairs,
+
         contractStatisticsData,
         baseInfo,
         pageParamsTj,
@@ -954,9 +875,7 @@
         safetyData,
         pageParamsFs,
         loadingFs,
-        top5QuiditySelect,
-        top5TokenHolderSelect,
-        handleSelectTop5,
+
         numberToCommaString,
         createDate,
         formatDate,
@@ -964,7 +883,6 @@
         formatTimeStamp,
         formatMoney,
         selectContract,
-        contractList,
         securityEventList,
         marketVolatilityData,
         governData,
@@ -982,6 +900,7 @@
         security2,
         whalePieData,
         keywordParam,
+        handleContractSelect,
       }
     },
   })

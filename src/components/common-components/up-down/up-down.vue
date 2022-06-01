@@ -3,7 +3,7 @@
   <div class="up-down">
     <be-icon :icon="data >= 0 ? 'iconArrowUp' : 'iconArrowDown'" width="24" height="24"> </be-icon>
     <span :class="data >= 0 ? 'up-down__up' : 'up-down__down'" style="margin-left: 6px">
-      {{ formatMoney(floatMultiply(data, 100)) }} %
+      {{ formatMoney(floatMultiply(Math.abs(data), 100)) }} %
     </span>
   </div>
 </template>
