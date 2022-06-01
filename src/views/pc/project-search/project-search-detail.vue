@@ -380,7 +380,7 @@
       </div>
       <div class="project-detail-risk--body">
         <risk-chart :data="riskChartData"></risk-chart>
-        <risk-list @show="handleShowRiskList"></risk-list>
+        <risk-list :project-id="projectId" @show="handleShowRiskList"></risk-list>
       </div>
     </div>
     <div v-show="showSecurityList && hasTokenAddress" class="project-detail-public-info">
@@ -513,6 +513,7 @@
       const selectContract = ref<string>('')
       const handleContractSelect = (data: string): void => {
         openWindow(`${webURL[`${baseInfo.value.platform}_addr` as keyof typeof webURL]}${data}`)
+        selectContract.value = ''
       }
       const baseLoading = ref<boolean>(false)
       const securityEventList = ref<Array<ISecurityEventList>>([])

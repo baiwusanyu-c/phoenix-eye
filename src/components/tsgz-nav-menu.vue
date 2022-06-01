@@ -137,7 +137,7 @@
         </be-button>
       </div>
       <div v-show="!isLogin">
-        <be-button custom-class="sign-up-btn" round="4" type="success" @click="openLogin"
+        <be-button custom-class="sign-up-btn" round="4" type="success" @click="openRegistry"
           >{{ $t('lang.signUp') }}
         </be-button>
       </div>
@@ -150,7 +150,7 @@
       @close="confirm(false)">
     </MsgDialog>
     <!--登錄彈窗-->
-    <login-dialog ref="loginDialog"></login-dialog>
+    <login-dialog ref="loginDialog" type></login-dialog>
     <!--合约请求彈窗-->
 
     <request-audit ref="requestAudit"></request-audit>
@@ -186,7 +186,6 @@
   import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
   import { platformToCurrency } from '../utils/platform-dict'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-  import FeedBack from './feed-back.vue'
   import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
   import RequestAudit from './request-audit.vue'
   import type { ElSelect } from 'element-plus'
@@ -217,7 +216,7 @@
       RequestAudit,
       ProjectNameCell,
       CreateProject,
-      FeedBack,
+
       LoginDialog,
       MsgDialog,
       BeIcon,
@@ -267,6 +266,11 @@
       //是否登陆
       const isLogin = ref<boolean>(false)
       const openLogin = (): void => {
+        ;(instanceInner?.refs.loginDialog as ILoginDialog).loginType = 'login'
+        ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
+      }
+      const openRegistry = (): void => {
+        ;(instanceInner?.refs.loginDialog as ILoginDialog).loginType = 'register'
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
       // 外部通知打開登錄窗口
@@ -551,6 +555,7 @@
         confirm,
         isLogout,
         openLogin,
+        openRegistry,
         platformToCurrency,
       }
     },

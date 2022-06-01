@@ -38,6 +38,7 @@ export interface IPopover {
 }
 export interface ILoginDialog {
   showDialog: boolean
+  loginType: string
 }
 
 // project-search-detail

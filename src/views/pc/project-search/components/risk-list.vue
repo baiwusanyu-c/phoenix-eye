@@ -81,6 +81,12 @@
       EllipsisCopy,
       BeIcon,
     },
+    props: {
+      projectId: {
+        type: [String, Number],
+        default: '',
+      },
+    },
     emits: ['show'],
     setup(props, { emit }) {
       const setTypeIcon = computed(() => {
@@ -141,6 +147,7 @@
         const params = {
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
+          project_id: Number(props.projectId),
         }
         getProjWarning(params)
           .then((res: any) => {

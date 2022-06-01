@@ -230,6 +230,11 @@
         params.attack_address_arr = (params.attack_address_arr as string).split(';')
         params.attacked_address_arr = (params.attacked_address_arr as string).split(';')
         params.attack_trx_arr = (params.attack_trx_arr as string).split(';')
+        if (!params.attack_time) {
+          const msg = `${t('lang.pleaseInput')} Attack Time`
+          message('warning', msg)
+          return
+        }
         const attackTime = (params.attack_time as string).toString()
         params.attack_time = formatDate(attackTime).split(' ')[0]
         addIncidentInfo(params)

@@ -24,7 +24,9 @@
         :placeholder="$t('lang.projectExplorer.exp.searchP')"
         class="input-with-select">
         <template #append>
-          <be-icon icon="search" @click="handleSearch"></be-icon>
+          <div style="width: 100%; height: 100%">
+            <be-icon icon="search" @click="handleSearch"></be-icon>
+          </div>
         </template>
       </el-input>
     </div>
@@ -169,7 +171,14 @@
           :page-size="pageParams.pageSize"
           :page-count="pageParams.total"
           :current-page="pageParams.currentPage"
-          :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
+          :page-num="[
+            { label: 10 },
+            { label: 15 },
+            { label: 20 },
+            { label: 40 },
+            { label: 80 },
+            { label: 100 },
+          ]"
           :pager-show-count="5"
           page-unit="page"
           :layout="['prev', 'pNum', 'page']"
@@ -228,6 +237,7 @@
         })
       }
       onMounted(() => {
+        resetPageParam(15)
         getList('reset')
       })
       // loading
@@ -242,7 +252,8 @@
       const projectList = ref<Array<projListType>>([])
       const getList = (type?: string) => {
         if (type === 'reset') {
-          resetPageParam(15)
+          const currentPageSize = pageParams.value.pageSize
+          resetPageParam(currentPageSize === 15 ? 15 : currentPageSize)
         }
         loading.value = true
         const params: IProjParam = {

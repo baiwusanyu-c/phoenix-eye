@@ -543,7 +543,7 @@ export const simulateToFixed = (num: number, decimal = 6) => {
     return
   }
   if (num.toString() === '0' && decimal !== 0) {
-    return '0.000000'
+    return '0'
   }
   const numInner = transferToNumber(num).toString()
   const index = numInner.indexOf('.')
@@ -560,7 +560,7 @@ export const simulateToFixed = (num: number, decimal = 6) => {
       parseFloat(numInner).toFixed(decimal) === minimum
         ? minimum.toString()
         : parseFloat(numInner).toFixed(decimal)
-    return res === '-0.000000' ? '0.000000' : res
+    return res === '-0.000000' ? '0' : res
   }
 }
 

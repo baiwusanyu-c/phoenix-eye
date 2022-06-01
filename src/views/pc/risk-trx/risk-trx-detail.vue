@@ -10,11 +10,11 @@
           <ellipsis-copy
             custom-class="detail-copy"
             :target-str="baseInfo.tx_hash"
-            :is-ellipsis="false"
+            :is-ellipsis="baseInfo.tx_hash && baseInfo.tx_hash.length > 64 ? true : false"
             empty-text="/"
             styles="color: #008EE9;cursor:pointer;"
-            font-length="8"
-            end-length="8"
+            font-length="30"
+            end-length="30"
             @click="openWeb(baseInfo.tx_hash, 'tx', baseInfo.platform)">
           </ellipsis-copy>
           <be-tag v-if="baseInfo.platform" type="info">

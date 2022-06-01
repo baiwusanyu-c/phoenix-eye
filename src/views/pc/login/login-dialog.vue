@@ -203,9 +203,14 @@
 
       .el-input__inner {
         height: 48px;
-        padding-left: 40px;
+        padding-left: 20px;
       }
-
+      .el-input__wrapper {
+        box-shadow: none;
+      }
+      .label .el-input__inner {
+        border: 0;
+      }
       .be-dialog--footer__center {
         display: none;
       }

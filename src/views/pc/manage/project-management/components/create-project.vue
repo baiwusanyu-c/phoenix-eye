@@ -552,12 +552,12 @@
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
+              createProjectCancel()
             } else {
               catchErr(res)
             }
           })
           .catch(catchErr)
-          .finally(createProjectCancel)
       }
       /**
        * 匹配社交
@@ -578,6 +578,9 @@
         getMatchSocial(params)
           .then((res: IAxiosRes) => {
             if (res.success) {
+              if (!res.data) {
+                message('warning', `${t('lang.emptyData')}`)
+              }
               websiteForm.value = res.data
             } else {
               catchErr(res)

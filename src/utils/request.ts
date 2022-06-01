@@ -7,7 +7,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { useEventBus } from '@vueuse/core'
-import config from '../enums/config'
+import configUrl from '../enums/config'
 import { getSession, getStore, message, removeSession, removeStore, setSession } from './common'
 import type { AxiosResponse } from 'axios'
 export const setHeader = (): string => {
@@ -28,14 +28,21 @@ export const setPrevUrl = (baseUrl = ''): string => {
 }
 // create an axios instance
 const service = axios.create({
-  baseURL: setPrevUrl(config.baseURL),
+  baseURL: setPrevUrl(configUrl.baseURL),
   timeout: 50000, // request timeout
 })
 // request interceptor
 service.interceptors.request.use(
   (config: any) => {
     const tokenCache = getStore('token')
-    if (tokenCache) {
+    if (
+      tokenCache &&
+      !(
+        config.url.indexOf('/ussa/project/add"') > 0 &&
+        config.params &&
+        config.params.type === 'user'
+      )
+    ) {
       config.headers['Authorization'] = setHeader()
     }
     config.headers['Accept-Language'] = getStore('language') ? getStore('language') : 'en_US'
