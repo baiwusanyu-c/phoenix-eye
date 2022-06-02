@@ -12,7 +12,7 @@ import type { IPageParam } from '../utils/types'
 interface IProjWarning extends IPageParam {
   param?: string
   contract_address?: string
-  project_id?: string
+  project_id?: string | number
   platform?: Array<string>
   alert_level?: Array<string>
   type?: Array<string>

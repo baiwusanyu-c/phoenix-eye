@@ -1,7 +1,12 @@
 /* * @risk-list.vue * @deprecated * @author czh * @update (czh 2022/5/26) */
 <template>
   <div class="risk-list">
-    <el-table ref="riskTrxList" v-loading="loading" tooltip-effect="light" :data="tableData">
+    <el-table
+      ref="riskTrxList"
+      v-loading="loading"
+      tooltip-effect="light"
+      :data="tableData"
+      @row-click="routerSwitch">
       <template #empty>
         <empty-data content="lang.noRisk"></empty-data>
       </template>
@@ -74,6 +79,7 @@
   import composition from '../../../../utils/mixin/common-func'
   import { getProjWarning } from '../../../../api/risk-trx'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import { openWindow } from '../../../../utils/common'
 
   export default defineComponent({
     name: 'RiskList',
@@ -169,11 +175,17 @@
             console.error(err)
           })
       }
-
+      /**
+       * 路由跳轉
+       */
+      const routerSwitch = (row: any): void => {
+        openWindow(`#/riskTrx/detail?tx_hash=${row.tx_hash}`)
+      }
       onMounted(() => {
         getList('reset')
       })
       return {
+        routerSwitch,
         tableData,
         loading,
         pageNum,
