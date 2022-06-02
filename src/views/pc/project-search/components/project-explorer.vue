@@ -24,9 +24,7 @@
         :placeholder="$t('lang.projectExplorer.exp.searchP')"
         class="input-with-select">
         <template #append>
-          <div style="width: 100%; height: 100%">
-            <be-icon icon="search" @click="handleSearch"></be-icon>
-          </div>
+          <be-icon icon="search" @click="handleSearch"></be-icon>
         </template>
       </el-input>
     </div>

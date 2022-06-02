@@ -244,7 +244,7 @@
                     : `${formatMoney(twitterAnalysisData.value)}`
                 }}
               </p>
-              <up-down :data="twitterAnalysisData.radio"></up-down>
+              <up-down :data="twitterAnalysisData.ratio"></up-down>
             </div>
             <div v-if="hasTokenAddress" class="twitter-analysis-left">
               <p>{{ $t('lang.projectExplorer.detail.twitterAnalysis1') }}</p>
