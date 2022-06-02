@@ -38,10 +38,11 @@ service.interceptors.request.use(
     if (
       tokenCache &&
       !(
-        config.url.indexOf('/ussa/project/add"') > 0 &&
+        config.url.indexOf('/ussa/project/add') >= 0 &&
         config.params &&
         config.params.type === 'user'
-      )
+      ) &&
+      !(config.url.indexOf('/website/quote/create') >= 0)
     ) {
       config.headers['Authorization'] = setHeader()
     }

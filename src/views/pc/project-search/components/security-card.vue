@@ -22,11 +22,11 @@
     <div class="security-card--body">
       <div>
         <ellipsis-copy
-          :target-str="info"
-          :is-ellipsis="info.length > 250 ? true : false"
+          :target-str="info.replace(/[\r\n]/g, '')"
+          :is-ellipsis="info.replace(/[\r\n]/g, '').length > 250 ? true : false"
           :is-show-copy-btn="false"
           :is-tooltip="false"
-          styles="color: #333333;font-size: 14px;line-height: 17px;"
+          styles="color: #333333;font-size: 14px;line-height: 17px;word-break: break-all;"
           font-length="250"
           end-length="0">
         </ellipsis-copy>

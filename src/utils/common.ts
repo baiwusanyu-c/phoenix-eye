@@ -375,6 +375,14 @@ export function nFormats(num: number) {
     res = num / 1e12
     unit = 'T'
   }
+  if (num > 1e15 && num < 1e18) {
+    res = num / 1e15
+    unit = 'P'
+  }
+  if (num > 1e18) {
+    res = num / 1e18
+    unit = 'E'
+  }
 
   return `${Math.floor(res * 1000) / 1000}${unit}`
 }

@@ -120,11 +120,15 @@
               market_cap_data: {},
             }
       })
-      watch(computePropsData, () => {
-        nextTick(() => {
-          innerData.value = computePropsData.value.token_price_data
-        })
-      })
+      watch(
+        computePropsData,
+        () => {
+          nextTick(() => {
+            innerData.value = computePropsData.value.token_price_data
+          })
+        },
+        { immediate: true, deep: true }
+      )
       const setTitle = (type: string): void => {
         if (type === 'liquidity_data') {
           titles.value = t('lang.projectExplorer.detail.marketTab3')
@@ -143,6 +147,7 @@
           props.data && (innerData.value = computePropsData.value.token_price_data)
         }
       }
+      setTitle()
       const showTabList = ref<Array<boolean>>(new Array<boolean>(true, true, true))
       const showTab = (): void => {
         if (!computePropsData.value.token_transfer_data.every_day_data) {

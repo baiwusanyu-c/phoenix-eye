@@ -387,7 +387,7 @@ export default {
     verCE: 'Input is illegal, please input English letters, Chinese characters, number only',
     verCeSemicolonReg: 'Input is illegal, do not start with semicolon',
     verCeSemicolonTag: 'Input is illegal',
-    searchP: 'Project name / Contract / Associated Account',
+    searchP: 'Project name / Contract ',
 
     contact: 'Contact',
     contactDesc:

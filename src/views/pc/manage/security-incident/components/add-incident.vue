@@ -66,7 +66,11 @@
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_time') + '    :'">
             <span class="reg-start feed-back--star">*</span>
-            <el-date-picker v-model="form.attack_time" type="date" placeholder="Pick a day" />
+            <el-date-picker
+              v-model="form.attack_time"
+              type="date"
+              placeholder="Pick a day"
+              :disabled-date="disableDate" />
           </el-form-item>
         </el-form>
       </div>
@@ -267,12 +271,19 @@
         form.value.attack_address_arr = (form.value.attack_address_arr as string).split(';')
         form.value.attacked_address_arr = (form.value.attacked_address_arr as string).split(';')
         form.value.attack_trx_arr = (form.value.attack_trx_arr as string).split(';')
+        if (!form.value.attack_time) {
+          const msg = `${t('lang.pleaseInput')} Attack Time`
+          message('warning', msg)
+          return
+        }
+        const attackTime = (form.value.attack_time as string).toString()
+        form.value.attack_time = formatDate(attackTime).split(' ')[0]
         editIncidentInfo(form.value, form.value.event_id as string)
           .then((res: any) => {
             if (!res) {
               return
             }
-            if (res) {
+            if (res && res.success) {
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
@@ -289,7 +300,11 @@
       const limitInput = (): void => {
         form.value.loss_amount = (form.value.loss_amount as string).replace(/[^0-9]/g, '')
       }
+      const disableDate = (date: Date) => {
+        return date > new Date()
+      }
       return {
+        disableDate,
         limitInput,
         handleConfirm,
         form,
@@ -327,6 +342,10 @@
       border-radius: 2px;
     }
 
+    .el-input__prefix,
+    .el-input__suffix {
+      height: 40px;
+    }
     .el-textarea__inner {
       border-radius: 2px;
     }

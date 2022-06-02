@@ -60,7 +60,7 @@
             <span class="table-head">{{ $t('lang.securityIncident.tableHeader.amount') }}</span>
           </template>
           <template #default="scope">
-            {{ isEmpty(scope.row.contract_num, '/') === '/' ? '/' : `$ ${scope.row.contract_num}` }}
+            {{ isEmpty(scope.row.loss_amount, '/') === '/' ? '/' : `$ ${scope.row.loss_amount}` }}
           </template>
         </el-table-column>
         <el-table-column prop="event_link">
@@ -76,7 +76,7 @@
               styles="color:#008EE9;font-weight: bold;font-size: 16px;cursor:pointer"
               font-length="8"
               end-length="0"
-              @click="openWindow(`https://${scope.row.event_link}`)">
+              @click="openWindow(`${scope.row.event_link}`)">
             </ellipsis-copy>
           </template>
         </el-table-column>
