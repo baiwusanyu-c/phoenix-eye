@@ -56,6 +56,7 @@
           <template #default="scope">
             <project-name-cell
               :size="32"
+              width="180"
               :name="scope.row.project_name"
               :url="scope.row.logo_url"
               :ellipsis-len="20">
@@ -112,7 +113,7 @@
             }}</span>
           </template>
           <template #default="scope">
-            <div style="display: flex; justify-content: center; align-items: center">
+            <div style="display: flex; justify-content: space-between; align-items: center">
               <span>{{
                 isEmpty(scope.row.token_price, '/') === '/'
                   ? '/'

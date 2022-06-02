@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
+  import { computed, defineComponent } from 'vue'
 
   export default defineComponent({
     name: 'ProjectNameCell',
@@ -43,6 +43,18 @@
         type: Number,
         default: 12,
       },
+      width: {
+        type: String,
+        default: '116',
+      },
+    },
+    setup(props) {
+      const ellipsisCopy = computed(() => {
+        return `${props.width}px`
+      })
+      return {
+        ellipsisCopy,
+      }
     },
   })
 </script>
@@ -59,7 +71,7 @@
       margin-right: 6px;
     }
     .ellipsis-copy {
-      width: 116px;
+      width: v-bind(ellipsisCopy);
       min-width: initial !important;
     }
   }

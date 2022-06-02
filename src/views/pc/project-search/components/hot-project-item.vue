@@ -160,6 +160,9 @@
     .risk-alert-row {
       height: 64px;
     }
+    .el-table .cell {
+      padding: 0;
+    }
     .el-table__header-wrapper {
       display: none;
     }

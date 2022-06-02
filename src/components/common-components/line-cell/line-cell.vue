@@ -76,6 +76,15 @@
           .position('create_time*token_price')
           .shape('smooth')
           .style({ stroke: props.type === 'up' || !props.type ? '#11CABE' : '#F32F2F' })
+        const areaColor =
+          props.type === 'up' || !props.type
+            ? 'l(270) 0:rgba(255, 255, 255, 1) 1:#11CABE'
+            : 'l(270) 0:rgba(255, 255, 255, 1) 1:#F32F2F'
+        chart.value
+          .area()
+          .position('create_time*token_price')
+          .style({ fill: areaColor })
+          .shape('smooth')
         chart.value.axis('create_time', false)
         chart.value.axis('token_price', false)
         chart.value.tooltip(false)
