@@ -230,6 +230,7 @@ export type IGuardProjectList = {
   logo_url?: string
   project_name?: string
   create_time?: string
+  project_id?: string
 }
 
 export type IRiskInfoList = {

@@ -4,7 +4,8 @@
     v-loading="loading"
     tooltip-effect="light"
     :data="currentPageData"
-    row-class-name="risk-alert-row">
+    row-class-name="risk-alert-row"
+    @row-click="routerSwitch">
     <template #empty>
       <empty-data content="lang.noRisk"></empty-data>
     </template>
@@ -74,7 +75,7 @@
       },
     },
     setup(props) {
-      const { isEmpty } = composition()
+      const { isEmpty, routerPush } = composition()
       const pageNum = ref<number>(0)
       const pageSize = 5
       const currentPage = ref<number>(1)
@@ -115,7 +116,14 @@
         }
         currentPageData.value = sliceList.get(currentPage.value)
       }
+      /**
+       * 路由跳轉
+       */
+      const routerSwitch = (row: any): void => {
+        routerPush('/projectSearch/detail', { id: row.project_id, keyword: row.keyword })
+      }
       return {
+        routerSwitch,
         currentPageData,
         currentPage,
         pageNum,

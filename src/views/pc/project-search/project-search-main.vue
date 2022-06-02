@@ -137,7 +137,8 @@
           <div
             v-for="item in guardProjectList"
             :key="item.create_time + item.logo_url"
-            class="project-explorer--guard--proj">
+            class="project-explorer--guard--proj"
+            @click="routerSwitch(item.project_id)">
             <project-name-cell
               :name="item.project_name"
               :url="item.logo_url"
