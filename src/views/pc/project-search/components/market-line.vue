@@ -38,7 +38,7 @@
       <div>
         <p>{{ titles }}</p>
         <p class="info-val">
-          {{ isEmpty(innerData.value, '/') === '/' ? '/' : `$${formatMoney(innerData.value)}` }}
+          {{ isEmpty(innerData.value, '/') === '/' ? '/' : `$${nFormats(innerData.value)}` }}
         </p>
         <p>
           24h:&nbsp;&nbsp;<span>{{
@@ -85,7 +85,7 @@
 <script lang="ts">
   import { computed, defineComponent, nextTick, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { floatMultiply, formatMoney } from '../../../../utils/common'
+  import { floatMultiply, formatMoney, nFormats } from '../../../../utils/common'
   import AreaLineCell from '../../../../components/common-components/area-line-cell/area-line-cell.vue'
   import composition from '../../../../utils/mixin/common-func'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
@@ -164,6 +164,7 @@
         handleTabClick,
         isEmpty,
         formatMoney,
+        nFormats,
         floatMultiply,
       }
     },

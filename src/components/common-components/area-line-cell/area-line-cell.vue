@@ -7,7 +7,7 @@
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
   import DataSet from '@antv/data-set'
-  import { formatMoney } from '../../../utils/common'
+  import { nFormats } from '../../../utils/common'
   import type { PropType } from 'vue'
   import type { IStatisticsLine } from '../../../utils/types'
   export default defineComponent({
@@ -102,7 +102,7 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token">$ ${formatMoney(item.value)}</p>
+                  <p class="g2-tooltip-list-token">$ ${nFormats(item.value)}</p>
                    <p>${item.title}</p>
               </li>`
             })

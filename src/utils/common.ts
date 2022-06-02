@@ -333,7 +333,7 @@ export function trimStr(str: string | undefined): string {
   if (str === undefined) return ''
   return str.replace(/(^\s*)|(\s*$)/g, '')
 }
-// 数字转百万M 100M
+// 数字转百万M 100M (似乎有点问题)
 export function nFormatter(num: number, digits: number, getS = false) {
   const si = [
     { value: 1, symbol: '' },
@@ -356,10 +356,32 @@ export function nFormatter(num: number, digits: number, getS = false) {
   }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
+export function nFormats(num: number) {
+  let unit = ''
+  let res = num
+  if (num > 1e3 && num < 1e6) {
+    res = num / 1e3
+    unit = 'K'
+  }
+  if (num > 1e6 && num < 1e9) {
+    res = num / 1e6
+    unit = 'M'
+  }
+  if (num > 1e9 && num < 1e12) {
+    res = num / 1e9
+    unit = 'B'
+  }
+  if (num > 1e12 && num < 1e15) {
+    res = num / 1e12
+    unit = 'T'
+  }
 
+  return `${Math.floor(res * 1000) / 1000}${unit}`
+}
 /**
  * 打开窗口
  * @param strUrl
+ * @param winName
  */
 export const openWindow = (strUrl: string, winName = '_blank'): void => {
   // 模拟a标签点击，实现无糖浏览器下的新开tab

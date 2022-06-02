@@ -10,7 +10,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import { floatMultiply, formatMoney, simulateToFixed } from '../../../utils/common'
+  import { floatMultiply, simulateToFixed } from '../../../utils/common'
   // @ts-ignore
   import { BeIcon } from '../../../../public/be-ui/be-ui.es.js'
   export default defineComponent({
@@ -25,7 +25,7 @@
       },
     },
     setup() {
-      return { formatMoney, floatMultiply, simulateToFixed }
+      return { floatMultiply, simulateToFixed }
     },
   })
 </script>

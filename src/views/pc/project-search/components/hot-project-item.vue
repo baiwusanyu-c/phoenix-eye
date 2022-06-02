@@ -39,7 +39,7 @@
       <template #header></template>
       <template #default="scope">
         <span class="tx24">
-          {{ isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${formatMoney(scope.row.tx_24)}` }}
+          {{ isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${nFormats(scope.row.tx_24)}` }}
         </span>
         <span class="trx">trx<span>/24</span></span>
       </template>
@@ -59,7 +59,7 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
-  import { formatMoney } from '../../../../utils/common'
+  import { nFormats } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
   import type { PropType } from 'vue'
   import type { IHotProjectList } from '../../../../utils/types'
@@ -123,7 +123,7 @@
         nextPage,
         loading,
         isEmpty,
-        formatMoney,
+        nFormats,
       }
     },
   })

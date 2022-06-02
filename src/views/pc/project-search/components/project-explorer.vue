@@ -85,7 +85,7 @@
           </template>
           <template #default="scope">
             <span>{{
-              isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${formatMoney(scope.row.tx_24)}`
+              isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${nFormats(scope.row.tx_24)}`
             }}</span>
           </template>
         </el-table-column>
@@ -100,7 +100,7 @@
             <span>{{
               isEmpty(scope.row.market_cap, '/') === '/'
                 ? '/'
-                : `$${formatMoney(scope.row.market_cap)}M`
+                : `$${nFormats(scope.row.market_cap)}`
             }}</span>
           </template>
         </el-table-column>
@@ -116,7 +116,7 @@
               <span>{{
                 isEmpty(scope.row.token_price, '/') === '/'
                   ? '/'
-                  : `$${formatMoney(scope.row.token_price)}M`
+                  : `$${nFormats(scope.row.token_price)}`
               }}</span>
               <line-cell
                 :dom-id="`line-cell_${scope.row.project_id}`"
@@ -207,7 +207,7 @@
   import { getExploreList } from '../../../../api/project-explorer'
   // @ts-ignore
   import { BeIcon, BePagination } from '../../../../../public/be-ui/be-ui.es'
-  import { catchErr, createDate, formatDate, formatMoney } from '../../../../utils/common'
+  import { catchErr, createDate, formatDate, nFormats } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'
@@ -336,7 +336,6 @@
         projectList,
         searchParams,
         getList,
-        formatMoney,
         pageParams,
         pageChange,
         updateNum,
@@ -346,6 +345,7 @@
         createDate,
         formatDate,
         explorerProj,
+        nFormats,
       }
     },
   })

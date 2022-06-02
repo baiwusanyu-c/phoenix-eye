@@ -21,7 +21,7 @@
           <span>{{
             isEmpty(baseInfo.project_total, '/') === '/'
               ? '/'
-              : `${formatMoney(baseInfo.project_total)}`
+              : `${nFormats(baseInfo.project_total)}`
           }}</span>
         </div>
         <div class="project-base-item">
@@ -168,8 +168,8 @@
     catchErr,
     createDate,
     formatDate,
-    formatMoney,
     getUrlkey,
+    nFormats,
     nFormatter,
     openWindow,
   } from '../../../utils/common'
@@ -328,7 +328,7 @@
       }
       const marketCapBaseInfo = computed(() => {
         return function (val: number) {
-          return formatMoney(val) + nFormatter(val, 0, true)
+          return nFormats(val)
         }
       })
       onMounted(() => {
@@ -345,7 +345,7 @@
         projectList,
         searchParams,
         getList,
-        formatMoney,
+        nFormats,
         baseInfo,
         guardProjectList,
         createDate,

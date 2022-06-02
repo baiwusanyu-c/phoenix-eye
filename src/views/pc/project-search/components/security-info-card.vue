@@ -37,7 +37,7 @@
         label-class-name="security-info-label"
         class-name="security-info-content scroll-diy"
         ><span>{{
-          isEmpty(item.loss_amount, '/') === '/' ? '/' : `$${formatMoney(item.loss_amount)}`
+          isEmpty(item.loss_amount, '/') === '/' ? '/' : `$${nFormats(item.loss_amount)}`
         }}</span>
       </el-descriptions-item>
     </el-descriptions>
@@ -47,7 +47,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
   import composition from '../../../../utils/mixin/common-func'
-  import { formatMoney } from '../../../../utils/common'
+  import { nFormats } from '../../../../utils/common'
   import type { PropType } from 'vue'
   import type { securityInfoList } from '../../../../utils/types'
   export default defineComponent({
@@ -74,7 +74,7 @@
     },
     setup() {
       const { isEmpty } = composition()
-      return { formatMoney, isEmpty }
+      return { nFormats, isEmpty }
     },
   })
 </script>

@@ -109,7 +109,7 @@
                   {{
                     isEmpty(onChainData.token_price, '/') === '/'
                       ? '/'
-                      : `$${formatMoney(onChainData.token_price)}`
+                      : `$${nFormats(onChainData.token_price)}`
                   }}
                 </p>
                 <up-down :data="onChainData.token_price_ratio"></up-down>
@@ -241,7 +241,7 @@
                 {{
                   isEmpty(twitterAnalysisData.value, '/') === '/'
                     ? '/'
-                    : `${formatMoney(twitterAnalysisData.value)}`
+                    : `${nFormats(twitterAnalysisData.value)}`
                 }}
               </p>
               <up-down :data="twitterAnalysisData.ratio"></up-down>
@@ -425,10 +425,9 @@
     accSub,
     createDate,
     formatDate,
-    formatMoney,
     formatTimeStamp,
     getStore,
-    nFormatter,
+    nFormats,
     numberToCommaString,
     openWindow,
   } from '../../../utils/common'
@@ -759,7 +758,7 @@
       // busLanguage.on(() => {})
       const marketCapBaseInfo = computed(() => {
         return function (val: number) {
-          return formatMoney(val) + nFormatter(val, 0, true)
+          return nFormats(val)
         }
       })
       const handleScoreColor = computed(() => {
@@ -815,7 +814,7 @@
         formatDate,
         openWindow,
         formatTimeStamp,
-        formatMoney,
+        nFormats,
         selectContract,
         securityEventList,
         marketVolatilityData,
