@@ -80,7 +80,7 @@
             @click="openWindow(governData.github)"></be-icon>
         </div>
       </div>
-      <div class="project-detail-base--body">
+      <div v-loading="baseLoading" class="project-detail-base--body">
         <div class="body-left">
           <div v-if="hasTokenAddress" class="token-price">
             <div class="token-price-area">
