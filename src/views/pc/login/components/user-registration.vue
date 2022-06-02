@@ -1,5 +1,5 @@
 <template>
-  <div class="formArea user-registration">
+  <div class="formArea user-registration login-inpput">
     <el-form ref="registerForm" :model="form" :rules="rules">
       <el-form-item class="label" prop="email">
         <el-input
@@ -200,7 +200,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
   .send-code {
     display: flex;
     justify-content: space-between;

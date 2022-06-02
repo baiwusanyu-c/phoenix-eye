@@ -1,5 +1,5 @@
 <template>
-  <div class="formArea">
+  <div class="formArea login-inpput">
     <el-form ref="resetPwdForm" :model="form" :rules="rules">
       <el-form-item class="label" prop="name">
         <el-input
@@ -258,7 +258,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
   .showIcon {
     position: relative;
     top: -2px;
@@ -267,7 +267,12 @@
     height: 16px;
     cursor: pointer;
   }
-
+  .login-inpput {
+      .el-input__prefix{
+          position: absolute;
+          left: 6px;
+      }
+  }
   .send-code {
     display: flex;
     justify-content: space-between;
@@ -288,6 +293,7 @@
     .send-code-input {
       width: 256px;
       padding-right: 16px;
+
     }
   }
 </style>
