@@ -24,7 +24,16 @@
         :placeholder="$t('lang.projectExplorer.exp.searchP')"
         class="input-with-select">
         <template #append>
-          <be-icon icon="search" @click="handleSearch"></be-icon>
+          <be-icon
+            icon="search"
+            style="
+              width: 46px;
+              height: 100%;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+            "
+            @click="handleSearch"></be-icon>
         </template>
       </el-input>
     </div>
@@ -366,6 +375,8 @@
         border: 0;
         background-color: $mainColor3;
         box-shadow: none;
+        width: 46px;
+        padding: 0;
       }
       .be-icon--container {
         use {

@@ -19,7 +19,7 @@
     ref,
     watch,
   } from 'vue'
-  //import DataSet from '@antv/data-set'
+  import DataSet from '@antv/data-set'
   import { Chart, registerGeometryLabelLayout } from '@antv/g2'
   import type { PropType } from 'vue'
 
@@ -119,17 +119,17 @@
         }
         // 注册 label 布局函数
         registerGeometryLabelLayout('limit-in-shape', limitInShape)
-        //const { DataView } = DataSet
-        //const dv = new DataView().source(props.radarData)
-        //dv.transform({
-        //  type: 'fold',
-        //  fields: ['a'], // 展开字段集
-        //  key: 'user', // 设置数据key对应展开字段-》 user:'a'
-        //  value: 'score', // 设置数据value字段 对应展开字段-》 a:70 => score:70
-        //})
+        const { DataView } = DataSet
+        const dv = new DataView().source(props.radarData)
+        dv.transform({
+          type: 'fold',
+          fields: ['a'], // 展开字段集
+          key: 'user', // 设置数据key对应展开字段-》 user:'a'
+          value: 'score', // 设置数据value字段 对应展开字段-》 a:70 => score:70
+        })
         // 更新
         if (isUpdate) {
-          radarChart.value.data(props.radarData)
+          radarChart.value.data(dv.rows)
           radarChart.value.render(isUpdate)
           return
         }
@@ -140,7 +140,7 @@
           appendPadding: [10],
         })
         radarChart.value = chart
-        chart.data(props.radarData)
+        chart.data(dv.rows)
         chart.scale('score', {
           min: 0,
           max: 100,

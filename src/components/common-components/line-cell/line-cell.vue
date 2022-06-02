@@ -6,7 +6,7 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
-  //import DataSet from '@antv/data-set'
+  import DataSet from '@antv/data-set'
   import type { PropType } from 'vue'
   import type { IStatisticsLine } from '../../../utils/types'
   export default defineComponent({
@@ -39,16 +39,16 @@
         }
       )
       const renderChart = (isUpdate?: boolean) => {
-        // const { DataView } = DataSet
-        // const dv = new DataView().source(props.lineData ? props.lineData : [])
-        // dv.transform({
-        //   type: 'sort-by',
-        //   fields: ['create_time'], // 根据指定的字段集进行排序，与lodash的sortBy行为一致
-        //   order: 'ASC', // 默认为 ASC，DESC 则为逆序
-        // })
+        const { DataView } = DataSet
+        const dv = new DataView().source(props.lineData ? props.lineData : [])
+        dv.transform({
+          type: 'sort-by',
+          fields: ['create_time'], // 根据指定的字段集进行排序，与lodash的sortBy行为一致
+          order: 'ASC', // 默认为 ASC，DESC 则为逆序
+        })
         // 更新
         if (isUpdate) {
-          chart.value.data(props.lineData)
+          chart.value.data(dv.rows)
           chart.value.render(isUpdate)
           return
         }
@@ -60,7 +60,7 @@
           padding: 10,
         })
 
-        chart.value.data(props.lineData)
+        chart.value.data(dv.rows)
         chart.value.scale({
           token_price: {
             min: 10000,
