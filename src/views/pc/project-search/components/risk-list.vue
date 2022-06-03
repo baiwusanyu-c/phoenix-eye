@@ -59,7 +59,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="front-page">
+    <div v-if="tableData.length > 0" class="front-page">
       <div class="front-page--body">
         <span>{{ pageParams.currentPage }} / {{ pageNum }}</span>
         <div class="page-btn-group">

@@ -1267,6 +1267,13 @@
       .project-detail-market {
         width: 92%;
       }
+      .project-detail-market {
+        .market-line--container {
+          .market-line {
+            width: 760px;
+          }
+        }
+      }
     }
   }
 
@@ -1280,6 +1287,26 @@
       .project-detail-risk,
       .project-detail-market {
         width: 80%;
+      }
+      .project-detail-market {
+        .market-line--container {
+          .market-line {
+            width: 820px;
+          }
+        }
+      }
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .project-search-detail {
+      .project-detail-base,
+      .project-detail-decent,
+      .project-detail-public-info,
+      .project-detail-security,
+      .project-detail-risk,
+      .project-detail-market {
+        width: 72%;
       }
     }
   }

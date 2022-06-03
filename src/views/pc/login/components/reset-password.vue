@@ -268,10 +268,10 @@
     cursor: pointer;
   }
   .login-inpput {
-      .el-input__prefix{
-          position: absolute;
-          left: 6px;
-      }
+    .el-input__prefix {
+      position: absolute;
+      left: 6px;
+    }
   }
   .send-code {
     display: flex;
@@ -293,7 +293,6 @@
     .send-code-input {
       width: 256px;
       padding-right: 16px;
-
     }
   }
 </style>

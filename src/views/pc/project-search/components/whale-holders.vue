@@ -623,6 +623,9 @@
     }
     .top-10-row {
       height: 44px;
+      .cell {
+        padding: 0px;
+      }
     }
     .whale-sub-title {
       font-size: 16px;
@@ -634,6 +637,9 @@
     .token-holders-distribution {
       display: flex;
       justify-content: space-between;
+      .pie-cell {
+        height: calc(80% - 44px);
+      }
     }
     .function-tag {
       height: 24px;
