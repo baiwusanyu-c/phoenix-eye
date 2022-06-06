@@ -78,11 +78,10 @@
               <template #default="scope">
                 <div class="token-val token-percentage">
                   <be-progress
-                    :percent="scope.row.showPercentage"
+                    :percent="scope.row.percentage"
                     status="normal"
                     color="#18304E"
-                    :show-info="false"
-                    :success="{ percent: scope.row.showPercentagePrev, color: '#f5f5f5' }">
+                    :show-info="false">
                   </be-progress>
                   <span style="color: #18304e; font-weight: bold; font-size: 14px">
                     {{ simulateToFixed(scope.row.percentage, 2) }} %
@@ -537,14 +536,14 @@
           // 设置显示 tag 还 是地址
           val.showVal = val.address_tag ? val.address_tag : val.address
           // index > 0 百分比为 上一条 数据 加上本条数据
-          if (index > 0) {
+          /*if (index > 0) {
             // 百分比为 上一条 数据 加上本条数据
             val.showPercentage = val.percentage! + dataList[index - 1].showPercentage!
             //  留白部分为上一个条数据的 showPercentage
             val.showPercentagePrev = dataList[index - 1].showPercentage!
           } else {
             val.showPercentage = val.percentage
-          }
+          }*/
         })
       }
       onMounted(() => {
