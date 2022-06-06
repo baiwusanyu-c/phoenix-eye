@@ -538,7 +538,9 @@
           val.showVal = val.address_tag ? val.address_tag : val.address
           // index > 0 百分比为 上一条 数据 加上本条数据
           if (index > 0) {
+            // 百分比为 上一条 数据 加上本条数据
             val.showPercentage = val.percentage! + dataList[index - 1].showPercentage!
+            //  留白部分为上一个条数据的 showPercentage
             val.showPercentagePrev = dataList[index - 1].showPercentage!
           } else {
             val.showPercentage = val.percentage

@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref } from 'vue'
+  import { computed, defineComponent, nextTick, ref, watch } from 'vue'
   import PieCell from '../../../../components/common-components/pie-cell/pie-cell.vue'
   import BarCell from '../../../../components/common-components/bar-cell/bar-cell.vue'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
@@ -58,6 +58,16 @@
       const computePropsData = computed(() => {
         return props.data
       })
+      watch(
+        computePropsData,
+        () => {
+          nextTick(() => {
+            innerData.value = computePropsData.value?.stat_30_day_data
+            createPieData(innerData.value!)
+          })
+        },
+        { immediate: true, deep: true }
+      )
       const innerData = ref<Array<IRiskPie> | undefined>([])
       const handleSelectChange = (data: string): void => {
         if (data === '1') {
