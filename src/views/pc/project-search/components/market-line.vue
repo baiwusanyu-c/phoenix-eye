@@ -147,7 +147,7 @@
           props.data && (innerData.value = computePropsData.value.token_price_data)
         }
       }
-      setTitle()
+      setTitle('token_price_data')
       const showTabList = ref<Array<boolean>>(new Array<boolean>(true, true, true))
       const showTab = (): void => {
         if (!computePropsData.value.token_transfer_data.every_day_data) {
