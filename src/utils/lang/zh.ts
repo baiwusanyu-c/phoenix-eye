@@ -213,7 +213,7 @@ export default {
     markup: 'Address Markup',
     whitePaper: 'White Paper',
     operation: 'Operation Manual',
-    boardExchange: 'Ob Board Of Exchange',
+    boardExchange: 'On Board Of Exchange',
     testChain: 'On Test Chain',
     tableHeader: {
       projectName: '项目名称',

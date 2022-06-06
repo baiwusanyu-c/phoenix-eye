@@ -72,7 +72,7 @@
         loading.value = true
         getPublicOpinionList(params)
           .then((res: any) => {
-            if (res.success) {
+            if (res && res.success) {
               res.data.page_infos.forEach((value: any) => {
                 list.value.push({
                   negativeMsg: '经自动识别，该资讯为负面信息',

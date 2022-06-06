@@ -291,11 +291,17 @@
               <div class="low-high-score">
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreH') }}
-                  <span class="score-high">{{ projectScoreData.high_total_score }}</span>
+                  <span class="score-high">{{
+                    projectScoreData.high_total_score > 0
+                      ? projectScoreData.high_total_score
+                      : 'N/A'
+                  }}</span>
                 </p>
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreL') }}
-                  <span class="score-low">{{ projectScoreData.low_total_score }}</span>
+                  <span class="score-low">{{
+                    projectScoreData.low_total_score > 0 ? projectScoreData.low_total_score : 'N/A'
+                  }}</span>
                 </p>
               </div>
               <bar-cell
@@ -653,7 +659,7 @@
         const baseURL = config.baseURL
         getContractReportList(params)
           .then((res: any) => {
-            if (res.success) {
+            if (res && res.success) {
               auditList.value = res.data.page_infos || []
               pageParamsAudit.value.total = res.data.total
               auditList.value.forEach(val => {
@@ -687,7 +693,7 @@
         }
         createSubscribe(params)
           .then((res: any) => {
-            if (res.success) {
+            if (res && res.success) {
               msgBox(
                 t('lang.subscribe.titleSuccess'),
                 `${t('lang.subscribe.success')}(${res.data.email}).`,

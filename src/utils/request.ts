@@ -80,11 +80,11 @@ service.interceptors.response.use(
         removeSession('CETInfo')
         removeStore('token')
         removeStore('userInfo')
-        // 如果当前路由是 /projectSearch 直接刷新页面
-        if (window.location.hash === '#/projectSearch') {
-          // location.reload()
-          return
-        }
+        // 如果当前路由是 /projectSearch 直接刷新页面 #4511
+        // if (window.location.hash === '#/projectSearch') {
+        //   location.reload()
+        //   return
+        // }
         if (getSession('loginExpiredNum') === 'false' || !getSession('loginExpiredNum')) {
           bus.emit('true')
           const err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期'

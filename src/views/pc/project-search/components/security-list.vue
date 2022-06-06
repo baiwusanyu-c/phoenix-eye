@@ -65,7 +65,7 @@
         emit('show', false)
         getPublicOpinionList(params)
           .then((res: IAxiosRes) => {
-            if (res.success) {
+            if (res && res.success) {
               riskInfoList.value = res.data.page_infos
               pageParams.value.total = res.data.total
               if (riskInfoList.value.length > 0) {

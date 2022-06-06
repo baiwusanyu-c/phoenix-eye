@@ -308,7 +308,7 @@
       const getInfoData = (): void => {
         getExploreInfo()
           .then((res: IAxiosRes) => {
-            if (res.success) {
+            if (res && res.success) {
               // 基本信息
               baseInfo.value.market_cap_total = res.data.market_cap_total
               baseInfo.value.project_total = res.data.project_total

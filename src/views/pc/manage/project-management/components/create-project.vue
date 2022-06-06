@@ -320,7 +320,7 @@
             if (!res) {
               return
             }
-            if (res.success) {
+            if (res && res.success) {
               formBasic.value.project_name = res.data.project_name
               formBasic.value.keyword = res.data.keyword
               formBasic.value.platform = res.data.platform
@@ -511,7 +511,7 @@
             if (!res) {
               return
             }
-            if (res.success) {
+            if (res && res.success) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
@@ -548,7 +548,7 @@
             if (!res) {
               return
             }
-            if (res.success) {
+            if (res && res.success) {
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
@@ -577,7 +577,7 @@
         }
         getMatchSocial(params)
           .then((res: IAxiosRes) => {
-            if (res.success) {
+            if (res && res.success) {
               if (!res.data) {
                 message('warning', `${t('lang.emptyData')}`)
               }
@@ -618,7 +618,7 @@
       ): void => {
         getReport(params)
           .then((res: IAxiosRes) => {
-            if (res.success) {
+            if (res && res.success) {
               auditList.value = res.data
               createAuditUrl()
               if (auditList.value.length === 0) {

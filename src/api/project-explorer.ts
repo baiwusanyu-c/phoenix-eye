@@ -7,7 +7,6 @@
 
 import request from '../utils/request'
 import config from '../enums/config'
-import { ITop10Holder } from '../utils/types' //路径配置
 import type { IPageParam } from '../utils/types'
 
 export interface IProjParam extends IPageParam {

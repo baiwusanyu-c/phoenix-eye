@@ -133,7 +133,7 @@
               styles="color:#008EE9;font-weight: bold;font-size: 16px;cursor:pointer"
               font-length="8"
               end-length="8"
-              @click="openWindow(`https://${item}`)">
+              @click="openWindow(`${item}`)">
             </ellipsis-copy>
           </template>
         </el-table-column>

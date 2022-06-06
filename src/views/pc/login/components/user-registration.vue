@@ -209,8 +209,8 @@
       width: 144px;
       height: 48px;
       color: #1cd2a9 !important;
-        background: rgba(133, 229, 191, 0.1) !important;
-        border-color: rgba(133, 229, 191, 0.1) !important;
+      background: rgba(133, 229, 191, 0.1) !important;
+      border-color: rgba(133, 229, 191, 0.1) !important;
       border-radius: 2px;
     }
 
