@@ -3,7 +3,7 @@
   <div class="project-detail-decent--body">
     <div class="project-detail-decent--title">
       <p>{{ $t('lang.projectExplorer.detail.whaleTitle') }}</p>
-      <div v-if="showLiquidityTab" class="project-detail-decent-tab">
+      <div v-if="liquidityList.length > 0" class="project-detail-decent-tab">
         <div
           class="tab-item"
           :class="{ 'tab-item__active': activeTab === 'Token' }"
@@ -44,7 +44,7 @@
               </template>
               <template #default="scope">
                 <be-icon
-                  v-if="scope.row.address_tag"
+                  v-if="scope.row.percentage > 20"
                   width="32"
                   height="32"
                   icon="iconJing"></be-icon>
@@ -110,101 +110,6 @@
                 <div class="page-btn" @click="prevPage">◀</div>
                 <div class="page-btn" @click="nextPage">▶</div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="privilegesList.length > 0" style="margin-top: 22px">
-        <p class="whale-sub-title">{{ $t('lang.projectExplorer.detail.whaleTitle3') }}</p>
-        <el-table v-loading="loadingPrivileges" :data="privilegesList" row-class-name="top-10-row">
-          <template #empty>
-            <empty-data></empty-data>
-          </template>
-          <el-table-column prop="showValHold" width="180">
-            <template #header>
-              <span class="table-head">{{
-                $t('lang.projectExplorer.detail.tableHeader2.contract')
-              }}</span>
-            </template>
-            <template #default="scope">
-              <ellipsis-copy
-                :target-str="scope.row.showValHold"
-                :is-ellipsis="
-                  scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
-                "
-                :is-show-copy-btn="false"
-                :is-tooltip="true"
-                styles="color: #18304E;font-weight: bold;font-size: 14px;"
-                font-length="6"
-                end-length="6">
-              </ellipsis-copy>
-            </template>
-          </el-table-column>
-          <el-table-column prop="type" width="180">
-            <template #header>
-              <span class="table-head">{{
-                $t('lang.projectExplorer.detail.tableHeader2.function')
-              }}</span>
-            </template>
-            <template #default="scope">
-              <p class="function-tag">{{ scope.row.type }}</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="showValHold" width="180">
-            <template #header>
-              <span class="table-head">{{
-                $t('lang.projectExplorer.detail.tableHeader2.holdAddress')
-              }}</span>
-            </template>
-            <template #default="scope">
-              <ellipsis-copy
-                :target-str="scope.row.showValHold"
-                :is-ellipsis="
-                  scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
-                "
-                :is-show-copy-btn="false"
-                :is-tooltip="true"
-                styles="color: #18304E;font-weight: bold;font-size: 14px;"
-                font-length="6"
-                end-length="6">
-              </ellipsis-copy>
-            </template>
-          </el-table-column>
-          <el-table-column prop="hash" width="180">
-            <template #header>
-              <span class="table-head">{{
-                $t('lang.projectExplorer.detail.tableHeader2.txHash')
-              }}</span>
-            </template>
-            <template #default="scope">
-              <ellipsis-copy
-                :target-str="scope.row.hash"
-                :is-ellipsis="scope.row.hash && scope.row.hash.length > 14 ? true : false"
-                :is-show-copy-btn="false"
-                :is-tooltip="true"
-                styles="color: #0ED9AC;font-weight: bold;font-size: 14px;"
-                font-length="6"
-                end-length="6">
-              </ellipsis-copy>
-            </template>
-          </el-table-column>
-          <el-table-column prop="block_time" width="180">
-            <template #header>
-              <span class="table-head">{{
-                $t('lang.projectExplorer.detail.tableHeader2.age')
-              }}</span>
-            </template>
-            <template #default="scope">
-              {{ formatTimeStamp(createDate(scope.row.block_time).getTime(), $i18n.locale) }}
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="front-page">
-          <div class="front-page--body">
-            <span>{{ pagePrivileges.currentPage }} / {{ pageNumPrivileges }}</span>
-            <div class="page-btn-group">
-              <div class="page-btn" @click="prevPagePrivileges">◀</div>
-              <div class="page-btn" @click="nextPagePrivileges">▶</div>
             </div>
           </div>
         </div>
@@ -327,6 +232,103 @@
           <div class="page-btn-group">
             <div class="page-btn" @click="prevPageLiquidity">◀</div>
             <div class="page-btn" @click="nextPageLiquidity">▶</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="privilegesList.length > 0" style="margin-top: 22px">
+      <div class="project-detail-decent--title">
+        <p>
+          {{ $t('lang.projectExplorer.detail.whaleTitle3') }}
+        </p>
+      </div>
+      <el-table v-loading="loadingPrivileges" :data="privilegesList" row-class-name="top-10-row">
+        <template #empty>
+          <empty-data></empty-data>
+        </template>
+        <el-table-column prop="showValHold" width="180">
+          <template #header>
+            <span class="table-head">{{
+              $t('lang.projectExplorer.detail.tableHeader2.contract')
+            }}</span>
+          </template>
+          <template #default="scope">
+            <ellipsis-copy
+              :target-str="scope.row.showValHold"
+              :is-ellipsis="
+                scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
+              "
+              :is-show-copy-btn="false"
+              :is-tooltip="true"
+              styles="color: #18304E;font-weight: bold;font-size: 14px;"
+              font-length="6"
+              end-length="6">
+            </ellipsis-copy>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" width="180">
+          <template #header>
+            <span class="table-head">{{
+              $t('lang.projectExplorer.detail.tableHeader2.function')
+            }}</span>
+          </template>
+          <template #default="scope">
+            <p class="function-tag">{{ scope.row.type }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="showValHold" width="180">
+          <template #header>
+            <span class="table-head">{{
+              $t('lang.projectExplorer.detail.tableHeader2.holdAddress')
+            }}</span>
+          </template>
+          <template #default="scope">
+            <ellipsis-copy
+              :target-str="scope.row.showValHold"
+              :is-ellipsis="
+                scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
+              "
+              :is-show-copy-btn="false"
+              :is-tooltip="true"
+              styles="color: #18304E;font-weight: bold;font-size: 14px;"
+              font-length="6"
+              end-length="6">
+            </ellipsis-copy>
+          </template>
+        </el-table-column>
+        <el-table-column prop="hash" width="180">
+          <template #header>
+            <span class="table-head">{{
+              $t('lang.projectExplorer.detail.tableHeader2.txHash')
+            }}</span>
+          </template>
+          <template #default="scope">
+            <ellipsis-copy
+              :target-str="scope.row.hash"
+              :is-ellipsis="scope.row.hash && scope.row.hash.length > 14 ? true : false"
+              :is-show-copy-btn="false"
+              :is-tooltip="true"
+              styles="color: #0ED9AC;font-weight: bold;font-size: 14px;"
+              font-length="6"
+              end-length="6">
+            </ellipsis-copy>
+          </template>
+        </el-table-column>
+        <el-table-column prop="block_time" width="180">
+          <template #header>
+            <span class="table-head">{{ $t('lang.projectExplorer.detail.tableHeader2.age') }}</span>
+          </template>
+          <template #default="scope">
+            {{ formatTimeStamp(createDate(scope.row.block_time).getTime(), $i18n.locale) }}
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="front-page">
+        <div class="front-page--body">
+          <span>{{ pagePrivileges.currentPage }} / {{ pageNumPrivileges }}</span>
+          <div class="page-btn-group">
+            <div class="page-btn" @click="prevPagePrivileges">◀</div>
+            <div class="page-btn" @click="nextPagePrivileges">▶</div>
           </div>
         </div>
       </div>
@@ -476,7 +478,7 @@
       /**************************** Liquidity 数据获取、翻页 **************************************/
       const pageLiquidity = createPageParam(5)
       const pageNumLiquidity = ref<number>(0)
-      const showLiquidityTab = ref<boolean>(true)
+
       const nextPageLiquidity = (): void => {
         pageLiquidity.value.currentPage!++
         if (pageLiquidity.value.currentPage! > pageNumLiquidity.value) {
@@ -499,7 +501,7 @@
           return
         }
         loadingLiquidity.value = true
-        showLiquidityTab.value = false
+
         if (type === 'reset') {
           resetPageParam(5, pageParams)
         }
@@ -521,9 +523,7 @@
               liquidityList.value = []
               resetPageParam()
             }
-            if (liquidityList.value.length > 0) {
-              showLiquidityTab.value = true
-            }
+
             loadingLiquidity.value = false
           })
           .catch(err => {
@@ -534,7 +534,9 @@
       }
       const handlePercentage = (dataList: Array<any>): void => {
         dataList.forEach((val, index) => {
+          // 设置显示 tag 还 是地址
           val.showVal = val.address_tag ? val.address_tag : val.address
+          // index > 0 百分比为 上一条 数据 加上本条数据
           if (index > 0) {
             val.showPercentage = val.percentage! + dataList[index - 1].showPercentage!
             val.showPercentagePrev = dataList[index - 1].showPercentage!
@@ -572,7 +574,6 @@
         loadingPrivileges,
         formatTimeStamp,
         createDate,
-        showLiquidityTab,
       }
     },
   })
