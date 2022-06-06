@@ -28,8 +28,8 @@
     <div class="risk-chart--bar">
       <p>{{ $t('lang.projectExplorer.detail.riskTrx') }}</p>
       <bar-cell
-          tooltip-lable="number"
         v-if="computePropsData.every_day_data && computePropsData.every_day_data.length > 0"
+        tooltip-lable="number"
         :line-data="computePropsData.every_day_data"
         x-axis="date"
         y-axis="num"></bar-cell>
@@ -83,7 +83,7 @@
         createPieData(innerData.value!)
       }
       const createPieData = (data: Array<IOption>) => {
-        if(!data) return
+        if (!data) return
         const colorDist = ['#8A96A3', '#1A589B', '#18304E', '#84a5c5']
         data.forEach((val, index) => {
           val.color = colorDist[index]

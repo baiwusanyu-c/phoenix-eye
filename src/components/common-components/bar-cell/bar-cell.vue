@@ -39,8 +39,8 @@
         default: 'create_time',
       },
       tooltipLable: {
-          type: String,
-          default: 'score',
+        type: String,
+        default: 'score',
       },
     },
     setup(props) {
