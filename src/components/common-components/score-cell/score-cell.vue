@@ -10,7 +10,7 @@
       stroke-linecap="square"
       stroke-width="20">
       <template #center>
-        <span class="score">{{ Number(scoreInner) === 0 ? nanVal : scoreInner }}</span>
+        <span class="score">{{ Number(scoreInner) < 0 ? nanVal : scoreInner }}</span>
       </template>
     </be-progress>
   </div>
@@ -55,7 +55,7 @@
           color.value = '#F32F2F'
         }
 
-        if (Number(computedPropsScore.value) === 0) {
+        if (Number(computedPropsScore.value) <= 0) {
           hiddenPath.value = 'none'
         }
       }
