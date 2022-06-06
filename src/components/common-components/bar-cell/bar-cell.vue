@@ -38,6 +38,10 @@
         type: String,
         default: 'create_time',
       },
+      tooltipLable: {
+          type: String,
+          default: 'score',
+      },
     },
     setup(props) {
       onMounted(() => {
@@ -100,7 +104,8 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token">score: ${item.value}</p>
+                  <p class="g2-tooltip-list-token">${props.tooltipLable}: ${item.value}</p>
+                   <p>${item.title}</p>
               </li>`
             })
             container.innerHTML = listItem

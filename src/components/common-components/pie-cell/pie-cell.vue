@@ -11,7 +11,9 @@
             <span class="item-marker" :style="`background-color: ${pieItems.color}`"></span>
             <span class="item-name">{{ pieItems[item] }}</span>
           </div>
-          <span class="item-value">{{ `${floatMultiply(pieItems[percent], 100)}%` }}</span>
+          <span class="item-value">{{
+            `${simulateToFixed(floatMultiply(pieItems[percent], 100), 4)}%`
+          }}</span>
         </div>
       </div>
     </div>
@@ -22,7 +24,7 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
-  import { floatMultiply } from '../../../utils/common'
+  import { floatMultiply, simulateToFixed } from '../../../utils/common'
   import type { IOption } from '../../../utils/types'
   import type { PropType } from 'vue'
   export default defineComponent({
@@ -34,14 +36,6 @@
       },
       pieData: {
         type: Array as PropType<Array<IOption>>,
-        default() {
-          return [
-            { color: '#8A96A3', item: 'Large outflow', count: 40, percent: 0.4 },
-            { color: '#1A589B', item: 'Flash loan', count: 21, percent: 0.3 },
-            { color: '#18304E', item: 'Privileged operation', count: 17, percent: 0.17 },
-            { color: '#84a5c5', item: 'Slump', count: 13, percent: 0.13 },
-          ]
-        },
       },
       item: {
         type: String,
@@ -68,9 +62,12 @@
       )
       const renderChart = (isUpdate?: boolean) => {
         if (props.pieData) {
+          const pieData = props.pieData
+          pieData.map((val: any) => (val.ratio = Number(val.ratio.toFixed(4))))
+
           // 更新
           if (isUpdate) {
-            chart.value.data(props.pieData)
+            chart.value.data(pieData)
             chart.value.render(isUpdate)
             return
           }
@@ -80,7 +77,7 @@
           })
 
           chart.value.legend(false)
-          chart.value.data(props.pieData)
+          chart.value.data(pieData)
           chart.value.scale(props.percent, {
             formatter: (val: any) => {
               val = `${floatMultiply(val, 100)}%`
@@ -153,6 +150,7 @@
         }
       }
       return {
+        simulateToFixed,
         floatMultiply,
       }
     },
