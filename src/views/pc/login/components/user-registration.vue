@@ -208,14 +208,14 @@
     .send-button {
       width: 144px;
       height: 48px;
-      color: #1cd2a9;
-      background: rgba(133, 229, 191, 0.1);
-      border-color: rgba(133, 229, 191, 0.1);
+      color: #1cd2a9 !important;
+        background: rgba(133, 229, 191, 0.1) !important;
+        border-color: rgba(133, 229, 191, 0.1) !important;
       border-radius: 2px;
     }
 
     .send-button:hover {
-      border-color: #1cd2a9;
+      border-color: #1cd2a9 !important;
     }
 
     .send-code-input {
