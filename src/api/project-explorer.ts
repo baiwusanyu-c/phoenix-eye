@@ -26,7 +26,7 @@ export interface IPublicOpinion extends IPageParam {
 }
 export function getPublicOpinion(params: IPublicOpinion) {
   return request({
-    url: `${config.baseURL}/ussa/project/opinion/list`,
+    url: `${config.baseURL}/ussa/opinion/list`,
     method: 'post',
     params,
   })

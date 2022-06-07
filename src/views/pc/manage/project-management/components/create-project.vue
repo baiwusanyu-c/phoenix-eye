@@ -103,9 +103,13 @@
             <be-button type="success" custom-class="eagle-cancel-btn" @click="createProjectCancel">
               {{ $t('lang.createProject.createProjectCancel') }}
             </be-button>
-            <be-button type="success" custom-class="eagle-btn" @click="createProjectConfirm">{{
-              $t('lang.createProject.createProjectConfirm')
-            }}</be-button>
+            <be-button
+              type="success"
+              custom-class="eagle-btn"
+              :loading="confirmLoading"
+              @click="createProjectConfirm">
+              {{ $t('lang.createProject.createProjectConfirm') }}</be-button
+            >
           </span>
         </template>
       </el-dialog>
@@ -247,10 +251,14 @@
           return
         }
       }
+
+      const confirmLoading = ref<boolean>(false)
       /**
        * 弹窗确认方法
        */
       const createProjectConfirm = async function () {
+        if (confirmLoading.value) return
+        confirmLoading.value = true
         if (props.type === 'add') {
           await addProject()
         }
@@ -515,12 +523,15 @@
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
+              createProjectCancel()
             } else {
               catchErr(res)
             }
           })
           .catch(catchErr)
-          .finally(createProjectCancel)
+          .finally(() => {
+            confirmLoading.value = false
+          })
       }
       /**
        * 确认编辑项目方法
@@ -558,6 +569,9 @@
             }
           })
           .catch(catchErr)
+          .finally(() => {
+            confirmLoading.value = false
+          })
       }
       /**
        * 匹配社交
@@ -688,6 +702,7 @@
         formContact,
         formOperating,
         formBasic,
+        confirmLoading,
       }
     },
   })

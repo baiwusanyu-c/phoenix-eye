@@ -14,7 +14,7 @@ export interface IPOList extends IPageParam {
 
 export function getPublicOpinionList(params: IPOList) {
   return request({
-    url: `${config.baseURL}/ussa/public/opinion/list`,
+    url: `${config.baseURL}/ussa/opinion/list`,
     method: 'post',
     params,
   })
