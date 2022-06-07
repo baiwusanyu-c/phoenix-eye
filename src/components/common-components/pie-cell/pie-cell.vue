@@ -45,6 +45,10 @@
         type: String,
         default: 'percent',
       },
+      content: {
+        type: String,
+        default: '',
+      },
     },
     setup(props) {
       onMounted(() => {
@@ -144,6 +148,30 @@
                 },
               },
             })
+          if (props.content) {
+            chart.value
+              .annotation()
+              .text({
+                position: ['50%', '50%'],
+                content: props.content,
+                style: {
+                  fontSize: 26,
+                  fill: '#18304E',
+                  textAlign: 'center',
+                },
+                offsetY: -10,
+              })
+              .text({
+                position: ['50%', '50%'],
+                content: 'Total supply',
+                style: {
+                  fontSize: 12,
+                  fill: '#8A96A3',
+                  textAlign: 'center',
+                },
+                offsetY: 20,
+              })
+          }
 
           chart.value.interaction('element-active')
           chart.value.render()

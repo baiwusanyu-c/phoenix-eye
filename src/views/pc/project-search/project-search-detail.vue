@@ -586,15 +586,13 @@
               }
               if (res.data.decentralization) {
                 whalePieData.value.total = res.data.decentralization.token_info.total_supply
-                const radio1To10 = Number(
-                  res.data.decentralization.token_info.top_1_10_ratio.toFixed(4)
-                )
-                const radio11To50 = Number(
-                  res.data.decentralization.token_info.top_11_50_ratio.toFixed(4)
-                )
-                const radio51To100 = Number(
-                  res.data.decentralization.token_info.top_51_100_ratio.toFixed(4)
-                )
+                const radio1To10 =
+                  Math.floor(res.data.decentralization.token_info.top_1_10_ratio * 10000) / 10000
+                const radio11To50 =
+                  Math.floor(res.data.decentralization.token_info.top_11_50_ratio * 10000) / 10000
+                const radio51To100 =
+                  Math.floor(res.data.decentralization.token_info.top_51_100_ratio * 10000) / 10000
+
                 const sum = accAdd(accAdd(radio1To10, radio11To50), radio51To100)
                 whalePieData.value.chartData = [
                   {

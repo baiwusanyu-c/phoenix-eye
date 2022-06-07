@@ -29,6 +29,7 @@
           <pie-cell
             dom-id="whale_chart__pie"
             :pie-data="pieData.chartData"
+            :content="pieData.total"
             item="feature"
             percent="ratio"></pie-cell>
         </div>

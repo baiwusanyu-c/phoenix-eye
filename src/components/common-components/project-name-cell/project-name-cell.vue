@@ -2,7 +2,7 @@
 <template>
   <div class="flex items-center project-name-cell">
     <el-avatar :size="size" :src="url" fit="cover">
-      <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+      <img src="../../../assets/image/pc/empty-avt.png" />
     </el-avatar>
     <ellipsis-copy
       v-if="isEll"
