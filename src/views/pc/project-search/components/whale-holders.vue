@@ -131,11 +131,11 @@
             <div class="token-val">
               <ellipsis-copy
                 empty-text=" "
-                :target-str="scope.row.token_1_address_token_name"
+                :target-str="scope.row.showTokenVal1"
                 :tooltip-txt="scope.row.token_1_address"
                 :is-ellipsis="
-                  scope.row.token_1_address_token_name &&
-                  scope.row.token_1_address_token_name.length > 14
+                  scope.row.showTokenVal1 &&
+                  scope.row.showTokenVal1.length > 14
                     ? true
                     : false
                 "
@@ -145,18 +145,14 @@
                 font-length="6"
                 end-length="6">
               </ellipsis-copy>
-              <span
-                v-if="scope.row.token_2_address_token_name && scope.row.token_1_address_token_name"
-                class="link-span"
-                >/</span
-              >
+              <span class="link-span">/</span>
               <ellipsis-copy
                 empty-text=" "
-                :target-str="scope.row.token_2_address_token_name"
+                :target-str="scope.row.showTokenVal2"
                 :tooltip-txt="scope.row.token_2_address"
                 :is-ellipsis="
-                  scope.row.token_2_address_token_name &&
-                  scope.row.token_2_address_token_name.length > 14
+                  scope.row.showTokenVal2 &&
+                  scope.row.showTokenVal2.length > 14
                     ? true
                     : false
                 "
@@ -522,6 +518,12 @@
               pageNumLiquidity.value = Math.ceil(res.data.total / pageLiquidity.value.pageSize!)
               liquidityList.value.forEach(val => {
                 val.showVal = val.address_tag ? val.address_tag : val.address
+                val.showTokenVal1 = val.token_1_address_token_name
+                  ? val.token_1_address_token_name
+                  : val.token_1_address
+                val.showTokenVal2 = val.token_2_address_token_name
+                  ? val.token_2_address_token_name
+                  : val.token_2_address
               })
             } else {
               liquidityList.value = []

@@ -357,6 +357,8 @@ export type ILiquidity = {
   token_1_address_token_name?: string
   token_2_address?: string
   token_2_address_token_name?: string
+  showTokenVal1?: string
+  showTokenVal2?: string
 } & ITop10Holder
 
 export type IWhalePieData = {
