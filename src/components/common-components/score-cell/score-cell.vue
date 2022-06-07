@@ -60,7 +60,6 @@
         } else {
           hiddenPath.value = ''
         }
-        console.log(color.value)
       }
       watch(
         () => computedPropsScore.value,

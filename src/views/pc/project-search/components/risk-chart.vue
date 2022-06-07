@@ -63,7 +63,7 @@
         computePropsData,
         () => {
           nextTick(() => {
-            innerData.value = computePropsData.value?.stat_30_day_data
+            innerData.value = computePropsData.value?.stat_1_day_data
             createPieData(innerData.value!)
           })
         },
@@ -89,8 +89,6 @@
           val.color = colorDist[index]
         })
       }
-      innerData.value = computePropsData.value?.stat_30_day_data
-
       return {
         handleSelectChange,
         computePropsData,
