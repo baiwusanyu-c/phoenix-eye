@@ -40,6 +40,7 @@
         remote
         :placeholder="$t('lang.pleaseSelect')"
         clearable
+        :loading="selectLoading"
         :remote-method="getProjectUser"
         popper-class="project-select"
         class="project-select-remote"
@@ -47,7 +48,7 @@
         @change="handleProjectSelect">
         <el-option
           v-for="item in projectList"
-          :key="item.project_id + item.project_name"
+          :key="item.project_id"
           :label="item.project_name"
           :value="item.project_id">
           <div class="project-select--option">
@@ -439,20 +440,19 @@
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-
+      const selectLoading = ref<boolean>(false)
       const getProjectUser = (params: string): void => {
+          selectLoading.value = true
         getProjectListCurUser({ param: params })
           .then(res => {
             if (!res.data) {
               projectList.value = []
               return
             }
-            /* const list = res.data
-            list.forEach((val: any) => {
+            // #fix:4721
+            res.data.forEach((val: any) => {
               val.project_id = val.project_id.toString()
-              val.logo_url = 'https://avatars.githubusercontent.com/u/32354856?v=4'
-              val.platform = 'eth'
-            })*/
+            })
             projectList.value = res.data
             if (route.path === '/projectSearch/detail') {
               selectVal.value = getStore('curSelectProjId')!
@@ -461,6 +461,7 @@
           .catch(err => {
             message('error', err.message || err)
           })
+          .finally(()=>selectLoading.value = false)
       }
 
       // 路由不在項目態勢詳情也就清空選擇值
@@ -557,6 +558,7 @@
         openLogin,
         openRegistry,
         platformToCurrency,
+          selectLoading,
       }
     },
   })

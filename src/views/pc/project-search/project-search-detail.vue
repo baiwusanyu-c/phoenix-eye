@@ -646,20 +646,16 @@
        * 获取Audit数据
        */
       const auditList = ref<Array<IAuditList>>([])
-      const pageParamsAudit = createPageParam(4)
       const getAuditData = (): void => {
         const params: IContractReport = {
           project_id: parseInt(projectId.value),
-          page_num: pageParamsAudit.value.currentPage,
-          page_size: pageParamsAudit.value.pageSize,
         }
         const prevUrl = setPrevUrl()
         const baseURL = config.baseURL
         getContractReportList(params)
           .then((res: any) => {
             if (res && res.success) {
-              auditList.value = res.data.page_infos || []
-              pageParamsAudit.value.total = res.data.total
+              auditList.value = res.data || []
               auditList.value.forEach(val => {
                 val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
               })
@@ -752,7 +748,6 @@
       const selectProjBus = useEventBus<string>('selectProjBus')
       selectProjBus.on((id: string) => {
         projectId.value = id
-        resetPageParam(5, pageParamsAudit)
         getProSituData()
       })
       // 语种切换重新赋值一下 解决不更新问题
@@ -803,7 +798,6 @@
         handleScoreColor,
         marketCapBaseInfo,
         getAuditData,
-        pageParamsAudit,
         auditList,
         handleSubscribe,
         openWeb,
