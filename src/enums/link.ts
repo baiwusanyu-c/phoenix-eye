@@ -32,5 +32,7 @@ export enum webURL {
 
   twitter_alert = 'https://twitter.com/BeosinAlert',
   feedback = 'https://forms.gle/uL5KMAQFK3XaSWur6',
+
+  plugin_link = 'https://chrome.google.com/webstore/detail/beosin-alert/lgbhcpagiobjacpmcgckfgodjeogceji?hl=zh-CN',
 }
 export const previewUrl = '/website/common/preview/single'

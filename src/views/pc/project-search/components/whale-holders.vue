@@ -61,6 +61,7 @@
               <template #default="scope">
                 <ellipsis-copy
                   :target-str="scope.row.showVal"
+                  :tooltip-txt="scope.row.address"
                   :is-ellipsis="scope.row.showVal && scope.row.showVal.length > 14 ? true : false"
                   :is-show-copy-btn="false"
                   :is-tooltip="true"
@@ -134,10 +135,7 @@
                 :target-str="scope.row.showTokenVal1"
                 :tooltip-txt="scope.row.token_1_address"
                 :is-ellipsis="
-                  scope.row.showTokenVal1 &&
-                  scope.row.showTokenVal1.length > 14
-                    ? true
-                    : false
+                  scope.row.showTokenVal1 && scope.row.showTokenVal1.length > 14 ? true : false
                 "
                 :is-show-copy-btn="false"
                 :is-tooltip="true"
@@ -151,10 +149,7 @@
                 :target-str="scope.row.showTokenVal2"
                 :tooltip-txt="scope.row.token_2_address"
                 :is-ellipsis="
-                  scope.row.showTokenVal2 &&
-                  scope.row.showTokenVal2.length > 14
-                    ? true
-                    : false
+                  scope.row.showTokenVal2 && scope.row.showTokenVal2.length > 14 ? true : false
                 "
                 :is-show-copy-btn="false"
                 :is-tooltip="true"

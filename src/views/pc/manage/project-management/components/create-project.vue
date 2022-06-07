@@ -507,6 +507,7 @@
         }
         // 表单校验
         if (!formVerification(params)) {
+          confirmLoading.value = false
           return
         }
 
@@ -545,6 +546,7 @@
         }
         // 表单校验
         if (!formVerification(params)) {
+          confirmLoading.value = false
           return
         }
         // 填写 report_id_list

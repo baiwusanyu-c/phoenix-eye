@@ -30,8 +30,8 @@
             role="link"
             width="24"
             height="24"
-            icon="iconHecoEagleG"
-            @click="openWindow(webURL.chains_heco)"></be-icon>
+            icon="iconEthEagleG"
+            @click="openWindow(webURL.chains_eth)"></be-icon>
           <be-icon
             role="link"
             width="24"
@@ -42,8 +42,9 @@
             role="link"
             width="24"
             height="24"
-            icon="iconEthEagleG"
-            @click="openWindow(webURL.chains_eth)"></be-icon>
+            icon="iconHecoEagleG"
+            @click="openWindow(webURL.chains_heco)"></be-icon>
+
           <be-icon
             role="link"
             width="24"
@@ -94,7 +95,7 @@
           <p>
             {{ $t('lang.projectExplorer.alert.plugin') }}
           </p>
-          <be-button custom-class="eagle-btn install-btn" round="4" type="success">
+          <be-button custom-class="eagle-btn install-btn" round="4" type="success" @click="openWindow(webURL.plugin_link)">
             <img src="../../../assets/image/pc/download-mini.png" alt="" />
             {{ $t('lang.projectExplorer.alert.install') }}
           </be-button>
