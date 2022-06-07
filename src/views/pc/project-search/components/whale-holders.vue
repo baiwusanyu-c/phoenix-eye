@@ -144,7 +144,11 @@
                 font-length="6"
                 end-length="6">
               </ellipsis-copy>
-              <span v-if="scope.row.token_2_address_token_name" class="link-span">/</span>
+              <span
+                v-if="scope.row.token_2_address_token_name && scope.row.token_1_address_token_name"
+                class="link-span"
+                >/</span
+              >
               <ellipsis-copy
                 empty-text=" "
                 :target-str="scope.row.token_2_address_token_name"

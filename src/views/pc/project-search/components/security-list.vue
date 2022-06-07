@@ -58,7 +58,7 @@
       const riskInfoList = ref<Array<IRiskInfoList>>([])
       const getRiskInfo = (): void => {
         const params: IPOList = {
-          param: props.param,
+          project_id: props.param,
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
         }

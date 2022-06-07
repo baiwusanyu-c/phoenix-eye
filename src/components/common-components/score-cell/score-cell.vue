@@ -57,7 +57,10 @@
 
         if (Number(computedPropsScore.value) <= 0) {
           hiddenPath.value = 'none'
+        } else {
+          hiddenPath.value = ''
         }
+        console.log(color.value)
       }
       watch(
         () => computedPropsScore.value,

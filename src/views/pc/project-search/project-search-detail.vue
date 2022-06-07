@@ -394,7 +394,7 @@
         <title-cell :url="security" :name="$t('lang.projectExplorer.detail.titleInfo')">
         </title-cell>
       </div>
-      <security-list :param="keywordParam" @show="handleShowSecurityList"></security-list>
+      <security-list :param="projectId" @show="handleShowSecurityList"></security-list>
     </div>
     <div v-if="securityEventList.length > 0 && hasTokenAddress" class="project-detail-security">
       <div class="project-detail--header">
@@ -675,10 +675,8 @@
 
       // 项目id
       const projectId = ref<string>('')
-      const { param, id, keyword } = route.query
-      const keywordParam = ref<string>('')
+      const { param, id } = route.query
       projectId.value = (param || id) as string
-      keywordParam.value = keyword as string
       onMounted(() => {
         getProSituData()
       })
@@ -838,7 +836,6 @@
         security,
         security2,
         whalePieData,
-        keywordParam,
         handleContractSelect,
         hasTokenAddress,
       }

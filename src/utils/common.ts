@@ -359,27 +359,27 @@ export function nFormatter(num: number, digits: number, getS = false) {
 export function nFormats(num: number) {
   let unit = ''
   let res = num
-  if (num > 1e3 && num < 1e6) {
+  if (num >= 1e3 && num < 1e6) {
     res = num / 1e3
     unit = 'K'
   }
-  if (num > 1e6 && num < 1e9) {
+  if (num >= 1e6 && num < 1e9) {
     res = num / 1e6
     unit = 'M'
   }
-  if (num > 1e9 && num < 1e12) {
+  if (num >= 1e9 && num < 1e12) {
     res = num / 1e9
     unit = 'B'
   }
-  if (num > 1e12 && num < 1e15) {
+  if (num >= 1e12 && num < 1e15) {
     res = num / 1e12
     unit = 'T'
   }
-  if (num > 1e15 && num < 1e18) {
+  if (num >= 1e15 && num < 1e18) {
     res = num / 1e15
     unit = 'P'
   }
-  if (num > 1e18) {
+  if (num >= 1e18) {
     res = num / 1e18
     unit = 'E'
   }
