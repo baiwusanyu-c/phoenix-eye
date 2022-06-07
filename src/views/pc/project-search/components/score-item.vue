@@ -5,7 +5,7 @@
       <p>{{ $t('lang.projectExplorer.detail.scoreItem1') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc1') }}</span>
     </div>
-    <score-cell v-if="hasTokenAddress" :score="data.audit_report_score" nan-val="0"></score-cell>
+    <score-cell v-if="hasTokenAddress" :score="data.audit_report_score"></score-cell>
     <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token4.png" />
   </div>
   <div class="score-item" :class="!hasTokenAddress ? 'score-item--un' : ''">
@@ -16,7 +16,7 @@
     <score-cell
       v-if="hasTokenAddress"
       :score="data.decentralization_score"
-      nan-val="0"></score-cell>
+      ></score-cell>
     <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token4.png" />
   </div>
   <div class="score-item" :class="!hasTokenAddress ? 'score-item--un' : ''">
@@ -27,7 +27,7 @@
     <score-cell
       v-if="hasTokenAddress"
       :score="data.market_volatility_score"
-      nan-val="0"></score-cell>
+      ></score-cell>
     <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token5.png" />
   </div>
   <div class="score-item" :class="!hasTokenAddress ? 'score-item--un' : ''">
@@ -35,7 +35,7 @@
       <p>{{ $t('lang.projectExplorer.detail.scoreItem4') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc4') }}</span>
     </div>
-    <score-cell v-if="hasTokenAddress" :score="data.diaphaneity_score" nan-val="0"></score-cell>
+    <score-cell v-if="hasTokenAddress" :score="data.diaphaneity_score" ></score-cell>
     <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token4.png" />
   </div>
   <div class="score-item" :class="!hasTokenAddress ? 'score-item--un' : ''">
@@ -43,7 +43,7 @@
       <p>{{ $t('lang.projectExplorer.detail.scoreItem5') }}</p>
       <span>{{ $t('lang.projectExplorer.detail.scoreItemDesc5') }}</span>
     </div>
-    <score-cell v-if="hasTokenAddress" :score="data.risk_tx_score" nan-val="0"></score-cell>
+    <score-cell v-if="hasTokenAddress" :score="data.risk_tx_score" ></score-cell>
     <img v-if="!hasTokenAddress" alt="" src="../../../../assets/image/pc/no-token5.png" />
   </div>
 </template>
