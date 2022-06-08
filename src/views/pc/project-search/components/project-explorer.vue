@@ -395,6 +395,9 @@
     margin-top: 16px;
     padding: 16px;
     box-sizing: border-box;
+    .el-table__row {
+      cursor: pointer;
+    }
     .table-head {
       font-size: 12px;
     }

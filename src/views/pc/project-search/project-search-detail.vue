@@ -9,9 +9,10 @@
         <div class="title">
           <project-name-cell
             :name="baseInfo.project_name"
+            :url="baseInfo.logo_url"
             :is-ell="false"
             size="46"
-            font-size="30">
+            styles="font-size:30px">
           </project-name-cell>
           <img
             v-if="auditList.length > 0"
@@ -452,6 +453,7 @@
   import security from '../../../assets/image/pc/security.png'
   import security2 from '../../../assets/image/pc/security2.png'
   import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
+  import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -479,12 +481,11 @@
   } from '../../../utils/types'
 
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
-  import ProjectNameCell from "../../../components/common-components/project-name-cell/project-name-cell.vue";
 
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
-        ProjectNameCell,
+      ProjectNameCell,
       ContactBar,
       WhaleHolders,
       BarCell,

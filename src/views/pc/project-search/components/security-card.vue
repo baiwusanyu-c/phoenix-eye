@@ -39,8 +39,8 @@
               {{ sourceName }}
             </a>
             <be-icon
-                style="cursor: pointer"
               v-if="sourceName === 'twitter'"
+              style="cursor: pointer"
               width="18"
               height="19"
               icon="iconTwitterBlu"

@@ -14,7 +14,7 @@
       :font-length="fontLen"
       end-length="0">
     </ellipsis-copy>
-    <span v-else >{{ name }}</span>
+    <span v-else :style="styles">{{ name }}</span>
   </div>
 </template>
 
@@ -33,7 +33,7 @@
       },
       url: {
         type: String,
-        default: 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png',
+        default: '../../../assets/image/pc/empty-avt.png',
       },
       isEll: {
         type: Boolean,
@@ -50,6 +50,10 @@
       width: {
         type: String,
         default: '116',
+      },
+      styles: {
+        type: String,
+        default: '',
       },
     },
     setup(props) {
