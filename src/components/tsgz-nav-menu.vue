@@ -451,14 +451,11 @@
             }
             // #fix:4721
             res.data.forEach((val: any) => {
-               // console.log(val.project_id)
               val.project_id = val.project_id.toString()
-              //  console.log(val.project_id)
+
             })
             projectList.value = res.data
-            if (route.path === '/projectSearch/detail') {
-              selectVal.value = getStore('curSelectProjId')!
-            }
+
           })
           .catch(err => {
             message('error', err.message || err)
