@@ -103,7 +103,11 @@
                     openWindow(`${webURL[baseInfo.platform + '_token']}${baseInfo.token_address}`)
                   ">
                   <ellipsis-copy
-                    :target-str="baseInfo.token_address_name ? baseInfo.token_address_name : baseInfo.token_address"
+                    :target-str="
+                      baseInfo.token_address_name
+                        ? baseInfo.token_address_name
+                        : baseInfo.token_address
+                    "
                     :is-tooltip="false"
                     :is-show-copy-btn="false">
                   </ellipsis-copy>

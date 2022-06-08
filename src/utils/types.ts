@@ -70,7 +70,7 @@ export interface IBaseInfo {
   platform?: string
   is_subscribe?: boolean
   project_name?: string
-  logo_url?: string
+  logo_url?:string
 }
 
 export interface ITop5TokenHolder {
