@@ -88,6 +88,14 @@
       background-color: $mainColor7;
     }
   }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .project-manage-main .project-manage-list,
+    .project-manage-main .project-manage--tab,
+    .project-manage-main .project-manage-search {
+      width: 92%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-manage-main .project-manage-list,

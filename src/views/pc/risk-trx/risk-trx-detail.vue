@@ -678,6 +678,51 @@
 </style>
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit,
+    .risk-trx-detail .detail-slump {
+      width: 92%;
+    }
+
+    .risk-trx-detail {
+      .detail-body {
+        padding: 10px;
+
+        .detail-item {
+          .detail-item-txt {
+            margin-top: 5px;
+            font-size: 12px;
+          }
+
+          .detail-item--date {
+            .date-label {
+              width: 16%;
+            }
+          }
+
+          .default {
+            height: 25px;
+            font-size: 12px;
+          }
+        }
+      }
+
+      .detail-profit {
+        height: 65.5%;
+        padding: 10px;
+
+        h3 {
+          font-size: 16px;
+        }
+
+        .detail-profit-body {
+          font-size: 12px;
+        }
+      }
+    }
+  }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .risk-trx-detail .detail-body,
     .risk-trx-detail .detail-profit,

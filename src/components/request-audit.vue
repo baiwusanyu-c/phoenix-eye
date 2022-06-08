@@ -232,7 +232,6 @@
 <style lang="scss">
   #request_audit_dialog .request-audit-dialog {
     width: 527px;
-
     .el-form-item__label {
       font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
@@ -270,6 +269,31 @@
     .project-username {
       display: flex;
       justify-content: center;
+    }
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    #request_audit_dialog .be-dialog {
+      display: initial;
+      overflow-y: auto;
+      .request-audit-dialog {
+        top: 10%;
+        left: calc(50% - 264px);
+        position: relative;
+        margin-bottom: 90px;
+      }
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    #request_audit_dialog .be-dialog {
+      display: initial;
+      overflow-y: auto;
+      .request-audit-dialog {
+        top: 10%;
+        left: calc(50% - 264px);
+        position: relative !important;
+        margin-bottom: 90px;
+      }
     }
   }
 </style>

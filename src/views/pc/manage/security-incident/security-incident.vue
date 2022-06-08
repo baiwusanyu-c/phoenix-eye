@@ -359,6 +359,13 @@
       background-color: $mainColor7;
     }
   }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .security-incident-main .security-incident-list,
+    .security-incident-main .security-incident-search {
+      width: 92%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .security-incident-main .security-incident-list,

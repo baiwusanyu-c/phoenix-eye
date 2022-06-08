@@ -4,30 +4,35 @@
   <el-form-item :label="`${$t('lang.createProject.markup')}:`">
     <el-input
       v-model="modelValueInner.address_markup"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>
   <el-form-item :label="`${$t('lang.createProject.whitePaper')}:`">
     <el-input
       v-model="modelValueInner.white_paper"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>
   <el-form-item :label="`${$t('lang.createProject.operation')}:`">
     <el-input
       v-model="modelValueInner.operation_manual"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>
   <el-form-item :label="`${$t('lang.createProject.boardExchange')}:`">
     <el-input
       v-model="modelValueInner.exchange_board"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>
   <el-form-item :label="`${$t('lang.createProject.testChain')}:`">
     <el-input
       v-model="modelValueInner.test_chain"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>

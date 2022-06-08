@@ -216,7 +216,11 @@
             <span class="table-head"></span>
           </template>
           <template #default="scope">
-            <be-icon v-if="scope.row.address_tag" width="32" height="32" icon="iconJing"></be-icon>
+            <be-icon
+              v-if="scope.row.percentage > 20"
+              width="32"
+              height="32"
+              icon="iconJing"></be-icon>
             <span v-else></span>
           </template>
         </el-table-column>

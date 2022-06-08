@@ -12,7 +12,7 @@
       :tag-list="item.tag">
     </security-card>
   </div>
-  <div style="float: right">
+  <div style="float: right;margin-top: 20px">
     <be-pagination
       is-ordianry
       :page-size="pageParams.pageSize"
@@ -100,7 +100,7 @@
 
 <style lang="scss">
   .project-risk--container {
-    @include common-container(32px, 65.2%);
+    @include common-container(32px, 67.2%);
     text-align: center;
     min-height: 480px;
     height: auto;
@@ -114,6 +114,12 @@
     justify-content: flex-start;
     flex-wrap: wrap;
   }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .project-search-main .project-risk--container {
+      width: 92%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-search-main .project-risk--container {
@@ -126,5 +132,12 @@
     .project-search-main .project-risk--container {
       width: 80%;
     }
+  }
+
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+      .project-search-main .project-risk--container {
+          width: 72%;
+      }
   }
 </style>

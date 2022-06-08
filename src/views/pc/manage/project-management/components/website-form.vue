@@ -14,6 +14,7 @@
   <el-form-item :label="'WebSite:'">
     <el-input
       v-model="modelValueInner.website"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>
@@ -21,6 +22,7 @@
   <el-form-item :label="'GitHub:'">
     <el-input
       v-model="modelValueInner.github"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>
@@ -28,6 +30,7 @@
   <el-form-item :label="'Twitter:'">
     <el-input
       v-model="modelValueInner.twitter"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>
@@ -35,6 +38,7 @@
   <el-form-item :label="'Telegram:'">
     <el-input
       v-model="modelValueInner.telegram"
+      maxlength="100"
       class="projectKeyWordsInput"
       @change="handleChange"></el-input>
   </el-form-item>

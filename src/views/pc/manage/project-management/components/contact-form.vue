@@ -18,6 +18,7 @@
       </el-select>
       <el-input
         v-model="modelValueInner.contact"
+        maxlength="100"
         class="projectKeyWordsInput"
         @change="handleChange"></el-input>
     </div>

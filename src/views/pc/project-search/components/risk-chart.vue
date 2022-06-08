@@ -63,8 +63,8 @@
         computePropsData,
         () => {
           nextTick(() => {
-            innerData.value = computePropsData.value?.stat_1_day_data
-            createPieData(innerData.value!)
+            // innerData.value = computePropsData.value?.stat_1_day_data
+            // createPieData(innerData.value!)
           })
         },
         { immediate: true, deep: true }

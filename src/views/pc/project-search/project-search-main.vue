@@ -95,7 +95,11 @@
           <p>
             {{ $t('lang.projectExplorer.alert.plugin') }}
           </p>
-          <be-button custom-class="eagle-btn install-btn" round="4" type="success" @click="openWindow(webURL.plugin_link)">
+          <be-button
+            custom-class="eagle-btn install-btn"
+            round="4"
+            type="success"
+            @click="openWindow(webURL.plugin_link)">
             <img src="../../../assets/image/pc/download-mini.png" alt="" />
             {{ $t('lang.projectExplorer.alert.install') }}
           </be-button>
@@ -377,7 +381,7 @@
     background-image: url('../../../assets/image/pc/bg-base-info.png');
     background-repeat: round;
     border-radius: 4px;
-    @include common-container(32px, 65.2%);
+    @include common-container(32px, 67.2%);
     padding: 40px 60px;
     box-sizing: border-box;
 
@@ -661,7 +665,20 @@
       }
     }
   }
-
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-explorer--container {
+      width: 92%;
+    }
+    .computer-bg {
+      position: absolute;
+      right: 0;
+      bottom: 8px;
+      width: 45%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-search-main .project-base--container,

@@ -15,7 +15,7 @@
           <el-form :label-position="labelPosition" label-width="80px">
             <el-form-item :label="$t('lang.feedback.formTitle') + ':'">
               <span class="reg-start feed-back--star">*</span>
-              <el-input v-model="form.title" maxlength="50"></el-input>
+              <el-input v-model="form.title" maxlength="100"></el-input>
               <p class="form-item__len">{{ form.title.length }} / 50</p>
             </el-form-item>
             <el-form-item :label="$t('lang.feedback.formContent') + ':'">

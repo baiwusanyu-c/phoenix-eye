@@ -6,6 +6,7 @@
     <span class="reg-start project-star">*</span>
     <el-input
       v-model="modelValueInner.project_name"
+      maxlength="100"
       class="projectKeyWordsInput"
       :placeholder="$t('lang.createProject.createProjectNameInput')"
       @change="handleChange"></el-input>
@@ -14,6 +15,7 @@
   <el-form-item :label="$t('lang.createProject.createProjectKeyWords') + ':'">
     <el-input
       v-model="modelValueInner.keyword"
+      maxlength="100"
       class="projectKeyWordsInput"
       :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"
       @change="handleChange"></el-input>

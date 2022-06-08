@@ -42,7 +42,7 @@
     position: fixed;
     right: 13%;
     top: 65%;
-    background-color: $mainColor20;
+    background-color: $textColor3;
     z-index: 20;
     border-radius: 8px;
     display: flex;
@@ -55,6 +55,19 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      width: 100%;
+      border-radius: 8px;
+      &:hover {
+        background-color: $mainColor20;
+      }
+    }
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .contact-bar {
+      right: 10px;
+      width: 45px;
+      height: 140px;
     }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {

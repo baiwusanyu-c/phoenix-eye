@@ -106,7 +106,7 @@
   .security-card {
     width: 290px;
     height: 373px;
-    margin: 10px;
+    margin: 15px;
     .security-card--head {
       height: 160px;
       padding: 20px;

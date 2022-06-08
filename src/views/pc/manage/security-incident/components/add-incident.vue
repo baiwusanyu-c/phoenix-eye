@@ -14,15 +14,15 @@
         <el-form label-position="right" label-width="142px">
           <el-form-item :label="$t('lang.securityIncident.form.project') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.project"></el-input>
+            <el-input v-model="form.project" maxlength="100"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_type') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.attack_type"></el-input>
+            <el-input v-model="form.attack_type" maxlength="100"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.loss_amount') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.loss_amount" @input="limitInput()">
+            <el-input v-model="form.loss_amount" maxlength="100" @input="limitInput()">
               <template #prefix>
                 <span style="width: 30px">$</span>
               </template>
@@ -34,11 +34,12 @@
               v-model="form.abstract_content"
               type="textarea"
               :rows="7"
+              maxlength="1000"
               resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.event_link') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.event_link"></el-input>
+            <el-input v-model="form.event_link" maxlength="100"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_address_arr') + ':'">
             <span class="reg-start feed-back--star">*</span>
@@ -46,6 +47,7 @@
               v-model="form.attack_address_arr"
               type="textarea"
               :rows="7"
+              maxlength="1000"
               resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attacked_address_arr') + ':'">
@@ -54,6 +56,7 @@
               v-model="form.attacked_address_arr"
               type="textarea"
               :rows="7"
+              maxlength="1000"
               resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_trx_arr') + ':'">
@@ -62,6 +65,7 @@
               v-model="form.attack_trx_arr"
               type="textarea"
               :rows="7"
+              maxlength="1000"
               resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_time') + '    :'">
@@ -380,5 +384,31 @@
         color: $mainColor7;
       }
     }
+  }
+
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+      #create_incident .be-dialog {
+          display: initial;
+          overflow-y: auto;
+          .create-dialog {
+               margin-top: 6%;
+              left: calc(50% - 264px);
+              position: relative;
+              margin-bottom: 90px;
+          }
+      }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+      #create_incident .be-dialog {
+          display: initial;
+          overflow-y: auto;
+          .create-dialog {
+              margin-top: 6%;
+              left: calc(50% - 400px);
+              position: relative !important;
+              margin-bottom: 90px;
+          }
+      }
   }
 </style>

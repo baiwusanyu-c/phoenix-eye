@@ -438,7 +438,13 @@
       display: block;
     }
   }
-
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .addr-monitor-main .addr-monitor-search,
+    .addr-monitor-main .addr-monitor-result {
+      width: 92%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .addr-monitor-main .addr-monitor-search,

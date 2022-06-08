@@ -24,7 +24,7 @@
               :index="value.index"
               :disabled="value.isDisabled"
               @click="routerSwitch(value, value.isPush)">
-              <span style="margin-left: 10px">{{ $t(value.name) }}</span>
+              <span style="margin-left: 10px; font-size: 16px">{{ $t(value.name) }}</span>
             </el-menu-item>
           </div>
         </el-menu>
@@ -442,7 +442,7 @@
       const selectVal = ref<string>('')
       const selectLoading = ref<boolean>(false)
       const getProjectUser = (params: string): void => {
-          selectLoading.value = true
+        selectLoading.value = true
         getProjectListCurUser({ param: params })
           .then(res => {
             if (!res.data) {
@@ -461,7 +461,7 @@
           .catch(err => {
             message('error', err.message || err)
           })
-          .finally(()=>selectLoading.value = false)
+          .finally(() => (selectLoading.value = false))
       }
 
       // 路由不在項目態勢詳情也就清空選擇值
@@ -558,7 +558,7 @@
         openLogin,
         openRegistry,
         platformToCurrency,
-          selectLoading,
+        selectLoading,
       }
     },
   })
@@ -566,6 +566,7 @@
 
 <style lang="scss">
   #xnhb_nav_menu .project-select-remote {
+    height: 40px;
     .el-input.is-focus .el-input__wrapper {
       box-shadow: none !important;
     }
@@ -577,12 +578,15 @@
       box-shadow: none;
       .el-input__inner {
         color: $mainColor7;
+        height: 40px;
+        line-height: 40px;
       }
     }
   }
   .project-select-remote--btn {
     background-color: $mainColor3;
-    height: 32px;
+    height: 40px;
+    line-height: 40px;
     width: 42px;
     display: flex;
     align-items: center;
@@ -741,7 +745,7 @@
     text-align: center;
     background-color: $mainColor20;
     box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
-
+    height: 68px;
     .tsgz-slogan {
       display: flex;
       flex: 4;
