@@ -113,6 +113,9 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    .security-card:last-child {
+      margin-right: 0;
+    }
   }
   /* 移动端预留 适配 */
   @media screen and (max-width: 1280px) {

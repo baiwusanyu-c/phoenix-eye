@@ -40,7 +40,7 @@
     width: 60px;
     height: 180px;
     position: fixed;
-    right: 13%;
+    right: 12%;
     top: 65%;
     background-color: $textColor3;
     z-index: 20;

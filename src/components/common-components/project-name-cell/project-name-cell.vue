@@ -14,7 +14,7 @@
       :font-length="fontLen"
       end-length="0">
     </ellipsis-copy>
-    <span v-else>{{ name }}</span>
+    <span v-else >{{ name }}</span>
   </div>
 </template>
 

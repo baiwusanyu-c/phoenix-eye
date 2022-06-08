@@ -246,7 +246,7 @@
         <template #empty>
           <empty-data></empty-data>
         </template>
-        <el-table-column prop="showValHold" width="180">
+        <el-table-column prop="showValContract" width="180">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.detail.tableHeader2.contract')
@@ -254,9 +254,10 @@
           </template>
           <template #default="scope">
             <ellipsis-copy
-              :target-str="scope.row.showValHold"
+              :target-str="scope.row.showValContract"
+              :tooltip-txt="scope.row.contract_address"
               :is-ellipsis="
-                scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
+                scope.row.showValContract && scope.row.showValContract.length > 14 ? true : false
               "
               :is-show-copy-btn="false"
               :is-tooltip="true"
@@ -285,6 +286,7 @@
           <template #default="scope">
             <ellipsis-copy
               :target-str="scope.row.showValHold"
+              :tooltip-txt="scope.row.hold_address"
               :is-ellipsis="
                 scope.row.showValHold && scope.row.showValHold.length > 14 ? true : false
               "

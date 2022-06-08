@@ -19,9 +19,7 @@
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item2') }}</p>
           <span>{{
-            isEmpty(baseInfo.project_total, '/') === '/'
-              ? '/'
-              : `${nFormats(baseInfo.project_total)}`
+            isEmpty(baseInfo.project_total, '/') === '/' ? '/' : `${baseInfo.project_total}`
           }}</span>
         </div>
         <div class="project-base-item">

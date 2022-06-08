@@ -7,13 +7,12 @@
     <div class="project-detail-base">
       <div class="project-detail--header">
         <div class="title">
-          <icon-cell
-            :content="baseInfo.project_name"
-            is-platform
-            :icon="baseInfo.platform"
+          <project-name-cell
+            :name="baseInfo.project_name"
+            :is-ell="false"
             size="46"
             font-size="30">
-          </icon-cell>
+          </project-name-cell>
           <img
             v-if="auditList.length > 0"
             alt=" "
@@ -55,7 +54,7 @@
             role="button"
             width="50"
             height="60"
-            icon="iconEmailEagle"
+            icon="iconWebsiteEagle"
             @click="openWindow(governData.website)"></be-icon>
           <be-icon
             v-if="governData.twitter"
@@ -480,10 +479,12 @@
   } from '../../../utils/types'
 
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
+  import ProjectNameCell from "../../../components/common-components/project-name-cell/project-name-cell.vue";
 
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+        ProjectNameCell,
       ContactBar,
       WhaleHolders,
       BarCell,

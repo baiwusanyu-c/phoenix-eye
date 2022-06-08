@@ -134,7 +134,7 @@
         getList()
       }
       const { message } = composition()
-      const tableData = ref<object>([])
+      const tableData = ref<Array<any>>([])
       const loading = ref<boolean>(false)
 
       /**
@@ -161,7 +161,9 @@
               tableData.value = res.data.page_infos
               pageParams.value.total = res.data.total
               pageNum.value = Math.ceil(res.data.total / pageParams.value.pageSize!)
-              emit('show', true)
+              if (tableData.value.length > 0) {
+                emit('show', true)
+              }
             } else {
               tableData.value = []
               resetPageParam()

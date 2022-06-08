@@ -39,6 +39,7 @@
               {{ sourceName }}
             </a>
             <be-icon
+                style="cursor: pointer"
               v-if="sourceName === 'twitter'"
               width="18"
               height="19"
@@ -104,9 +105,9 @@
 
 <style lang="scss">
   .security-card {
-    width: 290px;
+    width: 300px;
     height: 373px;
-    margin: 10px;
+    margin-right: 28px;
     .security-card--head {
       height: 160px;
       padding: 20px;

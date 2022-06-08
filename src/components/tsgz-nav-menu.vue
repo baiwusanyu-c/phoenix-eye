@@ -6,7 +6,7 @@
       <!--    logo    -->
       <div class="expend-logo" @click="routerPush('/projectSearch')">
         <img src="../assets/image/pc/logo.png" alt="Beosin-Eagle-Eye" />
-        <span>Eagle Eye</span>
+        <span>EagleEye</span>
       </div>
       <!--    菜单    -->
       <div class="tsgz-nav-menu-container">
