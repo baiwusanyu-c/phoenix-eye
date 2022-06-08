@@ -43,6 +43,7 @@
   import PieCell from '../../../../components/common-components/pie-cell/pie-cell.vue'
   import BarCell from '../../../../components/common-components/bar-cell/bar-cell.vue'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
+  import { jsonClone } from '../../../../utils/common'
   import type { PropType } from 'vue'
   import type { IOption, IRiskChartData, IRiskPie } from '../../../../utils/types'
 
@@ -63,8 +64,10 @@
         computePropsData,
         () => {
           nextTick(() => {
-            // innerData.value = computePropsData.value?.stat_1_day_data
-            // createPieData(innerData.value!)
+            if (computePropsData.value?.stat_1_day_data) {
+              innerData.value = jsonClone(computePropsData.value?.stat_1_day_data)
+              createPieData(innerData.value!)
+            }
           })
         },
         { immediate: true, deep: true }
@@ -72,13 +75,13 @@
       const innerData = ref<Array<IRiskPie> | undefined>([])
       const handleSelectChange = (data: string): void => {
         if (data === '1') {
-          innerData.value = computePropsData.value?.stat_1_day_data
+          innerData.value = jsonClone(computePropsData.value?.stat_1_day_data)
         }
         if (data === '7') {
-          innerData.value = computePropsData.value?.stat_7_day_data
+          innerData.value = jsonClone(computePropsData.value?.stat_7_day_data)
         }
         if (data === '30') {
-          innerData.value = computePropsData.value?.stat_30_day_data
+          innerData.value = jsonClone(computePropsData.value?.stat_30_day_data)
         }
         createPieData(innerData.value!)
       }

@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
+  import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
   import { floatMultiply, simulateToFixed } from '../../../utils/common'
   import type { IOption } from '../../../utils/types'
@@ -62,7 +62,8 @@
         () => props.pieData,
         () => {
           renderChart(true)
-        }
+        },
+        { deep: true }
       )
       const renderChart = (isUpdate?: boolean) => {
         if (props.pieData) {
