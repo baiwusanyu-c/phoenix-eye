@@ -19,23 +19,37 @@
           </el-option>
         </el-select>
       </div>
-      <el-input
-        v-model="searchParams"
-        :placeholder="$t('lang.projectExplorer.exp.searchP')"
-        class="input-with-select">
-        <template #append>
-          <be-icon
-            icon="search"
-            style="
-              width: 46px;
-              height: 100%;
-              align-items: center;
-              justify-content: center;
-              cursor: pointer;
-            "
-            @click="handleSearch"></be-icon>
-        </template>
-      </el-input>
+      <div style="display: flex; align-items: center">
+        <el-select
+          ref="projectSelect"
+          v-model="selectVal"
+          filterable
+          remote
+          :placeholder="$t('lang.pleaseSelect')"
+          clearable
+          :loading="selectLoading"
+          :remote-method="getProjectUser"
+          popper-class="project-select"
+          class="project-select-remote"
+          @change="handleProjectSelect">
+          <el-option
+            v-for="item in searchProjectList"
+            :key="item.project_id"
+            :label="item.project_name"
+            :value="item.project_id">
+            <div class="project-select--option">
+              <project-name-cell
+                :url="item.logo_url"
+                :name="item.project_name"
+                :is-ell="false"></project-name-cell>
+              <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+            </div>
+          </el-option>
+        </el-select>
+        <div class="project-select-remote--btn">
+          <be-icon icon="search" color="#fff"></be-icon>
+        </div>
+      </div>
     </div>
     <div class="project-explorer--table eagle-table">
       <el-table
@@ -210,11 +224,18 @@
   import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
   import compositionPage from '../../../../utils/mixin/page-param'
   import composition from '../../../../utils/mixin/common-func'
-  import { getExploreList } from '../../../../api/project-explorer'
+  import { getExploreList, getProjectListCurUser } from '../../../../api/project-explorer'
   // @ts-ignore
   import { BeIcon, BePagination } from '../../../../../public/be-ui/be-ui.es'
-  import { catchErr, createDate, formatDate, nFormats } from '../../../../utils/common'
-  import { platformListDict } from '../../../../utils/platform-dict'
+  import {
+    catchErr,
+    createDate,
+    formatDate,
+    nFormats,
+    removeStore,
+    setStore,
+  } from '../../../../utils/common'
+  import { platformListDict, platformToCurrency } from '../../../../utils/platform-dict'
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'
   import explorerProj from '../../../../assets/image/pc/explorer-proj.png'
@@ -236,15 +257,8 @@
        * 获取项目列表
        */
       // 搜索参数
-      const searchParams = ref<string>('')
       const selectValue = ref<string>('')
-      const handleSearch = (): void => {
-        nextTick(() => {
-          getList('reset')
-        })
-      }
       const handleSelect = (): void => {
-        searchParams.value = ''
         nextTick(() => {
           getList('reset')
         })
@@ -270,7 +284,7 @@
         }
         loading.value = true
         const params: IProjParam = {
-          param: searchParams.value,
+          param: '',
           platform: selectValue.value,
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
@@ -333,14 +347,52 @@
           return headerDict[key]
         }
       })
+
+      /****************************** 项目选择相关 ******************************/
+      // 获取用户项目下拉列表
+      const searchProjectList = ref<Array<IOption>>([])
+      const selectVal = ref<string>('')
+      const selectLoading = ref<boolean>(false)
+      const getProjectUser = (params: string): void => {
+        selectLoading.value = true
+        getProjectListCurUser({ param: params })
+          .then(res => {
+            if (!res.data) {
+              searchProjectList.value = []
+              return
+            }
+            // #fix:4721
+            res.data.forEach((val: any) => {
+              val.project_id = val.project_id.toString()
+            })
+            searchProjectList.value = res.data
+          })
+          .catch(err => {
+            message('error', err.message || err)
+          })
+          .finally(() => (selectLoading.value = false))
+      }
+      const handleProjectSelect = (): void => {
+        // 清空時
+        if (selectVal.value === '') {
+          removeStore('curSelectProjId')
+          return
+        }
+        setStore('curSelectProjId', selectVal.value)
+        routerPush('/projectSearch/detail', { id: selectVal.value })
+      }
       return {
+        platformToCurrency,
+        handleProjectSelect,
+        getProjectUser,
+        selectLoading,
+        selectVal,
+        searchProjectList,
         tableHeader,
         selectValue,
         isEmpty,
-        handleSearch,
         routerSwitch,
         projectList,
-        searchParams,
         getList,
         pageParams,
         pageChange,
@@ -359,17 +411,31 @@
 
 <style lang="scss">
   .project-explorer-tb--search {
+    .project-select-remote--btn {
+      height: 32px;
+    }
     .title {
       display: flex;
       align-items: center;
-
-      .el-select {
-        width: 160px;
-        .el-input__wrapper,
-        .el-input.is-focus .el-input__wrapper {
-          box-shadow: none !important;
-        }
+    }
+    .el-select.is-focus .el-input__wrapper {
+      border: 0;
+      box-shadow: none !important;
+    }
+    .el-select .el-input__wrapper.is-focus {
+      border: 0;
+      box-shadow: none !important;
+    }
+    .el-select {
+      width: 160px;
+      .el-input__wrapper,
+      .el-input.is-focus .el-input__wrapper {
+        box-shadow: none !important;
       }
+    }
+    .el-input__wrapper,
+    .el-input.is-focus .el-input__wrapper {
+      box-shadow: none !important;
     }
     .el-input-group {
       width: 330px;

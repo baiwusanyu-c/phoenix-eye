@@ -846,7 +846,7 @@
     .project-detail-security,
     .project-detail-risk,
     .project-detail-market {
-      @include common-container(32px, 65.2%);
+      @include common-container(32px, 67.2%);
     }
     .project-detail--header {
       height: 60px;
@@ -859,6 +859,15 @@
         align-items: center;
       }
       .contract-select {
+        .el-input {
+          width: 120px;
+        }
+        .el-input--prefix .el-input__inner {
+          padding-left: 20px;
+        }
+        .el-input--suffix .el-input__inner {
+          padding-right: 20px;
+        }
         .el-input.is-focus .el-input__wrapper {
           box-shadow: none !important;
         }
