@@ -1,61 +1,226 @@
 /* * @project-search-main.vue * @deprecated 项目搜索 * @author czh * @update (czh 2022/2/22) */
 <template>
   <div class="project-search-main eagle-page">
-    <div class="project-search-container">
-      <search-input
-        :search-btn-name="$t('lang.searchT')"
-        :placeholder="$t('lang.projectExplorer.searchP')"
-        @search="handleSearch">
-      </search-input>
-    </div>
-    <div class="project-search-result">
-      <!--   示例     -->
-      <div v-if="projectList.length === 0" class="project-search-eg">
-        <p>{{ $t('lang.projectExplorer.example') }}</p>
-        <p>
-          {{ $t('lang.projectExplorer.project') }}:
-          <span class="item ml-4" @click="handleDefaultSearch('AAVE')">AAVE</span>
-        </p>
-        <p>
-          {{ $t('lang.projectExplorer.contract') }}:
-          <span
-            class="item ml-4"
-            @click="handleDefaultSearch('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">
-            0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9
-          </span>
-        </p>
+    <div class="project-base--container">
+      <h1>
+        {{ $t('lang.projectExplorer.base.title') }}
+        <span>{{ $t('lang.projectExplorer.base.title2') }}</span>
+      </h1>
+      <p>{{ $t('lang.projectExplorer.base.subTitle') }}</p>
+      <div class="project-base-body">
+        <div class="project-base-item">
+          <p>{{ $t('lang.projectExplorer.base.item1') }}</p>
+          <span>{{
+            isEmpty(baseInfo.market_cap_total, '/') === '/'
+              ? '/'
+              : `$${marketCapBaseInfo(baseInfo.market_cap_total)}`
+          }}</span>
+        </div>
+        <div class="project-base-item">
+          <p>{{ $t('lang.projectExplorer.base.item2') }}</p>
+          <span>{{
+            isEmpty(baseInfo.project_total, '/') === '/' ? '/' : `${baseInfo.project_total}`
+          }}</span>
+        </div>
+        <div class="project-base-item">
+          <p>{{ $t('lang.projectExplorer.base.item3') }}</p>
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconEthEagleG"
+            @click="openWindow(webURL.chains_eth)"></be-icon>
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconBnbEagleG"
+            @click="openWindow(webURL.chains_bsc)"></be-icon>
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconHecoEagleG"
+            @click="openWindow(webURL.chains_heco)"></be-icon>
+
+          <be-icon
+            role="link"
+            width="24"
+            height="24"
+            icon="iconPolygonEagleG"
+            @click="openWindow(webURL.chains_polygon)"></be-icon>
+        </div>
       </div>
-      <div v-if="projectList.length > 1">
-        <p class="subTitle">{{ $t('lang.projectExplorer.MultipleResults') }}:</p>
-        <div style="margin-top: 18px" class="res">
-          <div v-for="item in projectList" :key="item.project_id">
-            <p class="subTitle" style="font-size: 12px">{{ $t('lang.projectExplorer.name') }}:</p>
-            <p class="subTitle mt-4">
-              <span class="item" style="font-size: 18px" @click="routerSwitch(item.project_id)">
-                {{ item.project_name }}
-              </span>
-            </p>
+    </div>
+    <div class="project-alert--container project-explorer--container">
+      <div class="alert-hot">
+        <div class="alert">
+          <div class="risk-alert">
+            <div class="project-alert--title">
+              <title-cell :url="alert" :name="$t('lang.projectExplorer.alert.title')"> </title-cell>
+              <be-button
+                custom-class="eagle-btn more-alert-btn"
+                round="4"
+                type="success"
+                @click="openWindow(webURL.twitter_alert)">
+                {{ $t('lang.projectExplorer.alert.more') }}
+              </be-button>
+            </div>
+            <risk-alert-item
+              v-if="riskAlertList.length > 0"
+              :data-list="riskAlertList"></risk-alert-item>
+            <empty-data v-if="riskAlertList.length === 0" content="lang.noRisk"> </empty-data>
+          </div>
+          <div class="hot-project">
+            <div class="project-alert--title">
+              <title-cell :url="hot" :name="$t('lang.projectExplorer.alert.title2')"> </title-cell>
+            </div>
+            <hot-project-item
+              v-if="hotProjectList.length > 0"
+              :data-list="hotProjectList"></hot-project-item>
+            <empty-data v-if="hotProjectList.length === 0" content="lang.noRisk"> </empty-data>
+          </div>
+        </div>
+        <project-explorer></project-explorer>
+      </div>
+
+      <div class="get-plugin">
+        <div class="plugin">
+          <img
+            alt=""
+            src="../../../assets/image/pc/plugin-logo.png"
+            style="width: 48px; height: 48px" />
+          <p>
+            {{ $t('lang.projectExplorer.alert.plugin') }}
+          </p>
+          <be-button
+            custom-class="eagle-btn install-btn"
+            round="4"
+            type="success"
+            @click="openWindow(webURL.plugin_link)">
+            <img src="../../../assets/image/pc/download-mini.png" alt="" />
+            {{ $t('lang.projectExplorer.alert.install') }}
+          </be-button>
+        </div>
+        <div class="computer">
+          <h1>{{ $t('lang.projectExplorer.alert.quesTitle2') }}</h1>
+          <be-button
+            custom-class="eagle-btn request-btn"
+            round="4"
+            type="success"
+            @click="openRequestAudit">
+            <img src="../../../assets/image/pc/request-q.png" alt="" />
+            {{ $t('lang.projectExplorer.alert.quoteBtn') }}
+          </be-button>
+          <img alt="" src="../../../assets/image/pc/computer.png" class="computer-bg" />
+        </div>
+        <div class="question">
+          <h1>{{ $t('lang.projectExplorer.alert.quesTitle3') }}</h1>
+          <img
+            role="link"
+            alt=""
+            src="../../../assets/image/pc/telegram.png"
+            style="width: 36px; height: 36px; margin-top: 20px; cursor: pointer"
+            @click="openWindow(webURL.contact_telegram)" />
+          <img
+            alt=""
+            src="../../../assets/image/pc/questions-bg.png"
+            style="position: absolute; right: 0; bottom: 0" />
+        </div>
+        <div class="project-explorer--guard">
+          <div class="project-explorer--guard--title">
+            <title-cell
+              :name="$t('lang.projectExplorer.exp.addTitle')"
+              :size="24"
+              :font-size="18"
+              :url="addProj">
+            </title-cell>
+          </div>
+          <empty-data v-if="guardProjectList.length === 0"></empty-data>
+          <div
+            v-for="item in guardProjectList"
+            :key="item.create_time + item.logo_url"
+            class="project-explorer--guard--proj"
+            @click="routerSwitch(item.project_id)">
+            <project-name-cell
+              :name="item.project_name"
+              :url="item.logo_url"
+              :size="24"
+              :font-size="12">
+            </project-name-cell>
+            <p class="date">{{ formatDate(createDate(item.create_time), 'Y-m-d') }}</p>
           </div>
         </div>
       </div>
     </div>
+    <div v-show="showSecurityList" class="project-risk--container">
+      <div class="project-risk--search">
+        <title-cell :name="$t('lang.projectExplorer.security.title')" :url="security"> </title-cell>
+      </div>
+      <security-list @show="handleShowSecurityList"></security-list>
+    </div>
+    <contact-bar></contact-bar>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, ref } from 'vue'
+  import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
+  import { useEventBus } from '@vueuse/core'
   import composition from '../../../utils/mixin/common-func'
-  import { getProjectListUser } from '../../../api/project-explorer'
-  import { getUrlkey } from '../../../utils/common'
+  import { getExploreInfo, getProjectListUser } from '../../../api/project-explorer'
+  import {
+    catchErr,
+    createDate,
+    formatDate,
+    getUrlkey,
+    nFormats,
+    nFormatter,
+    openWindow,
+  } from '../../../utils/common'
+  // @ts-ignore
+  import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
+  import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
+
+  import security from '../../../assets/image/pc/security.png'
+  import addProj from '../../../assets/image/pc/add-proj.png'
+  import hot from '../../../assets/image/pc/hot.png'
+  import alert from '../../../assets/image/pc/alert.png'
+  import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
+  import { webURL } from '../../../enums/link'
+  import ProjectExplorer from './components/project-explorer.vue'
+  import RiskAlertItem from './components/risk-alert-item.vue'
+  import HotProjectItem from './components/hot-project-item.vue'
+  import SecurityList from './components/security-list.vue'
+  import type { IExploreInfo, IGuardProjectList, IHotProjectList } from '../../../utils/types'
+  import type { IAxiosRes } from '../../../utils/request'
+
   import type { IProjParam } from '../../../api/project-explorer'
   declare type projListType = {
     project_id: string
     project_name: string
   }
+
   export default defineComponent({
     name: 'ProjectSearchMain',
+    components: {
+      ContactBar,
+      SecurityList,
+      ProjectNameCell,
+      HotProjectItem,
+      RiskAlertItem,
+      EmptyData,
+      ProjectExplorer,
+
+      TitleCell,
+
+      BeIcon,
+      BeButton,
+    },
     setup() {
-      const { message, routerPush } = composition()
+      const { message, routerPush, isEmpty } = composition()
+
       /**
        * 获取项目列表
        */
@@ -126,16 +291,79 @@
           routerSwitch(ProjIdByEmail.value.toString())
         }
       }
+      const showSecurityList = ref<boolean>(true)
+      const handleShowSecurityList = (data: boolean) => {
+        showSecurityList.value = data
+      }
+      // 打开审计请求弹窗
+      const busRequestAudit = useEventBus<string>('openRequestAudit')
+      const openRequestAudit = (): void => {
+        busRequestAudit.emit()
+      }
+      /******************************* 基本信息、热门项目、风险警告 ***********************************/
+      const baseInfo = ref<IExploreInfo>({
+        market_cap_total: 0,
+        project_total: 0,
+      })
+      const guardProjectList = ref<Array<IGuardProjectList>>([])
+      const riskAlertList = ref<Array<string>>([])
+      const hotProjectList = ref<Array<IHotProjectList>>([])
+      const getInfoData = (): void => {
+        getExploreInfo()
+          .then((res: IAxiosRes) => {
+            if (res && res.success) {
+              // 基本信息
+              baseInfo.value.market_cap_total = res.data.market_cap_total
+              baseInfo.value.project_total = res.data.project_total
+              // New Project Added
+              guardProjectList.value = res.data.guard_project_list
+              // 风险警告
+              riskAlertList.value = res.data.risk_alert_list
+              // 热门项目
+              hotProjectList.value = res.data.hot_project_list
+              hotProjectList.value.forEach((val, index) => {
+                val.index = index + 1 < 10 ? `0${index + 1}` : `${index + 1}`
+              })
+            } else {
+              catchErr(res)
+            }
+          })
+          .catch(catchErr)
+      }
+      const marketCapBaseInfo = computed(() => {
+        return function (val: number) {
+          return nFormats(val)
+        }
+      })
       onMounted(() => {
         initPage()
+        getInfoData()
       })
       return {
+        showSecurityList,
+        handleShowSecurityList,
+        isEmpty,
         handleSearch,
         handleDefaultSearch,
         routerSwitch,
         projectList,
         searchParams,
         getList,
+        nFormats,
+        baseInfo,
+        guardProjectList,
+        createDate,
+        formatDate,
+        marketCapBaseInfo,
+        riskAlertList,
+        hotProjectList,
+        security,
+        addProj,
+        hot,
+        alert,
+        openWindow,
+        webURL,
+        openRequestAudit,
       }
     },
   })
@@ -144,59 +372,340 @@
 <style lang="scss">
   .project-search-main {
     min-height: calc(100% - 100px);
+  }
 
-    .subTitle {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
-      font-size: 18px;
-      font-weight: 400;
-      color: $textColor12;
-    }
+  .project-base--container {
+    height: 280px;
+    background-image: url('../../../assets/image/pc/bg-base-info.png');
+    background-repeat: round;
+    border-radius: 4px;
+    @include common-container(32px, 67.2%);
+    padding: 40px 60px;
+    box-sizing: border-box;
 
-    .item {
-      font-family: AlibabaPuHuiTi-Medium, sans-serif;
-      font-size: 14px;
+    h1 {
+      font-size: 48px;
+      font-family: BarlowSemi-B, sans-serif;
       font-weight: bold;
-      line-height: 22px;
-      color: $lessColor3;
-      word-break: break-all;
-      cursor: pointer;
+      color: $mainColor7;
+      line-height: 58px;
+
+      span {
+        color: $mainColor3;
+      }
+    }
+
+    p {
+      font-size: 24px;
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: 400;
+      color: $textColor13;
+      line-height: 30px;
+      margin-top: 10px;
+    }
+
+    .project-base-body {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: 200px 200px 200px;
+      grid-gap: 20px;
+
+      .project-base-item {
+        p {
+          font-size: 16px;
+          line-height: 20px;
+        }
+
+        span {
+          font-size: 28px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $mainColor3;
+          line-height: 34px;
+          margin-top: 6px;
+          display: inline-block;
+        }
+
+        .be-icon--container {
+          margin-top: 12px;
+          margin-right: 8px;
+          cursor: pointer;
+        }
+      }
     }
   }
 
-  .project-search-container {
-    @include common-container(40px);
-    text-align: center;
-  }
-
-  .project-search-result {
-    @include common-container(32px);
-
-    .project-search-eg {
-      padding: 24px 24px 8px 24px;
+  .project-alert--container {
+    @include common-container(32px, 67.2%);
+    display: flex;
+    .alert-hot {
+      width: calc(75% - 20px);
+      margin-right: 20px;
+      .alert {
+        display: flex;
+        margin-bottom: 20px;
+      }
+    }
+    .risk-alert {
+      flex: 1;
+      height: 492px;
       background-color: $mainColor7;
       border-radius: 4px;
+      padding: 24px 20px;
+      box-sizing: border-box;
+      position: relative;
+      left: 0;
+      top: 0;
+    }
 
-      p {
-        margin-bottom: 16px;
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 22px;
-        color: $textColor3;
+    .hot-project {
+      flex: 1;
+      background-color: $mainColor7;
+      height: 492px;
+      border-radius: 4px;
+      margin-left: 20px;
+      padding: 24px 20px;
+      box-sizing: border-box;
+      position: relative;
+      left: 0;
+      top: 0;
+    }
+
+    .project-alert--title {
+      border-radius: 4px;
+      background-color: $mainColor22;
+      height: 68px;
+      padding: 16px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      .more-alert-btn {
+        height: 36px;
+        color: $mainColor7;
       }
     }
 
-    .res {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-gap: 22px;
+    .get-plugin {
+      width: calc(28% - 40px);
+      height: 100%;
 
-      div {
+      .plugin {
+        padding: 28px;
         box-sizing: border-box;
-        padding: 20px;
-        background-color: $mainColor7;
         border-radius: 4px;
+        height: calc(60% - 20px);
+        margin-bottom: 20px;
+        background-image: url('../../../assets/image/pc/bg-plugin.png');
+        background-repeat: round;
+        text-align: left;
+        p {
+          font-size: 28px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $mainColor7;
+          line-height: 34px;
+          margin-top: 20px;
+          margin-bottom: 44px;
+        }
+
+        .install-btn {
+          height: 36px;
+          .be-button-slot {
+            display: flex;
+            align-items: center;
+            line-height: 14px;
+            font-size: 12px;
+            img {
+              height: 16px;
+              margin-right: 4px;
+            }
+          }
+        }
       }
+      .computer {
+        padding: 28px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background: $mainColor3;
+        height: 40%;
+        position: relative;
+        left: 0;
+        top: 0;
+        margin-bottom: 20px;
+        text-align: left;
+        h1 {
+          font-size: 22px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 28px;
+          position: relative;
+          left: 0;
+          top: 0;
+          z-index: 1;
+        }
+        .computer-bg {
+          position: absolute;
+          right: 0;
+          bottom: 8px;
+          width: 50%;
+        }
+        .request-btn {
+          height: 36px;
+          background: $mainColor7;
+          margin-top: 20px;
+          font-size: 14px;
+          .be-button-slot {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            img {
+              height: 16px;
+              margin-right: 4px;
+            }
+          }
+        }
+      }
+      .question {
+        padding: 28px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background: linear-gradient(360deg, #e3f8fa 0%, #c8e3e9 100%);
+        height: 40%;
+        position: relative;
+        left: 0;
+        top: 0;
+        margin-bottom: 20px;
+        text-align: left;
+        h1 {
+          font-size: 22px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 28px;
+          position: relative;
+          left: 0;
+          top: 0;
+          z-index: 1;
+        }
+
+        p {
+          font-size: 14px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 30px;
+          margin-bottom: 28px;
+          position: relative;
+          left: 0;
+          top: 0;
+          z-index: 1;
+        }
+      }
+    }
+  }
+
+  .project-explorer--container {
+    text-align: center;
+    display: flex;
+    .project-explorer-tb--body {
+      .project-explorer-tb--search {
+        height: 46px;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+      }
+
+      .project-explorer--table {
+        background-color: $mainColor7;
+      }
+    }
+
+    .project-explorer--guard {
+      background-color: $mainColor7;
+      border-radius: 4px;
+      padding: 20px 16px;
+      box-sizing: border-box;
+      height: fit-content;
+
+      .project-explorer--guard--title {
+        border-radius: 4px;
+        background-color: $mainColor22;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        margin-bottom: 10px;
+      }
+
+      .project-explorer--guard--proj {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 32px;
+        border-radius: 4px;
+        padding: 4px 8px;
+        margin-top: 20px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $mainColor22;
+        }
+
+        .date {
+          font-size: 12px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 14px;
+        }
+      }
+    }
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-explorer--container {
+      width: 92%;
+    }
+    .computer-bg {
+      position: absolute;
+      right: 0;
+      bottom: 8px;
+      width: 45%;
+    }
+  }
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-explorer--container {
+      width: 92%;
+    }
+    .computer-bg {
+      position: absolute;
+      right: 0;
+      bottom: 8px;
+      width: 45%;
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-explorer--container {
+      width: 80%;
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .project-search-main .project-base--container,
+    .project-search-main .project-alert--container,
+    .project-search-main .project-explorer--container {
+      width: 72%;
     }
   }
 </style>

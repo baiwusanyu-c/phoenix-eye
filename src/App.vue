@@ -74,7 +74,7 @@
 </script>
 
 <style lang="scss">
-  @import 'assets/style/font-style.css';
+  @import 'assets/style/font-style';
 
   #browser_msg_dialog {
     .browser-msg-dialog {
@@ -140,6 +140,12 @@
 </style>
 
 <style scoped lang="scss">
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .noM {
+      min-width: 1280px;
+    }
+  }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .noM {
       min-width: 1280px;

@@ -3,7 +3,7 @@
   <div id="create_site">
     <be-dialog
       ref="loginDialogInner"
-      :titles="$t('lang.addrMonitor.title')"
+      :titles="$t('lang.siteManage.form.title')"
       :is-show="showDialog"
       :is-open-modal="true"
       :is-drag="false"
@@ -11,24 +11,23 @@
       custom-class="create-dialog"
       @close="handleClose">
       <div>
-        <el-form :label-position="labelPosition" label-width="120px">
-          <el-form-item :label="$t('lang.addrMonitor.form.labelAddr') + ':'">
-            <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.address" :disabled="type === 'edit'"></el-input>
+        <el-form ref="siteForm" :model="form" label-width="120px" label-position="top">
+          <el-form-item :label="$t('lang.siteManage.form.url')" prop="url">
+            <el-input
+              v-model="form.risk_url_list"
+              type="textarea"
+              resize="none"
+              maxlength="1000"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              :placeholder="$t('lang.siteManage.form.inputP')" />
           </el-form-item>
-          <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
-            <el-input v-model="form.remark" type="textarea" :rows="7"></el-input>
-          </el-form-item>
-          <el-form-item :label="$t('lang.addrMonitor.form.labelLink') + ':'">
-            <div class="form--link">
-              <be-tooltip
-                placement="top"
-                custom-class="addr-monitor--link"
-                :content="$t('lang.addrMonitor.form.linkDiscr')">
-                <be-icon icon="query" color="#333"></be-icon>
-              </be-tooltip>
-              <el-input v-model="form.event_link" class="form--link__input"></el-input>
-            </div>
+          <el-form-item :label="$t('lang.siteManage.form.tag')" prop="type">
+            <el-radio-group v-model="form.tag">
+              <el-radio label="Phishing">Phishing</el-radio>
+              <el-radio label="SCAM">SCAM</el-radio>
+              <el-radio label="RugPull">RugPull</el-radio>
+              <el-radio label="Other">Other</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-form>
       </div>
@@ -50,32 +49,18 @@
   import { defineComponent, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
-  import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../../public/be-ui/be-ui.es.js'
+  import { BeButton, BeDialog } from '../../../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../../../utils/mixin/common-func'
-  // import { addAddressMonitor, updateAddressMonitor } from '../../../../../api/addr-monitor'
-  import type { PropType } from 'vue'
-  import type { IAddrMonitorForm } from '../../../../../utils/types'
+  import { addRiskUrl } from '../../../../../api/malicious-site'
+  import type { IRiskUrl } from '../../../../../api/malicious-site'
   export default defineComponent({
     name: 'AddSite',
-    components: { BeDialog, BeIcon, BeTooltip, BeButton },
+    components: { BeDialog, BeButton },
     props: {
-      // 操作類型
-      type: {
-        type: String,
-        default: 'add',
-      },
-
       getList: {
         type: Function,
         default: () => {
           return Function
-        },
-      },
-      // 编辑时，当前操作的数据对象
-      curItem: {
-        type: Object as PropType<IAddrMonitorForm>,
-        default: () => {
-          return {}
         },
       },
     },
@@ -83,21 +68,12 @@
       const { message } = composition()
       const showDialog = ref<boolean>(false)
       const labelPosition = ref<string>('right')
-      const form = ref<IAddrMonitorForm>({
-        address: '',
-        remark: '',
-        event_link: '',
-        address_monitor_id: '',
+      const form = ref<IRiskUrl>({
+        risk_url_list: '',
+        tag: '',
       })
       watch(showDialog, nVal => {
-        if (nVal) {
-          // 新增时
-          if (props.type === 'add') {
-            return
-          }
-          // 獲取具体信息
-          getDetailData()
-        } else {
+        if (!nVal) {
           // 重置表單
           resetVar()
         }
@@ -114,46 +90,31 @@
        */
       const resetVar = (): void => {
         form.value = {
-          address: '',
-          remark: '',
-          event_link: '',
-          address_monitor_id: '',
+          risk_url_list: '',
+          tag: '',
         }
       }
-      /**
-       * 编辑时获取旧数据
-       */
-      const getDetailData = (): void => {
-        form.value = { ...props.curItem }
-        form.value.address_monitor_id = props.curItem.id
-      }
+
       /**
        * 处理提交确认
        */
       const handleConfirm = (): void => {
-        // 根据类别调用不同接口
-        if (props.type === 'add') {
-          createAddrMonitor()
-        } else {
-          updateAddrMonitor()
-        }
+        createAddrMonitor()
       }
       const { t } = useI18n()
       /**
        * 表单校验
        */
       const formVerification = (): boolean => {
-        if (!form.value.address) {
-          const msg = `${t('lang.pleaseInput')} ${t('lang.addrMonitor.form.labelAddr')}`
+        if (!form.value.risk_url_list) {
+          const msg = `${t('lang.pleaseInput')} ${t('lang.siteManage.form.url')}`
           message('warning', msg)
           return false
         }
-        if (props.type === 'edit') {
-          if (!form.value.address_monitor_id) {
-            const msg = `${t('lang.pleaseInput')} address_monitor_id`
-            message('warning', msg)
-            return false
-          }
+        if (!form.value.tag) {
+          const msg = `${t('lang.pleaseInput')} ${t('lang.siteManage.form.tag')}`
+          message('warning', msg)
+          return false
         }
         return true
       }
@@ -166,56 +127,29 @@
           return
         }
         const params = {
-          address: form.value.address,
-          remark: form.value.remark,
-          event_link: form.value.event_link,
+          risk_url_list: (form.value.risk_url_list as string).split(';'),
+          tag: form.value.tag,
         }
-        // addAddressMonitor(params)
-        //     .then((res: any) => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         if (res && res.code === '0000') {
-        //             message('success', `${t('lang.add')} ${t('lang.success')}`)
-        //             // 更新列表
-        //             props.getList('reset')
-        //             handleClose()
-        //         } else {
-        //             message('warning', res.message || res)
-        //         }
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
+        addRiskUrl(params)
+          .then((res: any) => {
+            if (!res) {
+              return
+            }
+            if (res && res.success) {
+              message('success', `${t('lang.add')} ${t('lang.success')}`)
+              // 更新列表
+              props.getList('reset')
+              handleClose()
+            } else {
+              message('warning', res.message || res)
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
-      /**
-       * 编辑
-       */
-      const updateAddrMonitor = () => {
-        // 校验表单
-        if (!formVerification()) {
-          return
-        }
-        // updateAddressMonitor(form.value)
-        //     .then((res: any) => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         if (res) {
-        //             message('success', `${t('lang.edit')} ${t('lang.success')}`)
-        //             // 更新列表
-        //             props.getList('reset')
-        //             handleClose()
-        //         } else {
-        //             message('warning', res.message || res)
-        //         }
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
-      }
+
       return {
         handleConfirm,
         form,
@@ -232,7 +166,7 @@
     width: 527px;
 
     .el-form-item__label {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 40px;

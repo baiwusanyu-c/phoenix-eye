@@ -4,85 +4,50 @@
     <div class="malicious-site-search">
       <search-input
         :search-btn-name="$t('lang.searchT')"
-        :placeholder="$t('lang.createProject.searchP')"
+        :placeholder="$t('lang.siteManage.searchP')"
         @search="handleSearch">
       </search-input>
       <be-button
         type="success"
         custom-class="eagle-btn create-btn"
         size="large"
-        prev-icon="add"
         round="4"
         @click="openDialog('add')">
         {{ $t('lang.createProject.createProjectTitle') }}
       </be-button>
     </div>
     <div class="malicious-site-list eagle-table">
-      <el-table :data="projectList.data">
+      <el-table :data="riskUrlList.data">
         <template #empty>
           <empty-data></empty-data>
         </template>
-        <el-table-column prop="name" width="180">
+        <el-table-column prop="url">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
+            <span class="table-head">{{ $t('lang.siteManage.tableHeader.url') }}</span>
           </template>
           <template #default="scope">
-            <ellipsis-copy
-              :target-str="scope.row.name"
-              :is-ellipsis="scope.row.name.length > 8 ? true : false"
-              :is-show-copy-btn="false"
-              :is-tooltip="true"
-              styles="color: black;font-weight: bold;font-size: 16px;"
-              font-length="8"
-              end-length="0">
-            </ellipsis-copy>
+            <span>{{ scope.row.url }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="keywordList" width="180">
+        <el-table-column prop="tag">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.shortName') }}</span>
+            <span class="table-head">{{ $t('lang.siteManage.tableHeader.tag') }}</span>
           </template>
           <template #default="scope">
-            <ellipsis-copy
-              :target-str="scope.row.keywordList"
-              :is-ellipsis="
-                scope.row.keywordList && scope.row.keywordList.length >= 14 ? true : false
-              "
-              :is-show-copy-btn="false"
-              :is-tooltip="true"
-              styles="color: black;font-weight: 400;font-size: 14px;"
-              font-length="8"
-              end-length="0">
-            </ellipsis-copy>
+            <span>{{ isEmpty(scope.row.tag, '/') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="contract_num">
+        <el-table-column prop="source">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
+            <span class="table-head">{{ $t('lang.siteManage.tableHeader.source') }}</span>
           </template>
           <template #default="scope">
-            <span>{{ scope.row.contract_num }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="risk_tx_num">
-          <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.riskTrx') }}</span>
-          </template>
-          <template #default="scope">
-            <span>{{ isEmpty(scope.row.risk_tx_num, '/') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="opinion_num">
-          <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.publicOpinion') }}</span>
-          </template>
-          <template #default="scope">
-            <span>{{ isEmpty(scope.row.opinion_num, '/') }}</span>
+            <span>{{ scope.row.source }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="create_time">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
+            <span class="table-head">{{ $t('lang.siteManage.tableHeader.createTime') }}</span>
           </template>
           <template #default="scope">
             <date-cell :time="scope.row.create_time"></date-cell>
@@ -90,20 +55,9 @@
         </el-table-column>
         <el-table-column prop="operation">
           <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.operation') }}</span>
+            <span class="table-head">{{ $t('lang.siteManage.tableHeader.operation') }}</span>
           </template>
           <template #default="scope">
-            <el-tooltip placement="top">
-              <template #content>
-                {{ $t('lang.edit') }}
-              </template>
-              <be-icon
-                custom-class="table-icon"
-                icon="iconEditEagle"
-                width="24"
-                height="24"
-                @click="openDialog('edit', scope.row)"></be-icon>
-            </el-tooltip>
             <el-tooltip placement="top">
               <template #content>
                 {{ $t('lang.delete') }}
@@ -162,22 +116,19 @@
   // @ts-ignore
   import { BeButton, BeIcon, BePagination } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
-  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'
-  // import { deleteProject, getProjectListAdmin } from '../../../../api/project-management'
+
+  import { deleteRiskUrl, getRiskUrl } from '../../../../api/malicious-site'
   import addSite from './components/add-site.vue'
-  import type {
-    ICreateProj,
-    IProjectListAdmin,
-    IReappraise,
-  } from '../../../../api/project-management'
+  import type { IDelRiskUrl, IRiskUrl, IRiskUrlList } from '../../../../api/malicious-site'
   import type { IPageParam } from '../../../../utils/types'
   export default defineComponent({
     name: 'MaliciousSiteManagement',
     components: {
       EmptyData,
-      EllipsisCopy,
+
       addSite,
       MsgDialog,
       BeButton,
@@ -191,9 +142,9 @@
       let { createCurItem, curItem, createDialog, opType, openDialog, showDelete } =
         compositionDialog()
       // 当前操作的项目对象
-      curItem = createCurItem<ICreateProj>({})
-      // 项目列表示例
-      const projectList = reactive({
+      curItem = createCurItem<IRiskUrl>({})
+      // 列表示例
+      const riskUrlList = reactive({
         data: [],
       })
 
@@ -206,26 +157,25 @@
        * 确认删除项目信息
        */
       const confirmDelete = () => {
-        message('success', `${t('lang.delete')} ${t('lang.success')}`)
-        // const params: IReappraise = {
-        //     id: (curItem.value as IReappraise).project_id as string,
-        // }
-        // deleteProject(params)
-        //     .then(res => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         if (res) {
-        //             message('success', `${t('lang.delete')} ${t('lang.success')}`)
-        //             // 更新列表
-        //             getList('reset')
-        //             showDelete.value = false
-        //         }
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
+        const params: IDelRiskUrl = {
+          id: (curItem.value as IDelRiskUrl).id as string,
+        }
+        deleteRiskUrl(params)
+          .then(res => {
+            if (!res) {
+              return
+            }
+            if (res) {
+              message('success', `${t('lang.delete')} ${t('lang.success')}`)
+              // 更新列表
+              getList('reset')
+              showDelete.value = false
+            }
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
 
       /**
@@ -236,6 +186,7 @@
       const handleSearch = (data: string): void => {
         searchParams.value = data
         nextTick(() => {
+          resetPageParam()
           getList()
         })
       }
@@ -252,34 +203,29 @@
           searchParams.value = ''
           resetPageParam()
         }
-        const params: IProjectListAdmin = {
+        const params: IRiskUrlList = {
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
           param: searchParams.value,
         }
-        message('error', 'get')
-        // getProjectListAdmin(params)
-        //     .then(res => {
-        //         if (!res) {
-        //             return
-        //         }
-        //         // 项目列表
-        //         projectList.data = res.data.page_infos
-        //         pageParams.value.total = res.data.total
-        //         // 關鍵詞字符串轉化為數組
-        //         projectList.data.forEach((val: any) => {
-        //             const keyword = val.keyword.replace('；', ';')
-        //             val.keywordList = keyword
-        //                 .split(';')
-        //                 .filter((filterVal: any) => filterVal)
-        //                 .join(',')
-        //         })
-        //         loading.value = false
-        //     })
-        //     .catch(err => {
-        //         message('error', err.message || err)
-        //         console.error(err)
-        //     })
+        getRiskUrl(params)
+          .then(res => {
+            if (!res) {
+              return
+            }
+            // 项目列表
+            riskUrlList.data = res.data.page_infos
+            pageParams.value.total = res.data.total
+            // 關鍵詞字符串轉化為數組
+            riskUrlList.data.forEach((val: any) => {
+              val.tag = val.tag.join('')
+            })
+            loading.value = false
+          })
+          .catch(err => {
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
       /**
        * 分页方法
@@ -302,7 +248,7 @@
         curItem,
         opType,
         showDelete,
-        projectList,
+        riskUrlList,
         loading,
         createDialog,
         confirmDelete,
@@ -328,6 +274,13 @@
       padding: 20px;
       margin: 0 auto;
       background-color: $mainColor7;
+    }
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .malicious-site-main .malicious-site-list,
+    .malicious-site-main .malicious-site-search {
+      width: 92%;
     }
   }
   /* 150% 适配 */

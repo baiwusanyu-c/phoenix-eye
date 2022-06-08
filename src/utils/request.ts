@@ -7,24 +7,44 @@
 import axios from 'axios'
 import qs from 'qs'
 import { useEventBus } from '@vueuse/core'
-import config from '../enums/config'
+import configUrl from '../enums/config'
 import { getSession, getStore, message, removeSession, removeStore, setSession } from './common'
-
+import type { AxiosResponse } from 'axios'
+export const setHeader = (): string => {
+  return !getStore('token') ? '' : `Bearer ${getStore('token')}`
+}
+export declare interface IAxiosRes extends AxiosResponse {
+  message?: string
+  code?: string | number
+  success?: boolean
+}
+/**
+ * 设置url前缀
+ */
+export const setPrevUrl = (baseUrl = ''): string => {
+  return String(import.meta.env.VITE_PROJECT_ENV) === 'production'
+    ? `${baseUrl}/hermit/back`
+    : `${baseUrl}`
+}
 // create an axios instance
 const service = axios.create({
-  baseURL:
-    String(import.meta.env.VITE_PROJECT_ENV) === 'production'
-      ? `${config.baseURL}/hermit/back/`
-      : config.baseURL,
+  baseURL: setPrevUrl(configUrl.baseURL),
   timeout: 50000, // request timeout
 })
-
 // request interceptor
 service.interceptors.request.use(
   (config: any) => {
     const tokenCache = getStore('token')
-    if (tokenCache) {
-      config.headers['Authorization'] = `Bearer ${getStore('token')}`
+    if (
+      tokenCache &&
+      !(
+        config.url.indexOf('/ussa/project/add') >= 0 &&
+        config.params &&
+        config.params.type === 'user'
+      ) &&
+      !(config.url.indexOf('/website/quote/create') >= 0)
+    ) {
+      config.headers['Authorization'] = setHeader()
     }
     config.headers['Accept-Language'] = getStore('language') ? getStore('language') : 'en_US'
     if (config.method === 'post' && config.url !== '/auth/oauth/login') {
@@ -60,11 +80,11 @@ service.interceptors.response.use(
         removeSession('CETInfo')
         removeStore('token')
         removeStore('userInfo')
-        // 如果当前路由是 /projectSearch 直接刷新页面
-        if (window.location.hash === '#/projectSearch') {
-          location.reload()
-          return
-        }
+        // 如果当前路由是 /projectSearch 直接刷新页面 #4511
+        // if (window.location.hash === '#/projectSearch') {
+        //   location.reload()
+        //   return
+        // }
         if (getSession('loginExpiredNum') === 'false' || !getSession('loginExpiredNum')) {
           bus.emit('true')
           const err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期'

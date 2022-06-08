@@ -9,12 +9,12 @@ import request from '../utils/request'
 import config from '../enums/config'
 import type { IPageParam } from '../utils/types'
 export interface IPOList extends IPageParam {
-  param?: string
+  project_id?: string
 }
 
 export function getPublicOpinionList(params: IPOList) {
   return request({
-    url: `${config.baseURL}/ussa/public/opinion/list`,
+    url: `${config.baseURL}/ussa/opinion/list`,
     method: 'post',
     params,
   })

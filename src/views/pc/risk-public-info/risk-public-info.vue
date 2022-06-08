@@ -33,6 +33,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, nextTick, ref } from 'vue'
+  // @ts-ignore
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'
@@ -71,7 +72,7 @@
         loading.value = true
         getPublicOpinionList(params)
           .then((res: any) => {
-            if (res.success) {
+            if (res && res.success) {
               res.data.page_infos.forEach((value: any) => {
                 list.value.push({
                   negativeMsg: '经自动识别，该资讯为负面信息',
@@ -121,7 +122,7 @@
     min-height: calc(100% - 100px);
 
     .subTitle {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: $textColor12;
@@ -136,6 +137,12 @@
   .risk-public-info-list {
     margin-top: 40px;
     text-align: left;
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .risk-public-info-container {
+      width: 92%;
+    }
   }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {

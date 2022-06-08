@@ -1,8 +1,3 @@
-<p align="center">
-  <img width="144px" src="https://lianantech.com/commonImg/mail/hermit-logo.png" />
-</p>
-
-#eagle-eye-front 态势感知  
 ##主要技術依賴  
 **Vue3.2 + Vue-router4 + Vite2.x + typeScript4.5**
 
@@ -52,9 +47,6 @@
 `"lint:ts-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx",`  
 **esLint 代碼校验修復**
 
-`"prettier:fix": "prettier --write ."`,  
-**prettier 格式修復**
-
 `"prepare": "husky install",`  
 **husky 初始化**
 
@@ -101,7 +93,7 @@
 - npm install husky --save-dev
 - npm set-script prepare "husky install"
 - npm run prepare
-- npx husky add .husky/pre-commit "npm exec lint-staged"
+- npx husky add .husky/pre-commit "npm exec lint-staged --allow-empty"
 - git add .husky/pre-commit
 - npx husky add .husky/commit-msg "npx --no -- commitlint --edit $1"
 - 在 package.json 配置

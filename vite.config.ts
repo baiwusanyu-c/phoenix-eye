@@ -83,11 +83,16 @@ export default defineConfig({
                 @import "./src/assets/style/transition.scss";
                 @import "./src/assets/style/variable.scss";
                 @import "./src/assets/style/common.scss";
+                @import "./src/assets/style/font-style.scss";
                 @import "./src/assets/style/theme-dark.scss";`, // 添加公共样式
       },
     },
   },
-
+  build: {
+    commonjsOptions: {
+      ignoreTryCatch: false,
+    },
+  },
   /* build: {
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖

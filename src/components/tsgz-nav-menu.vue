@@ -2,24 +2,12 @@
 2021/8/2) */
 <template>
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
-    <!--    logo    -->
     <div style="display: flex; align-items: center">
-      <div class="expend-logo" @click="routerPush('/projectSearch')"></div>
-      <el-select
-        v-show="isLogin"
-        v-model="selectVal"
-        filterable
-        :placeholder="$t('lang.pleaseSelect')"
-        clearable
-        popper-class="project-select"
-        @change="handleProjectSelect">
-        <el-option
-          v-for="item in projectList"
-          :key="item.project_id + item.name"
-          :label="item.name"
-          :value="item.project_id">
-        </el-option>
-      </el-select>
+      <!--    logo    -->
+      <div class="expend-logo" @click="routerPush('/projectSearch')">
+        <img src="../assets/image/pc/logo.png" alt="Beosin-Eagle-Eye" />
+        <span>EagleEye</span>
+      </div>
       <!--    菜单    -->
       <div class="tsgz-nav-menu-container">
         <el-menu
@@ -36,70 +24,79 @@
               :index="value.index"
               :disabled="value.isDisabled"
               @click="routerSwitch(value, value.isPush)">
-              <span style="margin-left: 10px">{{ $t(value.name) }}</span>
+              <span style="margin-left: 10px; font-size: 16px">{{ $t(value.name) }}</span>
             </el-menu-item>
           </div>
         </el-menu>
       </div>
+      <!--  <div @click="openDialog()">createProject</div>-->
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
+      <el-select
+        ref="projectSelect"
+        v-model="selectVal"
+        filterable
+        remote
+        :placeholder="$t('lang.pleaseSelect')"
+        clearable
+        :loading="selectLoading"
+        :remote-method="getProjectUser"
+        popper-class="project-select"
+        class="project-select-remote"
+        @click="insertAddDom"
+        @change="handleProjectSelect">
+        <el-option
+          v-for="item in projectList"
+          :key="item.project_id"
+          :label="item.project_name"
+          :value="item.project_id">
+          <div class="project-select--option">
+            <project-name-cell
+              :url="item.logo_url"
+              :name="item.project_name"
+              :is-ell="false"></project-name-cell>
+            <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+          </div>
+        </el-option>
+      </el-select>
+      <div class="project-select-remote--btn">
+        <be-icon icon="search"></be-icon>
+      </div>
       <!--    需求反馈   -->
       <be-button
         custom-class="eagle-btn feedback-btn"
-        prev-icon="iconFeedbackEagle"
         round="4"
         type="success"
-        @click="openFeedBack"
-        >{{ $t('lang.feedback.title') }}
+        @click="openRequestAudit"
+        >{{ $t('lang.request.title') }}
       </be-button>
-      <!--    设置菜单   -->
-      <div v-show="isLogin && headerConfigMore.length > 0">
-        <be-popover
-          ref="popoverRouter"
-          placement="bottom"
-          trigger="click"
-          custom-class="popover-router">
-          <template #trigger>
-            <be-icon icon="iconSetting" custom-class="setting"></be-icon>
-          </template>
-          <div
-            v-for="item in headerConfigMore"
-            :key="item.path + 'router'"
-            :class="`popover-item popover-router-item ${
-              item.index === active ? 'active-dropdown' : ''
-            }`"
-            @click="routerSwitch(item, item.isPush)">
-            <span>{{ $t(item.name) }}</span>
-          </div>
-        </be-popover>
-      </div>
 
       <!--    语种   -->
-      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
-        <template #trigger>
-          <div
-            class="dropdown-link dropdown-lang"
-            style="display: flex; align-items: center; margin: 0 18px">
-            {{ computeLang }}
-            <be-icon
-              icon="under"
-              style="margin-left: 5px"
-              color="#777"
-              custom-class="lang-under"></be-icon>
-          </div>
-        </template>
-        <div
-          :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
-          @click="changeLanguage('zh_CN')">
-          中文
-        </div>
-        <div
-          :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
-          @click="changeLanguage('en_US')">
-          EN
-        </div>
-      </be-popover>
+      <!--      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
+                    <template #trigger>
+                      <div
+                        class="dropdown-link dropdown-lang"
+                        style="display: flex; align-items: center; margin: 0 18px">
+                        {{ computeLang }}
+                        <be-icon
+                          icon="under"
+                          style="margin-left: 5px"
+                          color="#777"
+                          custom-class="lang-under"></be-icon>
+                      </div>
+                    </template>
+                    <div
+                      :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
+                      @click="changeLanguage('zh_CN')">
+                      中文
+                    </div>
+                    <div
+                      :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
+                      @click="changeLanguage('en_US')">
+                      EN
+                    </div>
+                  </be-popover>-->
       <!--    登出   -->
       <div v-show="isLogin">
         <be-popover placement="bottom" trigger="click" custom-class="popover-logout">
@@ -113,11 +110,36 @@
           </div>
         </be-popover>
       </div>
-
+      <!--    设置菜单   -->
+      <div v-show="isLogin && headerConfigMore.length > 0">
+        <be-popover
+          ref="popoverRouter"
+          placement="bottom"
+          trigger="click"
+          custom-class="popover-router">
+          <template #trigger>
+            <be-icon icon="iconSetting" custom-class="setting" width="28" height="28"></be-icon>
+          </template>
+          <div
+            v-for="item in headerConfigMore"
+            :key="item.path + 'router'"
+            :class="`popover-item popover-router-item ${
+              item.index === active ? 'active-dropdown' : ''
+            }`"
+            @click="routerSwitch(item, item.isPush)">
+            <span>{{ $t(item.name) }}</span>
+          </div>
+        </be-popover>
+      </div>
       <!--    登陆   -->
       <div v-show="!isLogin">
-        <be-button custom-class="eagle-btn sign-up-btn" round="4" type="success" @click="openLogin"
+        <be-button custom-class="login-btn" round="4" type="success" @click="openLogin"
           >{{ $t('lang.loginConfig.login') }}
+        </be-button>
+      </div>
+      <div v-show="!isLogin">
+        <be-button custom-class="sign-up-btn" round="4" type="success" @click="openRegistry"
+          >{{ $t('lang.signUp') }}
         </be-button>
       </div>
     </div>
@@ -129,9 +151,13 @@
       @close="confirm(false)">
     </MsgDialog>
     <!--登錄彈窗-->
-    <login-dialog ref="loginDialog"></login-dialog>
-    <!--需求反馈彈窗-->
-    <feed-back ref="feedbackDialog"></feed-back>
+    <login-dialog ref="loginDialog" type></login-dialog>
+    <!--合约请求彈窗-->
+
+    <request-audit ref="requestAudit"></request-audit>
+    <!--项目创建弹窗-->
+    <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
+    </create-project>
   </div>
 </template>
 
@@ -155,24 +181,43 @@
     setStore,
   } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
-  import { whiteList } from '../router/router-pc'
+
+  import { WHITE_LIST } from '../utils/router-dict'
+  import compositionDialog from '../utils/mixin/dialog-func'
+  import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
+  import { platformToCurrency } from '../utils/platform-dict'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-  import FeedBack from './feed-back.vue'
+  import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
+  import RequestAudit from './request-audit.vue'
+  import type { ElSelect } from 'element-plus'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
+  // XMSS: Project Explorer
+  // XMGL: Project Management
+  // DZJK: Address Monitor
+  // YYTJ: 'Operational Statistics
+  // EYWZGL: Malicious Website
+  // AQSJ: Security Incident,
+  // FXJY:Risk Trx
+  // FXGGYQ:Risk Public Information
   const MANAGEMENT_DICT = {
     XMGL: true,
     TRXRESET: true,
     YYTJ: true,
     EYWZGL: true,
+    AQSJ: true,
   }
+  type SelectInstance = InstanceType<typeof ElSelect>
   /**
    * 头部菜单导航
    */
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
-      FeedBack,
+      RequestAudit,
+      ProjectNameCell,
+      CreateProject,
+
       LoginDialog,
       MsgDialog,
       BeIcon,
@@ -208,7 +253,7 @@
           setStore('language', locale.value)
           // // 在白名单内的页面，刷新页面来重置权限菜单等
           nextTick(() => {
-            if (whiteList.indexOf(route.path) < 0) {
+            if (WHITE_LIST.indexOf(route.path) < 0) {
               window.location.href = '#/projectSearch'
             }
           })
@@ -222,6 +267,11 @@
       //是否登陆
       const isLogin = ref<boolean>(false)
       const openLogin = (): void => {
+        ;(instanceInner?.refs.loginDialog as ILoginDialog).loginType = 'login'
+        ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
+      }
+      const openRegistry = (): void => {
+        ;(instanceInner?.refs.loginDialog as ILoginDialog).loginType = 'register'
         ;(instanceInner?.refs.loginDialog as ILoginDialog).showDialog = true
       }
       // 外部通知打開登錄窗口
@@ -266,7 +316,6 @@
         computeLang.value = locale.value === 'en_US' ? 'EN' : '中文'
         nextTick(() => {
           if (loginUser.value) {
-            getProjectUser()
             setSession('loginExpiredNum', 'false')
             // 登錄了 才根據路由接口設置header
             initHeaderConfig()
@@ -376,7 +425,7 @@
         }
       /****************************** 语种切换相关 ******************************/
       // 语种切换
-      const { locale } = useI18n()
+      const { locale, t } = useI18n()
       const instanceInner = getCurrentInstance()
       const busLanguage = useEventBus<string>('language')
       const computeLang = ref<string>('EN')
@@ -391,17 +440,20 @@
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-      const getProjectUser = (): void => {
-        getProjectListCurUser()
+      const selectLoading = ref<boolean>(false)
+      const getProjectUser = (params: string): void => {
+        selectLoading.value = true
+        getProjectListCurUser({ param: params })
           .then(res => {
-            if (!res) {
+            if (!res.data) {
+              projectList.value = []
               return
             }
-            const list = res.data
-            list.forEach((val: any) => {
+            // #fix:4721
+            res.data.forEach((val: any) => {
               val.project_id = val.project_id.toString()
             })
-            projectList.value = list
+            projectList.value = res.data
             if (route.path === '/projectSearch/detail') {
               selectVal.value = getStore('curSelectProjId')!
             }
@@ -409,6 +461,7 @@
           .catch(err => {
             message('error', err.message || err)
           })
+          .finally(() => (selectLoading.value = false))
       }
 
       // 路由不在項目態勢詳情也就清空選擇值
@@ -436,14 +489,59 @@
       /**
        * 打开需求反馈
        */
-      const openFeedBack = (): void => {
-        ;(instanceInner?.refs.feedbackDialog as ILoginDialog).showDialog = true
+      const busRequestAudit = useEventBus<string>('openRequestAudit')
+      const openRequestAudit = (): void => {
+        ;(instanceInner?.refs.requestAudit as ILoginDialog).showDialog = true
+      }
+      busRequestAudit.on(openRequestAudit)
+      /**
+       * 打开用户创建项目
+       */
+      const { createDialog, openDialog } = compositionDialog()
+      const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
+      busCreateProjectUser.on(() => {
+        openDialog('add')
+      })
+      /**
+       * 用户选择项目，动态插入’增加项目‘的dom
+       */
+      const selectRef = getCurrentInstance()
+      const insertAddDom = (): void => {
+        nextTick(() => {
+          let createOneBody = document.getElementById('create_one_body')
+          const container = document.querySelector('.el-select-dropdown.project-select')
+          if (container && !createOneBody) {
+            createOneBody = document.createElement('div')
+            createOneBody.setAttribute('id', 'create_one_body')
+            createOneBody.setAttribute('class', 'create-one--body')
+            const createOneSpan = document.createElement('span')
+            createOneSpan.innerText = `${t('lang.createProject.notFound')}?`
+            createOneBody.append(createOneSpan)
+            // 创建按钮
+            const createOneBtn = document.createElement('div')
+            createOneBtn.setAttribute('role', 'button')
+            createOneBtn.setAttribute('class', 'create-one eagle-btn')
+            createOneBtn.addEventListener('click', () => {
+              // 关闭下拉
+              ;(selectRef?.refs.projectSelect as SelectInstance).blur()
+              openDialog('add')
+            })
+
+            createOneBtn.innerText = t('lang.createProject.notFound')
+            createOneBody.append(createOneBtn)
+
+            container?.append(createOneBody)
+          }
+        })
       }
       return {
-        openFeedBack,
+        insertAddDom,
+        openDialog,
+        createDialog,
+        getProjectUser,
+        openRequestAudit,
         routerPush,
         handleProjectSelect,
-        getProjectUser,
         projectList,
         selectVal,
         headerConfigMore,
@@ -458,25 +556,131 @@
         confirm,
         isLogout,
         openLogin,
+        openRegistry,
+        platformToCurrency,
+        selectLoading,
       }
     },
   })
 </script>
 
 <style lang="scss">
+  #xnhb_nav_menu .project-select-remote {
+    height: 40px;
+    .el-input.is-focus .el-input__wrapper {
+      box-shadow: none !important;
+    }
+    .el-input__wrapper.is-focus {
+      box-shadow: none !important;
+    }
+    .el-input__wrapper {
+      background: $mainColor1;
+      box-shadow: none;
+      .el-input__inner {
+        color: $mainColor7;
+        height: 40px;
+        line-height: 40px;
+      }
+    }
+  }
+  .project-select-remote--btn {
+    background-color: $mainColor3;
+    height: 40px;
+    line-height: 40px;
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 4px 4px 0;
+    margin-right: 20px;
+  }
   .project-select {
-    max-width: 214px;
-    background: white;
+    /*max-width: 214px;*/
+    background: $mainColor7;
+    .el-select-dropdown__item {
+      height: 48px;
+      line-height: 48px;
+    }
+
+    .project-select--option {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      line-height: 48px;
+      .ellipsis-copy {
+        min-width: 200px !important;
+      }
+      .project-select--platform {
+        font-weight: bold;
+        color: $textColor13;
+        line-height: 17px;
+        margin-left: 4px;
+      }
+    }
+    .create-one--body {
+      width: 100%;
+      background-color: #ecf3f9;
+      display: flex;
+      height: 48px;
+      padding: 15px 24px;
+      align-items: center;
+      justify-content: space-between;
+      span {
+        font-family: BarlowSemi-R, sans-serif;
+        font-weight: 400;
+        color: $textColor3;
+        line-height: 17px;
+        font-size: 14px;
+      }
+      .create-one {
+        color: $mainColor7;
+        border-radius: 4px;
+        height: 24px;
+        line-height: 24px;
+        margin-left: 6px;
+        font-family: BarlowSemi-R, sans-serif;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .tsgz-nav-menu {
+    padding: 0 17.4%;
   }
 
   .tsgz-nav-menu .sign-up-btn {
     width: 90px;
     min-width: initial;
+    background-color: #162e47;
+    height: 40px;
+    .be-button-slot {
+      font-size: 14px;
+      margin: 0;
+    }
   }
-
-  .tsgz-nav-menu .feedback-btn {
-    width: 120px;
+  .tsgz-nav-menu .login-btn {
+    width: 90px;
     min-width: initial;
+    background-color: transparent;
+    height: 40px;
+    .be-button-slot {
+      font-size: 14px;
+      font-weight: normal !important;
+      margin: 0;
+      color: $textColor13;
+    }
+  }
+  .tsgz-nav-menu .feedback-btn {
+    width: 125px;
+    height: 40px;
+    min-width: initial;
+    margin-right: 20px;
+
+    .be-button-slot {
+      font-size: 14px;
+      margin: 0;
+    }
   }
 
   .popover-logout,
@@ -539,9 +743,9 @@
     overflow-x: hidden;
     overflow-y: auto;
     text-align: center;
-    background-color: $mainColor7;
+    background-color: $mainColor20;
     box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
-
+    height: 68px;
     .tsgz-slogan {
       display: flex;
       flex: 4;
@@ -549,7 +753,6 @@
       align-items: center;
       justify-content: flex-end;
       height: 100%;
-      margin-right: 30px;
       background-repeat: no-repeat;
       background-position: right;
       background-size: 100% 100%;
@@ -593,15 +796,15 @@
         width: 28px;
         height: 28px;
         line-height: 28px;
-        color: $mainColor7;
+        color: $textColor3;
         text-align: center;
-        background-color: $textColor4;
+        background-color: $mainColor21;
         border-radius: 30px;
       }
 
       h3 {
         margin: 0 10px;
-        font-family: PingFangSC-Semibold, PingFang SC, sans-serif;
+        font-family: BarlowSemi-R, sans-serif;
         font-size: 20px;
         font-weight: 500;
         color: $textColor4;
@@ -609,13 +812,25 @@
     }
 
     .expend-logo {
-      width: 164px;
+      width: 160px;
       height: 60px;
-      margin: 0 30px;
+      line-height: 52px;
       cursor: pointer;
-      background-image: url('../assets/image/pc/logo-white.png');
-      background-repeat: no-repeat;
-      background-position-y: center;
+      img {
+        display: inline;
+        width: 32px;
+        height: 32px;
+      }
+
+      span {
+        font-family: BarlowSemi-R, sans-serif;
+        color: $mainColor7;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 29px;
+        margin-left: 8px;
+        vertical-align: middle;
+      }
     }
 
     .el-menu-item {
@@ -636,6 +851,10 @@
       background-color: transparent;
       border: 0;
 
+      .el-menu-item {
+        padding: 0 18px;
+      }
+
       .el-menu-item,
       .el-submenu__title {
         position: relative;
@@ -643,9 +862,13 @@
         margin-bottom: 10px;
         font-weight: bold;
         line-height: 40px;
-        color: $textColor3;
+        color: $mainColor7;
         white-space: nowrap;
         list-style: none;
+
+        span {
+          font-family: BarlowSemi-R, sans-serif;
+        }
       }
 
       .el-submenu__title:hover,
@@ -678,10 +901,10 @@
 
   /* 150% 适配 */
   @media screen and (max-width: 1326px) {
-    .tsgz-nav-menu .expend-logo {
-      width: 100px;
-      background-size: contain;
+    .tsgz-nav-menu {
+      padding: 0 2%;
     }
+
     .tsgz-nav-menu .el-input__inner {
       width: 120px;
     }
@@ -696,10 +919,10 @@
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-    .tsgz-nav-menu .expend-logo {
-      width: 120px;
-      background-size: contain;
+    .tsgz-nav-menu {
+      padding: 0 10%;
     }
+
     .tsgz-nav-menu .el-input__inner {
       width: 160px;
     }

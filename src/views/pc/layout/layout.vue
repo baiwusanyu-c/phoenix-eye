@@ -52,7 +52,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 400px;
+        height: 800px;
         background-image: url('../../../assets/image/pc/bg.png');
         background-repeat: round;
       }

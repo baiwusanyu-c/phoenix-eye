@@ -1,303 +1,423 @@
 /* * @project-search-detail.vue * @deprecated 項目瀏覽器搜索詳情 - 項目態勢頁面 * @author czh *
 @update (czh 2022/2/25) */
 <template>
-  <div class="project-search-detail">
+  <div class="project-search-detail eagle-page">
+    <contact-bar></contact-bar>
     <!--基本信息-->
-    <div v-loading="baseLoading" class="proj-detail-item" style="margin-top: 32px">
-      <div class="item-title" style="position: relative; width: 100%">
-        <h2>
-          <ellipsis-copy
-            :target-str="isEmpty(baseInfo.name)"
-            :is-show-copy-btn="false"
-            :is-ellipsis="
-              isEmpty(baseInfo.name) && isEmpty(baseInfo.name).length > 20 ? true : false
-            "
-            styles="color:#333"
-            font-length="8"
-            end-length="8">
-          </ellipsis-copy>
-        </h2>
-        <span style="margin-right: 6px"
-          >{{ $t('lang.projectExplorer.detail.riskTrx') }}(24h) :
-        </span>
-        <span style="margin-right: 30px; font-size: 14px; font-weight: bold; color: #333">{{
-          isEmpty(baseInfo.riksTrxNum)
-        }}</span>
-        <span style="margin-right: 6px"
-          >{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}(24h) :</span
-        >
-        <span style="margin-right: 16px; font-size: 14px; font-weight: bold; color: #333">{{
-          isEmpty(baseInfo.riskPublicOpinion)
-        }}</span>
-        <!--    订阅      -->
-        <be-button
-          :custom-class="`eagle-btn subscribe--btn ${
-            baseInfo.isSubscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
-          } `"
-          :prev-icon="baseInfo.isSubscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
-          type="success"
-          @click="handleSubscribe">
-          {{ $t('lang.projectExplorer.detail.subscribe') }}
-        </be-button>
-      </div>
-      <div class="base-info">
-        <div class="base-info-item">
-          <p>{{ $t('lang.projectExplorer.detail.transactions') }}(24h)</p>
-          <span v-if="baseInfo.transactions || baseInfo.transactions === 0">{{
-            numberToCommaString(isEmpty(baseInfo.transactions))
-          }}</span>
-          <span v-if="!baseInfo.transactions && baseInfo.transactions !== 0">{{
-            $t('lang.emptyData')
-          }}</span>
+    <div class="project-detail-base">
+      <div class="project-detail--header">
+        <div class="title">
+          <project-name-cell
+            :name="baseInfo.project_name"
+            :url="baseInfo.logo_url"
+            :is-ell="false"
+            size="46"
+            styles="font-size:30px">
+          </project-name-cell>
+          <img
+            v-if="auditList.length > 0"
+            alt=" "
+            src="../../../assets/image/pc/audit-c.png"
+            style="margin: 0 20px" />
+          <be-tag type="info" custom-class="platform-tag-g">
+            <div class="flex items-center">
+              <span>{{ baseInfo.platform?.toUpperCase() }}</span>
+            </div>
+          </be-tag>
+          <el-select
+            v-if="hasTokenAddress"
+            v-model="selectContract"
+            placeholder="contract"
+            class="contract-select"
+            @change="handleContractSelect">
+            <template #prefix>
+              <be-icon color="#fff" icon="text"></be-icon>
+            </template>
+            <el-option
+              v-for="item in baseInfo.contract_address_list"
+              :key="item.contract_address"
+              :label="item.contract_address_tag"
+              :value="item.contract_address" />
+          </el-select>
+          <be-button
+            v-if="hasTokenAddress"
+            :custom-class="`eagle-btn subscribe--btn ${
+              baseInfo.is_subscribe ? 'subscribe-btn__as' : 'subscribe-btn__ed'
+            } `"
+            :prev-icon="baseInfo.is_subscribe ? 'iconStarEagle' : 'iconStar2Eagle'"
+            type="success"
+            @click="handleSubscribe">
+          </be-button>
         </div>
-        <div class="base-info-item">
-          <div style="flex: 1">
-            <p>{{ $t('lang.projectExplorer.detail.transactionsTotal') }}</p>
-            <span
-              v-if="baseInfo.transactionsTotal || baseInfo.transactionsTotal === 0"
-              class="total"
-              >{{ numberToCommaString(isEmpty(baseInfo.transactionsTotal)) }}</span
-            >
-            <span
-              v-if="!baseInfo.transactionsTotal && baseInfo.transactionsTotal !== 0"
-              class="total"
-              >{{ $t('lang.emptyData') }}</span
-            >
-          </div>
-          <div style="flex: 1">
-            <p>{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
-            <p v-if="baseInfo.lastTradeData || baseInfo.lastTradeData === 0" class="date">
-              {{ formatDate(createDate(baseInfo.lastTradeData)) }}
-            </p>
-            <p v-if="!baseInfo.lastTradeData && baseInfo.lastTradeData !== 0" class="date">
-              {{ $t('lang.emptyData') }}
-            </p>
-            <p v-if="baseInfo.lastTradeData || baseInfo.lastTradeData === 0" class="time">
-              {{ formatTimeStamp(createDate(baseInfo.lastTradeData).getTime(), $i18n.locale) }}
-            </p>
-          </div>
-        </div>
-        <div class="base-info-item">
-          <p>{{ $t('lang.projectExplorer.detail.socialProfiles') }}:</p>
+        <div>
           <be-icon
-            v-if="baseInfo.website"
+            v-if="governData.website"
             role="button"
             width="50"
             height="60"
             icon="iconWebsiteEagle"
-            @click="openWindow(baseInfo.website)"></be-icon>
+            @click="openWindow(governData.website)"></be-icon>
           <be-icon
-            v-if="baseInfo.twitter"
+            v-if="governData.twitter"
             role="button"
             width="60"
             height="60"
             icon="iconTwitterEagle"
-            @click="openWindow(baseInfo.twitter)"></be-icon>
+            @click="openWindow(governData.twitter)"></be-icon>
           <be-icon
-            v-if="baseInfo.telegram"
+            v-if="governData.telegram"
             role="button"
             width="60"
             height="60"
             icon="iconTelegramEagle"
-            @click="openWindow(baseInfo.telegram)"></be-icon>
+            @click="openWindow(governData.telegram)"></be-icon>
           <be-icon
-            v-if="baseInfo.github"
+            v-if="governData.github"
             role="button"
             width="50"
             height="60"
             icon="iconGithubEagle"
-            @click="openWindow(baseInfo.github)"></be-icon>
-          <span
-            v-if="!baseInfo.website && !baseInfo.twitter && !baseInfo.telegram && !baseInfo.github"
-            class="total">
-            {{ $t('lang.emptyData') }}
-          </span>
+            @click="openWindow(governData.github)"></be-icon>
         </div>
       </div>
-    </div>
-    <!--合约统计-->
-    <div
-      v-if="contractStatisticsData.length > 0"
-      v-loading="statisticsLoading"
-      class="proj-detail-item eagle-table">
-      <div class="item-title">
-        <h2>{{ $t('lang.projectExplorer.detail.contractStatistics') }}</h2>
-      </div>
-      <div
-        v-for="item in contractStatisticsData"
-        :key="item.contract_address"
-        class="contract-statistics">
-        <div style="flex: 1">
-          <div style="display: flex; margin-bottom: 6px">
-            <be-tag type="info">
-              <div class="flex items-center">
-                <span>{{ item.platform.toUpperCase() }}</span>
+      <div v-loading="baseLoading" class="project-detail-base--body">
+        <div class="body-left">
+          <div v-if="hasTokenAddress" class="token-price">
+            <div class="token-price-area">
+              <div class="token-price-right">
+                <p class="token-price--title">
+                  {{ $t('lang.projectExplorer.detail.tokenPrice') }}
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr1') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
+                </p>
+                <p
+                  v-if="baseInfo.token_address_name"
+                  role="button"
+                  @click="
+                    openWindow(`${webURL[baseInfo.platform + '_token']}${baseInfo.token_address}`)
+                  ">
+                  {{ baseInfo.token_address_name }}
+                  <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
+                </p>
+                <p class="token-price-val">
+                  {{
+                    isEmpty(onChainData.token_price, '/') === '/'
+                      ? '/'
+                      : `$${nFormats(onChainData.token_price)}`
+                  }}
+                </p>
+                <up-down :data="onChainData.token_price_ratio"></up-down>
               </div>
-            </be-tag>
-            <ellipsis-copy
-              :target-str="item.token_name"
-              custom-class="total"
-              :is-show-copy-btn="false"
-              :empty-text="' '"
-              :is-ellipsis="(item.token_name && item.token_name.length) > 20 ? true : false"
-              font-length="8"
-              end-length="8">
-            </ellipsis-copy>
+              <div
+                v-if="
+                  marketVolatilityData.token_price_data &&
+                  marketVolatilityData.token_price_data.every_day_data
+                "
+                class="token-price-left">
+                <p>{{ $t('lang.projectExplorer.detail.tokenPrice1') }}</p>
+                <area-line-cell
+                  dom-id="token_price"
+                  :height="234"
+                  y-axis="date"
+                  x-axis="value"
+                  :line-data="
+                    marketVolatilityData.token_price_data.every_day_data
+                  "></area-line-cell>
+              </div>
+            </div>
+            <div class="user-active-market">
+              <div class="user">
+                <div class="uam-item">
+                  <span class="user-active-market--title">
+                    {{ $t('lang.projectExplorer.detail.user') }}
+                  </span>
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr2') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
+                </div>
+                <p class="uam-item-val">
+                  {{
+                    isEmpty(onChainData.holders, '/') === '/'
+                      ? '/'
+                      : `${marketCapBaseInfo(onChainData.holders)}`
+                  }}
+                </p>
+                <up-down :data="onChainData.holders_ratio"></up-down>
+              </div>
+              <div class="active">
+                <div class="uam-item">
+                  <span class="user-active-market--title">
+                    {{ $t('lang.projectExplorer.detail.activity') }}</span
+                  >
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr3') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
+                </div>
+                <p class="uam-item-val">
+                  {{
+                    isEmpty(onChainData.transactions, '/') === '/'
+                      ? '/'
+                      : `${marketCapBaseInfo(onChainData.transactions)}`
+                  }}
+                </p>
+                <up-down :data="onChainData.transactions_ratio" type="down"></up-down>
+              </div>
+              <div class="market">
+                <div class="uam-item">
+                  <span class="user-active-market--title">
+                    {{ $t('lang.projectExplorer.detail.MarketCap') }}</span
+                  >
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr4') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr5') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
+                </div>
+                <p class="uam-item-val">
+                  {{
+                    isEmpty(onChainData.market_cap, '/') === '/'
+                      ? '/'
+                      : `$${marketCapBaseInfo(onChainData.market_cap)}`
+                  }}
+                </p>
+                <up-down :data="onChainData.market_cap_ratio"></up-down>
+              </div>
+            </div>
           </div>
-          <ellipsis-copy
-            :target-str="item.contract_address"
-            styles="color: #008EE9;cursor:pointer;font-weight:400"
-            font-length="8"
-            end-length="8"
-            @click="
-              item.contract_address ? openWeb(item.contract_address, 'token', item.platform) : null
-            ">
-          </ellipsis-copy>
+          <div v-if="!hasTokenAddress" class="token-price" style="position: relative">
+            <img alt="" src="../../../assets/image/pc/no-token1.png" />
+            <div class="join">
+              <p>
+                {{ $t('lang.projectExplorer.detail.owner') }}
+              </p>
+              <p>
+                {{ $t('lang.projectExplorer.detail.join') }}
+              </p>
+              <be-button
+                type="success"
+                custom-class="eagle-btn enable-eagle-btn"
+                @click="openCreateProject"
+                >{{ $t('lang.projectExplorer.detail.enableEagleEye') }}</be-button
+              >
+            </div>
+          </div>
+          <div class="twitter-analysis">
+            <div v-if="hasTokenAddress" class="twitter-analysis-right">
+              <p class="twitter-analysis--title">
+                {{ $t('lang.projectExplorer.detail.twitterAnalysis') }}
+              </p>
+              <img
+                alt=""
+                style="width: 40px; height: 40px"
+                src="../../../assets/image/pc/follow.png" />
+              <p class="following">
+                {{ $t('lang.projectExplorer.detail.follow') }}
+                <span>
+                  {{ $t('lang.projectExplorer.detail.total') }}
+                </span>
+              </p>
+              <p class="twitter-analysis-val">
+                {{
+                  isEmpty(twitterAnalysisData.value, '/') === '/'
+                    ? '/'
+                    : `${nFormats(twitterAnalysisData.value)}`
+                }}
+              </p>
+              <up-down :data="twitterAnalysisData.ratio"></up-down>
+            </div>
+            <div v-if="hasTokenAddress" class="twitter-analysis-left">
+              <p>{{ $t('lang.projectExplorer.detail.twitterAnalysis1') }}</p>
+              <area-line-cell
+                dom-id="twitter_analysis"
+                :line-data="twitterAnalysisData.every_day_data"
+                x-axis="value"
+                y-axis="date"
+                :smooth="false"
+                :height="180">
+              </area-line-cell>
+            </div>
+            <div v-if="!hasTokenAddress">
+              <p class="twitter-analysis--title">
+                {{ $t('lang.projectExplorer.detail.twitterAnalysis') }}
+              </p>
+              <img alt="" src="../../../assets/image/pc/no-token2.png" />
+            </div>
+          </div>
         </div>
-        <div style="flex: 1">
-          <p class="contract-statistics-label">
-            {{ $t('lang.projectExplorer.detail.transactions') }}(24h)
-          </p>
-          <span>{{ numberToCommaString(isEmpty(item.tx_24)) }}</span>
+        <div class="body-right">
+          <div class="score-report">
+            <div v-if="hasTokenAddress" class="score-report--chart">
+              <div style="display: flex; justify-content: center; position: relative">
+                <be-progress
+                  type="dashboard"
+                  stroke-width="12"
+                  width="222"
+                  :color="handleScoreColor(projectScoreData.current_total_score)"
+                  stroke-linecap="square"
+                  :percent="projectScoreData.current_total_score"
+                  status="normal"
+                  gap="50">
+                  <template #center>
+                    <div class="progress-score">
+                      <p>{{ projectScoreData.current_total_score }}</p>
+                      <span>
+                        {{ $t('lang.projectExplorer.detail.securityScore') }}
+                      </span>
+                    </div>
+                  </template>
+                </be-progress>
+              </div>
+              <div class="low-high-score">
+                <p class="score">
+                  {{ $t('lang.projectExplorer.detail.scoreH') }}
+                  <span class="score-high">{{
+                    projectScoreData.high_total_score > 0
+                      ? projectScoreData.high_total_score
+                      : 'N/A'
+                  }}</span>
+                </p>
+                <p class="score">
+                  {{ $t('lang.projectExplorer.detail.scoreL') }}
+                  <span class="score-low">{{
+                    projectScoreData.low_total_score > 0 ? projectScoreData.low_total_score : 'N/A'
+                  }}</span>
+                </p>
+              </div>
+              <bar-cell
+                :show-axis="false"
+                :line-data="projectScoreData.every_day_data"
+                x-axis="date"
+                y-axis="score"
+                dom-id="score_report__chart"
+                :height="80"></bar-cell>
+              <p class="descr">{{ $t('lang.projectExplorer.detail.scoreItemDisc') }}</p>
+            </div>
+            <div v-if="!hasTokenAddress" class="score-report--chart">
+              <img
+                alt=""
+                src="../../../assets/image/pc/no-token3.png"
+                style="height: 284px; margin: 0 auto" />
+            </div>
+            <div class="score-report--list">
+              <p class="score-report__title">{{ $t('lang.projectExplorer.detail.scoreItem1') }}</p>
+              <div v-if="auditList.length > 0">
+                <report-item
+                  v-for="item in auditList"
+                  :key="item.url + item.report_id"
+                  :time="item.create_time"
+                  :name="item.report_name"
+                  :url="item.url">
+                </report-item>
+              </div>
+              <div v-if="auditList.length === 0" class="score-report--body">
+                <img alt="" src="../../../assets/image/pc/report-empty.png" />
+                <p>{{ $t('lang.projectExplorer.detail.noAudit') }}</p>
+                <be-button
+                  custom-class="eagle-btn"
+                  round="4"
+                  type="success"
+                  @click="openRequestAudit"
+                  >{{ $t('lang.request.title') }}
+                </be-button>
+              </div>
+            </div>
+          </div>
+          <component
+            :is="scoreItemComp"
+            :data="scoreItemDetail"
+            :has-token-address="hasTokenAddress"></component>
         </div>
-        <div style="flex: 1">
-          <p class="contract-statistics-label">
-            {{ $t('lang.projectExplorer.detail.transactionsTotal') }}
-          </p>
-          <span class="total">{{ numberToCommaString(isEmpty(item.tx_total)) }}</span>
-        </div>
-        <div style="flex: 1">
-          <p class="contract-statistics-label">{{ $t('lang.projectExplorer.detail.lastDate') }}</p>
-          <p class="date">{{ formatDate(createDate(item.latest_trading_date)) }}</p>
-        </div>
-      </div>
-      <div class="table-page">
-        <be-pagination
-          is-ordianry
-          :page-size="pageParamsTj.pageSize"
-          :page-count="pageParamsTj.total"
-          :current-page="pageParamsTj.currentPage"
-          :page-num="[{ label: 3 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-          :pager-show-count="5"
-          page-unit="page"
-          :layout="['prev', 'page']"
-          @change-page="
-            item => handlePageChange(item.currentPage, pageParamsTj, getContractStatistics)
-          ">
-          <template #prev>
-            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsTj.total }}</span>
-          </template>
-        </be-pagination>
       </div>
     </div>
-    <!--Audit-->
-    <div v-if="auditList.length > 0" class="proj-detail-item eagle-table">
-      <div class="item-title">
-        <h2>{{ $t('lang.projectExplorer.detail.audit') }}</h2>
+
+    <div v-if="hasTokenAddress" class="project-detail-decent">
+      <div class="project-detail--header">
+        <title-cell
+          :url="decentLogo"
+          :sub-content="$t('lang.projectExplorer.detail.titleDecentSub')"
+          :name="$t('lang.projectExplorer.detail.titleDecent')">
+        </title-cell>
       </div>
-      <div class="project-detail-audit--body">
-        <project-detail-audit
-          v-for="item in auditList"
-          :key="item.report_id"
-          :url="item.url"
-          :name="item.report_name"
-          :date="formatDate(createDate(item.create_time))">
-        </project-detail-audit>
-      </div>
-      <div class="table-page">
-        <be-pagination
-          is-ordianry
-          :page-size="pageParamsAudit.pageSize"
-          :page-count="pageParamsAudit.total"
-          :current-page="pageParamsAudit.currentPage"
-          :page-num="[{ label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-          :pager-show-count="5"
-          page-unit="page"
-          :layout="['prev', 'page']"
-          @change-page="item => handlePageChange(item.currentPage, pageParamsAudit, getAuditData)">
-          <template #prev>
-            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsAudit.total }}</span>
-          </template>
-        </be-pagination>
-      </div>
+      <whale-holders :project-id="projectId" :pie-data="whalePieData"></whale-holders>
     </div>
-    <!--top5 数据表格 "-->
-    <div v-loading="baseLoading" class="proj-detail-item" style="display: flex">
-      <project-detail-top
-        v-if="top5TokenHolderSelect.length > 0"
-        :token-name="top5TokenHolderName"
-        :token-address="top5TokenHolderAddr"
-        types="holder"
-        :default-platform="defaultPlatformTop5Token"
-        :data="top5TokenHolder"
-        style="margin-right: 16px"
-        :header="top5THTableHeader"
-        :title="$t('lang.projectExplorer.detail.top5Title1')"
-        @select="handleSelectTop5">
-      </project-detail-top>
-      <project-detail-top
-        v-if="top5QuiditySelect.length > 0"
-        :data="top5QuidityPairs"
-        types="pairs"
-        :default-platform="defaultPlatformTop5Quidity"
-        :header="top5QPTableHeader"
-        :title="$t('lang.projectExplorer.detail.top5Title2')"
-        @select="handleSelectTop5">
-      </project-detail-top>
-    </div>
-    <!--风险交易-->
-    <div class="proj-detail-item">
-      <div class="item-title" style="margin-bottom: 32px">
-        <h2>{{ $t('lang.projectExplorer.detail.riskTrx') }}</h2>
-      </div>
-      <risk-trx-table :project-id="projectId"></risk-trx-table>
-    </div>
-    <!--项目舆情安全-->
-    <div v-if="safetyData.length > 0" class="proj-detail-item">
-      <div class="item-title">
-        <h2>{{ $t('lang.projectExplorer.detail.riskPublicOpinion') }}</h2>
-      </div>
-      <div
-        v-loading="loadingFs"
-        :class="{
-          'eagle-table': true,
-          'proj-detail-item-feelingSecurity': true,
-          'proj-detail-item-hyaq': safetyData.length === 0,
-        }">
-        <project-detail-publi-opinion :info-data="safetyData"> </project-detail-publi-opinion>
-        <div class="table-page">
-          <be-pagination
-            is-ordianry
-            :page-size="pageParamsFs.pageSize"
-            :page-count="pageParamsFs.total"
-            :current-page="pageParamsFs.currentPage"
-            :page-num="[{ label: 5 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-            :pager-show-count="5"
-            page-unit="page"
-            :layout="['prev', 'pNum', 'page']"
-            @update-num="updateNumFs"
-            @change-page="
-              item => handlePageChange(item.currentPage, pageParamsFs, getPublicOpinionData)
-            ">
-            <template #prev>
-              <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParamsFs.total }}</span>
-            </template>
-          </be-pagination>
+    <div v-if="hasTokenAddress" class="project-detail-market">
+      <div class="market-line--container">
+        <div class="project-detail--header">
+          <title-cell
+            :sub-content="$t('lang.projectExplorer.detail.titleMarketSub')"
+            :url="marketLogo"
+            :name="$t('lang.projectExplorer.detail.titleMarket')">
+          </title-cell>
         </div>
-        <!--        <div v-if="safetyData.length === 0" class="empty-data" style="margin-top: 0">
-          <img class="img" src="@/assets/image/pc/empty-data.png" alt="" style="height: 180px" />
-          <p style="line-height: 25px">{{ $t('lang.emptyData') }}</p>
-        </div>-->
+        <div class="market-line">
+          <market-line :data="marketVolatilityData"></market-line>
+        </div>
       </div>
+      <market-govern :data="governData"></market-govern>
+    </div>
+    <div v-show="showRiskList && hasTokenAddress" class="project-detail-risk">
+      <div class="project-detail--header">
+        <title-cell
+          :sub-content="$t('lang.projectExplorer.detail.titleRiskSub')"
+          :url="riskLogo"
+          :name="$t('lang.projectExplorer.detail.titleRisk')">
+        </title-cell>
+      </div>
+      <div class="project-detail-risk--body">
+        <risk-chart :data="riskChartData"></risk-chart>
+        <risk-list :project-id="projectId" @show="handleShowRiskList"></risk-list>
+      </div>
+    </div>
+    <div v-show="showSecurityList && hasTokenAddress" class="project-detail-public-info">
+      <div class="project-detail--header">
+        <title-cell :url="security" :name="$t('lang.projectExplorer.detail.titleInfo')">
+        </title-cell>
+      </div>
+      <security-list :param="projectId" @show="handleShowSecurityList"></security-list>
+    </div>
+    <div v-if="securityEventList.length > 0 && hasTokenAddress" class="project-detail-security">
+      <div class="project-detail--header">
+        <title-cell :url="security2" :name="$t('lang.projectExplorer.detail.titleSecurity')">
+        </title-cell>
+      </div>
+      <security-info-card :data-list="securityEventList"></security-info-card>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { computed, defineComponent, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
-  import { BeButton, BeIcon, BePagination, BeTag } from '../../../../public/be-ui/be-ui.es'
+  import {
+    BeButton,
+    BeIcon,
+    BePagination,
+    BeProgress,
+    BeTag,
+    // @ts-ignore
+  } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
   import {
@@ -305,39 +425,82 @@
     deleteSubscribe,
     getContractReportList,
     getProjectSituation,
-    getProjectSituationStatistics,
-    getPublicOpinion,
   } from '../../../api/project-explorer'
   import {
+    accAdd,
+    accSub,
     createDate,
     formatDate,
     formatTimeStamp,
     getStore,
+    nFormats,
     numberToCommaString,
     openWindow,
   } from '../../../utils/common'
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import config from '../../../enums/config'
+  import { setPrevUrl } from '../../../utils/request'
+  import IconCell from '../../../components/common-components/icon-cell/icon-cell.vue'
+  import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
+  import AreaLineCell from '../../../components/common-components/area-line-cell/area-line-cell.vue'
+  import UpDown from '../../../components/common-components/up-down/up-down.vue'
+  import BarCell from '../../../components/common-components/bar-cell/bar-cell.vue'
+  import { webURL } from '../../../enums/link'
+  import decentLogo from '../../../assets/image/pc/decent-logo.png'
+  import marketLogo from '../../../assets/image/pc/market-logo.png'
+  import riskLogo from '../../../assets/image/pc/risk-logo.png'
+  import security from '../../../assets/image/pc/security.png'
+  import security2 from '../../../assets/image/pc/security2.png'
+  import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
+  import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
-  import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
+  import SecurityList from './components/security-list.vue'
+  import SecurityInfoCard from './components/security-info-card.vue'
+  import MarketGovern from './components/market-govern.vue'
+  import MarketLine from './components/market-line.vue'
+  import RiskList from './components/risk-list.vue'
+  import RiskChart from './components/risk-chart.vue'
+  import ScoreItem from './components/score-item.vue'
+  import ReportItem from './components/report-item.vue'
+  import WhaleHolders from './components/whale-holders.vue'
   import type {
     IAuditList,
     IBaseInfo,
-    IContractStatistics,
-    IPageParam,
-    ISafetyData,
-    ITableHeader,
-    ITop5QuidityPairs,
-    ITop5QuiditySelect,
-    ITop5TokenHolder,
-    ITop5TokenHolderSelect,
+    IChainData,
+    IGovern,
+    IMarketVolatility,
+    IProjectScore,
+    IRiskChartData,
+    IScoreItems,
+    ISecurityEventList,
+    ITwitterAnalysis,
+    IWhalePieData,
   } from '../../../utils/types'
+
+  import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
+
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      ProjectNameCell,
+      ContactBar,
+      WhaleHolders,
+      BarCell,
+      ReportItem,
+      ScoreItem,
+      UpDown,
+      AreaLineCell,
+      RiskChart,
+      RiskList,
+      MarketLine,
+      MarketGovern,
+      SecurityInfoCard,
+      SecurityList,
+      TitleCell,
+      IconCell,
       ProjectDetailAudit,
       ProjectDetailTop,
       RiskTrxTable,
@@ -346,60 +509,55 @@
       BeIcon,
       BeTag,
       BeButton,
+      BeProgress,
       EllipsisCopy,
     },
     setup() {
-      const { message, route, isEmpty, msgBox, openWeb } = composition()
-      const { resetPageParam, createPageParam, updatePageSize } = compositionPage()
-      const { t } = useI18n()
-      const baseInfo = ref<IBaseInfo>({})
+      const { message, route, msgBox, openWeb, isEmpty } = composition()
 
-      const top5TokenHolder = ref<Array<ITop5TokenHolder>>([])
-      const top5TokenHolderAddr = ref<string>('')
-      const top5TokenHolderName = ref<string>('')
-      const defaultPlatformTop5Token = ref<string>('')
-      const defaultPlatformTop5Quidity = ref<string>('')
-      // top5表格header
-      const top5THTableHeader = ref<Array<ITableHeader>>([
-        { prop: 'address', label: t('lang.projectExplorer.detail.address') },
-        { prop: 'percentage', label: t('lang.projectExplorer.detail.percentage') },
-        { prop: 'quantity', label: t('lang.projectExplorer.detail.quantity') },
-      ])
-      const top5QPTableHeader = ref<Array<ITableHeader>>([
-        { prop: 'address', label: t('lang.projectExplorer.detail.address') },
-        { prop: 'percentage', label: t('lang.projectExplorer.detail.percentage') },
-        { prop: 'quantity', label: t('lang.projectExplorer.detail.quantity') },
-        { prop: 'pair', label: t('lang.projectExplorer.detail.pair') },
-      ])
-      const top5QuidityPairs = ref<Array<ITop5QuidityPairs>>([])
-      const top5QuiditySelect = ref<Array<ITop5QuiditySelect>>([])
-      const top5TokenHolderSelect = ref<Array<ITop5TokenHolderSelect>>([])
-      const handleSelectTop5 = (params: { platform: string; type: string }): void => {
-        // top5数据
-        if (params.type === 'holder') {
-          top5TokenHolder.value = []
-          top5TokenHolderAddr.value = ''
-          top5TokenHolderName.value = ''
-          top5TokenHolderSelect.value &&
-            top5TokenHolderSelect.value.forEach((val: any) => {
-              if (val.platform === params.platform) {
-                top5TokenHolder.value = val.records
-                top5TokenHolderAddr.value = val.token_address
-                top5TokenHolderName.value = val.token_name
-              }
-            })
-        }
-        if (params.type === 'pairs') {
-          top5QuidityPairs.value = []
-          top5QuiditySelect.value &&
-            top5QuiditySelect.value.forEach((val: any) => {
-              if (val.platform === params.platform) {
-                top5QuidityPairs.value = val.records
-              }
-            })
-        }
+      const { resetPageParam, createPageParam } = compositionPage()
+      const { t } = useI18n()
+      const selectContract = ref<string>('')
+      const handleContractSelect = (data: string): void => {
+        openWindow(`${webURL[`${baseInfo.value.platform}_addr` as keyof typeof webURL]}${data}`)
+        selectContract.value = ''
       }
       const baseLoading = ref<boolean>(false)
+      const securityEventList = ref<Array<ISecurityEventList>>([])
+      const marketVolatilityData = ref<IMarketVolatility>({
+        token_price_data: {},
+        token_transfer_data: {},
+        liquidity_data: {},
+        market_cap_data: {},
+      })
+      const governData = ref<IGovern>({})
+      const riskChartData = ref<IRiskChartData>({})
+      const projectScoreData = ref<IProjectScore>({})
+      const scoreItemDetail = ref<IScoreItems>({
+        market_volatility_score: '',
+        diaphaneity_score: '',
+        decentralization_score: '',
+        risk_tx_score: '',
+        audit_report_score: '',
+      })
+      const whalePieData = ref<IWhalePieData>({})
+      const twitterAnalysisData = ref<ITwitterAnalysis>({
+        ratio: 0,
+        every_day_data: [],
+      })
+      const onChainData = ref<IChainData>({
+        token_price: 0,
+        token_price_ratio: 0,
+        market_cap: 0,
+        market_cap_ratio: 0,
+        holders: 0,
+        holders_ratio: 0,
+        transactions: 0,
+        transactions_ratio: 0,
+      })
+      const scoreItemComp = ref<string>('')
+      const baseInfo = ref<IBaseInfo>({})
+      const hasTokenAddress = ref<boolean>(false)
       const getProSituData = async () => {
         const params: IPublicOpinion = {
           project_id: parseInt(projectId.value),
@@ -411,35 +569,65 @@
               return
             }
             if (res) {
-              // 获取项目详情数据
-              baseInfo.value = {
-                transactions: res.data.details.tx_24,
-                transactionsTotal: res.data.details.tx_total,
-                lastTradeData: res.data.details.latest_trading_date,
-                riksTrxNum: res.data.details.risk_tx_24,
-                isSubscribe: res.data.details.is_subscribe,
-                riskPublicOpinion: res.data.details.risk_public_opinion_24,
-                name: res.data.details.name,
-                github: res.data.social_profiles.github,
-                telegram: res.data.social_profiles.telegram,
-                twitter: res.data.social_profiles.twitter,
-                website: res.data.social_profiles.website,
+              securityEventList.value = res.data.security_event_list
+              if (res.data.market_volatility) {
+                marketVolatilityData.value = res.data.market_volatility
               }
-              // top5数据
-              top5TokenHolderSelect.value = res.data.top_5_token_holders
-              // 默认取第一个币种
-              defaultPlatformTop5Token.value =
-                top5TokenHolderSelect.value && top5TokenHolderSelect.value.length > 0
-                  ? (top5TokenHolderSelect.value[0].platform as string)
-                  : 'bsc'
-              handleSelectTop5({ platform: defaultPlatformTop5Token.value, type: 'holder' })
 
-              top5QuiditySelect.value = res.data.top_5_liquidity_pairs_holders
-              defaultPlatformTop5Quidity.value =
-                top5QuiditySelect.value && top5QuiditySelect.value.length > 0
-                  ? (top5QuiditySelect.value[0].platform as string)
-                  : 'bsc'
-              handleSelectTop5({ platform: defaultPlatformTop5Quidity.value, type: 'pairs' })
+              governData.value = res.data.social_profiles
+              riskChartData.value = res.data.risk_tx_info
+              projectScoreData.value = res.data.project_score
+              if (res.data.twitter_analysis.following_info) {
+                twitterAnalysisData.value = res.data.twitter_analysis.following_info
+              }
+              onChainData.value = res.data.on_chain
+              baseInfo.value = res.data.details
+              //  token_address 有值，开启显示开关
+              if (baseInfo.value.token_address) {
+                hasTokenAddress.value = true
+              }
+              if (res.data.decentralization) {
+                whalePieData.value.total = res.data.decentralization.token_info.total_supply
+                const radio1To10 =
+                  Math.floor(res.data.decentralization.token_info.top_1_10_ratio * 10000) / 10000
+                const radio11To50 =
+                  Math.floor(res.data.decentralization.token_info.top_11_50_ratio * 10000) / 10000
+                const radio51To100 =
+                  Math.floor(res.data.decentralization.token_info.top_51_100_ratio * 10000) / 10000
+
+                const sum = accAdd(accAdd(radio1To10, radio11To50), radio51To100)
+                whalePieData.value.chartData = [
+                  {
+                    feature: t('lang.projectExplorer.detail.whalePie1'),
+                    color: '#1A589B',
+                    ratio: radio1To10,
+                  },
+                  {
+                    feature: t('lang.projectExplorer.detail.whalePie2'),
+                    color: '#F3BA2F',
+                    ratio: radio11To50,
+                  },
+                  {
+                    feature: t('lang.projectExplorer.detail.whalePie3'),
+                    color: '#0ED9AC',
+                    ratio: radio51To100,
+                  },
+                  {
+                    feature: 'other',
+                    color: '#15263A',
+                    ratio: accSub([1, sum]),
+                  },
+                ]
+              }
+              scoreItemDetail.value = {
+                market_volatility_score: res.data.project_score.market_volatility_score,
+                diaphaneity_score: res.data.project_score.diaphaneity_score,
+                decentralization_score: res.data.project_score.decentralization_score,
+                risk_tx_score: res.data.project_score.risk_tx_score,
+                audit_report_score: res.data.project_score.audit_report_score,
+              }
+              // scoreItemDetail数据拿到后，加载 scoreItemComp 组件
+              scoreItemComp.value = 'ScoreItem'
             }
             baseLoading.value = false
           })
@@ -452,29 +640,24 @@
         await getAuditData()
 
         // 获取合约静态检测数据
-        await getContractStatistics()
+        //  await getContractStatistics()
         // 获取项目舆情安全数据
-        await getPublicOpinionData()
+        //  await getPublicOpinionData()
       }
       /**
        * 获取Audit数据
        */
       const auditList = ref<Array<IAuditList>>([])
-      const pageParamsAudit = createPageParam(4)
       const getAuditData = (): void => {
         const params: IContractReport = {
           project_id: parseInt(projectId.value),
-          page_num: pageParamsAudit.value.currentPage,
-          page_size: pageParamsAudit.value.pageSize,
         }
-        const prevUrl =
-          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
+        const prevUrl = setPrevUrl()
         const baseURL = config.baseURL
         getContractReportList(params)
           .then((res: any) => {
-            if (res.success) {
-              auditList.value = res.data.page_infos
-              pageParamsAudit.value.total = res.data.total
+            if (res && res.success) {
+              auditList.value = res.data || []
               auditList.value.forEach(val => {
                 val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
               })
@@ -490,126 +673,11 @@
       const projectId = ref<string>('')
       const { param, id } = route.query
       projectId.value = (param || id) as string
-      /**
-       * 获取项目合约统计数据
-       */
-      const contractStatisticsData = ref<Array<IContractStatistics>>([])
-      const pageParamsTj = createPageParam(3)
-      const statisticsLoading = ref<boolean>(false)
-      const getContractStatistics = (): void => {
-        const params: IPublicOpinion = {
-          project_id: projectId.value,
-          page_num: pageParamsTj.value.currentPage,
-          page_size: pageParamsTj.value.pageSize,
-        }
-        statisticsLoading.value = true
-        getProjectSituationStatistics(params)
-          .then(res => {
-            if (!res) {
-              return
-            }
-            if (res) {
-              contractStatisticsData.value = res.data.page_infos
-              pageParamsTj.value.total = res.data.total
-            }
-            statisticsLoading.value = false
-          })
-          .catch(err => {
-            statisticsLoading.value = false
-            message('error', err.message || err)
-            console.error(err)
-          })
-      }
-
-      /**
-       * 获取项目舆情安全数据
-       */
-      // 项目舆情安全数据
-      const safetyData = ref<Array<ISafetyData>>([])
-      // 项目舆情安全loading
-      const loadingFs = ref<boolean>(false)
-      // 项目舆情安全分页参数
-      const pageParamsFs = createPageParam(5)
-      /**
-       * 项目舆情安全数据获取方法
-       */
-      const getPublicOpinionData = (): void => {
-        safetyData.value = []
-        loadingFs.value = true
-        const params: IPublicOpinion = {
-          project_id: parseInt(projectId.value),
-          page_num: pageParamsFs.value.currentPage,
-          page_size: pageParamsFs.value.pageSize,
-        }
-        getPublicOpinion(params)
-          .then(res => {
-            if (!res) {
-              return
-            }
-            if (res) {
-              res.data.page_infos.forEach((val: any) => {
-                safetyData.value.push({
-                  negative: val.is_negative_news,
-                  negativeMsg: '经自动识别，该资讯为负面信息',
-                  sourceUrl: val.url,
-                  title: val.title,
-                  message: val.content,
-                  from: val.source,
-                  time: val.pub_time,
-                  label: val.tag,
-                })
-              })
-              pageParamsFs.value.total = res.data.total
-              loadingFs.value = false
-            }
-          })
-          .catch(err => {
-            loadingFs.value = false
-            message('error', err.message || err)
-            console.error(err)
-          })
-      }
-
-      /**
-       * 分页处理方法
-       * @param currentPage 当前页
-       * @param item 分页参数
-       * @param cb 回调方法获取数据
-       */
-      const handlePageChange = (currentPage: number, item: IPageParam, cb: Function): void => {
-        item.currentPage = currentPage
-        cb()
-      }
-      const updateNumFs = (data: IPageParam): void => {
-        updatePageSize(data.pageSize!, pageParamsFs)
-        getPublicOpinionData()
-      }
       onMounted(() => {
         getProSituData()
       })
-      /**
-       * 选择项目 重置变量
-       */
-      const selectProjBus = useEventBus<string>('selectProjBus')
-      selectProjBus.on((id: string) => {
-        projectId.value = id
-        resetPageParam(5, pageParamsFs)
-        resetPageParam(3, pageParamsTj)
-        resetPageParam(5, pageParamsAudit)
-        getProSituData()
-      })
-      // 语种切换重新赋值一下 解决不更新问题
-      const busLanguage = useEventBus<string>('language')
-      busLanguage.on(() => {
-        top5THTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
-        top5THTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
-        top5THTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
 
-        top5QPTableHeader.value[0].label = t('lang.projectExplorer.detail.address')
-        top5QPTableHeader.value[1].label = t('lang.projectExplorer.detail.percentage')
-        top5QPTableHeader.value[2].label = t('lang.projectExplorer.detail.quantity')
-        top5QPTableHeader.value[3].label = t('lang.projectExplorer.detail.pair')
-      })
+      /*******************************   订阅  ******************************/
       /**
        * 发送订阅
        */
@@ -619,13 +687,13 @@
         }
         createSubscribe(params)
           .then((res: any) => {
-            if (res.success) {
+            if (res && res.success) {
               msgBox(
                 t('lang.subscribe.titleSuccess'),
                 `${t('lang.subscribe.success')}(${res.data.email}).`,
                 'subscribe'
               )
-              baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+              baseInfo.value.is_subscribe = !baseInfo.value.is_subscribe
             } else {
               msgBox(
                 t('lang.subscribe.titleFailed'),
@@ -650,7 +718,7 @@
           .then((res: any) => {
             if (res.code === '0000') {
               msgBox(t('lang.subscribe.titleUn'), t('lang.subscribe.unSubscribes'), 'subscribe')
-              baseInfo.value.isSubscribe = !baseInfo.value.isSubscribe
+              baseInfo.value.is_subscribe = !baseInfo.value.is_subscribe
             } else {
               message('warning', 'An unknown error has occurred in the system')
             }
@@ -669,48 +737,101 @@
           busLogin.emit()
           return
         }
-        if (baseInfo.value.isSubscribe) {
+        if (baseInfo.value.is_subscribe) {
           cancelSubscribe()
         } else {
           submitSubscribe()
         }
       }
+      /*******************************   其他杂项逻辑  ******************************/
+      /**
+       * 选择项目 重置变量
+       */
+      const selectProjBus = useEventBus<string>('selectProjBus')
+      selectProjBus.on((id: string) => {
+        projectId.value = id
+        getProSituData()
+      })
+      // 语种切换重新赋值一下 解决不更新问题
+      // const busLanguage = useEventBus<string>('language')
+      // busLanguage.on(() => {})
+      const marketCapBaseInfo = computed(() => {
+        return function (val: number) {
+          return nFormats(val)
+        }
+      })
+      const handleScoreColor = computed(() => {
+        return function (val: number) {
+          if (Number(val) >= 90) {
+            return '#0ED9AC'
+          }
+          if (Number(val) < 90 && Number(val) > 60) {
+            return '#F4CC29'
+          }
+          if (Number(val) <= 60) {
+            return '#F32F2F'
+          }
+        }
+      })
+      const showSecurityList = ref<boolean>(true)
+      const handleShowSecurityList = (data: boolean) => {
+        showSecurityList.value = data
+      }
+      const showRiskList = ref<boolean>(true)
+      const handleShowRiskList = (data: boolean) => {
+        showRiskList.value = data
+      }
+      // 打开审计请求弹窗
+      const busRequestAudit = useEventBus<string>('openRequestAudit')
+      const openRequestAudit = (): void => {
+        busRequestAudit.emit()
+      }
+      const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
+      const openCreateProject = (): void => {
+        busCreateProjectUser.emit()
+      }
       return {
+        openCreateProject,
+        openRequestAudit,
+        showRiskList,
+        handleShowRiskList,
+        showSecurityList,
+        handleShowSecurityList,
+        handleScoreColor,
+        marketCapBaseInfo,
         getAuditData,
-        handlePageChange,
-        pageParamsAudit,
         auditList,
-        getContractStatistics,
         handleSubscribe,
-        updateNumFs,
-        defaultPlatformTop5Token,
-        defaultPlatformTop5Quidity,
         openWeb,
         projectId,
-        statisticsLoading,
         baseLoading,
         isEmpty,
-        top5QPTableHeader,
-        top5THTableHeader,
-        top5TokenHolderAddr,
-        top5TokenHolderName,
-        top5TokenHolder,
-        top5QuidityPairs,
-        contractStatisticsData,
         baseInfo,
-        pageParamsTj,
-        getPublicOpinionData,
-        safetyData,
-        pageParamsFs,
-        loadingFs,
-        top5QuiditySelect,
-        top5TokenHolderSelect,
-        handleSelectTop5,
         numberToCommaString,
         createDate,
         formatDate,
         openWindow,
         formatTimeStamp,
+        nFormats,
+        selectContract,
+        securityEventList,
+        marketVolatilityData,
+        governData,
+        riskChartData,
+        projectScoreData,
+        scoreItemDetail,
+        scoreItemComp,
+        twitterAnalysisData,
+        onChainData,
+        webURL,
+        decentLogo,
+        marketLogo,
+        riskLogo,
+        security,
+        security2,
+        whalePieData,
+        handleContractSelect,
+        hasTokenAddress,
       }
     },
   })
@@ -718,33 +839,355 @@
 
 <style lang="scss">
   .project-search-detail {
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    box-sizing: border-box;
-    width: 100%;
-    height: auto;
-    min-height: calc(100% - 192px);
-    padding-bottom: 86px;
-
-    .subscribe--btn {
-      position: absolute;
-      right: 0;
-      float: right;
-      width: 118px;
-      height: 40px;
-      border-radius: 4px !important;
+    min-height: calc(100% - 92px);
+    .project-detail-base,
+    .project-detail-decent,
+    .project-detail-public-info,
+    .project-detail-security,
+    .project-detail-risk,
+    .project-detail-market {
+      @include common-container(32px, 67.2%);
     }
+    .project-detail--header {
+      height: 60px;
+      line-height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .title {
+        display: flex;
+        align-items: center;
+      }
+      .contract-select {
+        .el-input {
+          width: 120px;
+        }
+        .el-input--prefix .el-input__inner {
+          padding-left: 20px;
+        }
+        .el-input--suffix .el-input__inner {
+          padding-right: 20px;
+        }
+        .el-input.is-focus .el-input__wrapper {
+          box-shadow: none !important;
+        }
+        .el-input__wrapper.is-focus {
+          box-shadow: none !important;
+        }
+        .el-input__wrapper {
+          background-color: $textColor3;
+          box-shadow: none;
+          .el-input__inner {
+            color: $mainColor7;
+          }
+        }
+      }
+    }
+    .project-detail-base {
+      .platform-tag-g {
+        border: 0;
+        padding: 4px 8px;
+        height: 26px;
+        border-radius: 4px;
+        margin: 0 20px;
+        background-color: rgba(167, 199, 214, 0.29);
+        font-size: 14px;
+        font-family: BarlowSemi-B, sans-serif;
+        font-weight: bold;
+        color: #18304e;
+        line-height: 17px;
+      }
+      .el-input {
+        width: 160px;
+        line-height: 26px;
+        .el-input__inner {
+          height: 26px;
+          line-height: 26px;
+        }
+      }
+    }
+    .project-detail-base--body {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      .body-left,
+      .body-right {
+        width: calc(50% - 10px);
+      }
+      .join {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        p {
+          font-size: 32px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 38px;
+          margin-bottom: 14px;
+        }
+      }
+      .token-price-area {
+        display: flex;
 
+        .token-price-right {
+          width: 200px;
+
+          .token-price--title {
+            font-size: 18px;
+            font-family: BarlowSemi-B, sans-serif;
+            font-weight: bold;
+            color: $textColor3;
+            line-height: 22px;
+            display: flex;
+            align-items: center;
+          }
+          p[role='button'] {
+            width: max-content;
+            color: $textColor3;
+            padding: 0 10px;
+            height: 24px;
+            line-height: 24px;
+            cursor: pointer;
+            display: flex;
+            font-family: BarlowSemi-B, sans-serif;
+            align-items: center;
+            background: rgba(167, 199, 214, 0.3);
+            border-radius: 2px;
+            margin-top: 16px;
+            margin-bottom: 72px;
+          }
+          .token-price-val {
+            font-size: 48px;
+            font-family: BarlowSemi-B, sans-serif;
+            font-weight: bold;
+            color: $textColor3;
+            line-height: 58px;
+            margin-bottom: 10px;
+          }
+        }
+        .token-price-left {
+          padding-left: 30px;
+          width: calc(100% - 200px);
+          p {
+            font-size: 14px;
+            font-family: BarlowSemi-R, sans-serif;
+            font-weight: 400;
+            color: $textColor3;
+            line-height: 24px;
+            text-align: right;
+            margin: 32px 0;
+          }
+        }
+      }
+
+      .user-active-market {
+        display: flex;
+        margin-top: 32px;
+        justify-content: space-between;
+        .active,
+        .market,
+        .user {
+          flex: 1;
+        }
+        .uam-item {
+          display: flex;
+          align-items: center;
+        }
+        .user-active-market--title {
+          text-align: left;
+          font-size: 14px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 17px;
+        }
+        .uam-item-val {
+          font-size: 24px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 29px;
+          margin-top: 8px;
+          margin-bottom: 20px;
+        }
+      }
+
+      .twitter-analysis {
+        margin-top: 38px;
+        background: $mainColor7;
+        border-radius: 8px;
+        padding: 24px 32px;
+        display: flex;
+        .twitter-analysis--title {
+          font-size: 20px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 24px;
+        }
+        .twitter-analysis-right {
+          width: 200px;
+          img {
+            margin-top: 56px;
+            margin-bottom: 10px;
+          }
+        }
+        .twitter-analysis-left {
+          width: calc(100% - 200px);
+          p {
+            font-size: 14px;
+            font-family: BarlowSemi-R, sans-serif;
+            font-weight: 400;
+            color: $textColor3;
+            line-height: 24px;
+            text-align: right;
+            margin-bottom: 16px;
+            margin-top: 20px;
+          }
+        }
+        .following {
+          font-size: 20px;
+          font-family: BarlowSemi-R, sans-serif;
+          font-weight: 400;
+          color: $textColor3;
+          line-height: 24px;
+          span {
+            font-size: 14px;
+            color: $textColor2;
+          }
+        }
+        .twitter-analysis-val {
+          font-size: 24px;
+          font-family: BarlowSemi-B, sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 34px;
+          margin-top: 10px;
+          margin-bottom: 16px;
+        }
+      }
+
+      .body-right {
+        padding: 24px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: $mainColor7;
+        margin-left: 20px;
+        .score-report {
+          display: flex;
+          margin-bottom: 12px;
+          .score-report--list {
+            background-color: $mainColor22;
+            border-radius: 4px;
+            padding: 20px 12px;
+            box-sizing: border-box;
+            width: 226px;
+            .score-report__title {
+              font-size: 18px;
+              font-family: BarlowSemi-B, sans-serif;
+              font-weight: bold;
+              color: $textColor3;
+              line-height: 22px;
+              margin-bottom: 16px;
+            }
+            .score-report--body {
+              height: 80%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              p {
+                margin: 10px 0 15px 0;
+              }
+            }
+          }
+          .score-report--chart {
+            width: calc(100% - 226px);
+            padding: 20px;
+            box-sizing: border-box;
+            .low-high-score {
+              display: flex;
+              justify-content: space-around;
+              margin-bottom: 28px;
+              margin-top: 20px;
+            }
+            .score {
+              font-size: 14px;
+              font-family: BarlowSemi-B, sans-serif;
+              font-weight: bold;
+              color: $textColor3;
+              line-height: 18px;
+            }
+            .score-high {
+              margin-left: 6px;
+              color: $mainColor3;
+            }
+            .score-low {
+              margin-left: 6px;
+              color: $mainColor19;
+            }
+            .descr {
+              font-size: 12px;
+              font-family: BarlowSemi-R, sans-serif;
+              font-weight: 400;
+              color: $textColor2;
+              line-height: 20px;
+              text-align: center;
+              margin-top: 8px;
+            }
+            .be-progress-body {
+              height: 112px !important;
+              svg {
+                position: absolute;
+                top: -22px;
+              }
+            }
+            .progress-score {
+              text-align: center;
+              p {
+                font-size: 48px;
+                font-family: BarlowSemi-B, sans-serif;
+                font-weight: bold;
+                color: $textColor3;
+                line-height: 58px;
+              }
+              span {
+                font-size: 16px;
+                font-family: BarlowSemi-R, sans-serif;
+                font-weight: 400;
+                color: #444444;
+                line-height: 18px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .subscribe--btn {
+      width: 40px;
+      height: 40px;
+      min-width: initial;
+      margin-left: 16px;
+      border-radius: 4px !important;
+      .be-button-slot {
+        display: none;
+      }
+    }
     .subscribe-btn__as {
       background: $mainColor3;
     }
-
     .subscribe-btn__ed {
       color: $textColor3;
       background: transparent;
-      border: 1px solid $textColor3;
+      border: 1px solid $textColor7;
 
       .be-icon use {
         fill: $textColor3 !important;
@@ -760,161 +1203,35 @@
         }
       }
     }
-
-    .base-info {
+    .project-detail-public-info {
+      text-align: center;
+      min-height: 480px;
+      height: auto;
+    }
+    .project-detail-market {
       display: flex;
-      width: 100%;
-
-      .base-info-item:nth-child(1) {
-        margin-right: 20px;
-        background: linear-gradient(90deg, #fff 0%, #e5f3f2 100%);
-
-        span {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          font-size: 36px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-      }
-
-      .base-info-item:nth-child(2) {
-        display: flex;
-        flex: 2;
-        margin-right: 20px;
-
-        .total {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          font-size: 24px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-
-        .date {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          font-size: 18px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-      }
-
-      .base-info-item {
-        box-sizing: border-box;
-        flex: 1;
-        min-height: 126px;
-        padding: 24px;
-        background-color: $mainColor7-06;
-        border-radius: 4px;
-
-        &:hover {
-          @apply shadow-xl;
-        }
-
-        .be-icon {
-          fill: $textColor12;
-
-          &:hover {
-            fill: $mainColor11;
-          }
-        }
-
-        p {
-          margin-bottom: 12px;
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          color: $textColor4;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .market-line--container {
+        .market-line {
+          margin: 12px 0;
+          background-color: $mainColor7;
+          width: 843px;
+          height: 477px;
+          border-radius: 8px;
+          padding: 24px;
+          box-sizing: border-box;
         }
       }
     }
-
-    .project-detail-audit--body {
-      display: grid;
-      grid-template-columns: 24% 24% 24% 24%;
-      grid-gap: 20px;
-    }
-
-    .proj-detail-item {
-      @include common-container(24px);
-      min-width: 1172px;
-      .item-title {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-
-        h2 {
-          margin-right: 15px;
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          color: $textColor3;
-        }
-
-        span {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          color: $textColor4;
-        }
-      }
-
-      .contract-statistics {
-        box-sizing: border-box;
-        display: flex;
-        width: 100%;
-        min-height: 88px;
-        padding: 16px;
-        margin-bottom: 12px;
-        background-color: $mainColor7;
-        border-radius: 4px;
-
-        .be-tag {
-          height: 30px;
-          margin-right: 14px;
-          line-height: 30px;
-          background-color: $mainColor16;
-          border-width: 0;
-          border-radius: 0;
-
-          span {
-            font-family: AlibabaPuHuiTi-Regular, sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: $textColor3;
-          }
-
-          &:hover {
-            @apply shadow;
-          }
-        }
-
-        .contract-statistics-label {
-          margin-bottom: 12px;
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          color: $textColor4;
-        }
-
-        span,
-        .date {
-          font-family: AlibabaPuHuiTi-Medium, sans-serif;
-          font-size: 16px;
-          font-weight: bold;
-          color: $textColor3;
-        }
-
-        &:hover {
-          @apply shadow-md;
-        }
-      }
-
-      .proj-detail-item-hyaq {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 300px;
-        background-color: $mainColor7;
-      }
-
-      .proj-detail-item-feelingSecurity {
-        box-sizing: border-box;
-        padding-bottom: 15px;
-      }
+    .project-detail-risk--body {
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: $mainColor7;
+      border-radius: 8px;
+      display: flex;
     }
   }
-
   .subscribe {
     .be-message-box--container {
       width: 575px;
@@ -929,7 +1246,7 @@
 
       .be-message-box--body p {
         margin-top: 20px;
-        font-family: AlibabaPuHuiTi-Medium, sans-serif;
+        font-family: BarlowSemi-B, sans-serif;
         font-size: 14px;
         font-weight: 400;
         line-height: 22px;
@@ -945,17 +1262,79 @@
       }
     }
   }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .project-search-detail {
+      .project-detail-base,
+      .project-detail-decent,
+      .project-detail-public-info,
+      .project-detail-security,
+      .project-detail-risk,
+      .project-detail-market {
+        width: 92%;
+      }
+
+      .project-detail-market {
+        .market-line--container {
+          .market-line {
+            width: 760px;
+          }
+        }
+      }
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-    .project-search-detail .proj-detail-item {
-      width: 92%;
+    .project-search-detail {
+      .project-detail-base,
+      .project-detail-decent,
+      .project-detail-public-info,
+      .project-detail-security,
+      .project-detail-risk,
+      .project-detail-market {
+        width: 92%;
+      }
+      .project-detail-market {
+        .market-line--container {
+          .market-line {
+            width: 760px;
+          }
+        }
+      }
     }
   }
 
   /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
-    .project-search-detail .proj-detail-item {
-      width: 80%;
+    .project-search-detail {
+      .project-detail-base,
+      .project-detail-decent,
+      .project-detail-public-info,
+      .project-detail-security,
+      .project-detail-risk,
+      .project-detail-market {
+        width: 80%;
+      }
+      .project-detail-market {
+        .market-line--container {
+          .market-line {
+            width: 820px;
+          }
+        }
+      }
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .project-search-detail {
+      .project-detail-base,
+      .project-detail-decent,
+      .project-detail-public-info,
+      .project-detail-security,
+      .project-detail-risk,
+      .project-detail-market {
+        width: 72%;
+      }
     }
   }
 </style>

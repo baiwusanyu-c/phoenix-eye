@@ -12,61 +12,32 @@
         "
         width="1000px">
         <div>
-          <el-form :label-position="labelPosition" label-width="140px" class="projectForm">
-            <el-form-item :label="$t('lang.createProject.createProjectName') + ':'">
-              <span class="reg-start project-star">*</span>
-              <el-input
-                v-model="projectName"
-                class="projectKeyWordsInput"
-                :placeholder="$t('lang.createProject.createProjectNameInput')"></el-input>
-              <span class="reg-start project-Ver">{{ verName }}</span>
-            </el-form-item>
-            <el-form-item :label="$t('lang.createProject.createProjectKeyWords') + ':'">
-              <span class="reg-start project-star">*</span>
-              <el-input
-                v-model="projectKeyWords"
-                class="projectKeyWordsInput"
-                :placeholder="$t('lang.createProject.createProjectKeyWordsInput')"></el-input>
-              <span class="reg-start project-Ver">{{ verKeyword }}</span>
-            </el-form-item>
-            <!--        合约地址    -->
+          <el-form label-position="left" label-width="170px" class="projectForm">
+            <!--      ****** contact *********        -->
+            <contact-form
+              v-if="dialogType !== 3"
+              v-model="formContact"
+              :ver-tip-contact="verTipContact"></contact-form>
+            <!--      ****** base information *********        -->
+            <base-form
+              v-model="formBasic"
+              :ver-tip-name="verTipName"
+              :ver-tip-keyword="verTipKeyword"
+              :ver-tip-chain="verTipChain"
+              :ver-tip-token="verTipToken"></base-form>
+            <!--      ****** contact *********        -->
             <el-form-item :label="$t('lang.createProject.contractSite') + ':'">
-              <span class="reg-start project-star">*</span>
               <div
                 v-for="(o, index) in contractSite.data"
                 :key="index"
                 :class="`contractSiteBox ${index > 0 ? 'contract-site-box-item' : ''}`"
                 :offset="index > 0 ? addContract.n : 0">
-                <!--   币种平台    -->
-                <el-select
-                  v-model="contractSite.data[index].platform"
-                  class="contractSiteClass"
-                  :placeholder="$t('lang.createProject.selectContractClass')">
-                  <el-option
-                    v-for="item in takePlatformListDict"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.value"></el-option>
-                </el-select>
-                <!--   合约地址    -->
                 <el-input
                   v-model="contractSite.data[index].contract_address"
-                  class="contractSiteSite"
+                  class="projectKeyWordsInput"
                   :placeholder="$t('lang.createProject.contractSiteInput')"></el-input>
-                <span
-                  class="reg-start contract-ver"
-                  :style="{ top: 38 + 56 * index + 'px', left: '86px ' }">
+                <span class="reg-start contract-ver" :style="{ top: 36 + 58 * index + 'px' }">
                   {{ contractSite.data[index].verAddr }}
-                </span>
-                <!--   合约标签   -->
-                <el-input
-                  v-model="contractSite.data[index].label"
-                  class="contractSiteLabel"
-                  :placeholder="$t('lang.createProject.contractSiteLabel')"></el-input>
-                <span
-                  class="reg-start contract-ver"
-                  :style="{ top: 38 + 56 * index + 'px', left: '41%' }">
-                  {{ contractSite.data[index].verContract }}
                 </span>
                 <div
                   v-show="index < contractSite.data.length && index > 0"
@@ -79,29 +50,43 @@
                 </div>
               </div>
             </el-form-item>
-            <!--        聯係地址 - WebSite    -->
-            <el-form-item :label="'WebSite:'">
-              <el-input v-model="websiteForm.website" class="projectKeyWordsInput"></el-input>
+            <!--      ***************        -->
+            <el-form-item :label="$t('lang.createProject.logo') + ':'">
+              <el-upload
+                action=""
+                :before-upload="handleBeforeUpLoad"
+                :show-file-list="false"
+                :headers="uploadHeader">
+                <be-button
+                  prev-icon="upload"
+                  custom-class="retrieval-btn"
+                  title="Click to match the audit according to the contract">
+                  {{ $t('lang.createProject.selectFile') }}
+                </be-button>
+              </el-upload>
             </el-form-item>
-            <!--        聯係地址 - GitHub    -->
-            <el-form-item :label="'GitHub:'">
-              <el-input v-model="websiteForm.github" class="projectKeyWordsInput"></el-input>
+            <el-form-item>
+              <img
+                v-show="formBasic.logo_url"
+                style="background-color: #dfe4ea; width: 100px; height: 100px; object-fit: fill"
+                :src="formBasic.logo_url" />
             </el-form-item>
-            <!--        聯係地址 - Twitter    -->
-            <el-form-item :label="'Twitter:'">
-              <el-input v-model="websiteForm.twitter" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <!--        聯係地址 - Telegram    -->
-            <el-form-item :label="'Telegram:'">
-              <el-input v-model="websiteForm.telegram" class="projectKeyWordsInput"></el-input>
-            </el-form-item>
-            <el-form-item :label="$t('lang.createProject.associatedAccount') + ':'">
-              <el-input
-                v-model="emailList"
-                class="projectKeyWordsInput"
-                :placeholder="$t('lang.createProject.createProjectEmailInput')"></el-input>
-            </el-form-item>
-            <el-form-item :label="$t('lang.projectExplorer.detail.audit') + ':'">
+            <!--      ****** social information *********        -->
+            <website-form v-model="websiteForm" @match="matchSocial"></website-form>
+            <!--      ****** operating information *********        -->
+            <operating-form v-model="formOperating"></operating-form>
+            <!--      ****** audit match *********        -->
+            <h2 v-if="dialogType === 3" class="create--label">
+              4.{{ $t('lang.projectExplorer.detail.audit') }}
+              <be-button
+                custom-class="retrieval-btn"
+                prev-icon="iconRetrievalEagle"
+                title="Click to match the audit according to the contract"
+                @click="matchAudit">
+                {{ $t('lang.searchBtn') }}
+              </be-button>
+            </h2>
+            <div v-if="dialogType === 3">
               <be-tag
                 v-for="(item, index) in auditList"
                 :key="item.url"
@@ -110,14 +95,7 @@
                 @click="openWindow(item.url)">
                 {{ item.report_name }}
               </be-tag>
-              <be-button
-                custom-class="retrieval-btn"
-                prev-icon="iconRetrievalEagle"
-                title="Click to match the audit according to the contract"
-                @click="matchAudit">
-                {{ $t('lang.searchBtn') }}
-              </be-button>
-            </el-form-item>
+            </div>
           </el-form>
         </div>
         <template #footer>
@@ -125,9 +103,13 @@
             <be-button type="success" custom-class="eagle-cancel-btn" @click="createProjectCancel">
               {{ $t('lang.createProject.createProjectCancel') }}
             </be-button>
-            <be-button type="success" custom-class="eagle-btn" @click="createProjectConfirm">{{
-              $t('lang.createProject.createProjectConfirm')
-            }}</be-button>
+            <be-button
+              type="success"
+              custom-class="eagle-btn"
+              :loading="confirmLoading"
+              @click="createProjectConfirm">
+              {{ $t('lang.createProject.createProjectConfirm') }}</be-button
+            >
           </span>
         </template>
       </el-dialog>
@@ -136,34 +118,56 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
+  import { defineComponent, reactive, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import {
     createProject,
+    getMatchSocial,
     getProjectInfo,
     getReport,
     saveEditProject,
   } from '../../../../../api/project-management'
-  import { platformListDict } from '../../../../../utils/platform-dict'
   import { platformReg } from '../../../../../utils/verification'
   import { ceSemiSpecialCharReg } from '../../../../../utils/reg'
   // @ts-ignore
   import { BeButton, BeIcon, BeTag } from '../../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../../utils/mixin/common-func'
-  import { openWindow, trimStr } from '../../../../../utils/common'
+  import useUpload from '../../../../../utils/mixin/upload-func'
+  import { catchErr, openWindow, trimStr } from '../../../../../utils/common'
   import config from '../../../../../enums/config'
   import { previewUrl } from '../../../../../enums/link'
-  import type { IAuditList, IWebsiteForm } from '../../../../../utils/types'
-  import type { IContractInfos, ICreateProj, IReport } from '../../../../../api/project-management'
-  import type { IPlatformListItem } from '../../../../../utils/platform-dict'
+  import { setPrevUrl } from '../../../../../utils/request'
+  import ContactForm from './contact-form.vue'
+  import WebsiteForm from './website-form.vue'
+  import OperatingForm from './operating-form.vue'
+  import BaseForm from './base-form.vue'
+  import type { IAxiosRes } from '../../../../../utils/request'
+  import type { Ref } from 'vue'
+  import type { UploadProps } from 'element-plus'
+  import type {
+    IAuditList,
+    ICreateProj,
+    ICreateProjBase,
+    ICreateProjContact,
+    ICreateProjOperating,
+    IWebsiteForm,
+  } from '../../../../../utils/types'
+  import type { IContractInfos, IReport } from '../../../../../api/project-management'
+
+  // TODO 重构
   export default defineComponent({
     name: 'CreateProject',
-    components: { BeIcon, BeButton, BeTag },
+    components: { BaseForm, OperatingForm, WebsiteForm, ContactForm, BeIcon, BeButton, BeTag },
     props: {
       // 操作類型
       type: {
         type: String,
         default: 'add',
+      },
+      // tab标识
+      tabType: {
+        type: String, // sys / usr
+        default: 'sys',
       },
       // 项目id
       projectId: {
@@ -181,48 +185,80 @@
       const { t } = useI18n()
       const { message } = composition()
       const showDialog = ref<boolean>(false)
-      const projectName = ref<string>('')
-      const projectKeyWords = ref<string>('')
-      const emailList = ref<string>('')
-      // 聯係地址表單
-      const websiteForm = ref<IWebsiteForm>({})
       // 审计列表
       const auditList = ref<Array<IAuditList>>([])
-      const labelPosition = ref<string>('right')
       const addContract = ref<number>(0)
       const contractSite = reactive({
-        data: [{ platform: 'eth', contract_address: '', label: '', verAddr: '', verContract: '' }],
-      })
-      // 下拉平台字典
-      const takePlatformListDict = ref<Array<IPlatformListItem>>([])
-      // 名称校验信息
-      const verName = ref<string>('')
-      // 关键词校验信息
-      const verKeyword = ref<string>('')
-
-      onMounted(() => {
-        takePlatformListDict.value = platformListDict
+        data: [{ contract_address: '', verContract: '' }],
       })
 
+      // 校验信息
+      const verTipName = ref<string>('')
+      const verTipKeyword = ref<string>('')
+      const verTipChain = ref<string>('')
+      const verTipToken = ref<string>('')
+      const verTipContact = ref<string>('')
+      // 表单 contact
+      const formContact = ref<ICreateProjContact>({
+        contact_type: 'email',
+      })
+      // 表单 Basic
+      const formBasic = ref<ICreateProjBase>({
+        platform: 'eth',
+      })
+      // 聯係地址表單
+      const websiteForm = ref<IWebsiteForm>({})
+      // 表单 contact
+      const formOperating = ref<ICreateProjOperating>({})
+
+      /**************************************************************************** 视图交互逻辑   ***************************************************************/
       watch(showDialog, nVal => {
         if (nVal) {
-          // 新增时
-          if (props.type === 'add') {
-            projectName.value = ''
-            return
-          }
-          // 獲取詳情信息
-          getDetailData()
+          handleDialogOpen()
         } else {
           // 重置表單
           resetVar()
         }
       })
+      // 弹窗类型标识，
+      const dialogType = ref(3)
+      /**
+       * 弹窗开启处理，根据不同情况处理
+       */
+      const handleDialogOpen = (): void => {
+        // dialogType === 3 此时有 Audit 无 contract
+        // 管理员创建或编辑系统项目
+        dialogType.value = 3
+        // 用户创建用户项目
+        if (props.tabType === 'usr' && props.type === 'add') {
+          // dialogType === 1 此时有 contract 无 Audit
+          dialogType.value = 1
+        }
+        // 管理员编辑用户项目
+        if (props.tabType === 'usr' && props.type === 'edit') {
+          // dialogType === 2 此时有 contract 无 Audit
+          dialogType.value = 2
+        }
+        // 用户新增用户项目
+        if (props.type === 'add') {
+          formBasic.value.project_name = ''
+          return
+        }
+        // 管理员编辑项目
+        if (props.type === 'edit') {
+          // 獲取詳情信息
+          getDetailData()
+          return
+        }
+      }
 
+      const confirmLoading = ref<boolean>(false)
       /**
        * 弹窗确认方法
        */
       const createProjectConfirm = async function () {
+        if (confirmLoading.value) return
+        confirmLoading.value = true
         if (props.type === 'add') {
           await addProject()
         }
@@ -236,15 +272,18 @@
       const createProjectCancel = () => {
         showDialog.value = false
       }
+      /**
+       * 增加合约表单项
+       */
       const addContractSite = () => {
         contractSite.data.push({
-          platform: 'eth',
           contract_address: '',
-          label: '',
-          verAddr: '',
           verContract: '',
         })
       }
+      /**
+       * 删除合约表单项
+       */
       const deleteContractSite = (i: number) => {
         contractSite.data.splice(i, 1)
       }
@@ -253,48 +292,79 @@
        */
       const resetVar = () => {
         showDialog.value = false
-        projectName.value = ''
-        projectKeyWords.value = ''
-        verKeyword.value = ''
-        verName.value = ''
-        labelPosition.value = 'right'
+
+        verTipContact.value = ''
+        verTipName.value = ''
+        verTipKeyword.value = ''
+        verTipChain.value = ''
+        verTipToken.value = ''
+
         addContract.value = 0
-        contractSite.data = [
-          { platform: 'eth', contract_address: '', label: '', verAddr: '', verContract: '' },
-        ]
-        emailList.value = ''
-        websiteForm.value.website = ''
-        websiteForm.value.github = ''
-        websiteForm.value.telegram = ''
-        websiteForm.value.twitter = ''
+        dialogType.value = 3
+        contractSite.data = [{ contract_address: '', verContract: '' }]
         auditList.value = []
+        formContact.value = {
+          contact_type: 'email',
+        }
+        // 表单 Basic
+        formBasic.value = {
+          platform: 'eth',
+        }
+        // 聯係地址表單
+        websiteForm.value = {}
+        // 表单 contact
+        formOperating.value = {}
       }
+      /**************************************************************************** 新增、编辑、表单校验  ***************************************************************/
       /**
-       * 获取风险类型详情数据
+       * 获取详情数据
        */
       const getDetailData = () => {
         const params = {
           id: props.projectId,
         }
         getProjectInfo(params)
-          .then(res => {
+          .then((res: IAxiosRes) => {
             if (!res) {
               return
             }
-            if (res) {
-              projectName.value = res.data.name
-              projectKeyWords.value = res.data.keyword
-              contractSite.data = res.data.contract_infos
-              emailList.value = res.data.email_list.join(';')
-              websiteForm.value.website = res.data.website
-              websiteForm.value.github = res.data.github
-              websiteForm.value.telegram = res.data.telegram
-              websiteForm.value.twitter = res.data.twitter
-              // 编辑时，如果原数据有审计就使用
-              if (res.data.contract_report_list && res.data.contract_report_list.length > 0) {
-                auditList.value = res.data.contract_report_list
-                createAuditurl()
+            if (res && res.success) {
+              formBasic.value.project_name = res.data.project_name
+              formBasic.value.keyword = res.data.keyword
+              formBasic.value.platform = res.data.platform
+              formBasic.value.token_address = res.data.token_address
+              formBasic.value.contract_address_arr = res.data.contract_address_arr
+              formBasic.value.logo_url = res.data.logo_url
+              if (res.data.contract_address_arr.length > 0) {
+                contractSite.data = res.data.contract_address_arr.map((val: string) => {
+                  return { contract_address: val, verContract: '' }
+                })
               }
+              const { website, github, telegram, twitter } = res.data
+              websiteForm.value = { website, github, telegram, twitter }
+
+              formOperating.value.address_markup = res.data.address_markup
+              formOperating.value.white_paper = res.data.white_paper
+              formOperating.value.operation_manual = res.data.operation_manual
+              formOperating.value.exchange_board = res.data.exchange_board
+              formOperating.value.test_chain = res.data.test_chain
+              // 编辑时，如果原数据有审计就使用
+              if (
+                res.data.contract_report_list &&
+                res.data.contract_report_list.length > 0 &&
+                dialogType.value === 3
+              ) {
+                auditList.value = res.data.contract_report_list
+                createAuditUrl()
+              }
+              // 回显联系
+              if (dialogType.value === 2) {
+                formContact.value.contact_type = res.data.contact_type
+                formContact.value.contact = res.data.contact
+                formContact.value.message_board = res.data.message_board
+              }
+            } else {
+              catchErr(res)
             }
           })
           .catch(err => {
@@ -316,20 +386,17 @@
         return res
       }
       /**
-       * 校驗名稱
-       * @param {Object} params - 搜索参数
+       * 校驗必填
+       * @param params
+       * @param target
+       * @param tip
        */
-      const verificationName = (params: ICreateProj) => {
-        params.name = trimStr(params.name)
-        if (!params.name) {
-          verName.value =
-            t('lang.pleaseInput') + t('lang.createProject.createProjectName').toLocaleLowerCase()
+      const verificationRequire = (params: string, target: Ref<string>, tip: string) => {
+        params = trimStr(params!)
+        if (!params) {
+          target.value = t('lang.pleaseInput') + t(`lang.createProject.${tip}`).toLocaleLowerCase()
           return false
         }
-        // if(params.name && !ceReg.test(params.name)){
-        //     verName.value = t('lang.createProject.verCE')
-        //     return false
-        // }
         return true
       }
       /**
@@ -337,9 +404,9 @@
        * @param {Object} params - 搜索参数
        */
       const verificationKeyword = (params: ICreateProj) => {
-        params.keyword = trimStr(params.keyword)
+        params.keyword = trimStr(params.keyword!)
         if (!params.keyword) {
-          verKeyword.value =
+          verTipKeyword.value =
             t('lang.pleaseInput') +
             t('lang.createProject.createProjectKeyWords').toLocaleLowerCase()
           return false
@@ -348,7 +415,7 @@
         if (params.keyword) {
           const keyword = semicolonVerification(params.keyword)
           if (!ceSemiSpecialCharReg.test(keyword)) {
-            verKeyword.value = t('lang.createProject.verCeSemicolonReg')
+            verTipKeyword.value = t('lang.createProject.verCeSemicolonReg')
             return false
           }
           params.keyword = keyword
@@ -356,16 +423,24 @@
         return true
       }
       /**
-       * 校验合约地址
+       * 校验合约地址非空
        */
-      const verificationContractAddr = (val: any): boolean => {
+      const verContractAddrEmpty = (val: any): boolean => {
         // 没有填写合约地址
         if (!val.contract_address) {
           val.verAddr = t('lang.pleaseInput') + t('lang.createProject.contractSite')
           return true
         }
+        return false
+      }
+      /**
+       * 校验合约地址格式
+       */
+      const verContractAddrErr = (val: any): boolean => {
         // 校验地址格式
-        if (!platformReg[val.platform](val.contract_address)) {
+        if (
+          !platformReg[formBasic.value.platform as keyof typeof platformReg](val.contract_address)
+        ) {
           val.verAddr = t('lang.createProject.contractSite') + t('lang.formatError')
           return true
         }
@@ -376,109 +451,87 @@
        * @param {Object} params - 搜索参数
        */
       const formVerification = (params: ICreateProj) => {
-        verName.value = ''
-        verKeyword.value = ''
-        if (!verificationName(params)) return false
-        if (!verificationKeyword(params)) return false
-        const contractInfos: Array<IContractInfos> = []
-        let hasEmpty = false
-        const contractInfosParams: Array<IContractInfos> | undefined = params.contract_infos
-        contractInfosParams &&
-          contractInfosParams.forEach(val => {
-            val.verAddr = ''
+        verTipContact.value = ''
+        verTipName.value = ''
+        verTipKeyword.value = ''
+        verTipChain.value = ''
+        verTipToken.value = ''
+        // 校验非空
+        if (
+          !verificationRequire(params.contact!, verTipContact, 'contact') &&
+          dialogType.value === 1
+        )
+          return false
+        if (!verificationRequire(params.project_name!, verTipName, 'createProjectName'))
+          return false
+        // if (!verificationRequire(params.keyword!, verTipKeyword, 'createProjectKeyWords'))
+        //   return false
+        // // 校验 Keyword
+        // if (!verificationKeyword(params)) return false
+        // // 校验非空
+        // if (!verificationRequire(params.platform!, verTipChain, 'chain')) return false
+        // if (!verificationRequire(params.token_address!, verTipToken, 'tokenAddress')) return false
+        // 校验 合约地址格式
+        const contractInfos: Array<string> = []
+        let hasEmptyOrErr = false
+        contractSite.data &&
+          contractSite.data.forEach(val => {
             val.verContract = ''
-            hasEmpty = verificationContractAddr(val as IContractInfos)
-            // 填写了合约标签，则进行校验
-            if (val.label) {
-              const label = semicolonVerification(val.label)
-              if (!ceSemiSpecialCharReg.test(label)) {
-                val.verContract = t('lang.createProject.verCeSemicolonTag')
-                hasEmpty = true
-              } else {
-                val.label = label
-              }
-            }
+            // hasEmptyOrErr = verContractAddrEmpty(val as IContractInfos)
             if (val.contract_address) {
-              contractInfos.push(val)
+              hasEmptyOrErr = verContractAddrErr(val as IContractInfos)
+              contractInfos.push(val.contract_address)
             }
           })
-        if (hasEmpty) {
+        // 验证非空、格式结果
+        if (hasEmptyOrErr) {
           return false
         }
-        if (contractInfos.length === 0) {
-          const msg = t('lang.createProject.verInfo')
-          message('warning', msg)
-          return false
-        }
-        contractInfos && (params.contract_infos = contractInfos)
+        // if (contractInfos.length === 0) {
+        //   const msg = t('lang.createProject.verInfo')
+        //   message('warning', msg)
+        //   return false
+        // }
+        contractInfos && (params.contract_address_arr = contractInfos)
         return true
-      }
-      /**
-       * 处理格式化参数
-       */
-      const setParams = (params: Array<IContractInfos> | undefined) => {
-        params &&
-          params.map(val => {
-            return {
-              platform: val.platform,
-              contract_address: val.contract_address,
-              label: val.label,
-            }
-          })
-      }
-      /**
-       * 处理合约数据
-       * @param auditList 合约列表
-       */
-      const handleAuditParams = (auditList: Array<IAuditList>): Array<number> => {
-        return auditList.map(val => {
-          return Number(val.report_id)
-        })
-      }
-      const createAuditurl = (): void => {
-        const prevUrl =
-          String(import.meta.env.VITE_PROJECT_ENV) === 'production' ? '/hermit/back' : ''
-        const baseURL = config.baseURL
-        auditList.value.forEach((val: any) => {
-          val.url = `${baseURL}${prevUrl}${previewUrl}?fileUuid=${val.uuid}&reportNum=${val.report_num}`
-        })
       }
       /**
        * 确认增加项目方法
        */
       const addProject = () => {
         const params: ICreateProj = {
-          name: projectName.value,
-          keyword: projectKeyWords.value,
-          contract_infos: contractSite.data,
+          ...formContact.value,
+          ...formBasic.value,
           ...websiteForm.value,
-          email_list: emailList.value.split(';'),
-          report_id_list: [],
+          ...formOperating.value,
         }
         // 表单校验
         if (!formVerification(params)) {
+          confirmLoading.value = false
           return
         }
-        setParams(params.contract_infos)
+
+        // 填写 report_id_list
         params.report_id_list = handleAuditParams(auditList.value)
+        //  填写 type
+        params.type = dialogType.value === 1 ? 'user' : 'system'
         createProject(params)
-          .then((res: any) => {
+          .then((res: IAxiosRes) => {
             if (!res) {
               return
             }
-            if (res && res.code === '0000') {
+            if (res && res.success) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
-
               // 更新列表
               props.getList('reset')
-              showDialog.value = false
+              createProjectCancel()
             } else {
-              message('warning', res.message || res)
+              catchErr(res)
             }
           })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
+          .catch(catchErr)
+          .finally(() => {
+            confirmLoading.value = false
           })
       }
       /**
@@ -486,39 +539,72 @@
        */
       const editProject = () => {
         const params: ICreateProj = {
-          name: projectName.value,
-          keyword: projectKeyWords.value,
-          contract_infos: contractSite.data,
+          ...formContact.value,
+          ...formBasic.value,
           ...websiteForm.value,
-          email_list: emailList.value.split(';'),
-          report_id_list: [],
-        }
-        const pathParams = {
-          id: props.projectId,
+          ...formOperating.value,
         }
         // 表单校验
         if (!formVerification(params)) {
+          confirmLoading.value = false
           return
         }
-        setParams(params.contract_infos)
+        // 填写 report_id_list
         params.report_id_list = handleAuditParams(auditList.value)
+        //  填写 type
+        params.type = dialogType.value === 1 ? 'user' : 'system'
+        const pathParams = {
+          id: props.projectId,
+        }
         saveEditProject(params, pathParams)
-          .then(res => {
+          .then((res: IAxiosRes) => {
             if (!res) {
               return
             }
-            if (res) {
+            if (res && res.success) {
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
-              showDialog.value = false
+              createProjectCancel()
+            } else {
+              catchErr(res)
             }
           })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
+          .catch(catchErr)
+          .finally(() => {
+            confirmLoading.value = false
           })
       }
+      /**
+       * 匹配社交
+       */
+      const matchSocial = () => {
+        verTipChain.value = ''
+        verTipToken.value = ''
+        if (!verificationRequire(formBasic.value.platform as string, verTipChain, 'chain'))
+          return false
+        if (
+          !verificationRequire(formBasic.value.token_address as string, verTipToken, 'tokenAddress')
+        )
+          return false
+        const params = {
+          platform: formBasic.value.platform as string,
+          token_address: formBasic.value.token_address as string,
+        }
+        getMatchSocial(params)
+          .then((res: IAxiosRes) => {
+            if (res && res.success) {
+              if (!res.data) {
+                message('warning', `${t('lang.emptyData')}`)
+              }
+              websiteForm.value = res.data
+            } else {
+              catchErr(res)
+            }
+          })
+          .catch(catchErr)
+      }
+      /**************************************************************************** 合约审计报告相关逻辑  ***************************************************************/
       /**
        * 根據合約地址匹配
        */
@@ -547,51 +633,78 @@
         }
       ): void => {
         getReport(params)
-          .then((res: any) => {
-            if (res.success) {
+          .then((res: IAxiosRes) => {
+            if (res && res.success) {
               auditList.value = res.data
-              createAuditurl()
+              createAuditUrl()
               if (auditList.value.length === 0) {
                 message('warning', t('lang.emptyData'))
               }
             } else {
-              message('error', res.message || res)
+              catchErr(res)
             }
           })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+          .catch(catchErr)
+      }
+      /**
+       * 拼接生成预览url字段
+       */
+      const createAuditUrl = (): void => {
+        const prevUrl = setPrevUrl()
+        const baseURL = config.baseURL
+        auditList.value.forEach((val: any) => {
+          val.url = `${baseURL}${prevUrl}${previewUrl}?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+        })
+      }
+      /**
+       * 处理合约数据
+       * @param auditList 合约列表
+       */
+      const handleAuditParams = (auditList: Array<IAuditList>): Array<number> => {
+        return auditList.map(val => {
+          return Number(val.report_id)
+        })
+      }
+      /**************************************************************************** logo 上传相关  ***************************************************************/
+
+      const { uploadHeader, upLoadSingleFile } = useUpload()
+      const handleBeforeUpLoad: UploadProps['beforeUpload'] = file => {
+        return upLoadSingleFile(file, 100, (res: IAxiosRes) => {
+          formBasic.value.logo_url = res.data
+        })
       }
       return {
+        handleBeforeUpLoad,
+        uploadHeader,
+        matchSocial,
+        dialogType,
         matchAudit,
         openWindow,
         handleClose,
         auditList,
-        emailList,
         showDialog,
-        projectName,
-        projectKeyWords,
-        labelPosition,
         addContract,
         contractSite,
-        takePlatformListDict,
-        verName,
-        verKeyword,
+        verTipContact,
+        verTipName,
+        verTipKeyword,
+        verTipChain,
+        verTipToken,
         websiteForm,
         resetVar,
         semicolonVerification,
-        verificationName,
         verificationKeyword,
-        verificationContractAddr,
         formVerification,
-        setParams,
         addProject,
         editProject,
         createProjectConfirm,
         createProjectCancel,
         addContractSite,
         deleteContractSite,
+        formContact,
+        formOperating,
+        formBasic,
+        confirmLoading,
       }
     },
   })
@@ -599,8 +712,32 @@
 
 <style lang="scss">
   .createBox {
+    .sub--title {
+      font-size: 14px;
+      font-weight: 400;
+      color: $textColor12;
+    }
+
+    .create--label {
+      margin-bottom: 20px;
+      line-height: 46px;
+    }
+
+    .el-dialog__body {
+      padding: 30px;
+    }
+
+    .contract-type--select {
+      margin-right: 10px;
+    }
+
+    .el-form--label-left .el-form-item__label {
+      text-align: right;
+      line-height: 40px;
+    }
+
     .el-dialog__title {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       color: $mainColor3;
     }
 
@@ -611,8 +748,13 @@
 
     .project-star {
       position: absolute;
-      top: 4px;
-      left: -152px;
+      top: 7px;
+      left: -14px;
+    }
+
+    .project-star__contract {
+      left: -20px;
+      top: 5px;
     }
 
     .project-Ver {
@@ -627,10 +769,6 @@
     }
   }
 
-  .projectKeyWordsInput {
-    width: 772px;
-  }
-
   .btn-border {
     display: flex;
     align-items: center;
@@ -642,7 +780,7 @@
     border-radius: 2px;
 
     .add-create {
-      .be-icon {
+      .be-icon--container {
         fill: darkgray;
       }
     }
@@ -652,7 +790,7 @@
     border-color: $mainColor3;
 
     .add-create {
-      .be-icon {
+      .be-icon--container {
         fill: $mainColor3;
       }
     }
@@ -676,7 +814,6 @@
     display: flex;
     align-items: center;
     width: 800px;
-    margin-top: 8px;
   }
 
   .contract-site-box-item {
@@ -687,24 +824,14 @@
     width: 110px;
   }
 
-  .contractSiteSite {
-    width: 322px;
-    margin-left: 8px;
-  }
-
-  .contractSiteLabel {
-    width: 600px;
-    margin-left: 8px;
-  }
-
   .createBox .be-tag {
     height: 36px;
     margin: 5px;
     line-height: 36px;
 
-    span {
-      height: 100%;
-    }
+    /*span {
+        height: 100%;
+    }*/
 
     &:hover {
       color: $textColor3;
@@ -719,7 +846,7 @@
   }
 
   .retrieval-btn {
-    width: 98px;
+    width: 120px;
     height: 36px;
     margin: 5px;
     background: $mainColor7;
@@ -732,11 +859,17 @@
     }
 
     .be-button-body .be-button-slot {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
       font-weight: 400;
       line-height: 22px;
       color: #333;
+    }
+
+    .be-icon--container {
+      use {
+        fill: $mainColor3 !important;
+      }
     }
   }
 </style>

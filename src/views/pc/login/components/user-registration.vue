@@ -1,5 +1,5 @@
 <template>
-  <div class="formArea user-registration">
+  <div class="formArea user-registration login-inpput">
     <el-form ref="registerForm" :model="form" :rules="rules">
       <el-form-item class="label" prop="email">
         <el-input
@@ -200,7 +200,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
   .send-code {
     display: flex;
     justify-content: space-between;
@@ -208,14 +208,14 @@
     .send-button {
       width: 144px;
       height: 48px;
-      color: #1cd2a9;
-      background: rgba(133, 229, 191, 0.1);
-      border-color: rgba(133, 229, 191, 0.1);
+      color: #1cd2a9 !important;
+      background: rgba(133, 229, 191, 0.1) !important;
+      border-color: rgba(133, 229, 191, 0.1) !important;
       border-radius: 2px;
     }
 
     .send-button:hover {
-      border-color: #1cd2a9;
+      border-color: #1cd2a9 !important;
     }
 
     .send-code-input {

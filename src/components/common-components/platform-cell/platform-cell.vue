@@ -1,9 +1,23 @@
 /* * @platform-cell.vue * @deprecated * @author czh * @update (czh 2022/4/2) */
 <template>
-  <div class="flex items-center">
-    <be-icon :icon="iconDict[platform.toUpperCase()]" class="mr-2" width="24" height="24">
+  <div class="flex items-center justify-center">
+    <be-icon
+      :icon="iconDict[platform.toUpperCase()]"
+      :width="size"
+      :height="size"
+      :title="platform.toUpperCase()">
     </be-icon>
-    <span style="line-height: 24px">{{ platform.toUpperCase() }}</span>
+    <span
+      v-if="showPlatform"
+      style="
+        line-height: 24px;
+        margin-left: 4px;
+        font-weight: bold;
+        font-size: 12px;
+        font-family: BarlowSemi-B sans-serif;
+      "
+      >{{ platform.toUpperCase() }}</span
+    >
   </div>
 </template>
 
@@ -20,6 +34,14 @@
     props: {
       platform: {
         type: String,
+      },
+      size: {
+        type: Number,
+        default: 24,
+      },
+      showPlatform: {
+        type: Boolean,
+        default: true,
       },
     },
     setup() {

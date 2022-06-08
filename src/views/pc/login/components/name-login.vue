@@ -1,6 +1,6 @@
 /* * @login.vue * @deprecated 賬號登錄表單組件 * @author * @update (czh 2021/09/9) */
 <template>
-  <div class="formArea">
+  <div class="formArea login-inpput">
     <el-form ref="loginForm" :model="form" :rules="rules" class="login-form">
       <el-form-item class="label" prop="name">
         <el-input
