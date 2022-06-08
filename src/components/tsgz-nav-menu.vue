@@ -451,7 +451,9 @@
             }
             // #fix:4721
             res.data.forEach((val: any) => {
+               // console.log(val.project_id)
               val.project_id = val.project_id.toString()
+              //  console.log(val.project_id)
             })
             projectList.value = res.data
             if (route.path === '/projectSearch/detail') {
@@ -485,6 +487,7 @@
         setStore('curSelectProjId', selectVal.value)
         routerPush('/projectSearch/detail', { id: selectVal.value })
         selectProjBus.emit(selectVal.value)
+
       }
       /**
        * 打开需求反馈

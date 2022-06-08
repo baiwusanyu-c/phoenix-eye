@@ -309,6 +309,7 @@
        * 路由跳轉
        */
       const routerSwitch = (row: any): void => {
+        setStore('curSelectProjId', row.project_id)
         routerPush('/projectSearch/detail', { id: row.project_id, keyword: row.keyword })
       }
       /**

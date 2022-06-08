@@ -72,6 +72,7 @@
 
           // 更新
           if (isUpdate) {
+            chart.value.forceFit()
             chart.value.data(pieData)
             chart.value.render(isUpdate)
             return
