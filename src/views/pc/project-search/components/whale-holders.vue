@@ -339,7 +339,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { defineComponent, onMounted, ref, watch } from 'vue'
   import compositionPage from '../../../../utils/mixin/page-param'
 
   import { getLiquidity, getPrivilege, getTop10HolderList } from '../../../../api/project-explorer'
@@ -560,6 +560,14 @@
         getPrivilegesList('reset')
         getLiquidityList('reset')
       })
+      watch(
+        () => props.projectId,
+        () => {
+          getTop10Holder('reset')
+          getPrivilegesList('reset')
+          getLiquidityList('reset')
+        }
+      )
       return {
         simulateToFixed,
         pageNum,
