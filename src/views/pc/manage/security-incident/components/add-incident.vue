@@ -388,27 +388,27 @@
 
   /* 移动端预留 适配 */
   @media screen and (max-width: 1280px) {
-      #create_incident .be-dialog {
-          display: initial;
-          overflow-y: auto;
-          .create-dialog {
-               margin-top: 6%;
-              left: calc(50% - 264px);
-              position: relative;
-              margin-bottom: 90px;
-          }
+    #create_incident .be-dialog {
+      display: initial;
+      overflow-y: auto;
+      .create-dialog {
+        margin-top: 6%;
+        left: calc(50% - 264px);
+        position: relative;
+        margin-bottom: 90px;
       }
+    }
   }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
-      #create_incident .be-dialog {
-          display: initial;
-          overflow-y: auto;
-          .create-dialog {
-              margin-top: 6%;
-              left: calc(50% - 400px);
-              position: relative !important;
-              margin-bottom: 90px;
-          }
+    #create_incident .be-dialog {
+      display: initial;
+      overflow-y: auto;
+      .create-dialog {
+        margin-top: 6%;
+        left: calc(50% - 400px);
+        position: relative !important;
+        margin-bottom: 90px;
       }
+    }
   }
 </style>

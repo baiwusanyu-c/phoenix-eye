@@ -12,7 +12,7 @@
       :tag-list="item.tag">
     </security-card>
   </div>
-  <div style="float: right;margin-top: 20px">
+  <div style="float: right; margin-top: 20px">
     <be-pagination
       is-ordianry
       :page-size="pageParams.pageSize"
@@ -136,8 +136,8 @@
 
   /* 110% 适配 */
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
-      .project-search-main .project-risk--container {
-          width: 72%;
-      }
+    .project-search-main .project-risk--container {
+      width: 72%;
+    }
   }
 </style>

@@ -129,35 +129,36 @@
             }}</span>
           </template>
           <template #default="scope">
-            <div class="token-val">
-              <ellipsis-copy
-                empty-text=" "
-                :target-str="scope.row.showTokenVal1"
-                :tooltip-txt="scope.row.token_1_address"
-                :is-ellipsis="
-                  scope.row.showTokenVal1 && scope.row.showTokenVal1.length > 14 ? true : false
-                "
-                :is-show-copy-btn="false"
-                :is-tooltip="true"
-                styles="color: #1CD2A9;font-weight: bold;font-size: 14px;"
-                font-length="6"
-                end-length="6">
-              </ellipsis-copy>
-              <span class="link-span">/</span>
-              <ellipsis-copy
-                empty-text=" "
-                :target-str="scope.row.showTokenVal2"
-                :tooltip-txt="scope.row.token_2_address"
-                :is-ellipsis="
-                  scope.row.showTokenVal2 && scope.row.showTokenVal2.length > 14 ? true : false
-                "
-                :is-show-copy-btn="false"
-                :is-tooltip="true"
-                styles="color: #1CD2A9;font-weight: bold;font-size: 14px;"
-                font-length="6"
-                end-length="6">
-              </ellipsis-copy>
-            </div>
+            <el-tooltip :content="scope.row.pair_address" placement="top" effect="light">
+              <div class="token-val" style="width: max-content">
+                <ellipsis-copy
+                  empty-text=" "
+                  :target-str="scope.row.showTokenVal1"
+                  :is-ellipsis="
+                    scope.row.showTokenVal1 && scope.row.showTokenVal1.length > 14 ? true : false
+                  "
+                  :is-show-copy-btn="false"
+                  :is-tooltip="false"
+                  styles="color: #1CD2A9;font-weight: bold;font-size: 14px;"
+                  font-length="6"
+                  end-length="6">
+                </ellipsis-copy>
+                <span class="link-span">/</span>
+                <ellipsis-copy
+                  empty-text=" "
+                  :target-str="scope.row.showTokenVal2"
+                  :tooltip-txt="scope.row.pair_address"
+                  :is-ellipsis="
+                    scope.row.showTokenVal2 && scope.row.showTokenVal2.length > 14 ? true : false
+                  "
+                  :is-show-copy-btn="false"
+                  :is-tooltip="false"
+                  styles="color: #1CD2A9;font-weight: bold;font-size: 14px;"
+                  font-length="6"
+                  end-length="6">
+                </ellipsis-copy>
+              </div>
+            </el-tooltip>
           </template>
         </el-table-column>
 

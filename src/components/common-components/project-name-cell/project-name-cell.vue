@@ -11,7 +11,7 @@
       :is-show-copy-btn="false"
       :is-tooltip="true"
       styles="color: #18304E;font-weight: bold;font-size: 14px;"
-      font-length="8"
+      :font-length="fontLen"
       end-length="0">
     </ellipsis-copy>
     <span v-else>{{ name }}</span>
@@ -43,6 +43,10 @@
         type: Number,
         default: 12,
       },
+      fontLen: {
+        type: Number,
+        default: 8,
+      },
       width: {
         type: String,
         default: '116',
@@ -73,6 +77,40 @@
     .ellipsis-copy {
       width: v-bind(ellipsisCopy);
       min-width: initial !important;
+    }
+  }
+
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .project-name-cell {
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .project-name-cell {
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  /* 125% 适配 */
+  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+    .project-name-cell {
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+  /* 110% 适配 */
+  @media screen and (min-width: 1540px) and (max-width: 1750px) {
+    .project-name-cell {
+      span {
+        font-size: 12px;
+      }
     }
   }
 </style>

@@ -45,9 +45,13 @@
         :data="projectList"
         @row-click="routerSwitch">
         <template #empty>
-          <empty-data content="lang.noRisk"></empty-data>
+          <empty-data content="lang.emptyData"></empty-data>
         </template>
-        <el-table-column prop="project_name" :width="tableHeader('project_name')" align="left">
+        <el-table-column
+          prop="project_name"
+          :width="tableHeader('project_name')"
+          align="left"
+          fixed>
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.exp.tableHeader.project_name')
@@ -59,6 +63,7 @@
               width="180"
               :name="scope.row.project_name"
               :url="scope.row.logo_url"
+              :font-len="16"
               :ellipsis-len="20">
             </project-name-cell>
           </template>
@@ -309,8 +314,8 @@
       const tableHeader = computed(() => {
         const headerDict: IOption = {
           //project_name: '160',
-          project_name: '',
-          security_score: '110',
+          project_name: '230',
+          security_score: '60',
           tx_24: '70',
           market_cap: '120',
           token_price: '160',

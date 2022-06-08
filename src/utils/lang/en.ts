@@ -249,7 +249,7 @@ export default {
       title: 'Project Explorer',
       tableHeader: {
         project_name: 'Projects',
-        security_score: 'Security Score',
+        security_score: 'Score',
         tx_24: 'trx/24h',
         market_cap: 'Market Cap',
         token_price: 'Token Price',
