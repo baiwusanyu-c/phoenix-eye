@@ -864,14 +864,15 @@
         .el-input {
           width: 120px;
           .el-input__inner {
-            width: 80px;
+            width: 46px;
+            flex-grow: initial;
           }
         }
         .el-input--prefix .el-input__inner {
-          padding-left: 20px;
+          padding-left: 0;
         }
         .el-input--suffix .el-input__inner {
-          padding-right: 20px;
+          padding-right: 0;
         }
         .el-input.is-focus .el-input__wrapper {
           box-shadow: none !important;
