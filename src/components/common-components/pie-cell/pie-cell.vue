@@ -72,7 +72,9 @@
 
           // 更新
           if (isUpdate) {
-            chart.value.forceFit()
+            window.setTimeout(() => {
+              chart.value.forceFit()
+            }, 500)
             chart.value.data(pieData)
             chart.value.render(isUpdate)
             return
@@ -177,6 +179,9 @@
 
           chart.value.interaction('element-active')
           chart.value.render()
+            nextTick(()=>{
+                chart.value.forceFit()
+            })
         }
       }
       return {

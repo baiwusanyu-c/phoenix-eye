@@ -18,17 +18,10 @@ export declare interface IAxiosRes extends AxiosResponse {
   code?: string | number
   success?: boolean
 }
-/**
- * 设置url前缀
- */
-export const setPrevUrl = (baseUrl = ''): string => {
-  return String(import.meta.env.VITE_PROJECT_ENV) === 'production'
-    ? `${baseUrl}/hermit/back`
-    : `${baseUrl}`
-}
+
 // create an axios instance
 const service = axios.create({
-  baseURL: setPrevUrl(configUrl.baseURL),
+  baseURL: configUrl.baseURL,
   timeout: 50000, // request timeout
 })
 // request interceptor

@@ -1,11 +1,12 @@
 import type { IOption } from '../utils/types'
 // 生产环境
 enum productionUrl {
-  baseURL = 'https://eagleeye.beosin.com/eagle-eye-ussa/',
+  baseURL = 'https://eagleeye.beosin.com/v2/',
 }
 // 开发环境
 enum developmentUrl {
-  baseURL = 'http://192.168.0.2:9527',
+  // baseURL = 'http://192.168.0.2:9527',
+  baseURL = 'http://124.71.181.201:9527',
 }
 // 测试环境
 enum stagingUrl {

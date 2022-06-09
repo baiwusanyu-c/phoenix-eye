@@ -71,7 +71,9 @@
         })
         // 更新
         if (isUpdate) {
-          chart.value.forceFit()
+          window.setTimeout(() => {
+            chart.value.forceFit()
+          }, 500)
           chart.value.data(dv.rows)
           chart.value.render(isUpdate)
           return
