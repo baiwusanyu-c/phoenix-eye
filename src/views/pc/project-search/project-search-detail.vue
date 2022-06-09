@@ -456,7 +456,6 @@
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import config from '../../../enums/config'
-  import { setPrevUrl } from '../../../utils/request'
   import IconCell from '../../../components/common-components/icon-cell/icon-cell.vue'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import AreaLineCell from '../../../components/common-components/area-line-cell/area-line-cell.vue'
@@ -667,14 +666,13 @@
         const params: IContractReport = {
           project_id: parseInt(projectId.value),
         }
-        const prevUrl = setPrevUrl()
         const baseURL = config.baseURL
         getContractReportList(params)
           .then((res: any) => {
             if (res && res.success) {
               auditList.value = res.data || []
               auditList.value.forEach(val => {
-                val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+                val.url = `${baseURL}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
               })
             }
           })

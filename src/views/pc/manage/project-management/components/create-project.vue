@@ -136,7 +136,6 @@
   import { catchErr, openWindow, trimStr } from '../../../../../utils/common'
   import config from '../../../../../enums/config'
   import { previewUrl } from '../../../../../enums/link'
-  import { setPrevUrl } from '../../../../../utils/request'
   import ContactForm from './contact-form.vue'
   import WebsiteForm from './website-form.vue'
   import OperatingForm from './operating-form.vue'
@@ -650,10 +649,9 @@
        * 拼接生成预览url字段
        */
       const createAuditUrl = (): void => {
-        const prevUrl = setPrevUrl()
         const baseURL = config.baseURL
         auditList.value.forEach((val: any) => {
-          val.url = `${baseURL}${prevUrl}${previewUrl}?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+          val.url = `${baseURL}${previewUrl}?fileUuid=${val.uuid}&reportNum=${val.report_num}`
         })
       }
       /**
