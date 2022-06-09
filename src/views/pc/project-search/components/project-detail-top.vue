@@ -56,7 +56,8 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref, watch } from 'vue'
+  import { defineComponent, ref, watch } from 'vue'
+  // @ts-ignore
   import { BeProgress, BeTag } from '../../../../../public/be-ui/be-ui.es'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
@@ -169,7 +170,7 @@
     }
 
     .project-detail-top5-title {
-      font-family: AlibabaPuHuiTi-Medium, sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
       font-size: 18px;
       font-weight: bold;
       color: $textColor3;

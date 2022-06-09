@@ -15,7 +15,7 @@
           <el-form :label-position="labelPosition" label-width="80px">
             <el-form-item :label="$t('lang.feedback.formTitle') + ':'">
               <span class="reg-start feed-back--star">*</span>
-              <el-input v-model="form.title" maxlength="50"></el-input>
+              <el-input v-model="form.title" maxlength="100"></el-input>
               <p class="form-item__len">{{ form.title.length }} / 50</p>
             </el-form-item>
             <el-form-item :label="$t('lang.feedback.formContent') + ':'">
@@ -23,6 +23,7 @@
               <el-input
                 v-model="form.content"
                 type="textarea"
+                resize="none"
                 maxlength="200"
                 :rows="7"
                 :placeholder="$t('lang.feedback.formContractP')"></el-input>
@@ -48,6 +49,7 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  // @ts-ignore
   import { BeButton, BeDialog } from '../../public/be-ui/be-ui.es'
   import { createFeedBack } from '../api/feed-back'
   import composition from '../utils/mixin/common-func'
@@ -136,10 +138,9 @@
 <style lang="scss">
   #feed_back_dialog .feed-back-dialog {
     width: 527px;
-    height: 390px;
 
     .el-form-item__label {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 40px;

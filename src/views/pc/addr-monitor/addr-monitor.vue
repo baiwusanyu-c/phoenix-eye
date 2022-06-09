@@ -167,8 +167,9 @@
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
-  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es'
-  import { getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
+  // @ts-ignore
+  import { BeButton, BeIcon, BePagination } from '../../../../public/be-ui/be-ui.es.js'
+  import { catchErr, getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
@@ -236,10 +237,7 @@
               message('warning', t('lang.emptyData'))
             }
           })
-          .catch((err: any) => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+          .catch(catchErr)
       }
 
       const loading = ref<boolean>(false)
@@ -372,14 +370,14 @@
     min-height: calc(100% - 100px);
 
     .subTitle {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: $textColor12;
     }
 
     .item {
-      font-family: AlibabaPuHuiTi-Medium, sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 22px;
@@ -422,7 +420,7 @@
       max-width: 300px;
       display: block;
       font-size: 14px;
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-weight: 600;
       color: $textColor3;
       line-height: 22px;
@@ -433,14 +431,20 @@
     .table--link {
       @include ellipsis;
       font-size: 14px;
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-weight: 600;
       color: #008ee9;
       line-height: 22px;
       display: block;
     }
   }
-
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .addr-monitor-main .addr-monitor-search,
+    .addr-monitor-main .addr-monitor-result {
+      width: 92%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .addr-monitor-main .addr-monitor-search,

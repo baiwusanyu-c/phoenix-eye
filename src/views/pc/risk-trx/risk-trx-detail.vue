@@ -10,11 +10,11 @@
           <ellipsis-copy
             custom-class="detail-copy"
             :target-str="baseInfo.tx_hash"
-            :is-ellipsis="false"
+            :is-ellipsis="baseInfo.tx_hash && baseInfo.tx_hash.length > 64 ? true : false"
             empty-text="/"
             styles="color: #008EE9;cursor:pointer;"
-            font-length="8"
-            end-length="8"
+            font-length="30"
+            end-length="30"
             @click="openWeb(baseInfo.tx_hash, 'tx', baseInfo.platform)">
           </ellipsis-copy>
           <be-tag v-if="baseInfo.platform" type="info">
@@ -362,7 +362,7 @@
               v-if="baseInfo.slump.drop_prop"
               :class="'profit-d'"
               style="margin-right: 6px; font-weight: bold">
-              {{ (baseInfo.slump.drop_prop * 100).toFixed(2) }} %
+              {{ floatMultiply(baseInfo.slump.drop_prop, 100).toFixed(2) }} %
             </span>
             <be-icon
               v-if="baseInfo.slump.drop_prop"
@@ -386,11 +386,13 @@
   import {
     beijing2utc,
     createDate,
+    floatMultiply,
     formatDate,
     getUuid,
     openWindow,
     simulateToFixed,
   } from '../../../utils/common'
+  // @ts-ignore
   import { BeIcon, BeTag, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import type { IBaseInfoRiskInfo } from '../../../utils/types'
@@ -533,6 +535,7 @@
         openWeb,
         getUuid,
         openWindow,
+        floatMultiply,
       }
     },
   })
@@ -595,7 +598,7 @@
             border-radius: 0;
 
             span {
-              font-family: AlibabaPuHuiTi-Regular, sans-serif;
+              font-family: BarlowSemi-R, sans-serif;
               font-size: 14px;
               font-weight: 500;
               color: $textColor3;
@@ -664,7 +667,7 @@
 
       .label {
         margin-right: 20px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-family: BarlowSemi-R, sans-serif;
         font-size: 14px;
         font-weight: 400;
         line-height: 22px;
@@ -675,6 +678,51 @@
 </style>
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .risk-trx-detail .detail-body,
+    .risk-trx-detail .detail-profit,
+    .risk-trx-detail .detail-slump {
+      width: 92%;
+    }
+
+    .risk-trx-detail {
+      .detail-body {
+        padding: 10px;
+
+        .detail-item {
+          .detail-item-txt {
+            margin-top: 5px;
+            font-size: 12px;
+          }
+
+          .detail-item--date {
+            .date-label {
+              width: 16%;
+            }
+          }
+
+          .default {
+            height: 25px;
+            font-size: 12px;
+          }
+        }
+      }
+
+      .detail-profit {
+        height: 65.5%;
+        padding: 10px;
+
+        h3 {
+          font-size: 16px;
+        }
+
+        .detail-profit-body {
+          font-size: 12px;
+        }
+      }
+    }
+  }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .risk-trx-detail .detail-body,
     .risk-trx-detail .detail-profit,

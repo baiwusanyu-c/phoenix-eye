@@ -181,6 +181,7 @@
   import { getProjWarning } from '../../../../api/risk-trx'
   import { beijing2utc, createDate, formatDate, openWindow } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
+  // @ts-ignore
   import { BeIcon, BePagination, BeTag, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'

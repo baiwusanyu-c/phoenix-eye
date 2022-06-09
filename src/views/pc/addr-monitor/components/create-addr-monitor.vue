@@ -11,13 +11,13 @@
       custom-class="create-dialog"
       @close="handleClose">
       <div>
-        <el-form :label-position="labelPosition" label-width="120px">
+        <el-form :label-position="labelPosition" label-width="124px">
           <el-form-item :label="$t('lang.addrMonitor.form.labelAddr') + ':'">
             <span class="reg-start feed-back--star">*</span>
             <el-input v-model="form.address" :disabled="type === 'edit'"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
-            <el-input v-model="form.remark" type="textarea" :rows="7"></el-input>
+            <el-input v-model="form.remark" type="textarea" :rows="7" resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.addrMonitor.form.labelLink') + ':'">
             <div class="form--link">
@@ -49,6 +49,7 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
+  // @ts-ignore
   import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
@@ -174,7 +175,7 @@
             if (!res) {
               return
             }
-            if (res && res.code === '0000') {
+            if (res && res.success) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
               props.getList('reset')
@@ -231,7 +232,7 @@
     width: 527px;
 
     .el-form-item__label {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 40px;

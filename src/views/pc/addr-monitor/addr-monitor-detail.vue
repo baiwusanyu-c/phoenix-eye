@@ -204,12 +204,13 @@
     simulateToFixed,
   } from '../../../utils/common'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  // @ts-ignore
   import { BePagination } from '../../../../public/be-ui/be-ui.es'
   import PlatformCell from '../../../components/common-components/platform-cell/platform-cell.vue'
   import { getAddressMonitorOutList } from '../../../api/addr-monitor'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
-  import type { IAddrMonitorDetailOut, IAddrMonitorSearch } from '../../../api/addr-monitor'
+  import type { IAddrMonitorDetailOut } from '../../../api/addr-monitor'
   import type { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
   export default defineComponent({
     name: 'AddrMonitorDetail',
@@ -377,7 +378,7 @@
 
         .link {
           font-size: 14px;
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
+          font-family: BarlowSemi-R, sans-serif;
           font-weight: 600;
           color: #008ee9;
           line-height: 22px;
@@ -391,7 +392,18 @@
       box-sizing: border-box;
     }
   }
-
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .addr_monitor_detail {
+      .detail-body,
+      .addr-monitor-detail-table {
+        width: 92%;
+      }
+    }
+    .addr_monitor_detail .detail-body .detail-item .detail-item-txt .detail-item--ellipsis {
+      width: 80%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .addr_monitor_detail {

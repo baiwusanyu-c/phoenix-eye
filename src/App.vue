@@ -43,6 +43,7 @@
 </template>
 <script setup lang="tsx">
   import { ref } from 'vue'
+  // @ts-ignore
   import { BeButton, BeDialog } from '../public/be-ui/be-ui.es.js'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
   import { browserInfo, getStore, setStore } from './utils/common'
@@ -73,7 +74,7 @@
 </script>
 
 <style lang="scss">
-  @import 'assets/style/font-style.css';
+  @import 'assets/style/font-style';
 
   #browser_msg_dialog {
     .browser-msg-dialog {
@@ -87,8 +88,8 @@
       padding-left: 40px;
       background-color: white;
 
-      .be-dialog-title {
-        .be-dialog-contanter-head {
+      .be-dialog--title {
+        .be-dialog--container__head {
           box-sizing: border-box;
           padding: 0;
         }
@@ -139,6 +140,12 @@
 </style>
 
 <style scoped lang="scss">
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .noM {
+      min-width: 1280px;
+    }
+  }
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .noM {
       min-width: 1280px;

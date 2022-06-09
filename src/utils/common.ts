@@ -1,7 +1,7 @@
 import { isArray, isObject, toRawType } from '@vue/shared'
 // @ts-ignore
 import { BeMessage } from '../../public/be-ui/be-ui.es'
-//import { ElMessage } from 'element-plus'
+
 import type { IOption } from './types'
 /**
  * id生成方法
@@ -41,7 +41,8 @@ export function isEmpty(val: unknown) {
   if (
     (!val && val !== 0) ||
     (isArray(val) && !Array(val).length) ||
-    (isObject(val) && !Object.keys(Object(val)).length)
+    (isObject(val) && !Object.keys(Object(val)).length) ||
+    isNaN(Number(val))
   )
     return true
 
@@ -141,7 +142,25 @@ export const accSub = (arg: Array<number>): number => {
 
   return sum / 10 ** maxDecimalLength
 }
-
+export function floatMultiply(arg1: number, arg2: number) {
+  if (arg1 == null || arg2 == null) {
+    return null
+  }
+  let r1: number, r2: number // 小数位数
+  try {
+    r1 = arg1.toString().split('.')[1].length
+  } catch (e) {
+    r1 = 0
+  }
+  try {
+    r2 = arg2.toString().split('.')[1].length
+  } catch (e) {
+    r2 = 0
+  }
+  const n1 = Number(arg1.toString().replace('.', ''))
+  const n2 = Number(arg2.toString().replace('.', ''))
+  return (n1 * n2) / 10 ** (r1 + r2)
+}
 /**
  * 存储
  */
@@ -201,7 +220,7 @@ export const isFunction = (val: unknown) =>
   Object.prototype.toString.call(val) === '[object Function]'
 // 邮箱校验
 export const verEmail = (val: string) => {
-  return /^(\w)+((\.\w+)|(-\w+))*@(\w|-)+((\.\w+)+)$/.test(val)
+  return /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(val)
 }
 // 时间格式化
 export const formatDate = (timestamp: string, formats?: string) => {
@@ -310,19 +329,20 @@ export const trim = (str: string): string => {
   return str.replace(/^(\s|\xA0)+|(\s|\xA0)+$/g, '')
 }
 // 去收尾看看
-export function trimStr(str: string): string {
+export function trimStr(str: string | undefined): string {
+  if (str === undefined) return ''
   return str.replace(/(^\s*)|(\s*$)/g, '')
 }
-// 数字转百万M 100M
-export function nFormatter(num: number, digits: number) {
+// 数字转百万M 100M (似乎有点问题)
+export function nFormatter(num: number, digits: number, getS = false) {
   const si = [
     { value: 1, symbol: '' },
     { value: 1e3, symbol: 'K' },
     { value: 1e6, symbol: 'M' },
-    /* { value: 1E9, symbol: "G" },
-         { value: 1E12, symbol: "T" },
-         { value: 1E15, symbol: "P" },
-         { value: 1E18, symbol: "E" }*/
+    { value: 1e9, symbol: 'B' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e18, symbol: 'E' },
   ]
   const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
   let i
@@ -331,12 +351,45 @@ export function nFormatter(num: number, digits: number) {
       break
     }
   }
+  if (getS) {
+    return si[i].symbol
+  }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
+export function nFormats(num: number) {
+  let unit = ''
+  let res = num
+  if (num >= 1e3 && num < 1e6) {
+    res = num / 1e3
+    unit = 'K'
+  }
+  if (num >= 1e6 && num < 1e9) {
+    res = num / 1e6
+    unit = 'M'
+  }
+  if (num >= 1e9 && num < 1e12) {
+    res = num / 1e9
+    unit = 'B'
+  }
+  if (num >= 1e12 && num < 1e15) {
+    res = num / 1e12
+    unit = 'T'
+  }
+  if (num >= 1e15 && num < 1e18) {
+    res = num / 1e15
+    unit = 'P'
+  }
+  if (num >= 1e18) {
+    res = num / 1e18
+    unit = 'E'
+  }
 
+  return `${Math.floor(res * 1000) / 1000}${unit}`
+}
 /**
  * 打开窗口
  * @param strUrl
+ * @param winName
  */
 export const openWindow = (strUrl: string, winName = '_blank'): void => {
   // 模拟a标签点击，实现无糖浏览器下的新开tab
@@ -399,9 +452,9 @@ export function formatTimeStamp(dateTimeStamp: number, lang: string) {
   let yesterday = '昨天'
   if (lang === 'en_US') {
     gg = 'Just happened'
-    dq = ' day ago'
-    sq = ' hour ago'
-    fq = ' minutes ago'
+    dq = 'd ago'
+    sq = 'h ago'
+    fq = 'm ago'
     yesterday = 'yesterday'
   }
   result = gg
@@ -411,9 +464,10 @@ export function formatTimeStamp(dateTimeStamp: number, lang: string) {
   const dayC = diffValue / day
   const hourC = diffValue / hour
   const minC = diffValue / minute
-  if (parseInt(dayC.toString()) > 30) {
+  /*if (parseInt(dayC.toString()) > 30) {
     result = `${formatDD(createDate(dateTimeStamp), 'yyyy-MM-dd')}`
-  } else if (parseInt(dayC.toString()) > 1) {
+  } else */
+  if (parseInt(dayC.toString()) > 1) {
     result = `${parseInt(dayC.toString())}${dq}`
   } else if (parseInt(dayC.toString()) == 1) {
     result = yesterday
@@ -494,11 +548,6 @@ export const message = (type: string, info: string, className?: string): void =>
     offsetTop: 80,
     close: true,
   })
-  /* ElMessage({
-    showClose: true,
-    message: info,
-    type: type,
-  })*/
 }
 /**
  * 文本复制
@@ -525,7 +574,7 @@ export const simulateToFixed = (num: number, decimal = 6) => {
     return
   }
   if (num.toString() === '0' && decimal !== 0) {
-    return '0.000000'
+    return '0'
   }
   const numInner = transferToNumber(num).toString()
   const index = numInner.indexOf('.')
@@ -542,7 +591,7 @@ export const simulateToFixed = (num: number, decimal = 6) => {
       parseFloat(numInner).toFixed(decimal) === minimum
         ? minimum.toString()
         : parseFloat(numInner).toFixed(decimal)
-    return res === '-0.000000' ? '0.000000' : res
+    return res === '-0.000000' ? '0' : res
   }
 }
 
@@ -573,4 +622,24 @@ export const numberToCommaString = (nStr: number): string => {
     x1 = x1.replace(rgx, '$1' + ',' + '$2') //正则式替换
   }
   return x1 + x2
+}
+
+export const catchErr = (err: any): void => {
+  if (!err) return
+  message('error', err.message || err)
+  console.error(err)
+}
+export function formatMoney(n: number): string {
+  const regex = /\d{1,3}(?=(\d{3})+(\.|$))/g // 替换规则
+  const num = String(Math.round(n * 10 ** 2)) // 乘100 四舍五入
+  const integer = num.substr(0, num.length - 2).replace(regex, '$&,') // 最后两位前的为整数
+  const decimal = num.substr(num.length - 2) // 最后两位为小数
+  return decimal === '00' || Number(decimal) === 0
+    ? `${integer || 0}`
+    : `${integer || 0}.${decimal}`
+}
+// 还原金额
+export function restoreMoney(s: string): number {
+  const regex = /[^\d.-]/g
+  return Number(String(s).replace(regex, ''))
 }

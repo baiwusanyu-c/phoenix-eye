@@ -62,6 +62,7 @@
   import { defineComponent, getCurrentInstance, nextTick, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
+  // @ts-ignore
   import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
   import { debounce } from '../../../utils/common'
   import RiskTrxTable from './components/risk-trx-table.vue'
@@ -142,7 +143,7 @@
       .risk-trx-search-filter {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: 100px 160px 140px 200px 100px;
+        grid-template-columns: 100px 160px 140px 210px 100px;
         grid-gap: 20px;
         width: 100%;
         padding: 20px;
@@ -163,7 +164,7 @@
         background-color: transparent;
 
         .be-button-slot {
-          font-family: AlibabaPuHuiTi-Regular, sans-serif;
+          font-family: BarlowSemi-R, sans-serif;
         }
 
         &:hover {
@@ -183,7 +184,13 @@
       min-width: 1172px;
     }
   }
-
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .risk-trx-list .search-area,
+    .risk-trx-list .risk-table {
+      width: 92%;
+    }
+  }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .risk-trx-list .search-area,

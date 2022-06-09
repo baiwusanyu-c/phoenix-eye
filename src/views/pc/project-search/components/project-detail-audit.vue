@@ -62,12 +62,12 @@
     .project-detail-audit--name {
       @include ellipsis;
       margin: 40px 0 10px 0;
-      font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       line-height: 24px;
     }
 
     .project-detail-audit--date {
-      font-family: AlibabaPuHuiTi-Regular, AlibabaPuHuiTi, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       line-height: 22px;
     }
   }

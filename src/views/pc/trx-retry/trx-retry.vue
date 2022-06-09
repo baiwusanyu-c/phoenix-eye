@@ -35,6 +35,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
+  // @ts-ignore
   import { BeButton } from '../../../../public/be-ui/be-ui.es'
   import { platformListDict } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'
@@ -71,7 +72,7 @@
     min-height: calc(100% - 100px);
 
     .subTitle {
-      font-family: AlibabaPuHuiTi-Regular, sans-serif;
+      font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: $textColor12;
@@ -87,14 +88,14 @@
 
       input::-webkit-input-placeholder {
         /* WebKit browsers */
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-family: BarlowSemi-R, sans-serif;
         font-size: 18px;
         color: $mainColor14;
       }
 
       .el-input__inner {
         height: 52px;
-        font-family: AlibabaPuHuiTi-Regular, sans-serif;
+        font-family: BarlowSemi-R, sans-serif;
         font-size: 18px;
         line-height: 52px;
         color: $textColor4;
