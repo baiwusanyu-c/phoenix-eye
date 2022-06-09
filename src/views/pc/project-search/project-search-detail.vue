@@ -496,7 +496,7 @@
   } from '../../../utils/types'
 
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
-
+  import { setPrevUrl } from '../../../utils/request'
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
@@ -666,20 +666,21 @@
         const params: IContractReport = {
           project_id: parseInt(projectId.value),
         }
-        const baseURL = config.baseURL
-        getContractReportList(params)
-          .then((res: any) => {
-            if (res && res.success) {
-              auditList.value = res.data || []
-              auditList.value.forEach(val => {
-                val.url = `${baseURL}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+          const prevUrl = setPrevUrl()
+          const baseURL = config.baseURL
+          getContractReportList(params)
+              .then((res: any) => {
+                  if (res && res.success) {
+                      auditList.value = res.data || []
+                      auditList.value.forEach(val => {
+                          val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+                      })
+                  }
               })
-            }
-          })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+              .catch(err => {
+                  message('error', err.message || err)
+                  console.error(err)
+              })
       }
 
       // 项目id
