@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
+  import { defineComponent, nextTick, onMounted, ref, watch} from 'vue'
   import { Chart } from '@antv/g2'
 
   import DataSet from '@antv/data-set'
@@ -55,9 +55,13 @@
         () => props.lineData,
         (nVal, oVal) => {
           if (nVal && !oVal) {
+              nextTick(() => {
             renderChart()
+              })
           } else {
+              nextTick(() => {
             renderChart(true)
+              })
           }
         }
       )
@@ -71,7 +75,12 @@
         })
         // 更新
         if (isUpdate) {
-          chart.value.forceFit()
+           /* window.setTimeout(() => {
+                chart.value.forceFit()
+            },5000)*/
+            nextTick(()=>{
+                chart.value.forceFit()
+            })
           chart.value.data(dv.rows)
           chart.value.render(isUpdate)
           return
@@ -148,6 +157,21 @@
             radius: [20, 20, 0, 0],
           })
         chart.value.render()
+          nextTick(() => {
+              /*const containerDom:HTMLElement | null = document.getElementById(props.domId)
+              if(containerDom){
+                  let width = containerDom.getElementsByTagName('canvas')[0].width
+                  if (width < 10){
+                      console.log(1)
+                      window.setTimeout(() => {
+                          chart.value.forceFit()
+                      },500)
+
+                  }
+              }*/
+              chart.value.forceFit()
+
+          })
       }
     },
   })

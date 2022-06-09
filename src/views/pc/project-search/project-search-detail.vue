@@ -51,8 +51,8 @@
         </div>
         <div>
           <be-icon
-              :herf="governData.website"
             v-if="governData.website"
+            :herf="governData.website"
             style="cursor: pointer"
             role="button"
             width="50"
@@ -60,27 +60,27 @@
             icon="iconWebsiteEagle"
             @click="openWindow(governData.website)"></be-icon>
           <be-icon
-              style="cursor: pointer"
-              :herf="governData.twitter"
             v-if="governData.twitter"
+            style="cursor: pointer"
+            :herf="governData.twitter"
             role="button"
             width="60"
             height="60"
             icon="iconTwitterEagle"
             @click="openWindow(governData.twitter)"></be-icon>
           <be-icon
-              style="cursor: pointer"
-              :herf="governData.telegram"
             v-if="governData.telegram"
+            style="cursor: pointer"
+            :herf="governData.telegram"
             role="button"
             width="60"
             height="60"
             icon="iconTelegramEagle"
             @click="openWindow(governData.telegram)"></be-icon>
           <be-icon
-              style="cursor: pointer"
-              :herf="governData.github"
             v-if="governData.github"
+            style="cursor: pointer"
+            :herf="governData.github"
             role="button"
             width="50"
             height="60"
@@ -402,7 +402,7 @@
         </title-cell>
       </div>
       <div class="project-detail-risk--body">
-        <risk-chart :data="riskChartData"></risk-chart>
+        <risk-chart :data="riskChartData" v-if="showRiskList && hasTokenAddress"></risk-chart>
         <risk-list :project-id="projectId" @show="handleShowRiskList"></risk-list>
       </div>
     </div>
@@ -456,7 +456,6 @@
   import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import config from '../../../enums/config'
-  import { setPrevUrl } from '../../../utils/request'
   import IconCell from '../../../components/common-components/icon-cell/icon-cell.vue'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import AreaLineCell from '../../../components/common-components/area-line-cell/area-line-cell.vue'
@@ -497,7 +496,7 @@
   } from '../../../utils/types'
 
   import type { IContractReport, IPublicOpinion } from '../../../api/project-explorer'
-
+  import { setPrevUrl } from '../../../utils/request'
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
@@ -667,21 +666,21 @@
         const params: IContractReport = {
           project_id: parseInt(projectId.value),
         }
-        const prevUrl = setPrevUrl()
-        const baseURL = config.baseURL
-        getContractReportList(params)
-          .then((res: any) => {
-            if (res && res.success) {
-              auditList.value = res.data || []
-              auditList.value.forEach(val => {
-                val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+          const prevUrl = setPrevUrl()
+          const baseURL = config.baseURL
+          getContractReportList(params)
+              .then((res: any) => {
+                  if (res && res.success) {
+                      auditList.value = res.data || []
+                      auditList.value.forEach(val => {
+                          val.url = `${baseURL}${prevUrl}/website/common/preview/single?fileUuid=${val.uuid}&reportNum=${val.report_num}`
+                      })
+                  }
               })
-            }
-          })
-          .catch(err => {
-            message('error', err.message || err)
-            console.error(err)
-          })
+              .catch(err => {
+                  message('error', err.message || err)
+                  console.error(err)
+              })
       }
 
       // 项目id
@@ -1233,8 +1232,8 @@
       display: flex;
       justify-content: space-between;
       .market-line--container {
-          margin-right: 20px;
-          width: 70%;
+        margin-right: 20px;
+        width: 70%;
         .market-line {
           margin: 12px 0;
           background-color: $mainColor7;
@@ -1294,7 +1293,6 @@
       .project-detail-market {
         width: 92%;
       }
-
     }
   }
   /* 150% 适配 */
@@ -1322,7 +1320,6 @@
       .project-detail-market {
         width: 80%;
       }
-
     }
   }
   /* 110% 适配 */

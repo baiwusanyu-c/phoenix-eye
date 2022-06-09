@@ -18,6 +18,7 @@ export declare interface IAxiosRes extends AxiosResponse {
   code?: string | number
   success?: boolean
 }
+
 /**
  * 设置url前缀
  */
