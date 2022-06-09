@@ -18,7 +18,8 @@ enum developmentUrl02 {
 }
 
 enum stagingUrl02 {
-  baseURL = 'http://124.71.132.90:9527',
+  // baseURL = 'http://124.71.132.90:9527',
+  baseURL = 'http://124.71.181.201:9527',
 }
 
 enum production02 {

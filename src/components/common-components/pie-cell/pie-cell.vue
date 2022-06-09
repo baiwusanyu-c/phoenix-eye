@@ -57,7 +57,7 @@ import {computed, defineComponent, nextTick, onMounted, onUpdated, ref, watch} f
         })
       })
       onUpdated(() => {
-          chart.value.forceFit()
+        chart.value.forceFit()
       })
       // 实例对象
       const chart = ref<any>()
