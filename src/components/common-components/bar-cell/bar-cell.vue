@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, ref, watch ,onUpdated} from 'vue'
+  import { defineComponent, nextTick, onMounted, ref, watch} from 'vue'
   import { Chart } from '@antv/g2'
 
   import DataSet from '@antv/data-set'
@@ -49,18 +49,19 @@
           renderChart()
         })
       })
-      onUpdated(() => {
-        chart.value.forceFit()
-      })
       // 实例对象
       const chart = ref<any>()
       watch(
         () => props.lineData,
         (nVal, oVal) => {
           if (nVal && !oVal) {
+              nextTick(() => {
             renderChart()
+              })
           } else {
+              nextTick(() => {
             renderChart(true)
+              })
           }
         }
       )
@@ -74,13 +75,11 @@
         })
         // 更新
         if (isUpdate) {
-          nextTick(() => {
             window.setTimeout(() => {
-              chart.value.forceFit()
-            }, 500)
-            chart.value.data(dv.rows)
-            chart.value.render(isUpdate)
-          })
+                chart.value.forceFit()
+            },500)
+          chart.value.data(dv.rows)
+          chart.value.render(isUpdate)
           return
         }
         chart.value = new Chart({
@@ -155,9 +154,19 @@
             radius: [20, 20, 0, 0],
           })
         chart.value.render()
-        window.setTimeout(() => {
-          chart.value.forceFit()
-        }, 500)
+          nextTick(() => {
+              const containerDom:HTMLElement | null = document.getElementById(props.domId)
+              if(containerDom){
+                  let width = containerDom.getElementsByTagName('canvas')[0].width
+                  if (width < 10){
+                      window.setTimeout(() => {
+                          chart.value.forceFit()
+                      },500)
+
+                  }
+              }
+
+          })
       }
     },
   })
