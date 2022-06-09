@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
+  import { defineComponent, nextTick, onMounted, ref, watch ,onUpdated} from 'vue'
   import { Chart } from '@antv/g2'
 
   import DataSet from '@antv/data-set'
@@ -49,6 +49,9 @@
           renderChart()
         })
       })
+      onUpdated(() => {
+        chart.value.forceFit()
+      })
       // 实例对象
       const chart = ref<any>()
       watch(
@@ -71,11 +74,13 @@
         })
         // 更新
         if (isUpdate) {
-          window.setTimeout(() => {
-            chart.value.forceFit()
-          }, 500)
-          chart.value.data(dv.rows)
-          chart.value.render(isUpdate)
+          nextTick(() => {
+            window.setTimeout(() => {
+              chart.value.forceFit()
+            }, 500)
+            chart.value.data(dv.rows)
+            chart.value.render(isUpdate)
+          })
           return
         }
         chart.value = new Chart({
@@ -151,7 +156,7 @@
           })
         chart.value.render()
         window.setTimeout(() => {
-            chart.value.forceFit()
+          chart.value.forceFit()
         }, 500)
       }
     },

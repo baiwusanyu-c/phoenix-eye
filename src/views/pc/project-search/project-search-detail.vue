@@ -51,8 +51,8 @@
         </div>
         <div>
           <be-icon
-              :herf="governData.website"
             v-if="governData.website"
+            :herf="governData.website"
             style="cursor: pointer"
             role="button"
             width="50"
@@ -60,27 +60,27 @@
             icon="iconWebsiteEagle"
             @click="openWindow(governData.website)"></be-icon>
           <be-icon
-              style="cursor: pointer"
-              :herf="governData.twitter"
             v-if="governData.twitter"
+            style="cursor: pointer"
+            :herf="governData.twitter"
             role="button"
             width="60"
             height="60"
             icon="iconTwitterEagle"
             @click="openWindow(governData.twitter)"></be-icon>
           <be-icon
-              style="cursor: pointer"
-              :herf="governData.telegram"
             v-if="governData.telegram"
+            style="cursor: pointer"
+            :herf="governData.telegram"
             role="button"
             width="60"
             height="60"
             icon="iconTelegramEagle"
             @click="openWindow(governData.telegram)"></be-icon>
           <be-icon
-              style="cursor: pointer"
-              :herf="governData.github"
             v-if="governData.github"
+            style="cursor: pointer"
+            :herf="governData.github"
             role="button"
             width="50"
             height="60"
@@ -1231,8 +1231,8 @@
       display: flex;
       justify-content: space-between;
       .market-line--container {
-          margin-right: 20px;
-          width: 70%;
+        margin-right: 20px;
+        width: 70%;
         .market-line {
           margin: 12px 0;
           background-color: $mainColor7;
@@ -1292,7 +1292,6 @@
       .project-detail-market {
         width: 92%;
       }
-
     }
   }
   /* 150% 适配 */
@@ -1320,7 +1319,6 @@
       .project-detail-market {
         width: 80%;
       }
-
     }
   }
   /* 110% 适配 */

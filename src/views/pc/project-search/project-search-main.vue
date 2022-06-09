@@ -25,15 +25,15 @@
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item3') }}</p>
           <be-icon
-              :herf="webURL.chains_eth"
-              role="link"
+            :herf="webURL.chains_eth"
+            role="link"
             width="24"
             height="24"
             icon="iconEthEagleG"
             @click="openWindow(webURL.chains_eth)"></be-icon>
           <be-icon
-              :herf="webURL.chains_bsc"
-              role="link"
+            :herf="webURL.chains_bsc"
+            role="link"
             width="24"
             height="24"
             icon="iconBnbEagleG"
@@ -46,8 +46,8 @@
             icon="iconHecoEagleG"
             @click="openWindow(webURL.chains_heco)"></be-icon>
           <be-icon
-              :herf="webURL.chains_polygon"
-              role="link"
+            :herf="webURL.chains_polygon"
+            role="link"
             width="24"
             height="24"
             icon="iconPolygonEagleG"

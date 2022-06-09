@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
+import {computed, defineComponent, nextTick, onMounted, onUpdated, ref, watch} from 'vue'
   import { Chart } from '@antv/g2'
   import { floatMultiply, simulateToFixed } from '../../../utils/common'
   import type { IOption } from '../../../utils/types'
@@ -56,6 +56,9 @@
           renderChart()
         })
       })
+      onUpdated(() => {
+          chart.value.forceFit()
+      })
       // 实例对象
       const chart = ref<any>()
       watch(
@@ -72,11 +75,13 @@
 
           // 更新
           if (isUpdate) {
-            window.setTimeout(() => {
-              chart.value.forceFit()
-            }, 500)
-            chart.value.data(pieData)
-            chart.value.render(isUpdate)
+            nextTick(() => {
+              window.setTimeout(() => {
+                chart.value.forceFit()
+              }, 500)
+              chart.value.data(pieData)
+              chart.value.render(isUpdate)
+            })
             return
           }
           chart.value = new Chart({
@@ -180,7 +185,7 @@
           chart.value.interaction('element-active')
           chart.value.render()
           window.setTimeout(() => {
-              chart.value.forceFit()
+            chart.value.forceFit()
           }, 500)
         }
       }

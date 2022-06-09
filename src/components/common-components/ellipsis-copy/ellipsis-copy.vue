@@ -85,11 +85,11 @@
         type: String,
         default: '',
       },
-        // tooltip 样式
-        tooltipStyle: {
-            type: String,
-            default: '',
-        },
+      // tooltip 样式
+      tooltipStyle: {
+        type: String,
+        default: '',
+      },
       /**
        * 复制内容 沒有傳則默認是 targetStr 内容
        */
@@ -179,7 +179,7 @@
     .address {
       flex-shrink: 1;
       overflow: hidden;
-        width: 300px;
+      width: 300px;
     }
 
     .copy-btn {
