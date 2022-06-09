@@ -134,7 +134,7 @@ export default {
   navTextConfig: {
     navName0: 'On-chain situation',
     navName1: 'Project ranking',
-    navName2: 'Risk trx',
+    navName2: 'Risk Tx',
     navName3: 'Project management',
     navName4: 'System configuration',
     navName6: 'News',
@@ -148,7 +148,7 @@ export default {
     navName1: 'Project ranking',
     navName1s1: 'Project ranking/contract status details',
     navName1s2: 'Project ranking/contract status details',
-    navName2: 'Risk Trx',
+    navName2: 'Risk Tx',
     navName3: 'Project Management',
     navName4: 'System Configuration',
     navName5: 'Project Explorer',
@@ -250,7 +250,7 @@ export default {
       tableHeader: {
         project_name: 'Projects',
         security_score: 'Score',
-        tx_24: 'trx/24h',
+        tx_24: 'Tx/24h',
         market_cap: 'Market Cap',
         token_price: 'Token Price',
         create_time: 'Added on',
@@ -265,7 +265,7 @@ export default {
       title: 'Project Details',
       top5Title1: 'Top 5 Token Holders',
       top5Title2: 'Top 5 Liquidity Pairs Holders',
-      riskTrx: 'Risk Trx',
+      riskTrx: 'Risk Tx',
       audit: 'Audit',
       riskPublicOpinion: 'Risk Public Opinion',
       subscribe: 'Subscribe',
@@ -544,7 +544,7 @@ export default {
   },
   trxRetry: {
     searchP: 'Trx Hash',
-    result: 'You have submitted！please check later on the risk trx page.',
+    result: 'You have submitted！please check later on the Risk Tx page.',
   },
   riskPublicInfo: {
     searchP: 'Key Words',

@@ -198,7 +198,7 @@
   // YYTJ: 'Operational Statistics
   // EYWZGL: Malicious Website
   // AQSJ: Security Incident,
-  // FXJY:Risk Trx
+  // FXJY:Risk Tx
   // FXGGYQ:Risk Public Information
   const MANAGEMENT_DICT = {
     XMGL: true,
@@ -527,7 +527,7 @@
               openDialog('add')
             })
 
-            createOneBtn.innerText = t('lang.createProject.notFound')
+            createOneBtn.innerText = t('lang.createProject.createOne')
             createOneBody.append(createOneBtn)
 
             container?.append(createOneBody)
@@ -634,6 +634,7 @@
       }
       .create-one {
         color: $mainColor7;
+        min-width: 86px;
         border-radius: 4px;
         height: 24px;
         line-height: 24px;

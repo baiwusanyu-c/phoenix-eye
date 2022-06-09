@@ -377,7 +377,7 @@ export default {
   },
   trxRetry: {
     searchP: 'Trx Hash',
-    result: 'You have submitted！please check later on the risk trx page.',
+    result: 'You have submitted！please check later on the Risk Tx page.',
   },
   addrMonitor: {
     searchP: '地址',

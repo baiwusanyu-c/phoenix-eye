@@ -42,7 +42,7 @@
         <span class="tx24">
           {{ isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${nFormats(scope.row.tx_24)}` }}
         </span>
-        <span class="trx">trx<span>/24</span></span>
+        <span class="trx">Tx<span>/24</span></span>
       </template>
     </el-table-column>
   </el-table>
