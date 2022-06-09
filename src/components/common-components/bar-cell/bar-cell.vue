@@ -75,12 +75,13 @@
         })
         // 更新
         if (isUpdate) {
-           /* window.setTimeout(() => {
+            debugger
+            window.setTimeout(() => {
                 chart.value.forceFit()
-            },500)*/
-            nextTick(()=>{
+            },5000)
+           /* nextTick(()=>{
                 chart.value.forceFit()
-            })
+            })*/
           chart.value.data(dv.rows)
           chart.value.render(isUpdate)
           return
