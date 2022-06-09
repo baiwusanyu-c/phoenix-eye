@@ -150,6 +150,9 @@
             radius: [20, 20, 0, 0],
           })
         chart.value.render()
+        window.setTimeout(() => {
+            chart.value.forceFit()
+        }, 500)
       }
     },
   })

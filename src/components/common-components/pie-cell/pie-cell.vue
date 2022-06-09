@@ -179,9 +179,9 @@
 
           chart.value.interaction('element-active')
           chart.value.render()
-            nextTick(()=>{
-                chart.value.forceFit()
-            })
+          window.setTimeout(() => {
+              chart.value.forceFit()
+          }, 500)
         }
       }
       return {
