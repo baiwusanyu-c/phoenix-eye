@@ -64,10 +64,12 @@
         computePropsData,
         () => {
           nextTick(() => {
-            if (computePropsData.value?.stat_1_day_data) {
-              innerData.value = jsonClone(computePropsData.value?.stat_1_day_data)
-              createPieData(innerData.value!)
-            }
+            nextTick(() => {
+              if (computePropsData.value?.stat_1_day_data) {
+                innerData.value = jsonClone(computePropsData.value?.stat_1_day_data)
+                createPieData(innerData.value!)
+              }
+            })
           })
         },
         { immediate: true, deep: true }

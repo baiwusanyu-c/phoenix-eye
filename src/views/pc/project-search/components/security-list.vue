@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { defineComponent, onMounted, ref, watch } from 'vue'
   import compositionPage from '../../../../utils/mixin/page-param'
   import { getPublicOpinionList } from '../../../../api/risk-public-info'
   import { catchErr } from '../../../../utils/common'
@@ -53,6 +53,13 @@
     },
     emits: ['show'],
     setup(props, { emit }) {
+      watch(
+        () => props.param,
+        () => {
+          resetPageParam(4, pageParams)
+          getRiskInfo()
+        }
+      )
       const { pageParams, resetPageParam } = compositionPage()
       resetPageParam(4, pageParams)
       const riskInfoList = ref<Array<IRiskInfoList>>([])

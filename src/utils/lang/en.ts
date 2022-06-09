@@ -305,7 +305,7 @@ export default {
       titleRiskSub: 'On-chain performance and social performance.',
       titleInfo: 'Project News',
       titleSecurity: 'Securtity Event',
-      titleGovern: 'Diaphaneity & Governance',
+      titleGovern: 'Transparency & Governance',
       securtityEventLabel1: 'Allect project:',
       securtityEventLabel2: 'Abstract:',
       securtityEventLabel3: 'Attect type:',

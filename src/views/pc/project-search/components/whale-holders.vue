@@ -321,7 +321,14 @@
             <span class="table-head">{{ $t('lang.projectExplorer.detail.tableHeader2.age') }}</span>
           </template>
           <template #default="scope">
-            {{ formatTimeStamp(createDate(scope.row.block_time).getTime(), $i18n.locale) }}
+            <el-tooltip
+              :content="`${formatDate(
+                createDate(scope.row.block_time).toString()
+              )}  UTC：${beijing2utc(scope.row.block_time)}`"
+              placement="top"
+              effect="light">
+              {{ formatTimeStamp(createDate(scope.row.block_time).getTime(), $i18n.locale) }}
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -339,12 +346,18 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { defineComponent, onMounted, ref, watch } from 'vue'
   import compositionPage from '../../../../utils/mixin/page-param'
 
   import { getLiquidity, getPrivilege, getTop10HolderList } from '../../../../api/project-explorer'
   import composition from '../../../../utils/mixin/common-func'
-  import { createDate, formatTimeStamp, simulateToFixed } from '../../../../utils/common'
+  import {
+    beijing2utc,
+    createDate,
+    formatDate,
+    formatTimeStamp,
+    simulateToFixed,
+  } from '../../../../utils/common'
   // @ts-ignore
   import { BeIcon, BeProgress } from '../../../../../public/be-ui/be-ui.es'
   import type { ILiquidity, IPrivilege, ITop10Holder, IWhalePieData } from '../../../../utils/types'
@@ -560,6 +573,14 @@
         getPrivilegesList('reset')
         getLiquidityList('reset')
       })
+      watch(
+        () => props.projectId,
+        () => {
+          getTop10Holder('reset')
+          getPrivilegesList('reset')
+          getLiquidityList('reset')
+        }
+      )
       return {
         simulateToFixed,
         pageNum,
@@ -584,6 +605,8 @@
         loadingPrivileges,
         formatTimeStamp,
         createDate,
+        formatDate,
+          beijing2utc,
       }
     },
   })

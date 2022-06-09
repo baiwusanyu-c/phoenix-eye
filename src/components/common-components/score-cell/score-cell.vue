@@ -45,10 +45,10 @@
       const hiddenPath = ref<string>('')
       const color = ref<string>('')
       const setScoreColor = (): void => {
-        if (Number(computedPropsScore.value) >= 90) {
+        if (Number(computedPropsScore.value) >= 80) {
           color.value = '#0ED9AC'
         }
-        if (Number(computedPropsScore.value) < 90 && Number(computedPropsScore.value) > 60) {
+        if (Number(computedPropsScore.value) < 80 && Number(computedPropsScore.value) > 60) {
           color.value = '#F4CC29'
         }
         if (Number(computedPropsScore.value) <= 60) {

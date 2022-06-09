@@ -452,9 +452,9 @@ export function formatTimeStamp(dateTimeStamp: number, lang: string) {
   let yesterday = '昨天'
   if (lang === 'en_US') {
     gg = 'Just happened'
-    dq = ' day ago'
-    sq = ' hour ago'
-    fq = ' minutes ago'
+    dq = 'd ago'
+    sq = 'h ago'
+    fq = 'm ago'
     yesterday = 'yesterday'
   }
   result = gg
@@ -464,9 +464,10 @@ export function formatTimeStamp(dateTimeStamp: number, lang: string) {
   const dayC = diffValue / day
   const hourC = diffValue / hour
   const minC = diffValue / minute
-  if (parseInt(dayC.toString()) > 30) {
+  /*if (parseInt(dayC.toString()) > 30) {
     result = `${formatDD(createDate(dateTimeStamp), 'yyyy-MM-dd')}`
-  } else if (parseInt(dayC.toString()) > 1) {
+  } else */
+  if (parseInt(dayC.toString()) > 1) {
     result = `${parseInt(dayC.toString())}${dq}`
   } else if (parseInt(dayC.toString()) == 1) {
     result = yesterday
@@ -623,7 +624,8 @@ export const numberToCommaString = (nStr: number): string => {
   return x1 + x2
 }
 
-export const catchErr = (err?: any): void => {
+export const catchErr = (err: any): void => {
+  if (!err) return
   message('error', err.message || err)
   console.error(err)
 }

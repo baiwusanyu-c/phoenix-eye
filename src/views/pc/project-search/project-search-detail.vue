@@ -51,13 +51,17 @@
         </div>
         <div>
           <be-icon
+              :herf="governData.website"
             v-if="governData.website"
+            style="cursor: pointer"
             role="button"
             width="50"
             height="60"
             icon="iconWebsiteEagle"
             @click="openWindow(governData.website)"></be-icon>
           <be-icon
+              style="cursor: pointer"
+              :herf="governData.twitter"
             v-if="governData.twitter"
             role="button"
             width="60"
@@ -65,6 +69,8 @@
             icon="iconTwitterEagle"
             @click="openWindow(governData.twitter)"></be-icon>
           <be-icon
+              style="cursor: pointer"
+              :herf="governData.telegram"
             v-if="governData.telegram"
             role="button"
             width="60"
@@ -72,6 +78,8 @@
             icon="iconTelegramEagle"
             @click="openWindow(governData.telegram)"></be-icon>
           <be-icon
+              style="cursor: pointer"
+              :herf="governData.github"
             v-if="governData.github"
             role="button"
             width="50"
@@ -96,15 +104,24 @@
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </p>
+
                 <p
-                  v-if="baseInfo.token_address_name"
                   role="button"
                   @click="
                     openWindow(`${webURL[baseInfo.platform + '_token']}${baseInfo.token_address}`)
                   ">
-                  {{ baseInfo.token_address_name }}
+                  <ellipsis-copy
+                    :target-str="
+                      baseInfo.token_address_name
+                        ? baseInfo.token_address_name
+                        : baseInfo.token_address
+                    "
+                    :is-tooltip="false"
+                    :is-show-copy-btn="false">
+                  </ellipsis-copy>
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
                 </p>
+
                 <p class="token-price-val">
                   {{
                     isEmpty(onChainData.token_price, '/') === '/'
@@ -419,7 +436,6 @@
     // @ts-ignore
   } from '../../../../public/be-ui/be-ui.es.js'
   import composition from '../../../utils/mixin/common-func'
-  import compositionPage from '../../../utils/mixin/page-param'
   import {
     createSubscribe,
     deleteSubscribe,
@@ -515,7 +531,6 @@
     setup() {
       const { message, route, msgBox, openWeb, isEmpty } = composition()
 
-      const { resetPageParam, createPageParam } = compositionPage()
       const { t } = useI18n()
       const selectContract = ref<string>('')
       const handleContractSelect = (data: string): void => {
@@ -676,7 +691,6 @@
       onMounted(() => {
         getProSituData()
       })
-
       /*******************************   订阅  ******************************/
       /**
        * 发送订阅
@@ -861,12 +875,16 @@
       .contract-select {
         .el-input {
           width: 120px;
+          .el-input__inner {
+            width: 46px;
+            flex-grow: initial;
+          }
         }
         .el-input--prefix .el-input__inner {
-          padding-left: 20px;
+          padding-left: 0;
         }
         .el-input--suffix .el-input__inner {
-          padding-right: 20px;
+          padding-right: 0;
         }
         .el-input.is-focus .el-input__wrapper {
           box-shadow: none !important;
@@ -963,6 +981,9 @@
             border-radius: 2px;
             margin-top: 16px;
             margin-bottom: 72px;
+            .ellipsis-copy {
+              min-width: initial !important;
+            }
           }
           .token-price-val {
             font-size: 48px;
@@ -1210,13 +1231,13 @@
     }
     .project-detail-market {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       .market-line--container {
+          margin-right: 20px;
+          width: 70%;
         .market-line {
           margin: 12px 0;
           background-color: $mainColor7;
-          width: 843px;
           height: 477px;
           border-radius: 8px;
           padding: 24px;
@@ -1274,13 +1295,6 @@
         width: 92%;
       }
 
-      .project-detail-market {
-        .market-line--container {
-          .market-line {
-            width: 760px;
-          }
-        }
-      }
     }
   }
   /* 150% 适配 */
@@ -1293,13 +1307,6 @@
       .project-detail-risk,
       .project-detail-market {
         width: 92%;
-      }
-      .project-detail-market {
-        .market-line--container {
-          .market-line {
-            width: 760px;
-          }
-        }
       }
     }
   }
@@ -1315,13 +1322,7 @@
       .project-detail-market {
         width: 80%;
       }
-      .project-detail-market {
-        .market-line--container {
-          .market-line {
-            width: 820px;
-          }
-        }
-      }
+
     }
   }
   /* 110% 适配 */

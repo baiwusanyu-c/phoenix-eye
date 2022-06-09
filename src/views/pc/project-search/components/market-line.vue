@@ -150,15 +150,15 @@
       setTitle('token_price_data')
       const showTabList = ref<Array<boolean>>(new Array<boolean>(true, true, true))
       const showTab = (): void => {
-        if (!computePropsData.value.token_transfer_data.every_day_data) {
-          showTabList.value[0] = false
-        }
-        if (!computePropsData.value.liquidity_data.every_day_data) {
+        //if (!computePropsData.value.token_transfer_data.every_day_data) {
+        //  showTabList.value[0] = false
+        //}
+        if (computePropsData.value.liquidity_data.value! < 0) {
           showTabList.value[1] = false
         }
-        if (!computePropsData.value.market_cap_data.every_day_data) {
-          showTabList.value[2] = false
-        }
+        // if (!computePropsData.value.market_cap_data.every_day_data) {
+        //   showTabList.value[2] = false
+        // }
       }
       showTab()
       return {

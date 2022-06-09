@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted, ref } from 'vue'
+  import { computed, defineComponent, onMounted, ref, watch } from 'vue'
   import compositionPage from '../../../../utils/mixin/page-param'
   // @ts-ignore
   import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
@@ -95,6 +95,12 @@
     },
     emits: ['show'],
     setup(props, { emit }) {
+      watch(
+        () => props.projectId,
+        () => {
+          getList('reset')
+        }
+      )
       const setTypeIcon = computed(() => {
         return function (data: string) {
           if (data === 'Large outflow') {
