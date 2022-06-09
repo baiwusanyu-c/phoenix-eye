@@ -606,7 +606,7 @@
         formatTimeStamp,
         createDate,
         formatDate,
-          beijing2utc,
+        beijing2utc,
       }
     },
   })

@@ -2,9 +2,9 @@
 <template>
   <div class="contact-bar">
     <div class="icon-body" role="link" @click="openWindow(webURL.contact_telegram)">
-        <a :herf="webURL.contact_telegram">
-            <be-icon icon="iconTelegramG" width="25" height="25"></be-icon>
-        </a>
+      <a :herf="webURL.contact_telegram">
+        <be-icon icon="iconTelegramG" width="25" height="25"></be-icon>
+      </a>
     </div>
     <div class="icon-body">
       <el-tooltip :content="webURL.contact_email" placement="top">
@@ -12,9 +12,9 @@
       </el-tooltip>
     </div>
     <div class="icon-body" role="link" title="feedback" @click="openWindow(webURL.feedback)">
-        <a :herf="webURL.feedback">
-            <be-icon icon="iconFeedback" width="25" height="25"></be-icon>
-        </a>
+      <a :herf="webURL.feedback">
+        <be-icon icon="iconFeedback" width="25" height="25"></be-icon>
+      </a>
     </div>
   </div>
 </template>
