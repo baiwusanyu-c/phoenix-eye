@@ -159,6 +159,7 @@
     }
     .risk-alert-row {
       height: 64px;
+      cursor: pointer;
     }
     .el-table .cell {
       padding: 0;

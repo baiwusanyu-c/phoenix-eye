@@ -51,13 +51,17 @@
         </div>
         <div>
           <be-icon
+              :herf="governData.website"
             v-if="governData.website"
+            style="cursor: pointer"
             role="button"
             width="50"
             height="60"
             icon="iconWebsiteEagle"
             @click="openWindow(governData.website)"></be-icon>
           <be-icon
+              style="cursor: pointer"
+              :herf="governData.twitter"
             v-if="governData.twitter"
             role="button"
             width="60"
@@ -65,6 +69,8 @@
             icon="iconTwitterEagle"
             @click="openWindow(governData.twitter)"></be-icon>
           <be-icon
+              style="cursor: pointer"
+              :herf="governData.telegram"
             v-if="governData.telegram"
             role="button"
             width="60"
@@ -72,6 +78,8 @@
             icon="iconTelegramEagle"
             @click="openWindow(governData.telegram)"></be-icon>
           <be-icon
+              style="cursor: pointer"
+              :herf="governData.github"
             v-if="governData.github"
             role="button"
             width="50"
@@ -1223,13 +1231,13 @@
     }
     .project-detail-market {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       .market-line--container {
+          margin-right: 20px;
+          width: 70%;
         .market-line {
           margin: 12px 0;
           background-color: $mainColor7;
-          width: 843px;
           height: 477px;
           border-radius: 8px;
           padding: 24px;
@@ -1287,13 +1295,6 @@
         width: 92%;
       }
 
-      .project-detail-market {
-        .market-line--container {
-          .market-line {
-            width: 760px;
-          }
-        }
-      }
     }
   }
   /* 150% 适配 */
@@ -1306,13 +1307,6 @@
       .project-detail-risk,
       .project-detail-market {
         width: 92%;
-      }
-      .project-detail-market {
-        .market-line--container {
-          .market-line {
-            width: 760px;
-          }
-        }
       }
     }
   }
@@ -1328,13 +1322,7 @@
       .project-detail-market {
         width: 80%;
       }
-      .project-detail-market {
-        .market-line--container {
-          .market-line {
-            width: 820px;
-          }
-        }
-      }
+
     }
   }
   /* 110% 适配 */

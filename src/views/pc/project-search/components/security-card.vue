@@ -9,6 +9,7 @@
           :is-show-copy-btn="false"
           :is-tooltip="true"
           styles="color: #fff;font-weight: bold;font-size: 20px;line-height: 24px;"
+          tooltip-style="max-width: 300px;word-break: break-all;display: inline-block"
           font-length="60"
           end-length="0">
         </ellipsis-copy>
@@ -44,6 +45,7 @@
               width="18"
               height="19"
               icon="iconTwitterBlu"
+              :herf="sourceUrl"
               @click="openWindow(sourceUrl)">
             </be-icon>
           </span>

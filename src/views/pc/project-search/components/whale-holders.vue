@@ -321,7 +321,14 @@
             <span class="table-head">{{ $t('lang.projectExplorer.detail.tableHeader2.age') }}</span>
           </template>
           <template #default="scope">
-            {{ formatTimeStamp(createDate(scope.row.block_time).getTime(), $i18n.locale) }}
+            <el-tooltip
+              :content="`${formatDate(
+                createDate(scope.row.block_time).toString()
+              )}  UTC：${beijing2utc(scope.row.block_time)}`"
+              placement="top"
+              effect="light">
+              {{ formatTimeStamp(createDate(scope.row.block_time).getTime(), $i18n.locale) }}
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -344,7 +351,13 @@
 
   import { getLiquidity, getPrivilege, getTop10HolderList } from '../../../../api/project-explorer'
   import composition from '../../../../utils/mixin/common-func'
-  import { createDate, formatTimeStamp, simulateToFixed } from '../../../../utils/common'
+  import {
+    beijing2utc,
+    createDate,
+    formatDate,
+    formatTimeStamp,
+    simulateToFixed,
+  } from '../../../../utils/common'
   // @ts-ignore
   import { BeIcon, BeProgress } from '../../../../../public/be-ui/be-ui.es'
   import type { ILiquidity, IPrivilege, ITop10Holder, IWhalePieData } from '../../../../utils/types'
@@ -592,6 +605,8 @@
         loadingPrivileges,
         formatTimeStamp,
         createDate,
+        formatDate,
+          beijing2utc,
       }
     },
   })

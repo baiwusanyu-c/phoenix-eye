@@ -3,7 +3,7 @@
     <el-tooltip placement="top" effect="light" class="address" :disabled="!isTooltip || !targetStr">
       <template #content>
         <slot name="content">
-          <span>{{ getTooltipTxt() }}</span>
+          <span :style="tooltipStyle">{{ getTooltipTxt() }}</span>
         </slot>
       </template>
       <slot name="text" :item="changeEllipsisStr(targetStr)">
@@ -85,6 +85,11 @@
         type: String,
         default: '',
       },
+        // tooltip 样式
+        tooltipStyle: {
+            type: String,
+            default: '',
+        },
       /**
        * 复制内容 沒有傳則默認是 targetStr 内容
        */
@@ -97,6 +102,7 @@
         type: String,
         default: '',
       },
+
       emptyText: {
         type: String,
         default: '-',
@@ -173,6 +179,7 @@
     .address {
       flex-shrink: 1;
       overflow: hidden;
+        width: 300px;
     }
 
     .copy-btn {
