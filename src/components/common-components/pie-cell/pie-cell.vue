@@ -56,9 +56,7 @@ import {computed, defineComponent, nextTick, onMounted, onUpdated, ref, watch} f
           renderChart()
         })
       })
-      onUpdated(() => {
-        chart.value.forceFit()
-      })
+
       // 实例对象
       const chart = ref<any>()
       watch(
@@ -75,13 +73,11 @@ import {computed, defineComponent, nextTick, onMounted, onUpdated, ref, watch} f
 
           // 更新
           if (isUpdate) {
-            nextTick(() => {
-              window.setTimeout(() => {
-                chart.value.forceFit()
-              }, 500)
+              nextTick(()=>{
+                  chart.value.forceFit()
+              })
               chart.value.data(pieData)
               chart.value.render(isUpdate)
-            })
             return
           }
           chart.value = new Chart({
@@ -184,9 +180,9 @@ import {computed, defineComponent, nextTick, onMounted, onUpdated, ref, watch} f
 
           chart.value.interaction('element-active')
           chart.value.render()
-          window.setTimeout(() => {
-            chart.value.forceFit()
-          }, 500)
+            nextTick(()=>{
+                chart.value.forceFit()
+            })
         }
       }
       return {

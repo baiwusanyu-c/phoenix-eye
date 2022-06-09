@@ -402,7 +402,7 @@
         </title-cell>
       </div>
       <div class="project-detail-risk--body">
-        <risk-chart :data="riskChartData"></risk-chart>
+        <risk-chart :data="riskChartData" v-if="showRiskList && hasTokenAddress"></risk-chart>
         <risk-list :project-id="projectId" @show="handleShowRiskList"></risk-list>
       </div>
     </div>

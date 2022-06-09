@@ -75,9 +75,12 @@
         })
         // 更新
         if (isUpdate) {
-            window.setTimeout(() => {
+           /* window.setTimeout(() => {
                 chart.value.forceFit()
-            },500)
+            },500)*/
+            nextTick(()=>{
+                chart.value.forceFit()
+            })
           chart.value.data(dv.rows)
           chart.value.render(isUpdate)
           return
@@ -155,16 +158,18 @@
           })
         chart.value.render()
           nextTick(() => {
-              const containerDom:HTMLElement | null = document.getElementById(props.domId)
+              /*const containerDom:HTMLElement | null = document.getElementById(props.domId)
               if(containerDom){
                   let width = containerDom.getElementsByTagName('canvas')[0].width
                   if (width < 10){
+                      console.log(1)
                       window.setTimeout(() => {
                           chart.value.forceFit()
                       },500)
 
                   }
-              }
+              }*/
+              chart.value.forceFit()
 
           })
       }
