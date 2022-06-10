@@ -554,7 +554,7 @@
           })
       }
       const handlePercentage = (dataList: Array<any>): void => {
-        dataList.forEach((val, index) => {
+        dataList.forEach(val => {
           // 设置显示 tag 还 是地址
           val.showVal = val.address_tag ? val.address_tag : val.address
           // index > 0 百分比为 上一条 数据 加上本条数据

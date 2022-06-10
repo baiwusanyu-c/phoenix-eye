@@ -425,14 +425,14 @@
       /**
        * 校验合约地址非空
        */
-      const verContractAddrEmpty = (val: any): boolean => {
+      /*const verContractAddrEmpty = (val: any): boolean => {
         // 没有填写合约地址
         if (!val.contract_address) {
           val.verAddr = t('lang.pleaseInput') + t('lang.createProject.contractSite')
           return true
         }
         return false
-      }
+      }*/
       /**
        * 校验合约地址格式
        */
