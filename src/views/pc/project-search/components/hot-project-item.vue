@@ -59,7 +59,6 @@
 
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
-  import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { nFormats } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
   import type { PropType } from 'vue'
@@ -67,7 +66,7 @@
 
   export default defineComponent({
     name: 'HotProjectItem',
-    components: { EllipsisCopy },
+    components: {},
     props: {
       dataList: {
         type: Array as PropType<Array<IHotProjectList>>,

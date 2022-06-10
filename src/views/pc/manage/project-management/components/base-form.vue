@@ -87,7 +87,7 @@
       })
       watch(
         () => props.modelValue,
-        nVal => {
+        () => {
           props.modelValue && (modelValueInner.value = props.modelValue)
         },
         { deep: true, immediate: true }
