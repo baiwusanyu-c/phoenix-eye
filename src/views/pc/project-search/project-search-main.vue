@@ -177,7 +177,6 @@
     formatDate,
     getUrlkey,
     nFormats,
-    nFormatter,
     openWindow,
   } from '../../../utils/common'
   // @ts-ignore
