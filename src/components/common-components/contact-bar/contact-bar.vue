@@ -22,7 +22,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
   // @ts-ignore
-  import { BeIcon } from '../../../../public/be-ui/be-ui.es'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import { webURL } from '../../../enums/link'
   import { openWindow } from '../../../utils/common'
   export default defineComponent({

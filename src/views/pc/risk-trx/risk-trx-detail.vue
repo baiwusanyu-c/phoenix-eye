@@ -379,6 +379,7 @@
 <script lang="ts">
   import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { BeIcon, BeTag, BeTooltip } from '@eagle-eye/be-ui'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { getProjWarningDetail } from '../../../api/risk-trx'
   import { iconDict, platformToCurrency } from '../../../utils/platform-dict'
@@ -393,7 +394,6 @@
     simulateToFixed,
   } from '../../../utils/common'
   // @ts-ignore
-  import { BeIcon, BeTag, BeTooltip } from '../../../../public/be-ui/be-ui.es'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import type { IBaseInfoRiskInfo } from '../../../utils/types'
   import type { IPlatformToCurrency } from '../../../utils/platform-dict'

@@ -47,7 +47,7 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   // @ts-ignore
-  import { BeButton } from '../../../../../../public/be-ui/be-ui.es.js'
+  import { BeButton } from '@eagle-eye/be-ui'
   import type { PropType } from 'vue'
   import type { IWebsiteForm } from '../../../../../utils/types'
 

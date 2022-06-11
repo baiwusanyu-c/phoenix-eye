@@ -157,32 +157,25 @@
       </el-table-column>
     </el-table>
     <div v-if="tableData.length > 0 && showPager" class="table-page">
-      <be-pagination
-        is-ordianry
-        :page-size="pageParams.pageSize"
-        :page-count="pageParams.total"
-        :current-page="pageParams.currentPage"
-        :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-        :pager-show-count="5"
-        page-unit="page"
-        :layout="['prev', 'pNum', 'page']"
-        @update-num="updateNum"
-        @change-page="pageChange">
-        <template #prev>
-          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
-        </template>
-      </be-pagination>
+      <el-pagination
+        v-model:currentPage="pageParams.currentPage"
+        v-model:page-size="pageParams.pageSize"
+        :page-sizes="[10, 20, 40, 80, 100]"
+        layout="total, sizes, prev, pager, next"
+        :total="pageParams.total"
+        @size-change="updateNum"
+        @current-change="pageChange" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref } from 'vue'
+  import { BeIcon, BeTag, BeTooltip } from '@eagle-eye/be-ui'
   import { getProjWarning } from '../../../../api/risk-trx'
   import { beijing2utc, createDate, formatDate, openWindow } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
   // @ts-ignore
-  import { BeIcon, BePagination, BeTag, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { iconDict } from '../../../../utils/platform-dict'
   import PlatformCell from '../../../../components/common-components/platform-cell/platform-cell.vue'
@@ -200,7 +193,6 @@
       BeTooltip,
       BeIcon,
       BeTag,
-      BePagination,
       EllipsisCopy,
     },
     props: {

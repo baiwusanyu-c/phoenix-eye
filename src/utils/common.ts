@@ -1,6 +1,6 @@
 import { isArray, isObject, toRawType } from '@vue/shared'
 // @ts-ignore
-import { BeMessage } from '../../public/be-ui/be-ui.es'
+import { BeMessage } from '@eagle-eye/be-ui'
 
 import type { IOption } from './types'
 /**

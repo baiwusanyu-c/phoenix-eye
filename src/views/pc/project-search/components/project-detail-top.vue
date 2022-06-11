@@ -58,7 +58,7 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   // @ts-ignore
-  import { BeProgress, BeTag } from '../../../../../public/be-ui/be-ui.es'
+  import { BeProgress, BeTag } from '@eagle-eye/be-ui'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { simulateToFixed } from '../../../../utils/common'
   import { platformListDict } from '../../../../utils/platform-dict'

@@ -73,21 +73,14 @@
         </el-table-column>
       </el-table>
       <div class="table-page">
-        <be-pagination
-          is-ordianry
-          :page-size="pageParams.pageSize"
-          :page-count="pageParams.total"
-          :current-page="pageParams.currentPage"
-          :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-          :pager-show-count="5"
-          page-unit="page"
-          :layout="['prev', 'pNum', 'page']"
-          @update-num="updateNum"
-          @change-page="pageChange">
-          <template #prev>
-            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
-          </template>
-        </be-pagination>
+        <el-pagination
+          v-model:currentPage="pageParams.currentPage"
+          v-model:page-size="pageParams.pageSize"
+          :page-sizes="[10, 20, 40, 80, 100]"
+          layout="total, sizes, prev, pager, next"
+          :total="pageParams.total"
+          @size-change="updateNum"
+          @current-change="pageChange" />
       </div>
     </div>
     <!--    新增、编辑项目弹窗 -->
@@ -111,10 +104,10 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
   import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
   // @ts-ignore
-  import { BeButton, BeIcon, BePagination } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
 
   import compositionPage from '../../../../utils/mixin/page-param'
@@ -133,7 +126,6 @@
       MsgDialog,
       BeButton,
       BeIcon,
-      BePagination,
     },
     setup() {
       const { t } = useI18n()

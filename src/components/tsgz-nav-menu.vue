@@ -167,10 +167,10 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { onBeforeRouteUpdate } from 'vue-router'
+  import { BeButton, BeIcon, BePopover } from '@eagle-eye/be-ui'
   import LoginDialog from '../views/pc/login/login-dialog.vue'
   import { getProjectListCurUser } from '../api/project-explorer'
   // @ts-ignore
-  import { BeButton, BeIcon, BePopover } from '../../public/be-ui/be-ui.es.js'
   import composition from '../utils/mixin/common-func'
   import {
     clearSession,
@@ -648,11 +648,11 @@
   }
 
   .tsgz-nav-menu .sign-up-btn {
-    width: 90px;
+    width: 92px;
     min-width: initial;
     background-color: #162e47;
     height: 40px;
-    .be-button-slot {
+    .be-button--slot {
       font-size: 14px;
       margin: 0;
     }
@@ -662,7 +662,7 @@
     min-width: initial;
     background-color: transparent;
     height: 40px;
-    .be-button-slot {
+    .be-button--slot {
       font-size: 14px;
       font-weight: normal !important;
       margin: 0;
@@ -675,7 +675,7 @@
     min-width: initial;
     margin-right: 20px;
 
-    .be-button-slot {
+    .be-button--slot {
       font-size: 14px;
       margin: 0;
     }

@@ -430,11 +430,10 @@
   import {
     BeButton,
     BeIcon,
-    BePagination,
     BeProgress,
     BeTag,
     // @ts-ignore
-  } from '../../../../public/be-ui/be-ui.es.js'
+  } from '@eagle-eye/be-ui'
   import composition from '../../../utils/mixin/common-func'
   import {
     createSubscribe,
@@ -519,7 +518,6 @@
       ProjectDetailAudit,
       ProjectDetailTop,
       RiskTrxTable,
-      BePagination,
       ProjectDetailPubliOpinion,
       BeIcon,
       BeTag,
@@ -1197,7 +1195,7 @@
       min-width: initial;
       margin-left: 16px;
       border-radius: 4px !important;
-      .be-button-slot {
+      .be-button--slot {
         display: none;
       }
     }

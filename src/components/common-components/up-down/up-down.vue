@@ -10,9 +10,9 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import { floatMultiply, simulateToFixed } from '../../../utils/common'
   // @ts-ignore
-  import { BeIcon } from '../../../../public/be-ui/be-ui.es.js'
   export default defineComponent({
     name: 'UpDown',
     components: {
