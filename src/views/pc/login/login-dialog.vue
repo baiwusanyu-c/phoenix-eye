@@ -90,7 +90,7 @@
   import { computed, defineComponent, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
-  import { BeButton, BeDialog } from '../../../../public/be-ui/be-ui.es.js'
+  import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import composition from '../../../utils/mixin/common-func'
   import ResetPassword from './components/reset-password.vue'
   import NameLogin from './components/name-login.vue'

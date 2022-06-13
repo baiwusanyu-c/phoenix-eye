@@ -19,7 +19,7 @@
 <script lang="ts">
   import { computed, defineComponent, ref, watch } from 'vue'
   // @ts-ignore
-  import { BeProgress } from '../../../../public/be-ui/be-ui.es'
+  import { BeProgress } from '@eagle-eye/be-ui'
 
   export default defineComponent({
     name: 'ScoreCell',

@@ -13,21 +13,14 @@
   <div class="project-manage-list eagle-table">
     <project-manage-table :list="projectList.data" @operation="openDialog"></project-manage-table>
     <div class="table-page">
-      <be-pagination
-        is-ordianry
-        :page-size="pageParams.pageSize"
-        :page-count="pageParams.total"
-        :current-page="pageParams.currentPage"
-        :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-        :pager-show-count="5"
-        page-unit="page"
-        :layout="['prev', 'pNum', 'page']"
-        @update-num="updateNum"
-        @change-page="pageChange">
-        <template #prev>
-          <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
-        </template>
-      </be-pagination>
+      <el-pagination
+        v-model:currentPage="pageParams.currentPage"
+        v-model:page-size="pageParams.pageSize"
+        :page-sizes="[10, 20, 40, 80, 100]"
+        layout="total, sizes, prev, pager, next"
+        :total="pageParams.total"
+        @size-change="updateNum"
+        @current-change="pageChange" />
     </div>
   </div>
   <!--    新增、编辑项目弹窗 -->
@@ -53,8 +46,7 @@
   import { useI18n } from 'vue-i18n'
   import { deleteProject, getProjectListAdmin } from '../../../../api/project-management'
   import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
-  // @ts-ignore
-  import { BePagination } from '../../../../../public/be-ui/be-ui.es'
+
   import composition from '../../../../utils/mixin/common-func'
   import compositionPage from '../../../../utils/mixin/page-param'
   import compositionDialog from '../../../../utils/mixin/dialog-func'
@@ -69,7 +61,7 @@
       ProjectManageTable,
       CreateProject,
       MsgDialog,
-      BePagination,
+
       searchInput,
     },
     setup() {

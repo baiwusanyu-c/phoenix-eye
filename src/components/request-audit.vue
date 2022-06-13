@@ -91,7 +91,7 @@
   import { defineComponent, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
-  import { BeButton, BeDialog } from '../../public/be-ui/be-ui.es'
+  import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import composition from '../utils/mixin/common-func'
   import { getStore, verEmail } from '../utils/common'
   import { createQuote } from '../api/quote'

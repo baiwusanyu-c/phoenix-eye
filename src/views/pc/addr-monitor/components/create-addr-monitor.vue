@@ -50,7 +50,7 @@
   import { defineComponent, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
-  import { BeButton, BeDialog, BeIcon, BeTooltip } from '../../../../../public/be-ui/be-ui.es'
+  import { BeButton, BeDialog, BeIcon, BeTooltip } from '@eagle-eye/be-ui'
   import composition from '../../../../utils/mixin/common-func'
   import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
   import type { PropType } from 'vue'

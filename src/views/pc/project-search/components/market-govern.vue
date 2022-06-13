@@ -103,9 +103,9 @@
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { BeButton } from '@eagle-eye/be-ui'
   import TitleCell from '../../../../components/common-components/title-cell/title-cell.vue'
   // @ts-ignore
-  import { BeButton } from '../../../../../public/be-ui/be-ui.es'
   import { openWindow } from '../../../../utils/common'
   import governLogo from '../../../../assets/image/pc/govern-logo.png'
   import type { PropType } from 'vue'

@@ -73,9 +73,9 @@
 
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import compositionPage from '../../../../utils/mixin/page-param'
   // @ts-ignore
-  import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import { getProjWarning } from '../../../../api/risk-trx'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'

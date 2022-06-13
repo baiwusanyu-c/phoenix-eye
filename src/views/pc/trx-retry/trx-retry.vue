@@ -36,7 +36,7 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   // @ts-ignore
-  import { BeButton } from '../../../../public/be-ui/be-ui.es'
+  import { BeButton } from '@eagle-eye/be-ui'
   import { platformListDict } from '../../../utils/platform-dict'
   import composition from '../../../utils/mixin/common-func'
   export default defineComponent({

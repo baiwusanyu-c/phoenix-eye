@@ -13,18 +13,13 @@
     </security-card>
   </div>
   <div style="float: right; margin-top: 20px">
-    <be-pagination
-      is-ordianry
-      :page-size="pageParams.pageSize"
-      :page-count="pageParams.total"
-      :current-page="pageParams.currentPage"
-      :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-      :pager-show-count="5"
-      page-unit="page"
-      :layout="['prev', 'page']"
-      @change-page="pageChange">
-      <template #prev> </template>
-    </be-pagination>
+    <el-pagination
+      v-model:currentPage="pageParams.currentPage"
+      v-model:page-size="pageParams.pageSize"
+      :page-sizes="[10, 15, 20, 40, 80, 100]"
+      layout="prev, pager, next"
+      :total="pageParams.total"
+      @current-change="pageChange" />
   </div>
 </template>
 
@@ -34,7 +29,7 @@
   import { getPublicOpinionList } from '../../../../api/risk-public-info'
   import { catchErr } from '../../../../utils/common'
   // @ts-ignore
-  import { BePagination } from '../../../../../public/be-ui/be-ui.es'
+
   import SecurityCard from './security-card.vue'
   import type { IPageParam, IRiskInfoList } from '../../../../utils/types'
   import type { IPOList } from '../../../../api/risk-public-info'
@@ -42,7 +37,6 @@
   export default defineComponent({
     name: 'SecurityList',
     components: {
-      BePagination,
       SecurityCard,
     },
     props: {

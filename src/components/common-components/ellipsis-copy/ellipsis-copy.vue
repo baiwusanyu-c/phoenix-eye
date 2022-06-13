@@ -40,7 +40,7 @@
   // 地址/交易 中间省略显示，鼠标移入显示复制按钮
   import { computed, defineComponent, ref } from 'vue'
   // @ts-ignore
-  import { BeIcon } from '../../../../public/be-ui/be-ui.es'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import { copyAddress } from '../../../utils/common'
   export default defineComponent({
     name: 'EllipsisCopy',

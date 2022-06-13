@@ -33,7 +33,7 @@
 
 <script lang="ts">
   // @ts-ignore
-  import { BeIcon } from '../../public/be-ui/be-ui.es'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import { openWindow } from '../utils/common'
   import { webURL } from '../enums/link'
   export default {

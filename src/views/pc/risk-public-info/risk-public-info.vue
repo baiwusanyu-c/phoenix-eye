@@ -11,21 +11,14 @@
         <empty-data v-if="list.length === 0"></empty-data>
         <project-detail-public-opinion :info-data="list"> </project-detail-public-opinion>
         <div v-if="list.length > 0" class="table-page">
-          <be-pagination
-            is-ordianry
-            :page-size="pageParams.pageSize"
-            :page-count="pageParams.total"
-            :current-page="pageParams.currentPage"
-            :page-num="[{ label: 5 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-            :pager-show-count="5"
-            page-unit="page"
-            :layout="['prev', 'pNum', 'page']"
-            @update-num="updateNum"
-            @change-page="pageChange">
-            <template #prev>
-              <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
-            </template>
-          </be-pagination>
+          <el-pagination
+            v-model:currentPage="pageParams.currentPage"
+            v-model:page-size="pageParams.pageSize"
+            :page-sizes="[10, 20, 40, 80, 100]"
+            layout="total, sizes, prev, pager, next"
+            :total="pageParams.total"
+            @size-change="updateNum"
+            @current-change="pageChange" />
         </div>
       </div>
     </div>
@@ -33,8 +26,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, nextTick, ref } from 'vue'
-  // @ts-ignore
-  import { BePagination } from '../../../../public/be-ui/be-ui.es'
+
   import ProjectDetailPublicOpinion from '../project-search/components/project-detail-public-opinion.vue'
   import { getPublicOpinionList } from '../../../api/risk-public-info'
   import composition from '../../../utils/mixin/common-func'
@@ -43,7 +35,7 @@
   import type { IPOList } from '../../../api/risk-public-info'
   export default defineComponent({
     name: 'RiskPublicInfo',
-    components: { ProjectDetailPublicOpinion, BePagination },
+    components: { ProjectDetailPublicOpinion },
     setup() {
       const { message } = composition()
       const { pageParams, resetPageParam, updatePageSize } = compositionPage()
