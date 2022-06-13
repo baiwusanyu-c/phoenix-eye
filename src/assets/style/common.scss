@@ -638,7 +638,24 @@
     }
   }
 }
-
+.el-pager li.is-active{
+  color: $mainColor3;
+}
+.el-pager li:hover{
+  color: $mainColor3;
+}
+.el-pagination button:disabled,
+.el-pagination .btn-next,
+.el-pagination .btn-prev{
+  background-color: transparent;
+  color: $mainColor3;
+  &:hover{
+    color: $mainColor3;
+  }
+}
+.el-pager li{
+  background-color: transparent;
+}
 .be-pager li:hover{
   color: $mainColor3;
   border: 1px solid $mainColor3;

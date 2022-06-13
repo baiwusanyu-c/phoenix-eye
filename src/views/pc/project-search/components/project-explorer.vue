@@ -54,6 +54,7 @@
     <div class="project-explorer--table eagle-table">
       <el-table
         ref="riskTrxList"
+        v-loading="loading"
         tooltip-effect="light"
         :data="projectList"
         @row-click="routerSwitch">
@@ -191,8 +192,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <!--      <div v-if="projectList.length > 0" class="table-page">-->
-      <div class="table-page">
+      <div v-if="projectList.length > 0" class="table-page">
         <el-pagination
           v-model:currentPage="pageParams.currentPage"
           v-model:page-size="pageParams.pageSize"
@@ -303,7 +303,7 @@
        */
       const pageChange = (item: number): void => {
         pageParams.value.currentPage = item
-        // getList()
+        getList()
       }
       const updateNum = (item: number): void => {
         updatePageSize(item!, pageParams)
