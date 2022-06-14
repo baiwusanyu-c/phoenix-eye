@@ -32,4 +32,4 @@ const configUrl: IOption = {
   development02: developmentUrl02,
   production02,
 }
-export default configUrl[String(import.meta.env.VITE_PROJECT_ENV)]
+export default configUrl[String(import.meta.env.VITE_PROJECT_ENV) as keyof typeof configUrl]
