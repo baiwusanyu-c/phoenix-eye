@@ -58,7 +58,7 @@
   const showBrowserTip = ref<boolean>(false)
   const tipList = ref<Array<string>>(['为保证更优质的使用体验，', '建议使用谷歌浏览器访问系统。'])
   if (browserInfo().browser !== 'chrome') {
-    showBrowserTip.value = true
+    //showBrowserTip.value = true
   }
   // 設置語言
   if (!getStore('language')) {
