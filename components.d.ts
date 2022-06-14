@@ -10,6 +10,8 @@ declare module 'vue' {
     DateCell: typeof import('./src/components/common-components/date-cell/date-cell.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
+    ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -43,4 +45,4 @@ declare module 'vue' {
   }
 }
 
-export { }
+export {}

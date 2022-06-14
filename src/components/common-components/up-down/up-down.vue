@@ -2,9 +2,11 @@
 <template>
   <div class="up-down">
     <be-icon :icon="data >= 0 ? 'iconArrowUp' : 'iconArrowDown'" width="24" height="24"> </be-icon>
-    <span :class="data >= 0 ? 'up-down__up' : 'up-down__down'" style="margin-left: 6px">
-      {{ simulateToFixed(floatMultiply(Math.abs(data), 100), 2) }} %
-    </span>
+    <el-tooltip :content="simulateToFixed(data, 10)" placement="top" effect="light">
+      <span :class="data >= 0 ? 'up-down__up' : 'up-down__down'" style="margin-left: 6px">
+        {{ simulateToFixed(floatMultiply(Math.abs(data), 100), 3) }} %
+      </span>
+    </el-tooltip>
   </div>
 </template>
 

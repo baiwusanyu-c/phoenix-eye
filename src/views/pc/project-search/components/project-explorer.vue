@@ -104,9 +104,11 @@
             <span class="table-head">{{ $t('lang.projectExplorer.exp.tableHeader.tx_24') }}</span>
           </template>
           <template #default="scope">
-            <span>{{
-              isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${nFormats(scope.row.tx_24)}`
-            }}</span>
+            <el-tooltip :content="scope.row.tx_24" placement="top" effect="light">
+              <span>{{
+                isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${nFormats(scope.row.tx_24)}`
+              }}</span>
+            </el-tooltip>
           </template>
         </el-table-column>
 
@@ -117,11 +119,13 @@
             }}</span>
           </template>
           <template #default="scope">
-            <span>{{
-              isEmpty(scope.row.market_cap, '/') === '/'
-                ? '/'
-                : `$${nFormats(scope.row.market_cap)}`
-            }}</span>
+            <el-tooltip :content="scope.row.market_cap" placement="top" effect="light">
+              <span>{{
+                isEmpty(scope.row.market_cap, '/') === '/'
+                  ? '/'
+                  : `$${nFormats(scope.row.market_cap)}`
+              }}</span>
+            </el-tooltip>
           </template>
         </el-table-column>
 
@@ -133,11 +137,13 @@
           </template>
           <template #default="scope">
             <div style="display: flex; justify-content: space-between; align-items: center">
-              <span>{{
-                isEmpty(scope.row.token_price, '/') === '/'
-                  ? '/'
-                  : `$${nFormats(scope.row.token_price)}`
-              }}</span>
+              <el-tooltip :content="scope.row.token_price" placement="top" effect="light">
+                <span>{{
+                  isEmpty(scope.row.token_price, '/') === '/'
+                    ? '/'
+                    : `$${nFormats(scope.row.token_price)}`
+                }}</span>
+              </el-tooltip>
               <line-cell
                 :dom-id="`line-cell_${scope.row.project_id}`"
                 :type="scope.row.token_price_up_down"

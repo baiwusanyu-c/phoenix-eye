@@ -39,9 +39,11 @@
     <el-table-column prop="project_name" align="right">
       <template #header></template>
       <template #default="scope">
-        <span class="tx24">
-          {{ isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${nFormats(scope.row.tx_24)}` }}
-        </span>
+        <el-tooltip :content="scope.row.tx_24" placement="top" effect="light">
+          <span class="tx24">
+            {{ isEmpty(scope.row.tx_24, '/') === '/' ? '/' : `${nFormats(scope.row.tx_24)}` }}
+          </span>
+        </el-tooltip>
         <span class="trx">Tx<span>/24</span></span>
       </template>
     </el-table-column>

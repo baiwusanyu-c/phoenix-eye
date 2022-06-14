@@ -10,11 +10,13 @@
       <div class="project-base-body">
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item1') }}</p>
-          <span>{{
-            isEmpty(baseInfo.market_cap_total, '/') === '/'
-              ? '/'
-              : `$${marketCapBaseInfo(baseInfo.market_cap_total)}`
-          }}</span>
+          <el-tooltip :content="baseInfo.market_cap_total" placement="top" effect="light">
+            <span>{{
+              isEmpty(baseInfo.market_cap_total, '/') === '/'
+                ? '/'
+                : `$${marketCapBaseInfo(baseInfo.market_cap_total)}`
+            }}</span>
+          </el-tooltip>
         </div>
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item2') }}</p>
