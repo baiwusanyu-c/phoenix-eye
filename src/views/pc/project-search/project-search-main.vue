@@ -3,8 +3,8 @@
   <div class="project-search-main eagle-page">
     <div class="project-base--container">
       <h1>
-        {{ $t('lang.projectExplorer.base.title') }}
         <span>{{ $t('lang.projectExplorer.base.title2') }}</span>
+        {{ $t('lang.projectExplorer.base.title') }}
       </h1>
       <p>{{ $t('lang.projectExplorer.base.subTitle') }}</p>
       <div class="project-base-body">
@@ -121,12 +121,26 @@
         </div>
         <div class="question">
           <h1>{{ $t('lang.projectExplorer.alert.quesTitle3') }}</h1>
-          <img
-            role="link"
-            alt=""
-            src="../../../assets/image/pc/telegram.png"
-            style="width: 36px; height: 36px; margin-top: 20px; cursor: pointer"
-            @click="openWindow(webURL.contact_telegram)" />
+          <div style="display: flex">
+            <img
+              role="link"
+              alt=""
+              src="../../../assets/image/pc/telegram.png"
+              style="width: 36px; height: 36px; margin-top: 20px; cursor: pointer"
+              @click="openWindow(webURL.contact_telegram)" />
+            <img
+              role="link"
+              alt=""
+              src="../../../assets/image/pc/discord.png"
+              style="
+                margin-left: 10px;
+                width: 36px;
+                height: 36px;
+                margin-top: 20px;
+                cursor: pointer;
+              "
+              @click="openWindow(webURL.contact_discord)" />
+          </div>
           <img
             alt=""
             src="../../../assets/image/pc/questions-bg.png"
@@ -503,7 +517,7 @@
         background-repeat: round;
         text-align: left;
         p {
-          font-size: 28px;
+          font-size: 26px;
           font-family: BarlowSemi-B, sans-serif;
           font-weight: bold;
           color: $mainColor7;

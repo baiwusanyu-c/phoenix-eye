@@ -117,6 +117,7 @@
                         : baseInfo.token_address
                     "
                     :is-tooltip="false"
+                    :is-ellipsis="baseInfo.token_address_name.length > 24"
                     :is-show-copy-btn="false">
                   </ellipsis-copy>
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>

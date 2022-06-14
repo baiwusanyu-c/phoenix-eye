@@ -225,9 +225,9 @@ export default {
     MultipleResults: 'Multiple results are matched. Select one of them',
     name: 'Project Name',
     base: {
-      title: 'Security Checker on ',
+      title: 'Security Monitor',
       title2: 'Web3',
-      subTitle: 'Project evaluation, contract check, risk warning',
+      subTitle: 'Project evaluation, risky transaction, security news',
       item1: 'Total Market Cap',
       item2: 'Project',
       item3: 'Chains',
@@ -235,7 +235,7 @@ export default {
     alert: {
       title: 'Risk Alert',
       title2: 'Hot Projects',
-      plugin: 'Website security Detection.',
+      plugin: 'Identification of Malicious Websites',
       install: 'Install the extension',
       quesTitle: 'Identification of Malicious Websites',
       quesTitle2: 'Not Audited by Beosin?',
