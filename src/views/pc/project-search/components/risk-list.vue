@@ -42,8 +42,8 @@
           <be-icon
             v-for="item in scope.row.tag_list"
             :key="item + scope.row.tx_hash"
-            width="24"
-            height="24"
+            width="32"
+            height="32"
             :title="item"
             style="margin-right: 8px"
             :icon="setTypeIcon(item)">
