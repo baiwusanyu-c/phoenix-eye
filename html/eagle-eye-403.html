@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Beosin-Eagle-Eye" />
+    <meta name="twitter:site" content="Beosin-Eagle-Eye" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="https://vuejs.org/images/logo.png" />
+    <meta name="twitter:title" content="Beosin-Eagle-Eye" />
+    <meta name="og:title" content="Beosin-Eagle-Eye" />
+    <title>Beosin EagleEye</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: #f8fafb;
+      }
+      .app {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        align-items: center;
+        background-image: url('eagle-eye-bg-403.png');
+        background-size: 100%;
+        background-repeat: no-repeat;
+        height: 100vh;
+      }
+      .head {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        width: 1200px;
+        margin: 20px 0;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1200px;
+        height: 550px;
+      }
+      .container .content-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .container .content-container p {
+        font-size: 16px;
+        line-height: 16px;
+        color: #18304e;
+      }
+      .container img {
+        margin-right: 40px;
+        width: 328px;
+        height: 214px;
+      }
+
+      @media screen and (min-width: 100px) and (max-width: 1278px) {
+        .app {
+          background-image: url('eagle-eye-bg-403.png');
+          background-size: cover;
+        }
+        .head {
+          width: initial;
+        }
+        .container {
+          padding: 0 60px;
+          width: initial;
+          flex-wrap: wrap;
+        }
+        .container .content-container p {
+          line-height: 24px;
+          font-size: 12px;
+        }
+        .container img {
+          margin-right: 0;
+          width: 328px;
+          height: 214px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="head">
+        <img style="margin-top: 20px" src="eagle-eye-logo-403.png" />
+      </div>
+      <div class="container">
+        <img style="" src="eagle-eye-block-403.png" />
+        <div class="content-container">
+          <div style="margin-bottom: 10px">
+            <p>亲爱的用户</p>
+            <p>本网站不支持来自中国大陆地区的用户。访问前，请确认您不是来自上述国家或地区。</p>
+          </div>
+          <div>
+            <p>Dear User:</p>
+            <p>
+              This website does not support users from mainland China.Please confirm that you are
+              not from the above countries or regions before visiting.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
