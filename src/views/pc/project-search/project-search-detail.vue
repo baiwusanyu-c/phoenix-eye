@@ -783,10 +783,10 @@
       })
       const handleScoreColor = computed(() => {
         return function (val: number) {
-          if (Number(val) >= 90) {
+          if (Number(val) >= 80) {
             return '#0ED9AC'
           }
-          if (Number(val) < 90 && Number(val) > 60) {
+          if (Number(val) < 80 && Number(val) > 60) {
             return '#F4CC29'
           }
           if (Number(val) <= 60) {
