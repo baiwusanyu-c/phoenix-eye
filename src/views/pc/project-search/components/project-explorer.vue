@@ -171,7 +171,7 @@
             }}</span>
           </template>
           <template #default="scope">
-            <platform-cell :platform="scope.row.platform"></platform-cell>
+            <platform-cell :platform="scope.row.platform" :show-platform="false"></platform-cell>
           </template>
         </el-table-column>
 

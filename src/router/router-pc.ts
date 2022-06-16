@@ -13,6 +13,7 @@ import {
 } from '../utils/router-dict'
 
 import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
+// import {ref} from "vue";
 const routes = [
   {
     path: '/',
@@ -138,6 +139,15 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
 const beforeEachHandle = (router: Router) => {
   router.beforeEach(
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
+      // 設置是否手機訪問變量
+      // const ua = navigator.userAgent
+      // const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)
+      // const isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/)
+      // const isAndroid = ua.match(/(Android)\s+([\d.]+)/)
+      // const isMobile = ref<RegExpMatchArray | null>(isIphone || isAndroid)
+      // if (to.path === '/projectSearch' && isMobile.value) {
+      //   window.location.reload()
+      // }
       // 匹配运营统计路由
       if (STATISTICS_ROUTER[to.path]) {
         addIpLog({ module: STATISTICS_ROUTER[to.path] }).catch(err => {
