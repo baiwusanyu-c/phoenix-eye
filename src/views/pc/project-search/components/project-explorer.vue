@@ -164,14 +164,14 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="platform" :width="tableHeader('platform')" align="left">
+        <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.exp.tableHeader.platform')
             }}</span>
           </template>
           <template #default="scope">
-            <platform-cell :platform="scope.row.platform" :show-platform="false"></platform-cell>
+            <platform-cell :platform="scope.row.platform"></platform-cell>
           </template>
         </el-table-column>
 
@@ -326,7 +326,7 @@
           market_cap: '120',
           token_price: '160',
           create_time: '80',
-          platform: '50',
+          platform: '120',
           audit_report_num: '100',
         }
         /* if (1280 <= screenWidth && 1326 <= screenWidth) {
