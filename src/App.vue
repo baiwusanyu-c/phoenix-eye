@@ -1,5 +1,5 @@
 <template>
-  <div ref="app" :class="{ noM: isMobile == null, 'theme--dark': theme === 'dark' }">
+  <div ref="app" :class="{ 'theme--dark': theme === 'dark' }" class="noM">
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog
