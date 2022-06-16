@@ -55,6 +55,8 @@
         { deep: true, immediate: true }
       )
       const renderChart = (isUpdate?: boolean) => {
+        const dom = document.getElementById(props.domId)
+        if (!dom) return
         // 更新
         if (isUpdate && (!props.lineData || (props.lineData && props.lineData?.length === 0))) {
           return

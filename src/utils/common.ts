@@ -541,6 +541,9 @@ export const beijing2utc = (now: number | string, formats?: string) => {
 
 export const message = (type: string, info: string, className?: string): void => {
   BeMessage.service({
+    closeRender: undefined,
+    compType: '',
+    iconPreRender: undefined,
     customClass: className,
     titles: info,
     msgType: type,
@@ -570,7 +573,7 @@ export const copyAddress = function copyAddress(copyVal: string) {
  * @returns {*}
  */
 export const simulateToFixed = (num: number, decimal = 6) => {
-  if (num === undefined) {
+  if (num === undefined || num === null) {
     return
   }
   if (num.toString() === '0' && decimal !== 0) {
