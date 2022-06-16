@@ -639,22 +639,22 @@
   }
 }
 .el-pager li.is-active{
-  color: $mainColor3;
+  color: $mainColor3 !important;;
 }
 .el-pager li:hover{
-  color: $mainColor3;
+  color: $mainColor3 !important;;
 }
 .el-pagination button:disabled,
 .el-pagination .btn-next,
 .el-pagination .btn-prev{
-  background-color: transparent;
-  color: $mainColor3;
+  background-color: transparent !important;
+  color: $mainColor3 !important;;
   &:hover{
-    color: $mainColor3;
+    color: $mainColor3 !important;;
   }
 }
 .el-pager li{
-  background-color: transparent;
+  background-color: transparent !important;;
 }
 .be-pager li:hover{
   color: $mainColor3;

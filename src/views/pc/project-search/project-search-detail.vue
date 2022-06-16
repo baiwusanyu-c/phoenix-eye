@@ -165,15 +165,21 @@
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </div>
-                <el-tooltip :content="onChainData.holders" placement="top" effect="light">
-                  <p class="uam-item-val">
-                    {{
-                      isEmpty(onChainData.holders, '/') === '/'
-                        ? '/'
-                        : `${marketCapBaseInfo(onChainData.holders)}`
-                    }}
-                  </p>
-                </el-tooltip>
+                <p class="uam-item-val">
+                  <el-tooltip
+                    :content="onChainData.holders"
+                    placement="top"
+                    effect="light"
+                    :disabled="!onChainData.holders">
+                    <span style="width: max-content">
+                      {{
+                        isEmpty(onChainData.holders, '/') === '/'
+                          ? '/'
+                          : `${marketCapBaseInfo(onChainData.holders)}`
+                      }}
+                    </span>
+                  </el-tooltip>
+                </p>
                 <up-down :data="onChainData.holders_ratio"></up-down>
               </div>
               <div class="active">
@@ -190,15 +196,21 @@
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </div>
-                <el-tooltip :content="onChainData.transactions" placement="top" effect="light">
-                  <p class="uam-item-val">
-                    {{
-                      isEmpty(onChainData.transactions, '/') === '/'
-                        ? '/'
-                        : `${marketCapBaseInfo(onChainData.transactions)}`
-                    }}
-                  </p>
-                </el-tooltip>
+                <p class="uam-item-val">
+                  <el-tooltip
+                    :content="onChainData.transactions"
+                    placement="top"
+                    effect="light"
+                    :disabled="!onChainData.transactions">
+                    <span style="width: max-content">
+                      {{
+                        isEmpty(onChainData.transactions, '/') === '/'
+                          ? '/'
+                          : `${marketCapBaseInfo(onChainData.transactions)}`
+                      }}
+                    </span>
+                  </el-tooltip>
+                </p>
                 <up-down :data="onChainData.transactions_ratio" type="down"></up-down>
               </div>
               <div class="market">
@@ -217,15 +229,21 @@
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
                 </div>
-                <el-tooltip :content="onChainData.market_cap" placement="top" effect="light">
-                  <p class="uam-item-val">
-                    {{
-                      isEmpty(onChainData.market_cap, '/') === '/'
-                        ? '/'
-                        : `$${marketCapBaseInfo(onChainData.market_cap)}`
-                    }}
-                  </p>
-                </el-tooltip>
+                <p class="uam-item-val">
+                  <el-tooltip
+                    :content="onChainData.market_cap"
+                    placement="top"
+                    effect="light"
+                    :disabled="!onChainData.market_cap">
+                    <span style="width: max-content">
+                      {{
+                        isEmpty(onChainData.market_cap, '/') === '/'
+                          ? '/'
+                          : `$${marketCapBaseInfo(onChainData.market_cap)}`
+                      }}
+                    </span>
+                  </el-tooltip>
+                </p>
                 <up-down :data="onChainData.market_cap_ratio"></up-down>
               </div>
             </div>
@@ -262,15 +280,21 @@
                   {{ $t('lang.projectExplorer.detail.total') }}
                 </span>
               </p>
-              <el-tooltip :content="twitterAnalysisData.value" placement="top" effect="light">
-                <p class="twitter-analysis-val">
-                  {{
-                    isEmpty(twitterAnalysisData.value, '/') === '/'
-                      ? '/'
-                      : `${nFormats(twitterAnalysisData.value)}`
-                  }}
-                </p>
-              </el-tooltip>
+              <p class="twitter-analysis-val">
+                <el-tooltip
+                  :content="twitterAnalysisData.value"
+                  placement="top"
+                  effect="light"
+                  :disabled="!twitterAnalysisData.value">
+                  <span style="width: max-content">
+                    {{
+                      isEmpty(twitterAnalysisData.value, '/') === '/'
+                        ? '/'
+                        : `${nFormats(twitterAnalysisData.value)}`
+                    }}
+                  </span>
+                </el-tooltip>
+              </p>
               <up-down :data="twitterAnalysisData.ratio"></up-down>
             </div>
             <div v-if="hasTokenAddress" class="twitter-analysis-left">
@@ -377,7 +401,7 @@
         </div>
       </div>
     </div>
-
+    <!--  Decentralization    -->
     <div v-if="hasTokenAddress" class="project-detail-decent">
       <div class="project-detail--header">
         <title-cell
@@ -388,6 +412,7 @@
       </div>
       <whale-holders :project-id="projectId" :pie-data="whalePieData"></whale-holders>
     </div>
+    <!--  Market Volatility    -->
     <div v-if="hasTokenAddress" class="project-detail-market">
       <div class="market-line--container">
         <div class="project-detail--header">
