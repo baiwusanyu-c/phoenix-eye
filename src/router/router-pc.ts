@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { useEventBus } from '@vueuse/core'
 import { getStore, isString } from '../utils/common'
 import { i18n } from '../utils/i18n'
@@ -174,7 +174,7 @@ const beforeEachHandle = (router: Router) => {
 }
 
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 } as RouterOptions)
 beforeEachHandle(router)
