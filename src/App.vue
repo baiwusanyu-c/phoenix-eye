@@ -1,5 +1,5 @@
 <template>
-  <div ref="app" :class="{ noM: isMobile == null, 'theme--dark': theme === 'dark' }">
+  <div ref="app" :class="{ 'theme--dark': theme === 'dark' }" class="noM">
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog
@@ -44,7 +44,7 @@
 <script setup lang="tsx">
   import { ref } from 'vue'
   // @ts-ignore
-  import { BeButton, BeDialog } from '../public/be-ui/be-ui.es.js'
+  import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
   import { browserInfo, getStore, setStore } from './utils/common'
   // 設置是否手機訪問變量
@@ -58,7 +58,7 @@
   const showBrowserTip = ref<boolean>(false)
   const tipList = ref<Array<string>>(['为保证更优质的使用体验，', '建议使用谷歌浏览器访问系统。'])
   if (browserInfo().browser !== 'chrome') {
-    showBrowserTip.value = true
+    //showBrowserTip.value = true
   }
   // 設置語言
   if (!getStore('language')) {

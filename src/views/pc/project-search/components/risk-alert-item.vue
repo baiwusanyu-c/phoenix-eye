@@ -1,13 +1,17 @@
 /* * @risk-alert-item.vue * @deprecated * @author czh * @update (czh 2022/5/24) */
 <template>
   <div style="height: calc(100% - 112px)">
-    <div v-for="item in currentPageData" :key="item" class="project-alert--item">
+    <div
+      v-for="item in currentPageData"
+      :key="item"
+      class="project-alert--item"
+      @click="openWindow(item.url)">
       <img alt="" src="../../../../assets/image/pc/alert-logo.png" />
       <ellipsis-copy
-        :target-str="`🔥🔥${item.replace(/[\r\n]/g, '')}`"
+        :target-str="`🔥🔥${item.content.replace(/[\r\n]/g, '')}`"
         :is-show-copy-btn="false"
         custom-class="detail-item--ellipsis"
-        :is-ellipsis="item.length > 40"
+        :is-ellipsis="item.content.length > 40"
         styles="font-weight: 500"
         font-length="80"
         :is-tooltip="false"
@@ -29,8 +33,8 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
+  import { openWindow } from '../../../../utils/common'
   import type { PropType } from 'vue'
-
   export default defineComponent({
     name: 'RiskAlertItem',
     components: { EllipsisCopy },
@@ -84,6 +88,7 @@
         pageNum,
         prevPage,
         nextPage,
+        openWindow,
       }
     },
   })
@@ -98,6 +103,7 @@
     border-radius: 4px;
     margin-top: 10px;
     text-align: left;
+    cursor: pointer;
     &:hover {
       background-color: $mainColor22;
     }

@@ -58,6 +58,7 @@
 
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
+  import { BeTag } from '@eagle-eye/be-ui'
   import {
     beijing2utc,
     createDate,
@@ -68,7 +69,6 @@
   } from '../../../../utils/common'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   // @ts-ignore
-  import { BeTag } from '../../../../../public/be-ui/be-ui.es'
   export default defineComponent({
     name: 'ProjectDetailPublicOpinion',
     components: {

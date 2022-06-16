@@ -120,6 +120,7 @@
 <script lang="ts">
   import { defineComponent, reactive, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { BeButton, BeIcon, BeTag } from '@eagle-eye/be-ui'
   import {
     createProject,
     getMatchSocial,
@@ -130,7 +131,6 @@
   import { platformReg } from '../../../../../utils/verification'
   import { ceSemiSpecialCharReg } from '../../../../../utils/reg'
   // @ts-ignore
-  import { BeButton, BeIcon, BeTag } from '../../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../../utils/mixin/common-func'
   import useUpload from '../../../../../utils/mixin/upload-func'
   import { catchErr, openWindow, trimStr } from '../../../../../utils/common'
@@ -858,7 +858,7 @@
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
     }
 
-    .be-button-body .be-button-slot {
+    .be-button--body .be-button--slot {
       font-family: BarlowSemi-R, sans-serif;
       font-size: 14px;
       font-weight: 400;

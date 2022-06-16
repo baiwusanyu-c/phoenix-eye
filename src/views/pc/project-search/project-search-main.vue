@@ -3,18 +3,20 @@
   <div class="project-search-main eagle-page">
     <div class="project-base--container">
       <h1>
-        {{ $t('lang.projectExplorer.base.title') }}
         <span>{{ $t('lang.projectExplorer.base.title2') }}</span>
+        {{ $t('lang.projectExplorer.base.title') }}
       </h1>
       <p>{{ $t('lang.projectExplorer.base.subTitle') }}</p>
       <div class="project-base-body">
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item1') }}</p>
-          <span>{{
-            isEmpty(baseInfo.market_cap_total, '/') === '/'
-              ? '/'
-              : `$${marketCapBaseInfo(baseInfo.market_cap_total)}`
-          }}</span>
+          <el-tooltip :content="baseInfo.market_cap_total" placement="top" effect="light">
+            <span>{{
+              isEmpty(baseInfo.market_cap_total, '/') === '/'
+                ? '/'
+                : `$${marketCapBaseInfo(baseInfo.market_cap_total)}`
+            }}</span>
+          </el-tooltip>
         </div>
         <div class="project-base-item">
           <p>{{ $t('lang.projectExplorer.base.item2') }}</p>
@@ -119,12 +121,26 @@
         </div>
         <div class="question">
           <h1>{{ $t('lang.projectExplorer.alert.quesTitle3') }}</h1>
-          <img
-            role="link"
-            alt=""
-            src="../../../assets/image/pc/telegram.png"
-            style="width: 36px; height: 36px; margin-top: 20px; cursor: pointer"
-            @click="openWindow(webURL.contact_telegram)" />
+          <div style="display: flex">
+            <img
+              role="link"
+              alt=""
+              src="../../../assets/image/pc/telegram.png"
+              style="width: 36px; height: 36px; margin-top: 20px; cursor: pointer"
+              @click="openWindow(webURL.contact_telegram)" />
+            <img
+              role="link"
+              alt=""
+              src="../../../assets/image/pc/discord.png"
+              style="
+                margin-left: 10px;
+                width: 36px;
+                height: 36px;
+                margin-top: 20px;
+                cursor: pointer;
+              "
+              @click="openWindow(webURL.contact_discord)" />
+          </div>
           <img
             alt=""
             src="../../../assets/image/pc/questions-bg.png"
@@ -169,6 +185,7 @@
 <script lang="ts">
   import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
   import { useEventBus } from '@vueuse/core'
+  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
   import composition from '../../../utils/mixin/common-func'
   import { getExploreInfo, getProjectListUser } from '../../../api/project-explorer'
   import {
@@ -180,7 +197,6 @@
     openWindow,
   } from '../../../utils/common'
   // @ts-ignore
-  import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
@@ -501,7 +517,7 @@
         background-repeat: round;
         text-align: left;
         p {
-          font-size: 28px;
+          font-size: 26px;
           font-family: BarlowSemi-B, sans-serif;
           font-weight: bold;
           color: $mainColor7;
@@ -512,7 +528,7 @@
 
         .install-btn {
           height: 36px;
-          .be-button-slot {
+          .be-button--slot {
             display: flex;
             align-items: center;
             line-height: 14px;
@@ -557,7 +573,7 @@
           background: $mainColor7;
           margin-top: 20px;
           font-size: 14px;
-          .be-button-slot {
+          .be-button--slot {
             display: flex;
             align-items: center;
             font-size: 12px;

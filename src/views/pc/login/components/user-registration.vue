@@ -56,9 +56,9 @@
   import { defineComponent, getCurrentInstance, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { Base64 } from 'js-base64'
+  import { BeButton } from '@eagle-eye/be-ui'
   import { trim } from '../../../../utils/common'
   // @ts-ignore
-  import { BeButton } from '../../../../../public/be-ui/be-ui.es'
   import { registerAccount, verifyCode } from '../../../../api/login'
   import composition from '../../../../utils/mixin/common-func'
   import { emailReg, pwdReg } from '../../../../utils/reg'

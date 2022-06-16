@@ -95,7 +95,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
   // @ts-ignore
-  import { BeIcon } from '../../../../../../public/be-ui/be-ui.es.js'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import composition from '../../../../../utils/mixin/common-func'
   import EllipsisCopy from '../../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import EmptyData from '../../../../../components/common-components/empty-data/empty-data.vue'

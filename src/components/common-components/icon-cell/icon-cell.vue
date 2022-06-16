@@ -15,9 +15,9 @@
 
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import { iconDict } from '../../../utils/platform-dict'
   // @ts-ignore
-  import { BeIcon } from '../../../../public/be-ui/be-ui.es'
   export default defineComponent({
     name: 'IconCell',
     components: {

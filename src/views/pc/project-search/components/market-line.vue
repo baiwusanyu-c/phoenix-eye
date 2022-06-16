@@ -37,9 +37,11 @@
     <div class="info-data">
       <div>
         <p>{{ titles }}</p>
-        <p class="info-val">
-          {{ isEmpty(innerData.value, '/') === '/' ? '/' : `$${nFormats(innerData.value)}` }}
-        </p>
+        <el-tooltip :content="innerData.value" placement="top" effect="light">
+          <p class="info-val">
+            {{ isEmpty(innerData.value, '/') === '/' ? '/' : `$${nFormats(innerData.value)}` }}
+          </p>
+        </el-tooltip>
         <p>
           24h:&nbsp;&nbsp;<span>{{
             isEmpty(innerData.day_1_ratio, '/') === '/'

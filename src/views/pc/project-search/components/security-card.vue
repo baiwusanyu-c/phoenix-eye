@@ -1,65 +1,66 @@
 /* * @security-card.vue * @deprecated * @author czh * @update (czh 2022/5/23) */
 <template>
   <div class="security-card">
-    <div class="security-card--head">
-      <div class="security-card--decr">
-        <ellipsis-copy
-          :target-str="title"
-          :is-ellipsis="title.length > 60 ? true : false"
-          :is-show-copy-btn="false"
-          :is-tooltip="true"
-          styles="color: #fff;font-weight: bold;font-size: 20px;line-height: 24px;"
-          tooltip-style="max-width: 300px;word-break: break-all;display: inline-block"
-          font-length="60"
-          end-length="0">
-        </ellipsis-copy>
-      </div>
-      <div class="security-card--tag scroll-diy">
-        <be-tag v-for="item in tagListArr" :key="item" :round="2">
-          {{ item }}
-        </be-tag>
-      </div>
-    </div>
-    <div class="security-card--body">
-      <div>
-        <ellipsis-copy
-          :target-str="info.replace(/[\r\n]/g, '')"
-          :is-ellipsis="info.replace(/[\r\n]/g, '').length > 250 ? true : false"
-          :is-show-copy-btn="false"
-          :is-tooltip="false"
-          styles="color: #333333;font-size: 14px;line-height: 17px;word-break: break-all;"
-          font-length="250"
-          end-length="0">
-        </ellipsis-copy>
-      </div>
-      <div style="position: absolute; left: 20px; bottom: 20px; width: calc(100% - 40px)">
-        <div class="security-card--body--foo">
-          <span style="display: flex; align-items: center">
-            Source:
-            <a v-if="sourceName !== 'twitter'" :href="sourceUrl" target="_blank">
-              {{ sourceName }}
-            </a>
-            <be-icon
-              v-if="sourceName === 'twitter'"
-              style="cursor: pointer"
-              width="18"
-              height="19"
-              icon="iconTwitterBlu"
-              :herf="sourceUrl"
-              @click="openWindow(sourceUrl)">
-            </be-icon>
-          </span>
-          <span>{{ formatTimeStamp(createDate(createTime).getTime(), $i18n.locale) }}</span>
+    <a :href="sourceUrl" target="_blank">
+      <div class="security-card--head">
+        <div class="security-card--decr">
+          <ellipsis-copy
+            :target-str="title"
+            :is-ellipsis="title.length > 60 ? true : false"
+            :is-show-copy-btn="false"
+            :is-tooltip="true"
+            styles="color: #fff;font-weight: bold;font-size: 20px;line-height: 24px;"
+            tooltip-style="max-width: 300px;word-break: break-all;display: inline-block"
+            font-length="60"
+            end-length="0">
+          </ellipsis-copy>
+        </div>
+        <div class="security-card--tag scroll-diy">
+          <be-tag v-for="item in tagListArr" :key="item" :round="2">
+            {{ item }}
+          </be-tag>
         </div>
       </div>
-    </div>
+      <div class="security-card--body">
+        <div>
+          <ellipsis-copy
+            :target-str="info.replace(/[\r\n]/g, '')"
+            :is-ellipsis="info.replace(/[\r\n]/g, '').length > 250 ? true : false"
+            :is-show-copy-btn="false"
+            :is-tooltip="false"
+            styles="color: #333333;font-size: 14px;line-height: 17px;word-break: break-all;"
+            font-length="250"
+            end-length="0">
+          </ellipsis-copy>
+        </div>
+        <div style="position: absolute; left: 20px; bottom: 20px; width: calc(100% - 40px)">
+          <div class="security-card--body--foo">
+            <span style="display: flex; align-items: center">
+              Source:
+              <a v-if="sourceName !== 'twitter'" :href="sourceUrl" target="_blank">
+                {{ sourceName }}
+              </a>
+              <be-icon
+                v-if="sourceName === 'twitter'"
+                style="cursor: pointer"
+                width="18"
+                height="19"
+                icon="iconTwitterBlu"
+                :herf="sourceUrl">
+              </be-icon>
+            </span>
+            <span>{{ formatTimeStamp(createDate(createTime).getTime(), $i18n.locale) }}</span>
+          </div>
+        </div>
+      </div>
+    </a>
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   // @ts-ignore
-  import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
+  import { BeIcon, BeTag } from '@eagle-eye/be-ui'
   import { createDate, formatTimeStamp, openWindow } from '../../../../utils/common'
   import type { PropType } from 'vue'
 

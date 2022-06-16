@@ -42,8 +42,8 @@
           <be-icon
             v-for="item in scope.row.tag_list"
             :key="item + scope.row.tx_hash"
-            width="24"
-            height="24"
+            width="32"
+            height="32"
             :title="item"
             style="margin-right: 8px"
             :icon="setTypeIcon(item)">
@@ -73,9 +73,9 @@
 
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import compositionPage from '../../../../utils/mixin/page-param'
   // @ts-ignore
-  import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
   import composition from '../../../../utils/mixin/common-func'
   import { getProjWarning } from '../../../../api/risk-trx'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'

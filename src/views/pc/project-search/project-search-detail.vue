@@ -117,18 +117,20 @@
                         : baseInfo.token_address
                     "
                     :is-tooltip="false"
+                    :is-ellipsis="baseInfo.token_address_name.length > 24"
                     :is-show-copy-btn="false">
                   </ellipsis-copy>
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
                 </p>
-
-                <p class="token-price-val">
-                  {{
-                    isEmpty(onChainData.token_price, '/') === '/'
-                      ? '/'
-                      : `$${nFormats(onChainData.token_price)}`
-                  }}
-                </p>
+                <el-tooltip :content="onChainData.token_price" placement="top" effect="light">
+                  <p class="token-price-val">
+                    {{
+                      isEmpty(onChainData.token_price, '/') === '/'
+                        ? '/'
+                        : `$${nFormats(onChainData.token_price)}`
+                    }}
+                  </p>
+                </el-tooltip>
                 <up-down :data="onChainData.token_price_ratio"></up-down>
               </div>
               <div
@@ -164,11 +166,19 @@
                   </el-tooltip>
                 </div>
                 <p class="uam-item-val">
-                  {{
-                    isEmpty(onChainData.holders, '/') === '/'
-                      ? '/'
-                      : `${marketCapBaseInfo(onChainData.holders)}`
-                  }}
+                  <el-tooltip
+                    :content="onChainData.holders"
+                    placement="top"
+                    effect="light"
+                    :disabled="!onChainData.holders">
+                    <span style="width: max-content">
+                      {{
+                        isEmpty(onChainData.holders, '/') === '/'
+                          ? '/'
+                          : `${marketCapBaseInfo(onChainData.holders)}`
+                      }}
+                    </span>
+                  </el-tooltip>
                 </p>
                 <up-down :data="onChainData.holders_ratio"></up-down>
               </div>
@@ -187,11 +197,19 @@
                   </el-tooltip>
                 </div>
                 <p class="uam-item-val">
-                  {{
-                    isEmpty(onChainData.transactions, '/') === '/'
-                      ? '/'
-                      : `${marketCapBaseInfo(onChainData.transactions)}`
-                  }}
+                  <el-tooltip
+                    :content="onChainData.transactions"
+                    placement="top"
+                    effect="light"
+                    :disabled="!onChainData.transactions">
+                    <span style="width: max-content">
+                      {{
+                        isEmpty(onChainData.transactions, '/') === '/'
+                          ? '/'
+                          : `${marketCapBaseInfo(onChainData.transactions)}`
+                      }}
+                    </span>
+                  </el-tooltip>
                 </p>
                 <up-down :data="onChainData.transactions_ratio" type="down"></up-down>
               </div>
@@ -212,11 +230,19 @@
                   </el-tooltip>
                 </div>
                 <p class="uam-item-val">
-                  {{
-                    isEmpty(onChainData.market_cap, '/') === '/'
-                      ? '/'
-                      : `$${marketCapBaseInfo(onChainData.market_cap)}`
-                  }}
+                  <el-tooltip
+                    :content="onChainData.market_cap"
+                    placement="top"
+                    effect="light"
+                    :disabled="!onChainData.market_cap">
+                    <span style="width: max-content">
+                      {{
+                        isEmpty(onChainData.market_cap, '/') === '/'
+                          ? '/'
+                          : `$${marketCapBaseInfo(onChainData.market_cap)}`
+                      }}
+                    </span>
+                  </el-tooltip>
                 </p>
                 <up-down :data="onChainData.market_cap_ratio"></up-down>
               </div>
@@ -255,11 +281,19 @@
                 </span>
               </p>
               <p class="twitter-analysis-val">
-                {{
-                  isEmpty(twitterAnalysisData.value, '/') === '/'
-                    ? '/'
-                    : `${nFormats(twitterAnalysisData.value)}`
-                }}
+                <el-tooltip
+                  :content="twitterAnalysisData.value"
+                  placement="top"
+                  effect="light"
+                  :disabled="!twitterAnalysisData.value">
+                  <span style="width: max-content">
+                    {{
+                      isEmpty(twitterAnalysisData.value, '/') === '/'
+                        ? '/'
+                        : `${nFormats(twitterAnalysisData.value)}`
+                    }}
+                  </span>
+                </el-tooltip>
               </p>
               <up-down :data="twitterAnalysisData.ratio"></up-down>
             </div>
@@ -287,6 +321,7 @@
             <div v-if="hasTokenAddress" class="score-report--chart">
               <div style="display: flex; justify-content: center; position: relative">
                 <be-progress
+                  :hidden-path="false"
                   type="dashboard"
                   stroke-width="12"
                   width="222"
@@ -367,7 +402,7 @@
         </div>
       </div>
     </div>
-
+    <!--  Decentralization    -->
     <div v-if="hasTokenAddress" class="project-detail-decent">
       <div class="project-detail--header">
         <title-cell
@@ -378,6 +413,7 @@
       </div>
       <whale-holders :project-id="projectId" :pie-data="whalePieData"></whale-holders>
     </div>
+    <!--  Market Volatility    -->
     <div v-if="hasTokenAddress" class="project-detail-market">
       <div class="market-line--container">
         <div class="project-detail--header">
@@ -430,11 +466,10 @@
   import {
     BeButton,
     BeIcon,
-    BePagination,
     BeProgress,
     BeTag,
     // @ts-ignore
-  } from '../../../../public/be-ui/be-ui.es.js'
+  } from '@eagle-eye/be-ui'
   import composition from '../../../utils/mixin/common-func'
   import {
     createSubscribe,
@@ -519,7 +554,6 @@
       ProjectDetailAudit,
       ProjectDetailTop,
       RiskTrxTable,
-      BePagination,
       ProjectDetailPubliOpinion,
       BeIcon,
       BeTag,
@@ -775,10 +809,10 @@
       })
       const handleScoreColor = computed(() => {
         return function (val: number) {
-          if (Number(val) >= 90) {
+          if (Number(val) >= 80) {
             return '#0ED9AC'
           }
-          if (Number(val) < 90 && Number(val) > 60) {
+          if (Number(val) < 80 && Number(val) > 60) {
             return '#F4CC29'
           }
           if (Number(val) <= 60) {
@@ -1197,7 +1231,7 @@
       min-width: initial;
       margin-left: 16px;
       border-radius: 4px !important;
-      .be-button-slot {
+      .be-button--slot {
         display: none;
       }
     }
