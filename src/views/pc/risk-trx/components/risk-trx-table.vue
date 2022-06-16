@@ -287,11 +287,11 @@
        * @param {Object} item - 分页参数对象
        */
       const pageChange = (item: any): void => {
-        pageParams.value.currentPage = item.currentPage
+        pageParams.value.currentPage = item
         getList()
       }
-      const updateNum = (data: IPageParam): void => {
-        updatePageSize(data.pageSize!, pageParams)
+      const updateNum = (data: number): void => {
+        updatePageSize(data!, pageParams)
         getList()
       }
       /**
