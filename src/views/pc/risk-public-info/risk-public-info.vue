@@ -86,12 +86,12 @@
             console.error(err)
           })
       }
-      const updateNum = (data: IPageParam): void => {
-        updatePageSize(data.pageSize!, pageParams)
+      const updateNum = (data: number): void => {
+        updatePageSize(data!, pageParams)
         getList()
       }
-      const pageChange = (item: IPageParam): void => {
-        pageParams.value.currentPage = item.currentPage
+      const pageChange = (item: number): void => {
+        pageParams.value.currentPage = item
         getList()
       }
       getList('reset')
