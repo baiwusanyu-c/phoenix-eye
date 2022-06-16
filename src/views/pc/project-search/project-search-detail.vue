@@ -321,6 +321,7 @@
             <div v-if="hasTokenAddress" class="score-report--chart">
               <div style="display: flex; justify-content: center; position: relative">
                 <be-progress
+                  :hidden-path="false"
                   type="dashboard"
                   stroke-width="12"
                   width="222"
