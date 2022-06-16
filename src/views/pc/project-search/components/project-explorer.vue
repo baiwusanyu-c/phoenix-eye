@@ -175,7 +175,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column
+        <!--        <el-table-column
           prop="audit_report_num"
           :width="tableHeader('audit_report_num')"
           align="center">
@@ -196,7 +196,7 @@
                 src="../../../../assets/image/pc/audit.png" />
             </div>
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
       <div v-if="projectList.length > 0" class="table-page">
         <el-pagination
