@@ -3,20 +3,20 @@
   "version": "2.0.5",
   "scripts": {
     "init": "pnpm i",
-    "serve:dev": "vite --host --mode development",
-    "serve:stage": "vite --host --mode staging",
+    "serve:dev02": "vite --host --mode development02",
+    "serve:stage02": "vite --host --mode staging02",
     "serve:prod": "vite --host --mode production",
-    "build:dev": "vite build --mode development",
-    "build:stage": "vite build --mode staging",
     "build:prod": "vite build --mode production",
     "build:dev02": "vite build --mode development02",
     "build:test02": "vite build --mode staging02",
-    "build:prod02": "vite build --mode production02",
     "lint:ts": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",
     "lint:ts-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx ",
     "prepare": "husky install",
     "formatDateiew": "vite preview --port 8080 --host"
   },
+  "workspaces": [
+    "be-ui/**"
+  ],
   "lint-staged": {
     "*.{vue,js,ts,jsx,tsx,md,json}": [
       "pretty-quick --staged --allow-empty",
@@ -42,6 +42,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@eagle-eye/be-ui": "workspace:^1.0.0",
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
@@ -88,6 +89,7 @@
     "vue-jest": "^5.0.0-alpha.10",
     "vue-tsc": "^0.0.24",
     "windicss": "^3.4.3",
+    "@popperjs/core": "^2.11.5",
     "yaml-eslint-parser": "^0.5.0"
   }
 }

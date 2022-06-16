@@ -69,21 +69,14 @@
         </el-table-column>
       </el-table>
       <div class="table-page">
-        <be-pagination
-          is-ordianry
-          :page-size="pageParams.pageSize"
-          :page-count="pageParams.total"
-          :current-page="pageParams.currentPage"
-          :page-num="[{ label: 10 }, { label: 20 }, { label: 40 }, { label: 80 }, { label: 100 }]"
-          :pager-show-count="5"
-          page-unit="page"
-          :layout="['prev', 'pNum', 'page']"
-          @update-num="updateNum"
-          @change-page="pageChange">
-          <template #prev>
-            <span class="table-page-info"> {{ $t('lang.total') }} {{ pageParams.total }}</span>
-          </template>
-        </be-pagination>
+        <el-pagination
+          v-model:currentPage="pageParams.currentPage"
+          v-model:page-size="pageParams.pageSize"
+          :page-sizes="[10, 20, 40, 80, 100]"
+          layout="total, sizes, prev, pager, next"
+          :total="pageParams.total"
+          @size-change="updateNum"
+          @current-change="pageChange" />
       </div>
     </div>
   </div>
@@ -94,8 +87,7 @@
   import compositionPage from '../../../../utils/mixin/page-param'
   import composition from '../../../../utils/mixin/common-func'
   import { getIpStatistics, getLogList } from '../../../../api/operational-statistics'
-  // @ts-ignore
-  import { BePagination } from '../../../../../public/be-ui/be-ui.es.js'
+
   import ChartLine from './components/chart-line.vue'
   import ChartPie from './components/chart-pie.vue'
   import type { ILogParam } from '../../../../api/operational-statistics'
@@ -103,7 +95,7 @@
 
   export default defineComponent({
     name: 'OperationalStatistics',
-    components: { ChartPie, ChartLine, BePagination },
+    components: { ChartPie, ChartLine },
     setup() {
       const { message, isEmpty } = composition()
       const { pageParams, resetPageParam, updatePageSize } = compositionPage()

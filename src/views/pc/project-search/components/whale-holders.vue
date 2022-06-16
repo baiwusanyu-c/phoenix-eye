@@ -347,6 +347,7 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref, watch } from 'vue'
+  import { BeIcon, BeProgress } from '@eagle-eye/be-ui'
   import compositionPage from '../../../../utils/mixin/page-param'
 
   import { getLiquidity, getPrivilege, getTop10HolderList } from '../../../../api/project-explorer'
@@ -359,7 +360,6 @@
     simulateToFixed,
   } from '../../../../utils/common'
   // @ts-ignore
-  import { BeIcon, BeProgress } from '../../../../../public/be-ui/be-ui.es'
   import type { ILiquidity, IPrivilege, ITop10Holder, IWhalePieData } from '../../../../utils/types'
   import type { PropType } from 'vue'
   export default defineComponent({

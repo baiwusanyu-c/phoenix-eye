@@ -100,12 +100,12 @@
   import { defineComponent, getCurrentInstance, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { Base64 } from 'js-base64'
+  import { BeButton } from '@eagle-eye/be-ui'
   import { forgetPasswordApi, verifyCodePassword } from '../../../../api/login'
   import { emailReg, pwdReg } from '../../../../utils/reg'
   import composition from '../../../../utils/mixin/common-func'
   import { trim } from '../../../../utils/common'
   // @ts-ignore
-  import { BeButton } from '../../../../../public/be-ui/be-ui.es'
   import type { ElForm } from 'element-plus'
   import type { ComponentInternalInstance } from 'vue'
   type FormInstance = InstanceType<typeof ElForm>

@@ -533,7 +533,7 @@
   width: 320px;
   height: 56px;
   border-radius: 4px;
-  .be-button-slot{
+  .be-button--slot{
     font-size: 20px;
   }
 }
@@ -638,7 +638,24 @@
     }
   }
 }
-
+.el-pager li.is-active{
+  color: $mainColor3 !important;;
+}
+.el-pager li:hover{
+  color: $mainColor3 !important;;
+}
+.el-pagination button:disabled,
+.el-pagination .btn-next,
+.el-pagination .btn-prev{
+  background-color: transparent !important;
+  color: $mainColor3 !important;;
+  &:hover{
+    color: $mainColor3 !important;;
+  }
+}
+.el-pager li{
+  background-color: transparent !important;;
+}
 .be-pager li:hover{
   color: $mainColor3;
   border: 1px solid $mainColor3;
@@ -739,7 +756,7 @@
     }
   }
 }
-.be-button .be-button-body .be-button-slot{
+.be-button .be-button--body .be-button--slot{
   font-family: BarlowSemi-B, sans-serif !important;
   font-weight: bolder;
 }

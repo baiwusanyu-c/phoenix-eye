@@ -74,11 +74,11 @@
   import { defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue'
   import { Base64 } from 'js-base64'
   import { useI18n } from 'vue-i18n'
+  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
   import { loginName } from '../../../../api/login'
   import { clearStore, getStore, setSession, setStore, trim } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
   // @ts-ignore
-  import { BeButton, BeIcon } from '../../../../../public/be-ui/be-ui.es.js'
   import type { ComponentInternalInstance } from 'vue'
   import type { ElForm } from 'element-plus'
   type FormInstance = InstanceType<typeof ElForm>

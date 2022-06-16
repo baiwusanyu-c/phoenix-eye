@@ -40,7 +40,7 @@ Modified by: czh * @Last Modified time: 2021-04-21 14:19:09 */
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
   // @ts-ignore
-  import { BeButton, BeDialog } from '../../../../public/be-ui/be-ui.es.js'
+  import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   export default defineComponent({
     name: 'MsgDialog',
     components: { BeButton, BeDialog },

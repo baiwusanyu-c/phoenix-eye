@@ -60,7 +60,7 @@
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   // @ts-ignore
-  import { BeIcon, BeTag } from '../../../../../public/be-ui/be-ui.es'
+  import { BeIcon, BeTag } from '@eagle-eye/be-ui'
   import { createDate, formatTimeStamp, openWindow } from '../../../../utils/common'
   import type { PropType } from 'vue'
 

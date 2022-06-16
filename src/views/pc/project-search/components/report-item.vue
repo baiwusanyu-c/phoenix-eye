@@ -19,9 +19,9 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import { createDate, formatDate, openWindow } from '../../../../utils/common'
   // @ts-ignore
-  import { BeIcon } from '../../../../../public/be-ui/be-ui.es'
 
   export default defineComponent({
     name: 'ReportItem',

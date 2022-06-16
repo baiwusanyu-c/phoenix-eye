@@ -63,7 +63,7 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   // @ts-ignore
-  import { BeButton } from '../../../../public/be-ui/be-ui.es.js'
+  import { BeButton } from '@eagle-eye/be-ui'
   import { debounce } from '../../../utils/common'
   import RiskTrxTable from './components/risk-trx-table.vue'
   import type { IFilterItem, IRiskTable } from '../../../utils/types'
@@ -163,7 +163,7 @@
         color: $textColor11;
         background-color: transparent;
 
-        .be-button-slot {
+        .be-button--slot {
           font-family: BarlowSemi-R, sans-serif;
         }
 

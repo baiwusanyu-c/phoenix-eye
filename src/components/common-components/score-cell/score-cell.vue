@@ -2,13 +2,14 @@
 <template>
   <div class="score-cell">
     <be-progress
+      :hidden-path="hiddenPath"
       type="circle"
       :percent="scoreInner"
       :color="color"
       status="normal"
       trail-color="#E0E0E0"
       stroke-linecap="square"
-      stroke-width="20">
+      :stroke-width="20">
       <template #center>
         <span class="score">{{ Number(scoreInner) < 0 ? nanVal : scoreInner }}</span>
       </template>
@@ -19,7 +20,7 @@
 <script lang="ts">
   import { computed, defineComponent, ref, watch } from 'vue'
   // @ts-ignore
-  import { BeProgress } from '../../../../public/be-ui/be-ui.es'
+  import { BeProgress } from '@eagle-eye/be-ui'
 
   export default defineComponent({
     name: 'ScoreCell',
@@ -42,7 +43,7 @@
       })
 
       const scoreInner = ref<number>(computedPropsScore.value)
-      const hiddenPath = ref<string>('')
+      const hiddenPath = ref<boolean>(false)
       const color = ref<string>('')
       const setScoreColor = (): void => {
         if (Number(computedPropsScore.value) >= 80) {
@@ -56,9 +57,9 @@
         }
 
         if (Number(computedPropsScore.value) <= 0) {
-          hiddenPath.value = 'none'
+          hiddenPath.value = true
         } else {
-          hiddenPath.value = ''
+          hiddenPath.value = false
         }
       }
       watch(
@@ -89,9 +90,6 @@
 
     .be-progress-circle--text {
       width: 100%;
-    }
-    .be-progress-circle__path {
-      display: v-bind(hiddenPath);
     }
     .score {
       font-weight: bold;

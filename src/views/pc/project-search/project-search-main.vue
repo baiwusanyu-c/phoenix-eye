@@ -185,6 +185,7 @@
 <script lang="ts">
   import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
   import { useEventBus } from '@vueuse/core'
+  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
   import composition from '../../../utils/mixin/common-func'
   import { getExploreInfo, getProjectListUser } from '../../../api/project-explorer'
   import {
@@ -196,7 +197,6 @@
     openWindow,
   } from '../../../utils/common'
   // @ts-ignore
-  import { BeButton, BeIcon } from '../../../../public/be-ui/be-ui.es'
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
@@ -528,7 +528,7 @@
 
         .install-btn {
           height: 36px;
-          .be-button-slot {
+          .be-button--slot {
             display: flex;
             align-items: center;
             line-height: 14px;
@@ -573,7 +573,7 @@
           background: $mainColor7;
           margin-top: 20px;
           font-size: 14px;
-          .be-button-slot {
+          .be-button--slot {
             display: flex;
             align-items: center;
             font-size: 12px;

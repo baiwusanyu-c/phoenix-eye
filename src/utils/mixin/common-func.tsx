@@ -7,9 +7,9 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { BeMsg } from '@eagle-eye/be-ui'
 import { getCodeImg } from '../../api/login'
 // @ts-ignore
-import { BeMsg } from '../../../public/be-ui/be-ui.es.js'
 import { isNumber, isString, message, openWindow } from '../common'
 import { webURL } from '../../enums/link'
 import type { Ref } from 'vue'
