@@ -66,7 +66,7 @@ const routes = [
         meta: { title: 'lang.subNav.navName5' },
       },
       {
-        path: '/projectSearch/detail',
+        path: '/detail',
         name: 'ProjectSearchDetail',
         component: () => import('../views/pc/project-search/project-search-detail.vue'),
         meta: { title: 'lang.subNav.navName5' },

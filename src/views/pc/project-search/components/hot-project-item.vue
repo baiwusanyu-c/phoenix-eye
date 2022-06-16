@@ -121,7 +121,7 @@
        * 路由跳轉
        */
       const routerSwitch = (row: any): void => {
-        routerPush('/projectSearch/detail', { id: row.project_id, keyword: row.keyword })
+        routerPush('/detail', { id: row.project_id, keyword: row.keyword })
       }
       return {
         routerSwitch,
