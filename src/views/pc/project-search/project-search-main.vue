@@ -292,7 +292,7 @@
        * 路由跳轉
        */
       const routerSwitch = (id: string): void => {
-        routerPush('/projectSearch/detail', { id })
+        routerPush('/detail', { id })
       }
       const handleDefaultSearch = (params: string): void => {
         searchParams.value = params

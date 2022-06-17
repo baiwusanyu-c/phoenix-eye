@@ -17,7 +17,7 @@ export const META_TITLE_DICT: IOption = {
   AQSJ: 'lang.subNav.navName11',
 }
 export const WHITE_LIST: Array<string> = [
-  '/riskTrx/list',
+  '/riskTrxList',
   '/ProjectSearch',
   '/RiskPublicInformation',
 ]
@@ -39,5 +39,5 @@ export const ROUTER_COMPONENT_DICT: IOption = {
 // 需要运营统计的路由,值由后端约定
 export const STATISTICS_ROUTER: IOption = {
   '/projectSearch': 'project explore',
-  '/projectSearch/detail': 'project details',
+  '/detail': 'project details',
 }

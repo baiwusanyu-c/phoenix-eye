@@ -187,7 +187,7 @@
        * 路由跳轉
        */
       const routerSwitch = (row: any): void => {
-        openWindow(`#/riskTrx/detail?tx_hash=${row.tx_hash}`)
+        openWindow(`/riskTrxDetail?tx_hash=${row.tx_hash}`)
       }
       onMounted(() => {
         getList('reset')

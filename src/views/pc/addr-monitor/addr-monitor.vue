@@ -307,7 +307,7 @@
        * 打開詳情页
        */
       const openDetail = (params: string) => {
-        openWindow(`#/addressMonitor/detail?address=${params}`, params)
+        openWindow(`/addressMonitorDetail?address=${params}`, params)
       }
       /**
        * 处理email打开
