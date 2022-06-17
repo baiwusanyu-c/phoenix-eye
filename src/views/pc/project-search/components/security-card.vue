@@ -126,7 +126,7 @@
       .security-card--tag {
         margin-top: 10px;
         display: flex;
-        overflow-x: auto;
+        overflow-x: hidden;
       }
 
       .be-tag {
