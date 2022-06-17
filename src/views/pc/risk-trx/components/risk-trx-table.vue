@@ -298,7 +298,7 @@
        * 打開交易分析詳情tab
        */
       const openDetail = (params: any) => {
-        openWindow(`#/riskTrx/detail?tx_hash=${params.tx_hash}`)
+        openWindow(`/riskTrxDetail?tx_hash=${params.tx_hash}`)
       }
 
       const screenWidth = window.screen.width

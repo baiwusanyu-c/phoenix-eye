@@ -17,7 +17,7 @@ export const META_TITLE_DICT: IOption = {
   AQSJ: 'lang.subNav.navName11',
 }
 export const WHITE_LIST: Array<string> = [
-  '/riskTrx/list',
+  '/riskTrxList',
   '/ProjectSearch',
   '/RiskPublicInformation',
 ]

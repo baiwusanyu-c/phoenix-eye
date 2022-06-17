@@ -33,13 +33,13 @@ const routes = [
       },
       // 风险交易
       {
-        path: '/riskTrx/list',
+        path: '/riskTrxList',
         name: 'RiskTrx',
         component: () => import('../views/pc/risk-trx/risk-trx-list.vue'),
         meta: { title: 'lang.subNav.navName2' },
       },
       {
-        path: '/riskTrx/detail',
+        path: '/riskTrxDetail',
         name: 'RiskTrxDetail',
         component: () => import('../views/pc/risk-trx/risk-trx-detail.vue'),
         meta: { title: 'lang.subNav.navName2' },
@@ -53,7 +53,7 @@ const routes = [
       },
       // 地址监控详情
       {
-        path: '/addressMonitor/detail',
+        path: '/addressMonitorDetail',
         name: 'AddressMonitorDetail',
         component: () => import('../views/pc/addr-monitor/addr-monitor-detail.vue'),
         meta: { title: 'lang.subNav.navName7' },
