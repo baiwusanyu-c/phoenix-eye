@@ -21,7 +21,7 @@ export const publicHeaderConfig = {
     index: '1',
     name: 'lang.subNav.navName2',
     show: true,
-    path: '/riskTrx/list',
+    path: '/riskTrxList',
     isPush: true,
     children: [],
     isDisabled: false,

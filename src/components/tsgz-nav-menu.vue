@@ -463,7 +463,7 @@
 
       // 路由不在項目態勢詳情也就清空選擇值
       onBeforeRouteUpdate(to => {
-        if (to.path !== '/projectSearch/detail') {
+        if (to.path !== '/detail') {
           selectVal.value = ''
           removeStore('curSelectProjId')
         }
@@ -480,7 +480,7 @@
           return
         }
         setStore('curSelectProjId', selectVal.value)
-        routerPush('/projectSearch/detail', { id: selectVal.value })
+        routerPush('/detail', { id: selectVal.value })
         selectProjBus.emit(selectVal.value)
       }
       /**

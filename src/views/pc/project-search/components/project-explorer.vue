@@ -301,7 +301,7 @@
        */
       const routerSwitch = (row: any): void => {
         setStore('curSelectProjId', row.project_id)
-        routerPush('/projectSearch/detail', { id: row.project_id, keyword: row.keyword })
+        routerPush('/detail', { id: row.project_id, keyword: row.keyword })
       }
       /**
        * 分页方法
@@ -371,7 +371,7 @@
           return
         }
         setStore('curSelectProjId', selectVal.value)
-        routerPush('/projectSearch/detail', { id: selectVal.value })
+        routerPush('/detail', { id: selectVal.value })
       }
       return {
         platformToCurrency,
