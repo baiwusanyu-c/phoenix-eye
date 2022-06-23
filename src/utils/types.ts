@@ -367,3 +367,12 @@ export type IWhalePieData = {
   chartData?: Array<{ ratio: number; feature: string; color: string }>
   total?: number
 }
+
+// related-project
+export type IRelateProject = {
+  logo_url?: string
+  project_name?: string
+  create_time?: string
+  project_id?: string
+  platform?: string
+}

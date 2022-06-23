@@ -455,6 +455,8 @@
       </div>
       <security-info-card :data-list="securityEventList"></security-info-card>
     </div>
+    <!--  Related Project    -->
+    <relate-project></relate-project>
   </div>
 </template>
 
@@ -516,6 +518,7 @@
   import ScoreItem from './components/score-item.vue'
   import ReportItem from './components/report-item.vue'
   import WhaleHolders from './components/whale-holders.vue'
+  import RelateProject from './components/related-project.vue'
   import type {
     IAuditList,
     IBaseInfo,
@@ -534,6 +537,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      RelateProject,
       ProjectNameCell,
       ContactBar,
       WhaleHolders,
@@ -896,6 +900,7 @@
     .project-detail-decent,
     .project-detail-public-info,
     .project-detail-security,
+    .project-detail-related,
     .project-detail-risk,
     .project-detail-market {
       @include common-container(32px, 67.2%);
@@ -1328,6 +1333,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 92%;
@@ -1341,6 +1347,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 92%;
@@ -1355,6 +1362,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 80%;
@@ -1368,6 +1376,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 72%;
