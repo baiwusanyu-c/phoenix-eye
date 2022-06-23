@@ -33,7 +33,7 @@
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
-      <el-select
+      <!--      <el-select
         ref="projectSelect"
         v-model="selectVal"
         filterable
@@ -51,18 +51,28 @@
           :key="item.project_id"
           :label="item.project_name"
           :value="item.project_id">
-          <div class="project-select--option">
+          <div class="project-select&#45;&#45;option">
             <project-name-cell
               :url="item.logo_url"
               :name="item.project_name"
               :is-ell="false"></project-name-cell>
-            <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+            <span class="project-select&#45;&#45;platform">{{ platformToCurrency[item.platform] }}</span>
           </div>
         </el-option>
       </el-select>
-      <div class="project-select-remote--btn">
+      <div class="project-select-remote&#45;&#45;btn">
         <be-icon icon="search"></be-icon>
-      </div>
+      </div>-->
+      <remote-search @select="handleProjectSelect">
+        <template #listFooter>
+          <div id="create_one_body" class="create-one--body" @click="openDialog('add')">
+            <span>{{ $t('lang.createProject.notFound') }}?</span>
+            <div role="button" class="create-one eagle-btn">
+              {{ $t('lang.createProject.createOne') }}
+            </div>
+          </div>
+        </template>
+      </remote-search>
       <!--    需求反馈   -->
       <be-button
         custom-class="eagle-btn feedback-btn"
@@ -167,7 +177,7 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { onBeforeRouteUpdate } from 'vue-router'
-  import { BeButton, BeIcon, BePopover } from '@eagle-eye/be-ui'
+  import { BeButton, BeIcon, BeInput, BePopover } from '@eagle-eye/be-ui'
   import LoginDialog from '../views/pc/login/login-dialog.vue'
   import { getProjectListCurUser } from '../api/project-explorer'
   // @ts-ignore
@@ -214,6 +224,7 @@
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
+      BeInput,
       RequestAudit,
       ProjectNameCell,
       CreateProject,
@@ -472,16 +483,16 @@
        * 项目选择事件
        */
       const selectProjBus = useEventBus<string>('selectProjBus')
-      const handleProjectSelect = (): void => {
+      const handleProjectSelect = (data?: IOption): void => {
         // 清空時
-        if (selectVal.value === '') {
+        if (!data) {
           removeStore('curSelectProjId')
           routerPush('/projectSearch')
           return
         }
-        setStore('curSelectProjId', selectVal.value)
-        routerPush('/detail', { id: selectVal.value })
-        selectProjBus.emit(selectVal.value)
+        setStore('curSelectProjId', data.project_id)
+        routerPush('/detail', { id: data.project_id })
+        selectProjBus.emit(data.project_id)
       }
       /**
        * 打开需求反馈
@@ -531,7 +542,10 @@
           }
         })
       }
+
+      const searchParamsInput = ref<string>('')
       return {
+        searchParamsInput,
         insertAddDom,
         openDialog,
         createDialog,
@@ -562,7 +576,7 @@
 </script>
 
 <style lang="scss">
-  #xnhb_nav_menu .project-select-remote {
+  /* #xnhb_nav_menu .project-select-remote {
     height: 40px;
     .el-input.is-focus .el-input__wrapper {
       box-shadow: none !important;
@@ -579,7 +593,9 @@
         line-height: 40px;
       }
     }
-  }
+
+    width: 200px;
+  }*/
   .project-select-remote--btn {
     background-color: $mainColor3;
     height: 40px;
@@ -614,32 +630,33 @@
         margin-left: 4px;
       }
     }
-    .create-one--body {
-      width: 100%;
-      background-color: #ecf3f9;
-      display: flex;
-      height: 48px;
-      padding: 15px 24px;
-      align-items: center;
-      justify-content: space-between;
-      span {
-        font-family: BarlowSemi-R, sans-serif;
-        font-weight: 400;
-        color: $textColor3;
-        line-height: 17px;
-        font-size: 14px;
-      }
-      .create-one {
-        color: $mainColor7;
-        min-width: 86px;
-        border-radius: 4px;
-        height: 24px;
-        line-height: 24px;
-        margin-left: 6px;
-        font-family: BarlowSemi-R, sans-serif;
-        font-weight: bold;
-        cursor: pointer;
-      }
+  }
+
+  .create-one--body {
+    width: 100%;
+    background-color: #ecf3f9;
+    display: flex;
+    height: 48px;
+    padding: 15px 24px;
+    align-items: center;
+    justify-content: space-between;
+    span {
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: 400;
+      color: $textColor3;
+      line-height: 17px;
+      font-size: 14px;
+    }
+    .create-one {
+      color: $mainColor7;
+      min-width: 86px;
+      border-radius: 4px;
+      height: 24px;
+      line-height: 24px;
+      margin-left: 6px;
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
     }
   }
 

@@ -11,6 +11,7 @@
     "build:test02": "vite build --mode staging02",
     "lint:ts": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",
     "lint:ts-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx ",
+    "lint:be-ui": "eslint --fix ./be-ui --ext .vue,.js,.ts,.jsx,.tsx ",
     "prepare": "husky install",
     "formatDateiew": "vite preview --port 8080 --host"
   },

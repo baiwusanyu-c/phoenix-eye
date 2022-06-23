@@ -5,11 +5,12 @@
  * @create (xuqianqian 2021/4/16)
  * @update (czh 2021/4/16)
  */
-import { IEvent } from "../type/types";
-import type { DirectiveBinding, ObjectDirective } from "vue";
 
+import type { DirectiveBinding, ObjectDirective } from 'vue'
+// TODO 暂未实现
 export const dragDirective: ObjectDirective = {
   beforeMount(el: HTMLElement, binding: DirectiveBinding): void {
+    console.log(el, binding)
     /* const op: HTMLElement = el
     op.style.transform = 'translate(0%, 0%)'
     op.style.position = 'absolute'
@@ -102,4 +103,4 @@ export const dragDirective: ObjectDirective = {
       }
     } */
   },
-};
+}
