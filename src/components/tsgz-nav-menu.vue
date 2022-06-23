@@ -33,36 +33,34 @@
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
-      <el-select
-        ref="projectSelect"
-        v-model="selectVal"
-        filterable
-        remote
-        :placeholder="$t('lang.pleaseSelect')"
-        clearable
-        :loading="selectLoading"
-        :remote-method="getProjectUser"
-        popper-class="project-select"
-        class="project-select-remote"
-        @click="insertAddDom"
-        @change="handleProjectSelect">
-        <el-option
-          v-for="item in projectList"
-          :key="item.project_id"
-          :label="item.project_name"
-          :value="item.project_id">
-          <div class="project-select--option">
-            <project-name-cell
-              :url="item.logo_url"
-              :name="item.project_name"
-              :is-ell="false"></project-name-cell>
-            <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+      <remote-search
+        :remote-search="getProjectUser"
+        @select="handleProjectSelect"
+        @clear="handleProjectSelect(false)">
+        <template #option="slotProps">
+          <project-name-cell
+            :url="slotProps.item.logo_url"
+            :name="slotProps.item.project_name"
+            :is-ell="false">
+          </project-name-cell>
+          <span style="font-size: 14px; color: #7c9aaa; font-weight: bold">{{
+            platformToCurrency[slotProps.item.platform]
+          }}</span>
+        </template>
+        <template #listFooter>
+          <div id="create_one_body" class="create-one--body">
+            <span>{{ $t('lang.createProject.notFound') }}?</span>
+            <div role="button" class="create-one eagle-btn" @click="openDialog('add')">
+              {{ $t('lang.createProject.createOne') }}
+            </div>
           </div>
-        </el-option>
-      </el-select>
-      <div class="project-select-remote--btn">
-        <be-icon icon="search"></be-icon>
-      </div>
+        </template>
+        <template #next>
+          <div class="project-select-remote--btn">
+            <be-icon icon="search"></be-icon>
+          </div>
+        </template>
+      </remote-search>
       <!--    需求反馈   -->
       <be-button
         custom-class="eagle-btn feedback-btn"
@@ -189,7 +187,6 @@
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
   import RequestAudit from './request-audit.vue'
-  import type { ElSelect } from 'element-plus'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
   // XMSS: Project Explorer
@@ -207,7 +204,6 @@
     EYWZGL: true,
     AQSJ: true,
   }
-  type SelectInstance = InstanceType<typeof ElSelect>
   /**
    * 头部菜单导航
    */
@@ -425,7 +421,7 @@
         }
       /****************************** 语种切换相关 ******************************/
       // 语种切换
-      const { locale, t } = useI18n()
+      const { locale } = useI18n()
       const instanceInner = getCurrentInstance()
       const busLanguage = useEventBus<string>('language')
       const computeLang = ref<string>('EN')
@@ -440,25 +436,23 @@
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-      const selectLoading = ref<boolean>(false)
-      const getProjectUser = (params: string): void => {
-        selectLoading.value = true
+      const getProjectUser = (params: string, cb: Function): void => {
         getProjectListCurUser({ param: params })
           .then(res => {
             if (!res.data) {
               projectList.value = []
-              return
+            } else {
+              res.data.forEach((val: any) => {
+                val.project_id = val.project_id.toString()
+              })
+              projectList.value = res.data
             }
-            // #fix:4721
-            res.data.forEach((val: any) => {
-              val.project_id = val.project_id.toString()
-            })
-            projectList.value = res.data
+            cb(projectList.value)
           })
           .catch(err => {
+            cb([])
             message('error', err.message || err)
           })
-          .finally(() => (selectLoading.value = false))
       }
 
       // 路由不在項目態勢詳情也就清空選擇值
@@ -472,16 +466,16 @@
        * 项目选择事件
        */
       const selectProjBus = useEventBus<string>('selectProjBus')
-      const handleProjectSelect = (): void => {
+      const handleProjectSelect = (data?: IOption): void => {
         // 清空時
-        if (selectVal.value === '') {
+        if (!data) {
           removeStore('curSelectProjId')
           routerPush('/projectSearch')
           return
         }
-        setStore('curSelectProjId', selectVal.value)
-        routerPush('/detail', { id: selectVal.value })
-        selectProjBus.emit(selectVal.value)
+        setStore('curSelectProjId', data.project_id)
+        routerPush('/detail', { id: data.project_id })
+        selectProjBus.emit(data.project_id)
       }
       /**
        * 打开需求反馈
@@ -499,40 +493,9 @@
       busCreateProjectUser.on(() => {
         openDialog('add')
       })
-      /**
-       * 用户选择项目，动态插入’增加项目‘的dom
-       */
-      const selectRef = getCurrentInstance()
-      const insertAddDom = (): void => {
-        nextTick(() => {
-          let createOneBody = document.getElementById('create_one_body')
-          const container = document.querySelector('.el-select-dropdown.project-select')
-          if (container && !createOneBody) {
-            createOneBody = document.createElement('div')
-            createOneBody.setAttribute('id', 'create_one_body')
-            createOneBody.setAttribute('class', 'create-one--body')
-            const createOneSpan = document.createElement('span')
-            createOneSpan.innerText = `${t('lang.createProject.notFound')}?`
-            createOneBody.append(createOneSpan)
-            // 创建按钮
-            const createOneBtn = document.createElement('div')
-            createOneBtn.setAttribute('role', 'button')
-            createOneBtn.setAttribute('class', 'create-one eagle-btn')
-            createOneBtn.addEventListener('click', () => {
-              // 关闭下拉
-              ;(selectRef?.refs.projectSelect as SelectInstance).blur()
-              openDialog('add')
-            })
-
-            createOneBtn.innerText = t('lang.createProject.createOne')
-            createOneBody.append(createOneBtn)
-
-            container?.append(createOneBody)
-          }
-        })
-      }
+      const searchParamsInput = ref<string>('')
       return {
-        insertAddDom,
+        searchParamsInput,
         openDialog,
         createDialog,
         getProjectUser,
@@ -555,14 +518,13 @@
         openLogin,
         openRegistry,
         platformToCurrency,
-        selectLoading,
       }
     },
   })
 </script>
 
 <style lang="scss">
-  #xnhb_nav_menu .project-select-remote {
+  /* #xnhb_nav_menu .project-select-remote {
     height: 40px;
     .el-input.is-focus .el-input__wrapper {
       box-shadow: none !important;
@@ -579,17 +541,18 @@
         line-height: 40px;
       }
     }
-  }
+
+    width: 200px;
+  }*/
   .project-select-remote--btn {
     background-color: $mainColor3;
     height: 40px;
     line-height: 40px;
-    width: 42px;
+    width: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 0 4px 4px 0;
-    margin-right: 20px;
   }
   .project-select {
     /*max-width: 214px;*/
@@ -614,32 +577,34 @@
         margin-left: 4px;
       }
     }
-    .create-one--body {
-      width: 100%;
-      background-color: #ecf3f9;
-      display: flex;
-      height: 48px;
-      padding: 15px 24px;
-      align-items: center;
-      justify-content: space-between;
-      span {
-        font-family: BarlowSemi-R, sans-serif;
-        font-weight: 400;
-        color: $textColor3;
-        line-height: 17px;
-        font-size: 14px;
-      }
-      .create-one {
-        color: $mainColor7;
-        min-width: 86px;
-        border-radius: 4px;
-        height: 24px;
-        line-height: 24px;
-        margin-left: 6px;
-        font-family: BarlowSemi-R, sans-serif;
-        font-weight: bold;
-        cursor: pointer;
-      }
+  }
+
+  .create-one--body {
+    border-radius: 4px;
+    width: 100%;
+    background-color: $mainColor2;
+    display: flex;
+    height: 48px;
+    padding: 15px 24px;
+    align-items: center;
+    justify-content: space-between;
+    span {
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: 400;
+      color: $textColor3;
+      line-height: 17px;
+      font-size: 14px;
+    }
+    .create-one {
+      color: $mainColor7;
+      min-width: 86px;
+      border-radius: 4px;
+      height: 24px;
+      line-height: 24px;
+      margin-left: 6px;
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
     }
   }
 
@@ -754,6 +719,16 @@
       background-repeat: no-repeat;
       background-position: right;
       background-size: 100% 100%;
+
+      .remote-search-input {
+        background: $mainColor1;
+        border: none;
+        margin-right: 20px;
+        .be-input__inner {
+          background: $mainColor1;
+          color: $mainColor7;
+        }
+      }
 
       .setting {
         margin-left: 10px;

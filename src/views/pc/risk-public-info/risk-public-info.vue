@@ -31,7 +31,7 @@
   import { getPublicOpinionList } from '../../../api/risk-public-info'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
-  import type { IPageParam, ISafetyData } from '../../../utils/types'
+  import type { ISafetyData } from '../../../utils/types'
   import type { IPOList } from '../../../api/risk-public-info'
   export default defineComponent({
     name: 'RiskPublicInfo',

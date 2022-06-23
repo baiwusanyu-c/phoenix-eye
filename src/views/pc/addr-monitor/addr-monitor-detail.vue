@@ -203,7 +203,7 @@
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
   import type { IAddrMonitorDetailOut } from '../../../api/addr-monitor'
-  import type { IAddrMonitorDetail, IAddrMonitorInfo, IPageParam } from '../../../utils/types'
+  import type { IAddrMonitorDetail, IAddrMonitorInfo } from '../../../utils/types'
   export default defineComponent({
     name: 'AddrMonitorDetail',
     components: { PlatformCell, EmptyData, EllipsisCopy },

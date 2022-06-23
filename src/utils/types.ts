@@ -71,6 +71,7 @@ export interface IBaseInfo {
   is_subscribe?: boolean
   project_name?: string
   logo_url?: string
+  token_address_symbol?: string
 }
 
 export interface ITop5TokenHolder {
@@ -365,4 +366,13 @@ export type ILiquidity = {
 export type IWhalePieData = {
   chartData?: Array<{ ratio: number; feature: string; color: string }>
   total?: number
+}
+
+// related-project
+export type IRelateProject = {
+  logo_url?: string
+  project_name?: string
+  create_time?: string
+  project_id?: string
+  platform?: string
 }

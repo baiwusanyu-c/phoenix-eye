@@ -111,13 +111,12 @@
                     openWindow(`${webURL[baseInfo.platform + '_token']}${baseInfo.token_address}`)
                   ">
                   <ellipsis-copy
-                    :target-str="
-                      baseInfo.token_address_name
-                        ? baseInfo.token_address_name
-                        : baseInfo.token_address
-                    "
-                    :is-tooltip="false"
-                    :is-ellipsis="baseInfo.token_address_name.length > 24"
+                    :target-str="handleTokenAddress(baseInfo)"
+                    :tooltip-txt="`
+                    Token Address Symbol: ${baseInfo.token_address_symbol}
+                    Token Address: ${baseInfo.token_address}`"
+                    :is-tooltip="true"
+                    :is-ellipsis="handleTokenAddress(baseInfo).length > 30"
                     :is-show-copy-btn="false">
                   </ellipsis-copy>
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
@@ -456,6 +455,8 @@
       </div>
       <security-info-card :data-list="securityEventList"></security-info-card>
     </div>
+    <!--  Related Project    -->
+    <relate-project v-if="relatedProject.length > 0" :data="relatedProject"></relate-project>
   </div>
 </template>
 
@@ -517,6 +518,7 @@
   import ScoreItem from './components/score-item.vue'
   import ReportItem from './components/report-item.vue'
   import WhaleHolders from './components/whale-holders.vue'
+  import RelateProject from './components/related-project.vue'
   import type {
     IAuditList,
     IBaseInfo,
@@ -524,6 +526,7 @@
     IGovern,
     IMarketVolatility,
     IProjectScore,
+    IRelateProject,
     IRiskChartData,
     IScoreItems,
     ISecurityEventList,
@@ -535,6 +538,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      RelateProject,
       ProjectNameCell,
       ContactBar,
       WhaleHolders,
@@ -603,6 +607,7 @@
         transactions: 0,
         transactions_ratio: 0,
       })
+      const relatedProject = ref<Array<IRelateProject>>([])
       const scoreItemComp = ref<string>('')
       const baseInfo = ref<IBaseInfo>({})
       const hasTokenAddress = ref<boolean>(false)
@@ -625,6 +630,7 @@
               governData.value = res.data.social_profiles
               riskChartData.value = res.data.risk_tx_info
               projectScoreData.value = res.data.project_score
+              relatedProject.value = res.data.relate_project
               if (res.data.twitter_analysis.following_info) {
                 twitterAnalysisData.value = res.data.twitter_analysis.following_info
               }
@@ -837,7 +843,14 @@
       const openCreateProject = (): void => {
         busCreateProjectUser.emit()
       }
+      const handleTokenAddress = computed(() => {
+        return function (val: IBaseInfo) {
+          return val.token_address_symbol ? val.token_address_symbol : val.token_address
+        }
+      })
       return {
+        relatedProject,
+        handleTokenAddress,
         openCreateProject,
         openRequestAudit,
         showRiskList,
@@ -891,6 +904,7 @@
     .project-detail-decent,
     .project-detail-public-info,
     .project-detail-security,
+    .project-detail-related,
     .project-detail-risk,
     .project-detail-market {
       @include common-container(32px, 67.2%);
@@ -1323,6 +1337,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 92%;
@@ -1336,6 +1351,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 92%;
@@ -1350,6 +1366,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 80%;
@@ -1363,6 +1380,7 @@
       .project-detail-decent,
       .project-detail-public-info,
       .project-detail-security,
+      .project-detail-related,
       .project-detail-risk,
       .project-detail-market {
         width: 72%;

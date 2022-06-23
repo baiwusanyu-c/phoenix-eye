@@ -22,7 +22,7 @@ export enum webURL {
 
   contact_email = 'contact@beosin.com',
   contact_twitter = 'https://twitter.com/Beosin_com',
-  contact_telegram = 'https://t.me/+dD8Bnqd133RmNWNl',
+  contact_telegram = 'http://t.me/beosin',
   contact_discord = 'https://discord.gg/B4QJxhStV4',
 
   chains_eth = 'https://etherscan.io/',

@@ -91,7 +91,7 @@
   import ChartLine from './components/chart-line.vue'
   import ChartPie from './components/chart-pie.vue'
   import type { ILogParam } from '../../../../api/operational-statistics'
-  import type { IPageParam, IStatisticsLine, IStatisticsPie } from '../../../../utils/types'
+  import type { IStatisticsLine, IStatisticsPie } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'OperationalStatistics',

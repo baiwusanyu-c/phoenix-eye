@@ -183,7 +183,7 @@
   import DateCell from '../../../../components/common-components/date-cell/date-cell.vue'
   import compositionPage from '../../../../utils/mixin/page-param'
   import type { PropType } from 'vue'
-  import type { IFilterItem, IOption, IPageParam } from '../../../../utils/types'
+  import type { IFilterItem, IOption } from '../../../../utils/types'
   export default defineComponent({
     name: 'RiskTrxTable',
     components: {
