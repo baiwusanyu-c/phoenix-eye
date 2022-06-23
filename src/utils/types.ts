@@ -71,6 +71,7 @@ export interface IBaseInfo {
   is_subscribe?: boolean
   project_name?: string
   logo_url?: string
+  token_address_symbol?: string
 }
 
 export interface ITop5TokenHolder {

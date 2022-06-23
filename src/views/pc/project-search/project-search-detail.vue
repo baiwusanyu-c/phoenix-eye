@@ -111,13 +111,12 @@
                     openWindow(`${webURL[baseInfo.platform + '_token']}${baseInfo.token_address}`)
                   ">
                   <ellipsis-copy
-                    :target-str="
-                      baseInfo.token_address_name
-                        ? baseInfo.token_address_name
-                        : baseInfo.token_address
-                    "
-                    :is-tooltip="false"
-                    :is-ellipsis="baseInfo.token_address_name.length > 24"
+                    :target-str="handleTokenAddress(baseInfo)"
+                    :tooltip-txt="`
+                    Token Address Symbol: ${baseInfo.token_address_symbol}
+                    Token Address: ${baseInfo.token_address}`"
+                    :is-tooltip="true"
+                    :is-ellipsis="handleTokenAddress(baseInfo).length > 30"
                     :is-show-copy-btn="false">
                   </ellipsis-copy>
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
@@ -837,7 +836,13 @@
       const openCreateProject = (): void => {
         busCreateProjectUser.emit()
       }
+      const handleTokenAddress = computed(() => {
+        return function (val: IBaseInfo) {
+          return val.token_address_symbol ? val.token_address_symbol : val.token_address
+        }
+      })
       return {
+        handleTokenAddress,
         openCreateProject,
         openRequestAudit,
         showRiskList,
