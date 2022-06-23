@@ -20,7 +20,36 @@
         </el-select>
       </div>
       <div style="display: flex; align-items: center">
-        <el-select
+        <remote-search
+          :remote-search="getProjectUser"
+          @select="handleProjectSelect"
+          @clear="handleProjectSelect(false)">
+          <template #option="slotProps">
+            <project-name-cell
+              :url="slotProps.item.logo_url"
+              :name="slotProps.item.project_name"
+              :is-ell="false">
+            </project-name-cell>
+            <span style="font-size: 14px; color: #7c9aaa; font-weight: bold">{{
+              platformToCurrency[slotProps.item.platform]
+            }}</span>
+          </template>
+          <template #listFooter>
+            <div id="create_one_body" class="create-one--body">
+              <span>{{ $t('lang.createProject.notFound') }}?</span>
+              <div role="button" class="create-one eagle-btn" @click="openDialog('add')">
+                {{ $t('lang.createProject.createOne') }}
+              </div>
+            </div>
+          </template>
+          <template #next>
+            <div class="project-select-remote--btn">
+              <be-icon icon="search" color="#fff"></be-icon>
+            </div>
+          </template>
+        </remote-search>
+
+        <!--        <el-select
           ref="projectSelect"
           v-model="selectVal"
           filterable
@@ -37,18 +66,20 @@
             :key="item.project_id"
             :label="item.project_name"
             :value="item.project_id">
-            <div class="project-select--option">
+            <div class="project-select&#45;&#45;option">
               <project-name-cell
                 :url="item.logo_url"
                 :name="item.project_name"
                 :is-ell="false"></project-name-cell>
-              <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+              <span class="project-select&#45;&#45;platform">{{ platformToCurrency[item.platform] }}</span>
             </div>
           </el-option>
         </el-select>
-        <div class="project-select-remote--btn">
+
+
+        <div class="project-select-remote&#45;&#45;btn">
           <be-icon icon="search" color="#fff"></be-icon>
-        </div>
+        </div>-->
       </div>
     </div>
     <div class="project-explorer--table eagle-table">
@@ -344,40 +375,37 @@
       // 获取用户项目下拉列表
       const searchProjectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-      const selectLoading = ref<boolean>(false)
-      const getProjectUser = (params: string): void => {
-        selectLoading.value = true
+      const getProjectUser = (params: string, cb: Function): void => {
         getProjectListCurUser({ param: params })
           .then(res => {
             if (!res.data) {
               searchProjectList.value = []
-              return
+            } else {
+              res.data.forEach((val: any) => {
+                val.project_id = val.project_id.toString()
+              })
+              searchProjectList.value = res.data
             }
-            // #fix:4721
-            res.data.forEach((val: any) => {
-              val.project_id = val.project_id.toString()
-            })
-            searchProjectList.value = res.data
+            cb(searchProjectList.value)
           })
           .catch(err => {
+            cb([])
             message('error', err.message || err)
           })
-          .finally(() => (selectLoading.value = false))
       }
-      const handleProjectSelect = (): void => {
+      const handleProjectSelect = (data?: IOption): void => {
         // 清空時
-        if (selectVal.value === '') {
+        if (!data) {
           removeStore('curSelectProjId')
           return
         }
-        setStore('curSelectProjId', selectVal.value)
-        routerPush('/detail', { id: selectVal.value })
+        setStore('curSelectProjId', data.project_id)
+        routerPush('/detail', { id: data.project_id })
       }
       return {
         platformToCurrency,
         handleProjectSelect,
         getProjectUser,
-        selectLoading,
         selectVal,
         searchProjectList,
         tableHeader,
@@ -403,6 +431,10 @@
 
 <style lang="scss">
   .project-explorer-tb--search {
+    .remote-search-input {
+      height: 32px;
+      border: none;
+    }
     .project-select-remote--btn {
       height: 32px;
     }

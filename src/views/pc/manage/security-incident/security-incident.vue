@@ -205,7 +205,6 @@
   import { openWindow } from '../../../../utils/common'
   import { deleteIncidentInfo, getIncidentList } from '../../../../api/security-incident'
   import addSite from './components/add-incident.vue'
-  import type { IPageParam } from '../../../../utils/types'
   import type { IIncident, IIncidentList } from '../../../../api/security-incident'
   export default defineComponent({
     name: 'SecurityIncident',

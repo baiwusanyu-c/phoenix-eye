@@ -45,18 +45,16 @@
         @mouseenter="handleEnter"
         @mouseleave="handleLeave"
         @input="handleInput($event.target.value)" />
-      <!--            @blur="handleBlur($event.target.value)"
-                        @focus="handleFocus($event.target.value,$event)"-->
+      <!--清除按钮 v-show="showClearIcon-->
+      <div v-if="!isInner && showClearIcon" class="be-input-close-body">
+        <be-icon icon="error" class="be-input-icon be-input-close" @click="handleClear" />
+      </div>
       <!--后置图标-->
       <be-icon
         v-if="nextIcon"
         :icon="nextIcon"
         class="be-input-nextIcon"
         @click="handleIcon('next')" />
-      <!--清除按钮 v-show="showClearIcon-->
-      <div v-if="!isInner && showClearIcon" class="be-input-close-body">
-        <be-icon icon="deleteIc" class="be-input-icon be-input-close" @click="handleClear" />
-      </div>
       <!--密碼按鈕-->
       <div v-show="showPassword" class="be-input-close-body">
         <be-icon

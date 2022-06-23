@@ -31,7 +31,7 @@
   // @ts-ignore
 
   import SecurityCard from './security-card.vue'
-  import type { IPageParam, IRiskInfoList } from '../../../../utils/types'
+  import type { IRiskInfoList } from '../../../../utils/types'
   import type { IPOList } from '../../../../api/risk-public-info'
   import type { IAxiosRes } from '../../../../utils/request'
   export default defineComponent({

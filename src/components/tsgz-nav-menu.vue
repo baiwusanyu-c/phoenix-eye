@@ -33,43 +33,31 @@
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
-      <!--      <el-select
-        ref="projectSelect"
-        v-model="selectVal"
-        filterable
-        remote
-        :placeholder="$t('lang.pleaseSelect')"
-        clearable
-        :loading="selectLoading"
-        :remote-method="getProjectUser"
-        popper-class="project-select"
-        class="project-select-remote"
-        @click="insertAddDom"
-        @change="handleProjectSelect">
-        <el-option
-          v-for="item in projectList"
-          :key="item.project_id"
-          :label="item.project_name"
-          :value="item.project_id">
-          <div class="project-select&#45;&#45;option">
-            <project-name-cell
-              :url="item.logo_url"
-              :name="item.project_name"
-              :is-ell="false"></project-name-cell>
-            <span class="project-select&#45;&#45;platform">{{ platformToCurrency[item.platform] }}</span>
-          </div>
-        </el-option>
-      </el-select>
-      <div class="project-select-remote&#45;&#45;btn">
-        <be-icon icon="search"></be-icon>
-      </div>-->
-      <remote-search @select="handleProjectSelect">
+      <remote-search
+        :remote-search="getProjectUser"
+        @select="handleProjectSelect"
+        @clear="handleProjectSelect(false)">
+        <template #option="slotProps">
+          <project-name-cell
+            :url="slotProps.item.logo_url"
+            :name="slotProps.item.project_name"
+            :is-ell="false">
+          </project-name-cell>
+          <span style="font-size: 14px; color: #7c9aaa; font-weight: bold">{{
+            platformToCurrency[slotProps.item.platform]
+          }}</span>
+        </template>
         <template #listFooter>
-          <div id="create_one_body" class="create-one--body" @click="openDialog('add')">
+          <div id="create_one_body" class="create-one--body">
             <span>{{ $t('lang.createProject.notFound') }}?</span>
-            <div role="button" class="create-one eagle-btn">
+            <div role="button" class="create-one eagle-btn" @click="openDialog('add')">
               {{ $t('lang.createProject.createOne') }}
             </div>
+          </div>
+        </template>
+        <template #next>
+          <div class="project-select-remote--btn">
+            <be-icon icon="search"></be-icon>
           </div>
         </template>
       </remote-search>
@@ -177,7 +165,7 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   import { onBeforeRouteUpdate } from 'vue-router'
-  import { BeButton, BeIcon, BeInput, BePopover } from '@eagle-eye/be-ui'
+  import { BeButton, BeIcon, BePopover } from '@eagle-eye/be-ui'
   import LoginDialog from '../views/pc/login/login-dialog.vue'
   import { getProjectListCurUser } from '../api/project-explorer'
   // @ts-ignore
@@ -199,7 +187,6 @@
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
   import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
   import RequestAudit from './request-audit.vue'
-  import type { ElSelect } from 'element-plus'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
   // XMSS: Project Explorer
@@ -217,14 +204,12 @@
     EYWZGL: true,
     AQSJ: true,
   }
-  type SelectInstance = InstanceType<typeof ElSelect>
   /**
    * 头部菜单导航
    */
   export default defineComponent({
     name: 'TsgzNavMenu',
     components: {
-      BeInput,
       RequestAudit,
       ProjectNameCell,
       CreateProject,
@@ -436,7 +421,7 @@
         }
       /****************************** 语种切换相关 ******************************/
       // 语种切换
-      const { locale, t } = useI18n()
+      const { locale } = useI18n()
       const instanceInner = getCurrentInstance()
       const busLanguage = useEventBus<string>('language')
       const computeLang = ref<string>('EN')
@@ -451,25 +436,23 @@
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-      const selectLoading = ref<boolean>(false)
-      const getProjectUser = (params: string): void => {
-        selectLoading.value = true
+      const getProjectUser = (params: string, cb: Function): void => {
         getProjectListCurUser({ param: params })
           .then(res => {
             if (!res.data) {
               projectList.value = []
-              return
+            } else {
+              res.data.forEach((val: any) => {
+                val.project_id = val.project_id.toString()
+              })
+              projectList.value = res.data
             }
-            // #fix:4721
-            res.data.forEach((val: any) => {
-              val.project_id = val.project_id.toString()
-            })
-            projectList.value = res.data
+            cb(projectList.value)
           })
           .catch(err => {
+            cb([])
             message('error', err.message || err)
           })
-          .finally(() => (selectLoading.value = false))
       }
 
       // 路由不在項目態勢詳情也就清空選擇值
@@ -510,43 +493,9 @@
       busCreateProjectUser.on(() => {
         openDialog('add')
       })
-      /**
-       * 用户选择项目，动态插入’增加项目‘的dom
-       */
-      const selectRef = getCurrentInstance()
-      const insertAddDom = (): void => {
-        nextTick(() => {
-          let createOneBody = document.getElementById('create_one_body')
-          const container = document.querySelector('.el-select-dropdown.project-select')
-          if (container && !createOneBody) {
-            createOneBody = document.createElement('div')
-            createOneBody.setAttribute('id', 'create_one_body')
-            createOneBody.setAttribute('class', 'create-one--body')
-            const createOneSpan = document.createElement('span')
-            createOneSpan.innerText = `${t('lang.createProject.notFound')}?`
-            createOneBody.append(createOneSpan)
-            // 创建按钮
-            const createOneBtn = document.createElement('div')
-            createOneBtn.setAttribute('role', 'button')
-            createOneBtn.setAttribute('class', 'create-one eagle-btn')
-            createOneBtn.addEventListener('click', () => {
-              // 关闭下拉
-              ;(selectRef?.refs.projectSelect as SelectInstance).blur()
-              openDialog('add')
-            })
-
-            createOneBtn.innerText = t('lang.createProject.createOne')
-            createOneBody.append(createOneBtn)
-
-            container?.append(createOneBody)
-          }
-        })
-      }
-
       const searchParamsInput = ref<string>('')
       return {
         searchParamsInput,
-        insertAddDom,
         openDialog,
         createDialog,
         getProjectUser,
@@ -569,7 +518,6 @@
         openLogin,
         openRegistry,
         platformToCurrency,
-        selectLoading,
       }
     },
   })
@@ -600,12 +548,11 @@
     background-color: $mainColor3;
     height: 40px;
     line-height: 40px;
-    width: 42px;
+    width: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 0 4px 4px 0;
-    margin-right: 20px;
   }
   .project-select {
     /*max-width: 214px;*/
@@ -633,8 +580,9 @@
   }
 
   .create-one--body {
+    border-radius: 4px;
     width: 100%;
-    background-color: #ecf3f9;
+    background-color: $mainColor2;
     display: flex;
     height: 48px;
     padding: 15px 24px;
@@ -771,6 +719,16 @@
       background-repeat: no-repeat;
       background-position: right;
       background-size: 100% 100%;
+
+      .remote-search-input {
+        background: $mainColor1;
+        border: none;
+        margin-right: 20px;
+        .be-input__inner {
+          background: $mainColor1;
+          color: $mainColor7;
+        }
+      }
 
       .setting {
         margin-left: 10px;

@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { useEventBus } from '@vueuse/core'
 import { getStore, isString } from '../utils/common'
 import { i18n } from '../utils/i18n'

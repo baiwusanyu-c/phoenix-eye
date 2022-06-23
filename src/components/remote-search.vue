@@ -4,6 +4,7 @@
     ref="remoteSearchPopover"
     trigger="click"
     placement="bottom"
+    :raw="false"
     not-close-on-trigger="be-input"
     custom-class="remote-popover"
     @update="setSearchCacheVal">
@@ -13,9 +14,16 @@
         tabindex="0"
         custom-class="remote-search-input"
         size="medium"
+        placeholder="Please select"
         clearable
         @clear="handleClear"
         @input="handleChange">
+        <template #next>
+          <slot name="next"></slot>
+        </template>
+        <template #prev>
+          <slot name="prev"></slot>
+        </template>
       </be-input>
     </template>
     <div class="remote-search-list--body">
@@ -96,9 +104,11 @@
         })
       }, 300)
 
-      const handleClickSelect = (isSwitch = true, item: IOption): void => {
-        searchParamsInput.value = item[props.label]
-        searchParamsCache.value = item[props.label]
+      const handleClickSelect = (isSwitch = true, item?: IOption): void => {
+        if (item) {
+          searchParamsInput.value = item[props.label]
+          searchParamsCache.value = item[props.label]
+        }
         ;(internalInstance?.refs.remoteSearchPopover as IPopover).close()
         if (isSwitch) {
           ctx.emit('select', item)
@@ -140,14 +150,19 @@
   .remote-popover {
     .be-popover--body {
       padding: 0;
+      border-radius: 4px;
     }
   }
   .remote-search-input {
-    width: 200px;
+    width: 300px;
     height: 40px;
   }
+  .remote-search-input.be-input__focus {
+    border: none;
+    box-shadow: none;
+  }
   .remote-search-list--body {
-    min-width: 200px;
+    min-width: 300px;
     .remote-search-list--container {
       max-height: 250px;
       overflow-y: auto;

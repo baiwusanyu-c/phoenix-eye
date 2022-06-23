@@ -21,7 +21,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0 5px;
+    padding: 0 10px;
 
     .be-input__textarea__inner {
       box-sizing: border-box;
@@ -86,7 +86,7 @@
 
       .be-icon--container {
         vertical-align: 1em;
-        fill: $infoHover;
+        fill: #c0c4cc;
       }
     }
 
@@ -98,7 +98,6 @@
       height: 100%;
 
       .be-input-close {
-        border: 1px solid $infoHover;
         border-radius: 50px;
 
         .be-icon--container {
@@ -107,8 +106,7 @@
         }
 
         &:hover {
-          color: $infoHover;
-          border: 1px solid $infoHover;
+          color: #c0c4cc;
         }
       }
     }

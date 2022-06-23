@@ -116,7 +116,7 @@
   import { deleteRiskUrl, getRiskUrl } from '../../../../api/malicious-site'
   import addSite from './components/add-site.vue'
   import type { IDelRiskUrl, IRiskUrl, IRiskUrlList } from '../../../../api/malicious-site'
-  import type { IPageParam } from '../../../../utils/types'
+
   export default defineComponent({
     name: 'MaliciousSiteManagement',
     components: {
