@@ -456,7 +456,7 @@
       <security-info-card :data-list="securityEventList"></security-info-card>
     </div>
     <!--  Related Project    -->
-    <relate-project></relate-project>
+    <relate-project v-if="relatedProject.length > 0" :data="relatedProject"></relate-project>
   </div>
 </template>
 
@@ -526,6 +526,7 @@
     IGovern,
     IMarketVolatility,
     IProjectScore,
+    IRelateProject,
     IRiskChartData,
     IScoreItems,
     ISecurityEventList,
@@ -606,6 +607,7 @@
         transactions: 0,
         transactions_ratio: 0,
       })
+      const relatedProject = ref<Array<IRelateProject>>([])
       const scoreItemComp = ref<string>('')
       const baseInfo = ref<IBaseInfo>({})
       const hasTokenAddress = ref<boolean>(false)
@@ -628,6 +630,7 @@
               governData.value = res.data.social_profiles
               riskChartData.value = res.data.risk_tx_info
               projectScoreData.value = res.data.project_score
+              relatedProject.value = res.data.relate_project
               if (res.data.twitter_analysis.following_info) {
                 twitterAnalysisData.value = res.data.twitter_analysis.following_info
               }
@@ -846,6 +849,7 @@
         }
       })
       return {
+        relatedProject,
         handleTokenAddress,
         openCreateProject,
         openRequestAudit,
