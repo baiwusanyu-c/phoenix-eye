@@ -5,13 +5,13 @@
     trigger="click"
     placement="bottom"
     not-close-on-trigger="be-input"
-    custom-class="project-select-remote-popover"
+    custom-class="remote-popover"
     @update="setSearchCacheVal">
     <template #trigger>
       <be-input
         v-model="searchParamsInput"
         tabindex="0"
-        custom-class="project-select-remote"
+        custom-class="remote-search-input"
         size="medium"
         clearable
         @clear="handleClear"
@@ -20,20 +20,16 @@
     </template>
     <div class="remote-search-list--body">
       <div v-loading="selectLoading" class="remote-search-list--container scroll-diy">
-        <slot name="option">
-          <div
-            v-for="item in projectList"
-            :key="item.project_id + item.project_name"
-            class="remote-search-list--item"
-            @click="handleClickSelect(true, item)">
-            <project-name-cell :url="item.logo_url" :name="item.project_name" :is-ell="false">
-            </project-name-cell>
-            <span>{{ platformToCurrency[item.platform] }}</span>
-          </div>
-        </slot>
         <div
-          v-if="projectList.length === 0 && searchParamsInput !== ''"
-          class="remote-search-list__empty">
+          v-for="item in list"
+          :key="item[keyVal]"
+          class="remote-search-list--item"
+          @click="handleClickSelect(true, item)">
+          <slot name="option" :item="item">
+            <div>{{ item[label] }}</div>
+          </slot>
+        </div>
+        <div v-if="list.length === 0 && searchParamsInput !== ''" class="remote-search-list__empty">
           <img class="img" src="@/assets/image/pc/empty-data.png" alt="" />
           <p>
             {{ $t('lang.emptyData') }}
@@ -49,12 +45,8 @@
 
 <script lang="ts">
   import { defineComponent, getCurrentInstance, ref } from 'vue'
-  import { BeIcon, BeInput, BePopover } from '@eagle-eye/be-ui'
-  import { getProjectListCurUser } from '../api/project-explorer'
-  import composition from '../utils/mixin/common-func'
-  import { platformToCurrency } from '../utils/platform-dict'
+  import { BeInput, BePopover } from '@eagle-eye/be-ui'
   import { debounce } from '../utils/common'
-  import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
   import type { IOption } from '../utils/types'
   import type { IPopover } from '@eagle-eye/be-ui/package/popover/src/be-popover-type'
   // TODO: 样式修改
@@ -62,56 +54,51 @@
   export default defineComponent({
     name: 'RemoteSearch',
     components: {
-      ProjectNameCell,
       BePopover,
-      BeIcon,
       BeInput,
     },
-    emits: ['select'],
+    props: {
+      label: {
+        type: String,
+        default: 'project_name',
+      },
+      keyVal: {
+        type: String,
+        default: 'project_id',
+      },
+      remoteSearch: {
+        type: Function,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        default: () => {},
+      },
+    },
+    emits: ['select', 'clear'],
     setup(props, ctx) {
-      const { message } = composition()
       const internalInstance = getCurrentInstance()
       const searchParamsInput = ref<string>('')
       const searchParamsCache = ref<string>('')
-      const projectList = ref<Array<IOption>>([])
+      const list = ref<Array<IOption>>([])
       const selectLoading = ref<boolean>(false)
-      /**
-       * 调用搜索接口
-       */
-      const getProjectUser = (params: string): void => {
-        selectLoading.value = true
-        getProjectListCurUser({ param: params })
-          .then(res => {
-            if (!res.data) {
-              projectList.value = []
-            } else {
-              res.data.forEach((val: any) => {
-                val.project_id = val.project_id.toString()
-              })
-              projectList.value = res.data
-            }
-            ;(internalInstance?.refs.remoteSearchPopover as IPopover).update()
-          })
-          .catch(err => {
-            message('error', err.message || err)
-          })
-          .finally(() => (selectLoading.value = false))
-      }
       /**
        * 处理输入，调用搜索接口
        */
       const handleChange = debounce((): void => {
+        selectLoading.value = true
         if (!searchParamsInput.value && searchParamsInput.value !== '0') {
-          projectList.value = []
+          list.value = []
           ;(internalInstance?.refs.remoteSearchPopover as IPopover).update()
           return
         }
-        getProjectUser(searchParamsInput.value)
+        props.remoteSearch(searchParamsInput.value, (data: Array<any>) => {
+          selectLoading.value = false
+          list.value = data
+          ;(internalInstance?.refs.remoteSearchPopover as IPopover).update()
+        })
       }, 300)
 
       const handleClickSelect = (isSwitch = true, item: IOption): void => {
-        searchParamsInput.value = item.project_name
-        searchParamsCache.value = item.project_name
+        searchParamsInput.value = item[props.label]
+        searchParamsCache.value = item[props.label]
         ;(internalInstance?.refs.remoteSearchPopover as IPopover).close()
         if (isSwitch) {
           ctx.emit('select', item)
@@ -122,6 +109,7 @@
        */
       const setSearchCacheVal = (status: boolean): void => {
         if (!status && searchParamsInput.value !== searchParamsCache.value) {
+          list.value = []
           searchParamsInput.value = searchParamsCache.value
         }
         if (status && searchParamsInput.value) {
@@ -133,6 +121,7 @@
        */
       const handleClear = (): void => {
         searchParamsInput.value = searchParamsCache.value = ''
+        ctx.emit('clear')
       }
       return {
         handleClear,
@@ -140,21 +129,20 @@
         handleClickSelect,
         searchParamsInput,
         handleChange,
-        projectList,
+        list,
         selectLoading,
-        platformToCurrency,
       }
     },
   })
 </script>
 
 <style lang="scss">
-  .project-select-remote-popover {
+  .remote-popover {
     .be-popover--body {
       padding: 0;
     }
   }
-  .project-select-remote {
+  .remote-search-input {
     width: 200px;
     height: 40px;
   }
@@ -169,7 +157,6 @@
         cursor: pointer;
         padding: 0 20px;
         box-sizing: border-box;
-        cursor: pointer;
         display: flex;
         align-items: center;
         &:hover {
