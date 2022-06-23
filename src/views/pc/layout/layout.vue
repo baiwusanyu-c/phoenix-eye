@@ -43,7 +43,8 @@
       position: relative;
       top: 0;
       left: 0;
-      height: calc(100vh - 60px);
+      /*height: calc(100vh - 68px);*/
+      height: calc(937px - 68px);
       overflow-y: auto;
       background-color: $mainColor18;
 

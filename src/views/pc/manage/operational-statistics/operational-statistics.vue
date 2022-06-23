@@ -246,7 +246,7 @@
     }
   }
   /* 移动端预留 适配 */
-  @media screen and (max-width: 1280px) {
+  /* @media screen and (max-width: 1280px) {
     .operational-statistics-main .operational-statistics-list,
     .operational-statistics-main .operational-statistics-chart,
     .operational-statistics-main .operational-statistics-title,
@@ -254,7 +254,7 @@
       width: 92%;
     }
   }
-  /* 150% 适配 */
+  !* 150% 适配 *!
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .operational-statistics-main .operational-statistics-list,
     .operational-statistics-main .operational-statistics-chart,
@@ -264,7 +264,7 @@
     }
   }
 
-  /* 125% 适配 */
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .operational-statistics-main .operational-statistics-list,
     .operational-statistics-main .operational-statistics-chart,
@@ -272,5 +272,5 @@
     .operational-statistics-main .operational-statistics-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

@@ -387,7 +387,7 @@
   }
 
   /* 移动端预留 适配 */
-  @media screen and (max-width: 1280px) {
+  /*@media screen and (max-width: 1280px) {
     #create_incident .be-dialog {
       display: initial;
       overflow-y: auto;
@@ -410,5 +410,5 @@
         margin-bottom: 90px;
       }
     }
-  }
+  }*/
 </style>

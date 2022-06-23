@@ -351,13 +351,13 @@
     }
   }
   /* 移动端预留 适配 */
-  @media screen and (max-width: 1280px) {
+  /* @media screen and (max-width: 1280px) {
     .security-incident-main .security-incident-list,
     .security-incident-main .security-incident-search {
       width: 92%;
     }
   }
-  /* 150% 适配 */
+  !* 150% 适配 *!
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .security-incident-main .security-incident-list,
     .security-incident-main .security-incident-search {
@@ -365,11 +365,11 @@
     }
   }
 
-  /* 125% 适配 */
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .security-incident-main .security-incident-list,
     .security-incident-main .security-incident-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

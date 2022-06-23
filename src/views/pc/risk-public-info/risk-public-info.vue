@@ -130,23 +130,23 @@
     margin-top: 40px;
     text-align: left;
   }
-  /* 移动端预留 适配 */
+  /*!* 移动端预留 适配 *!
   @media screen and (max-width: 1280px) {
     .risk-public-info-container {
       width: 92%;
     }
   }
-  /* 150% 适配 */
+  !* 150% 适配 *!
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .risk-public-info-container {
       width: 92%;
     }
   }
 
-  /* 125% 适配 */
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .risk-public-info-container {
       width: 80%;
     }
-  }
+  }*/
 </style>

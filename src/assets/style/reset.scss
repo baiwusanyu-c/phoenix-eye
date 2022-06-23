@@ -52,10 +52,10 @@ h3 {
 }
 
 html,
-body {
-  height: 100%;
+body{
+  width: 1920px;
+  height: 1080px !important;
 }
-
 .be-message {
   z-index: 9999 !important;
 
@@ -238,4 +238,5 @@ body::-webkit-scrollbar-corner {
 
 body{
   overflow-y: hidden;
+  overflow-x: hidden;
 }

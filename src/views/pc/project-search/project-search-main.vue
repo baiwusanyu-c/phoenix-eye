@@ -682,7 +682,7 @@
     }
   }
   /* 移动端预留 适配 */
-  @media screen and (max-width: 1280px) {
+  /* @media screen and (max-width: 1280px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
     .project-search-main .project-explorer--container {
@@ -695,7 +695,7 @@
       width: 45%;
     }
   }
-  /* 150% 适配 */
+  !* 150% 适配 *!
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
@@ -710,7 +710,7 @@
     }
   }
 
-  /* 125% 适配 */
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
@@ -718,12 +718,12 @@
       width: 80%;
     }
   }
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
     .project-search-main .project-explorer--container {
       width: 72%;
     }
-  }
+  }*/
 </style>

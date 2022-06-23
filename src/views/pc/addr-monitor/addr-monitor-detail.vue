@@ -385,7 +385,7 @@
     }
   }
   /* 移动端预留 适配 */
-  @media screen and (max-width: 1280px) {
+  /* @media screen and (max-width: 1280px) {
     .addr_monitor_detail {
       .detail-body,
       .addr-monitor-detail-table {
@@ -396,7 +396,7 @@
       width: 80%;
     }
   }
-  /* 150% 适配 */
+  !* 150% 适配 *!
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .addr_monitor_detail {
       .detail-body,
@@ -409,7 +409,7 @@
     }
   }
 
-  /* 125% 适配 */
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .addr_monitor_detail {
       .detail-body,
@@ -421,10 +421,10 @@
       width: 83%;
     }
   }
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .addr_monitor_detail .detail-body .detail-item .detail-item-txt .detail-item--ellipsis {
       width: 81%;
     }
-  }
+  }*/
 </style>

@@ -1,5 +1,10 @@
 <template>
-  <div ref="app" :class="{ 'theme--dark': theme === 'dark' }" class="noM">
+  <div
+    id="appc"
+    ref="app"
+    :class="{ 'theme--dark': theme === 'dark' }"
+    class="noM scale-app"
+    :style="`width: ${appStyle.width}px;height: ${appStyle.height}px;transform: ${appStyle.transform};`">
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog
@@ -71,6 +76,27 @@
   const delTip = ref<boolean>(false)
   // 主题
   const theme = ref<string>(import.meta.env.VITE_APP_THEME as string)
+
+  //let baseWidth = document.documentElement.clientWidth
+  //let baseHeight = document.documentElement.clientHeight
+
+  const appStyle = ref({
+    width: 1920,
+    height: 937,
+    transform: 'scaleY(1) scaleX(1) translate(-50%, -50%)',
+    marginBottom: 0,
+  })
+  function getScale() {
+    const w = window.innerWidth / appStyle.value.width
+    const h = window.innerHeight / appStyle.value.height
+    return { x: w, y: h }
+  }
+  function setScale() {
+    const scale = getScale()
+    appStyle.value.transform = `scaleY(${scale.y}) scaleX(${scale.x}) translate(-50%, -50%)`
+  }
+  setScale()
+  window.onresize = setScale
 </script>
 
 <style lang="scss">
@@ -137,11 +163,19 @@
     min-width: 1280px;
     height: 100%;
   }
+  .scale-app {
+    z-index: 1;
+    transform-origin: 0 0;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transition: 0.3s;
+  }
 </style>
 
 <style scoped lang="scss">
   /* 移动端预留 适配 */
-  @media screen and (max-width: 1280px) {
+  /*@media screen and (max-width: 1280px) {
     .noM {
       min-width: 1280px;
     }
@@ -150,5 +184,5 @@
     .noM {
       min-width: 1280px;
     }
-  }
+  }*/
 </style>
