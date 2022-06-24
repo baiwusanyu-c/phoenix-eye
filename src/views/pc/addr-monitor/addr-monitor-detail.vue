@@ -39,6 +39,7 @@
             :is-ellipsis="baseInfo.remark && baseInfo.remark.length > 45"
             styles="font-weight: 500"
             font-length="18"
+            empty-text="/"
             end-length="18"></ellipsis-copy>
         </div>
       </div>

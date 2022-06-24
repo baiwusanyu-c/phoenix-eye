@@ -8,11 +8,11 @@
         size="large"
         prev-icon="add"
         round="4"
-        @click="openDialog('add')">
+        @click="openAddAddrMonitor">
         {{ $t('lang.addrMonitor.create') }}
       </be-button>
     </div>
-    <div class="addr-monitor-result eagle-table">
+    <div v-if="isLogin" class="addr-monitor-result eagle-table">
       <el-table v-loading="loading" :data="addrMonitorList" tooltip-effect="light">
         <template #empty>
           <empty-data></empty-data>
@@ -54,11 +54,11 @@
             <el-tooltip
               placement="top"
               effect="light"
+              :disabled="!scope.row.remark"
               popper-class="addr-monitor-main--address"
               :content="scope.row.remark">
-              <span class="table--info">{{ scope.row.remark }}</span>
+              <span class="table--info">{{ scope.row.remark ? scope.row.remark : '/' }}</span>
             </el-tooltip>
-            <!--            <span class="table&#45;&#45;info">{{ scope.row.remark }}</span>-->
           </template>
         </el-table-column>
         <el-table-column prop="create_time" width="120">
@@ -256,26 +256,46 @@
        * 处理email打开
        */
       const busLogin = useEventBus<string>('openLogin')
+      const isLogin = ref<boolean>(false)
       const initPage = (): void => {
         const urlParams = getUrlkey()
+        isLogin.value = !!getStore('token')
         // 来自email 打开
         if (urlParams.from === 'email' && urlParams.address) {
           // 如果没登录就通知显示登录
-          const isLogin = !!getStore('token')
-          if (!isLogin) {
+          if (!isLogin.value) {
             // 开启登录窗口
             busLogin.emit()
             return
           }
           // 直接去态势详情页面
           handleSearch(urlParams.address)
+        } else {
+          // 不是email打开，且登录了则调接口拿列表
+          if (isLogin.value) {
+            getList()
+          }
         }
-        getList()
       }
+      const isLogoutBus = useEventBus<string>('isLogout')
+      isLogoutBus.on(() => {
+        isLogin.value = false
+      })
+      const openAddAddrMonitor = (): void => {
+        if (isLogin.value) {
+          openDialog('add')
+        } else {
+          // 开启登录窗口
+          busLogin.emit()
+        }
+      }
+
       onMounted(() => {
         initPage()
       })
       return {
+        openAddAddrMonitor,
+        isLogin,
         loading,
         curItem,
         opType,

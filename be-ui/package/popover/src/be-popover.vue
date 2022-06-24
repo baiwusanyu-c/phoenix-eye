@@ -107,7 +107,6 @@
        */
       notCloseOnTrigger: {
         type: String,
-        default: '',
       },
     },
     emits: ['update'],

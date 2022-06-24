@@ -29,7 +29,6 @@
           </div>
         </el-menu>
       </div>
-      <!--  <div @click="openDialog()">createProject</div>-->
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
@@ -239,6 +238,7 @@
       /**
        * 退出调用方法
        */
+      const isLogoutBus = useEventBus<string>('isLogout')
       const confirm = (isConfirm: boolean | string): void => {
         if (isConfirm === true || isConfirm === 'true') {
           isLogin.value = false
@@ -254,6 +254,7 @@
             }
           })
         }
+        isLogoutBus.emit()
         isLogout.value = false
       }
       // 初始化 登录过期bus，登录过期 就调用登出方法
