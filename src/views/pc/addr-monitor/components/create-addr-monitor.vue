@@ -19,17 +19,17 @@
           <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
             <el-input v-model="form.remark" type="textarea" :rows="7" resize="none"></el-input>
           </el-form-item>
-          <el-form-item :label="$t('lang.addrMonitor.form.labelLink') + ':'">
-            <div class="form--link">
+          <!--<el-form-item :label="$t('lang.addrMonitor.form.labelLink') + ':'">
+            <div class="form&#45;&#45;link">
               <be-tooltip
                 placement="top"
-                custom-class="addr-monitor--link"
+                custom-class="addr-monitor&#45;&#45;link"
                 :content="$t('lang.addrMonitor.form.linkDiscr')">
                 <be-icon icon="query" color="#333"></be-icon>
               </be-tooltip>
-              <el-input v-model="form.event_link" class="form--link__input"></el-input>
+              <el-input v-model="form.event_link" class="form&#45;&#45;link__input"></el-input>
             </div>
-          </el-form-item>
+          </el-form-item>-->
         </el-form>
       </div>
       <template #footer>
@@ -50,14 +50,14 @@
   import { defineComponent, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
-  import { BeButton, BeDialog, BeIcon, BeTooltip } from '@eagle-eye/be-ui'
+  import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import composition from '../../../../utils/mixin/common-func'
   import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
   import type { PropType } from 'vue'
   import type { IAddrMonitorForm } from '../../../../utils/types'
   export default defineComponent({
     name: 'CreateAddrMonitor',
-    components: { BeDialog, BeIcon, BeTooltip, BeButton },
+    components: { BeDialog, BeButton },
     props: {
       // 操作類型
       type: {
@@ -86,7 +86,6 @@
       const form = ref<IAddrMonitorForm>({
         address: '',
         remark: '',
-        event_link: '',
         address_monitor_id: '',
       })
       watch(showDialog, nVal => {
@@ -116,7 +115,6 @@
         form.value = {
           address: '',
           remark: '',
-          event_link: '',
           address_monitor_id: '',
         }
       }
@@ -168,7 +166,6 @@
         const params = {
           address: form.value.address,
           remark: form.value.remark,
-          event_link: form.value.event_link,
         }
         addAddressMonitor(params)
           .then((res: any) => {

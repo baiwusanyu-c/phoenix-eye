@@ -42,23 +42,6 @@
             end-length="18"></ellipsis-copy>
         </div>
       </div>
-      <div class="detail-item">
-        <div class="detail-item-txt">
-          <span>{{ $t('lang.addrMonitor.tableHeader.link') }}：</span>
-          <ellipsis-copy
-            :target-str="baseInfo.event_link"
-            :is-show-copy-btn="false"
-            :is-ellipsis="baseInfo.event_link && baseInfo.event_link.length > 45"
-            styles="font-weight: 500"
-            font-length="18"
-            custom-class="detail-item--ellipsis"
-            end-length="18">
-            <template #text="slotProps">
-              <a class="link" :href="baseInfo.event_link" target="_blank">{{ slotProps.item }}</a>
-            </template>
-          </ellipsis-copy>
-        </div>
-      </div>
     </div>
     <!--   表格   -->
     <div class="addr-monitor-detail-table eagle-table">
