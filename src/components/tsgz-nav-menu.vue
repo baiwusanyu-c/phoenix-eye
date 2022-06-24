@@ -180,7 +180,7 @@
   } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
 
-  import { WHITE_LIST } from '../utils/router-dict'
+  import { WHITE_LIST } from '../router/router-dict'
   import compositionDialog from '../utils/mixin/dialog-func'
   import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
   import { platformToCurrency } from '../utils/platform-dict'

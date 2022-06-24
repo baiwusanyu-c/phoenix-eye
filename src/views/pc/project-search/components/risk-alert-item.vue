@@ -11,7 +11,7 @@
         :target-str="`🔥🔥${item.content.replace(/[\r\n]/g, '')}`"
         :is-show-copy-btn="false"
         custom-class="detail-item--ellipsis"
-        :is-ellipsis="item.content.length > 40"
+        :is-ellipsis="item.content && item.content.length > 40"
         styles="font-weight: 500"
         font-length="80"
         :is-tooltip="false"

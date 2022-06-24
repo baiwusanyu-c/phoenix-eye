@@ -5,7 +5,7 @@
  * @update (czh 2022/5/10)
  */
 
-import type { IOption } from './types'
+import type { IOption } from '../utils/types'
 // 路由的metaTitle字典
 export const META_TITLE_DICT: IOption = {
   XMSS: 'lang.subNav.navName5',
@@ -27,7 +27,6 @@ export const WHITE_LIST: Array<string> = [
 export const ROUTER_COMPONENT_DICT: IOption = {
   'pc/manage/project-management/project-manage-main': () =>
     import('../views/pc/manage/project-management/project-manage-main.vue'),
-  'pc/addr-monitor/addr-monitor': () => import('../views/pc/addr-monitor/addr-monitor.vue'),
   'pc/trx-retry/trx-retry': () => import('../views/pc/trx-retry/trx-retry.vue'),
   'pc/manage/malicious-site-management/malicious-site-management': () =>
     import('../views/pc/manage/malicious-site-management/malicious-site-management.vue'),
