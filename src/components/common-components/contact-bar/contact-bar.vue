@@ -67,7 +67,7 @@
     }
   }
   /* 移动端预留 适配 */
-  /*  @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1280px) {
     .contact-bar {
       right: 10px;
       width: 45px;
@@ -81,7 +81,7 @@
       height: 140px;
     }
   }
-
+  /*
   !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .contact-bar {

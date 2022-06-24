@@ -269,20 +269,20 @@
     }
   }
   /* 移动端预留 适配 */
-  /* @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1280px) {
     .malicious-site-main .malicious-site-list,
     .malicious-site-main .malicious-site-search {
       width: 92%;
     }
   }
-  !* 150% 适配 *!
+  /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .malicious-site-main .malicious-site-list,
     .malicious-site-main .malicious-site-search {
       width: 92%;
     }
   }
-
+  /*
   !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .malicious-site-main .malicious-site-list,

@@ -124,7 +124,7 @@
     }
   }
   /* 移动端预留 适配 */
-  /* @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1280px) {
     .project-alert--item {
       padding: 10px;
     }
@@ -134,10 +134,10 @@
       padding: 10px;
     }
   }
-  !* 125% 适配 *!
+  /* 125% 适配 */
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-alert--item {
       padding: 10px;
     }
-  }*/
+  }
 </style>

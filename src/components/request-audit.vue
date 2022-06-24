@@ -272,7 +272,7 @@
     }
   }
   /* 移动端预留 适配 */
-  /* @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1280px) {
     #request_audit_dialog .be-dialog {
       display: initial;
       overflow-y: auto;
@@ -295,5 +295,5 @@
         margin-bottom: 90px;
       }
     }
-  }*/
+  }
 </style>

@@ -874,23 +874,22 @@
   }
 
   /* 150% 适配 */
-  /*@media screen and (max-width: 1326px) {
+  @media screen and (max-width: 1326px) {
     .tsgz-nav-menu {
       padding: 0 2%;
     }
-
+    .tsgz-nav-menu .remote-search-input {
+      width: 160px;
+    }
     .tsgz-nav-menu .el-input__inner {
       width: 120px;
     }
-    !*.project-select{
-          width: 120px;
-      }*!
     .tsgz-nav-menu .el-menu-item {
       padding: 0 5px;
       font-size: 12px;
     }
   }
-
+  /*
   !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .tsgz-nav-menu {

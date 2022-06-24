@@ -679,7 +679,7 @@
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
   /* 移动端预留 适配 */
-  /*@media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1280px) {
     .risk-trx-detail .detail-body,
     .risk-trx-detail .detail-profit,
     .risk-trx-detail .detail-slump {
@@ -767,7 +767,7 @@
       }
     }
   }
-
+  /*
   !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .risk-trx-detail .detail-body,

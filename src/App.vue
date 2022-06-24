@@ -2,8 +2,8 @@
   <div
     id="appc"
     ref="app"
-    :class="{ 'theme--dark': theme === 'dark' }"
-    class="noM scale-app"
+    :class="{ 'theme--dark': theme === 'dark', 'scale-app': !is1280p }"
+    class="noM"
     :style="`width: ${appStyle.width}px;height: ${appStyle.height}px;transform: ${appStyle.transform};`">
     <router-view></router-view>
     <!--下线弹窗-->
@@ -52,6 +52,7 @@
   import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
   import { browserInfo, getStore, setStore } from './utils/common'
+  import type { IAppStyle } from './utils/types'
   // 設置是否手機訪問變量
   const ua = navigator.userAgent
   const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)
@@ -79,19 +80,34 @@
 
   //let baseWidth = document.documentElement.clientWidth
   //let baseHeight = document.documentElement.clientHeight
-
-  const appStyle = ref({
+  const is1280p = ref(false)
+  const appStyle = ref<IAppStyle>({
     width: 1920,
     height: 937,
     transform: 'scaleY(1) scaleX(1) translate(-50%, -50%)',
-    marginBottom: 0,
   })
   function getScale() {
-    const w = window.innerWidth / appStyle.value.width
-    const h = window.innerHeight / appStyle.value.height
+    const w = window.innerWidth / appStyle.value.width!
+    const h = window.innerHeight / appStyle.value.height!
     return { x: w, y: h }
   }
   function setScale() {
+    if (window.innerWidth <= 1280) {
+      appStyle.value = {
+        width: null,
+        height: null,
+        transform: '',
+      }
+      is1280p.value = true
+      document.body.style.overflowX = 'auto'
+      document.body.style.width = ''
+      return
+    }
+    is1280p.value = false
+    document.body.style.overflowX = 'hidden'
+    document.body.style.width = '1920px'
+    appStyle.value.width = 1920
+    appStyle.value.height = 937
     const scale = getScale()
     appStyle.value.transform = `scaleY(${scale.y}) scaleX(${scale.x}) translate(-50%, -50%)`
   }
@@ -169,13 +185,12 @@
     position: fixed;
     left: 50%;
     top: 50%;
-    transition: 0.3s;
   }
 </style>
 
 <style scoped lang="scss">
   /* 移动端预留 适配 */
-  /*@media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1280px) {
     .noM {
       min-width: 1280px;
     }
@@ -184,5 +199,5 @@
     .noM {
       min-width: 1280px;
     }
-  }*/
+  }
 </style>

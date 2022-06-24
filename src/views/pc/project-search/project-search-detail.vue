@@ -1332,7 +1332,7 @@
     }
   }
   /* 移动端预留 适配 */
-  /*@media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1280px) {
     .project-search-detail {
       .project-detail-base,
       .project-detail-decent,
@@ -1345,7 +1345,7 @@
       }
     }
   }
-  !* 150% 适配 *!
+  /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .project-search-detail {
       .project-detail-base,
@@ -1359,7 +1359,7 @@
       }
     }
   }
-
+  /*
   !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-search-detail {
