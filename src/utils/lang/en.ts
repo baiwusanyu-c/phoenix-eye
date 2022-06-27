@@ -554,12 +554,15 @@ export default {
     searchP: 'Address',
     create: 'Add the monitor',
     title: 'Address Monitor',
+    login: 'Log in ',
+    loginTo: 'to view your address monitor list.',
     tableHeader: {
       addr: 'Address',
       remark: 'Remark',
       createTime: 'Create Time',
       link: 'The Event Link',
       operate: 'Operate',
+      result: 'Result',
     },
     form: {
       labelAddr: 'Address',
