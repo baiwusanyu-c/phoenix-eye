@@ -1,5 +1,10 @@
 <template>
-  <div ref="app" :class="{ 'theme--dark': theme === 'dark' }" class="noM">
+  <div
+    id="appc"
+    ref="app"
+    :class="{ 'theme--dark': theme === 'dark', 'scale-app': !is1280p }"
+    class="noM"
+    :style="`width: ${appStyle.width}px;height: ${appStyle.height}px;transform: ${appStyle.transform};`">
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog
@@ -10,7 +15,7 @@
       @close="() => (delTip = false)">
     </MsgDialog>
     <!--****************** 浏览器版本提示  **********************-->
-    <div id="browser_msg_dialog">
+    <!--    <div id="browser_msg_dialog">
       <be-dialog
         ref="tipsDialog"
         titles="温馨提示"
@@ -38,39 +43,79 @@
           </be-button>
         </template>
       </be-dialog>
-    </div>
+    </div>-->
   </div>
 </template>
 <script setup lang="tsx">
   import { ref } from 'vue'
-  // @ts-ignore
-  import { BeButton, BeDialog } from '@eagle-eye/be-ui'
+  // import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
-  import { browserInfo, getStore, setStore } from './utils/common'
+  import {
+    // browserInfo,
+    getStore,
+    setStore,
+  } from './utils/common'
+  import type { IAppStyle } from './utils/types'
   // 設置是否手機訪問變量
-  const ua = navigator.userAgent
+  /*const ua = navigator.userAgent
   const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)
   const isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/)
   const isAndroid = ua.match(/(Android)\s+([\d.]+)/)
-  const isMobile = ref<RegExpMatchArray | null>(isIphone || isAndroid)
+  const isMobile = ref<RegExpMatchArray | null>(isIphone || isAndroid)*/
 
   // 設置瀏覽器信息
-  const showBrowserTip = ref<boolean>(false)
+  /*const showBrowserTip = ref<boolean>(false)
   const tipList = ref<Array<string>>(['为保证更优质的使用体验，', '建议使用谷歌浏览器访问系统。'])
   if (browserInfo().browser !== 'chrome') {
-    //showBrowserTip.value = true
-  }
+    showBrowserTip.value = true
+  }*/
+
   // 設置語言
   if (!getStore('language')) {
     setStore('language', 'en_US')
   }
-
   /**
    * 下线弹窗显示方法
    */
   const delTip = ref<boolean>(false)
   // 主题
   const theme = ref<string>(import.meta.env.VITE_APP_THEME as string)
+
+  //let baseWidth = document.documentElement.clientWidth
+  //let baseHeight = document.documentElement.clientHeight
+  const is1280p = ref(false)
+  const appStyle = ref<IAppStyle>({
+    width: 1920,
+    height: 937,
+    transform: 'scaleY(1) scaleX(1) translate(-50%, -50%)',
+  })
+  function getScale() {
+    const w = window.innerWidth / appStyle.value.width!
+    const h = window.innerHeight / appStyle.value.height!
+    return { x: w, y: h }
+  }
+  function setScale() {
+    if (window.innerWidth <= 1280) {
+      appStyle.value = {
+        width: null,
+        height: null,
+        transform: '',
+      }
+      is1280p.value = true
+      document.body.style.overflowX = 'auto'
+      document.body.style.width = ''
+      return
+    }
+    is1280p.value = false
+    document.body.style.overflowX = 'hidden'
+    document.body.style.width = '1920px'
+    appStyle.value.width = 1920
+    appStyle.value.height = 937
+    const scale = getScale()
+    appStyle.value.transform = `scaleY(${scale.y}) scaleX(${scale.x}) translate(-50%, -50%)`
+  }
+  setScale()
+  window.onresize = setScale
 </script>
 
 <style lang="scss">
@@ -136,6 +181,13 @@
   .noM {
     min-width: 1280px;
     height: 100%;
+  }
+  .scale-app {
+    z-index: 1;
+    transform-origin: 0 0;
+    position: fixed;
+    left: 50%;
+    top: 50%;
   }
 </style>
 

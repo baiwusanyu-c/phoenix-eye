@@ -52,10 +52,9 @@ h3 {
 }
 
 html,
-body {
-  height: 100%;
+body{
+  height: 1080px !important;
 }
-
 .be-message {
   z-index: 9999 !important;
 
@@ -176,8 +175,8 @@ textarea::-webkit-input-placeholder {
 
 .scrollDiy::-webkit-scrollbar
 {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
   margin: 5px;
 }
 
@@ -203,8 +202,8 @@ textarea::-webkit-input-placeholder {
 /* 整个滚动条 */
 
 body::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
 }
 
 /* 滚动条有滑块的轨道部分 */
@@ -238,4 +237,5 @@ body::-webkit-scrollbar-corner {
 
 body{
   overflow-y: hidden;
+  overflow-x: hidden;
 }

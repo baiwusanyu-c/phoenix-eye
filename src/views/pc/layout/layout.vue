@@ -17,18 +17,14 @@
   import TsgzNavMenu from '../../../components/tsgz-nav-menu.vue'
   import composition from '../../../utils/mixin/common-func'
   import TsgzFooter from '../../../components/tsgz-footer.vue'
-  import { getRouterData } from '../../../router/router-pc'
-
   export default defineComponent({
     name: 'LayoutPage',
     components: { TsgzFooter, TsgzNavMenu },
     setup() {
-      const { route, router } = composition()
+      const { route } = composition()
       const key = computed(() => {
         return route.path
       })
-      // 每次载入页面都加载路由
-      getRouterData(router)
       return {
         key,
       }
@@ -43,7 +39,8 @@
       position: relative;
       top: 0;
       left: 0;
-      height: calc(100vh - 60px);
+      /*height: calc(100vh - 68px);*/
+      height: calc(937px - 68px);
       overflow-y: auto;
       background-color: $mainColor18;
 
@@ -55,6 +52,22 @@
         height: 800px;
         background-image: url('../../../assets/image/pc/bg.png');
         background-repeat: round;
+      }
+    }
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .layout {
+      .main {
+        height: calc(100vh - 68px);
+      }
+    }
+  }
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .layout {
+      .main {
+        height: calc(100vh - 68px);
       }
     }
   }

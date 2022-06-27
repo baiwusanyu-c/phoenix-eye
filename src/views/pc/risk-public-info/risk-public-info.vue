@@ -142,11 +142,11 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .risk-public-info-container {
       width: 80%;
     }
-  }
+  }*/
 </style>

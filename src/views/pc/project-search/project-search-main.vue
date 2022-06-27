@@ -709,8 +709,8 @@
       width: 45%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
@@ -718,12 +718,12 @@
       width: 80%;
     }
   }
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
     .project-search-main .project-explorer--container {
       width: 72%;
     }
-  }
+  }*/
 </style>

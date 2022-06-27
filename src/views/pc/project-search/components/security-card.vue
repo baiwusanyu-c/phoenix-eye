@@ -202,8 +202,8 @@
       }
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .security-card {
       width: 284px;
@@ -216,7 +216,7 @@
     }
   }
 
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .security-card {
       width: 290px;
@@ -227,5 +227,5 @@
         padding: 16px;
       }
     }
-  }
+  }*/
 </style>

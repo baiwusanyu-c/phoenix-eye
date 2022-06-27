@@ -39,24 +39,8 @@
             :is-ellipsis="baseInfo.remark && baseInfo.remark.length > 45"
             styles="font-weight: 500"
             font-length="18"
+            empty-text="/"
             end-length="18"></ellipsis-copy>
-        </div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-item-txt">
-          <span>{{ $t('lang.addrMonitor.tableHeader.link') }}：</span>
-          <ellipsis-copy
-            :target-str="baseInfo.event_link"
-            :is-show-copy-btn="false"
-            :is-ellipsis="baseInfo.event_link && baseInfo.event_link.length > 45"
-            styles="font-weight: 500"
-            font-length="18"
-            custom-class="detail-item--ellipsis"
-            end-length="18">
-            <template #text="slotProps">
-              <a class="link" :href="baseInfo.event_link" target="_blank">{{ slotProps.item }}</a>
-            </template>
-          </ellipsis-copy>
         </div>
       </div>
     </div>
@@ -408,8 +392,8 @@
       width: 80%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .addr_monitor_detail {
       .detail-body,
@@ -421,10 +405,10 @@
       width: 83%;
     }
   }
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .addr_monitor_detail .detail-body .detail-item .detail-item-txt .detail-item--ellipsis {
       width: 81%;
     }
-  }
+  }*/
 </style>

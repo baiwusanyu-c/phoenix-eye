@@ -10,7 +10,7 @@ import {
   ROUTER_COMPONENT_DICT,
   STATISTICS_ROUTER,
   WHITE_LIST,
-} from '../utils/router-dict'
+} from './router-dict'
 
 import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 // import {ref} from "vue";
@@ -50,6 +50,12 @@ const routes = [
         name: 'RiskPublicInformation',
         component: () => import('../views/pc/risk-public-info/risk-public-info.vue'),
         meta: { title: 'lang.subNav.navName6' },
+      },
+      {
+        path: '/addressMonitor',
+        name: 'AddressMonitor',
+        component: () => import('../views/pc/addr-monitor/addr-monitor.vue'),
+        meta: { title: 'lang.subNav.navName7' },
       },
       // 地址监控详情
       {
@@ -162,7 +168,6 @@ const beforeEachHandle = (router: Router) => {
           isWhitePath = true
         }
       })
-
       if (store.state.routeConfig.length > 0 || isWhitePath) {
         next()
         return

@@ -282,12 +282,12 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .malicious-site-main .malicious-site-list,
     .malicious-site-main .malicious-site-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

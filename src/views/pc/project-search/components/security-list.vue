@@ -130,18 +130,18 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
-  @media screen and (min-width: 1328px) and (max-width: 1538px) {
-    .project-search-main .project-risk--container {
-      width: 80%;
+  /*
+    !* 125% 适配 *!
+    @media screen and (min-width: 1328px) and (max-width: 1538px) {
+      .project-search-main .project-risk--container {
+        width: 80%;
+      }
     }
-  }
 
-  /* 110% 适配 */
-  @media screen and (min-width: 1540px) and (max-width: 1750px) {
-    .project-search-main .project-risk--container {
-      width: 72%;
-    }
-  }
+    !* 110% 适配 *!
+    @media screen and (min-width: 1540px) and (max-width: 1750px) {
+      .project-search-main .project-risk--container {
+        width: 72%;
+      }
+    }*/
 </style>

@@ -263,8 +263,8 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .operational-statistics-main .operational-statistics-list,
     .operational-statistics-main .operational-statistics-chart,
@@ -272,5 +272,5 @@
     .operational-statistics-main .operational-statistics-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

@@ -619,6 +619,7 @@
         getProjectSituation(params)
           .then(res => {
             if (!res) {
+              baseLoading.value = true
               return
             }
             if (res) {
@@ -1358,8 +1359,8 @@
       }
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-search-detail {
       .project-detail-base,
@@ -1373,7 +1374,7 @@
       }
     }
   }
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .project-search-detail {
       .project-detail-base,
@@ -1386,5 +1387,5 @@
         width: 72%;
       }
     }
-  }
+  }*/
 </style>

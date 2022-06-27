@@ -376,3 +376,9 @@ export type IRelateProject = {
   project_id?: string
   platform?: string
 }
+
+export type IAppStyle = {
+  width?: number | null
+  height?: number | null
+  transform?: string
+}

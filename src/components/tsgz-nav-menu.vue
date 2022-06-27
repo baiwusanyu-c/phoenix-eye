@@ -29,7 +29,6 @@
           </div>
         </el-menu>
       </div>
-      <!--  <div @click="openDialog()">createProject</div>-->
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
@@ -180,7 +179,7 @@
   } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
 
-  import { WHITE_LIST } from '../utils/router-dict'
+  import { WHITE_LIST } from '../router/router-dict'
   import compositionDialog from '../utils/mixin/dialog-func'
   import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
   import { platformToCurrency } from '../utils/platform-dict'
@@ -239,6 +238,7 @@
       /**
        * 退出调用方法
        */
+      const isLogoutBus = useEventBus<string>('isLogout')
       const confirm = (isConfirm: boolean | string): void => {
         if (isConfirm === true || isConfirm === 'true') {
           isLogin.value = false
@@ -254,6 +254,7 @@
             }
           })
         }
+        isLogoutBus.emit()
         isLogout.value = false
       }
       // 初始化 登录过期bus，登录过期 就调用登出方法
@@ -877,20 +878,19 @@
     .tsgz-nav-menu {
       padding: 0 2%;
     }
-
+    .tsgz-nav-menu .remote-search-input {
+      width: 160px;
+    }
     .tsgz-nav-menu .el-input__inner {
       width: 120px;
     }
-    /*.project-select{
-          width: 120px;
-      }*/
     .tsgz-nav-menu .el-menu-item {
       padding: 0 5px;
       font-size: 12px;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .tsgz-nav-menu {
       padding: 0 10%;
@@ -899,11 +899,11 @@
     .tsgz-nav-menu .el-input__inner {
       width: 160px;
     }
-    /*.project-select{
+    !*.project-select{
           width: 160px;
-      }*/
+      }*!
     .tsgz-nav-menu .el-menu-item {
       padding: 0 10px;
     }
-  }
+  }*/
 </style>

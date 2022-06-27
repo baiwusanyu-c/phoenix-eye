@@ -81,17 +81,17 @@
       height: 140px;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .contact-bar {
       right: 6%;
     }
   }
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .contact-bar {
       right: 10%;
     }
-  }
+  }*/
 </style>
