@@ -201,7 +201,11 @@
     }
   }
 }
-
+.el-table.is-scrolling-none th.el-table-fixed-column--left,
+.el-table.is-scrolling-left th.el-table-fixed-column--left,
+.el-table.is-scrolling-none th.el-table-fixed-column--right{
+  background-color: $mainColor22;
+}
 .el-table thead {
   font-size: 16px;
   line-height: 42px;
