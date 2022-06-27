@@ -54,8 +54,8 @@
 <script lang="ts">
   import { defineComponent, getCurrentInstance, ref } from 'vue'
   import { BeInput, BePopover } from '@eagle-eye/be-ui'
-  import { debounce } from '../utils/common'
-  import type { IOption } from '../utils/types'
+  import { debounce } from '../../../utils/common'
+  import type { IOption } from '../../../utils/types'
   import type { IPopover } from '@eagle-eye/be-ui/package/popover/src/be-popover-type'
   // TODO: 样式修改
 

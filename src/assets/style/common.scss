@@ -609,6 +609,52 @@
     opacity: .8;
   }
 }
+.view-btn__w{
+  width: 72px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid $textColor9;
+  background-color: $mainColor7;
+  padding: 0 4px;
+  .be-button--body{
+    .be-icon--container{
+      width: 14px;
+      height: 14px;
+      use{
+        fill: $textColor7 !important;;
+      }
+    }
+    .be-button--slot{
+      font-size: 14px;
+      font-weight: 400 !important;
+      color: $textColor3;
+      line-height: 16px;
+    }
+  }
+  &:hover{
+    background-color: #F7F8F8;
+    .be-button--body{
+      .be-icon--container{
+        use{
+          fill: $textColor3 !important;;
+        }
+      }
+    }
+  }
+  &:active{
+    .be-button--body{
+      .be-button--slot{
+        color: #8A929C;
+      }
+      .be-icon--container{
+        use{
+          fill: #8A929C !important;;
+        }
+      }
+    }
+  }
+}
+
 .operate-btn{
   height: 24px;
   border-radius: 4px;

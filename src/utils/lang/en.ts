@@ -158,6 +158,7 @@ export default {
     navName9: 'Operational Statistics',
     navName10: 'Malicious Website',
     navName11: 'Security Incident',
+    navName12: 'Disclaimers',
     navName4s1: 'Risk type configuration',
     navName4s2: 'Risk score configuration',
   },
@@ -248,7 +249,7 @@ export default {
       addTitle: 'New Project Added',
       title: 'Project Explorer',
       tableHeader: {
-        project_name: 'Projects',
+        project_name: 'Project',
         security_score: 'Score',
         tx_24: 'Tx/24h',
         market_cap: 'Market Cap',

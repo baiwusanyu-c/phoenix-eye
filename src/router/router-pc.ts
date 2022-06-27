@@ -77,6 +77,12 @@ const routes = [
         component: () => import('../views/pc/project-search/project-search-detail.vue'),
         meta: { title: 'lang.subNav.navName5' },
       },
+      {
+        path: '/disclaimers',
+        name: 'Disclaimers',
+        component: () => import('../views/pc/disclaimer-page/disclaimer-page.vue'),
+        meta: { title: 'lang.subNav.navName5' },
+      },
     ],
   },
 ]
