@@ -135,9 +135,9 @@
     }
   }
   /* 125% 适配 */
-  @media screen and (min-width: 1328px) and (max-width: 1538px) {
+  /*@media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-alert--item {
       padding: 10px;
     }
-  }
+  }*/
 </style>

@@ -175,8 +175,8 @@ textarea::-webkit-input-placeholder {
 
 .scrollDiy::-webkit-scrollbar
 {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
   margin: 5px;
 }
 
@@ -202,8 +202,8 @@ textarea::-webkit-input-placeholder {
 /* 整个滚动条 */
 
 body::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
 }
 
 /* 滚动条有滑块的轨道部分 */

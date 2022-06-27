@@ -168,7 +168,6 @@ const beforeEachHandle = (router: Router) => {
           isWhitePath = true
         }
       })
-      console.log(store.state.routeConfig.length)
       if (store.state.routeConfig.length > 0 || isWhitePath) {
         next()
         return
