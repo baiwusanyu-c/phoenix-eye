@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <defs>
+        <filter color-interpolation-filters="auto" id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.094118 0 0 0 0 0.188235 0 0 0 0 0.305882 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+        <polygon id="path-2" points="0 0 16.001 0 16.001 16.001 0 16.001"></polygon>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2-1地址监控-未登录" transform="translate(-367.000000, -150.000000)">
+            <g id="编组" transform="translate(355.000000, 140.000000)" filter="url(#filter-1)">
+                <g transform="translate(12.000000, 10.000000)">
+                    <mask id="mask-3" fill="white">
+                        <use xlink:href="#path-2"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M12.5006,8.5004 L8.5006,8.5004 L8.5006,12.5004 C8.5006,12.7764 8.2766,13.0004 8.0006,13.0004 C7.7246,13.0004 7.5006,12.7764 7.5006,12.5004 L7.5006,8.5004 L3.5006,8.5004 C3.2246,8.5004 3.0006,8.2764 3.0006,8.0004 C3.0006,7.7244 3.2246,7.5004 3.5006,7.5004 L7.5006,7.5004 L7.5006,3.5004 C7.5006,3.2244 7.7246,3.0004 8.0006,3.0004 C8.2766,3.0004 8.5006,3.2244 8.5006,3.5004 L8.5006,7.5004 L12.5006,7.5004 C12.7766,7.5004 13.0006,7.7244 13.0006,8.0004 C13.0006,8.2764 12.7766,8.5004 12.5006,8.5004 M15.9616,7.2104 C15.5246,2.8134 11.6066,-0.3966 7.2106,0.0394 C2.8136,0.4764 -0.3964,4.3944 0.0396,8.7904 C0.4766,13.1874 4.3946,16.3974 8.7906,15.9614 C13.1876,15.5244 16.3976,11.6064 15.9616,7.2104" id="Fill-1" fill="#000000" mask="url(#mask-3)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

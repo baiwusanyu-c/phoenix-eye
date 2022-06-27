@@ -1,116 +1,150 @@
 /* * @addr-monitor.vue * @deprecated 地址监控 * @author czh * @update (czh 2022/3/24) */
 <template>
   <div class="addr-monitor-main eagle-page">
-    <div class="addr-monitor-search">
-      <be-button
-        type="success"
-        custom-class="eagle-btn create-btn"
-        size="large"
-        prev-icon="add"
-        round="4"
-        @click="openAddAddrMonitor">
-        {{ $t('lang.addrMonitor.create') }}
-      </be-button>
-    </div>
-    <div v-if="isLogin" class="addr-monitor-result eagle-table">
-      <el-table v-loading="loading" :data="addrMonitorList" tooltip-effect="light">
-        <template #empty>
-          <empty-data></empty-data>
-        </template>
-        <el-table-column prop="address">
-          <template #header>
-            <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.addr') }}</span>
+    <div class="addr-monitor-container">
+      <div class="addr-monitor-search">
+        <be-button
+          type="success"
+          custom-class="eagle-btn create-btn create-addr-monitor"
+          size="large"
+          prev-icon="iconAddPlus"
+          round="4"
+          @click="openAddAddrMonitor">
+          {{ $t('lang.addrMonitor.create') }}
+        </be-button>
+      </div>
+      <div class="addr-monitor-result eagle-table">
+        <div v-if="!isLogin" class="empty-info__un_login">
+          <img class="img" src="@/assets/image/pc/addr-monitor-un-login.png" alt="" />
+          <p>
+            <span class="empty-info" role="button" @click="openAddAddrMonitor">{{
+              $t('lang.addrMonitor.login')
+            }}</span>
+            <span>{{ $t('lang.addrMonitor.loginTo') }}</span>
+          </p>
+        </div>
+        <el-table v-if="isLogin" v-loading="loading" :data="addrMonitorList" tooltip-effect="light">
+          <template #empty>
+            <empty-data></empty-data>
           </template>
-          <template #default="scope">
-            <el-tooltip placement="top" effect="light" class="address" :content="scope.row.address">
-              <span class="table--info">{{ scope.row.address }}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column prop="today_transfer_num" show-overflow-tooltip width="100">
-          <template #header>
-            <span class="table-head"></span>
-          </template>
-          <template #default="scope">
-            <div style="display: flex; justify-content: center; align-items: center">
+          <el-table-column prop="address">
+            <template #header>
+              <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.addr') }}</span>
+            </template>
+            <template #default="scope">
+              <el-tooltip
+                placement="top"
+                effect="light"
+                class="address"
+                :content="scope.row.address">
+                <span class="table--info">{{ scope.row.address }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column prop="today_transfer_num" show-overflow-tooltip width="100">
+            <template #header>
+              <span class="table-head"></span>
+            </template>
+            <template #default="scope">
+              <div style="display: flex; justify-content: center; align-items: center">
+                <be-button
+                  v-if="scope.row.today_transfer_num > 0"
+                  round="4"
+                  type="default"
+                  bordered
+                  custom-class="ring-btn"
+                  prev-icon="iconRingEagle"
+                  size="mini">
+                  {{ scope.row.today_transfer_num }}
+                </be-button>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="remark">
+            <template #header>
+              <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.remark') }}</span>
+            </template>
+            <template #default="scope">
+              <el-tooltip
+                placement="top"
+                effect="light"
+                :disabled="!scope.row.remark"
+                popper-class="addr-monitor-main--address"
+                :content="scope.row.remark">
+                <span class="table--info">{{ scope.row.remark ? scope.row.remark : '/' }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column prop="create_time">
+            <template #header>
+              <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
+            </template>
+            <template #default="scope">
+              <date-cell :time="scope.row.create_time" :is-break="false"></date-cell>
+            </template>
+          </el-table-column>
+          <el-table-column prop="operation">
+            <template #header>
+              <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.operate') }}</span>
+            </template>
+            <template #default="scope">
               <be-button
-                v-if="scope.row.today_transfer_num > 0"
-                round="4"
-                type="default"
-                bordered
-                custom-class="ring-btn"
-                prev-icon="iconRingEagle"
-                size="mini">
-                {{ scope.row.today_transfer_num }}
-              </be-button>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="remark">
-          <template #header>
-            <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.remark') }}</span>
-          </template>
-          <template #default="scope">
-            <el-tooltip
-              placement="top"
-              effect="light"
-              :disabled="!scope.row.remark"
-              popper-class="addr-monitor-main--address"
-              :content="scope.row.remark">
-              <span class="table--info">{{ scope.row.remark ? scope.row.remark : '/' }}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column prop="create_time" width="120">
-          <template #header>
-            <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
-          </template>
-          <template #default="scope">
-            <date-cell :time="scope.row.create_time"></date-cell>
-          </template>
-        </el-table-column>
-        <el-table-column prop="operation" width="120">
-          <template #header>
-            <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.operate') }}</span>
-          </template>
-          <template #default="scope">
-            <el-tooltip placement="top">
-              <template #content>
+                style="margin-right: 10px"
+                type="success"
+                custom-class="operate-btn"
+                prev-icon="iconEditEagle"
+                @click="openDialog('edit', scope.row)">
                 {{ $t('lang.edit') }}
-              </template>
-              <be-icon
-                custom-class="table-icon"
-                icon="iconEditEagle"
-                width="24"
-                height="24"
-                @click="openDialog('edit', scope.row)"></be-icon>
-            </el-tooltip>
-            <el-tooltip placement="top">
-              <template #content>
+              </be-button>
+              <be-button
+                custom-class="operate-btn"
+                type="success"
+                prev-icon="iconDeleteEagle"
+                @click="openDialog('delete', scope.row)">
                 {{ $t('lang.delete') }}
-              </template>
-              <be-icon
-                custom-class="table-icon"
-                icon="iconDeleteEagle"
-                width="24"
-                height="24"
-                @click="openDialog('delete', scope.row)"></be-icon>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column width="50" label=" " align="center">
-          <template #default="scope">
-            <div class="more-btn">
-              <be-icon
-                icon="more"
-                width="20"
-                height="21"
-                @click="handleSearch(scope.row.address)"></be-icon>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+              </be-button>
+
+              <!--              <el-tooltip placement="top">
+                <template #content>
+                  {{ $t('lang.edit') }}
+                </template>
+                <be-icon
+                  custom-class="table-icon"
+                  icon="iconEditEagle"
+                  width="24"
+                  height="24"
+                  @click="openDialog('edit', scope.row)"></be-icon>
+              </el-tooltip>
+              <el-tooltip placement="top">
+                <template #content>
+                  {{ $t('lang.delete') }}
+                </template>
+                <be-icon
+                  custom-class="table-icon"
+                  icon="iconDeleteEagle"
+                  width="24"
+                  height="24"
+                  @click="openDialog('delete', scope.row)"></be-icon>
+              </el-tooltip>-->
+            </template>
+          </el-table-column>
+          <el-table-column label=" " align="center">
+            <template #header>
+              <span class="table-head">{{ $t('lang.addrMonitor.tableHeader.result') }}</span>
+            </template>
+            <template #default="scope">
+              <be-button
+                type="success"
+                custom-class="view-btn"
+                @click="handleSearch(scope.row.address)">
+                {{ $t('lang.projectExplorer.detail.view') }}
+              </be-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
+
     <!--    删除弹窗    -->
     <MsgDialog
       :header-title="$t('lang.delete')"
@@ -317,10 +351,16 @@
   .addr-monitor-main--address {
     width: 300px;
   }
-
+  .addr-monitor-container {
+    @include common-container(0px);
+    background-color: $mainColor7;
+    padding: 32px 20px;
+    box-sizing: border-box;
+    height: 678px;
+    margin-top: 40px;
+  }
   .addr-monitor-main {
     min-height: calc(100% - 100px);
-
     .subTitle {
       font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;
@@ -340,17 +380,34 @@
   }
 
   .addr-monitor-search {
-    @include common-container(40px);
     text-align: center;
+    margin-bottom: 16px;
+    .create-addr-monitor {
+      margin: 0;
+    }
   }
 
   .addr-monitor-result {
-    @include common-container(32px);
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: $mainColor7;
     border-radius: 4px;
-
+    .empty-info__un_login {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 380px;
+      p {
+        margin-top: 16px;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 26px;
+        font-family: BarlowSemi-R, sans-serif;
+        color: $textColor3;
+        .empty-info {
+          color: $mainColor3;
+          cursor: pointer;
+        }
+      }
+    }
     .ring-btn {
       padding: 0 4px;
       border-color: $mainColor19;
