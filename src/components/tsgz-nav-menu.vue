@@ -32,10 +32,7 @@
     </div>
     <!--    语种、设置菜单等    -->
     <div class="tsgz-slogan">
-      <remote-search
-        :remote-search="getProjectUser"
-        @select="handleProjectSelect"
-        @clear="handleProjectSelect(false)">
+      <remote-search :remote-search="getProjectUser" @select="handleProjectSelect">
         <template #option="slotProps">
           <project-name-cell
             :url="slotProps.item.logo_url"
@@ -460,21 +457,13 @@
       onBeforeRouteUpdate(to => {
         if (to.path !== '/detail') {
           selectVal.value = ''
-          removeStore('curSelectProjId')
         }
       })
       /**
        * 项目选择事件
        */
       const selectProjBus = useEventBus<string>('selectProjBus')
-      const handleProjectSelect = (data?: IOption): void => {
-        // 清空時
-        if (!data) {
-          removeStore('curSelectProjId')
-          routerPush('/projectSearch')
-          return
-        }
-        setStore('curSelectProjId', data.project_id)
+      const handleProjectSelect = (data: IOption): void => {
         routerPush('/detail', { id: data.project_id })
         selectProjBus.emit(data.project_id)
       }

@@ -20,10 +20,7 @@
         </el-select>
       </div>
       <div style="display: flex; align-items: center">
-        <remote-search
-          :remote-search="getProjectUser"
-          @select="handleProjectSelect"
-          @clear="handleProjectSelect(false)">
+        <remote-search :remote-search="getProjectUser" @select="handleProjectSelect">
           <template #option="slotProps">
             <project-name-cell
               :url="slotProps.item.logo_url"
@@ -332,7 +329,6 @@
        * 路由跳轉
        */
       const routerSwitch = (row: any): void => {
-        setStore('curSelectProjId', row.project_id)
         routerPush('/detail', { id: row.project_id, keyword: row.keyword })
       }
       /**
@@ -394,13 +390,7 @@
             message('error', err.message || err)
           })
       }
-      const handleProjectSelect = (data?: IOption): void => {
-        // 清空時
-        if (!data) {
-          removeStore('curSelectProjId')
-          return
-        }
-        setStore('curSelectProjId', data.project_id)
+      const handleProjectSelect = (data: IOption): void => {
         routerPush('/detail', { id: data.project_id })
       }
       const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')

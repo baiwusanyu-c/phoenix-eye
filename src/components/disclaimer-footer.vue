@@ -53,8 +53,9 @@
   .disclaimer-footer {
     background-color: $mainColor7;
     width: 100%;
+    min-width: 1280px;
     height: 60px;
-    position: fixed;
+    position: absolute;
     left: 0;
     bottom: 0;
     z-index: 10;
@@ -87,6 +88,30 @@
       right: 20px;
       use {
         fill: #8a929c;
+      }
+    }
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .disclaimer-footer {
+      .disclaimer-footer-content {
+        .view-btn__w {
+          width: 46px;
+          height: 28px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+  /* 150% 适配 */
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .disclaimer-footer {
+      .disclaimer-footer-content {
+        .view-btn__w {
+          width: 46px;
+          height: 28px;
+          margin-left: 10px;
+        }
       }
     }
   }
