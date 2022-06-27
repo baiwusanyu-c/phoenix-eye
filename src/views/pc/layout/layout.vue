@@ -9,23 +9,32 @@
       </transition>
       <tsgz-footer></tsgz-footer>
     </div>
+    <disclaimer-footer v-if="$route.path === '/projectSearch' && showDisclaimer" @close="close">
+    </disclaimer-footer>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent } from 'vue'
+  import { computed, defineComponent, ref } from 'vue'
   import TsgzNavMenu from '../../../components/tsgz-nav-menu.vue'
   import composition from '../../../utils/mixin/common-func'
   import TsgzFooter from '../../../components/tsgz-footer.vue'
+  import DisclaimerFooter from '../../../components/disclaimer-footer.vue'
   export default defineComponent({
     name: 'LayoutPage',
-    components: { TsgzFooter, TsgzNavMenu },
+    components: { DisclaimerFooter, TsgzFooter, TsgzNavMenu },
     setup() {
       const { route } = composition()
       const key = computed(() => {
         return route.path
       })
+      const showDisclaimer = ref<boolean>(true)
+      const close = (): void => {
+        showDisclaimer.value = false
+      }
       return {
+        close,
+        showDisclaimer,
         key,
       }
     },
