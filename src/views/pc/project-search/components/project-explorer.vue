@@ -37,7 +37,7 @@
           <template #listFooter>
             <div id="create_one_body" class="create-one--body">
               <span>{{ $t('lang.createProject.notFound') }}?</span>
-              <div role="button" class="create-one eagle-btn" @click="openDialog('add')">
+              <div role="button" class="create-one eagle-btn" @click="openDialog()">
                 {{ $t('lang.createProject.createOne') }}
               </div>
             </div>
@@ -246,6 +246,7 @@
 <script lang="ts">
   import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
   import { BeIcon } from '@eagle-eye/be-ui'
+  import { useEventBus } from '@vueuse/core'
   import compositionPage from '../../../../utils/mixin/page-param'
   import composition from '../../../../utils/mixin/common-func'
   import { getExploreList, getProjectListCurUser } from '../../../../api/project-explorer'
@@ -402,7 +403,12 @@
         setStore('curSelectProjId', data.project_id)
         routerPush('/detail', { id: data.project_id })
       }
+      const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
+      const openDialog = (): void => {
+        busCreateProjectUser.emit()
+      }
       return {
+        openDialog,
         platformToCurrency,
         handleProjectSelect,
         getProjectUser,
