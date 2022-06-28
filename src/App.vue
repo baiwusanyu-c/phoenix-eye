@@ -5,6 +5,7 @@
     :class="{ 'theme--dark': theme === 'dark', 'scale-app': !is1280p }"
     class="noM"
     :style="`width: ${appStyle.width}px;height: ${appStyle.height}px;transform: ${appStyle.transform};`">
+    <!--  <div id="appc" ref="app" :class="{ 'theme&#45;&#45;dark': theme === 'dark' }" class="noM scale-app">-->
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog

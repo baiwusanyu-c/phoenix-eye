@@ -51,6 +51,7 @@ export default {
   requestAudit: {
     tipProject: 'Please select Project',
     tipAccount: 'Please select Project',
+    tipEmail: 'Please enter the email address',
     tipErrEmail: 'Invalid email address',
     tipVerCode: 'Please enter the verification code',
     project1: 'Smart contract audit',

@@ -121,12 +121,7 @@
        */
       const close = (e): void => {
         setTimeout(() => {
-          if (
-            triggerDom &&
-            e &&
-            e.target.className &&
-            e.target.className.indexOf(props.notCloseOnTrigger) > -1
-          ) {
+          if (triggerDom && e && e.target.id && e.target.id.indexOf(props.notCloseOnTrigger) > -1) {
             return
           }
           showPopover.value = false

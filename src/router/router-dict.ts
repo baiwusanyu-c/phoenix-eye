@@ -20,6 +20,7 @@ export const WHITE_LIST: Array<string> = [
   '/riskTrxList',
   '/ProjectSearch',
   '/RiskPublicInformation',
+  '/addressMonitor',
 ]
 // 组件字典
 // 递归路由配置对象时会使用到，其key必须和bms的组件路径一致

@@ -5,11 +5,12 @@
     trigger="click"
     placement="bottom"
     :raw="false"
-    not-close-on-trigger="be-input"
+    :not-close-on-trigger="`remote-search-input_${uid}`"
     custom-class="remote-popover"
     @update="setSearchCacheVal">
     <template #trigger>
       <be-input
+        :id="`remote-search-input_${uid}`"
         v-model="searchParamsInput"
         tabindex="0"
         custom-class="remote-search-input"
@@ -54,7 +55,7 @@
 <script lang="ts">
   import { defineComponent, getCurrentInstance, ref } from 'vue'
   import { BeInput, BePopover } from '@eagle-eye/be-ui'
-  import { debounce } from '../../../utils/common'
+  import { useThrottleFn } from '@vueuse/core'
   import type { IOption } from '../../../utils/types'
   import type { IPopover } from '@eagle-eye/be-ui/package/popover/src/be-popover-type'
   // TODO: 样式修改
@@ -90,7 +91,7 @@
       /**
        * 处理输入，调用搜索接口
        */
-      const handleChange = debounce((): void => {
+      const handleChange = useThrottleFn((): void => {
         selectLoading.value = true
         if (!searchParamsInput.value && searchParamsInput.value !== '0') {
           list.value = []
@@ -140,6 +141,7 @@
         searchParamsInput,
         handleChange,
         list,
+        uid: internalInstance?.uid,
         selectLoading,
       }
     },
