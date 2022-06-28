@@ -79,6 +79,7 @@
   import { clearStore, getStore, setSession, setStore, trim } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
   // @ts-ignore
+  import { getRouterData } from '../../../../router/router-pc'
   import type { ComponentInternalInstance } from 'vue'
   import type { ElForm } from 'element-plus'
   type FormInstance = InstanceType<typeof ElForm>
@@ -92,7 +93,7 @@
     components: { BeButton, BeIcon },
     setup() {
       const { t } = useI18n()
-      const { message, codeUrl, uuid, getCode } = composition()
+      const { message, codeUrl, uuid, getCode, router, route } = composition()
       const visible = ref<boolean>(false)
 
       // 校驗規則

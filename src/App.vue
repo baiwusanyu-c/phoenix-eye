@@ -42,9 +42,6 @@
   </div>
 </template>
 <script setup lang="tsx">
-  // TODO header
-  // TODO footer
-  // TODO address monitor
   // TODO back management
   import { ref } from 'vue'
   // import { BeButton, BeDialog } from '@eagle-eye/be-ui'
