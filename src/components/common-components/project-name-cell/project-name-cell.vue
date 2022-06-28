@@ -10,7 +10,7 @@
       :is-ellipsis="(name && name.length) >= ellipsisLen ? true : false"
       :is-show-copy-btn="false"
       :is-tooltip="true"
-      styles="color: #18304E;font-weight: bold;font-size: 14px;"
+      :styles="`color: #18304E;font-weight: bold;font-size: 14px;${styles}`"
       :font-length="fontLen"
       end-length="0">
     </ellipsis-copy>

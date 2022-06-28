@@ -10,7 +10,10 @@
           <project-name-cell
             :name="baseInfo.project_name"
             :url="baseInfo.logo_url"
-            :is-ell="false"
+            :is-ell="true"
+            :ellipsis-len="30"
+            :font-len="30"
+            width="600"
             size="46"
             styles="font-size:30px">
           </project-name-cell>
@@ -49,7 +52,7 @@
             @click="handleSubscribe">
           </be-button>
         </div>
-        <div>
+        <div style="height: 60px">
           <be-icon
             v-if="governData.website"
             :herf="governData.website"
