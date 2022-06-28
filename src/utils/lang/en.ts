@@ -609,9 +609,9 @@ export default {
     searchP: 'project / address /trx hash',
     tableHeader: {
       project: 'Project',
-      attackType: 'Attack Type',
+      attackType: 'Type',
       amount: 'Amount Of Loss',
-      link: 'Event Link',
+      link: 'Link',
       attackAddr: 'Attack Address',
       attackedAddr: 'Attacked Address',
       attackedTrx: 'Attack Trx',
