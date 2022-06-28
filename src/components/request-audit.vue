@@ -140,7 +140,7 @@
           return false
         }
         if (!formData.value.email) {
-          tipStr = t('lang.requestAudit.tipAccount')
+          tipStr = t('lang.requestAudit.tipEmail')
           verMsg(tipStr)
           return false
         }
