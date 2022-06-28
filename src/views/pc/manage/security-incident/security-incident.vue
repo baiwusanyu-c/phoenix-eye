@@ -340,7 +340,7 @@
     min-height: calc(100% - 100px);
 
     .security-incident-search {
-      @include common-container(40px, 80%);
+      @include common-container(40px);
     }
 
     .security-incident-list {

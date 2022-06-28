@@ -397,7 +397,7 @@
     background-image: url('../../../assets/image/pc/bg-base-info.png');
     background-repeat: round;
     border-radius: 4px;
-    @include common-container(32px, 67.2%);
+    @include common-container(32px);
     padding: 40px 60px;
     box-sizing: border-box;
 
@@ -454,7 +454,7 @@
   }
 
   .project-alert--container {
-    @include common-container(32px, 67.2%);
+    @include common-container(32px);
     display: flex;
     .alert-hot {
       width: calc(75% - 20px);

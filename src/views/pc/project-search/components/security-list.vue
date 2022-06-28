@@ -101,7 +101,7 @@
 
 <style lang="scss">
   .project-risk--container {
-    @include common-container(32px, 67.2%);
+    @include common-container(32px);
     text-align: center;
     min-height: 480px;
     height: auto;

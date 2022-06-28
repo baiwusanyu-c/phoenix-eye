@@ -1,11 +1,5 @@
 <template>
-  <div
-    id="appc"
-    ref="app"
-    :class="{ 'theme--dark': theme === 'dark', 'scale-app': !is1280p }"
-    class="noM"
-    :style="`width: ${appStyle.width}px;height: ${appStyle.height}px;transform: ${appStyle.transform};`">
-    <!--  <div id="appc" ref="app" :class="{ 'theme&#45;&#45;dark': theme === 'dark' }" class="noM scale-app">-->
+  <div id="appc" ref="app" :class="{ 'theme--dark': theme === 'dark' }" class="noM scale-app">
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog
@@ -48,6 +42,10 @@
   </div>
 </template>
 <script setup lang="tsx">
+  // TODO header
+  // TODO footer
+  // TODO address monitor
+  // TODO back management
   import { ref } from 'vue'
   // import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
@@ -56,7 +54,6 @@
     getStore,
     setStore,
   } from './utils/common'
-  import type { IAppStyle } from './utils/types'
   // 設置是否手機訪問變量
   /*const ua = navigator.userAgent
   const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)
@@ -81,42 +78,6 @@
   const delTip = ref<boolean>(false)
   // 主题
   const theme = ref<string>(import.meta.env.VITE_APP_THEME as string)
-
-  //let baseWidth = document.documentElement.clientWidth
-  //let baseHeight = document.documentElement.clientHeight
-  const is1280p = ref(false)
-  const appStyle = ref<IAppStyle>({
-    width: 1920,
-    height: 937,
-    transform: 'scaleY(1) scaleX(1) translate(-50%, -50%)',
-  })
-  function getScale() {
-    const w = window.innerWidth / appStyle.value.width!
-    const h = window.innerHeight / appStyle.value.height!
-    return { x: w, y: h }
-  }
-  function setScale() {
-    if (window.innerWidth <= 1280) {
-      appStyle.value = {
-        width: null,
-        height: null,
-        transform: '',
-      }
-      is1280p.value = true
-      document.body.style.overflowX = 'auto'
-      document.body.style.width = ''
-      return
-    }
-    is1280p.value = false
-    document.body.style.overflowX = 'hidden'
-    document.body.style.width = '1920px'
-    appStyle.value.width = 1920
-    appStyle.value.height = 937
-    const scale = getScale()
-    appStyle.value.transform = `scaleY(${scale.y}) scaleX(${scale.x}) translate(-50%, -50%)`
-  }
-  setScale()
-  window.onresize = setScale
 </script>
 
 <style lang="scss">
@@ -182,13 +143,6 @@
   .noM {
     min-width: 1280px;
     height: 100%;
-  }
-  .scale-app {
-    z-index: 1;
-    transform-origin: 0 0;
-    position: fixed;
-    left: 50%;
-    top: 50%;
   }
 </style>
 

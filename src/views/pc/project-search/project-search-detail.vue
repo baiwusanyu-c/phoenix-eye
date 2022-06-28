@@ -908,7 +908,7 @@
     .project-detail-related,
     .project-detail-risk,
     .project-detail-market {
-      @include common-container(32px, 67.2%);
+      @include common-container(32px);
     }
     .project-detail--header {
       height: 60px;
