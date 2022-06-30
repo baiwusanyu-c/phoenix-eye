@@ -248,14 +248,7 @@
   import composition from '../../../../utils/mixin/common-func'
   import { getExploreList, getProjectListCurUser } from '../../../../api/project-explorer'
   // @ts-ignore
-  import {
-    catchErr,
-    createDate,
-    formatDate,
-    nFormats,
-    removeStore,
-    setStore,
-  } from '../../../../utils/common'
+  import { catchErr, createDate, formatDate, nFormats } from '../../../../utils/common'
   import { platformListDict, platformToCurrency } from '../../../../utils/platform-dict'
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'

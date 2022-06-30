@@ -166,14 +166,7 @@
   import { getProjectListCurUser } from '../api/project-explorer'
   // @ts-ignore
   import composition from '../utils/mixin/common-func'
-  import {
-    clearSession,
-    clearStore,
-    getStore,
-    removeStore,
-    setSession,
-    setStore,
-  } from '../utils/common'
+  import { clearSession, clearStore, getStore, setSession, setStore } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
 
   import { WHITE_LIST } from '../router/router-dict'

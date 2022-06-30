@@ -155,7 +155,6 @@
       const registerSubmit = (): void => {
         form.value.email = trim(form.value.email)
         form.value.code = trim(form.value.code)
-        form.value.code = trim(form.value.code)
         refsForm &&
           (refsForm.refs.registerForm as FormInstance).validate((valid: boolean | undefined) => {
             if (valid) {

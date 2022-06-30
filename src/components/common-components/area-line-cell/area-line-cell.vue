@@ -77,6 +77,7 @@
           container: props.domId,
           autoFit: true,
           height: props.height,
+          padding: 20,
         })
 
         chart.value.data(dv.rows)
