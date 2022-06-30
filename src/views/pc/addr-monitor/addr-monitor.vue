@@ -299,7 +299,12 @@
           if (urlParams.from === 'mobile' && urlParams.token) {
             isLogin.value = true
             setStore('token', Base64.decode(urlParams.token))
-            setStore('userInfo', urlParams.userInfo)
+            setStore(
+              'userInfo',
+              JSON.stringify({
+                username: urlParams.userName,
+              })
+            )
             const reInit = useEventBus<string>('reInit')
             reInit.emit()
           }
