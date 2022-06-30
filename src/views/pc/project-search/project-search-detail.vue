@@ -302,6 +302,10 @@
             <div v-if="hasTokenAddress" class="twitter-analysis-left">
               <p>{{ $t('lang.projectExplorer.detail.twitterAnalysis1') }}</p>
               <area-line-cell
+                v-if="
+                  twitterAnalysisData.every_day_data &&
+                  twitterAnalysisData.every_day_data.length > 0
+                "
                 dom-id="twitter_analysis"
                 :line-data="twitterAnalysisData.every_day_data"
                 x-axis="value"
@@ -309,6 +313,7 @@
                 :smooth="false"
                 :height="180">
               </area-line-cell>
+              <empty-data v-else></empty-data>
             </div>
             <div v-if="!hasTokenAddress">
               <p class="twitter-analysis--title">
@@ -509,6 +514,7 @@
   import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
   import { setPrevUrl } from '../../../utils/request'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -541,6 +547,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      EmptyData,
       RelateProject,
       ProjectNameCell,
       ContactBar,

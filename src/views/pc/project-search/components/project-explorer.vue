@@ -341,21 +341,15 @@
       const tableHeader = computed(() => {
         const headerDict: IOption = {
           //project_name: '160',
-          project_name: '230',
+          project_name: '220',
           security_score: '60',
           tx_24: '70',
           market_cap: '120',
           token_price: '160',
           create_time: '80',
-          platform: '120',
+          platform: '110',
           audit_report_num: '100',
         }
-        /* if (1280 <= screenWidth && 1326 <= screenWidth) {
-                headerDict.risk_features = '320'
-                headerDict.from_address = '140'
-                headerDict.tx_hash = '140'
-                headerDict.platform = '90'
-            }*/
         return function (key: string) {
           return headerDict[key]
         }

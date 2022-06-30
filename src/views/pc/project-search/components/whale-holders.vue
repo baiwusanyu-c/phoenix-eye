@@ -91,7 +91,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="quantity" width="180">
+            <el-table-column prop="quantity" width="170">
               <template #header>
                 <span class="table-head">{{
                   $t('lang.projectExplorer.detail.tableHeader1.amount')

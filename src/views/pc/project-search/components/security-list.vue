@@ -16,7 +16,7 @@
     <el-pagination
       v-model:currentPage="pageParams.currentPage"
       v-model:page-size="pageParams.pageSize"
-      :page-sizes="[10, 15, 20, 40, 80, 100]"
+      :page-sizes="[4, 10, 15, 20, 40, 80, 100]"
       layout="prev, pager, next"
       :total="pageParams.total"
       @current-change="pageChange" />
