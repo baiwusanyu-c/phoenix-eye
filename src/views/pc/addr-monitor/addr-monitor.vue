@@ -299,6 +299,9 @@
           if (urlParams.from === 'mobile' && urlParams.token) {
             isLogin.value = true
             setStore('token', Base64.decode(urlParams.token))
+            setStore('userInfo', urlParams.userInfo)
+            const reInit = useEventBus<string>('reInit')
+            reInit.emit()
           }
         }
         // 来自email 打开

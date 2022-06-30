@@ -295,6 +295,10 @@
       busRouterInfo.on(() => {
         initVar()
       })
+      const reInit = useEventBus<string>('reInit')
+      reInit.on(() => {
+        initVar()
+      })
       // 初始化方法
       const initVar = (): void => {
         isLogin.value = !!getStore('token')
