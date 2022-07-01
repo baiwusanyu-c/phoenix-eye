@@ -106,7 +106,12 @@ export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
   return treeData
 }
 
-export function getRouterData(router: Router, next?: Function, to?: RouteLocationNormalized) {
+export function getRouterData(
+  router: Router,
+  next?: Function,
+  to?: RouteLocationNormalized,
+  isWhitePath?: boolean
+) {
   const params = {
     systemCode: 'beosin-eye',
     userId: getStore('userId'),
@@ -120,6 +125,10 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
         redirect: '/404',
       })
       if (!res || res.data.length === 0) {
+        // 白名单内疚跳转白名单
+        if (isWhitePath && to) {
+          next && next({ path: to.path, query: to.query })
+        }
         next &&
           next({
             path: '/projectSearch',
@@ -170,11 +179,17 @@ const beforeEachHandle = (router: Router) => {
           console.error(err)
         })
       }
+      let isWhitePath = false
+      WHITE_LIST.forEach(val => {
+        if (val === to.path) {
+          isWhitePath = true
+        }
+      })
       if (store.state.routeConfig.length > 0 || isEmptyRouterInfo) {
         next()
         return
       } else {
-        getRouterData(router, next, to)
+        getRouterData(router, next, to, isWhitePath)
       }
     }
   )
