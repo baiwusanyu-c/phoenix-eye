@@ -31,16 +31,31 @@
       </div>
       <!--    语种、设置菜单等    -->
       <div class="tsgz-slogan">
-        <remote-search :remote-search="getProjectUser" select-clear @select="handleProjectSelect">
+        <remote-search
+          custom-list-class="remote-search-custom-list"
+          :remote-search="getProjectUser"
+          select-clear
+          @select="handleProjectSelect">
           <template #option="slotProps">
-            <project-name-cell
+            <div class="remote-search-item">
+              <el-avatar :size="32" :src="slotProps.item.logo_url" fit="cover">
+                <img src="../assets/image/pc/empty-avt.png" />
+              </el-avatar>
+              <span class="item-project-name">
+                {{ slotProps.item.project_name }}
+                <span class="project-platform">
+                  {{ platformToCurrency[slotProps.item.platform] }}
+                </span>
+              </span>
+            </div>
+            <!--            <project-name-cell
               :url="slotProps.item.logo_url"
               :name="slotProps.item.project_name"
               :is-ell="false">
             </project-name-cell>
             <span style="font-size: 14px; color: #7c9aaa; font-weight: bold">{{
               platformToCurrency[slotProps.item.platform]
-            }}</span>
+            }}</span>-->
           </template>
           <template #listFooter>
             <div id="create_one_body" class="create-one--body">
@@ -168,13 +183,11 @@
   import composition from '../utils/mixin/common-func'
   import { clearSession, clearStore, getStore, setSession, setStore } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
-
   import { WHITE_LIST } from '../router/router-dict'
   import compositionDialog from '../utils/mixin/dialog-func'
   import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
   import { platformToCurrency } from '../utils/platform-dict'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-  import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
   import RequestAudit from './request-audit.vue'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
@@ -200,9 +213,7 @@
     name: 'TsgzNavMenu',
     components: {
       RequestAudit,
-      ProjectNameCell,
       CreateProject,
-
       LoginDialog,
       MsgDialog,
       BeIcon,
@@ -512,6 +523,37 @@
 </script>
 
 <style lang="scss">
+  .remote-search-custom-list {
+    .remote-search-list--item {
+      height: auto;
+      min-height: 48px;
+    }
+  }
+  .remote-search-item {
+    width: 250px;
+    display: flex;
+    align-items: center;
+    .el-avatar {
+      width: 32px;
+      height: 32px;
+    }
+    .item-project-name {
+      width: 218px;
+      line-height: 20px;
+      text-align: left;
+      margin-left: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      color: $textColor3;
+      font-family: BarlowSemi-B, sans-serif;
+      margin-right: 6px;
+      .project-platform {
+        font-size: 14px;
+        color: #7c9aaa;
+        font-weight: bold;
+      }
+    }
+  }
   /* #xnhb_nav_menu .project-select-remote {
     height: 40px;
     .el-input.is-focus .el-input__wrapper {

@@ -172,7 +172,12 @@ textarea::-webkit-input-placeholder {
 
 
 /* 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸 */
-
+@media screen and (min--moz-device-pixel-ratio: 0){
+  * {
+    scrollbar-color: #c1c1c1; /* 滑块颜色  滚动条背景颜色 未生效 */
+    scrollbar-width: thin; /* 滚动条宽度有三种：thin、auto、none */
+  }
+}
 .scrollDiy::-webkit-scrollbar
 {
   width: 8px;

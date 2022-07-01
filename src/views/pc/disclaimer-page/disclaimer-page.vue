@@ -62,7 +62,7 @@
       margin-top: 40px;
       h2 {
         font-size: 32px;
-        font-family: BarlowSemi-B sans-serif;
+        font-family: BarlowSemi-B, sans-serif;
         font-weight: bold;
         color: $textColor3;
         line-height: 40px;
@@ -70,7 +70,7 @@
       }
       p {
         font-size: 16px;
-        font-family: BarlowSemi-R sans-serif;
+        font-family: BarlowSemi-R, sans-serif;
         font-weight: 400;
         color: $textColor3;
         line-height: 26px;

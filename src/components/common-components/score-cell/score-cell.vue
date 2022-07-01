@@ -94,7 +94,7 @@
     .score {
       font-weight: bold;
       font-size: 12px;
-      font-family: BarlowSemi-B sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
     }
   }
 </style>

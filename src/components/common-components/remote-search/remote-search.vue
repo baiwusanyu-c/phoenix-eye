@@ -28,7 +28,10 @@
       </be-input>
     </template>
     <div class="remote-search-list--body">
-      <div v-loading="selectLoading" class="remote-search-list--container scroll-diy">
+      <div
+        v-loading="selectLoading"
+        class="remote-search-list--container scroll-diy"
+        :class="customListClass">
         <div
           v-for="item in list"
           :key="item[keyVal]"
@@ -83,6 +86,10 @@
         type: Function,
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         default: () => {},
+      },
+      customListClass: {
+        type: String,
+        default: '',
       },
     },
     emits: ['select', 'clear'],
