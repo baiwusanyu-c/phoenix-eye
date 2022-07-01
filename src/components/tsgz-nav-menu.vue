@@ -528,6 +528,7 @@
 
 <style lang="scss">
   .remote-search-custom-list {
+    overflow-x: hidden;
     .remote-search-list--item {
       height: auto;
       min-height: 48px;

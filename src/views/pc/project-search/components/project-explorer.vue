@@ -20,16 +20,22 @@
         </el-select>
       </div>
       <div style="display: flex; align-items: center">
-        <remote-search :remote-search="getProjectUser" @select="handleProjectSelect">
+        <remote-search
+          :remote-search="getProjectUser"
+          custom-list-class="remote-search-custom-list"
+          @select="handleProjectSelect">
           <template #option="slotProps">
-            <project-name-cell
-              :url="slotProps.item.logo_url"
-              :name="slotProps.item.project_name"
-              :is-ell="false">
-            </project-name-cell>
-            <span style="font-size: 14px; color: #7c9aaa; font-weight: bold">{{
-              platformToCurrency[slotProps.item.platform]
-            }}</span>
+            <div class="remote-search-item">
+              <el-avatar :size="32" :src="slotProps.item.logo_url" fit="cover">
+                <img src="../../../../assets/image/pc/empty-avt.png" />
+              </el-avatar>
+              <span class="item-project-name">
+                {{ slotProps.item.project_name }}
+                <span class="project-platform">
+                  {{ platformToCurrency[slotProps.item.platform] }}
+                </span>
+              </span>
+            </div>
           </template>
           <template #listFooter>
             <div id="create_one_body" class="create-one--body">
