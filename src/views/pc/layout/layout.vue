@@ -9,7 +9,7 @@
       </transition>
       <tsgz-footer></tsgz-footer>
     </div>
-    <disclaimer-footer v-if="$route.path === '/ProjectSearch' && showDisclaimer" @close="close">
+    <disclaimer-footer v-if="$route.path === '/projectSearch' && showDisclaimer" @close="close">
     </disclaimer-footer>
   </div>
 </template>
@@ -33,7 +33,7 @@
       const close = (): void => {
         showDisclaimer.value = false
       }
-      if (route.path !== '/ProjectSearch') {
+      if (route.path !== '/projectSearch') {
         getRouterData(router)
       }
       return {

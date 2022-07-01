@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useEventBus } from '@vueuse/core'
 import { getStore, isString } from '../utils/common'
@@ -13,11 +14,10 @@ import {
 } from './router-dict'
 
 import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
-// import {ref} from "vue";
 const routes = [
   {
     path: '/',
-    redirect: '/ProjectSearch',
+    redirect: '/projectSearch',
   },
   {
     path: '/',
@@ -86,6 +86,7 @@ const routes = [
     ],
   },
 ]
+let isEmptyRouterInfo = false
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
   treeData.forEach((val: any) => {
@@ -111,23 +112,25 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
     userId: getStore('userId'),
   }
   const bus = useEventBus<string>('getRouterInfo')
+  isEmptyRouterInfo = false
   getRouterInfo(params)
     .then(res => {
+      router.addRoute({
+        path: '/:w+',
+        redirect: '/404',
+      })
       if (!res || res.data.length === 0) {
         next &&
           next({
-            path: '/ProjectSearch',
+            path: '/projectSearch',
           })
+        isEmptyRouterInfo = true
         return
       }
       const routerConfig = initRouterConfig(res.data[0].children)
       store.commit('update', ['routeConfig', routerConfig])
       routerConfig.forEach((val: any) => {
         router.addRoute('layout', val)
-      })
-      router.addRoute({
-        path: '/:w+',
-        redirect: '/404',
       })
       setTimeout(() => {
         i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
@@ -138,7 +141,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
     .catch(err => {
       next &&
         next({
-          path: '/ProjectSearch',
+          path: '/projectSearch',
         })
       console.error(err)
     })
@@ -160,21 +163,14 @@ const beforeEachHandle = (router: Router) => {
       // if (to.path === '/projectSearch' && isMobile.value) {
       //   window.location.reload()
       // }
+
       // 匹配运营统计路由
       if (STATISTICS_ROUTER[to.path]) {
         addIpLog({ module: STATISTICS_ROUTER[to.path] }).catch(err => {
           console.error(err)
         })
       }
-
-      // 路由跳转白名单（不需要验证token,和获取路由）
-      let isWhitePath = false
-      WHITE_LIST.forEach(val => {
-        if (val === to.path) {
-          isWhitePath = true
-        }
-      })
-      if (store.state.routeConfig.length > 0 || isWhitePath) {
+      if (store.state.routeConfig.length > 0 || isEmptyRouterInfo) {
         next()
         return
       } else {
@@ -190,5 +186,7 @@ export const router = createRouter({
 } as RouterOptions)
 beforeEachHandle(router)
 router.afterEach(() => {
-  window.scrollTo(0, 0)
+  setTimeout(() => {
+    document.body.scrollTop = document.documentElement.scrollTop = 0
+  })
 })

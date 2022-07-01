@@ -75,6 +75,10 @@
         type: String,
         default: 'project_id',
       },
+      selectClear: {
+        type: Boolean,
+        default: false,
+      },
       remoteSearch: {
         type: Function,
         // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -113,6 +117,9 @@
         ;(internalInstance?.refs.remoteSearchPopover as IPopover).close()
         if (isSwitch) {
           ctx.emit('select', item)
+          if (props.selectClear) {
+            searchParamsInput.value = ''
+          }
         }
       }
       /**
@@ -121,7 +128,9 @@
       const setSearchCacheVal = (status: boolean): void => {
         if (!status && searchParamsInput.value !== searchParamsCache.value) {
           list.value = []
-          searchParamsInput.value = searchParamsCache.value
+          if (!props.selectClear) {
+            searchParamsInput.value = searchParamsCache.value
+          }
         }
         if (status && searchParamsInput.value) {
           handleChange()

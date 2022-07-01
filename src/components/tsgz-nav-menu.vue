@@ -31,7 +31,7 @@
       </div>
       <!--    语种、设置菜单等    -->
       <div class="tsgz-slogan">
-        <remote-search :remote-search="getProjectUser" @select="handleProjectSelect">
+        <remote-search :remote-search="getProjectUser" select-clear @select="handleProjectSelect">
           <template #option="slotProps">
             <project-name-cell
               :url="slotProps.item.logo_url"
@@ -240,7 +240,7 @@
           // // 在白名单内的页面，刷新页面来重置权限菜单等
           nextTick(() => {
             if (WHITE_LIST.indexOf(route.path) < 0) {
-              window.location.href = '#/projectSearch'
+              window.location.href = '/projectSearch'
             }
           })
         }
@@ -461,6 +461,7 @@
        */
       const selectProjBus = useEventBus<string>('selectProjBus')
       const handleProjectSelect = (data: IOption): void => {
+        document.body.scrollTop = document.documentElement.scrollTop = 0
         routerPush('/detail', { id: data.project_id })
         selectProjBus.emit(data.project_id)
       }
