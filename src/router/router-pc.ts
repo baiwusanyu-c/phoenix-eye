@@ -201,7 +201,9 @@ export const router = createRouter({
 } as RouterOptions)
 beforeEachHandle(router)
 router.afterEach(() => {
-  setTimeout(() => {
-    document.body.scrollTop = document.documentElement.scrollTop = 0
+  window.scrollTo(0, 0)
+  nextTick(() => {
+    const mainBody: HTMLElement | null = document.getElementById('main_body')
+    mainBody && mainBody.scrollTo(0, 0)
   })
 })

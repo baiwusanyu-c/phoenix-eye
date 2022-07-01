@@ -2,7 +2,7 @@
   <div class="layout">
     <!--   上侧菜单     -->
     <tsgz-nav-menu ref="headerCom"></tsgz-nav-menu>
-    <div class="main scrollDiy">
+    <div id="main_body" class="main scrollDiy">
       <div class="bg"></div>
       <transition name="fade" mode="out-in">
         <router-view ref="parentRouterRef" :key="key" />

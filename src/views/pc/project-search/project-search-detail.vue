@@ -1120,6 +1120,10 @@
           }
         }
         .twitter-analysis-left {
+          .empty-data {
+            width: 120px;
+            margin: 0 auto;
+          }
           width: calc(100% - 200px);
           p {
             font-size: 14px;

@@ -472,7 +472,11 @@
        */
       const selectProjBus = useEventBus<string>('selectProjBus')
       const handleProjectSelect = (data: IOption): void => {
-        document.body.scrollTop = document.documentElement.scrollTop = 0
+        window.scrollTo(0, 0)
+        nextTick(() => {
+          const mainBody: HTMLElement | null = document.getElementById('main_body')
+          mainBody && mainBody.scrollTo(0, 0)
+        })
         routerPush('/detail', { id: data.project_id })
         selectProjBus.emit(data.project_id)
       }
