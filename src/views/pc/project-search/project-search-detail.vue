@@ -350,17 +350,27 @@
               <div class="low-high-score">
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreH') }}
-                  <span class="score-high">{{
-                    projectScoreData.high_total_score > 0
-                      ? projectScoreData.high_total_score
-                      : 'N/A'
-                  }}</span>
+                  <span
+                    class="score-high"
+                    :style="`color:${handleScoreColor(projectScoreData.high_total_score)}`"
+                    >{{
+                      projectScoreData.high_total_score > 0
+                        ? projectScoreData.high_total_score
+                        : 'N/A'
+                    }}</span
+                  >
                 </p>
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreL') }}
-                  <span class="score-low">{{
-                    projectScoreData.low_total_score > 0 ? projectScoreData.low_total_score : 'N/A'
-                  }}</span>
+                  <span
+                    class="score-low"
+                    :style="`color:${handleScoreColor(projectScoreData.low_total_score)}`"
+                    >{{
+                      projectScoreData.low_total_score > 0
+                        ? projectScoreData.low_total_score
+                        : 'N/A'
+                    }}</span
+                  >
                 </p>
               </div>
               <bar-cell
