@@ -184,6 +184,8 @@
     .remote-search-list--container {
       max-height: 250px;
       overflow-y: auto;
+      padding-top: 10px;
+      box-sizing: border-box;
       .remote-search-list--item {
         height: 48px;
         line-height: 48px;
