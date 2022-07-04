@@ -479,7 +479,12 @@
     transform: translateY(-50%);
   }
 }
-
+.be-message--container{
+  width: auto !important;
+  .be-message--head{
+    width: max-content;
+  }
+}
 //多选框样式
 
 .el-checkbox__input.is-checked + .el-checkbox__label {
@@ -719,7 +724,7 @@
 
   .table-page {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     justify-content: flex-end;
     height: 60px;
 

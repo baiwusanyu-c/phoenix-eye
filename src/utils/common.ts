@@ -273,6 +273,9 @@ export const createDate = function createDate(dateStr?: string | Date | number) 
     return dateStr
   }
   if (dateStr && dateStr.constructor === String) {
+    if (browserInfo().browser === 'safari') {
+      return new Date(dateStr.replace('.000+0000', ''))
+    }
     // 替换成ie支持的字符串
     return ieVersion() === -1
       ? new Date(dateStr)

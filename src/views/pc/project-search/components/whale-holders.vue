@@ -86,7 +86,7 @@
                     :show-info="false">
                   </be-progress>
                   <span style="color: #18304e; font-weight: bold; font-size: 14px">
-                    {{ simulateToFixed(scope.row.percentage, 2) }} %
+                    {{ simulateToFixed(scope.row.percentage, 2) }}%
                   </span>
                 </div>
               </template>
@@ -177,7 +177,7 @@
                 :show-info="false">
               </be-progress>
               <span style="color: #18304e; font-weight: bold; font-size: 14px; width: 80px">
-                {{ simulateToFixed(scope.row.percentage, 2) }} %
+                {{ simulateToFixed(scope.row.percentage, 2) }}%
               </span>
             </div>
           </template>

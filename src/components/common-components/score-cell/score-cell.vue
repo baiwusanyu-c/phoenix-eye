@@ -83,6 +83,11 @@
 
 <style lang="scss">
   .score-cell {
+    position: relative;
+    svg {
+      position: absolute;
+      top: 0;
+    }
     .be-progress-body {
       width: 32px !important;
       height: 32px !important;

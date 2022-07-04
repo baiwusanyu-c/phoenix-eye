@@ -375,7 +375,10 @@
     margin-top: 40px;
   }
   .addr-monitor-main {
-    min-height: calc(100% - 100px);
+    min-height: calc(100vh - 128px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .subTitle {
       font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;
