@@ -91,6 +91,18 @@ service.interceptors.response.use(
           const err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期'
           message('error', err)
           setSession('loginExpiredNum', 'true')
+          if (location.pathname === '/addressMonitor') {
+            setTimeout(() => {
+              window.location.href = '/addressMonitor'
+            }, 500)
+            return
+          }
+          if (location.pathname.indexOf('/addressMonitorDetail') >= 0) {
+            setTimeout(() => {
+              window.location.href = '/addressMonitor'
+            }, 1500)
+            return
+          }
         }
         setTimeout(() => {
           window.location.href = '/projectSearch'

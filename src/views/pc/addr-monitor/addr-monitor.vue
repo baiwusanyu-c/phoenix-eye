@@ -293,22 +293,20 @@
       const isLogin = ref<boolean>(false)
       const initPage = (): void => {
         const urlParams = getUrlkey()
-        isLogin.value = !!getStore('token')
-        // 没登录。看看url是否有移动端传参
-        if (!isLogin.value) {
-          if (urlParams.from === 'mobile' && urlParams.token) {
-            isLogin.value = true
-            setStore('token', Base64.decode(urlParams.token))
-            setStore(
-              'userInfo',
-              JSON.stringify({
-                username: urlParams.userName,
-              })
-            )
-            const reInit = useEventBus<string>('reInit')
-            reInit.emit()
-          }
+        // 看看url是否有移动端传参
+        if (urlParams.from === 'mobile' && urlParams.token) {
+          isLogin.value = true
+          setStore('token', Base64.decode(urlParams.token))
+          setStore(
+            'userInfo',
+            JSON.stringify({
+              username: urlParams.userName,
+            })
+          )
+          const reInit = useEventBus<string>('reInit')
+          reInit.emit()
         }
+        isLogin.value = !!getStore('token')
         // 来自email 打开
         if (urlParams.from === 'email' && urlParams.address) {
           // 如果没登录就通知显示登录
