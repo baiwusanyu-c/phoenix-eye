@@ -60,6 +60,7 @@
       const ellipsisCopy = computed(() => {
         return `${props.width}px`
       })
+
       return {
         ellipsisCopy,
       }
@@ -79,8 +80,8 @@
       margin-right: 6px;
     }
     .ellipsis-copy {
-      width: v-bind(ellipsisCopy);
       min-width: initial !important;
+      max-width: v-bind(ellipsisCopy);
     }
   }
 
