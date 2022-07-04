@@ -356,7 +356,7 @@ export function nFormatter(num: number, digits: number, getS = false) {
   }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
-export function nFormats(num: number) {
+export function nFormats(num: number, precision = 1000) {
   let unit = ''
   let res = num
   if (num >= 1e3 && num < 1e6) {
@@ -383,8 +383,12 @@ export function nFormats(num: number) {
     res = num / 1e18
     unit = 'E'
   }
-
-  return `${Math.floor(res * 1000) / 1000}${unit}`
+  if (precision && precision !== 0) {
+    return `${Math.floor(res * 1000) / 1000}${unit}`
+  }
+  if (!precision) {
+    return `${res}${unit}`
+  }
 }
 /**
  * 打开窗口
