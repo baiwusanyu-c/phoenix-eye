@@ -51,6 +51,10 @@
         type: String,
         default: '116',
       },
+      isFixedWidth: {
+        type: Boolean,
+        default: false,
+      },
       styles: {
         type: String,
         default: '',
@@ -60,9 +64,12 @@
       const ellipsisCopy = computed(() => {
         return `${props.width}px`
       })
-
+      const ellipsisFixedWidth = computed(() => {
+        return props.isFixedWidth ? `${props.width}px` : ''
+      })
       return {
         ellipsisCopy,
+        ellipsisFixedWidth,
       }
     },
   })
@@ -81,6 +88,7 @@
     }
     .ellipsis-copy {
       min-width: initial !important;
+      width: v-bind(ellipsisFixedWidth);
       max-width: v-bind(ellipsisCopy);
     }
   }

@@ -164,6 +164,7 @@
             <project-name-cell
               :name="item.project_name"
               :url="item.logo_url"
+              is-fixed-width
               :size="24"
               :font-size="12">
             </project-name-cell>

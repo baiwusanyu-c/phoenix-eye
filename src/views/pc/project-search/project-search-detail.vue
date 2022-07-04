@@ -651,7 +651,10 @@
               governData.value = res.data.social_profiles
               riskChartData.value = res.data.risk_tx_info
               projectScoreData.value = res.data.project_score
-              relatedProject.value = res.data.relate_project
+              relatedProject.value =
+                res.data.relate_project && res.data.relate_project.length > 5
+                  ? res.data.relate_project[5]
+                  : res.data.relate_project
               if (res.data.twitter_analysis.following_info) {
                 twitterAnalysisData.value = res.data.twitter_analysis.following_info
               }

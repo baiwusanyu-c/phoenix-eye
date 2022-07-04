@@ -112,6 +112,9 @@
     height: 373px;
     margin-right: 24px;
     .security-card--head {
+      .security-card--decr {
+        height: 72px;
+      }
       height: 160px;
       padding: 20px;
       box-sizing: border-box;
