@@ -16,7 +16,7 @@
     <el-pagination
       v-model:currentPage="pageParams.currentPage"
       v-model:page-size="pageParams.pageSize"
-      :page-sizes="[10, 15, 20, 40, 80, 100]"
+      :page-sizes="[4, 10, 15, 20, 40, 80, 100]"
       layout="prev, pager, next"
       :total="pageParams.total"
       @current-change="pageChange" />
@@ -27,7 +27,7 @@
   import { defineComponent, onMounted, ref, watch } from 'vue'
   import compositionPage from '../../../../utils/mixin/page-param'
   import { getPublicOpinionList } from '../../../../api/risk-public-info'
-  import { catchErr } from '../../../../utils/common'
+  import { catchErr, message } from '../../../../utils/common'
   // @ts-ignore
 
   import SecurityCard from './security-card.vue'
@@ -63,7 +63,6 @@
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
         }
-        emit('show', false)
         getPublicOpinionList(params)
           .then((res: IAxiosRes) => {
             if (res && res.success) {
@@ -71,12 +70,19 @@
               pageParams.value.total = res.data.total
               if (riskInfoList.value.length > 0) {
                 emit('show', true)
+              } else {
+                emit('show', false)
               }
             } else {
               catchErr(res)
             }
           })
-          .catch(catchErr)
+          .catch(err => {
+            emit('show', false)
+            if (!err) return
+            message('error', err.message || err)
+            console.error(err)
+          })
       }
       /**
        * 分页方法
@@ -101,7 +107,7 @@
 
 <style lang="scss">
   .project-risk--container {
-    @include common-container(32px, 67.2%);
+    @include common-container(32px);
     text-align: center;
     min-height: 480px;
     height: auto;

@@ -20,16 +20,22 @@
         </el-select>
       </div>
       <div style="display: flex; align-items: center">
-        <remote-search :remote-search="getProjectUser" @select="handleProjectSelect">
+        <remote-search
+          :remote-search="getProjectUser"
+          custom-list-class="remote-search-custom-list"
+          @select="handleProjectSelect">
           <template #option="slotProps">
-            <project-name-cell
-              :url="slotProps.item.logo_url"
-              :name="slotProps.item.project_name"
-              :is-ell="false">
-            </project-name-cell>
-            <span style="font-size: 14px; color: #7c9aaa; font-weight: bold">{{
-              platformToCurrency[slotProps.item.platform]
-            }}</span>
+            <div class="remote-search-item">
+              <el-avatar :size="32" :src="slotProps.item.logo_url" fit="cover">
+                <img src="../../../../assets/image/pc/empty-avt.png" />
+              </el-avatar>
+              <span class="item-project-name">
+                {{ slotProps.item.project_name }}
+                <span class="project-platform">
+                  {{ platformToCurrency[slotProps.item.platform] }}
+                </span>
+              </span>
+            </div>
           </template>
           <template #listFooter>
             <div id="create_one_body" class="create-one--body">
@@ -248,14 +254,7 @@
   import composition from '../../../../utils/mixin/common-func'
   import { getExploreList, getProjectListCurUser } from '../../../../api/project-explorer'
   // @ts-ignore
-  import {
-    catchErr,
-    createDate,
-    formatDate,
-    nFormats,
-    removeStore,
-    setStore,
-  } from '../../../../utils/common'
+  import { catchErr, createDate, formatDate, nFormats } from '../../../../utils/common'
   import { platformListDict, platformToCurrency } from '../../../../utils/platform-dict'
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'
@@ -348,21 +347,15 @@
       const tableHeader = computed(() => {
         const headerDict: IOption = {
           //project_name: '160',
-          project_name: '230',
+          project_name: '220',
           security_score: '60',
           tx_24: '70',
           market_cap: '120',
           token_price: '160',
           create_time: '80',
-          platform: '120',
+          platform: '110',
           audit_report_num: '100',
         }
-        /* if (1280 <= screenWidth && 1326 <= screenWidth) {
-                headerDict.risk_features = '320'
-                headerDict.from_address = '140'
-                headerDict.tx_hash = '140'
-                headerDict.platform = '90'
-            }*/
         return function (key: string) {
           return headerDict[key]
         }

@@ -28,7 +28,11 @@
       </be-input>
     </template>
     <div class="remote-search-list--body">
-      <div v-loading="selectLoading" class="remote-search-list--container scroll-diy">
+      <div
+        v-loading="selectLoading"
+        class="remote-search-list--container scroll-diy"
+        :style="`padding-top: ${showPadding};`"
+        :class="customListClass">
         <div
           v-for="item in list"
           :key="item[keyVal]"
@@ -53,7 +57,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, getCurrentInstance, ref } from 'vue'
+  import { computed, defineComponent, getCurrentInstance, ref } from 'vue'
   import { BeInput, BePopover } from '@eagle-eye/be-ui'
   import { useThrottleFn } from '@vueuse/core'
   import type { IOption } from '../../../utils/types'
@@ -75,10 +79,18 @@
         type: String,
         default: 'project_id',
       },
+      selectClear: {
+        type: Boolean,
+        default: false,
+      },
       remoteSearch: {
         type: Function,
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         default: () => {},
+      },
+      customListClass: {
+        type: String,
+        default: '',
       },
     },
     emits: ['select', 'clear'],
@@ -113,6 +125,9 @@
         ;(internalInstance?.refs.remoteSearchPopover as IPopover).close()
         if (isSwitch) {
           ctx.emit('select', item)
+          if (props.selectClear) {
+            searchParamsInput.value = ''
+          }
         }
       }
       /**
@@ -121,7 +136,9 @@
       const setSearchCacheVal = (status: boolean): void => {
         if (!status && searchParamsInput.value !== searchParamsCache.value) {
           list.value = []
-          searchParamsInput.value = searchParamsCache.value
+          if (!props.selectClear) {
+            searchParamsInput.value = searchParamsCache.value
+          }
         }
         if (status && searchParamsInput.value) {
           handleChange()
@@ -134,6 +151,9 @@
         searchParamsInput.value = searchParamsCache.value = ''
         ctx.emit('clear')
       }
+      const showPadding = computed(() => {
+        return list.value.length > 0 ? '10px' : ''
+      })
       return {
         handleClear,
         setSearchCacheVal,
@@ -143,6 +163,7 @@
         list,
         uid: internalInstance?.uid,
         selectLoading,
+        showPadding,
       }
     },
   })
@@ -168,8 +189,9 @@
     .remote-search-list--container {
       max-height: 250px;
       overflow-y: auto;
+      box-sizing: border-box;
       .remote-search-list--item {
-        height: 48px;
+        min-height: 48px;
         line-height: 48px;
         cursor: pointer;
         padding: 0 20px;

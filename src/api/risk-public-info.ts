@@ -10,6 +10,7 @@ import config from '../enums/config'
 import type { IPageParam } from '../utils/types'
 export interface IPOList extends IPageParam {
   project_id?: string
+  param?: string
 }
 
 export function getPublicOpinionList(params: IPOList) {

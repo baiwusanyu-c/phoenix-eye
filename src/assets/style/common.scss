@@ -479,7 +479,12 @@
     transform: translateY(-50%);
   }
 }
-
+.be-message--container{
+  width: auto !important;
+  .be-message--head{
+    width: max-content;
+  }
+}
 //多选框样式
 
 .el-checkbox__input.is-checked + .el-checkbox__label {
@@ -558,7 +563,7 @@
 .create-btn {
   display: block;
   margin: 38px 0;
-  font-weight: bolder;
+  font-weight: bold;
   .be-icon--container{
     use{
       fill: $textColor3 !important;
@@ -719,7 +724,7 @@
 
   .table-page {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     justify-content: flex-end;
     height: 60px;
 
@@ -872,7 +877,7 @@
 }
 .be-button .be-button--body .be-button--slot{
   font-family: BarlowSemi-B, sans-serif !important;
-  font-weight: bolder;
+  font-weight: bold;
 }
 /*
 @media screen and (min-width: 1536px) and (max-width: 1830px) {

@@ -17,7 +17,12 @@
             <el-input v-model="form.address" :disabled="type === 'edit'"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
-            <el-input v-model="form.remark" type="textarea" :rows="7" resize="none"></el-input>
+            <el-input
+              v-model="form.remark"
+              type="textarea"
+              :rows="7"
+              resize="none"
+              maxlength="300"></el-input>
           </el-form-item>
           <!--<el-form-item :label="$t('lang.addrMonitor.form.labelLink') + ':'">
             <div class="form&#45;&#45;link">

@@ -18,9 +18,11 @@ export const META_TITLE_DICT: IOption = {
 }
 export const WHITE_LIST: Array<string> = [
   '/riskTrxList',
-  '/ProjectSearch',
+  '/projectSearch',
   '/RiskPublicInformation',
   '/addressMonitor',
+  '/detail',
+  '/addressMonitorDetail',
 ]
 // 组件字典
 // 递归路由配置对象时会使用到，其key必须和bms的组件路径一致

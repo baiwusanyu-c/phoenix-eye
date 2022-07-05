@@ -164,7 +164,8 @@
   import { useI18n } from 'vue-i18n'
   import { useEventBus } from '@vueuse/core'
   // @ts-ignore
-  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
+  import { BeButton } from '@eagle-eye/be-ui'
+  import { Base64 } from 'js-base64'
   import { catchErr, getStore, getUrlkey, openWindow, setStore } from '../../../utils/common'
   import composition from '../../../utils/mixin/common-func'
   import MsgDialog from '../../../components/common-components/msg-dialog/msg-dialog.vue'
@@ -184,7 +185,6 @@
     components: {
       EmptyData,
       BeButton,
-      BeIcon,
       MsgDialog,
       createAddrMonitor,
     },
@@ -287,12 +287,25 @@
         openWindow(`/addressMonitorDetail?address=${params}`, params)
       }
       /**
-       * 处理email打开
+       * 处理email、移动端打开打开
        */
       const busLogin = useEventBus<string>('openLogin')
       const isLogin = ref<boolean>(false)
       const initPage = (): void => {
         const urlParams = getUrlkey()
+        // 看看url是否有移动端传参
+        if (urlParams.from === 'mobile' && urlParams.token) {
+          isLogin.value = true
+          setStore('token', Base64.decode(urlParams.token))
+          setStore(
+            'userInfo',
+            JSON.stringify({
+              username: urlParams.userName,
+            })
+          )
+          const reInit = useEventBus<string>('reInit')
+          reInit.emit()
+        }
         isLogin.value = !!getStore('token')
         // 来自email 打开
         if (urlParams.from === 'email' && urlParams.address) {
@@ -360,7 +373,10 @@
     margin-top: 40px;
   }
   .addr-monitor-main {
-    min-height: calc(100% - 100px);
+    min-height: calc(100vh - 128px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .subTitle {
       font-family: BarlowSemi-R, sans-serif;
       font-size: 18px;

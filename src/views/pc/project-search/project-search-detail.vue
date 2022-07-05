@@ -10,7 +10,10 @@
           <project-name-cell
             :name="baseInfo.project_name"
             :url="baseInfo.logo_url"
-            :is-ell="false"
+            :is-ell="true"
+            :ellipsis-len="30"
+            :font-len="30"
+            width="600"
             size="46"
             styles="font-size:30px">
           </project-name-cell>
@@ -49,7 +52,7 @@
             @click="handleSubscribe">
           </be-button>
         </div>
-        <div>
+        <div style="height: 60px">
           <be-icon
             v-if="governData.website"
             :herf="governData.website"
@@ -112,16 +115,18 @@
                   ">
                   <ellipsis-copy
                     :target-str="handleTokenAddress(baseInfo)"
-                    :tooltip-txt="`
-                    Token Address Symbol: ${baseInfo.token_address_symbol}
-                    Token Address: ${baseInfo.token_address}`"
+                    :tooltip-txt="tokenAddrTips()"
                     :is-tooltip="true"
                     :is-ellipsis="handleTokenAddress(baseInfo).length > 30"
                     :is-show-copy-btn="false">
                   </ellipsis-copy>
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
                 </p>
-                <el-tooltip :content="onChainData.token_price" placement="top" effect="light">
+                <el-tooltip
+                  :content="onChainData.token_price"
+                  placement="top"
+                  effect="light"
+                  :disabled="!onChainData.token_price">
                   <p class="token-price-val">
                     {{
                       isEmpty(onChainData.token_price, '/') === '/'
@@ -299,6 +304,10 @@
             <div v-if="hasTokenAddress" class="twitter-analysis-left">
               <p>{{ $t('lang.projectExplorer.detail.twitterAnalysis1') }}</p>
               <area-line-cell
+                v-if="
+                  twitterAnalysisData.every_day_data &&
+                  twitterAnalysisData.every_day_data.length > 0
+                "
                 dom-id="twitter_analysis"
                 :line-data="twitterAnalysisData.every_day_data"
                 x-axis="value"
@@ -306,6 +315,7 @@
                 :smooth="false"
                 :height="180">
               </area-line-cell>
+              <empty-data v-else></empty-data>
             </div>
             <div v-if="!hasTokenAddress">
               <p class="twitter-analysis--title">
@@ -342,17 +352,27 @@
               <div class="low-high-score">
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreH') }}
-                  <span class="score-high">{{
-                    projectScoreData.high_total_score > 0
-                      ? projectScoreData.high_total_score
-                      : 'N/A'
-                  }}</span>
+                  <span
+                    class="score-high"
+                    :style="`color:${handleScoreColor(projectScoreData.high_total_score)}`"
+                    >{{
+                      projectScoreData.high_total_score > 0
+                        ? projectScoreData.high_total_score
+                        : 'N/A'
+                    }}</span
+                  >
                 </p>
                 <p class="score">
                   {{ $t('lang.projectExplorer.detail.scoreL') }}
-                  <span class="score-low">{{
-                    projectScoreData.low_total_score > 0 ? projectScoreData.low_total_score : 'N/A'
-                  }}</span>
+                  <span
+                    class="score-low"
+                    :style="`color:${handleScoreColor(projectScoreData.low_total_score)}`"
+                    >{{
+                      projectScoreData.low_total_score > 0
+                        ? projectScoreData.low_total_score
+                        : 'N/A'
+                    }}</span
+                  >
                 </p>
               </div>
               <bar-cell
@@ -506,6 +526,7 @@
   import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
   import { setPrevUrl } from '../../../utils/request'
+  import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import ProjectDetailPubliOpinion from './components/project-detail-public-opinion.vue'
   import ProjectDetailAudit from './components/project-detail-audit.vue'
   import ProjectDetailTop from './components/project-detail-top.vue'
@@ -538,6 +559,7 @@
   export default defineComponent({
     name: 'ProjectSearchDetail',
     components: {
+      EmptyData,
       RelateProject,
       ProjectNameCell,
       ContactBar,
@@ -631,7 +653,10 @@
               governData.value = res.data.social_profiles
               riskChartData.value = res.data.risk_tx_info
               projectScoreData.value = res.data.project_score
-              relatedProject.value = res.data.relate_project
+              relatedProject.value =
+                res.data.relate_project && res.data.relate_project.length > 5
+                  ? res.data.relate_project.slice(0, 5)
+                  : res.data.relate_project
               if (res.data.twitter_analysis.following_info) {
                 twitterAnalysisData.value = res.data.twitter_analysis.following_info
               }
@@ -849,7 +874,23 @@
           return val.token_address_symbol ? val.token_address_symbol : val.token_address
         }
       })
+      const tokenAddrTips = computed(() => {
+        return () => {
+          if (baseInfo.value.token_address_symbol && !baseInfo.value.token_address) {
+            return `Token Address Symbol: ${baseInfo.value.token_address_symbol}`
+          }
+          if (!baseInfo.value.token_address_symbol && baseInfo.value.token_address) {
+            return `Token Address: ${baseInfo.value.token_address}`
+          }
+          if (baseInfo.value.token_address_symbol && baseInfo.value.token_address) {
+            return `Token Address Symbol: ${baseInfo.value.token_address_symbol}
+                      Token Address: ${baseInfo.value.token_address}`
+          }
+          return ''
+        }
+      })
       return {
+        tokenAddrTips,
         relatedProject,
         handleTokenAddress,
         openCreateProject,
@@ -908,7 +949,7 @@
     .project-detail-related,
     .project-detail-risk,
     .project-detail-market {
-      @include common-container(32px, 67.2%);
+      @include common-container(32px);
     }
     .project-detail--header {
       height: 60px;
@@ -1040,6 +1081,7 @@
             color: $textColor3;
             line-height: 58px;
             margin-bottom: 10px;
+            width: min-content;
           }
         }
         .token-price-left {
@@ -1110,6 +1152,10 @@
           }
         }
         .twitter-analysis-left {
+          .empty-data {
+            width: 120px;
+            margin: 0 auto;
+          }
           width: calc(100% - 200px);
           p {
             font-size: 14px;

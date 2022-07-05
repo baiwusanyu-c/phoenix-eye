@@ -14,7 +14,7 @@
         margin-left: 4px;
         font-weight: bold;
         font-size: 12px;
-        font-family: BarlowSemi-B sans-serif;
+        font-family: BarlowSemi-B, sans-serif;
       "
       >{{ platform.toUpperCase() }}</span
     >

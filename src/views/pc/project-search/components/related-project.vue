@@ -11,7 +11,8 @@
         :key="item.project_name + item.platform + item.logo_url"
         :name="item.project_name"
         :url="item.logo_url"
-        :platform="item.platform">
+        :platform="item.platform"
+        @click="openWindow(`/detail?id=${item.project_id}`)">
       </relate-project-card>
     </div>
   </div>
@@ -20,6 +21,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
   import related from '../../../../assets/image/pc/related.png'
+  import { openWindow } from '../../../../utils/common'
   import RelateProjectCard from './relate-project-card.vue'
   import type { IRelateProject } from '../../../../utils/types'
   import type { PropType } from 'vue'
@@ -34,6 +36,7 @@
     setup() {
       return {
         related,
+        openWindow,
       }
     },
   })

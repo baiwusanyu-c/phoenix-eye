@@ -1,32 +1,36 @@
 /* * @contact-bar.vue * @deprecated * @author czh * @update (czh 2022/5/30) */
 <template>
-  <div class="contact-bar">
-    <div class="icon-body" role="link" @click="openWindow(webURL.contact_telegram)">
-      <a :herf="webURL.contact_telegram">
-        <be-icon icon="iconTelegramG" width="25" height="25"></be-icon>
-      </a>
+  <teleport to="body">
+    <div v-drag class="contact-bar">
+      <div class="icon-body" role="link" @click="openWindow(webURL.contact_telegram)">
+        <a :herf="webURL.contact_telegram">
+          <be-icon icon="iconTelegramG" width="25" height="25"></be-icon>
+        </a>
+      </div>
+      <div class="icon-body">
+        <el-tooltip :content="webURL.contact_email" placement="top">
+          <be-icon icon="iconEmailG" width="25" height="25"></be-icon>
+        </el-tooltip>
+      </div>
+      <div class="icon-body" role="link" title="feedback" @click="openWindow(webURL.feedback)">
+        <a :herf="webURL.feedback">
+          <be-icon icon="iconFeedback" width="25" height="25"></be-icon>
+        </a>
+      </div>
     </div>
-    <div class="icon-body">
-      <el-tooltip :content="webURL.contact_email" placement="top">
-        <be-icon icon="iconEmailG" width="25" height="25"></be-icon>
-      </el-tooltip>
-    </div>
-    <div class="icon-body" role="link" title="feedback" @click="openWindow(webURL.feedback)">
-      <a :herf="webURL.feedback">
-        <be-icon icon="iconFeedback" width="25" height="25"></be-icon>
-      </a>
-    </div>
-  </div>
+  </teleport>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  // @ts-ignore
   import { BeIcon } from '@eagle-eye/be-ui'
+  import { dragDirective } from '../../../utils/drag-directives'
+  // @ts-ignore
   import { webURL } from '../../../enums/link'
   import { openWindow } from '../../../utils/common'
   export default defineComponent({
     name: 'ContactBar',
+    directives: { drag: dragDirective },
     components: {
       BeIcon,
     },
@@ -81,6 +85,21 @@
       height: 140px;
     }
   }
+  @media screen and (min-width: 1752px) and (max-width: 1850px) {
+    .contact-bar {
+      right: 10%;
+    }
+  }
+  @media screen and (min-width: 1326px) and (max-width: 1750px) {
+    .contact-bar {
+      right: 1%;
+    }
+  }
+  /* @media screen and (min-width: 1326px) and (max-width: 1660px) {
+      .contact-bar {
+          right: 4%;
+      }
+  }*/
   /*
   !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {

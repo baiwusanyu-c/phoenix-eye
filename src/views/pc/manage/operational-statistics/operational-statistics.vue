@@ -227,7 +227,7 @@
     }
 
     .operational-statistics-list {
-      width: 70%;
+      width: 1284px;
       padding: 20px;
       margin: 36px auto 0 auto;
       background-color: $mainColor7;

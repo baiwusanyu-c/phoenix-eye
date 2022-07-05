@@ -10,7 +10,7 @@
       :is-ellipsis="(name && name.length) >= ellipsisLen ? true : false"
       :is-show-copy-btn="false"
       :is-tooltip="true"
-      styles="color: #18304E;font-weight: bold;font-size: 14px;"
+      :styles="`color: #18304E;font-weight: bold;font-size: 14px;${styles}`"
       :font-length="fontLen"
       end-length="0">
     </ellipsis-copy>
@@ -51,6 +51,10 @@
         type: String,
         default: '116',
       },
+      isFixedWidth: {
+        type: Boolean,
+        default: false,
+      },
       styles: {
         type: String,
         default: '',
@@ -60,8 +64,12 @@
       const ellipsisCopy = computed(() => {
         return `${props.width}px`
       })
+      const ellipsisFixedWidth = computed(() => {
+        return props.isFixedWidth ? `${props.width}px` : ''
+      })
       return {
         ellipsisCopy,
+        ellipsisFixedWidth,
       }
     },
   })
@@ -75,12 +83,13 @@
       font-weight: bold;
       font-size: 14px;
       color: $textColor3;
-      font-family: BarlowSemi-B sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
       margin-right: 6px;
     }
     .ellipsis-copy {
-      width: v-bind(ellipsisCopy);
       min-width: initial !important;
+      width: v-bind(ellipsisFixedWidth);
+      max-width: v-bind(ellipsisCopy);
     }
   }
 
