@@ -115,16 +115,18 @@
                   ">
                   <ellipsis-copy
                     :target-str="handleTokenAddress(baseInfo)"
-                    :tooltip-txt="`
-                    Token Address Symbol: ${baseInfo.token_address_symbol}
-                    Token Address: ${baseInfo.token_address}`"
+                    :tooltip-txt="tokenAddrTips(baseInfo)"
                     :is-tooltip="true"
                     :is-ellipsis="handleTokenAddress(baseInfo).length > 30"
                     :is-show-copy-btn="false">
                   </ellipsis-copy>
                   <be-icon icon="iconEnter" style="margin-left: 6px"></be-icon>
                 </p>
-                <el-tooltip :content="onChainData.token_price" placement="top" effect="light">
+                <el-tooltip
+                  :content="onChainData.token_price"
+                  placement="top"
+                  effect="light"
+                  :disabled="!onChainData.token_price">
                   <p class="token-price-val">
                     {{
                       isEmpty(onChainData.token_price, '/') === '/'
@@ -872,7 +874,23 @@
           return val.token_address_symbol ? val.token_address_symbol : val.token_address
         }
       })
+      const tokenAddrTips = computed(() => {
+        return data => {
+          if (baseInfo.value.token_address_symbol && !baseInfo.value.token_address) {
+            return `Token Address Symbol: ${baseInfo.value.token_address_symbol}`
+          }
+          if (!baseInfo.value.token_address_symbol && baseInfo.value.token_address) {
+            return `Token Address: ${baseInfo.value.token_address}`
+          }
+          if (baseInfo.value.token_address_symbol && baseInfo.value.token_address) {
+            return `Token Address Symbol: ${baseInfo.value.token_address_symbol}
+                      Token Address: ${baseInfo.value.token_address}`
+          }
+          return ''
+        }
+      })
       return {
+        tokenAddrTips,
         relatedProject,
         handleTokenAddress,
         openCreateProject,
@@ -1063,6 +1081,7 @@
             color: $textColor3;
             line-height: 58px;
             margin-bottom: 10px;
+            width: min-content;
           }
         }
         .token-price-left {

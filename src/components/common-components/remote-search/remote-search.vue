@@ -31,6 +31,7 @@
       <div
         v-loading="selectLoading"
         class="remote-search-list--container scroll-diy"
+        :style="`padding-top: ${showPadding};`"
         :class="customListClass">
         <div
           v-for="item in list"
@@ -56,7 +57,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, getCurrentInstance, ref } from 'vue'
+  import { computed, defineComponent, getCurrentInstance, ref } from 'vue'
   import { BeInput, BePopover } from '@eagle-eye/be-ui'
   import { useThrottleFn } from '@vueuse/core'
   import type { IOption } from '../../../utils/types'
@@ -150,6 +151,9 @@
         searchParamsInput.value = searchParamsCache.value = ''
         ctx.emit('clear')
       }
+      const showPadding = computed(() => {
+        return list.value.length > 0 ? '10px' : ''
+      })
       return {
         handleClear,
         setSearchCacheVal,
@@ -159,6 +163,7 @@
         list,
         uid: internalInstance?.uid,
         selectLoading,
+        showPadding,
       }
     },
   })
@@ -184,10 +189,9 @@
     .remote-search-list--container {
       max-height: 250px;
       overflow-y: auto;
-      padding-top: 10px;
       box-sizing: border-box;
       .remote-search-list--item {
-        height: 48px;
+        min-height: 48px;
         line-height: 48px;
         cursor: pointer;
         padding: 0 20px;
