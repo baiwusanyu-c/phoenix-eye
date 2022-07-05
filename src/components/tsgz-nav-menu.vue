@@ -24,7 +24,7 @@
               :index="value.index"
               :disabled="value.isDisabled"
               @click="routerSwitch(value, value.isPush)">
-              <span style="margin-left: 10px; font-size: 16px">{{ $t(value.name) }}</span>
+              <span class="nav-name">{{ $t(value.name) }}</span>
             </el-menu-item>
           </div>
         </el-menu>
@@ -753,10 +753,14 @@
       background-repeat: no-repeat;
       background-position: right;
       background-size: 100% 100%;
-
+      .nav-name {
+        margin-left: 10px;
+        font-size: 16px;
+      }
       .remote-search-input {
         background: $mainColor1;
         border: none;
+        width: 240px;
         margin-right: 20px;
         .be-input__inner {
           background: $mainColor1;
@@ -913,6 +917,16 @@
     }
     .tsgz-nav-menu {
       padding: 0 2%;
+    }
+    .tsgz-nav-menu .feedback-btn {
+      width: 108px;
+      .be-button--slot {
+        font-size: 12px;
+      }
+    }
+    .tsgz-nav-menu .nav-name {
+      margin-left: 4px;
+      font-size: 12px;
     }
     .tsgz-nav-menu .remote-search-input {
       width: 160px;
