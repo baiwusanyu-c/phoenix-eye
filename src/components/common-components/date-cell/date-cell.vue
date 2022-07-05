@@ -2,11 +2,11 @@
 <template>
   <be-tooltip :content="contentCompute(time)" custom-class="table-tooltip">
     <span style="color: #888">
-      <p style="font-family: BarlowSemi-B sans-serif">
+      <p style="font-family: BarlowSemi-B, sans-serif">
         {{ formatDate(createDate(time)).split(' ')[0] }}
         <span v-if="!isBreak"> {{ formatDate(createDate(time)).split(' ')[1] }}</span>
       </p>
-      <p v-if="isBreak" style="font-family: BarlowSemi-B sans-serif">
+      <p v-if="isBreak" style="font-family: BarlowSemi-B, sans-serif">
         {{ formatDate(createDate(time)).split(' ')[1] }}
       </p>
     </span>

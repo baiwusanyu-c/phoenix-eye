@@ -164,6 +164,7 @@
             <project-name-cell
               :name="item.project_name"
               :url="item.logo_url"
+              is-fixed-width
               :size="24"
               :font-size="12">
             </project-name-cell>
@@ -397,7 +398,7 @@
     background-image: url('../../../assets/image/pc/bg-base-info.png');
     background-repeat: round;
     border-radius: 4px;
-    @include common-container(32px, 67.2%);
+    @include common-container(32px);
     padding: 40px 60px;
     box-sizing: border-box;
 
@@ -454,7 +455,7 @@
   }
 
   .project-alert--container {
-    @include common-container(32px, 67.2%);
+    @include common-container(32px);
     display: flex;
     .alert-hot {
       width: calc(75% - 20px);
@@ -709,8 +710,8 @@
       width: 45%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
@@ -718,12 +719,12 @@
       width: 80%;
     }
   }
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .project-search-main .project-base--container,
     .project-search-main .project-alert--container,
     .project-search-main .project-explorer--container {
       width: 72%;
     }
-  }
+  }*/
 </style>

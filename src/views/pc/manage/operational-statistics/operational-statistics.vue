@@ -91,7 +91,7 @@
   import ChartLine from './components/chart-line.vue'
   import ChartPie from './components/chart-pie.vue'
   import type { ILogParam } from '../../../../api/operational-statistics'
-  import type { IPageParam, IStatisticsLine, IStatisticsPie } from '../../../../utils/types'
+  import type { IStatisticsLine, IStatisticsPie } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'OperationalStatistics',
@@ -227,7 +227,7 @@
     }
 
     .operational-statistics-list {
-      width: 70%;
+      width: 1284px;
       padding: 20px;
       margin: 36px auto 0 auto;
       background-color: $mainColor7;
@@ -263,8 +263,8 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .operational-statistics-main .operational-statistics-list,
     .operational-statistics-main .operational-statistics-chart,
@@ -272,5 +272,5 @@
     .operational-statistics-main .operational-statistics-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

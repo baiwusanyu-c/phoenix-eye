@@ -116,7 +116,7 @@
   import { deleteRiskUrl, getRiskUrl } from '../../../../api/malicious-site'
   import addSite from './components/add-site.vue'
   import type { IDelRiskUrl, IRiskUrl, IRiskUrlList } from '../../../../api/malicious-site'
-  import type { IPageParam } from '../../../../utils/types'
+
   export default defineComponent({
     name: 'MaliciousSiteManagement',
     components: {
@@ -262,7 +262,7 @@
     }
 
     .malicious-site-list {
-      width: 70%;
+      width: 1284px;
       padding: 20px;
       margin: 0 auto;
       background-color: $mainColor7;
@@ -282,12 +282,12 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .malicious-site-main .malicious-site-list,
     .malicious-site-main .malicious-site-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

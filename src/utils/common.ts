@@ -273,6 +273,9 @@ export const createDate = function createDate(dateStr?: string | Date | number) 
     return dateStr
   }
   if (dateStr && dateStr.constructor === String) {
+    if (browserInfo().browser === 'safari') {
+      return new Date(dateStr.replace('.000+0000', ''))
+    }
     // 替换成ie支持的字符串
     return ieVersion() === -1
       ? new Date(dateStr)
@@ -356,7 +359,7 @@ export function nFormatter(num: number, digits: number, getS = false) {
   }
   return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
-export function nFormats(num: number) {
+export function nFormats(num: number, precision = 1000) {
   let unit = ''
   let res = num
   if (num >= 1e3 && num < 1e6) {
@@ -383,8 +386,12 @@ export function nFormats(num: number) {
     res = num / 1e18
     unit = 'E'
   }
-
-  return `${Math.floor(res * 1000) / 1000}${unit}`
+  if (precision && precision !== 0) {
+    return `${Math.floor(res * 1000) / 1000}${unit}`
+  }
+  if (!precision) {
+    return `${res}${unit}`
+  }
 }
 /**
  * 打开窗口

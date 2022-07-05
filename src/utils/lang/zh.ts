@@ -125,6 +125,7 @@ export default {
     navName9: '运营统计',
     navName10: '恶意网站管理',
     navName11: '安全事件管理',
+    navName12: '免责声明',
     navName4s1: '风险类型配置',
     navName4s2: '风险评分配置',
   },

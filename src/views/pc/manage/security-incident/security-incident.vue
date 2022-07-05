@@ -21,7 +21,7 @@
         <template #empty>
           <empty-data></empty-data>
         </template>
-        <el-table-column prop="project" width="180">
+        <el-table-column prop="project" width="120">
           <template #header>
             <span class="table-head">{{ $t('lang.securityIncident.tableHeader.project') }}</span>
           </template>
@@ -37,7 +37,7 @@
             </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="attack_type" width="180">
+        <el-table-column prop="attack_type" width="120">
           <template #header>
             <span class="table-head">{{ $t('lang.securityIncident.tableHeader.attackType') }}</span>
           </template>
@@ -63,7 +63,7 @@
             {{ isEmpty(scope.row.loss_amount, '/') === '/' ? '/' : `$ ${scope.row.loss_amount}` }}
           </template>
         </el-table-column>
-        <el-table-column prop="event_link">
+        <el-table-column prop="event_link" width="120">
           <template #header>
             <span class="table-head">{{ $t('lang.securityIncident.tableHeader.link') }}</span>
           </template>
@@ -92,8 +92,8 @@
               :is-ellipsis="item.length > 25 ? true : false"
               :is-show-copy-btn="false"
               :is-tooltip="true"
-              font-length="8"
-              end-length="8">
+              font-length="6"
+              end-length="6">
             </ellipsis-copy>
           </template>
         </el-table-column>
@@ -111,8 +111,8 @@
               :is-ellipsis="item.length > 25 ? true : false"
               :is-show-copy-btn="false"
               :is-tooltip="true"
-              font-length="8"
-              end-length="8">
+              font-length="6"
+              end-length="6">
             </ellipsis-copy>
           </template>
         </el-table-column>
@@ -131,13 +131,13 @@
               :is-show-copy-btn="false"
               :is-tooltip="true"
               styles="color:#008EE9;font-weight: bold;font-size: 16px;cursor:pointer"
-              font-length="8"
-              end-length="8"
+              font-length="6"
+              end-length="6"
               @click="openWindow(`${item}`)">
             </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="operation">
+        <el-table-column prop="operation" width="120">
           <template #header>
             <span class="table-head">{{ $t('lang.securityIncident.tableHeader.operation') }}</span>
           </template>
@@ -205,7 +205,6 @@
   import { openWindow } from '../../../../utils/common'
   import { deleteIncidentInfo, getIncidentList } from '../../../../api/security-incident'
   import addSite from './components/add-incident.vue'
-  import type { IPageParam } from '../../../../utils/types'
   import type { IIncident, IIncidentList } from '../../../../api/security-incident'
   export default defineComponent({
     name: 'SecurityIncident',
@@ -224,7 +223,11 @@
       let { createCurItem, curItem, createDialog, opType, openDialog, showDelete } =
         compositionDialog()
       // 当前操作的项目对象
-      curItem = createCurItem<IIncident>({})
+      curItem = createCurItem<IIncident>({
+        attack_address_arr: '',
+        attacked_address_arr: '',
+        attack_trx_arr: '',
+      })
       // 项目列表示例
       const incidentList = reactive({
         data: [],
@@ -341,11 +344,11 @@
     min-height: calc(100% - 100px);
 
     .security-incident-search {
-      @include common-container(40px, 80%);
+      @include common-container(40px);
     }
 
     .security-incident-list {
-      width: 80%;
+      width: 1284px;
       padding: 20px;
       margin: 0 auto;
       background-color: $mainColor7;
@@ -365,12 +368,12 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .security-incident-main .security-incident-list,
     .security-incident-main .security-incident-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

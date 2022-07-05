@@ -6,6 +6,7 @@ export { default as BeIcon } from './package/svg-icon' // 全局、按需
 export { default as BePopover } from './package/popover' // 全局、按需
 export { default as BeProgress } from './package/progress' // 全局、按需
 export { default as BeDialog } from './package/dialog' // 全局、按需
+export { default as BeInput } from './package/input' // 全局、按需
 // plugins
 export { default as BeNotification } from './package/notification' // 服务
 export { default as BeMessage } from './package/message' // 服务

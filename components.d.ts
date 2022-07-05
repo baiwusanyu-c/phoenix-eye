@@ -37,6 +37,7 @@ declare module 'vue' {
     PlatformCell: typeof import('./src/components/common-components/platform-cell/platform-cell.vue')['default']
     ProjectNameCell: typeof import('./src/components/common-components/project-name-cell/project-name-cell.vue')['default']
     ProjectRankingRadar: typeof import('./src/components/project-ranking-radar.vue')['default']
+    RemoteSearch: typeof import('./src/components/common-components/remote-search/remote-search.vue')['default']
     RequestAudit: typeof import('./src/components/request-audit.vue')['default']
     ScoreCell: typeof import('./src/components/common-components/score-cell/score-cell.vue')['default']
     SearchInput: typeof import('./src/components/search-input.vue')['default']
@@ -47,4 +48,4 @@ declare module 'vue' {
   }
 }
 
-export {}
+export { }

@@ -20,7 +20,39 @@
         </el-select>
       </div>
       <div style="display: flex; align-items: center">
-        <el-select
+        <remote-search
+          :remote-search="getProjectUser"
+          custom-list-class="remote-search-custom-list"
+          @select="handleProjectSelect">
+          <template #option="slotProps">
+            <div class="remote-search-item">
+              <el-avatar :size="32" :src="slotProps.item.logo_url" fit="cover">
+                <img src="../../../../assets/image/pc/empty-avt.png" />
+              </el-avatar>
+              <span class="item-project-name">
+                {{ slotProps.item.project_name }}
+                <span class="project-platform">
+                  {{ platformToCurrency[slotProps.item.platform] }}
+                </span>
+              </span>
+            </div>
+          </template>
+          <template #listFooter>
+            <div id="create_one_body" class="create-one--body">
+              <span>{{ $t('lang.createProject.notFound') }}?</span>
+              <div role="button" class="create-one eagle-btn" @click="openDialog()">
+                {{ $t('lang.createProject.createOne') }}
+              </div>
+            </div>
+          </template>
+          <template #next>
+            <div class="project-select-remote--btn">
+              <be-icon icon="search" color="#fff"></be-icon>
+            </div>
+          </template>
+        </remote-search>
+
+        <!--        <el-select
           ref="projectSelect"
           v-model="selectVal"
           filterable
@@ -37,18 +69,20 @@
             :key="item.project_id"
             :label="item.project_name"
             :value="item.project_id">
-            <div class="project-select--option">
+            <div class="project-select&#45;&#45;option">
               <project-name-cell
                 :url="item.logo_url"
                 :name="item.project_name"
                 :is-ell="false"></project-name-cell>
-              <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
+              <span class="project-select&#45;&#45;platform">{{ platformToCurrency[item.platform] }}</span>
             </div>
           </el-option>
         </el-select>
-        <div class="project-select-remote--btn">
+
+
+        <div class="project-select-remote&#45;&#45;btn">
           <be-icon icon="search" color="#fff"></be-icon>
-        </div>
+        </div>-->
       </div>
     </div>
     <div class="project-explorer--table eagle-table">
@@ -215,18 +249,12 @@
 <script lang="ts">
   import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
   import { BeIcon } from '@eagle-eye/be-ui'
+  import { useEventBus } from '@vueuse/core'
   import compositionPage from '../../../../utils/mixin/page-param'
   import composition from '../../../../utils/mixin/common-func'
   import { getExploreList, getProjectListCurUser } from '../../../../api/project-explorer'
   // @ts-ignore
-  import {
-    catchErr,
-    createDate,
-    formatDate,
-    nFormats,
-    removeStore,
-    setStore,
-  } from '../../../../utils/common'
+  import { catchErr, createDate, formatDate, nFormats } from '../../../../utils/common'
   import { platformListDict, platformToCurrency } from '../../../../utils/platform-dict'
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'
@@ -300,7 +328,6 @@
        * 路由跳轉
        */
       const routerSwitch = (row: any): void => {
-        setStore('curSelectProjId', row.project_id)
         routerPush('/detail', { id: row.project_id, keyword: row.keyword })
       }
       /**
@@ -320,21 +347,15 @@
       const tableHeader = computed(() => {
         const headerDict: IOption = {
           //project_name: '160',
-          project_name: '230',
+          project_name: '220',
           security_score: '60',
           tx_24: '70',
           market_cap: '120',
           token_price: '160',
           create_time: '80',
-          platform: '120',
+          platform: '110',
           audit_report_num: '100',
         }
-        /* if (1280 <= screenWidth && 1326 <= screenWidth) {
-                headerDict.risk_features = '320'
-                headerDict.from_address = '140'
-                headerDict.tx_hash = '140'
-                headerDict.platform = '90'
-            }*/
         return function (key: string) {
           return headerDict[key]
         }
@@ -344,40 +365,36 @@
       // 获取用户项目下拉列表
       const searchProjectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-      const selectLoading = ref<boolean>(false)
-      const getProjectUser = (params: string): void => {
-        selectLoading.value = true
+      const getProjectUser = (params: string, cb: Function): void => {
         getProjectListCurUser({ param: params })
           .then(res => {
             if (!res.data) {
               searchProjectList.value = []
-              return
+            } else {
+              res.data.forEach((val: any) => {
+                val.project_id = val.project_id.toString()
+              })
+              searchProjectList.value = res.data
             }
-            // #fix:4721
-            res.data.forEach((val: any) => {
-              val.project_id = val.project_id.toString()
-            })
-            searchProjectList.value = res.data
+            cb(searchProjectList.value)
           })
           .catch(err => {
+            cb([])
             message('error', err.message || err)
           })
-          .finally(() => (selectLoading.value = false))
       }
-      const handleProjectSelect = (): void => {
-        // 清空時
-        if (selectVal.value === '') {
-          removeStore('curSelectProjId')
-          return
-        }
-        setStore('curSelectProjId', selectVal.value)
-        routerPush('/detail', { id: selectVal.value })
+      const handleProjectSelect = (data: IOption): void => {
+        routerPush('/detail', { id: data.project_id })
+      }
+      const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
+      const openDialog = (): void => {
+        busCreateProjectUser.emit()
       }
       return {
+        openDialog,
         platformToCurrency,
         handleProjectSelect,
         getProjectUser,
-        selectLoading,
         selectVal,
         searchProjectList,
         tableHeader,
@@ -403,6 +420,10 @@
 
 <style lang="scss">
   .project-explorer-tb--search {
+    .remote-search-input {
+      height: 32px;
+      border: none;
+    }
     .project-select-remote--btn {
       height: 32px;
     }

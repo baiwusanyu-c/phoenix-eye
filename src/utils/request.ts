@@ -74,15 +74,15 @@ service.interceptors.response.use(
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
-        window.location.href = '#/projectSearch'
+        window.location.href = '/ProjectSearch'
         bus.emit('true')
       }
       if (res.code === 401 || res.code === 920000003) {
         removeSession('CETInfo')
         removeStore('token')
         removeStore('userInfo')
-        // 如果当前路由是 /projectSearch 直接刷新页面 #4511
-        // if (window.location.hash === '#/projectSearch') {
+        // 如果当前路由是 /ProjectSearch 直接刷新页面 #4511
+        // if (window.location.hash === '#/ProjectSearch') {
         //   location.reload()
         //   return
         // }
@@ -91,9 +91,21 @@ service.interceptors.response.use(
           const err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期'
           message('error', err)
           setSession('loginExpiredNum', 'true')
+          if (location.pathname === '/addressMonitor') {
+            setTimeout(() => {
+              window.location.href = '/addressMonitor'
+            }, 500)
+            return
+          }
+          if (location.pathname.indexOf('/addressMonitorDetail') >= 0) {
+            setTimeout(() => {
+              window.location.href = '/addressMonitor'
+            }, 1500)
+            return
+          }
         }
         setTimeout(() => {
-          window.location.href = '#/projectSearch'
+          window.location.href = '/ProjectSearch'
         }, 1500)
         return null
       }

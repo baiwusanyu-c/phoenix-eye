@@ -5,12 +5,13 @@
  * @create (xuqianqian 2021/4/16)
  * @update (czh 2021/4/16)
  */
-import { IEvent } from "../type/types";
-import type { DirectiveBinding, ObjectDirective } from "vue";
 
+import type { DirectiveBinding, ObjectDirective } from 'vue'
+import type { IEvent } from '../../../src/utils/types'
+// TODO 暂未实现
 export const dragDirective: ObjectDirective = {
   beforeMount(el: HTMLElement, binding: DirectiveBinding): void {
-    /* const op: HTMLElement = el
+    const op: HTMLElement = el
     op.style.transform = 'translate(0%, 0%)'
     op.style.position = 'absolute'
     // 设置不拖拽就直接返回
@@ -18,7 +19,7 @@ export const dragDirective: ObjectDirective = {
       return
     }
     if (op.firstChild) {
-      (op.firstChild as HTMLElement).style.cursor = 'move'
+      ;(op.firstChild as HTMLElement).style.cursor = 'move'
     }
     // 调证分析- 交易所中的信息区也可拖动
     let otherEle: Element | null = null
@@ -84,8 +85,8 @@ export const dragDirective: ObjectDirective = {
           if (left > maxLeft) {
             left = maxLeft
           }
-          op.style.left = left + 'px'
-          op.style.top = top + 'px'
+          op.style.left = `${left}px`
+          op.style.top = `${top}px`
           op.style.transform = 'translate(0%, 0%)'
           //将移动后的top和left回调出去
           if (
@@ -100,6 +101,6 @@ export const dragDirective: ObjectDirective = {
       document.onmouseup = () => {
         document.onmousemove = document.onmouseup = null
       }
-    } */
+    }
   },
-};
+}

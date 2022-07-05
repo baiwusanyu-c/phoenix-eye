@@ -82,7 +82,7 @@
     }
 
     .project-manage-list {
-      width: 70%;
+      width: 1284px;
       padding: 20px;
       margin: 0 auto;
       background-color: $mainColor7;
@@ -104,13 +104,13 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .project-manage-main .project-manage-list,
     .project-manage-main .project-manage--tab,
     .project-manage-main .project-manage-search {
       width: 80%;
     }
-  }
+  }*/
 </style>

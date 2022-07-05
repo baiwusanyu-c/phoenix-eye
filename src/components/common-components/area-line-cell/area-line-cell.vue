@@ -77,6 +77,7 @@
           container: props.domId,
           autoFit: true,
           height: props.height,
+          appendPadding: [10, 10],
         })
 
         chart.value.data(dv.rows)
@@ -104,7 +105,7 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token">$ ${nFormats(item.value)}</p>
+                  <p class="g2-tooltip-list-token">$ ${nFormats(item.value, null)}</p>
                    <p>${item.title}</p>
               </li>`
             })

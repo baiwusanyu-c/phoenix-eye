@@ -43,14 +43,14 @@
   }
   .up-down__up {
     font-size: 16px;
-    font-family: BarlowSemi-B sans-serif;
+    font-family: BarlowSemi-B, sans-serif;
     font-weight: bold;
     color: $mainColor3;
     line-height: 16px;
   }
   .up-down__down {
     font-size: 16px;
-    font-family: BarlowSemi-B sans-serif;
+    font-family: BarlowSemi-B, sans-serif;
     font-weight: bold;
     color: $lessColor4;
     line-height: 16px;

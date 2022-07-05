@@ -50,12 +50,14 @@ export interface IPlatformToCurrency {
   bsc: string
   heco: string
   Polygon: string
+  polygon: string
 }
 export const platformToCurrency: IPlatformToCurrency = {
   eth: 'ETH',
   bsc: 'BNB',
   heco: 'HT',
   Polygon: 'POLYGON',
+  polygon: 'POLYGON',
 }
 export const iconDict: IPlatformDict = {
   HT: 'iconHecoEagle',

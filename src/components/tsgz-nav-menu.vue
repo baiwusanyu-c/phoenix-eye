@@ -2,9 +2,9 @@
 2021/8/2) */
 <template>
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
-    <div style="display: flex; align-items: center">
+    <div class="tsgz-nav-menu-body">
       <!--    logo    -->
-      <div class="expend-logo" @click="routerPush('/projectSearch')">
+      <div class="expend-logo" @click="routerPush('/ProjectSearch')">
         <img src="../assets/image/pc/logo.png" alt="Beosin-Eagle-Eye" />
         <span>EagleEye</span>
       </div>
@@ -24,141 +24,150 @@
               :index="value.index"
               :disabled="value.isDisabled"
               @click="routerSwitch(value, value.isPush)">
-              <span style="margin-left: 10px; font-size: 16px">{{ $t(value.name) }}</span>
+              <span class="nav-name">{{ $t(value.name) }}</span>
             </el-menu-item>
           </div>
         </el-menu>
       </div>
-      <!--  <div @click="openDialog()">createProject</div>-->
-    </div>
-    <!--    语种、设置菜单等    -->
-    <div class="tsgz-slogan">
-      <el-select
-        ref="projectSelect"
-        v-model="selectVal"
-        filterable
-        remote
-        :placeholder="$t('lang.pleaseSelect')"
-        clearable
-        :loading="selectLoading"
-        :remote-method="getProjectUser"
-        popper-class="project-select"
-        class="project-select-remote"
-        @click="insertAddDom"
-        @change="handleProjectSelect">
-        <el-option
-          v-for="item in projectList"
-          :key="item.project_id"
-          :label="item.project_name"
-          :value="item.project_id">
-          <div class="project-select--option">
-            <project-name-cell
-              :url="item.logo_url"
-              :name="item.project_name"
-              :is-ell="false"></project-name-cell>
-            <span class="project-select--platform">{{ platformToCurrency[item.platform] }}</span>
-          </div>
-        </el-option>
-      </el-select>
-      <div class="project-select-remote--btn">
-        <be-icon icon="search"></be-icon>
-      </div>
-      <!--    需求反馈   -->
-      <be-button
-        custom-class="eagle-btn feedback-btn"
-        round="4"
-        type="success"
-        @click="openRequestAudit"
-        >{{ $t('lang.request.title') }}
-      </be-button>
-
-      <!--    语种   -->
-      <!--      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
-                    <template #trigger>
-                      <div
-                        class="dropdown-link dropdown-lang"
-                        style="display: flex; align-items: center; margin: 0 18px">
-                        {{ computeLang }}
-                        <be-icon
-                          icon="under"
-                          style="margin-left: 5px"
-                          color="#777"
-                          custom-class="lang-under"></be-icon>
-                      </div>
-                    </template>
-                    <div
-                      :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
-                      @click="changeLanguage('zh_CN')">
-                      中文
-                    </div>
-                    <div
-                      :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
-                      @click="changeLanguage('en_US')">
-                      EN
-                    </div>
-                  </be-popover>-->
-      <!--    登出   -->
-      <div v-show="isLogin">
-        <be-popover placement="bottom" trigger="click" custom-class="popover-logout">
-          <template #trigger>
-            <span class="dropdown-link">
-              <div class="tsgz-user">{{ loginUser }}</div>
-            </span>
+      <!--    语种、设置菜单等    -->
+      <div class="tsgz-slogan">
+        <remote-search
+          custom-list-class="remote-search-custom-list"
+          :remote-search="getProjectUser"
+          select-clear
+          @select="handleProjectSelect">
+          <template #option="slotProps">
+            <div class="remote-search-item">
+              <el-avatar :size="32" :src="slotProps.item.logo_url" fit="cover">
+                <img src="../assets/image/pc/empty-avt.png" />
+              </el-avatar>
+              <span class="item-project-name">
+                {{ slotProps.item.project_name }}
+                <span class="project-platform">
+                  {{ platformToCurrency[slotProps.item.platform] }}
+                </span>
+              </span>
+            </div>
+            <!--            <project-name-cell
+              :url="slotProps.item.logo_url"
+              :name="slotProps.item.project_name"
+              :is-ell="false">
+            </project-name-cell>
+            <span style="font-size: 14px; color: #7c9aaa; font-weight: bold">{{
+              platformToCurrency[slotProps.item.platform]
+            }}</span>-->
           </template>
-          <div class="popover-item" @click="routerSwitch('/logout')">
-            {{ $t('lang.header.logout') }}
-          </div>
-        </be-popover>
-      </div>
-      <!--    设置菜单   -->
-      <div v-show="isLogin && headerConfigMore.length > 0">
-        <be-popover
-          ref="popoverRouter"
-          placement="bottom"
-          trigger="click"
-          custom-class="popover-router">
-          <template #trigger>
-            <be-icon icon="iconSetting" custom-class="setting" width="28" height="28"></be-icon>
+          <template #listFooter>
+            <div id="create_one_body" class="create-one--body">
+              <span>{{ $t('lang.createProject.notFound') }}?</span>
+              <div role="button" class="create-one eagle-btn" @click="openDialog('add')">
+                {{ $t('lang.createProject.createOne') }}
+              </div>
+            </div>
           </template>
-          <div
-            v-for="item in headerConfigMore"
-            :key="item.path + 'router'"
-            :class="`popover-item popover-router-item ${
-              item.index === active ? 'active-dropdown' : ''
-            }`"
-            @click="routerSwitch(item, item.isPush)">
-            <span>{{ $t(item.name) }}</span>
-          </div>
-        </be-popover>
-      </div>
-      <!--    登陆   -->
-      <div v-show="!isLogin">
-        <be-button custom-class="login-btn" round="4" type="success" @click="openLogin"
-          >{{ $t('lang.loginConfig.login') }}
+          <template #next>
+            <div class="project-select-remote--btn">
+              <be-icon icon="search"></be-icon>
+            </div>
+          </template>
+        </remote-search>
+        <!--    需求反馈   -->
+        <be-button
+          custom-class="eagle-btn feedback-btn"
+          round="4"
+          type="success"
+          @click="openRequestAudit"
+          >{{ $t('lang.request.title') }}
         </be-button>
-      </div>
-      <div v-show="!isLogin">
-        <be-button custom-class="sign-up-btn" round="4" type="success" @click="openRegistry"
-          >{{ $t('lang.signUp') }}
-        </be-button>
+
+        <!--    语种   -->
+        <!--      <be-popover ref="popoverLang" placement="bottom" trigger="click" custom-class="popover-lang">
+                          <template #trigger>
+                            <div
+                              class="dropdown-link dropdown-lang"
+                              style="display: flex; align-items: center; margin: 0 18px">
+                              {{ computeLang }}
+                              <be-icon
+                                icon="under"
+                                style="margin-left: 5px"
+                                color="#777"
+                                custom-class="lang-under"></be-icon>
+                            </div>
+                          </template>
+                          <div
+                            :class="`${getStore('language') === 'zh_CN' ? 'active-dropdown' : ''} popover-item`"
+                            @click="changeLanguage('zh_CN')">
+                            中文
+                          </div>
+                          <div
+                            :class="`${getStore('language') === 'en_US' ? 'active-dropdown' : ''} popover-item`"
+                            @click="changeLanguage('en_US')">
+                            EN
+                          </div>
+                        </be-popover>-->
+        <!--    登出   -->
+        <div v-show="isLogin">
+          <be-popover placement="bottom" trigger="click" custom-class="popover-logout">
+            <template #trigger>
+              <span class="dropdown-link">
+                <div class="tsgz-user">{{ loginUser }}</div>
+              </span>
+            </template>
+            <div class="popover-item" @click="routerSwitch('/logout')">
+              {{ $t('lang.header.logout') }}
+            </div>
+          </be-popover>
+        </div>
+        <!--    设置菜单   -->
+        <div v-show="isLogin && headerConfigMore.length > 0">
+          <be-popover
+            ref="popoverRouter"
+            placement="bottom"
+            trigger="click"
+            custom-class="popover-router">
+            <template #trigger>
+              <be-icon icon="iconSetting" custom-class="setting" width="28" height="28"></be-icon>
+            </template>
+            <div
+              v-for="item in headerConfigMore"
+              :key="item.path + 'router'"
+              :class="`popover-item popover-router-item ${
+                item.index === active ? 'active-dropdown' : ''
+              }`"
+              @click="routerSwitch(item, item.isPush)">
+              <span>{{ $t(item.name) }}</span>
+            </div>
+          </be-popover>
+        </div>
+        <!--    登陆   -->
+        <div v-show="!isLogin">
+          <be-button custom-class="login-btn" round="4" type="success" @click="openLogin"
+            >{{ $t('lang.loginConfig.login') }}
+          </be-button>
+        </div>
+        <div v-show="!isLogin">
+          <be-button custom-class="sign-up-btn" round="4" type="success" @click="openRegistry"
+            >{{ $t('lang.signUp') }}
+          </be-button>
+        </div>
       </div>
     </div>
-    <!--退出弹窗-->
-    <MsgDialog
-      :is-show="isLogout"
-      :title="$t('lang.loginConfig.confirmLogout')"
-      @confirm="confirm(true)"
-      @close="confirm(false)">
-    </MsgDialog>
-    <!--登錄彈窗-->
-    <login-dialog ref="loginDialog" type></login-dialog>
-    <!--合约请求彈窗-->
-
-    <request-audit ref="requestAudit"></request-audit>
-    <!--项目创建弹窗-->
-    <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
-    </create-project>
   </div>
+  <!--退出弹窗-->
+  <MsgDialog
+    :is-show="isLogout"
+    :title="$t('lang.loginConfig.confirmLogout')"
+    @confirm="confirm(true)"
+    @close="confirm(false)">
+  </MsgDialog>
+  <!--登錄彈窗-->
+  <login-dialog ref="loginDialog" type></login-dialog>
+  <!--合约请求彈窗-->
+
+  <request-audit ref="requestAudit"></request-audit>
+  <!--项目创建弹窗-->
+  <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
+  </create-project>
 </template>
 
 <script lang="ts">
@@ -172,24 +181,14 @@
   import { getProjectListCurUser } from '../api/project-explorer'
   // @ts-ignore
   import composition from '../utils/mixin/common-func'
-  import {
-    clearSession,
-    clearStore,
-    getStore,
-    removeStore,
-    setSession,
-    setStore,
-  } from '../utils/common'
+  import { clearSession, clearStore, getStore, setSession, setStore } from '../utils/common'
   import { publicHeaderConfig } from '../utils/header-config'
-
-  import { WHITE_LIST } from '../utils/router-dict'
+  import { WHITE_LIST } from '../router/router-dict'
   import compositionDialog from '../utils/mixin/dialog-func'
   import CreateProject from '../views/pc/manage/project-management/components/create-project.vue'
   import { platformToCurrency } from '../utils/platform-dict'
   import MsgDialog from './common-components/msg-dialog/msg-dialog.vue'
-  import ProjectNameCell from './common-components/project-name-cell/project-name-cell.vue'
   import RequestAudit from './request-audit.vue'
-  import type { ElSelect } from 'element-plus'
   import type { ILoginDialog, IOption, IPopover } from '../utils/types'
   // 管理頁的相關頁面匹配標識
   // XMSS: Project Explorer
@@ -207,7 +206,6 @@
     EYWZGL: true,
     AQSJ: true,
   }
-  type SelectInstance = InstanceType<typeof ElSelect>
   /**
    * 头部菜单导航
    */
@@ -215,9 +213,7 @@
     name: 'TsgzNavMenu',
     components: {
       RequestAudit,
-      ProjectNameCell,
       CreateProject,
-
       LoginDialog,
       MsgDialog,
       BeIcon,
@@ -243,6 +239,7 @@
       /**
        * 退出调用方法
        */
+      const isLogoutBus = useEventBus<string>('isLogout')
       const confirm = (isConfirm: boolean | string): void => {
         if (isConfirm === true || isConfirm === 'true') {
           isLogin.value = false
@@ -254,10 +251,11 @@
           // // 在白名单内的页面，刷新页面来重置权限菜单等
           nextTick(() => {
             if (WHITE_LIST.indexOf(route.path) < 0) {
-              window.location.href = '#/projectSearch'
+              window.location.href = '/ProjectSearch'
             }
           })
         }
+        isLogoutBus.emit()
         isLogout.value = false
       }
       // 初始化 登录过期bus，登录过期 就调用登出方法
@@ -306,6 +304,10 @@
       // 初始化 路由信息 bus，接口拿到路由信息就初始化相关配置
       const busRouterInfo = useEventBus<string>('getRouterInfo')
       busRouterInfo.on(() => {
+        initVar()
+      })
+      const reInit = useEventBus<string>('reInit')
+      reInit.on(() => {
         initVar()
       })
       // 初始化方法
@@ -425,7 +427,7 @@
         }
       /****************************** 语种切换相关 ******************************/
       // 语种切换
-      const { locale, t } = useI18n()
+      const { locale } = useI18n()
       const instanceInner = getCurrentInstance()
       const busLanguage = useEventBus<string>('language')
       const computeLang = ref<string>('EN')
@@ -440,48 +442,43 @@
       // 获取用户项目下拉列表
       const projectList = ref<Array<IOption>>([])
       const selectVal = ref<string>('')
-      const selectLoading = ref<boolean>(false)
-      const getProjectUser = (params: string): void => {
-        selectLoading.value = true
+      const getProjectUser = (params: string, cb: Function): void => {
         getProjectListCurUser({ param: params })
           .then(res => {
             if (!res.data) {
               projectList.value = []
-              return
+            } else {
+              res.data.forEach((val: any) => {
+                val.project_id = val.project_id.toString()
+              })
+              projectList.value = res.data
             }
-            // #fix:4721
-            res.data.forEach((val: any) => {
-              val.project_id = val.project_id.toString()
-            })
-            projectList.value = res.data
+            cb(projectList.value)
           })
           .catch(err => {
+            cb([])
             message('error', err.message || err)
           })
-          .finally(() => (selectLoading.value = false))
       }
 
       // 路由不在項目態勢詳情也就清空選擇值
       onBeforeRouteUpdate(to => {
         if (to.path !== '/detail') {
           selectVal.value = ''
-          removeStore('curSelectProjId')
         }
       })
       /**
        * 项目选择事件
        */
       const selectProjBus = useEventBus<string>('selectProjBus')
-      const handleProjectSelect = (): void => {
-        // 清空時
-        if (selectVal.value === '') {
-          removeStore('curSelectProjId')
-          routerPush('/projectSearch')
-          return
-        }
-        setStore('curSelectProjId', selectVal.value)
-        routerPush('/detail', { id: selectVal.value })
-        selectProjBus.emit(selectVal.value)
+      const handleProjectSelect = (data: IOption): void => {
+        window.scrollTo(0, 0)
+        nextTick(() => {
+          const mainBody: HTMLElement | null = document.getElementById('main_body')
+          mainBody && mainBody.scrollTo(0, 0)
+        })
+        routerPush('/detail', { id: data.project_id })
+        selectProjBus.emit(data.project_id)
       }
       /**
        * 打开需求反馈
@@ -499,40 +496,9 @@
       busCreateProjectUser.on(() => {
         openDialog('add')
       })
-      /**
-       * 用户选择项目，动态插入’增加项目‘的dom
-       */
-      const selectRef = getCurrentInstance()
-      const insertAddDom = (): void => {
-        nextTick(() => {
-          let createOneBody = document.getElementById('create_one_body')
-          const container = document.querySelector('.el-select-dropdown.project-select')
-          if (container && !createOneBody) {
-            createOneBody = document.createElement('div')
-            createOneBody.setAttribute('id', 'create_one_body')
-            createOneBody.setAttribute('class', 'create-one--body')
-            const createOneSpan = document.createElement('span')
-            createOneSpan.innerText = `${t('lang.createProject.notFound')}?`
-            createOneBody.append(createOneSpan)
-            // 创建按钮
-            const createOneBtn = document.createElement('div')
-            createOneBtn.setAttribute('role', 'button')
-            createOneBtn.setAttribute('class', 'create-one eagle-btn')
-            createOneBtn.addEventListener('click', () => {
-              // 关闭下拉
-              ;(selectRef?.refs.projectSelect as SelectInstance).blur()
-              openDialog('add')
-            })
-
-            createOneBtn.innerText = t('lang.createProject.createOne')
-            createOneBody.append(createOneBtn)
-
-            container?.append(createOneBody)
-          }
-        })
-      }
+      const searchParamsInput = ref<string>('')
       return {
-        insertAddDom,
+        searchParamsInput,
         openDialog,
         createDialog,
         getProjectUser,
@@ -555,14 +521,49 @@
         openLogin,
         openRegistry,
         platformToCurrency,
-        selectLoading,
       }
     },
   })
 </script>
 
 <style lang="scss">
-  #xnhb_nav_menu .project-select-remote {
+  .remote-search-custom-list {
+    overflow-x: hidden;
+    .remote-search-list--item {
+      height: auto;
+      min-height: 48px;
+    }
+  }
+  .nav-name {
+    margin-left: 10px;
+    font-size: 16px;
+  }
+  .remote-search-item {
+    width: 250px;
+    display: flex;
+    align-items: center;
+    .el-avatar {
+      width: 32px;
+      height: 32px;
+    }
+    .item-project-name {
+      width: 218px;
+      line-height: 20px;
+      text-align: left;
+      margin-left: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      color: $textColor3;
+      font-family: BarlowSemi-B, sans-serif;
+      margin-right: 6px;
+      .project-platform {
+        font-size: 14px;
+        color: #7c9aaa;
+        font-weight: bold;
+      }
+    }
+  }
+  /* #xnhb_nav_menu .project-select-remote {
     height: 40px;
     .el-input.is-focus .el-input__wrapper {
       box-shadow: none !important;
@@ -579,17 +580,18 @@
         line-height: 40px;
       }
     }
-  }
+
+    width: 200px;
+  }*/
   .project-select-remote--btn {
     background-color: $mainColor3;
     height: 40px;
     line-height: 40px;
-    width: 42px;
+    width: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 0 4px 4px 0;
-    margin-right: 20px;
   }
   .project-select {
     /*max-width: 214px;*/
@@ -614,37 +616,35 @@
         margin-left: 4px;
       }
     }
-    .create-one--body {
-      width: 100%;
-      background-color: #ecf3f9;
-      display: flex;
-      height: 48px;
-      padding: 15px 24px;
-      align-items: center;
-      justify-content: space-between;
-      span {
-        font-family: BarlowSemi-R, sans-serif;
-        font-weight: 400;
-        color: $textColor3;
-        line-height: 17px;
-        font-size: 14px;
-      }
-      .create-one {
-        color: $mainColor7;
-        min-width: 86px;
-        border-radius: 4px;
-        height: 24px;
-        line-height: 24px;
-        margin-left: 6px;
-        font-family: BarlowSemi-R, sans-serif;
-        font-weight: bold;
-        cursor: pointer;
-      }
-    }
   }
 
-  .tsgz-nav-menu {
-    padding: 0 17.4%;
+  .create-one--body {
+    border-radius: 4px;
+    width: 100%;
+    background-color: $mainColor2;
+    display: flex;
+    height: 48px;
+    padding: 15px 24px;
+    align-items: center;
+    justify-content: space-between;
+    span {
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: 400;
+      color: $textColor3;
+      line-height: 17px;
+      font-size: 14px;
+    }
+    .create-one {
+      color: $mainColor7;
+      min-width: 86px;
+      border-radius: 4px;
+      height: 24px;
+      line-height: 24px;
+      margin-left: 6px;
+      font-family: BarlowSemi-R, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+    }
   }
 
   .tsgz-nav-menu .sign-up-btn {
@@ -666,7 +666,12 @@
       font-size: 14px;
       font-weight: normal !important;
       margin: 0;
-      color: $textColor13;
+      color: $mainColor7;
+    }
+    &:hover {
+      .be-button--slot {
+        color: $textColor13;
+      }
     }
   }
   .tsgz-nav-menu .feedback-btn {
@@ -735,18 +740,21 @@
   }
 
   .tsgz-nav-menu {
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
     overflow-x: hidden;
     overflow-y: auto;
     text-align: center;
     background-color: $mainColor20;
     box-shadow: 2px 0 6px 0 rgba(0, 21, 41, 0.12);
     height: 68px;
+    .tsgz-nav-menu-body {
+      margin: 0 auto;
+      width: 1300px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
     .tsgz-slogan {
       display: flex;
-      flex: 4;
       flex-direction: row;
       align-items: center;
       justify-content: flex-end;
@@ -754,6 +762,16 @@
       background-repeat: no-repeat;
       background-position: right;
       background-size: 100% 100%;
+      .remote-search-input {
+        background: $mainColor1;
+        border: none;
+        width: 240px;
+        margin-right: 20px;
+        .be-input__inner {
+          background: $mainColor1;
+          color: $mainColor7;
+        }
+      }
 
       .setting {
         margin-left: 10px;
@@ -850,7 +868,7 @@
       border: 0;
 
       .el-menu-item {
-        padding: 0 18px;
+        padding: 0 8px;
       }
 
       .el-menu-item,
@@ -899,23 +917,35 @@
 
   /* 150% 适配 */
   @media screen and (max-width: 1326px) {
+    .tsgz-nav-menu .tsgz-nav-menu-body {
+      width: 1160px;
+    }
     .tsgz-nav-menu {
       padding: 0 2%;
     }
-
+    .tsgz-nav-menu .feedback-btn {
+      width: 108px;
+      .be-button--slot {
+        font-size: 12px;
+      }
+    }
+    .tsgz-nav-menu .nav-name {
+      margin-left: 4px;
+      font-size: 12px;
+    }
+    .tsgz-nav-menu .remote-search-input {
+      width: 160px;
+    }
     .tsgz-nav-menu .el-input__inner {
       width: 120px;
     }
-    /*.project-select{
-          width: 120px;
-      }*/
     .tsgz-nav-menu .el-menu-item {
       padding: 0 5px;
       font-size: 12px;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .tsgz-nav-menu {
       padding: 0 10%;
@@ -924,11 +954,11 @@
     .tsgz-nav-menu .el-input__inner {
       width: 160px;
     }
-    /*.project-select{
+    !*.project-select{
           width: 160px;
-      }*/
+      }*!
     .tsgz-nav-menu .el-menu-item {
       padding: 0 10px;
     }
-  }
+  }*/
 </style>

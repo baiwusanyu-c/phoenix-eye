@@ -151,7 +151,6 @@
         if (loading.value) {
           return
         }
-        emit('show', false)
         loading.value = true
         if (type === 'reset') {
           resetPageParam(5, pageParams)
@@ -169,6 +168,8 @@
               pageNum.value = Math.ceil(res.data.total / pageParams.value.pageSize!)
               if (tableData.value.length > 0) {
                 emit('show', true)
+              } else {
+                emit('show', false)
               }
             } else {
               tableData.value = []
@@ -178,6 +179,7 @@
             loading.value = false
           })
           .catch(err => {
+            emit('show', false)
             message('error', err.message || err)
             loading.value = false
             console.error(err)

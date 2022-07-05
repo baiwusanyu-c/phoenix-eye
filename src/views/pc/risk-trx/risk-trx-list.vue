@@ -198,12 +198,12 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .risk-trx-list .search-area,
     .risk-trx-list .risk-table {
       width: 80%;
     }
-  }
+  }*/
 </style>

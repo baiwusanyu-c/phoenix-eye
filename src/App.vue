@@ -1,5 +1,5 @@
 <template>
-  <div ref="app" :class="{ 'theme--dark': theme === 'dark' }" class="noM">
+  <div id="appc" ref="app" :class="{ 'theme--dark': theme === 'dark' }" class="noM scale-app">
     <router-view></router-view>
     <!--下线弹窗-->
     <MsgDialog
@@ -10,7 +10,7 @@
       @close="() => (delTip = false)">
     </MsgDialog>
     <!--****************** 浏览器版本提示  **********************-->
-    <div id="browser_msg_dialog">
+    <!--    <div id="browser_msg_dialog">
       <be-dialog
         ref="tipsDialog"
         titles="温馨提示"
@@ -38,33 +38,37 @@
           </be-button>
         </template>
       </be-dialog>
-    </div>
+    </div>-->
   </div>
 </template>
 <script setup lang="tsx">
+  // TODO back management
   import { ref } from 'vue'
-  // @ts-ignore
-  import { BeButton, BeDialog } from '@eagle-eye/be-ui'
+  // import { BeButton, BeDialog } from '@eagle-eye/be-ui'
   import MsgDialog from '../src/components/common-components/msg-dialog/msg-dialog.vue'
-  import { browserInfo, getStore, setStore } from './utils/common'
+  import {
+    // browserInfo,
+    getStore,
+    setStore,
+  } from './utils/common'
   // 設置是否手機訪問變量
-  const ua = navigator.userAgent
+  /*const ua = navigator.userAgent
   const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)
   const isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/)
   const isAndroid = ua.match(/(Android)\s+([\d.]+)/)
-  const isMobile = ref<RegExpMatchArray | null>(isIphone || isAndroid)
+  const isMobile = ref<RegExpMatchArray | null>(isIphone || isAndroid)*/
 
   // 設置瀏覽器信息
-  const showBrowserTip = ref<boolean>(false)
+  /*const showBrowserTip = ref<boolean>(false)
   const tipList = ref<Array<string>>(['为保证更优质的使用体验，', '建议使用谷歌浏览器访问系统。'])
   if (browserInfo().browser !== 'chrome') {
-    //showBrowserTip.value = true
-  }
+    showBrowserTip.value = true
+  }*/
+
   // 設置語言
   if (!getStore('language')) {
     setStore('language', 'en_US')
   }
-
   /**
    * 下线弹窗显示方法
    */

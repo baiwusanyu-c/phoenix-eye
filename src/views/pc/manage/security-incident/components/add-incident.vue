@@ -56,6 +56,7 @@
               v-model="form.attacked_address_arr"
               type="textarea"
               :rows="7"
+              :placeholder="`Multiple address Name separated by ’;‘ `"
               maxlength="1000"
               resize="none"></el-input>
           </el-form-item>
@@ -66,6 +67,7 @@
               type="textarea"
               :rows="7"
               maxlength="1000"
+              :placeholder="`Multiple trx Name separated by ’;‘ `"
               resize="none"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.securityIncident.form.attack_time') + '    :'">

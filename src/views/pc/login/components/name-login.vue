@@ -78,7 +78,6 @@
   import { loginName } from '../../../../api/login'
   import { clearStore, getStore, setSession, setStore, trim } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
-  // @ts-ignore
   import type { ComponentInternalInstance } from 'vue'
   import type { ElForm } from 'element-plus'
   type FormInstance = InstanceType<typeof ElForm>
@@ -230,11 +229,11 @@
 </style>
 <!--1080p的145% - 150%放大-->
 <style scoped lang="scss">
-  @media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
+  /*@media screen and (min-width: 1280px) and (max-height: 638px) and (max-width: 1326px) {
     .formArea {
       .checkArea {
         margin-top: 20px;
       }
     }
-  }
+  }*/
 </style>
