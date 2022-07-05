@@ -15,7 +15,6 @@ const isMobile: RegExpMatchArray | null = isIphone || isAndroid
 let router
 const configList = import.meta.globEager('./router-*.ts')
 if (isMobile) {
-  // router = configList['./router-mobile.ts']
   router = configList['./router-pc.ts']
 } else {
   router = configList['./router-pc.ts']

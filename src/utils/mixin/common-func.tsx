@@ -57,7 +57,7 @@ export default () => {
    */
   const isEmpty = computed(() => {
     return function (val: string | number, emptyStr: string) {
-      if (isNumber(val) && (val || val === 0)) {
+      if (isNumber(val) && (val || val === 0) && val >= 0) {
         return val
       }
       if (isString(val) && val) {

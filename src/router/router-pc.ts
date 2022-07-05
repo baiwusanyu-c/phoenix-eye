@@ -1,4 +1,5 @@
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
+import { nextTick } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { useEventBus } from '@vueuse/core'
 import { getStore, isString } from '../utils/common'
 import { i18n } from '../utils/i18n'
@@ -10,14 +11,13 @@ import {
   ROUTER_COMPONENT_DICT,
   STATISTICS_ROUTER,
   WHITE_LIST,
-} from '../utils/router-dict'
+} from './router-dict'
 
 import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
-// import {ref} from "vue";
 const routes = [
   {
     path: '/',
-    redirect: '/ProjectSearch',
+    redirect: '/projectSearch',
   },
   {
     path: '/',
@@ -51,6 +51,12 @@ const routes = [
         component: () => import('../views/pc/risk-public-info/risk-public-info.vue'),
         meta: { title: 'lang.subNav.navName6' },
       },
+      {
+        path: '/addressMonitor',
+        name: 'AddressMonitor',
+        component: () => import('../views/pc/addr-monitor/addr-monitor.vue'),
+        meta: { title: 'lang.subNav.navName7' },
+      },
       // 地址监控详情
       {
         path: '/addressMonitorDetail',
@@ -71,9 +77,16 @@ const routes = [
         component: () => import('../views/pc/project-search/project-search-detail.vue'),
         meta: { title: 'lang.subNav.navName5' },
       },
+      {
+        path: '/disclaimers',
+        name: 'Disclaimers',
+        component: () => import('../views/pc/disclaimer-page/disclaimer-page.vue'),
+        meta: { title: 'lang.subNav.navName5' },
+      },
     ],
   },
 ]
+let isEmptyRouterInfo = false
 // 递归路由配置对象
 export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
   treeData.forEach((val: any) => {
@@ -93,29 +106,40 @@ export const initRouterConfig = <T>(treeData: Array<T>): Array<T> => {
   return treeData
 }
 
-export function getRouterData(router: Router, next?: Function, to?: RouteLocationNormalized) {
+export function getRouterData(
+  router: Router,
+  next?: Function,
+  to?: RouteLocationNormalized,
+  isWhitePath?: boolean
+) {
   const params = {
     systemCode: 'beosin-eye',
     userId: getStore('userId'),
   }
   const bus = useEventBus<string>('getRouterInfo')
+  isEmptyRouterInfo = false
   getRouterInfo(params)
     .then(res => {
+      router.addRoute({
+        path: '/:w+',
+        redirect: '/404',
+      })
       if (!res || res.data.length === 0) {
+        // 白名单内疚跳转白名单
+        if (isWhitePath && to) {
+          next && next({ path: to.path, query: to.query })
+        }
         next &&
           next({
-            path: '/ProjectSearch',
+            path: '/projectSearch',
           })
+        isEmptyRouterInfo = true
         return
       }
       const routerConfig = initRouterConfig(res.data[0].children)
       store.commit('update', ['routeConfig', routerConfig])
       routerConfig.forEach((val: any) => {
         router.addRoute('layout', val)
-      })
-      router.addRoute({
-        path: '/:w+',
-        redirect: '/404',
       })
       setTimeout(() => {
         i18n.global.locale.value = getStore('language') === 'en_US' ? 'en_US' : 'zh_CN'
@@ -126,7 +150,7 @@ export function getRouterData(router: Router, next?: Function, to?: RouteLocatio
     .catch(err => {
       next &&
         next({
-          path: '/ProjectSearch',
+          path: '/projectSearch',
         })
       console.error(err)
     })
@@ -148,26 +172,24 @@ const beforeEachHandle = (router: Router) => {
       // if (to.path === '/projectSearch' && isMobile.value) {
       //   window.location.reload()
       // }
+
       // 匹配运营统计路由
       if (STATISTICS_ROUTER[to.path]) {
         addIpLog({ module: STATISTICS_ROUTER[to.path] }).catch(err => {
           console.error(err)
         })
       }
-
-      // 路由跳转白名单（不需要验证token,和获取路由）
       let isWhitePath = false
       WHITE_LIST.forEach(val => {
         if (val === to.path) {
           isWhitePath = true
         }
       })
-
-      if (store.state.routeConfig.length > 0 || isWhitePath) {
+      if (store.state.routeConfig.length > 0 || isEmptyRouterInfo) {
         next()
         return
       } else {
-        getRouterData(router, next, to)
+        getRouterData(router, next, to, isWhitePath)
       }
     }
   )
@@ -180,4 +202,8 @@ export const router = createRouter({
 beforeEachHandle(router)
 router.afterEach(() => {
   window.scrollTo(0, 0)
+  nextTick(() => {
+    const mainBody: HTMLElement | null = document.getElementById('main_body')
+    mainBody && mainBody.scrollTo(0, 0)
+  })
 })

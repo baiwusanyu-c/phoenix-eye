@@ -52,10 +52,9 @@ h3 {
 }
 
 html,
-body {
-  height: 100%;
+body{
+  height: 1080px !important;
 }
-
 .be-message {
   z-index: 9999 !important;
 
@@ -173,11 +172,16 @@ textarea::-webkit-input-placeholder {
 
 
 /* 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸 */
-
+@media screen and (min--moz-device-pixel-ratio: 0){
+  * {
+    scrollbar-color: #c1c1c1; /* 滑块颜色  滚动条背景颜色 未生效 */
+    scrollbar-width: thin; /* 滚动条宽度有三种：thin、auto、none */
+  }
+}
 .scrollDiy::-webkit-scrollbar
 {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
   margin: 5px;
 }
 
@@ -203,8 +207,8 @@ textarea::-webkit-input-placeholder {
 /* 整个滚动条 */
 
 body::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
 }
 
 /* 滚动条有滑块的轨道部分 */
@@ -238,4 +242,6 @@ body::-webkit-scrollbar-corner {
 
 body{
   overflow-y: hidden;
+  overflow-x: auto;
+
 }

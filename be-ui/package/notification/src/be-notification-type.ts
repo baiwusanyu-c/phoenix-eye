@@ -28,6 +28,7 @@ export interface INotifyOption {
   closeRender?: any
   loading?: boolean
   placementSelf?: string
+  // eslint-disable-next-line @typescript-eslint/ban-types
   style: {}
 }
 

@@ -83,6 +83,7 @@
 
 <style lang="scss">
   .score-cell {
+    position: relative;
     .be-progress-body {
       width: 32px !important;
       height: 32px !important;
@@ -94,7 +95,7 @@
     .score {
       font-weight: bold;
       font-size: 12px;
-      font-family: BarlowSemi-B sans-serif;
+      font-family: BarlowSemi-B, sans-serif;
     }
   }
 </style>

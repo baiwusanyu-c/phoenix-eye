@@ -112,6 +112,9 @@
     height: 373px;
     margin-right: 24px;
     .security-card--head {
+      .security-card--decr {
+        height: 72px;
+      }
       height: 160px;
       padding: 20px;
       box-sizing: border-box;
@@ -126,7 +129,7 @@
       .security-card--tag {
         margin-top: 10px;
         display: flex;
-        overflow-x: auto;
+        overflow-x: hidden;
       }
 
       .be-tag {
@@ -202,8 +205,8 @@
       }
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .security-card {
       width: 284px;
@@ -216,7 +219,7 @@
     }
   }
 
-  /* 110% 适配 */
+  !* 110% 适配 *!
   @media screen and (min-width: 1540px) and (max-width: 1750px) {
     .security-card {
       width: 290px;
@@ -227,5 +230,5 @@
         padding: 16px;
       }
     }
-  }
+  }*/
 </style>

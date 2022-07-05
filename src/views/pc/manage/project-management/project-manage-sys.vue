@@ -61,7 +61,7 @@
   import CreateProject from './components/create-project.vue'
   import ProjectManageTable from './components/project-manage-table.vue'
   import type { IProjectListAdmin, IReappraise } from '../../../../api/project-management'
-  import type { ICreateProj, IPageParam } from '../../../../utils/types'
+  import type { ICreateProj } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'ProjectManageSys',

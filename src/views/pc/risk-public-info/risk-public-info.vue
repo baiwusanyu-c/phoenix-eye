@@ -14,7 +14,7 @@
           <el-pagination
             v-model:currentPage="pageParams.currentPage"
             v-model:page-size="pageParams.pageSize"
-            :page-sizes="[10, 20, 40, 80, 100]"
+            :page-sizes="[5, 10, 20, 40, 80, 100]"
             layout="total, sizes, prev, pager, next"
             :total="pageParams.total"
             @size-change="updateNum"
@@ -31,7 +31,7 @@
   import { getPublicOpinionList } from '../../../api/risk-public-info'
   import composition from '../../../utils/mixin/common-func'
   import compositionPage from '../../../utils/mixin/page-param'
-  import type { IPageParam, ISafetyData } from '../../../utils/types'
+  import type { ISafetyData } from '../../../utils/types'
   import type { IPOList } from '../../../api/risk-public-info'
   export default defineComponent({
     name: 'RiskPublicInfo',
@@ -142,11 +142,11 @@
       width: 92%;
     }
   }
-
-  /* 125% 适配 */
+  /*
+  !* 125% 适配 *!
   @media screen and (min-width: 1328px) and (max-width: 1538px) {
     .risk-public-info-container {
       width: 80%;
     }
-  }
+  }*/
 </style>

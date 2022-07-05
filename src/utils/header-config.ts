@@ -36,4 +36,14 @@ export const publicHeaderConfig = {
     children: [],
     isDisabled: false,
   },
+  DZJK: {
+    icon: '',
+    index: '3',
+    name: 'lang.subNav.navName7',
+    show: true,
+    path: '/addressMonitor',
+    isPush: true,
+    children: [],
+    isDisabled: false,
+  },
 }

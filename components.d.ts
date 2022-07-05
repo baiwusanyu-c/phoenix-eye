@@ -8,6 +8,7 @@ declare module 'vue' {
     BarCell: typeof import('./src/components/common-components/bar-cell/bar-cell.vue')['default']
     ContactBar: typeof import('./src/components/common-components/contact-bar/contact-bar.vue')['default']
     DateCell: typeof import('./src/components/common-components/date-cell/date-cell.vue')['default']
+    DisclaimerFooter: typeof import('./src/components/disclaimer-footer.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
@@ -39,6 +40,7 @@ declare module 'vue' {
     PlatformCell: typeof import('./src/components/common-components/platform-cell/platform-cell.vue')['default']
     ProjectNameCell: typeof import('./src/components/common-components/project-name-cell/project-name-cell.vue')['default']
     ProjectRankingRadar: typeof import('./src/components/project-ranking-radar.vue')['default']
+    RemoteSearch: typeof import('./src/components/common-components/remote-search/remote-search.vue')['default']
     RequestAudit: typeof import('./src/components/request-audit.vue')['default']
     ScoreCell: typeof import('./src/components/common-components/score-cell/score-cell.vue')['default']
     SearchInput: typeof import('./src/components/search-input.vue')['default']
@@ -49,4 +51,4 @@ declare module 'vue' {
   }
 }
 
-export {}
+export { }

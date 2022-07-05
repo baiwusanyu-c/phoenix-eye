@@ -321,7 +321,7 @@ export default defineComponent({
                 <path
                   class="be-progress-circle__track"
                   d={trackPath.value}
-                  stroke-Linecap={props.strokeLinecap as 'round' | 'square'}
+                  stroke-linecap={props.strokeLinecap as 'round' | 'square'}
                   stroke={props.trailColor ? props.trailColor : '#f5f5f5'}
                   stroke-width={relativeStrokeWidth.value}
                   fill="none"
@@ -334,7 +334,7 @@ export default defineComponent({
                     d={trackPath.value}
                     stroke={circlePathColor.value}
                     fill="none"
-                    stroke-Linecap={props.strokeLinecap as 'round' | 'square'}
+                    stroke-linecap={props.strokeLinecap as 'round' | 'square'}
                     stroke-width={relativeStrokeWidth.value}
                     style={circlePathStyle.value}
                   />
