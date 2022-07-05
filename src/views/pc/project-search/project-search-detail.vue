@@ -115,7 +115,7 @@
                   ">
                   <ellipsis-copy
                     :target-str="handleTokenAddress(baseInfo)"
-                    :tooltip-txt="tokenAddrTips(baseInfo)"
+                    :tooltip-txt="tokenAddrTips()"
                     :is-tooltip="true"
                     :is-ellipsis="handleTokenAddress(baseInfo).length > 30"
                     :is-show-copy-btn="false">
@@ -655,7 +655,7 @@
               projectScoreData.value = res.data.project_score
               relatedProject.value =
                 res.data.relate_project && res.data.relate_project.length > 5
-                  ? res.data.relate_project[5]
+                  ? res.data.relate_project.slice(0, 5)
                   : res.data.relate_project
               if (res.data.twitter_analysis.following_info) {
                 twitterAnalysisData.value = res.data.twitter_analysis.following_info
@@ -875,7 +875,7 @@
         }
       })
       const tokenAddrTips = computed(() => {
-        return data => {
+        return () => {
           if (baseInfo.value.token_address_symbol && !baseInfo.value.token_address) {
             return `Token Address Symbol: ${baseInfo.value.token_address_symbol}`
           }
