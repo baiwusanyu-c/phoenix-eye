@@ -534,6 +534,10 @@
       min-height: 48px;
     }
   }
+  .nav-name {
+    margin-left: 10px;
+    font-size: 16px;
+  }
   .remote-search-item {
     width: 250px;
     display: flex;
@@ -662,7 +666,12 @@
       font-size: 14px;
       font-weight: normal !important;
       margin: 0;
-      color: $textColor13;
+      color: $mainColor7;
+    }
+    &:hover {
+      .be-button--slot {
+        color: $textColor13;
+      }
     }
   }
   .tsgz-nav-menu .feedback-btn {
@@ -753,10 +762,6 @@
       background-repeat: no-repeat;
       background-position: right;
       background-size: 100% 100%;
-      .nav-name {
-        margin-left: 10px;
-        font-size: 16px;
-      }
       .remote-search-input {
         background: $mainColor1;
         border: none;
