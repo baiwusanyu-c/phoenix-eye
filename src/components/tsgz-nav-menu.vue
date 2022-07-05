@@ -4,7 +4,7 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <div class="tsgz-nav-menu-body">
       <!--    logo    -->
-      <div class="expend-logo" @click="routerPush('/projectSearch')">
+      <div class="expend-logo" @click="routerPush('/ProjectSearch')">
         <img src="../assets/image/pc/logo.png" alt="Beosin-Eagle-Eye" />
         <span>EagleEye</span>
       </div>
@@ -251,7 +251,7 @@
           // // 在白名单内的页面，刷新页面来重置权限菜单等
           nextTick(() => {
             if (WHITE_LIST.indexOf(route.path) < 0) {
-              window.location.href = '/projectSearch'
+              window.location.href = '/ProjectSearch'
             }
           })
         }
