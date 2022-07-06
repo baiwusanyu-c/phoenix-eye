@@ -342,7 +342,7 @@
         menuConfig.forEach((val: any, index: number) => {
           if (MANAGEMENT_DICT[val.perms as keyof typeof MANAGEMENT_DICT]) {
             headerConfigMore.value.push({
-              index: (index + 3).toString(),
+              index: (index + 4).toString(),
               name: val.meta.title,
               show: !val.hidden,
               path: val.path,
