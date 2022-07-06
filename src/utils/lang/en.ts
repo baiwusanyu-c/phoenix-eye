@@ -7,10 +7,6 @@
 export default {
   searchT: 'SEARCH',
   reTry: 'RETRY',
-  companyAddr: '联系地址：成都市武侯区世纪城南路599号天府软件园D7座504室',
-  companyTel: '联系电话： 028-8326-2585',
-  companyRecord: '蜀ICP备18013498号-1',
-  companyName: '成都链安科技有限公司',
   copyright: 'Copyright',
   emptyData: 'No data available',
   noRisk: 'No risk transactions detected',

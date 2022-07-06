@@ -173,7 +173,7 @@
       }
       .g2-tooltip-list-token {
         font-size: 14px;
-        font-family: BarlowSemi-B, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: bold;
         line-height: 20px;
         color: $mainColor7 !important;

@@ -62,7 +62,7 @@
       margin-top: 40px;
       h2 {
         font-size: 32px;
-        font-family: BarlowSemi-B, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: bold;
         color: $textColor3;
         line-height: 40px;

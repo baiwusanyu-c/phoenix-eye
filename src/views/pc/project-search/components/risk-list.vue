@@ -225,7 +225,7 @@
     }
     .level-low {
       font-size: 14px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $mainColor3;
       background-color: $mainColor16-025;
@@ -234,7 +234,7 @@
     }
     .level-high {
       font-size: 14px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $lessColor4;
       padding: 4px 12px;
@@ -243,7 +243,7 @@
     }
     .level-medium {
       font-size: 14px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       padding: 4px 12px;
       color: $mainColor19;

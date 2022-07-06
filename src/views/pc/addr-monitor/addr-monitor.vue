@@ -385,7 +385,7 @@
     }
 
     .item {
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 22px;

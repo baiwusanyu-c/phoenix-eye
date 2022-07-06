@@ -190,7 +190,7 @@
     .tab-item {
       border-radius: 4px;
       font-size: 16px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
 
       color: $textColor2;
       line-height: 36px;
@@ -224,13 +224,13 @@
           margin-top: 23px;
           span {
             font-weight: bold;
-            font-family: BarlowSemi-B, sans-serif;
+            font-family: 'Barlow', sans-serif;
           }
         }
         .info-val {
           font-size: 24px;
           font-weight: bold;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           margin-bottom: 26px;
         }
       }

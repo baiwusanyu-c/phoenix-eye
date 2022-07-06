@@ -190,7 +190,7 @@
       height: 24px;
     }
     span {
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
     }
   }
 </style>
