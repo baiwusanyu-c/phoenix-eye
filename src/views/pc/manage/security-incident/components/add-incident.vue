@@ -335,7 +335,7 @@
     width: 800px;
 
     .el-form-item__label {
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-size: 14px;
       font-weight: bold;
       line-height: 40px;

@@ -628,7 +628,7 @@
     align-items: center;
     justify-content: space-between;
     span {
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: $textColor3;
       line-height: 17px;
@@ -641,7 +641,7 @@
       height: 24px;
       line-height: 24px;
       margin-left: 6px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       cursor: pointer;
     }
@@ -820,7 +820,7 @@
 
       h3 {
         margin: 0 10px;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-size: 20px;
         font-weight: 500;
         color: $textColor4;
@@ -839,7 +839,7 @@
       }
 
       span {
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         color: $mainColor7;
         font-size: 24px;
         font-weight: bold;
@@ -883,7 +883,7 @@
         list-style: none;
 
         span {
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
         }
       }
 

@@ -378,7 +378,7 @@
     justify-content: center;
     align-items: center;
     .subTitle {
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: $textColor12;
@@ -416,7 +416,7 @@
         font-size: 18px;
         font-weight: 400;
         line-height: 26px;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         color: $textColor3;
         .empty-info {
           color: $mainColor3;
@@ -445,7 +445,7 @@
       max-width: 600px;
       display: block;
       font-size: 14px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 600;
       color: $textColor3;
       line-height: 22px;
@@ -456,7 +456,7 @@
     .table--link {
       @include ellipsis;
       font-size: 14px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 600;
       color: #008ee9;
       line-height: 22px;

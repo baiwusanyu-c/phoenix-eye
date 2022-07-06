@@ -18,7 +18,7 @@
           <ellipsis-copy
             :target-str="scope.row.tx_hash"
             :is-show-copy-btn="false"
-            styles="font-weight:bold;font-family:BarlowSemi-B, sans-serif;color:#18304E"
+            styles="font-weight:bold;font-family:Barlow, sans-serif;color:#18304E"
             font-length="7"
             end-length="7">
           </ellipsis-copy>

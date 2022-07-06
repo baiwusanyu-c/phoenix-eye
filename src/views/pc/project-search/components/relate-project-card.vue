@@ -62,7 +62,7 @@
     .relate-project-card--name {
       max-width: 80%;
       font-size: 20px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 24px;

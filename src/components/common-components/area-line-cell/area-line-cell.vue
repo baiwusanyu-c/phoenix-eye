@@ -165,7 +165,7 @@
     .g2-tooltip-list-item {
       p {
         text-align: left !important;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-size: 12px;
         font-weight: 400;
         color: $textColor7 !important;

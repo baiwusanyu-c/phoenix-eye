@@ -6,7 +6,7 @@
       style="
         line-height: 25px;
         text-align: center;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         color: #bababa;
         font-weight: 400;
         font-size: 14px;

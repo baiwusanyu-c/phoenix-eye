@@ -70,7 +70,7 @@
       }
       p {
         font-size: 16px;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: 400;
         color: $textColor3;
         line-height: 26px;

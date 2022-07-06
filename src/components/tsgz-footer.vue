@@ -60,7 +60,7 @@
       display: flex;
       flex: 1;
       justify-content: center;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-size: 14px;
       font-weight: 400;
       line-height: 60px;
@@ -75,7 +75,7 @@
       .contact-logo {
         display: flex;
         align-items: center;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-size: 14px;
         font-weight: 400;
         color: $textColor13;

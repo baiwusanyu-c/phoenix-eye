@@ -1089,7 +1089,7 @@
           width: calc(100% - 200px);
           p {
             font-size: 14px;
-            font-family: BarlowSemi-R, sans-serif;
+            font-family: 'Barlow', sans-serif;
             font-weight: 400;
             color: $textColor3;
             line-height: 24px;
@@ -1159,7 +1159,7 @@
           width: calc(100% - 200px);
           p {
             font-size: 14px;
-            font-family: BarlowSemi-R, sans-serif;
+            font-family: 'Barlow', sans-serif;
             font-weight: 400;
             color: $textColor3;
             line-height: 24px;
@@ -1170,7 +1170,7 @@
         }
         .following {
           font-size: 20px;
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: 400;
           color: $textColor3;
           line-height: 24px;
@@ -1251,7 +1251,7 @@
             }
             .descr {
               font-size: 12px;
-              font-family: BarlowSemi-R, sans-serif;
+              font-family: 'Barlow', sans-serif;
               font-weight: 400;
               color: $textColor2;
               line-height: 20px;
@@ -1276,7 +1276,7 @@
               }
               span {
                 font-size: 16px;
-                font-family: BarlowSemi-R, sans-serif;
+                font-family: 'Barlow', sans-serif;
                 font-weight: 400;
                 color: #444444;
                 line-height: 18px;

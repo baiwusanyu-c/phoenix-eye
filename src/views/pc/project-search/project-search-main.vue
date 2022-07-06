@@ -416,7 +416,7 @@
 
     p {
       font-size: 24px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: $textColor13;
       line-height: 30px;

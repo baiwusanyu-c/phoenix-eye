@@ -220,7 +220,7 @@
           color: $textColor3;
           font-size: 14px;
           line-height: 17px;
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
           margin-top: 23px;
           span {
             font-weight: bold;
@@ -245,7 +245,7 @@
         text-align: right;
         margin-bottom: 10px;
         font-size: 14px;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: 400;
         color: $textColor3;
         line-height: 20px;

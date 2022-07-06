@@ -244,7 +244,7 @@
         .login-title-small {
           width: 490px;
           height: 20px;
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-size: 14px;
           font-weight: 400;
           line-height: 40px;
