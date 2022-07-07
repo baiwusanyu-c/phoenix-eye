@@ -389,7 +389,7 @@ export function nFormats(num: number, precision = 1000) {
   if (precision && precision > 0) {
     return `${Math.floor(res * 1000) / 1000}${unit}`
   }
-  if (!precision) {
+  if (precision < 0) {
     return `${res}${unit}`
   }
 }
