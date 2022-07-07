@@ -158,7 +158,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    font-family: BarlowSemi-B, sans-serif;
+    font-family: 'Barlow', sans-serif;
     color: $textColor3;
   }
 

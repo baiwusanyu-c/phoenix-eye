@@ -17,7 +17,7 @@ import type { RouteLocationNormalized, Router, RouterOptions } from 'vue-router'
 const routes = [
   {
     path: '/',
-    redirect: '/projectSearch',
+    redirect: '/ProjectSearch',
   },
   {
     path: '/',
@@ -66,7 +66,7 @@ const routes = [
       },
       // 项目浏览器
       {
-        path: '/projectSearch',
+        path: '/ProjectSearch',
         name: 'ProjectSearch',
         component: () => import('../views/pc/project-search/project-search-main.vue'),
         meta: { title: 'lang.subNav.navName5' },
@@ -131,7 +131,7 @@ export function getRouterData(
         }
         next &&
           next({
-            path: '/projectSearch',
+            path: '/ProjectSearch',
           })
         isEmptyRouterInfo = true
         return
@@ -150,7 +150,7 @@ export function getRouterData(
     .catch(err => {
       next &&
         next({
-          path: '/projectSearch',
+          path: '/ProjectSearch',
         })
       console.error(err)
     })
@@ -169,7 +169,7 @@ const beforeEachHandle = (router: Router) => {
       // const isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/)
       // const isAndroid = ua.match(/(Android)\s+([\d.]+)/)
       // const isMobile = ref<RegExpMatchArray | null>(isIphone || isAndroid)
-      // if (to.path === '/projectSearch' && isMobile.value) {
+      // if (to.path === '/ProjectSearch' && isMobile.value) {
       //   window.location.reload()
       // }
 

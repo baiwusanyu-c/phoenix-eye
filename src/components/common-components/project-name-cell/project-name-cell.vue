@@ -83,7 +83,7 @@
       font-weight: bold;
       font-size: 14px;
       color: $textColor3;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       margin-right: 6px;
     }
     .ellipsis-copy {

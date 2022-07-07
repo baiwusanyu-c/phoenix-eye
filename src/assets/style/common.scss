@@ -259,7 +259,7 @@
 }
 
 .table-head{
-  font-family: BarlowSemi-R,sans-serif;
+  font-family: 'Barlow',sans-serif;
   font-size: 14px;
   font-weight: 800;
   line-height: 22px;
@@ -837,7 +837,7 @@
     text-align: left;
 
     span{
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       color: #1CD2A9;
     }
   }
@@ -853,7 +853,7 @@
     align-items: center;
     span {
       font-size: 14px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: $textColor13;
       line-height: 17px;
@@ -876,7 +876,7 @@
   }
 }
 .be-button .be-button--body .be-button--slot{
-  font-family: BarlowSemi-B, sans-serif !important;
+  font-family: 'Barlow', sans-serif !important;
   font-weight: bold;
 }
 /*

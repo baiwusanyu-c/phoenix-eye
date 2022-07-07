@@ -162,7 +162,7 @@
     box-sizing: border-box;
     .market-govern--label {
       font-size: 18px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 22px;
@@ -171,7 +171,7 @@
     }
     .market-govern--subLabel {
       font-size: 16px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: $textColor3;
       line-height: 24px;
@@ -189,7 +189,7 @@
       background: #18304e;
       border-radius: 4px;
       font-size: 16px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $mainColor7;
       line-height: 24px;

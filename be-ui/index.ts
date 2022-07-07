@@ -7,6 +7,11 @@ export { default as BePopover } from './package/popover' // 全局、按需
 export { default as BeProgress } from './package/progress' // 全局、按需
 export { default as BeDialog } from './package/dialog' // 全局、按需
 export { default as BeInput } from './package/input' // 全局、按需
+export { BeMain } from './package/container' //全局、按需
+export { BeFooter } from './package/container' //全局、按需
+export { BeAside } from './package/container' //全局、按需
+export { BeHeader } from './package/container' //全局、按需
+export { BeContainer } from './package/container' //全局、按需
 // plugins
 export { default as BeNotification } from './package/notification' // 服务
 export { default as BeMessage } from './package/message' // 服务

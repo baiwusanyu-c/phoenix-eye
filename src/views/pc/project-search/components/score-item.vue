@@ -83,14 +83,14 @@
     }
     p {
       font-size: 18px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 24px;
     }
     span {
       font-size: 14px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: #18304e;
       line-height: 20px;

@@ -18,7 +18,7 @@ export const META_TITLE_DICT: IOption = {
 }
 export const WHITE_LIST: Array<string> = [
   '/riskTrxList',
-  '/projectSearch',
+  '/ProjectSearch',
   '/RiskPublicInformation',
   '/addressMonitor',
   '/detail',
@@ -40,6 +40,6 @@ export const ROUTER_COMPONENT_DICT: IOption = {
 }
 // 需要运营统计的路由,值由后端约定
 export const STATISTICS_ROUTER: IOption = {
-  '/projectSearch': 'project explore',
+  '/ProjectSearch': 'project explore',
   '/detail': 'project details',
 }

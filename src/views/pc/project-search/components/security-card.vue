@@ -142,7 +142,7 @@
         span {
           color: $textColor3;
           font-size: 14px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: 400;
           line-height: 17px;
           width: max-content;
@@ -167,7 +167,7 @@
         justify-content: space-between;
         span {
           font-size: 14px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: 400;
           color: $textColor13;
           line-height: 17px;

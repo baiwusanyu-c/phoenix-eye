@@ -142,7 +142,7 @@
   .hot-project {
     .tx24 {
       font-size: 14px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 18px;
@@ -150,7 +150,7 @@
     }
     .trx {
       font-size: 12px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 12px;

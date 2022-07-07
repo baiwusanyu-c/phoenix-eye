@@ -11,7 +11,7 @@ export const publicHeaderConfig = {
     index: '0',
     name: 'lang.subNav.navName5',
     show: true,
-    path: '/projectSearch',
+    path: '/ProjectSearch',
     isPush: true,
     children: [],
     isDisabled: false,

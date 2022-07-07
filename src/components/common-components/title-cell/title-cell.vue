@@ -41,7 +41,7 @@
       margin-left: 8px;
       font-weight: bold;
       color: $textColor3;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
     }
   }
 </style>

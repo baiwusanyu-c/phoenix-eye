@@ -164,7 +164,7 @@
               fontWeight: 'bold',
               fontSize: 16,
               fill: 'black',
-              fontFamily: 'BarlowSemi-R,sans-serif',
+              fontFamily: 'Barlow,sans-serif',
             },
             formatter: (text, item) => {
               labelCache.push(JSON.parse(JSON.stringify(item)))

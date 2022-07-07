@@ -1,7 +1,7 @@
 /* * @contact-bar.vue * @deprecated * @author czh * @update (czh 2022/5/30) */
 <template>
   <teleport to="body">
-    <div v-drag class="contact-bar">
+    <div class="contact-bar">
       <div class="icon-body" role="link" @click="openWindow(webURL.contact_telegram)">
         <a :herf="webURL.contact_telegram">
           <be-icon icon="iconTelegramG" width="25" height="25"></be-icon>

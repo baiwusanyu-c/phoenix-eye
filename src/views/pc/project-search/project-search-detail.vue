@@ -312,6 +312,7 @@
                 :line-data="twitterAnalysisData.every_day_data"
                 x-axis="value"
                 y-axis="date"
+                prefix=" "
                 :smooth="false"
                 :height="180">
               </area-line-cell>
@@ -999,7 +1000,7 @@
         margin: 0 20px;
         background-color: rgba(167, 199, 214, 0.29);
         font-size: 14px;
-        font-family: BarlowSemi-B, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: bold;
         color: #18304e;
         line-height: 17px;
@@ -1034,7 +1035,7 @@
         flex-direction: column;
         p {
           font-size: 32px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $textColor3;
           line-height: 38px;
@@ -1049,7 +1050,7 @@
 
           .token-price--title {
             font-size: 18px;
-            font-family: BarlowSemi-B, sans-serif;
+            font-family: 'Barlow', sans-serif;
             font-weight: bold;
             color: $textColor3;
             line-height: 22px;
@@ -1064,7 +1065,7 @@
             line-height: 24px;
             cursor: pointer;
             display: flex;
-            font-family: BarlowSemi-B, sans-serif;
+            font-family: 'Barlow', sans-serif;
             align-items: center;
             background: rgba(167, 199, 214, 0.3);
             border-radius: 2px;
@@ -1076,7 +1077,7 @@
           }
           .token-price-val {
             font-size: 48px;
-            font-family: BarlowSemi-B, sans-serif;
+            font-family: 'Barlow', sans-serif;
             font-weight: bold;
             color: $textColor3;
             line-height: 58px;
@@ -1089,7 +1090,7 @@
           width: calc(100% - 200px);
           p {
             font-size: 14px;
-            font-family: BarlowSemi-R, sans-serif;
+            font-family: 'Barlow', sans-serif;
             font-weight: 400;
             color: $textColor3;
             line-height: 24px;
@@ -1115,14 +1116,14 @@
         .user-active-market--title {
           text-align: left;
           font-size: 14px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: 400;
           color: $textColor3;
           line-height: 17px;
         }
         .uam-item-val {
           font-size: 24px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $textColor3;
           line-height: 29px;
@@ -1139,7 +1140,7 @@
         display: flex;
         .twitter-analysis--title {
           font-size: 20px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $textColor3;
           line-height: 24px;
@@ -1159,7 +1160,7 @@
           width: calc(100% - 200px);
           p {
             font-size: 14px;
-            font-family: BarlowSemi-R, sans-serif;
+            font-family: 'Barlow', sans-serif;
             font-weight: 400;
             color: $textColor3;
             line-height: 24px;
@@ -1170,7 +1171,7 @@
         }
         .following {
           font-size: 20px;
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: 400;
           color: $textColor3;
           line-height: 24px;
@@ -1181,7 +1182,7 @@
         }
         .twitter-analysis-val {
           font-size: 24px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $textColor3;
           line-height: 34px;
@@ -1207,7 +1208,7 @@
             width: 226px;
             .score-report__title {
               font-size: 18px;
-              font-family: BarlowSemi-B, sans-serif;
+              font-family: 'Barlow', sans-serif;
               font-weight: bold;
               color: $textColor3;
               line-height: 22px;
@@ -1236,7 +1237,7 @@
             }
             .score {
               font-size: 14px;
-              font-family: BarlowSemi-B, sans-serif;
+              font-family: 'Barlow', sans-serif;
               font-weight: bold;
               color: $textColor3;
               line-height: 18px;
@@ -1251,7 +1252,7 @@
             }
             .descr {
               font-size: 12px;
-              font-family: BarlowSemi-R, sans-serif;
+              font-family: 'Barlow', sans-serif;
               font-weight: 400;
               color: $textColor2;
               line-height: 20px;
@@ -1269,14 +1270,14 @@
               text-align: center;
               p {
                 font-size: 48px;
-                font-family: BarlowSemi-B, sans-serif;
+                font-family: 'Barlow', sans-serif;
                 font-weight: bold;
                 color: $textColor3;
                 line-height: 58px;
               }
               span {
                 font-size: 16px;
-                font-family: BarlowSemi-R, sans-serif;
+                font-family: 'Barlow', sans-serif;
                 font-weight: 400;
                 color: #444444;
                 line-height: 18px;
@@ -1361,7 +1362,7 @@
 
       .be-message-box--body p {
         margin-top: 20px;
-        font-family: BarlowSemi-B, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-size: 14px;
         font-weight: 400;
         line-height: 22px;

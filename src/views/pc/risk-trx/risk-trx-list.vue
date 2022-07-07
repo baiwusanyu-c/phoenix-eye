@@ -164,7 +164,7 @@
         background-color: transparent;
 
         .be-button--slot {
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
         }
 
         &:hover {

@@ -4,7 +4,7 @@
   <div id="xnhb_nav_menu" class="tsgz-nav-menu">
     <div class="tsgz-nav-menu-body">
       <!--    logo    -->
-      <div class="expend-logo" @click="routerPush('/projectSearch')">
+      <div class="expend-logo" @click="routerPush('/ProjectSearch')">
         <img src="../assets/image/pc/logo.png" alt="Beosin-Eagle-Eye" />
         <span>EagleEye</span>
       </div>
@@ -251,7 +251,7 @@
           // // 在白名单内的页面，刷新页面来重置权限菜单等
           nextTick(() => {
             if (WHITE_LIST.indexOf(route.path) < 0) {
-              window.location.href = '/projectSearch'
+              window.location.href = '/ProjectSearch'
             }
           })
         }
@@ -342,7 +342,7 @@
         menuConfig.forEach((val: any, index: number) => {
           if (MANAGEMENT_DICT[val.perms as keyof typeof MANAGEMENT_DICT]) {
             headerConfigMore.value.push({
-              index: (index + 3).toString(),
+              index: (index + 4).toString(),
               name: val.meta.title,
               show: !val.hidden,
               path: val.path,
@@ -554,7 +554,7 @@
       font-weight: bold;
       font-size: 14px;
       color: $textColor3;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       margin-right: 6px;
       .project-platform {
         font-size: 14px;
@@ -628,7 +628,7 @@
     align-items: center;
     justify-content: space-between;
     span {
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: $textColor3;
       line-height: 17px;
@@ -641,7 +641,7 @@
       height: 24px;
       line-height: 24px;
       margin-left: 6px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       cursor: pointer;
     }
@@ -752,6 +752,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      height: 68px;
     }
     .tsgz-slogan {
       display: flex;
@@ -820,7 +821,7 @@
 
       h3 {
         margin: 0 10px;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-size: 20px;
         font-weight: 500;
         color: $textColor4;
@@ -839,7 +840,7 @@
       }
 
       span {
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         color: $mainColor7;
         font-size: 24px;
         font-weight: bold;
@@ -883,7 +884,7 @@
         list-style: none;
 
         span {
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
         }
       }
 
