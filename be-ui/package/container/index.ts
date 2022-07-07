@@ -5,7 +5,7 @@
  * @update (czh 2021/12/7)
  */
 
-import { withInstall } from '@be-ui/utils/with-install'
+import { withInstall } from '../../utils/with-install'
 import beContainer from './src/be-container.vue'
 import beAside from './src/be-aside.vue'
 import beMain from './src/be-main.vue'
