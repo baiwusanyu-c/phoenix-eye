@@ -39,7 +39,11 @@
         <p>{{ titles }}</p>
         <el-tooltip :content="innerData.value" placement="top" effect="light">
           <p class="info-val">
-            {{ isEmpty(innerData.value, '/') === '/' ? '/' : `$${nFormats(innerData.value)}` }}
+            {{
+              isEmpty(innerData.value, '/') === '/'
+                ? '/'
+                : `${activeTab === 'token_transfer_data' ? '' : '$'}${nFormats(innerData.value)}`
+            }}
           </p>
         </el-tooltip>
         <p>
@@ -72,6 +76,7 @@
       <area-line-cell
         dom-id="market_line_tab"
         :line-data="innerData.every_day_data"
+        :prefix="activeTab === 'token_transfer_data' ? '' : '$'"
         y-axis="date"
         x-axis="value">
       </area-line-cell>
