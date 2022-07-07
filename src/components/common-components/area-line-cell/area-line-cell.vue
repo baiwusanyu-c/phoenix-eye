@@ -109,10 +109,7 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token">${props.prefix}${nFormats(
-                item.value,
-                undefined
-              )}</p>
+                  <p class="g2-tooltip-list-token">${props.prefix}${nFormats(item.value, -1)}</p>
                    <p>${item.title}</p>
               </li>`
             })

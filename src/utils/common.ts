@@ -386,7 +386,7 @@ export function nFormats(num: number, precision = 1000) {
     res = num / 1e18
     unit = 'E'
   }
-  if (precision && precision !== 0) {
+  if (precision && precision > 0) {
     return `${Math.floor(res * 1000) / 1000}${unit}`
   }
   if (!precision) {
