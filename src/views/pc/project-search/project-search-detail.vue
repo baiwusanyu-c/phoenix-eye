@@ -312,6 +312,7 @@
                 :line-data="twitterAnalysisData.every_day_data"
                 x-axis="value"
                 y-axis="date"
+                prefix=" "
                 :smooth="false"
                 :height="180">
               </area-line-cell>
