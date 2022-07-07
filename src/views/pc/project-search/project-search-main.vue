@@ -404,7 +404,7 @@
 
     h1 {
       font-size: 48px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $mainColor7;
       line-height: 58px;
@@ -416,7 +416,7 @@
 
     p {
       font-size: 24px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: $textColor13;
       line-height: 30px;
@@ -437,7 +437,7 @@
 
         span {
           font-size: 28px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $mainColor3;
           line-height: 34px;
@@ -519,7 +519,7 @@
         text-align: left;
         p {
           font-size: 26px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $mainColor7;
           line-height: 34px;
@@ -554,7 +554,7 @@
         text-align: left;
         h1 {
           font-size: 22px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $textColor3;
           line-height: 28px;
@@ -598,7 +598,7 @@
         text-align: left;
         h1 {
           font-size: 22px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $textColor3;
           line-height: 28px;
@@ -610,7 +610,7 @@
 
         p {
           font-size: 14px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: 400;
           color: $textColor3;
           line-height: 30px;
@@ -674,7 +674,7 @@
 
         .date {
           font-size: 12px;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           font-weight: 400;
           color: $textColor3;
           line-height: 14px;

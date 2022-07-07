@@ -114,7 +114,7 @@
     }
     p {
       font-size: 16px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 24px;

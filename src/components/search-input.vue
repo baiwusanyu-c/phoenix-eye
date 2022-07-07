@@ -49,13 +49,13 @@
     display: flex;
     input::-webkit-input-placeholder {
       /* WebKit browsers */
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-size: 18px;
       color: $mainColor14;
     }
     .el-input__inner {
       height: 52px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-size: 18px;
       line-height: 52px;
       color: $textColor4;

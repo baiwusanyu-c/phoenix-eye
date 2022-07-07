@@ -114,7 +114,7 @@
     min-height: calc(100% - 100px);
 
     .subTitle {
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: $textColor12;

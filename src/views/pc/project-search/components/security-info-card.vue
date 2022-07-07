@@ -107,7 +107,7 @@
       width: 120px;
       display: inline-block;
       font-size: 14px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 17px;
@@ -115,7 +115,7 @@
     }
     .security-info-content {
       font-size: 14px;
-      font-family: BarlowSemi-R, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: 400;
       color: $textColor1;
       line-height: 17px;

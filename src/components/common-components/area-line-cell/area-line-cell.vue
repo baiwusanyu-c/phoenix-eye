@@ -36,6 +36,10 @@
         type: String,
         default: 'create_time',
       },
+      prefix: {
+        type: String,
+        default: '$',
+      },
     },
     setup(props) {
       onMounted(() => {
@@ -105,7 +109,7 @@
             items.forEach((item: { title: string; value: number }) => {
               listItem += `
               <li class="g2-tooltip-list-item" style="margin-bottom:4px;">
-                  <p class="g2-tooltip-list-token">$ ${nFormats(item.value, null)}</p>
+                  <p class="g2-tooltip-list-token">${props.prefix}${nFormats(item.value, -1)}</p>
                    <p>${item.title}</p>
               </li>`
             })
@@ -165,7 +169,7 @@
     .g2-tooltip-list-item {
       p {
         text-align: left !important;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-size: 12px;
         font-weight: 400;
         color: $textColor7 !important;
@@ -173,7 +177,7 @@
       }
       .g2-tooltip-list-token {
         font-size: 14px;
-        font-family: BarlowSemi-B, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: bold;
         line-height: 20px;
         color: $mainColor7 !important;

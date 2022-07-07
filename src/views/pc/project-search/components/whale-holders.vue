@@ -624,7 +624,7 @@
       margin-bottom: 28px;
       p {
         font-size: 20px;
-        font-family: BarlowSemi-B, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: bold;
         color: $textColor3;
         line-height: 24px;
@@ -641,7 +641,7 @@
       .tab-item {
         border-radius: 4px;
         font-size: 16px;
-        font-family: BarlowSemi-B, sans-serif;
+        font-family: 'Barlow', sans-serif;
         min-width: 112px;
         color: $textColor2;
         line-height: 32px;
@@ -663,7 +663,7 @@
     }
     .whale-sub-title {
       font-size: 16px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
       font-weight: bold;
       color: $textColor3;
       line-height: 20px;
@@ -684,7 +684,7 @@
       color: white;
       width: max-content;
       text-align: center;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
     }
     .token-val {
       display: flex;

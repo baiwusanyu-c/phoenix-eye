@@ -39,7 +39,11 @@
         <p>{{ titles }}</p>
         <el-tooltip :content="innerData.value" placement="top" effect="light">
           <p class="info-val">
-            {{ isEmpty(innerData.value, '/') === '/' ? '/' : `$${nFormats(innerData.value)}` }}
+            {{
+              isEmpty(innerData.value, '/') === '/'
+                ? '/'
+                : `${activeTab === 'token_transfer_data' ? '' : '$'}${nFormats(innerData.value)}`
+            }}
           </p>
         </el-tooltip>
         <p>
@@ -72,6 +76,7 @@
       <area-line-cell
         dom-id="market_line_tab"
         :line-data="innerData.every_day_data"
+        :prefix="activeTab === 'token_transfer_data' ? '' : '$'"
         y-axis="date"
         x-axis="value">
       </area-line-cell>
@@ -190,7 +195,7 @@
     .tab-item {
       border-radius: 4px;
       font-size: 16px;
-      font-family: BarlowSemi-B, sans-serif;
+      font-family: 'Barlow', sans-serif;
 
       color: $textColor2;
       line-height: 36px;
@@ -220,17 +225,17 @@
           color: $textColor3;
           font-size: 14px;
           line-height: 17px;
-          font-family: BarlowSemi-R, sans-serif;
+          font-family: 'Barlow', sans-serif;
           margin-top: 23px;
           span {
             font-weight: bold;
-            font-family: BarlowSemi-B, sans-serif;
+            font-family: 'Barlow', sans-serif;
           }
         }
         .info-val {
           font-size: 24px;
           font-weight: bold;
-          font-family: BarlowSemi-B, sans-serif;
+          font-family: 'Barlow', sans-serif;
           margin-bottom: 26px;
         }
       }
@@ -245,7 +250,7 @@
         text-align: right;
         margin-bottom: 10px;
         font-size: 14px;
-        font-family: BarlowSemi-R, sans-serif;
+        font-family: 'Barlow', sans-serif;
         font-weight: 400;
         color: $textColor3;
         line-height: 20px;

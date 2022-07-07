@@ -7,7 +7,7 @@
         font-size:${fontSize}px;
         margin-left: 6px;
         font-weight: ${fontWeight};
-        font-family: BarlowSemi-B,sans-serif;`"
+        font-family: Barlow,sans-serif;`"
       >{{ content }}</span
     >
   </div>
