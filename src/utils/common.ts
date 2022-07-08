@@ -606,6 +606,17 @@ export const simulateToFixed = (num: number, decimal = 6) => {
 }
 
 /**
+ * 去除末尾0
+ * @param str
+ */
+export function toPrecision(str: string) {
+  if (!/^[0-9.]+$/g.test(str)) return '0'
+  while (str.includes('.') && (str.endsWith('.') || str.endsWith('0'))) {
+    str = str.slice(0, -1)
+  }
+  return str
+}
+/**
  * 科学计数法转化成小数点
  * @param inputNumber 数值
  * @returns Number

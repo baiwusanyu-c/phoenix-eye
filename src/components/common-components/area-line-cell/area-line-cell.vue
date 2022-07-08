@@ -7,7 +7,7 @@
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
   import DataSet from '@antv/data-set'
-  import { nFormats, simulateToFixed } from '../../../utils/common'
+  import { nFormats, simulateToFixed, toPrecision } from '../../../utils/common'
   import type { PropType } from 'vue'
   import type { IStatisticsLine } from '../../../utils/types'
   export default defineComponent({
@@ -123,7 +123,7 @@
               fill: '#8A96A3',
             },
             formatter(text: number) {
-              return simulateToFixed(text)
+              return toPrecision(simulateToFixed(text))
             },
           },
           line: null,
