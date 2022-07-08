@@ -29,6 +29,7 @@ export default defineConfig({
       format: 'default',
     }),
     viteCompression({
+      disable: true,
       deleteOriginFile: true,
     }),
   ],

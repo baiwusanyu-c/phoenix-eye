@@ -98,9 +98,11 @@
                 }}</span>
               </template>
               <template #default="scope">
-                <span style="color: #18304e; font-weight: bold; font-size: 14px">
-                  {{ simulateToFixed(scope.row.quantity) }}
-                </span>
+                <el-tooltip :content="scope.row.quantity" placement="top" effect="light">
+                  <span style="color: #18304e; font-weight: bold; font-size: 14px">
+                    {{ nFormats(scope.row.quantity) }}
+                  </span>
+                </el-tooltip>
               </template>
             </el-table-column>
           </el-table>
@@ -189,9 +191,11 @@
             }}</span>
           </template>
           <template #default="scope">
-            <span style="color: #18304e; font-weight: bold; font-size: 14px">
-              {{ simulateToFixed(scope.row.quantity) }}
-            </span>
+            <el-tooltip :content="scope.row.quantity" placement="top" effect="light">
+              <span style="color: #18304e; font-weight: bold; font-size: 14px">
+                {{ nFormats(scope.row.quantity) }}
+              </span>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column prop="address" width="180">
@@ -364,6 +368,7 @@
     createDate,
     formatDate,
     formatTimeStamp,
+    nFormats,
     simulateToFixed,
   } from '../../../../utils/common'
   // @ts-ignore
@@ -546,6 +551,7 @@
         }
       )
       return {
+        nFormats,
         simulateToFixed,
         pageNum,
         pageParams,
