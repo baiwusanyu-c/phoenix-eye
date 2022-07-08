@@ -1,6 +1,6 @@
 /* * @project-manage-table.vue * @deprecated * @author czh * @update (czh 2022/5/10) */
 <template>
-  <el-table :data="list" @row-click="routerSwitch">
+  <el-table :data="list" @sort-change="handleSort" @row-click="routerSwitch">
     <template #empty>
       <empty-data></empty-data>
     </template>
@@ -35,7 +35,11 @@
         </ellipsis-copy>
       </template>
     </el-table-column>
-    <el-table-column prop="contract_num" width="120">
+    <el-table-column
+      prop="contract_num"
+      width="120"
+      sortable="custom"
+      :sort-orders="['ascending', 'descending']">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
       </template>
@@ -43,7 +47,11 @@
         <span>{{ scope.row.contract_num }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="audit_report_num" width="120">
+    <el-table-column
+      prop="audit_report_num"
+      width="120"
+      sortable="custom"
+      :sort-orders="['ascending', 'descending']">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.auditNum') }}</span>
       </template>
@@ -51,7 +59,11 @@
         <span>{{ isEmpty(scope.row.audit_report_num, '/') }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="create_time" width="120">
+    <el-table-column
+      prop="create_time"
+      width="120"
+      sortable="custom"
+      :sort-orders="['ascending', 'descending']">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
       </template>
@@ -117,7 +129,7 @@
         default: '',
       },
     },
-    emits: ['operation'],
+    emits: ['operation', 'sort'],
     setup(props, ctx) {
       const { isEmpty, routerPush } = composition()
       const handleOperation = (type: string, data: IProjectInfo): void => {
@@ -130,7 +142,12 @@
         if (props.type !== 'system' || col.property === 'operation') return
         routerPush('/detail', { id: row.project_id, keyword: row.keyword })
       }
+      const handleSort = (column: any): void => {
+        const sortType = column.order === 'ascending' ? 'asc' : 'desc'
+        ctx.emit('sort', { sort_field: column.prop, sort_type: sortType })
+      }
       return {
+        handleSort,
         handleOperation,
         routerSwitch,
         isEmpty,

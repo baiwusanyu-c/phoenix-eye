@@ -20,6 +20,7 @@
     <project-manage-table
       :list="projectList.data"
       type="system"
+      @sort="handleSort"
       @operation="openDialog"></project-manage-table>
     <div class="table-page">
       <el-pagination
@@ -63,8 +64,8 @@
   import searchInput from '../../../../components/search-input.vue'
   import CreateProject from './components/create-project.vue'
   import ProjectManageTable from './components/project-manage-table.vue'
+  import type { ICreateProj, ISort } from '../../../../utils/types'
   import type { IProjectListAdmin, IReappraise } from '../../../../api/project-management'
-  import type { ICreateProj } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'ProjectManageSys',
@@ -149,6 +150,7 @@
           page_size: pageParams.value.pageSize,
           param: searchParams.value,
           type: 'system',
+          ...sortParams.value,
         }
         getProjectListAdmin(params)
           .then(res => {
@@ -185,8 +187,14 @@
         updatePageSize(data!, pageParams)
         getList()
       }
-
+      const sortParams = ref<ISort>({})
+      const handleSort = (sort: ISort): void => {
+        sortParams.value = sort
+        resetPageParam()
+        getList()
+      }
       return {
+        handleSort,
         handleSearch,
         updateNum,
         isEmpty,

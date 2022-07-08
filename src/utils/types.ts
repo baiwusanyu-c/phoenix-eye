@@ -376,3 +376,8 @@ export type IRelateProject = {
   project_id?: string
   platform?: string
 }
+
+export type ISort = {
+  sort_field?: string
+  sort_type?: string
+}
