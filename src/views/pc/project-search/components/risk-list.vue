@@ -200,6 +200,9 @@
     .el-table__row {
       height: 54px;
     }
+    .el-table__cell {
+      padding: 4px 0;
+    }
     width: 50%;
     height: 388px;
     position: relative;

@@ -357,7 +357,6 @@
   import { defineComponent, onMounted, ref, watch } from 'vue'
   import { BeIcon, BeProgress } from '@eagle-eye/be-ui'
   import compositionPage from '../../../../utils/mixin/page-param'
-
   import { getLiquidity, getPrivilege, getTop10HolderList } from '../../../../api/project-explorer'
   import composition from '../../../../utils/mixin/common-func'
   import {
