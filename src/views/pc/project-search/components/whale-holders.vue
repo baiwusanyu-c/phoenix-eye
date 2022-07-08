@@ -108,8 +108,8 @@
             <div class="front-page--body">
               <span>{{ pageParams.currentPage }} / {{ pageNum }}</span>
               <div class="page-btn-group">
-                <div class="page-btn" @click="prevPage">◀</div>
-                <div class="page-btn" @click="nextPage">▶</div>
+                <div class="page-btn" @click="prevPage(pageParams, getTop10Holder)">◀</div>
+                <div class="page-btn" @click="nextPage(pageParams, pageNum, getTop10Holder)">▶</div>
               </div>
             </div>
           </div>
@@ -230,8 +230,12 @@
         <div class="front-page--body">
           <span>{{ pageLiquidity.currentPage }} / {{ pageNumLiquidity }}</span>
           <div class="page-btn-group">
-            <div class="page-btn" @click="prevPageLiquidity">◀</div>
-            <div class="page-btn" @click="nextPageLiquidity">▶</div>
+            <div class="page-btn" @click="prevPage(pageLiquidity, getLiquidityList)">◀</div>
+            <div
+              class="page-btn"
+              @click="nextPage(pageLiquidity, pageNumLiquidity, getLiquidityList)">
+              ▶
+            </div>
           </div>
         </div>
       </div>
@@ -336,8 +340,12 @@
         <div class="front-page--body">
           <span>{{ pagePrivileges.currentPage }} / {{ pageNumPrivileges }}</span>
           <div class="page-btn-group">
-            <div class="page-btn" @click="prevPagePrivileges">◀</div>
-            <div class="page-btn" @click="nextPagePrivileges">▶</div>
+            <div class="page-btn" @click="prevPage(pagePrivileges, getPrivilegesList)">◀</div>
+            <div
+              class="page-btn"
+              @click="nextPage(pagePrivileges, pageNumPrivileges, getPrivilegesList)">
+              ▶
+            </div>
           </div>
         </div>
       </div>
@@ -380,23 +388,9 @@
         activeTab.value = type
       }
       const { message } = composition()
-      const { pageParams, resetPageParam, createPageParam } = compositionPage()
+      const { pageParams, resetPageParam, createPageParam, nextPage, prevPage } = compositionPage()
       const pageNum = ref<number>(0)
       /**************************** top10Holder数据获取、翻页 **************************************/
-      const nextPage = (): void => {
-        pageParams.value.currentPage!++
-        if (pageParams.value.currentPage! > pageNum.value) {
-          pageParams.value.currentPage! = pageNum.value
-        }
-        getTop10Holder()
-      }
-      const prevPage = (): void => {
-        pageParams.value.currentPage!--
-        if (pageParams.value.currentPage! < 1) {
-          pageParams.value.currentPage! = 1
-        }
-        getTop10Holder()
-      }
       const loading = ref<boolean>(false)
       const top10HolderList = ref<Array<ITop10Holder>>([])
       const getTop10Holder = (type?: string): void => {
@@ -436,20 +430,6 @@
       /**************************** Privileges 数据获取、翻页 **************************************/
       const pagePrivileges = createPageParam(3)
       const pageNumPrivileges = ref<number>(0)
-      const nextPagePrivileges = (): void => {
-        pagePrivileges.value.currentPage!++
-        if (pagePrivileges.value.currentPage! > pageNumPrivileges.value) {
-          pagePrivileges.value.currentPage! = pageNumPrivileges.value
-        }
-        getPrivilegesList()
-      }
-      const prevPagePrivileges = (): void => {
-        pagePrivileges.value.currentPage!--
-        if (pagePrivileges.value.currentPage! < 1) {
-          pagePrivileges.value.currentPage! = 1
-        }
-        getPrivilegesList()
-      }
       const loadingPrivileges = ref<boolean>(false)
       const privilegesList = ref<Array<IPrivilege>>([])
       const getPrivilegesList = (type?: string): void => {
@@ -493,21 +473,6 @@
       /**************************** Liquidity 数据获取、翻页 **************************************/
       const pageLiquidity = createPageParam(5)
       const pageNumLiquidity = ref<number>(0)
-
-      const nextPageLiquidity = (): void => {
-        pageLiquidity.value.currentPage!++
-        if (pageLiquidity.value.currentPage! > pageNumLiquidity.value) {
-          pageLiquidity.value.currentPage! = pageNumLiquidity.value
-        }
-        getLiquidityList()
-      }
-      const prevPageLiquidity = (): void => {
-        pageLiquidity.value.currentPage!--
-        if (pageLiquidity.value.currentPage! < 1) {
-          pageLiquidity.value.currentPage! = 1
-        }
-        getLiquidityList()
-      }
       const loadingLiquidity = ref<boolean>(false)
       const liquidityList = ref<Array<ILiquidity>>([])
       const getLiquidityList = (type?: string): void => {
@@ -591,13 +556,9 @@
         activeTab,
         handleTabClick,
         loading,
-        prevPagePrivileges,
-        nextPagePrivileges,
         privilegesList,
         pagePrivileges,
         pageNumPrivileges,
-        prevPageLiquidity,
-        nextPageLiquidity,
         liquidityList,
         pageLiquidity,
         pageNumLiquidity,
@@ -607,6 +568,9 @@
         createDate,
         formatDate,
         beijing2utc,
+        getTop10Holder,
+        getLiquidityList,
+        getPrivilegesList,
       }
     },
   })

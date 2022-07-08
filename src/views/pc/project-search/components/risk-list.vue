@@ -63,8 +63,8 @@
       <div class="front-page--body">
         <span>{{ pageParams.currentPage }} / {{ pageNum }}</span>
         <div class="page-btn-group">
-          <div class="page-btn" @click="prevPage">◀</div>
-          <div class="page-btn" @click="nextPage">▶</div>
+          <div class="page-btn" @click="prevPage(pageParams, getList)">◀</div>
+          <div class="page-btn" @click="nextPage(pageParams, pageNum, getList)">▶</div>
         </div>
       </div>
     </div>
@@ -123,22 +123,8 @@
             { label: 'Privileged operation', val: 'Privileged operation', isActive: false },
             { label: 'Slump', val: 'Slump', isActive: false },
         ])*/
-      const { pageParams, resetPageParam } = compositionPage()
+      const { pageParams, resetPageParam, nextPage, prevPage } = compositionPage()
       const pageNum = ref<number>(0)
-      const nextPage = (): void => {
-        pageParams.value.currentPage!++
-        if (pageParams.value.currentPage! > pageNum.value) {
-          pageParams.value.currentPage! = pageNum.value
-        }
-        getList()
-      }
-      const prevPage = (): void => {
-        pageParams.value.currentPage!--
-        if (pageParams.value.currentPage! < 1) {
-          pageParams.value.currentPage! = 1
-        }
-        getList()
-      }
       const { message } = composition()
       const tableData = ref<Array<any>>([])
       const loading = ref<boolean>(false)
@@ -203,6 +189,7 @@
         nextPage,
         pageParams,
         setTypeIcon,
+        getList,
       }
     },
   })
