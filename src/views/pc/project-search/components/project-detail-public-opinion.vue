@@ -3,7 +3,7 @@
     <!--        header                -->
     <div class="safety-opinion-header">
       <div class="safety-opinion-header-title">
-        <span style="font-size: 16px; font-weight: bold">{{ opinion.title }}</span>
+        <span>{{ opinion.title }}</span>
       </div>
     </div>
     <!--        body                -->
@@ -14,7 +14,7 @@
           :is-ellipsis="opinion.message.length > 300 ? true : false"
           :is-show-copy-btn="false"
           :is-tooltip="false"
-          styles="font-weight: 400;font-size: 14px;line-height:1.5"
+          styles="font-weight: 500;font-size: 14px;line-height:1.5;color: #18304e;"
           :font-length="opinion.message.length - 200"
           :end-length="0">
         </ellipsis-copy>
@@ -37,11 +37,12 @@
       <div style="display: flex; align-items: center; justify-content: space-between; width: 300px">
         <span class="msg-font">
           {{ $t('lang.projectExplorer.detail.source') }}:
-          <span
-            style="margin-left: 5px; color: #008ee9; cursor: pointer"
-            @click="lookTextOriginal(opinion.sourceUrl)">
-            {{ opinion.from }}
-          </span>
+          <a
+            :href="opinion.sourceUrl"
+            style="margin-left: 5px; color: #18304e; cursor: pointer"
+            target="_blank">
+            {{ toUpper(opinion.from) }}
+          </a>
         </span>
         <el-tooltip placement="top" effect="light">
           <template #content>
@@ -98,11 +99,11 @@
         }
       })
       // 查看原文按钮
-      const lookTextOriginal = (url: string): void => {
-        if (url) {
-          openWindow(url)
+      const toUpper = computed(() => {
+        return function (str: string) {
+          return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase()
         }
-      }
+      })
 
       return {
         createKey,
@@ -110,7 +111,7 @@
         formatDate,
         createDate,
         formatTimeStamp,
-        lookTextOriginal,
+        toUpper,
       }
     },
   })
@@ -124,10 +125,10 @@
     align-items: flex-start;
     justify-content: space-between;
     padding: 24px;
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     background-color: $mainColor7;
     border-radius: 4px;
-
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
     &:hover {
       transform: scale(1);
       @apply shadow-xl;
@@ -149,7 +150,7 @@
 
   .safety-opinion-footer-tag {
     min-width: 54px;
-    height: 24px;
+    height: 28px;
     margin-top: 5px;
     margin-right: 18px;
   }
@@ -160,6 +161,10 @@
     margin-bottom: 10px;
     font-family: 'Barlow', sans-serif;
     color: $textColor3;
+    span {
+      font-size: 16px;
+      font-weight: bold;
+    }
   }
 
   .safety-opinion-body-msg {
@@ -167,11 +172,11 @@
     height: 66px;
     overflow-y: auto;
     font-size: 14px;
-    color: #5c5c5c;
   }
 
   .msg-font {
     font-size: 14px;
-    color: #5c5c5c;
+    color: $textColor13;
+    font-weight: 500;
   }
 </style>

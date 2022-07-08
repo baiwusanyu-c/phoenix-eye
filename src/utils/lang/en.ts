@@ -5,7 +5,7 @@
  * @update (czh 2021/12/15)
  */
 export default {
-  searchT: 'SEARCH',
+  searchT: 'Search',
   reTry: 'RETRY',
   copyright: 'Copyright',
   emptyData: 'No data available',

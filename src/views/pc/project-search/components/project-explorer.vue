@@ -47,7 +47,7 @@
           </template>
           <template #next>
             <div class="project-select-remote--btn">
-              <be-icon icon="search" color="#fff"></be-icon>
+              <be-icon icon="iconSearchEagle" color="#fff"></be-icon>
             </div>
           </template>
         </remote-search>
@@ -81,7 +81,7 @@
 
 
         <div class="project-select-remote&#45;&#45;btn">
-          <be-icon icon="search" color="#fff"></be-icon>
+          <be-icon icon="iconSearchEagle" color="#fff"></be-icon>
         </div>-->
       </div>
     </div>
