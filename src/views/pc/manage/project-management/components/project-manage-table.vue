@@ -1,23 +1,22 @@
 /* * @project-manage-table.vue * @deprecated * @author czh * @update (czh 2022/5/10) */
 <template>
-  <el-table :data="list">
+  <el-table :data="list" @row-click="routerSwitch">
     <template #empty>
       <empty-data></empty-data>
     </template>
-    <el-table-column prop="name" width="180">
+    <el-table-column prop="name" width="300">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.projectName') }}</span>
       </template>
       <template #default="scope">
-        <ellipsis-copy
-          :target-str="scope.row.project_name"
-          :is-ellipsis="scope.row.project_name.length > 8 ? true : false"
-          :is-show-copy-btn="false"
-          :is-tooltip="true"
-          styles="color: black;font-weight: bold;font-size: 16px;"
-          font-length="8"
-          end-length="0">
-        </ellipsis-copy>
+        <project-name-cell
+          :size="32"
+          width="300"
+          :name="scope.row.project_name"
+          :url="scope.row.logo_url"
+          :font-len="40"
+          :ellipsis-len="40">
+        </project-name-cell>
       </template>
     </el-table-column>
     <el-table-column prop="keywordList" width="180">
@@ -27,16 +26,16 @@
       <template #default="scope">
         <ellipsis-copy
           :target-str="scope.row.keywordList"
-          :is-ellipsis="scope.row.keywordList && scope.row.keywordList.length >= 14 ? true : false"
+          :is-ellipsis="scope.row.keywordList && scope.row.keywordList.length >= 40 ? true : false"
           :is-show-copy-btn="false"
           :is-tooltip="true"
           styles="color: black;font-weight: 400;font-size: 14px;"
-          font-length="8"
+          font-length="30"
           end-length="0">
         </ellipsis-copy>
       </template>
     </el-table-column>
-    <el-table-column prop="contract_num">
+    <el-table-column prop="contract_num" width="120">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.contractNum') }}</span>
       </template>
@@ -44,7 +43,7 @@
         <span>{{ scope.row.contract_num }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="audit_report_num">
+    <el-table-column prop="audit_report_num" width="120">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.auditNum') }}</span>
       </template>
@@ -52,7 +51,7 @@
         <span>{{ isEmpty(scope.row.audit_report_num, '/') }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="create_time">
+    <el-table-column prop="create_time" width="120">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
       </template>
@@ -60,7 +59,7 @@
         <date-cell :time="scope.row.create_time"></date-cell>
       </template>
     </el-table-column>
-    <el-table-column prop="operation">
+    <el-table-column prop="operation" width="120">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.operation') }}</span>
       </template>
@@ -113,15 +112,27 @@
       list: {
         type: Array as PropType<Array<IProjectInfo>>,
       },
+      type: {
+        type: String,
+        default: '',
+      },
     },
     emits: ['operation'],
     setup(props, ctx) {
-      const { isEmpty } = composition()
+      const { isEmpty, routerPush } = composition()
       const handleOperation = (type: string, data: IProjectInfo): void => {
         ctx.emit('operation', type, data)
       }
+      /**
+       * 路由跳轉
+       */
+      const routerSwitch = (row: any, col: any): void => {
+        if (props.type !== 'system' || col.property === 'operation') return
+        routerPush('/detail', { id: row.project_id, keyword: row.keyword })
+      }
       return {
         handleOperation,
+        routerSwitch,
         isEmpty,
       }
     },

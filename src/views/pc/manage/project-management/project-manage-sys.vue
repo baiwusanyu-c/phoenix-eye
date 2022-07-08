@@ -17,7 +17,10 @@
     </be-button>
   </div>
   <div class="project-manage-list eagle-table">
-    <project-manage-table :list="projectList.data" @operation="openDialog"></project-manage-table>
+    <project-manage-table
+      :list="projectList.data"
+      type="system"
+      @operation="openDialog"></project-manage-table>
     <div class="table-page">
       <el-pagination
         v-model:currentPage="pageParams.currentPage"

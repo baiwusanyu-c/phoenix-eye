@@ -66,7 +66,6 @@
     formatDate,
     formatTimeStamp,
     getUuid,
-    openWindow,
   } from '../../../../utils/common'
   import EllipsisCopy from '../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   // @ts-ignore
