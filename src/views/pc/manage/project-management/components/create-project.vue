@@ -205,6 +205,7 @@
       // 表单 Basic
       const formBasic = ref<ICreateProjBase>({
         platform: 'eth',
+        top_flag: false,
       })
       // 聯係地址表單
       const websiteForm = ref<IWebsiteForm>({})
@@ -309,6 +310,7 @@
         // 表单 Basic
         formBasic.value = {
           platform: 'eth',
+          top_flag: false,
         }
         // 聯係地址表單
         websiteForm.value = {}
@@ -712,6 +714,9 @@
 
 <style lang="scss">
   .createBox {
+    .be-switch__checked.create-proj--top {
+      background-color: $mainColor3;
+    }
     .sub--title {
       font-size: 14px;
       font-weight: 400;
