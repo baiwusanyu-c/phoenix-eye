@@ -124,7 +124,7 @@ export interface ICreateProjBase {
   token_address?: string
   logo_url?: string
   contract_address_arr?: Array<string>
-  top_flag: boolean
+  top_flag?: boolean
 }
 export interface ICreateProjOperating {
   address_markup?: string
@@ -381,4 +381,8 @@ export type IRelateProject = {
 export type ISort = {
   sort_field?: string
   sort_type?: string
+}
+
+export type IProjectManageTable = {
+  projManagementTable?: any
 }

@@ -91,6 +91,7 @@
         v-loading="loading"
         tooltip-effect="light"
         :data="projectList"
+        @sort-change="handleSort"
         @row-click="routerSwitch">
         <template #empty>
           <empty-data content="lang.emptyData"></empty-data>
@@ -119,6 +120,8 @@
 
         <el-table-column
           prop="security_score"
+          sortable="custom"
+          :sort-orders="['ascending', 'descending']"
           :width="tableHeader('security_score')"
           align="center">
           <template #header>
@@ -133,7 +136,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="tx_24" :width="tableHeader('tx_24')" align="center">
+        <el-table-column
+          sortable="custom"
+          :sort-orders="['ascending', 'descending']"
+          prop="tx_24"
+          :width="tableHeader('tx_24')"
+          align="center">
           <template #header>
             <span class="table-head">{{ $t('lang.projectExplorer.exp.tableHeader.tx_24') }}</span>
           </template>
@@ -146,7 +154,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="market_cap" :width="tableHeader('market_cap')" align="center">
+        <el-table-column
+          sortable="custom"
+          :sort-orders="['ascending', 'descending']"
+          prop="market_cap"
+          :width="tableHeader('market_cap')"
+          align="center">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.exp.tableHeader.market_cap')
@@ -163,7 +176,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="token_price" :width="tableHeader('token_price')" align="left">
+        <el-table-column
+          sortable="custom"
+          :sort-orders="['ascending', 'descending']"
+          prop="token_price"
+          :width="tableHeader('token_price')"
+          align="left">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.exp.tableHeader.token_price')
@@ -187,7 +205,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="create_time" :width="tableHeader('create_time')" align="center">
+        <el-table-column
+          sortable="custom"
+          :sort-orders="['ascending', 'descending']"
+          prop="create_time"
+          :width="tableHeader('create_time')"
+          align="center">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.exp.tableHeader.create_time')
@@ -247,7 +270,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
+  import { computed, defineComponent, getCurrentInstance, nextTick, onMounted, ref } from 'vue'
   import { BeIcon } from '@eagle-eye/be-ui'
   import { useEventBus } from '@vueuse/core'
   import compositionPage from '../../../../utils/mixin/page-param'
@@ -259,9 +282,9 @@
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'
   import explorerProj from '../../../../assets/image/pc/explorer-proj.png'
-  import type { IOption, projListType } from '../../../../utils/types'
+  import type { IOption, ISort, projListType } from '../../../../utils/types'
   import type { IProjParam } from '../../../../api/project-explorer'
-
+  import type { ElTable } from 'element-plus'
   export default defineComponent({
     name: 'ProjectExplorer',
     components: {
@@ -277,8 +300,11 @@
        */
       // 搜索参数
       const selectValue = ref<string>('')
+      const curInst = getCurrentInstance()
       const handleSelect = (): void => {
         nextTick(() => {
+          ;(curInst?.refs.riskTrxList as typeof ElTable).clearSort()
+          sortParams.value = {}
           getList('reset')
         })
       }
@@ -307,6 +333,7 @@
           platform: selectValue.value,
           page_num: pageParams.value.currentPage,
           page_size: pageParams.value.pageSize,
+          ...sortParams.value,
         }
         getExploreList(params)
           .then((res: any) => {
@@ -347,13 +374,13 @@
       const tableHeader = computed(() => {
         const headerDict: IOption = {
           //project_name: '160',
-          project_name: '220',
+          project_name: '180',
           security_score: '60',
           tx_24: '70',
           market_cap: '120',
           token_price: '160',
           create_time: '80',
-          platform: '110',
+          platform: '40',
           audit_report_num: '100',
         }
         return function (key: string) {
@@ -390,7 +417,16 @@
       const openDialog = (): void => {
         busCreateProjectUser.emit()
       }
+
+      const sortParams = ref<ISort>({})
+      const handleSort = (column: any): void => {
+        const sortType = column.order === 'ascending' ? 'asc' : 'desc'
+        sortParams.value = { sort_field: column.prop, sort_type: sortType }
+        resetPageParam()
+        getList()
+      }
       return {
+        handleSort,
         openDialog,
         platformToCurrency,
         handleProjectSelect,

@@ -1,6 +1,10 @@
 /* * @project-manage-table.vue * @deprecated * @author czh * @update (czh 2022/5/10) */
 <template>
-  <el-table :data="list" @sort-change="handleSort" @row-click="routerSwitch">
+  <el-table
+    ref="projManagementTable"
+    :data="list"
+    @sort-change="handleSort"
+    @row-click="routerSwitch">
     <template #empty>
       <empty-data></empty-data>
     </template>
@@ -104,12 +108,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
+  import { defineComponent, getCurrentInstance } from 'vue'
   // @ts-ignore
   import { BeIcon } from '@eagle-eye/be-ui'
   import composition from '../../../../../utils/mixin/common-func'
   import EllipsisCopy from '../../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import EmptyData from '../../../../../components/common-components/empty-data/empty-data.vue'
+  import type { ElTable } from 'element-plus'
   import type { IProjectInfo } from '../../../../../utils/types'
   import type { PropType } from 'vue'
   export default defineComponent({
@@ -117,7 +122,6 @@
     components: {
       EmptyData,
       EllipsisCopy,
-
       BeIcon,
     },
     props: {
@@ -146,7 +150,10 @@
         const sortType = column.order === 'ascending' ? 'asc' : 'desc'
         ctx.emit('sort', { sort_field: column.prop, sort_type: sortType })
       }
+      const curInst = getCurrentInstance()
+      const projManagementTable = curInst?.refs.projManagementTable as typeof ElTable
       return {
+        projManagementTable,
         handleSort,
         handleOperation,
         routerSwitch,
