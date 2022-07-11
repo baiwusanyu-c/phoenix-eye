@@ -2,6 +2,10 @@
 <template>
   <h2 class="create--label">1.{{ $t('lang.createProject.label1') }}</h2>
   <!--      ***************        -->
+  <el-form-item :label="$t('lang.createProject.top') + ':'">
+    <be-switch v-model="modelValueInner.top_flag" custom-class="create-proj--top"> </be-switch>
+  </el-form-item>
+  <!--      ***************        -->
   <el-form-item :label="$t('lang.createProject.createProjectName') + ':'">
     <span class="reg-start project-star">*</span>
     <el-input
@@ -44,13 +48,16 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref, watch } from 'vue'
+  import { BeSwitch } from '@eagle-eye/be-ui'
   import { platformListDict } from '../../../../../utils/platform-dict'
   import type { PropType } from 'vue'
   import type { ICreateProjBase } from '../../../../../utils/types'
   import type { IPlatformListItem } from '../../../../../utils/platform-dict'
-
   export default defineComponent({
     name: 'BaseForm',
+    components: {
+      BeSwitch,
+    },
     props: {
       modelValue: {
         type: Object as PropType<ICreateProjBase>,

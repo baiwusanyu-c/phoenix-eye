@@ -124,6 +124,7 @@ export interface ICreateProjBase {
   token_address?: string
   logo_url?: string
   contract_address_arr?: Array<string>
+  top_flag: boolean
 }
 export interface ICreateProjOperating {
   address_markup?: string
