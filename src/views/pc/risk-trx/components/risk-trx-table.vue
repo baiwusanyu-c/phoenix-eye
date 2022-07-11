@@ -171,7 +171,7 @@
 
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref } from 'vue'
-  import { BeIcon, BeTag, BeTooltip } from '@eagle-eye/be-ui'
+  import { BeIcon } from '@eagle-eye/be-ui'
   import { getProjWarning } from '../../../../api/risk-trx'
   import { beijing2utc, createDate, formatDate, openWindow } from '../../../../utils/common'
   import composition from '../../../../utils/mixin/common-func'
@@ -190,9 +190,7 @@
       DateCell,
       EmptyData,
       PlatformCell,
-      BeTooltip,
       BeIcon,
-      BeTag,
       EllipsisCopy,
     },
     props: {
