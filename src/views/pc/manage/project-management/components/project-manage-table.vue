@@ -65,43 +65,36 @@
     </el-table-column>
     <el-table-column
       prop="create_time"
-      width="120"
+      width="130"
       sortable="custom"
       :sort-orders="['ascending', 'descending']">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.createTime') }}</span>
       </template>
       <template #default="scope">
-        <date-cell :time="scope.row.create_time"></date-cell>
+        <date-cell :time="scope.row.create_time" :is-break="false"></date-cell>
       </template>
     </el-table-column>
-    <el-table-column prop="operation" width="120">
+    <el-table-column prop="operation" width="160">
       <template #header>
         <span class="table-head">{{ $t('lang.createProject.tableHeader.operation') }}</span>
       </template>
       <template #default="scope">
-        <el-tooltip placement="top">
-          <template #content>
-            {{ $t('lang.edit') }}
-          </template>
-          <be-icon
-            custom-class="table-icon"
-            icon="iconEditEagle"
-            width="24"
-            height="24"
-            @click="handleOperation('edit', scope.row)"></be-icon>
-        </el-tooltip>
-        <el-tooltip placement="top">
-          <template #content>
-            {{ $t('lang.delete') }}
-          </template>
-          <be-icon
-            custom-class="table-icon"
-            icon="iconDeleteEagle"
-            width="24"
-            height="24"
-            @click="handleOperation('delete', scope.row)"></be-icon>
-        </el-tooltip>
+        <be-button
+          style="margin-right: 10px"
+          type="success"
+          custom-class="operate-btn"
+          prev-icon="iconEditEagle"
+          @click="handleOperation('edit', scope.row)">
+          {{ $t('lang.edit') }}
+        </be-button>
+        <be-button
+          custom-class="operate-btn"
+          type="success"
+          prev-icon="iconDeleteEagle"
+          @click="handleOperation('delete', scope.row)">
+          {{ $t('lang.delete') }}
+        </be-button>
       </template>
     </el-table-column>
   </el-table>
@@ -110,7 +103,7 @@
 <script lang="ts">
   import { defineComponent, getCurrentInstance } from 'vue'
   // @ts-ignore
-  import { BeIcon } from '@eagle-eye/be-ui'
+  import { BeButton } from '@eagle-eye/be-ui'
   import composition from '../../../../../utils/mixin/common-func'
   import EllipsisCopy from '../../../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import EmptyData from '../../../../../components/common-components/empty-data/empty-data.vue'
@@ -122,7 +115,7 @@
     components: {
       EmptyData,
       EllipsisCopy,
-      BeIcon,
+      BeButton,
     },
     props: {
       list: {

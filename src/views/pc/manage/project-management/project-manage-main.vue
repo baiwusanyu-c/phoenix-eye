@@ -64,26 +64,29 @@
         padding: 10px 16px;
         box-sizing: border-box;
         cursor: pointer;
-        height: 40px;
-        background-color: $mainColor7;
+        height: 48px;
+        background-color: $textColor7;
         color: $textColor3;
         border-radius: 5px;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
       .project-manage--tabs__active {
-        background-color: $mainColor3;
-        color: $mainColor17;
+        background-color: $mainColor7;
+        font-weight: bold;
         cursor: pointer;
       }
     }
     .project-manage-search {
-      @include common-container(40px);
+      @include common-container(0);
+      background-color: $mainColor7;
+      border-radius: 4px;
+      padding: 24px 20px 16px 20px;
     }
 
     .project-manage-list {
       width: 1284px;
-      padding: 20px;
+      padding: 0 20px 24px 20px;
       margin: 0 auto;
       background-color: $mainColor7;
     }

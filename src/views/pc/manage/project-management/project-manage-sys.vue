@@ -9,6 +9,7 @@
     </search-input>
     <be-button
       type="success"
+      prev-icon="iconAddPlus"
       custom-class="eagle-btn create-btn"
       size="large"
       round="4"
