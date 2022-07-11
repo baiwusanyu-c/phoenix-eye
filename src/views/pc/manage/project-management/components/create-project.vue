@@ -337,6 +337,7 @@
               formBasic.value.token_address = res.data.token_address
               formBasic.value.contract_address_arr = res.data.contract_address_arr
               formBasic.value.logo_url = res.data.logo_url
+              formBasic.value.top_flag = res.data.top_flag
               if (res.data.contract_address_arr.length > 0) {
                 contractSite.data = res.data.contract_address_arr.map((val: string) => {
                   return { contract_address: val, verContract: '' }
