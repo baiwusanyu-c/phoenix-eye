@@ -149,6 +149,7 @@ export interface IFilterItem {
   label?: string
   val: string
   isActive: boolean
+  icon?: string
 }
 
 export interface IRiskTable {

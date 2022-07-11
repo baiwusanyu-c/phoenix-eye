@@ -190,7 +190,7 @@ export default {
     },
     tableHeader: {
       platform: 'Chain',
-      txHash: 'Trx Hash',
+      txHash: 'Transaction Hash',
       level: 'Alert Level',
       warningType: 'Type',
       gainer: 'Gainer',

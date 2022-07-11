@@ -519,7 +519,6 @@
     numberToCommaString,
     openWindow,
   } from '../../../utils/common'
-  import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import config from '../../../enums/config'
   import IconCell from '../../../components/common-components/icon-cell/icon-cell.vue'
@@ -589,7 +588,6 @@
       IconCell,
       ProjectDetailAudit,
       ProjectDetailTop,
-      RiskTrxTable,
       ProjectDetailPubliOpinion,
       BeIcon,
       BeTag,

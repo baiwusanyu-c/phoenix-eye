@@ -10,7 +10,7 @@
       <template #empty>
         <empty-data content="lang.noRisk"></empty-data>
       </template>
-      <el-table-column prop="platform" :width="tableHeader('platform')" align="center">
+      <el-table-column prop="platform" width="120" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
@@ -18,67 +18,50 @@
           <platform-cell :platform="scope.row.platform"></platform-cell>
         </template>
       </el-table-column>
-      <el-table-column prop="tx_hash" :width="tableHeader('tx_hash')" align="center">
+      <el-table-column prop="tx_hash" width="180" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
         </template>
         <template #default="scope">
           <ellipsis-copy
+            custom-class="risk-table-inner--addr"
             :target-str="scope.row.tx_hash"
             :is-show-copy-btn="false"
-            font-length="7"
-            end-length="7">
+            font-length="6"
+            end-length="6">
           </ellipsis-copy>
         </template>
       </el-table-column>
-      <el-table-column prop="alert_level" :width="tableHeader('alert_level')" align="center">
+      <el-table-column prop="alert_level" width="126" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.level') }}</span>
         </template>
         <template #default="scope">
-          <span v-if="scope.row.alert_level === 'LOW'" style="font-weight: bold; color: #1cd2a9"
-            >Low</span
-          >
-          <span v-if="scope.row.alert_level === 'HIGH'" style="font-weight: bold; color: #f04735"
-            >High</span
-          >
-          <span v-if="scope.row.alert_level === 'MEDIUM'" style="font-weight: bold; color: #f7b500"
-            >Medium</span
-          >
+          <div v-if="scope.row.alert_level === 'LOW'">
+            <span class="level__Low"></span>
+            Low
+          </div>
+          <div v-if="scope.row.alert_level === 'HIGH'">
+            <span class="level__High"></span>
+            High
+          </div>
+          <div v-if="scope.row.alert_level === 'MEDIUM'">
+            <span class="level__Medium"></span>
+            Medium
+          </div>
         </template>
       </el-table-column>
-      <el-table-column prop="risk_features" :width="tableHeader('risk_features')" align="left">
+
+      <el-table-column prop="risk_features" width="180" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.warningType') }}</span>
         </template>
         <template #default="scope">
-          <div
-            v-if="
-              scope.row.tag_list && scope.row.tag_list.length > 0 && scope.row.tag_list.length <= 2
-            ">
-            <be-tag
-              v-for="item in scope.row.tag_list"
-              :key="item"
-              custom-class="table-tag"
-              round="4"
-              >{{ item }}
-            </be-tag>
-          </div>
-          <div v-else-if="scope.row.tag_list && scope.row.tag_list.length > 2">
-            <be-tag
-              v-for="item in scope.row.tag_list"
-              :key="item + 4"
-              custom-class="table-tag"
-              round="4">
-              <ellipsis-copy
-                :target-str="item"
-                :is-show-copy-btn="false"
-                :is-ellipsis="true"
-                styles="min-width:initial !important"
-                font-length="3"
-                end-length="0">
-              </ellipsis-copy>
-            </be-tag>
+          <div v-if="scope.row.tag_list && scope.row.tag_list.length > 0" style="display: flex">
+            <div v-for="item in scope.row.tag_list" :key="item" :title="item">
+              <be-icon width="24" height="24" style="margin-right: 8px" :icon="typeDict[item]">
+              </be-icon>
+            </div>
           </div>
           <div
             v-else
@@ -92,7 +75,8 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="from_address" :width="tableHeader('from_address')" align="left">
+
+      <!--      <el-table-column prop="from_address" :width="tableHeader('from_address')" align="left">
         <template #header>
           <span class="table-head">
             {{ $t('lang.riskConfig.tableHeader.gainer') }}
@@ -139,13 +123,24 @@
         <template #default="scope">
           {{ isEmpty(scope.row.amount, '/') === '/' ? '/' : `$ ${scope.row.amount}` }}
         </template>
+      </el-table-column>-->
+      <el-table-column prop="Description" align="left" show-overflow-tooltip>
+        <template #header>
+          <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
+        </template>
+        <!--            <template #default="scope">
+                DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescri
+                ptionDescriptionDescriptionDescriptionDescriptionDescription
+            </template>-->
+        DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescri
+        ptionDescriptionDescriptionDescriptionDescriptionDescription
       </el-table-column>
-      <el-table-column :width="tableHeader('tx_time')" prop="tx_time" align="left">
+      <el-table-column width="180" prop="tx_time" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
         </template>
         <template #default="scope">
-          <date-cell :time="scope.row.tx_time"></date-cell>
+          <date-cell :time="scope.row.tx_time" :is-break="false"></date-cell>
         </template>
       </el-table-column>
       <el-table-column v-if="showOperation" width="50" label=" " align="center">
@@ -302,18 +297,16 @@
       const screenWidth = window.screen.width
       const tableHeader = computed(() => {
         const headerDict: IOption = {
-          platform: '130',
-          tx_hash: '170',
-          alert_level: '110',
+          platform: '80',
+          alert_level: '80',
           risk_features: '400',
           from_address: '200',
           amount: '120',
-          tx_time: '100',
+          tx_time: '110',
         }
         if (1280 <= screenWidth && 1326 <= screenWidth) {
           headerDict.risk_features = '320'
           headerDict.from_address = '140'
-          headerDict.tx_hash = '140'
           headerDict.platform = '120'
         }
         return function (key: string) {
@@ -323,8 +316,14 @@
       onMounted(() => {
         getList('reset')
       })
-
+      const typeDict = {
+        'Large outflow': 'iconLargeOutflow2',
+        'Flash loan': 'iconFlash2',
+        'Privileged operation': 'iconPrivileged2',
+        Slump: 'iconExploiter',
+      }
       return {
+        typeDict,
         updateNum,
         tableHeader,
         isEmpty,
@@ -354,6 +353,10 @@
       width: 8px;
       height: 8px;
       margin: 5px;
+    }
+    .risk-table-inner--addr {
+      width: 120px;
+      min-width: 100px !important;
     }
   }
 </style>

@@ -18,6 +18,7 @@
       @click="handleSearch">
       <span>{{ searchBtnName }}</span>
     </be-button>
+    <slot />
   </div>
 </template>
 
@@ -55,6 +56,7 @@
 <style lang="scss">
   .search-input--container {
     display: flex;
+    align-items: center;
     input::-webkit-input-placeholder {
       /* WebKit browsers */
       font-family: 'Barlow', sans-serif;
