@@ -373,6 +373,7 @@ export default {
     },
   },
   createProject: {
+    top: 'Sticky on top',
     createProjectTitle: 'Create',
     editProjectTitle: 'Edit Project',
     createProjectName: 'Project Name',

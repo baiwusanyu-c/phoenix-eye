@@ -205,6 +205,7 @@
       // 表单 Basic
       const formBasic = ref<ICreateProjBase>({
         platform: 'eth',
+        top_flag: false,
       })
       // 聯係地址表單
       const websiteForm = ref<IWebsiteForm>({})
@@ -309,6 +310,7 @@
         // 表单 Basic
         formBasic.value = {
           platform: 'eth',
+          top_flag: false,
         }
         // 聯係地址表單
         websiteForm.value = {}
@@ -335,6 +337,7 @@
               formBasic.value.token_address = res.data.token_address
               formBasic.value.contract_address_arr = res.data.contract_address_arr
               formBasic.value.logo_url = res.data.logo_url
+              formBasic.value.top_flag = res.data.top_flag
               if (res.data.contract_address_arr.length > 0) {
                 contractSite.data = res.data.contract_address_arr.map((val: string) => {
                   return { contract_address: val, verContract: '' }
@@ -712,6 +715,9 @@
 
 <style lang="scss">
   .createBox {
+    .be-switch__checked.create-proj--top {
+      background-color: $mainColor3;
+    }
     .sub--title {
       font-size: 14px;
       font-weight: 400;
