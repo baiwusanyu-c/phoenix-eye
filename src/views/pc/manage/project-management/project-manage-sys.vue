@@ -200,7 +200,8 @@
       const sortParams = ref<ISort>({})
       const handleSort = (sort: ISort): void => {
         sortParams.value = sort
-        resetPageParam()
+        const currentPageSize = pageParams.value.pageSize
+        resetPageParam(currentPageSize === 10 ? 10 : currentPageSize)
         getList()
       }
       return {

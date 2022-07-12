@@ -148,18 +148,12 @@
       const getList = (): void => {
         ;(tabelInstance?.refs.RiskTrxTable as IRiskTable).getList('reset')
       }
-      const showFilter = ref<boolean>(false)
-      const filterLoading = ref<boolean>(false)
+      const showFilter = ref<boolean>(true)
       const handleShowFilter = (): void => {
-        filterLoading.value = true
         showFilter.value = !showFilter.value
-        nextTick(() => {
-          filterLoading.value = false
-        })
       }
       return {
         handleShowFilter,
-        filterLoading,
         iconDict,
         showFilter,
         debounce,

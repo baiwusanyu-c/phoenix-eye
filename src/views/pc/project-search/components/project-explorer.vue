@@ -318,7 +318,7 @@
        * 获取项目列表
        * 重置：清空所有条件进行搜索
        * 翻页：带上所有现有条件搜索
-       * 排序：只清空翻页搜索
+       * 排序：只清空翻页搜索，保留分页尺寸pageSize
        * 搜索：只清空翻页参数、排序参数，保留搜索参数，搜索
        */
       const projectList = ref<Array<projListType>>([])
@@ -422,8 +422,7 @@
       const handleSort = (column: any): void => {
         const sortType = column.order === 'ascending' ? 'asc' : 'desc'
         sortParams.value = { sort_field: column.prop, sort_type: sortType }
-        resetPageParam()
-        getList()
+        getList('reset')
       }
       return {
         handleSort,
