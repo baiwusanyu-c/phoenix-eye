@@ -68,7 +68,11 @@
     </div>
     <div v-if="profitData.length > 0" class="detail-profit">
       <div class="detail-profit-body">
-        <el-table tooltip-effect="light" :data="profitData">
+        <el-table
+          tooltip-effect="light"
+          :data="profitData"
+          :span-method="objectSpanMethod"
+          row-class-name="detail-profit--row">
           <template #empty>
             <empty-data></empty-data>
           </template>
@@ -124,7 +128,6 @@
               </div>
             </template>
           </el-table-column>
-
           <el-table-column prop="addrList" align="left">
             <template #header>
               <span class="table-head">{{
@@ -132,35 +135,22 @@
               }}</span>
             </template>
             <template #default="scope">
-              <div v-if="scope.row.addrList && scope.row.addrList.length > 0">
-                <ellipsis-copy
-                  v-for="item in scope.row.addrList"
-                  :key="item.itemId"
-                  :target-str="item.val"
-                  :is-ellipsis="item.val.length > 25 ? true : false"
-                  :is-show-copy-btn="true"
-                  :copy-content="item.contractAddress"
-                  :tooltip-txt="item.contractAddress"
-                  empty-text="/"
-                  styles="color: #008EE9;cursor:pointer;font-weight:400;"
-                  font-length="8"
-                  end-length="8"
-                  @click="
-                    item.val ? openWeb(item.contractAddress, 'token', baseInfo.platform) : null
-                  ">
-                </ellipsis-copy>
-              </div>
-
-              <div
-                v-else
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
+              <ellipsis-copy
+                :target-str="scope.row.token_name"
+                :is-ellipsis="scope.row.token_name.length > 25 ? true : false"
+                :is-show-copy-btn="true"
+                :copy-content="scope.row.contract_address"
+                :tooltip-txt="scope.row.contract_address"
+                empty-text="/"
+                styles="color: #008EE9;cursor:pointer;font-weight:600;"
+                font-length="8"
+                end-length="8"
+                @click="
+                  scope.row.token_name
+                    ? openWeb(scope.row.contract_address, 'token', baseInfo.platform)
+                    : null
                 ">
-                /
-              </div>
+              </ellipsis-copy>
             </template>
           </el-table-column>
           <el-table-column prop="valueList" align="left">
@@ -168,26 +158,14 @@
               <span class="table-head">{{ $t('lang.riskConfig.profitTableHeader.tokenNum') }}</span>
             </template>
             <template #default="scope">
-              <div v-if="scope.row.valueList && scope.row.valueList.length > 0">
-                <p v-for="item in scope.row.valueList" :key="item.itemId">
-                  <el-tooltip placement="top" effect="light">
-                    <template #content>
-                      <span>{{ item.ordVal }}</span>
-                    </template>
-                    <span>{{ item.val }}</span>
-                  </el-tooltip>
-                </p>
-              </div>
-              <div
-                v-else
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                ">
-                /
-              </div>
+              <el-tooltip placement="top" effect="light">
+                <template #content>
+                  <span>{{ scope.row.token_num }}</span>
+                </template>
+                <span style="font-weight: 600">{{
+                  numberToCommaString(scope.row.token_num, 6)
+                }}</span>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -290,7 +268,7 @@
 <script lang="ts">
   import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { BeIcon, BeTag, BeTooltip } from '@eagle-eye/be-ui'
+  import { BeIcon, BeTag } from '@eagle-eye/be-ui'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import { getProjWarningDetail } from '../../../api/risk-trx'
   import { iconDict, platformToCurrency } from '../../../utils/platform-dict'
@@ -300,7 +278,7 @@
     createDate,
     floatMultiply,
     formatDate,
-    getUuid,
+    numberToCommaString,
     openWindow,
     simulateToFixed,
   } from '../../../utils/common'
@@ -311,7 +289,13 @@
   import type { IBaseInfoRiskInfo } from '../../../utils/types'
   import type { IPlatformToCurrency } from '../../../utils/platform-dict'
   import type { IProjDetail } from '../../../api/risk-trx'
-
+  import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-column/defaults'
+  interface SpanMethodProps {
+    row: any
+    column: TableColumnCtx<any>
+    rowIndex: number
+    columnIndex: number
+  }
   export default defineComponent({
     name: 'RiskTrxDetail',
     components: { EmptyData, EllipsisCopy, BeTag, BeIcon },
@@ -329,7 +313,7 @@
       const ellipsis = ref<string>('8')
       // 链平台转化币种
       const platformToCurrencyInner = ref<IPlatformToCurrency>(platformToCurrency)
-      const addrCellWidth = ref<string>('430')
+      const addrCellWidth = ref<string>('460')
       const { t } = useI18n()
       const handleProfit = computed(() => {
         return function (val: number, dec: number) {
@@ -378,35 +362,16 @@
               return
             }
             baseInfo.value = res.data
-            profitData.value = res.data.address_profits
-            profitData.value.forEach(val => {
-              val.addrList = []
-              val.dollarList = []
-              val.valueList = []
+            // 重组数据，把token_profits的数据提取出来
+            res.data.address_profits.forEach((val: any) => {
+              const tokenLen = val.token_profits.length
               val.token_profits.forEach((valRes: any) => {
-                res.itemId = getUuid()
                 if (valRes.token_name === null) {
                   valRes.token_name = valRes.contract_address
                 }
-                val.addrList.push({
-                  val: valRes.token_name,
-                  itemId: `token_name${getUuid()}`,
-                  tag: valRes.contract_address_tag,
-                  contractAddress: valRes.contract_address,
-                })
-                val.valueList.push({
-                  ordVal: valRes.token_num,
-                  val: simulateToFixed(valRes.token_num, 6),
-                  itemId: `token_profit_no_dollar${getUuid()}`,
-                })
-                val.dollarList.push({
-                  ordVal: valRes.dollar_money,
-                  val: simulateToFixed(valRes.dollar_money, 0),
-                  itemId: `token_profit_dollar${getUuid()}`,
-                })
+                profitData.value.push({ ...val, ...valRes, tokenLen })
               })
             })
-
             loading.value = false
           })
           .catch(err => {
@@ -415,27 +380,28 @@
             loading.value = false
           })
       }
-      /**
-       * 收益浮动样式夹杂
-       */
-      const profitClass = computed(() => {
-        return function (val: number) {
-          if (val > 0) {
-            return 'profit-x'
+      let cache = { address: '' }
+      const objectSpanMethod = ({ row, columnIndex }: SpanMethodProps) => {
+        if (columnIndex === 0) {
+          if (cache.address !== row.address) {
+            cache = row
+            return {
+              rowspan: row.tokenLen,
+              colspan: 1,
+            }
+          } else {
+            return {
+              rowspan: 0,
+              colspan: 0,
+            }
           }
-          if (val < 0) {
-            return 'profit-d'
-          }
-          return ''
         }
-      })
-
+      }
       return {
         beijing2utc,
         formatDate,
         createDate,
         iconDict,
-        profitClass,
         baseInfo,
         profitData,
         loading,
@@ -447,11 +413,12 @@
         getInfoData,
         simulateToFixed,
         openWeb,
-        getUuid,
         openWindow,
         floatMultiply,
         transactionIcon,
         addrIncomeIcon,
+        numberToCommaString,
+        objectSpanMethod,
       }
     },
   })
@@ -463,13 +430,6 @@
       width: initial;
     }
 
-    .profit-d {
-      color: $lessColor4;
-    }
-
-    .profit-x {
-      color: $mainColor3;
-    }
     position: relative;
     top: 0;
     left: 0;
@@ -534,6 +494,9 @@
       background: transparent;
 
       .detail-profit-body {
+        .detail-profit--row {
+          height: 30px;
+        }
         .tag__to {
           .be-tag__default {
             width: 60px;

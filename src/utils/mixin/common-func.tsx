@@ -91,6 +91,7 @@ export default () => {
    * 跳轉到第三方頁面
    */
   const openWeb = (params: string, type: string, platform: string): void => {
+    debugger
     if (!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic')
       return
     const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string

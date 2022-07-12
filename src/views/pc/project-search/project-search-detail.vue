@@ -348,7 +348,7 @@
                         <el-tooltip placement="top">
                           <template #content>
                             <p>A security index that measures the audit status,</p>
-                            <p>decentralization, market volatility,transparency,</p>
+                            <p>decentralization, market volatility, transparency,</p>
                             <p>and real-time transaction risks of crypto projects.</p>
                             <p>The higher the score, the better.</p>
                           </template>

@@ -485,7 +485,7 @@ export function formatTimeStamp(dateTimeStamp: number, lang: string) {
   }
   return result
 }
-function formatDD(date: string | Date, format: string) {
+export function formatDD(date: string | Date, format: string) {
   if (typeof date == 'string') {
     if (date.indexOf('T') >= 0) {
       date = date.replace('T', ' ')
@@ -632,7 +632,7 @@ export const transferToNumber = (inputNumber: any) => {
   return inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
 }
 // 數字轉都好分隔字符串 1123 =》'1,223'
-export const numberToCommaString = (nStr: number): string => {
+export const numberToCommaString = (nStr: number, decimal = 6): string => {
   const text = `${nStr}`
   const x: Array<string> = text.split('.') //按照小数点分隔
   let x1: string = x[0] //整数部分
@@ -642,7 +642,8 @@ export const numberToCommaString = (nStr: number): string => {
     //正则式匹配
     x1 = x1.replace(rgx, '$1' + ',' + '$2') //正则式替换
   }
-  return x1 + x2
+
+  return x1 + x2.slice(0, decimal + 1)
 }
 
 export const catchErr = (err: any): void => {
