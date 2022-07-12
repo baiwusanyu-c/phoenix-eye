@@ -101,7 +101,7 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
+  import { BeButton } from '@eagle-eye/be-ui'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
   import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
   // @ts-ignore
@@ -118,11 +118,9 @@
     name: 'MaliciousSiteManagement',
     components: {
       EmptyData,
-
       addSite,
       MsgDialog,
       BeButton,
-      BeIcon,
     },
     setup() {
       const { t } = useI18n()

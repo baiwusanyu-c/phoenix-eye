@@ -106,18 +106,23 @@
       const filterTypeItem = ref<Array<IFilterItem>>([
         {
           icon: 'iconLargeOutflow2',
-          label: 'Large outflow',
+          label: 'Large Outflow',
           val: 'Large outflow',
           isActive: false,
         },
-        { icon: 'iconFlash2', label: 'Flash loan', val: 'Flash loan', isActive: false },
+        { icon: 'iconFlash2', label: 'Flash Loan', val: 'Flash loan', isActive: false },
         {
           icon: 'iconPrivileged2',
-          label: 'Privileged operation',
+          label: 'Privileged Operation',
           val: 'Privileged operation',
           isActive: false,
         },
-        { icon: 'iconExploiter', label: 'Exploiter On The Move', val: 'Slump', isActive: false },
+        {
+          icon: 'iconExploiter',
+          label: 'Exploiter On The Move',
+          val: 'Exploiter On The Move',
+          isActive: false,
+        },
       ])
 
       const filterLevelItem = ref<Array<IFilterItem>>([

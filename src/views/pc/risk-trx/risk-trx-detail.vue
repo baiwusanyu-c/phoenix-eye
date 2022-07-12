@@ -3,115 +3,70 @@
 <template>
   <div v-loading="loading" class="risk-trx-detail">
     <!--   基本信息     -->
+    <div class="detail-title">
+      <title-cell :name="$t('lang.riskConfig.transactions')" :url="transactionIcon"> </title-cell>
+    </div>
     <div class="detail-body">
       <div class="detail-item">
-        <div class="detail-item-txt detail-item--hash">
-          <span style="width: 12%">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
-          <ellipsis-copy
-            custom-class="detail-copy"
-            :target-str="baseInfo.tx_hash"
-            :is-ellipsis="baseInfo.tx_hash && baseInfo.tx_hash.length > 64 ? true : false"
-            empty-text="/"
-            styles="color: #008EE9;cursor:pointer;"
-            font-length="30"
-            end-length="30"
-            @click="openWeb(baseInfo.tx_hash, 'tx', baseInfo.platform)">
-          </ellipsis-copy>
-          <be-tag v-if="baseInfo.platform" type="info">
-            <div class="flex items-center">
-              <be-icon
-                :content="$t('lang.profit')"
-                :icon="iconDict[baseInfo.platform.toUpperCase()]"></be-icon>
-              <span style="margin-left: 10px">{{ baseInfo.platform.toUpperCase() }}</span>
-            </div>
-          </be-tag>
-        </div>
-        <div class="detail-item-txt detail-item--date">
-          <span class="date-label">{{ $t('lang.riskConfig.tableHeader.txTime') }}：</span>
-          <el-tooltip placement="top" effect="light">
-            <template #content>
-              <span style="font-weight: 400">UTC：{{ beijing2utc(baseInfo.tx_time) }}</span>
-            </template>
-            <span style="font-weight: 400">{{
-              formatDate(createDate(baseInfo.tx_time).getTime())
-            }}</span>
-          </el-tooltip>
-        </div>
+        <span class="detail-item-txt">{{ $t('lang.riskConfig.tableHeader.txHash') }}：</span>
+        <ellipsis-copy
+          custom-class="detail-copy"
+          :target-str="baseInfo.tx_hash"
+          :is-ellipsis="baseInfo.tx_hash && baseInfo.tx_hash.length > 64 ? true : false"
+          empty-text="/"
+          styles="color: #008EE9;cursor:pointer;font-weight: 500"
+          font-length="30"
+          end-length="30"
+          @click="openWeb(baseInfo.tx_hash, 'tx', baseInfo.platform)">
+        </ellipsis-copy>
+        <be-tag v-if="baseInfo.platform" type="info">
+          <div class="flex items-center">
+            <be-icon
+              :content="$t('lang.profit')"
+              :icon="iconDict[baseInfo.platform.toUpperCase()]"></be-icon>
+            <span style="margin-left: 10px">{{ baseInfo.platform.toUpperCase() }}</span>
+          </div>
+        </be-tag>
       </div>
-      <div class="detail-item detail-form">
-        <div class="detail-item-txt">
-          <span style="width: 24%">{{ $t('lang.riskConfig.tableHeader.from') }}：</span>
-          <ellipsis-copy
-            :tooltip-txt="baseInfo.from_address"
-            :target-str="
-              baseInfo.from_address_tag ? baseInfo.from_address_tag : baseInfo.from_address
-            "
-            :copy-content="baseInfo.from_address"
-            :is-ellipsis="
-              baseInfo.from_address &&
-              baseInfo.from_address.length > 15 &&
-              !baseInfo.from_address_tag
-                ? true
-                : false
-            "
-            empty-text="/"
-            styles="color: #008EE9;cursor:pointer;font-weight:400"
-            font-length="8"
-            end-length="8"
-            @click="openWeb(baseInfo.from_address, 'addr', baseInfo.platform)">
-          </ellipsis-copy>
-        </div>
-        <div class="detail-item-txt">
-          <span style="width: 24%">{{ $t('lang.riskConfig.tableHeader.to') }}：</span>
-          <ellipsis-copy
-            :tooltip-txt="baseInfo.to_address"
-            :target-str="baseInfo.to_address_tag ? baseInfo.to_address_tag : baseInfo.to_address"
-            :copy-content="baseInfo.to_address"
-            :is-ellipsis="
-              baseInfo.to_address && baseInfo.to_address.length > 15 && !baseInfo.to_address_tag
-                ? true
-                : false
-            "
-            empty-text="/"
-            styles="color: #008EE9;cursor:pointer;font-weight:400"
-            font-length="8"
-            end-length="8"
-            @click="openWeb(baseInfo.to_address, 'addr', baseInfo.platform)">
-          </ellipsis-copy>
-        </div>
-        <div class="detail-item-txt">
-          <span>{{ $t('lang.riskConfig.values') }}：</span>
-          <el-tooltip placement="top" effect="light">
-            <template #content>
-              <span>{{ baseInfo.token_num }}</span>
-            </template>
-            <span style="font-weight: 400"> {{ simulateToFixed(baseInfo.token_num, 6) }}</span>
-          </el-tooltip>
-          <span style="font-weight: 400"
-            >&nbsp;&nbsp;{{
-              baseInfo.token_unit ? baseInfo.token_unit.toUpperCase() : ''
-            }}&nbsp;&nbsp;</span
-          >
-          <el-tooltip placement="top" effect="light">
-            <template #content>
-              <span>{{ baseInfo.dollar_money }}</span>
-            </template>
-            <span style="font-weight: 400"> ({{ handleProfit(baseInfo.dollar_money, 0) }})</span>
-          </el-tooltip>
-        </div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-item-txt">
-          <span>{{ $t('lang.riskConfig.features') }}：</span>
-          <be-tag v-for="item in baseInfo.risk_features" :key="item" type="info"
-            >{{ item }}
-          </be-tag>
-        </div>
-      </div>
+      <span class="detail-item-txt">{{ $t('lang.riskConfig.description') }}：</span>
+      <p class="descr">
+        <icon-cell
+          font-weight="400"
+          font-size="16"
+          size="16"
+          content="Large Outflow"
+          icon="iconLargeOutflow2"></icon-cell>
+      </p>
+      <p class="descr">
+        <icon-cell
+          font-weight="400"
+          font-size="16"
+          size="16"
+          content="Flash Loan"
+          icon="iconFlash2"></icon-cell>
+      </p>
+      <p class="descr">
+        <icon-cell
+          font-weight="400"
+          font-size="16"
+          size="16"
+          content="Privileged Operation"
+          icon="iconPrivileged2"></icon-cell>
+      </p>
+      <p class="descr">
+        <icon-cell
+          font-weight="400"
+          font-size="16"
+          size="16"
+          content="Exploiter On The Move"
+          icon="iconExploiter"></icon-cell>
+      </p>
     </div>
     <!--   地址收益     -->
+    <div v-if="profitData.length > 0" class="detail-title">
+      <title-cell :name="$t('lang.riskConfig.profit')" :url="addrIncomeIcon"> </title-cell>
+    </div>
     <div v-if="profitData.length > 0" class="detail-profit">
-      <h3>{{ $t('lang.riskConfig.profit') }}</h3>
       <div class="detail-profit-body">
         <el-table tooltip-effect="light" :data="profitData">
           <template #empty>
@@ -132,64 +87,44 @@
                 <ellipsis-copy
                   v-if="scope.row.address_tag"
                   :target-str="scope.row.address_tag"
-                  styles="font-weight: bold;color:#409EFF"
                   :copy-content="scope.row.address"
                   :tooltip-txt="scope.row.address"
+                  :is-show-copy-btn="false"
                   empty-text="/"
                   :is-ellipsis="false"
                   @click="openWeb(scope.row.address, 'addr', baseInfo.platform)">
+                  <template #text="textScope">
+                    <div class="tag__from">
+                      <a style="font-weight: bold; color: #409eff; margin-right: 10px">{{
+                        textScope.item
+                      }}</a>
+                      <be-tag round="12">to</be-tag>
+                    </div>
+                  </template>
                 </ellipsis-copy>
                 <ellipsis-copy
                   v-if="!scope.row.address_tag"
                   :target-str="scope.row.address"
                   empty-text="/"
+                  :is-show-copy-btn="false"
                   :is-ellipsis="isEllipsis || scope.row.address.length >= 45"
                   styles="font-weight: bold;color:#409EFF"
                   font-length="8"
                   end-length="8"
                   @click="openWeb(scope.row.address, 'addr', baseInfo.platform)">
+                  <template #text="textScope">
+                    <div class="tag__to">
+                      <a style="font-weight: bold; color: #409eff; margin-right: 10px">{{
+                        textScope.item
+                      }}</a>
+                      <be-tag round="12">to</be-tag>
+                    </div>
+                  </template>
                 </ellipsis-copy>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="tx_hash" align="left">
-            <template #header>
-              <span class="table-head">{{
-                $t('lang.riskConfig.profitTableHeader.profitSum')
-              }}</span>
-              <be-tooltip :content="$t('lang.riskConfig.amountExp')" custom-class="table-tooltip">
-                <be-icon icon="iconHelpEagle"></be-icon>
-              </be-tooltip>
-            </template>
-            <template #default="scope">
-              <be-icon
-                v-if="scope.row.profit > 0"
-                :content="$t('lang.profit')"
-                icon="iconArrowUp"></be-icon>
-              <be-icon
-                v-if="scope.row.profit < 0"
-                :content="$t('lang.loss')"
-                icon="iconArrowDown"
-                style="margin-right: 4px"></be-icon>
-              <!-- 占位 -->
-              <be-icon
-                v-if="scope.row.profit === 0"
-                disabled-tool-tip
-                icon-class="iconArrowDown"
-                style="visibility: hidden"></be-icon>
 
-              <el-tooltip placement="top" effect="light">
-                <template #content>
-                  <span>{{ scope.row.profit }}</span>
-                </template>
-                <span
-                  style="margin-left: 10px; font-weight: bold; vertical-align: super"
-                  :class="profitClass(scope.row.profit)">
-                  {{ handleProfit(scope.row.profit, 0) }}
-                </span>
-              </el-tooltip>
-            </template>
-          </el-table-column>
           <el-table-column prop="addrList" align="left">
             <template #header>
               <span class="table-head">{{
@@ -240,30 +175,6 @@
                       <span>{{ item.ordVal }}</span>
                     </template>
                     <span>{{ item.val }}</span>
-                  </el-tooltip>
-                </p>
-              </div>
-              <div
-                v-else
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                ">
-                /
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="dollarList" align="left">
-            <template #default="scope">
-              <div v-if="scope.row.dollarList && scope.row.dollarList.length > 0">
-                <p v-for="item in scope.row.dollarList" :key="item.itemId">
-                  <el-tooltip placement="top" effect="light">
-                    <template #content>
-                      <span>{{ item.ordVal }}</span>
-                    </template>
-                    <span>({{ handleProfit(item.val, 0) }})</span>
                   </el-tooltip>
                 </p>
               </div>
@@ -395,13 +306,15 @@
   } from '../../../utils/common'
   // @ts-ignore
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
+  import transactionIcon from '../../../assets/image/pc/transaction.png'
+  import addrIncomeIcon from '../../../assets/image/pc/address-income.png'
   import type { IBaseInfoRiskInfo } from '../../../utils/types'
   import type { IPlatformToCurrency } from '../../../utils/platform-dict'
   import type { IProjDetail } from '../../../api/risk-trx'
 
   export default defineComponent({
     name: 'RiskTrxDetail',
-    components: { EmptyData, EllipsisCopy, BeTag, BeIcon, BeTooltip },
+    components: { EmptyData, EllipsisCopy, BeTag, BeIcon },
     setup() {
       const { message, route, openWeb } = composition()
       // 基础信息
@@ -493,6 +406,7 @@
                 })
               })
             })
+
             loading.value = false
           })
           .catch(err => {
@@ -536,6 +450,8 @@
         getUuid,
         openWindow,
         floatMultiply,
+        transactionIcon,
+        addrIncomeIcon,
       }
     },
   })
@@ -563,61 +479,51 @@
     height: auto;
     min-height: calc(100% - 100px);
     padding-bottom: 86px;
-
+    .detail-title {
+      @include common-container(40px);
+      h3 {
+        font-size: 24px;
+        font-family: 'Barlow', sans-serif;
+        font-weight: bold;
+        color: $textColor3;
+        line-height: 29px;
+      }
+    }
     .detail-body {
       box-sizing: border-box;
-      @include common-container(40px);
+      @include common-container(20px);
       min-width: 1172px;
       padding: 20px;
-      background: $mainColor7-06;
-
+      background: $mainColor7;
+      .descr {
+        margin: 32px 0 16px 0;
+      }
       .detail-item {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-
-        .open-web {
-          width: 126px;
-        }
-
-        .detail-item-txt {
-          display: flex;
-          flex: 1;
-          align-items: center;
-          margin-top: 15px;
-          font-weight: bold;
-          color: $textColor3;
-
-          .be-tag {
-            height: 30px;
-            margin-left: 16px;
-            line-height: 30px;
-            cursor: context-menu;
-            background-color: $mainColor16;
-            border-width: 0;
-            border-radius: 0;
-
-            span {
-              font-family: 'Barlow', sans-serif;
-              font-size: 14px;
-              font-weight: 500;
-              color: $textColor3;
-            }
+        justify-content: flex-start;
+        margin-bottom: 16px;
+        .be-tag {
+          height: 30px;
+          line-height: 30px;
+          cursor: context-menu;
+          background-color: transparent;
+          border-width: 0;
+          border-radius: 0;
+          span {
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: $textColor3;
           }
         }
-
-        .detail-item--hash {
-          flex: 2;
-          justify-content: flex-start;
-        }
-
-        .detail-item--date {
-          flex: 1;
-
-          .date-label {
-            width: 12%;
-          }
-        }
+      }
+      .detail-item-txt {
+        font-weight: bold;
+        color: $textColor3;
+        font-size: 18px;
+        font-family: 'Barlow', sans-serif;
+        line-height: 32px;
       }
     }
 
@@ -628,6 +534,44 @@
       background: transparent;
 
       .detail-profit-body {
+        .tag__to {
+          .be-tag__default {
+            width: 60px;
+            height: 24px;
+            background: #ecf5f9;
+            border-radius: 12px;
+            border: 0;
+            span {
+              width: 40px;
+              height: 20px;
+              font-size: 14px;
+              font-family: 'Barlow', sans-serif;
+              font-weight: bold;
+              color: #008ee9;
+              line-height: 20px;
+              text-align: center;
+            }
+          }
+        }
+        .tag__from {
+          .be-tag__default {
+            width: 60px;
+            height: 24px;
+            background: #ecf9f5;
+            border-radius: 12px;
+            border: 0;
+            span {
+              width: 40px;
+              height: 20px;
+              font-size: 14px;
+              font-family: 'Barlow', sans-serif;
+              font-weight: bold;
+              color: $mainColor3;
+              line-height: 20px;
+              text-align: center;
+            }
+          }
+        }
         height: calc(100% - 40px);
         padding: 20px;
         margin-top: 20px;
@@ -695,17 +639,6 @@
             margin-top: 5px;
             font-size: 12px;
           }
-
-          .detail-item--date {
-            .date-label {
-              width: 16%;
-            }
-          }
-
-          .default {
-            height: 25px;
-            font-size: 12px;
-          }
         }
       }
 
@@ -737,17 +670,6 @@
         .detail-item {
           .detail-item-txt {
             margin-top: 5px;
-            font-size: 12px;
-          }
-
-          .detail-item--date {
-            .date-label {
-              width: 16%;
-            }
-          }
-
-          .default {
-            height: 25px;
             font-size: 12px;
           }
         }
