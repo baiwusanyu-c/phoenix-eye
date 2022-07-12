@@ -123,7 +123,11 @@
               fill: '#8A96A3',
             },
             formatter(text: number) {
-              return toPrecision(simulateToFixed(text))
+              if (Number(text.toString().split('-')[1]) > 6) {
+                const splitStr = text.toString().split('e')
+                return `${splitStr[0]}.00e${splitStr[1]}`
+              }
+              return toPrecision(simulateToFixed(text, 2))
             },
           },
           line: null,
