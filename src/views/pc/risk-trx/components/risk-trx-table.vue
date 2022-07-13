@@ -59,9 +59,11 @@
         </template>
         <template #default="scope">
           <div v-if="scope.row.tag_list && scope.row.tag_list.length > 0" style="display: flex">
-            <div v-for="item in scope.row.tag_list" :key="item" :title="item">
-              <be-icon width="24" height="24" style="margin-right: 8px" :icon="typeDict[item]">
-              </be-icon>
+            <div v-for="item in scope.row.tag_list" :key="item">
+              <el-tooltip effect="light" placement="top" :content="item">
+                <be-icon width="24" height="24" style="margin-right: 8px" :icon="typeDict[item]">
+                </be-icon>
+              </el-tooltip>
             </div>
           </div>
           <div

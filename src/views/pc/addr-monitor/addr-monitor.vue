@@ -353,7 +353,6 @@
     min-height: calc(100vh - 128px);
     display: flex;
     justify-content: center;
-    align-items: center;
     .subTitle {
       font-family: 'Barlow', sans-serif;
       font-size: 18px;

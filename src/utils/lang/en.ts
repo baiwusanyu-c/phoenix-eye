@@ -226,7 +226,7 @@ export default {
     base: {
       title: 'Security Monitor',
       title2: 'Web3',
-      subTitle: 'Security Assessment, Risk Transactions Identification, and Security News',
+      subTitle: 'Security Assessment, Risk Transactions Identification, and Security Sentiment',
       item1: 'Total Market Cap',
       item2: 'Project',
       item3: 'Chains',

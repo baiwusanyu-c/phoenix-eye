@@ -7,13 +7,13 @@
         class="project-manage--tabs"
         :class="{ 'project-manage--tabs__active': tabType === 'sys' }"
         @click="handleClick('sys')">
-        project in system
+        Project in system
       </div>
       <div
         class="project-manage--tabs"
         :class="{ 'project-manage--tabs__active': tabType === 'usr' }"
         @click="handleClick('usr')">
-        project from user
+        Project from user
       </div>
     </div>
     <!--  虽然两个组件逻辑相似，但是还是分开便于维护，组件内的内容已经组件化   -->
@@ -56,6 +56,7 @@
     min-height: calc(100% - 100px);
     .project-manage--tab {
       @include common-container(40px);
+      width: 1250px;
       display: flex;
       .project-manage--tabs {
         display: flex;
@@ -65,7 +66,7 @@
         box-sizing: border-box;
         cursor: pointer;
         height: 48px;
-        background-color: $textColor7;
+        background-color: $textColor7-05;
         color: $textColor3;
         border-radius: 5px;
         border-bottom-right-radius: 0;

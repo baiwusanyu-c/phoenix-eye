@@ -18,8 +18,8 @@
           width="300"
           :name="scope.row.project_name"
           :url="scope.row.logo_url"
-          :font-len="40"
-          :ellipsis-len="40">
+          :font-len="35"
+          :ellipsis-len="35">
         </project-name-cell>
       </template>
     </el-table-column>
@@ -34,7 +34,7 @@
           :is-show-copy-btn="false"
           :is-tooltip="true"
           styles="color: black;font-weight: 400;font-size: 14px;"
-          font-length="30"
+          font-length="25"
           end-length="0">
         </ellipsis-copy>
       </template>

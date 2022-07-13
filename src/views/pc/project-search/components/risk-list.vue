@@ -102,27 +102,16 @@
         }
       )
       const setTypeIcon = computed(() => {
+        const typeDict = {
+          'Large outflow': 'iconLargeOutflow2',
+          'Flash loan': 'iconFlash2',
+          'Privileged operation': 'iconPrivileged2',
+          'Exploiter On The Move': 'iconExploiter',
+        }
         return function (data: string) {
-          if (data === 'Large outflow') {
-            return 'iconLargeOutflow'
-          }
-          if (data === 'Slump') {
-            return 'iconSlump'
-          }
-          if (data === 'Flash loan') {
-            return 'iconFlash'
-          }
-          if (data === 'Privileged operation') {
-            return 'iconPrivileged'
-          }
+          return typeDict[data as keyof typeof typeDict]
         }
       })
-      /* const filterTypeItem = ref<Array<IFilterItem>>([
-            { label: 'Large outflow', val: 'Large outflow', isActive: false },
-            { label: 'Flash loan', val: 'Flash loan', isActive: false },
-            { label: 'Privileged operation', val: 'Privileged operation', isActive: false },
-            { label: 'Slump', val: 'Slump', isActive: false },
-        ])*/
       const { pageParams, resetPageParam, nextPage, prevPage } = compositionPage()
       const pageNum = ref<number>(0)
       const { message } = composition()

@@ -172,22 +172,22 @@
 <style lang="scss">
   .level__High {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 10px;
     background-color: $lessColor4;
   }
   .level__Medium {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 10px;
     background-color: $mainColor3;
   }
   .level__Low {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 10px;
     background-color: $mainColor24;
   }
