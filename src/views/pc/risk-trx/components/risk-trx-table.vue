@@ -320,7 +320,7 @@
         'Large outflow': 'iconLargeOutflow2',
         'Flash loan': 'iconFlash2',
         'Privileged operation': 'iconPrivileged2',
-        Slump: 'iconExploiter',
+        'Exploiter On The Move': 'iconExploiter',
       }
       return {
         typeDict,
