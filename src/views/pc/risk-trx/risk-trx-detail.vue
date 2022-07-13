@@ -362,7 +362,8 @@
               return
             }
             baseInfo.value = res.data
-            // 重组数据，把token_profits的数据提取出来
+            // 重组数据，把token_profits的数据提取出来，
+            // 拼凑成表格可以合并单元格的数据结构
             res.data.address_profits.forEach((val: any) => {
               const tokenLen = val.token_profits.length
               val.token_profits.forEach((valRes: any) => {

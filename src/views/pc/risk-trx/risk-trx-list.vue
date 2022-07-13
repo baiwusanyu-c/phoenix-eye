@@ -7,6 +7,7 @@
         :placeholder="$t('lang.riskConfig.searchP')"
         @search="handleSearch">
         <be-icon
+          role="button"
           icon="iconFilter"
           custom-class="filter--btn"
           width="24"
@@ -199,6 +200,7 @@
       box-sizing: border-box;
       background-color: $mainColor7;
       border-radius: 4px;
+      user-select: none;
       @include common-container(40px);
       min-width: 1172px;
       .filter--btn {

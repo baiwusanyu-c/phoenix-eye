@@ -552,7 +552,7 @@
   color: $textColor3;
   background-color: $mainColor3;
   opacity: 1;
-
+  user-select: none;
   &:hover,&:focus {
     background-color: $mainColor3-h;
     opacity: .8;
