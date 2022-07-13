@@ -7,7 +7,7 @@
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
   import DataSet from '@antv/data-set'
-  import { nFormats } from '../../../utils/common'
+  import { nFormats, simulateToFixed, toPrecision } from '../../../utils/common'
   import type { PropType } from 'vue'
   import type { IStatisticsLine } from '../../../utils/types'
   export default defineComponent({
@@ -121,6 +121,15 @@
           label: {
             style: {
               fill: '#8A96A3',
+            },
+            formatter(text: number) {
+              if (text >= 1e3) {
+                return nFormats(text)
+              }
+              if (text <= 0) return text
+              const p = Math.floor(Math.log(text) / Math.LN10)
+              const n = (text * 10 ** -p).toFixed(2)
+              return `${n}e${p}`
             },
           },
           line: null,

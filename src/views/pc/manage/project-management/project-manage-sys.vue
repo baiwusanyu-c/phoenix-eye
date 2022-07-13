@@ -9,6 +9,7 @@
     </search-input>
     <be-button
       type="success"
+      prev-icon="iconAddPlus"
       custom-class="eagle-btn create-btn"
       size="large"
       round="4"
@@ -17,7 +18,12 @@
     </be-button>
   </div>
   <div class="project-manage-list eagle-table">
-    <project-manage-table :list="projectList.data" @operation="openDialog"></project-manage-table>
+    <project-manage-table
+      ref="projectManageTable"
+      :list="projectList.data"
+      type="system"
+      @sort="handleSort"
+      @operation="openDialog"></project-manage-table>
     <div class="table-page">
       <el-pagination
         v-model:currentPage="pageParams.currentPage"
@@ -48,7 +54,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
+  import { defineComponent, getCurrentInstance, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { BeButton } from '@eagle-eye/be-ui'
   import { deleteProject, getProjectListAdmin } from '../../../../api/project-management'
@@ -60,8 +66,10 @@
   import searchInput from '../../../../components/search-input.vue'
   import CreateProject from './components/create-project.vue'
   import ProjectManageTable from './components/project-manage-table.vue'
+  import type { ICreateProj, IProjectManageTable, ISort } from '../../../../utils/types'
+  import type { ElTable } from 'element-plus'
+
   import type { IProjectListAdmin, IReappraise } from '../../../../api/project-management'
-  import type { ICreateProj } from '../../../../utils/types'
 
   export default defineComponent({
     name: 'ProjectManageSys',
@@ -121,9 +129,15 @@
        */
       // 搜索参数
       const searchParams = ref<string>('')
+      const curInst = getCurrentInstance()
       const handleSearch = (data: string): void => {
         searchParams.value = data
         nextTick(() => {
+          ;(
+            (curInst?.refs.projectManageTable as IProjectManageTable)
+              .projManagementTable as typeof ElTable
+          ).clearSort()
+          sortParams.value = {}
           resetPageParam()
           getList()
         })
@@ -146,6 +160,7 @@
           page_size: pageParams.value.pageSize,
           param: searchParams.value,
           type: 'system',
+          ...sortParams.value,
         }
         getProjectListAdmin(params)
           .then(res => {
@@ -182,8 +197,15 @@
         updatePageSize(data!, pageParams)
         getList()
       }
-
+      const sortParams = ref<ISort>({})
+      const handleSort = (sort: ISort): void => {
+        sortParams.value = sort
+        const currentPageSize = pageParams.value.pageSize
+        resetPageParam(currentPageSize === 10 ? 10 : currentPageSize)
+        getList()
+      }
       return {
+        handleSort,
         handleSearch,
         updateNum,
         isEmpty,

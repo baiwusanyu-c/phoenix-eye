@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="风险交易" transform="translate(-678.000000, -264.000000)" fill-rule="nonzero">
+            <g id="编组-6" transform="translate(355.000000, 212.000000)">
+                <g id="标签-/-n备份-6" transform="translate(317.000000, 44.000000)">
+                    <g id="BNB" transform="translate(6.000000, 8.000000)">
+                        <path d="M0,8 C0,12.418278 3.58172194,16 8,16 C12.4182778,16 16,12.418278 16,8 C16,3.581722 12.4182778,0 8,0 C3.58172194,0 0,3.581722 0,8 Z" id="路径" fill="#F5F8FB"></path>
+                        <g id="转移" transform="translate(2.000000, 2.000000)">
+                            <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="11.9999998" height="12"></rect>
+                            <path d="M6.29174989,0.75 L6.29174989,3.66675 L1.04174998,3.66675 L1.04174998,5.4165 L10.9589998,5.4165 L6.29174989,0.75 Z M5.7082499,11.25 L5.7082499,8.33325 L10.9582498,8.33325 L10.9582498,6.5835 L1.04174998,6.5835 L5.7082499,11.25 Z" id="形状" fill="#18304E"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

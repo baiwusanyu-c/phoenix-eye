@@ -7,13 +7,13 @@
         class="project-manage--tabs"
         :class="{ 'project-manage--tabs__active': tabType === 'sys' }"
         @click="handleClick('sys')">
-        project in system
+        Project in system
       </div>
       <div
         class="project-manage--tabs"
         :class="{ 'project-manage--tabs__active': tabType === 'usr' }"
         @click="handleClick('usr')">
-        project from user
+        Project from user
       </div>
     </div>
     <!--  虽然两个组件逻辑相似，但是还是分开便于维护，组件内的内容已经组件化   -->
@@ -56,6 +56,7 @@
     min-height: calc(100% - 100px);
     .project-manage--tab {
       @include common-container(40px);
+      width: 1250px;
       display: flex;
       .project-manage--tabs {
         display: flex;
@@ -64,26 +65,29 @@
         padding: 10px 16px;
         box-sizing: border-box;
         cursor: pointer;
-        height: 40px;
-        background-color: $mainColor7;
+        height: 48px;
+        background-color: $textColor7-05;
         color: $textColor3;
         border-radius: 5px;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
       .project-manage--tabs__active {
-        background-color: $mainColor3;
-        color: $mainColor17;
+        background-color: $mainColor7;
+        font-weight: bold;
         cursor: pointer;
       }
     }
     .project-manage-search {
-      @include common-container(40px);
+      @include common-container(0);
+      background-color: $mainColor7;
+      border-radius: 4px;
+      padding: 24px 20px 16px 20px;
     }
 
     .project-manage-list {
       width: 1284px;
-      padding: 20px;
+      padding: 0 20px 24px 20px;
       margin: 0 auto;
       background-color: $mainColor7;
     }

@@ -7,7 +7,7 @@
         line-height: 25px;
         text-align: center;
         font-family: 'Barlow', sans-serif;
-        color: #bababa;
+        color: #18304e;
         font-weight: 400;
         font-size: 14px;
       ">

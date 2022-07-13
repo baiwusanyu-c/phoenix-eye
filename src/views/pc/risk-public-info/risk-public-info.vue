@@ -124,6 +124,10 @@
   .risk-public-info-container {
     @include common-container(40px);
     text-align: center;
+    background-color: $mainColor7;
+    border-radius: 4px;
+    padding: 32px 22px;
+    box-sizing: border-box;
   }
 
   .risk-public-info-list {

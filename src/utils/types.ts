@@ -124,7 +124,7 @@ export interface ICreateProjBase {
   token_address?: string
   logo_url?: string
   contract_address_arr?: Array<string>
-  top_flag: boolean
+  top_flag?: boolean
 }
 export interface ICreateProjOperating {
   address_markup?: string
@@ -149,6 +149,7 @@ export interface IFilterItem {
   label?: string
   val: string
   isActive: boolean
+  icon?: string
 }
 
 export interface IRiskTable {
@@ -376,4 +377,13 @@ export type IRelateProject = {
   create_time?: string
   project_id?: string
   platform?: string
+}
+
+export type ISort = {
+  sort_field?: string
+  sort_type?: string
+}
+
+export type IProjectManageTable = {
+  projManagementTable?: any
 }

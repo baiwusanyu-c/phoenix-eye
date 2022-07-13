@@ -9,6 +9,7 @@
       </search-input>
       <be-button
         type="success"
+        prev-icon="iconAddPlus"
         custom-class="eagle-btn create-btn"
         size="large"
         round="4"
@@ -137,33 +138,26 @@
             </ellipsis-copy>
           </template>
         </el-table-column>
-        <el-table-column prop="operation" width="120">
+        <el-table-column prop="operation" width="180">
           <template #header>
             <span class="table-head">{{ $t('lang.securityIncident.tableHeader.operation') }}</span>
           </template>
           <template #default="scope">
-            <el-tooltip placement="top">
-              <template #content>
-                {{ $t('lang.edit') }}
-              </template>
-              <be-icon
-                custom-class="table-icon"
-                icon="iconEditEagle"
-                width="24"
-                height="24"
-                @click="openDialog('edit', scope.row)"></be-icon>
-            </el-tooltip>
-            <el-tooltip placement="top">
-              <template #content>
-                {{ $t('lang.delete') }}
-              </template>
-              <be-icon
-                custom-class="table-icon"
-                icon="iconDeleteEagle"
-                width="24"
-                height="24"
-                @click="openDialog('delete', scope.row)"></be-icon>
-            </el-tooltip>
+            <be-button
+              style="margin-right: 10px"
+              type="success"
+              custom-class="operate-btn"
+              prev-icon="iconEditEagle"
+              @click="openDialog('edit', scope.row)">
+              {{ $t('lang.edit') }}
+            </be-button>
+            <be-button
+              custom-class="operate-btn"
+              type="success"
+              prev-icon="iconDeleteEagle"
+              @click="openDialog('delete', scope.row)">
+              {{ $t('lang.delete') }}
+            </be-button>
           </template>
         </el-table-column>
       </el-table>
@@ -194,7 +188,7 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
+  import { BeButton } from '@eagle-eye/be-ui'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
   import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
   // @ts-ignore
@@ -214,7 +208,6 @@
       addSite,
       MsgDialog,
       BeButton,
-      BeIcon,
     },
     setup() {
       const { t } = useI18n()
@@ -342,9 +335,16 @@
 <style lang="scss">
   .security-incident-main {
     min-height: calc(100% - 100px);
+    .ellipsis-copy {
+      width: 160px;
+      min-width: 160px !important;
+    }
 
     .security-incident-search {
       @include common-container(40px);
+      background-color: $mainColor7;
+      border-radius: 4px;
+      padding: 24px 20px 0 20px;
     }
 
     .security-incident-list {

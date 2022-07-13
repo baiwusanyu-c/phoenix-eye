@@ -9,6 +9,7 @@
       </search-input>
       <be-button
         type="success"
+        prev-icon="iconAddPlus"
         custom-class="eagle-btn create-btn"
         size="large"
         round="4"
@@ -58,17 +59,13 @@
             <span class="table-head">{{ $t('lang.siteManage.tableHeader.operation') }}</span>
           </template>
           <template #default="scope">
-            <el-tooltip placement="top">
-              <template #content>
-                {{ $t('lang.delete') }}
-              </template>
-              <be-icon
-                custom-class="table-icon"
-                icon="iconDeleteEagle"
-                width="24"
-                height="24"
-                @click="openDialog('delete', scope.row)"></be-icon>
-            </el-tooltip>
+            <be-button
+              custom-class="operate-btn"
+              type="success"
+              prev-icon="iconDeleteEagle"
+              @click="openDialog('delete', scope.row)">
+              {{ $t('lang.delete') }}
+            </be-button>
           </template>
         </el-table-column>
       </el-table>
@@ -104,7 +101,7 @@
 <script lang="ts">
   import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
+  import { BeButton } from '@eagle-eye/be-ui'
   import EmptyData from '../../../../components/common-components/empty-data/empty-data.vue'
   import MsgDialog from '../../../../components/common-components/msg-dialog/msg-dialog.vue'
   // @ts-ignore
@@ -121,11 +118,9 @@
     name: 'MaliciousSiteManagement',
     components: {
       EmptyData,
-
       addSite,
       MsgDialog,
       BeButton,
-      BeIcon,
     },
     setup() {
       const { t } = useI18n()
@@ -259,6 +254,9 @@
 
     .malicious-site-search {
       @include common-container(40px);
+      background-color: $mainColor7;
+      border-radius: 4px;
+      padding: 24px 20px 0 20px;
     }
 
     .malicious-site-list {

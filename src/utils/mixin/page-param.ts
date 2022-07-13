@@ -5,6 +5,7 @@
  * @update (czh 2022/4/20)
  */
 import { ref } from 'vue'
+import type { Ref, UnwrapRef } from 'vue'
 import type { IPageParam } from '../types'
 export default () => {
   /**
@@ -49,7 +50,29 @@ export default () => {
     page.value.currentPage = 1
     page.value.pageSize = pageSize!
   }
+  const nextPage = (
+    pageParams: UnwrapRef<Ref<UnwrapRef<IPageParam>>>,
+    pageNum: UnwrapRef<Ref<UnwrapRef<number>>>,
+    cb: Function
+  ): void => {
+    pageParams.currentPage!++
+    if (pageParams.currentPage! > pageNum) {
+      pageParams.currentPage! = pageNum
+      return
+    }
+    cb && cb()
+  }
+  const prevPage = (pageParams: UnwrapRef<Ref<UnwrapRef<IPageParam>>>, cb: Function): void => {
+    pageParams.currentPage!--
+    if (pageParams.currentPage! < 1) {
+      pageParams.currentPage! = 1
+      return
+    }
+    cb && cb()
+  }
   return {
+    nextPage,
+    prevPage,
     updatePageSize,
     createPageParam,
     resetPageParam,

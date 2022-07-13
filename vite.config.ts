@@ -7,7 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { transformScript } from 'vite-plugin-svg-transform-script'
-
+import viteCompression from 'vite-plugin-compression'
 // https://vitejs.dev/config/
 export default defineConfig({
   assetsInclude: ['**/*.ttf', '**/*.png'],
@@ -27,6 +27,10 @@ export default defineConfig({
       name: 'svg-dict',
       type: 'ts',
       format: 'default',
+    }),
+    viteCompression({
+      disable: true,
+      deleteOriginFile: true,
     }),
   ],
   // 指定环境变量文件路径
