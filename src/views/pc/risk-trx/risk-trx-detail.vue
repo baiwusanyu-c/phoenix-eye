@@ -33,7 +33,7 @@
         <icon-cell
           font-weight="400"
           font-size="16"
-          size="16"
+          size="20"
           content="Large Outflow"
           icon="iconLargeOutflow2"></icon-cell>
       </p>
@@ -41,7 +41,7 @@
         <icon-cell
           font-weight="400"
           font-size="16"
-          size="16"
+          size="20"
           content="Flash Loan"
           icon="iconFlash2"></icon-cell>
       </p>
@@ -49,7 +49,7 @@
         <icon-cell
           font-weight="400"
           font-size="16"
-          size="16"
+          size="20"
           content="Privileged Operation"
           icon="iconPrivileged2"></icon-cell>
       </p>
@@ -57,7 +57,7 @@
         <icon-cell
           font-weight="400"
           font-size="16"
-          size="16"
+          size="20"
           content="Exploiter On The Move"
           icon="iconExploiter"></icon-cell>
       </p>

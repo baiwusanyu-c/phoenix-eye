@@ -6,6 +6,7 @@
       v-loading="loading"
       tooltip-effect="light"
       :data="tableData"
+      cell-class-name="cursor-pointer"
       @row-click="openDetail">
       <template #empty>
         <empty-data content="lang.noRisk"></empty-data>

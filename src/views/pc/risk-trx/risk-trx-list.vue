@@ -215,14 +215,16 @@
         margin-top: 36px;
         background-color: $mainColor7;
         border-radius: 4px;
-        opacity: 0.69;
+        user-select: none;
         .be-button--slot {
           font-weight: 500;
           border-radius: 4px;
         }
         .filter-label {
+          color: $textColor3;
           font-weight: bold;
           vertical-align: sub;
+          font-family: 'Barlow', sans-serif;
         }
       }
 
