@@ -127,12 +127,12 @@
           {{ isEmpty(scope.row.amount, '/') === '/' ? '/' : `$ ${scope.row.amount}` }}
         </template>
       </el-table-column>-->
-      <el-table-column prop="Description" align="left" show-overflow-tooltip>
+      <el-table-column prop="Description" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.description') }}</span>
         </template>
         <template #default="scope">
-          {{ scope.row.descript }}
+          <span class="ellipsis-text">{{ scope.row.descript }}</span>
         </template>
       </el-table-column>
       <el-table-column width="180" prop="tx_time" align="left">
