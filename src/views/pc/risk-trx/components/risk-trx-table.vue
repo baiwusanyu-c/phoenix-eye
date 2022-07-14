@@ -11,12 +11,14 @@
       <template #empty>
         <empty-data content="lang.noRisk"></empty-data>
       </template>
-      <el-table-column prop="platform" width="120" align="center">
+      <el-table-column prop="platform" width="120" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
         <template #default="scope">
-          <platform-cell :platform="scope.row.platform"></platform-cell>
+          <platform-cell
+            :platform="scope.row.platform"
+            custom-class="justify-start"></platform-cell>
         </template>
       </el-table-column>
       <el-table-column prop="tx_hash" width="180" align="left">

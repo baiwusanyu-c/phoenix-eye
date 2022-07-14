@@ -1,6 +1,6 @@
 /* * @platform-cell.vue * @deprecated * @author czh * @update (czh 2022/4/2) */
 <template>
-  <div class="flex items-center justify-center">
+  <div class="flex items-center" :class="customClass">
     <be-icon
       :icon="iconDict[platform.toUpperCase()]"
       :width="size"
@@ -34,6 +34,10 @@
     props: {
       platform: {
         type: String,
+      },
+      customClass: {
+        type: String,
+        default: 'justify-center',
       },
       size: {
         type: Number,

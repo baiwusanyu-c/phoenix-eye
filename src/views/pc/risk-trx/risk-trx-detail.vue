@@ -113,7 +113,9 @@
             >
           </template>
         </ellipsis-copy>
-
+        <span v-if="descriptionTemplate['Privileged Operation'].type === 2" class="descr-text"
+          >&nbsp;{{ descriptionTemplate['Privileged Operation'].text }}&nbsp;</span
+        >
         <ellipsis-copy
           v-if="descriptionTemplate['Privileged Operation'].type === 2"
           custom-class="detail-copy"
@@ -139,7 +141,7 @@
           </template>
         </ellipsis-copy>
         <span v-if="descriptionTemplate['Privileged Operation'].type === 2" class="descr-text"
-          >&nbsp;{{ descriptionTemplate['Privileged Operation'].text }}&nbsp;</span
+          >&nbsp;To&nbsp;</span
         >
         <ellipsis-copy
           v-if="descriptionTemplate['Privileged Operation'].type === 2"
@@ -652,6 +654,7 @@
   .risk-trx-detail {
     .detail-copy {
       width: initial;
+      min-width: initial !important;
     }
 
     position: relative;
