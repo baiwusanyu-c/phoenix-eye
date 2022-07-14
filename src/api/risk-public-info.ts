@@ -18,5 +18,6 @@ export function getPublicOpinionList(params: IPOList) {
     url: `${config.baseURL}/ussa/opinion/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }

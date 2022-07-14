@@ -22,7 +22,8 @@ export function getProjWarning(params: IProjWarning) {
     url: `${config.baseURL}/ussa/risk_tx/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 // 获取项目風險詳情
 export interface IProjDetail {
@@ -33,5 +34,6 @@ export function getProjWarningDetail(params: IProjDetail) {
     url: `${config.baseURL}/ussa/risk_tx/tx_detail`,
     method: 'get',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }

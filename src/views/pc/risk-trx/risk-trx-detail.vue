@@ -42,7 +42,7 @@
           :is-show-copy-btn="false"
           custom-class="detail-copy"
           :target-str="descriptionTemplate['Large Outflow'].content"
-          :is-ellipsis="descriptionTemplate['Large Outflow'].content.length > 64 ? true : false"
+          :is-ellipsis="descriptionTemplate['Large Outflow'].content.length > 20 ? true : false"
           empty-text="/"
           font-length="6"
           end-length="6">
@@ -68,7 +68,7 @@
           custom-class="detail-copy"
           :is-show-copy-btn="false"
           :target-str="descriptionTemplate['Flash Loan'].content"
-          :is-ellipsis="descriptionTemplate['Flash Loan'].content.length > 64 ? true : false"
+          :is-ellipsis="descriptionTemplate['Flash Loan'].content.length > 20 ? true : false"
           empty-text="/"
           font-length="6"
           end-length="6">
@@ -98,7 +98,7 @@
           custom-class="detail-copy"
           :target-str="descriptionTemplate['Privileged Operation'].content"
           :is-ellipsis="
-            descriptionTemplate['Privileged Operation'].content.length > 64 ? true : false
+            descriptionTemplate['Privileged Operation'].content.length > 20 ? true : false
           "
           empty-text="/"
           font-length="6"
@@ -120,7 +120,7 @@
           :is-show-copy-btn="false"
           :target-str="descriptionTemplate['Privileged Operation'].contentOne"
           :is-ellipsis="
-            descriptionTemplate['Privileged Operation'].contentOne.length > 64 ? true : false
+            descriptionTemplate['Privileged Operation'].contentOne.length > 20 ? true : false
           "
           empty-text="/"
           font-length="6"
@@ -147,7 +147,7 @@
           :is-show-copy-btn="false"
           :target-str="descriptionTemplate['Privileged Operation'].contentSec"
           :is-ellipsis="
-            descriptionTemplate['Privileged Operation'].contentSec.length > 64 ? true : false
+            descriptionTemplate['Privileged Operation'].contentSec.length > 20 ? true : false
           "
           empty-text="/"
           font-length="6"
@@ -179,7 +179,7 @@
           :is-show-copy-btn="false"
           :target-str="descriptionTemplate['Exploiter On The Move'].contentOne"
           :is-ellipsis="
-            descriptionTemplate['Exploiter On The Move'].contentOne.length > 64 ? true : false
+            descriptionTemplate['Exploiter On The Move'].contentOne.length > 20 ? true : false
           "
           empty-text="/"
           font-length="6"
@@ -205,7 +205,7 @@
           :is-show-copy-btn="false"
           :target-str="descriptionTemplate['Exploiter On The Move'].contentSec"
           :is-ellipsis="
-            descriptionTemplate['Exploiter On The Move'].contentSec.length > 64 ? true : false
+            descriptionTemplate['Exploiter On The Move'].contentSec.length > 20 ? true : false
           "
           empty-text="/"
           font-length="6"

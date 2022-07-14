@@ -21,5 +21,6 @@ export function createQuote(params: IQuote) {
     url: '/website/quote/create',
     method: 'POST',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
