@@ -35,7 +35,7 @@
           font-size="16"
           size="20"
           content="Large Outflow"
-          style="margin-right: 10px"
+          style="margin-right: 10px; width: 200px"
           icon="iconLargeOutflow2"></icon-cell>
         <span class="descr-text">{{ descriptionTemplate['Large Outflow'].text }} &nbsp;</span>
         <ellipsis-copy
@@ -60,7 +60,7 @@
           font-weight="400"
           font-size="16"
           size="20"
-          style="margin-right: 10px"
+          style="margin-right: 10px; width: 200px"
           content="Flash Loan"
           icon="iconFlash2"></icon-cell>
         <span class="descr-text">{{ descriptionTemplate['Flash Loan'].text }} &nbsp;</span>
@@ -86,7 +86,7 @@
           font-weight="400"
           font-size="16"
           size="20"
-          style="margin-right: 10px"
+          style="margin-right: 10px; width: 200px"
           content="Privileged Operation"
           icon="iconPrivileged2"></icon-cell>
         <span v-if="descriptionTemplate['Privileged Operation'].type === 1" class="descr-text"
@@ -173,7 +173,7 @@
           font-weight="400"
           font-size="16"
           size="20"
-          style="margin-right: 10px"
+          style="margin-right: 10px; width: 200px"
           content="Exploiter On The Move"
           icon="iconExploiter"></icon-cell>
         <ellipsis-copy
@@ -288,7 +288,9 @@
                       <a style="font-weight: bold; color: #409eff; margin-right: 10px">{{
                         textScope.item
                       }}</a>
-                      <be-tag round="12">{{ scope.row.address_label }}</be-tag>
+                      <be-tag v-if="scope.row.address_label" round="12">{{
+                        scope.row.address_label
+                      }}</be-tag>
                     </div>
                   </template>
                 </ellipsis-copy>
@@ -698,6 +700,7 @@
         a {
           font-weight: bold;
           color: $lessColor3;
+          font-family: 'Barlow', sans-serif;
           font-size: 16px;
           line-height: 16px;
         }
