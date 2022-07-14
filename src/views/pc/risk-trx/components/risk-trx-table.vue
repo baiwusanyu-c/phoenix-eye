@@ -263,20 +263,16 @@
             if (res.data) {
               // 组装descript字段数据
               res.data.page_infos.forEach((val: any) => {
-                let arrStr = ''
                 val.description.forEach((descri: any) => {
-                  const descriArr = descri.text.split('%s')
-                  // eslint-disable-next-line array-callback-return
-                  descriArr.map((spl: any, splIndex: number) => {
-                    if (!spl && descri.params[splIndex - 1]) {
-                      descriArr[splIndex] = descri.params[splIndex - 1].tag_name
-                        ? descri.params[splIndex - 1].tag_name
-                        : descri.params[splIndex - 1].address
-                    }
+                  descri.params.forEach((spl: any) => {
+                    const text: string = descri.text
+                    const sIndex: number = text.search('%s')
+                    const textArr: Array<string> = text.split('')
+                    textArr.splice(sIndex, 2, spl.tag_name ? spl.tag_name : spl.address)
+                    descri.text = textArr.join('')
+                    val.descript = descri.text
                   })
-                  arrStr = arrStr + descriArr.join('')
                 })
-                val.descript = arrStr
               })
               tableData.value = res.data.page_infos
 
