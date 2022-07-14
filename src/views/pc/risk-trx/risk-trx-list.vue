@@ -108,7 +108,7 @@
         {
           icon: 'iconLargeOutflow2',
           label: 'Large Outflow',
-          val: 'Large outflow',
+          val: 'Large Outflow',
           isActive: false,
         },
         { icon: 'iconFlash2', label: 'Flash Loan', val: 'Flash loan', isActive: false },

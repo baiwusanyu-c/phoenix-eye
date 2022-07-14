@@ -103,9 +103,9 @@
       )
       const setTypeIcon = computed(() => {
         const typeDict = {
-          'Large outflow': 'iconLargeOutflow2',
-          'Flash loan': 'iconFlash2',
-          'Privileged operation': 'iconPrivileged2',
+          'Large Outflow': 'iconLargeOutflow2',
+          'Flash Loan': 'iconFlash2',
+          'Privileged Operation': 'iconPrivileged2',
           'Exploiter On The Move': 'iconExploiter',
         }
         return function (data: string) {

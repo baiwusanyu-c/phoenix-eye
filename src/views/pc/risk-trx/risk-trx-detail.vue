@@ -29,37 +29,200 @@
         </be-tag>
       </div>
       <span class="detail-item-txt">{{ $t('lang.riskConfig.description') }}：</span>
-      <p class="descr">
+      <p v-if="descriptionTemplate['Large Outflow']" class="descr">
         <icon-cell
           font-weight="400"
           font-size="16"
           size="20"
           content="Large Outflow"
+          style="margin-right: 10px"
           icon="iconLargeOutflow2"></icon-cell>
+        <span class="descr-text">{{ descriptionTemplate['Large Outflow'].text }} &nbsp;</span>
+        <ellipsis-copy
+          :is-show-copy-btn="false"
+          custom-class="detail-copy"
+          :target-str="descriptionTemplate['Large Outflow'].content"
+          :is-ellipsis="descriptionTemplate['Large Outflow'].content.length > 64 ? true : false"
+          empty-text="/"
+          font-length="6"
+          end-length="6">
+          <template #text="textScope">
+            <a
+              :href="createLink(baseInfo.platform, descriptionTemplate['Large Outflow'].address)"
+              target="_blank">
+              {{ ` ${textScope.item}` }}</a
+            >
+          </template>
+        </ellipsis-copy>
       </p>
-      <p class="descr">
+      <p v-if="descriptionTemplate['Flash Loan']" class="descr">
         <icon-cell
           font-weight="400"
           font-size="16"
           size="20"
+          style="margin-right: 10px"
           content="Flash Loan"
           icon="iconFlash2"></icon-cell>
+        <span class="descr-text">{{ descriptionTemplate['Flash Loan'].text }} &nbsp;</span>
+        <ellipsis-copy
+          custom-class="detail-copy"
+          :is-show-copy-btn="false"
+          :target-str="descriptionTemplate['Flash Loan'].content"
+          :is-ellipsis="descriptionTemplate['Flash Loan'].content.length > 64 ? true : false"
+          empty-text="/"
+          font-length="6"
+          end-length="6">
+          <template #text="textScope">
+            <a
+              :href="createLink(baseInfo.platform, descriptionTemplate['Flash Loan'].address)"
+              target="_blank">
+              {{ ` ${textScope.item}` }}</a
+            >
+          </template>
+        </ellipsis-copy>
       </p>
-      <p class="descr">
+      <p v-if="descriptionTemplate['Privileged Operation']" class="descr">
         <icon-cell
           font-weight="400"
           font-size="16"
           size="20"
+          style="margin-right: 10px"
           content="Privileged Operation"
           icon="iconPrivileged2"></icon-cell>
+        <span v-if="descriptionTemplate['Privileged Operation'].type === 1" class="descr-text"
+          >{{ descriptionTemplate['Privileged Operation'].text }} &nbsp;</span
+        >
+        <ellipsis-copy
+          v-if="descriptionTemplate['Privileged Operation'].type === 1"
+          :is-show-copy-btn="false"
+          custom-class="detail-copy"
+          :target-str="descriptionTemplate['Privileged Operation'].content"
+          :is-ellipsis="
+            descriptionTemplate['Privileged Operation'].content.length > 64 ? true : false
+          "
+          empty-text="/"
+          font-length="6"
+          end-length="6">
+          <template #text="textScope">
+            <a
+              :href="
+                createLink(baseInfo.platform, descriptionTemplate['Privileged Operation'].address)
+              "
+              target="_blank">
+              {{ ` ${textScope.item}` }}</a
+            >
+          </template>
+        </ellipsis-copy>
+
+        <ellipsis-copy
+          v-if="descriptionTemplate['Privileged Operation'].type === 2"
+          custom-class="detail-copy"
+          :is-show-copy-btn="false"
+          :target-str="descriptionTemplate['Privileged Operation'].contentOne"
+          :is-ellipsis="
+            descriptionTemplate['Privileged Operation'].contentOne.length > 64 ? true : false
+          "
+          empty-text="/"
+          font-length="6"
+          end-length="6">
+          <template #text="textScope">
+            <a
+              :href="
+                createLink(
+                  baseInfo.platform,
+                  descriptionTemplate['Privileged Operation'].addressOne
+                )
+              "
+              target="_blank">
+              {{ ` ${textScope.item}` }}</a
+            >
+          </template>
+        </ellipsis-copy>
+        <span v-if="descriptionTemplate['Privileged Operation'].type === 2" class="descr-text"
+          >&nbsp;{{ descriptionTemplate['Privileged Operation'].text }}&nbsp;</span
+        >
+        <ellipsis-copy
+          v-if="descriptionTemplate['Privileged Operation'].type === 2"
+          custom-class="detail-copy"
+          :is-show-copy-btn="false"
+          :target-str="descriptionTemplate['Privileged Operation'].contentSec"
+          :is-ellipsis="
+            descriptionTemplate['Privileged Operation'].contentSec.length > 64 ? true : false
+          "
+          empty-text="/"
+          font-length="6"
+          end-length="6">
+          <template #text="textScope">
+            <a
+              :href="
+                createLink(
+                  baseInfo.platform,
+                  descriptionTemplate['Privileged Operation'].addressSec
+                )
+              "
+              target="_blank">
+              {{ ` ${textScope.item}` }}</a
+            >
+          </template>
+        </ellipsis-copy>
       </p>
-      <p class="descr">
+      <p v-if="descriptionTemplate['Exploiter On The Move']" class="descr">
         <icon-cell
           font-weight="400"
           font-size="16"
           size="20"
+          style="margin-right: 10px"
           content="Exploiter On The Move"
           icon="iconExploiter"></icon-cell>
+        <ellipsis-copy
+          custom-class="detail-copy"
+          :is-show-copy-btn="false"
+          :target-str="descriptionTemplate['Exploiter On The Move'].contentOne"
+          :is-ellipsis="
+            descriptionTemplate['Exploiter On The Move'].contentOne.length > 64 ? true : false
+          "
+          empty-text="/"
+          font-length="6"
+          end-length="6">
+          <template #text="textScope">
+            <a
+              :href="
+                createLink(
+                  baseInfo.platform,
+                  descriptionTemplate['Exploiter On The Move'].addressOne
+                )
+              "
+              target="_blank">
+              {{ ` ${textScope.item}` }}</a
+            >
+          </template>
+        </ellipsis-copy>
+        <span class="descr-text"
+          >&nbsp;{{ descriptionTemplate['Exploiter On The Move'].text }}&nbsp;</span
+        >
+        <ellipsis-copy
+          custom-class="detail-copy"
+          :is-show-copy-btn="false"
+          :target-str="descriptionTemplate['Exploiter On The Move'].contentSec"
+          :is-ellipsis="
+            descriptionTemplate['Exploiter On The Move'].contentSec.length > 64 ? true : false
+          "
+          empty-text="/"
+          font-length="6"
+          end-length="6">
+          <template #text="textScope">
+            <a
+              :href="
+                createLink(
+                  baseInfo.platform,
+                  descriptionTemplate['Exploiter On The Move'].addressSec
+                )
+              "
+              target="_blank">
+              {{ ` ${textScope.item}` }}</a
+            >
+          </template>
+        </ellipsis-copy>
       </p>
     </div>
     <!--   地址收益     -->
@@ -98,11 +261,11 @@
                   :is-ellipsis="false"
                   @click="openWeb(scope.row.address, 'addr', baseInfo.platform)">
                   <template #text="textScope">
-                    <div class="tag__from">
+                    <div :class="`tag__${scope.row.address_label}`">
                       <a style="font-weight: bold; color: #409eff; margin-right: 10px">{{
                         textScope.item
                       }}</a>
-                      <be-tag round="12">to</be-tag>
+                      <be-tag round="12">{{ scope.row.address_label }}</be-tag>
                     </div>
                   </template>
                 </ellipsis-copy>
@@ -117,11 +280,11 @@
                   end-length="8"
                   @click="openWeb(scope.row.address, 'addr', baseInfo.platform)">
                   <template #text="textScope">
-                    <div class="tag__to">
+                    <div :class="`tag__${scope.row.address_label}`">
                       <a style="font-weight: bold; color: #409eff; margin-right: 10px">{{
                         textScope.item
                       }}</a>
-                      <be-tag round="12">to</be-tag>
+                      <be-tag round="12">{{ scope.row.address_label }}</be-tag>
                     </div>
                   </template>
                 </ellipsis-copy>
@@ -286,7 +449,9 @@
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import transactionIcon from '../../../assets/image/pc/transaction.png'
   import addrIncomeIcon from '../../../assets/image/pc/address-income.png'
-  import type { IBaseInfoRiskInfo } from '../../../utils/types'
+  import { webURL } from '../../../enums/link'
+  import type { IBaseInfoRiskInfo, IDescriptionTemplate, IOption } from '../../../utils/types'
+
   import type { IPlatformToCurrency } from '../../../utils/platform-dict'
   import type { IProjDetail } from '../../../api/risk-trx'
   import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-column/defaults'
@@ -348,6 +513,51 @@
           ellipsis.value = '12'
         }
       }
+      const descriptionTemplate = ref<IOption>({})
+      const handlerDescription = (data: Array<IDescriptionTemplate>): void => {
+        data.forEach(val => {
+          if (
+            val.type === 'Large Outflow' ||
+            val.type === 'Flash Loan' ||
+            (val.type === 'Privileged Operation' && val.params?.length === 1)
+          ) {
+            descriptionTemplate.value[val.type!] = {
+              text: val.text ? val.text.replace('%s', '') : '',
+              address: val.params && val.params.length > 0 ? val.params[0].address : '',
+              tag_name: val.params && val.params.length > 0 ? val.params[0].tag_name : '',
+              type: 1,
+            }
+            descriptionTemplate.value[val.type!].content = descriptionTemplate.value[val.type!]
+              .tag_name
+              ? descriptionTemplate.value[val.type!].tag_name
+              : descriptionTemplate.value[val.type!].address
+          }
+          if (val.type === 'Privileged Operation' && val.params?.length === 2) {
+            val.text = val.text?.split('%s To')[0]
+          }
+          if (
+            val.type === 'Exploiter On The Move' ||
+            (val.type === 'Privileged Operation' && val.params?.length === 2)
+          ) {
+            descriptionTemplate.value[val.type!] = {
+              text: val.text ? val.text.replace('%s', '') : '',
+              addressOne: val.params && val.params.length > 0 ? val.params[0].address : '',
+              tag_nameOne: val.params && val.params.length > 0 ? val.params[0].tag_name : '',
+              addressSec: val.params && val.params.length > 0 ? val.params[1].address : '',
+              tag_nameSec: val.params && val.params.length > 0 ? val.params[1].tag_name : '',
+              type: 2,
+            }
+            descriptionTemplate.value[val.type!].contentOne = descriptionTemplate.value[val.type!]
+              .tag_nameOne
+              ? descriptionTemplate.value[val.type!].tag_nameOne
+              : descriptionTemplate.value[val.type!].addressOne
+            descriptionTemplate.value[val.type!].contentSec = descriptionTemplate.value[val.type!]
+              .tag_nameSec
+              ? descriptionTemplate.value[val.type!].tag_nameSec
+              : descriptionTemplate.value[val.type!].addressSec
+          }
+        })
+      }
       /**
        * 獲得基本信息
        */
@@ -362,6 +572,7 @@
               return
             }
             baseInfo.value = res.data
+            handlerDescription(res.data.description)
             // 重组数据，把token_profits的数据提取出来，
             // 拼凑成表格可以合并单元格的数据结构
             res.data.address_profits.forEach((val: any) => {
@@ -381,6 +592,9 @@
             loading.value = false
           })
       }
+      /**
+       * 合并单元格
+       */
       let cache = { address: '' }
       const objectSpanMethod = ({ row, columnIndex }: SpanMethodProps) => {
         if (columnIndex === 0) {
@@ -398,7 +612,16 @@
           }
         }
       }
+      const createLink = computed(() => {
+        return function (platform: string, addr: string) {
+          const mainUrl: string = (webURL as any)[`${platform}_addr`] as string
+          return `${mainUrl}${addr}`
+        }
+      })
+
       return {
+        createLink,
+        descriptionTemplate,
         beijing2utc,
         formatDate,
         createDate,
@@ -458,6 +681,21 @@
       background: $mainColor7;
       .descr {
         margin: 32px 0 16px 0;
+        display: flex;
+        align-items: center;
+        .descr-text {
+          font-size: 16px;
+          font-family: 'Barlow', sans-serif;
+          font-weight: bold;
+          color: $textColor3;
+          line-height: 16px;
+        }
+        a {
+          font-weight: bold;
+          color: $lessColor3;
+          font-size: 16px;
+          line-height: 16px;
+        }
       }
       .detail-item {
         display: flex;
@@ -498,7 +736,7 @@
         .detail-profit--row {
           height: 30px;
         }
-        .tag__to {
+        .tag__To {
           .be-tag__default {
             width: 60px;
             height: 24px;
@@ -517,7 +755,7 @@
             }
           }
         }
-        .tag__from {
+        .tag__From {
           .be-tag__default {
             width: 60px;
             height: 24px;

@@ -7,7 +7,7 @@
   import { defineComponent, nextTick, onMounted, ref, watch } from 'vue'
   import { Chart } from '@antv/g2'
   import DataSet from '@antv/data-set'
-  import { nFormats, simulateToFixed, toPrecision } from '../../../utils/common'
+  import { nFormats } from '../../../utils/common'
   import type { PropType } from 'vue'
   import type { IStatisticsLine } from '../../../utils/types'
   export default defineComponent({

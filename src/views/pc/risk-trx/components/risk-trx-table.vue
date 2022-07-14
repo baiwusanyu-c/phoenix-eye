@@ -129,14 +129,11 @@
       </el-table-column>-->
       <el-table-column prop="Description" align="left" show-overflow-tooltip>
         <template #header>
-          <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
+          <span class="table-head">{{ $t('lang.riskConfig.description') }}</span>
         </template>
-        <!--            <template #default="scope">
-                DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescri
-                ptionDescriptionDescriptionDescriptionDescriptionDescription
-            </template>-->
-        DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescri
-        ptionDescriptionDescriptionDescriptionDescriptionDescription
+        <template #default="scope">
+          {{ scope.row.descript }}
+        </template>
       </el-table-column>
       <el-table-column width="180" prop="tx_time" align="left">
         <template #header>
@@ -262,7 +259,25 @@
               return
             }
             if (res.data) {
+              // 组装descript字段数据
+              res.data.page_infos.forEach((val: any) => {
+                let arrStr = ''
+                val.description.forEach((descri: any) => {
+                  const descriArr = descri.text.split('%s')
+                  // eslint-disable-next-line array-callback-return
+                  descriArr.map((spl: any, splIndex: number) => {
+                    if (!spl && descri.params[splIndex - 1]) {
+                      descriArr[splIndex] = descri.params[splIndex - 1].tag_name
+                        ? descri.params[splIndex - 1].tag_name
+                        : descri.params[splIndex - 1].address
+                    }
+                  })
+                  arrStr = arrStr + descriArr.join('')
+                })
+                val.descript = arrStr
+              })
               tableData.value = res.data.page_infos
+
               pageParams.value.total = res.data.total
             } else {
               tableData.value = []
@@ -320,9 +335,9 @@
         getList('reset')
       })
       const typeDict = {
-        'Large outflow': 'iconLargeOutflow2',
-        'Flash loan': 'iconFlash2',
-        'Privileged operation': 'iconPrivileged2',
+        'Large Outflow': 'iconLargeOutflow2',
+        'Flash Loan': 'iconFlash2',
+        'Privileged Operation': 'iconPrivileged2',
         'Exploiter On The Move': 'iconExploiter',
       }
       return {
