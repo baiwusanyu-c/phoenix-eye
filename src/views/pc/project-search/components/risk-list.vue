@@ -63,8 +63,8 @@
       <div class="front-page--body">
         <span>{{ pageParams.currentPage }} / {{ pageNum }}</span>
         <div class="page-btn-group">
-          <div class="page-btn" @click="prevPage">◀</div>
-          <div class="page-btn" @click="nextPage">▶</div>
+          <div class="page-btn" @click="prevPage(pageParams, getList)">◀</div>
+          <div class="page-btn" @click="nextPage(pageParams, pageNum, getList)">▶</div>
         </div>
       </div>
     </div>
@@ -102,43 +102,18 @@
         }
       )
       const setTypeIcon = computed(() => {
+        const typeDict = {
+          'Large Outflow': 'iconLargeOutflow2',
+          'Flash Loan': 'iconFlash2',
+          'Privileged Operation': 'iconPrivileged2',
+          'Exploiter On The Move': 'iconExploiter',
+        }
         return function (data: string) {
-          if (data === 'Large outflow') {
-            return 'iconLargeOutflow'
-          }
-          if (data === 'Slump') {
-            return 'iconSlump'
-          }
-          if (data === 'Flash loan') {
-            return 'iconFlash'
-          }
-          if (data === 'Privileged operation') {
-            return 'iconPrivileged'
-          }
+          return typeDict[data as keyof typeof typeDict]
         }
       })
-      /* const filterTypeItem = ref<Array<IFilterItem>>([
-            { label: 'Large outflow', val: 'Large outflow', isActive: false },
-            { label: 'Flash loan', val: 'Flash loan', isActive: false },
-            { label: 'Privileged operation', val: 'Privileged operation', isActive: false },
-            { label: 'Slump', val: 'Slump', isActive: false },
-        ])*/
-      const { pageParams, resetPageParam } = compositionPage()
+      const { pageParams, resetPageParam, nextPage, prevPage } = compositionPage()
       const pageNum = ref<number>(0)
-      const nextPage = (): void => {
-        pageParams.value.currentPage!++
-        if (pageParams.value.currentPage! > pageNum.value) {
-          pageParams.value.currentPage! = pageNum.value
-        }
-        getList()
-      }
-      const prevPage = (): void => {
-        pageParams.value.currentPage!--
-        if (pageParams.value.currentPage! < 1) {
-          pageParams.value.currentPage! = 1
-        }
-        getList()
-      }
       const { message } = composition()
       const tableData = ref<Array<any>>([])
       const loading = ref<boolean>(false)
@@ -203,6 +178,7 @@
         nextPage,
         pageParams,
         setTypeIcon,
+        getList,
       }
     },
   })
@@ -212,6 +188,9 @@
   .risk-list {
     .el-table__row {
       height: 54px;
+    }
+    .el-table__cell {
+      padding: 4px 0;
     }
     width: 50%;
     height: 388px;

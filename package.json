@@ -1,6 +1,6 @@
 {
   "name": "eagle-eye",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "scripts": {
     "init": "pnpm i",
     "serve:dev02": "vite --host --mode development02",
@@ -43,13 +43,14 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@eagle-eye/be-ui": "workspace:^1.0.0",
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
+    "@eagle-eye/be-ui": "workspace:^1.0.0",
+    "@popperjs/core": "^2.11.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@types/jest": "^27.0.2",
     "@types/marked": "^2.0.2",
@@ -85,12 +86,12 @@
     "unplugin-auto-import": "^0.5.11",
     "unplugin-vue-components": "^0.17.15",
     "vite": "^2.9.1",
+    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-style-import": "^0.10.0",
     "vite-plugin-windicss": "^1.6.3",
     "vue-jest": "^5.0.0-alpha.10",
     "vue-tsc": "^0.0.24",
     "windicss": "^3.4.3",
-    "@popperjs/core": "^2.11.5",
     "yaml-eslint-parser": "^0.5.0"
   }
 }

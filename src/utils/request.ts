@@ -36,7 +36,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config: any) => {
     const tokenCache = getStore('token')
-    if (
+    /*if (
       tokenCache &&
       !(
         config.url.indexOf('/ussa/project/add') >= 0 &&
@@ -45,6 +45,9 @@ service.interceptors.request.use(
       ) &&
       !(config.url.indexOf('/website/quote/create') >= 0)
     ) {
+      config.headers['Authorization'] = setHeader()
+    }*/
+    if (tokenCache && !config.isNanToken) {
       config.headers['Authorization'] = setHeader()
     }
     config.headers['Accept-Language'] = getStore('language') ? getStore('language') : 'en_US'

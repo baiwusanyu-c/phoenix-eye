@@ -221,7 +221,7 @@
 }
 
 
-.el-table__row > td:first-child {
+/*.el-table__row > td:first-child {
   -moz-border-radius: 4px 0 0 4px;
   border-radius: 4px 0 0 4px;
 }
@@ -229,10 +229,10 @@
 .el-table__row > td:last-child {
   -moz-border-radius: 0 4px 4px 0;
   border-radius:  0 4px 4px 0;
-}
+}*/
 
 .el-table__row{
-  height: 64px;
+  height: 48px;
 }
 
 .el-table::before {
@@ -271,7 +271,9 @@
     display: flex;
   }
 }
-
+.ellipsis-text{
+  @include ellipsis;
+}
 .table-tooltip span{
   color: black;
 }
@@ -301,12 +303,11 @@
   height: 2rem;
   margin-right: 10px;
   color: $mainColor3;
-  background-color: $mainColor16;
-  border:0;
-
+  border: 1px solid $mainColor16-025;
   &:hover{
     color: $mainColor3;
     background-color: $mainColor16-025;
+    border: 1px solid $mainColor16-025;
   }
 
   .ellipsis-copy{
@@ -553,7 +554,7 @@
   color: $textColor3;
   background-color: $mainColor3;
   opacity: 1;
-
+  user-select: none;
   &:hover,&:focus {
     background-color: $mainColor3-h;
     opacity: .8;
@@ -562,7 +563,7 @@
 }
 .create-btn {
   display: block;
-  margin: 38px 0;
+  margin: 16px 0 0 0;
   font-weight: bold;
   .be-icon--container{
     use{
@@ -572,11 +573,11 @@
 }
 .search-btn{
   width: 184px;
-  height: 52px;
-  line-height: 52px;
+  height: 48px;
+  line-height: 48px;
 
   span{
-    font-size: 18px;
+    font-size: 16px;
   }
 
   &:hover,&:focus {
@@ -738,6 +739,60 @@
 
 //分页样式
 
+.el-pager li.is-active{
+  color: $textColor3 !important;
+  background-color: $mainColor2 !important;
+  border-radius: 4px;
+}
+.el-pager li:hover{
+  color: $textColor3 !important;
+}
+.el-pagination button:disabled,
+.el-pagination .btn-next,
+.el-pagination .btn-prev{
+  background-color: transparent !important;
+  color: $textColor3 !important;
+  &:hover{
+    color: $textColor3 !important;
+  }
+}
+.el-pager li{
+  background-color: transparent !important;
+}
+.el-pagination__sizes{
+  .el-select .el-input__wrapper.is-focus {
+    border: 0;
+    box-shadow: none !important;
+  }
+  .el-select:hover:not(.el-select--disabled) .el-input__wrapper{
+    box-shadow: none;
+  }
+  .el-select{
+
+  }
+
+  .el-input__wrapper{
+    box-shadow: none;
+    &:hover{
+      box-shadow: none;
+    }
+    .el-input__inner{
+      color:$textColor13;
+    }
+  }
+  .el-select .el-input.is-focus .el-input__wrapper{
+    box-shadow: none !important;
+  }
+}
+
+/*.be-pager li:hover{
+  color: $mainColor3;
+  border: 1px solid $mainColor3;
+
+  .be-icon-container use{
+    fill:$mainColor3 !important;
+  }
+}
 .be-pager li{
   width: 32px;
   height: 32px;
@@ -757,33 +812,6 @@
     }
   }
 }
-.el-pager li.is-active{
-  color: $mainColor3 !important;;
-}
-.el-pager li:hover{
-  color: $mainColor3 !important;;
-}
-.el-pagination button:disabled,
-.el-pagination .btn-next,
-.el-pagination .btn-prev{
-  background-color: transparent !important;
-  color: $mainColor3 !important;;
-  &:hover{
-    color: $mainColor3 !important;;
-  }
-}
-.el-pager li{
-  background-color: transparent !important;;
-}
-.be-pager li:hover{
-  color: $mainColor3;
-  border: 1px solid $mainColor3;
-
-  .be-icon-container use{
-    fill:$mainColor3 !important;
-  }
-}
-
 .be-pager li.active{
   font-weight: bold;
   color: $mainColor3;
@@ -799,7 +827,7 @@
     height: 28px;
     color: #606266;
   }
-}
+}*/
 
 .be-select .be-select-body:hover{
   border: 1px solid $mainColor3;

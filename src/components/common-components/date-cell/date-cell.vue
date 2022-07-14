@@ -1,7 +1,7 @@
 /* * @date-cell.vue * @deprecated * @author czh * @update (czh 2022/4/20) */
 <template>
   <be-tooltip :content="contentCompute(time)" custom-class="table-tooltip">
-    <span style="color: #888">
+    <span style="color: #18304e">
       <p style="font-family: 'Barlow', sans-serif">
         {{ formatDate(createDate(time)).split(' ')[0] }}
         <span v-if="!isBreak"> {{ formatDate(createDate(time)).split(' ')[1] }}</span>

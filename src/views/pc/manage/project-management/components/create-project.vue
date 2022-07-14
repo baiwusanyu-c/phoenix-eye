@@ -526,7 +526,7 @@
             if (res && res.success) {
               message('success', `${t('lang.add')} ${t('lang.success')}`)
               // 更新列表
-              props.getList('reset')
+              props.getList('keep')
               createProjectCancel()
             } else {
               catchErr(res)
@@ -567,7 +567,7 @@
             if (res && res.success) {
               message('success', `${t('lang.edit')} ${t('lang.success')}`)
               // 更新列表
-              props.getList('reset')
+              props.getList('keep')
               createProjectCancel()
             } else {
               catchErr(res)

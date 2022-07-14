@@ -103,29 +103,6 @@
                 @click="openDialog('delete', scope.row)">
                 {{ $t('lang.delete') }}
               </be-button>
-
-              <!--              <el-tooltip placement="top">
-                <template #content>
-                  {{ $t('lang.edit') }}
-                </template>
-                <be-icon
-                  custom-class="table-icon"
-                  icon="iconEditEagle"
-                  width="24"
-                  height="24"
-                  @click="openDialog('edit', scope.row)"></be-icon>
-              </el-tooltip>
-              <el-tooltip placement="top">
-                <template #content>
-                  {{ $t('lang.delete') }}
-                </template>
-                <be-icon
-                  custom-class="table-icon"
-                  icon="iconDeleteEagle"
-                  width="24"
-                  height="24"
-                  @click="openDialog('delete', scope.row)"></be-icon>
-              </el-tooltip>-->
             </template>
           </el-table-column>
           <el-table-column label=" " align="center">
@@ -376,7 +353,6 @@
     min-height: calc(100vh - 128px);
     display: flex;
     justify-content: center;
-    align-items: center;
     .subTitle {
       font-family: 'Barlow', sans-serif;
       font-size: 18px;

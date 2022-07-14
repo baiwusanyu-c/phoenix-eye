@@ -29,7 +29,7 @@
         v-show="isShowCopy"
         icon="iconCopyEagle"
         class="icon"
-        color="#1496F2"
+        color="#1CD2A9"
         @click.stop="copyAddress(copyContent || targetStr)">
       </be-icon>
     </span>

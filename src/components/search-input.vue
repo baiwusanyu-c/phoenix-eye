@@ -1,7 +1,15 @@
 /* * @search-input.vue * @deprecated * @author czh * @update (czh 2022/4/20) */
 <template>
   <div class="search-input--container">
-    <el-input v-model="searchParams" :placeholder="placeholder" style="margin-right: 16px" />
+    <el-input
+      v-model="searchParams"
+      :placeholder="placeholder"
+      type="text"
+      style="margin-right: 16px">
+      <template #prefix>
+        <be-icon icon="iconSearchEagle" color="#18304E"></be-icon>
+      </template>
+    </el-input>
     <be-button
       type="success"
       custom-class="eagle-btn search-btn"
@@ -10,16 +18,17 @@
       @click="handleSearch">
       <span>{{ searchBtnName }}</span>
     </be-button>
+    <slot />
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue'
   // @ts-ignore
-  import { BeButton } from '@eagle-eye/be-ui'
+  import { BeButton, BeIcon } from '@eagle-eye/be-ui'
   export default defineComponent({
     name: 'SearchInput',
-    components: { BeButton },
+    components: { BeButton, BeIcon },
     props: {
       placeholder: {
         type: String,
@@ -47,17 +56,29 @@
 <style lang="scss">
   .search-input--container {
     display: flex;
+    align-items: center;
     input::-webkit-input-placeholder {
       /* WebKit browsers */
       font-family: 'Barlow', sans-serif;
       font-size: 18px;
       color: $mainColor14;
     }
+    .el-input {
+      border: 0;
+    }
+    .el-input__wrapper {
+      background-color: $mainColor18;
+      border: 0;
+      box-shadow: none;
+      &:hover {
+        border: 0;
+      }
+    }
     .el-input__inner {
-      height: 52px;
+      height: 48px;
       font-family: 'Barlow', sans-serif;
       font-size: 18px;
-      line-height: 52px;
+      line-height: 48px;
       color: $textColor4;
     }
   }

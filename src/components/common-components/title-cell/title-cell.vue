@@ -2,7 +2,7 @@
 <template>
   <div class="flex items-center title-cell">
     <img v-if="url" :src="url" alt=" " :style="`width:${size}px;height:${size}px`" />
-    <span :style="`font-size:${fontSize}px`">{{ name }}</span>
+    <span :style="`font-size:${fontSize}px`" :class="{ 'span--bold': bold }">{{ name }}</span>
     <span :style="`font-size:${20}px;color:#8A96A3;font-weight:400`">{{ subContent }}</span>
   </div>
 </template>
@@ -27,6 +27,10 @@
         type: Number,
         default: 24,
       },
+      bold: {
+        type: Boolean,
+        default: true,
+      },
       url: {
         type: String,
         default: 'https://avatars.githubusercontent.com/u/32354856?v=4',
@@ -39,9 +43,11 @@
     span {
       line-height: 24px;
       margin-left: 8px;
-      font-weight: bold;
       color: $textColor3;
       font-family: 'Barlow', sans-serif;
+    }
+    .span--bold {
+      font-weight: bold;
     }
   }
 </style>

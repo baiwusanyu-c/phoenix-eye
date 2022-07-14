@@ -122,6 +122,15 @@
             style: {
               fill: '#8A96A3',
             },
+            formatter(text: number) {
+              if (text >= 1e3) {
+                return nFormats(text)
+              }
+              if (text <= 0) return text
+              const p = Math.floor(Math.log(text) / Math.LN10)
+              const n = (text * 10 ** -p).toFixed(2)
+              return `${n}e${p}`
+            },
           },
           line: null,
           tickLine: null,

@@ -345,6 +345,15 @@
                       <p>{{ projectScoreData.current_total_score }}</p>
                       <span>
                         {{ $t('lang.projectExplorer.detail.securityScore') }}
+                        <el-tooltip placement="top">
+                          <template #content>
+                            <p>A security index that measures the audit status,</p>
+                            <p>decentralization, market volatility, transparency,</p>
+                            <p>and real-time transaction risks of crypto projects.</p>
+                            <p>The higher the score, the better.</p>
+                          </template>
+                          <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                        </el-tooltip>
                       </span>
                     </div>
                   </template>
@@ -510,7 +519,6 @@
     numberToCommaString,
     openWindow,
   } from '../../../utils/common'
-  import RiskTrxTable from '../risk-trx/components/risk-trx-table.vue'
   import EllipsisCopy from '../../../components/common-components/ellipsis-copy/ellipsis-copy.vue'
   import config from '../../../enums/config'
   import IconCell from '../../../components/common-components/icon-cell/icon-cell.vue'
@@ -580,7 +588,6 @@
       IconCell,
       ProjectDetailAudit,
       ProjectDetailTop,
-      RiskTrxTable,
       ProjectDetailPubliOpinion,
       BeIcon,
       BeTag,
@@ -1281,6 +1288,13 @@
                 font-weight: 400;
                 color: #444444;
                 line-height: 18px;
+                display: flex;
+                width: 130px;
+              }
+              .be-icon--container {
+                position: relative;
+                top: 0;
+                left: 0;
               }
             }
           }
