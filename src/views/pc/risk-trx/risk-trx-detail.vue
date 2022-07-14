@@ -343,10 +343,10 @@
       </div>
     </div>
     <!--   Slump 与 PrivilegedOperation   -->
-    <div class="detail-slump">
-      <div v-if="baseInfo.privileged_operation" class="detail-slump--container">
+    <!--    <div class="detail-slump">
+      <div v-if="baseInfo.privileged_operation" class="detail-slump&#45;&#45;container">
         <h3>{{ $t('lang.riskConfig.PrivilegedOperation') }}</h3>
-        <div class="detail-slump--body">
+        <div class="detail-slump&#45;&#45;body">
           <div style="display: flex">
             <span class="label">{{ $t('lang.projectExplorer.contract') }} :</span>
             <ellipsis-copy
@@ -397,9 +397,9 @@
           </div>
         </div>
       </div>
-      <div v-if="baseInfo.slump" class="detail-slump--container">
+      <div v-if="baseInfo.slump" class="detail-slump&#45;&#45;container">
         <h3>{{ $t('lang.riskConfig.slump') }}</h3>
-        <div class="detail-slump--body">
+        <div class="detail-slump&#45;&#45;body">
           <div style="display: flex">
             <span class="label">Token :</span>
             <ellipsis-copy
@@ -432,7 +432,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
