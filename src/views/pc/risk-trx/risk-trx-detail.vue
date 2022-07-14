@@ -65,23 +65,25 @@
           style="margin-right: 10px; width: 200px"
           content="Flash Loan"
           icon="iconFlash2"></icon-cell>
-        <span class="descr-text">{{ descriptionTemplate['Flash Loan'].text }} &nbsp;</span>
-        <ellipsis-copy
-          custom-class="detail-copy"
-          :is-show-copy-btn="false"
-          :target-str="descriptionTemplate['Flash Loan'].content"
-          :is-ellipsis="descriptionTemplate['Flash Loan'].content.length > 20 ? true : false"
-          empty-text="/"
-          font-length="6"
-          end-length="6">
-          <template #text="textScope">
-            <a
-              :href="createLink(baseInfo.platform, descriptionTemplate['Flash Loan'].address)"
-              target="_blank">
-              {{ ` ${textScope.item}` }}</a
-            >
-          </template>
-        </ellipsis-copy>
+        <span class="descr-text"
+          >{{ descriptionTemplate['Flash Loan'].text }} &nbsp;
+          <ellipsis-copy
+            custom-class="detail-copy"
+            :is-show-copy-btn="false"
+            :target-str="descriptionTemplate['Flash Loan'].content"
+            :is-ellipsis="descriptionTemplate['Flash Loan'].content.length > 20 ? true : false"
+            empty-text="/"
+            font-length="6"
+            end-length="6">
+            <template #text="textScope">
+              <a
+                :href="createLink(baseInfo.platform, descriptionTemplate['Flash Loan'].address)"
+                target="_blank">
+                {{ ` ${textScope.item}` }}</a
+              >
+            </template>
+          </ellipsis-copy>
+        </span>
       </p>
       <p v-if="descriptionTemplate['Privileged Operation']" class="descr">
         <icon-cell
@@ -92,83 +94,81 @@
           content="Privileged Operation"
           icon="iconPrivileged2"></icon-cell>
         <span v-if="descriptionTemplate['Privileged Operation'].type === 1" class="descr-text"
-          >{{ descriptionTemplate['Privileged Operation'].text }} &nbsp;</span
-        >
-        <ellipsis-copy
-          v-if="descriptionTemplate['Privileged Operation'].type === 1"
-          :is-show-copy-btn="false"
-          custom-class="detail-copy"
-          :target-str="descriptionTemplate['Privileged Operation'].content"
-          :is-ellipsis="
-            descriptionTemplate['Privileged Operation'].content.length > 20 ? true : false
-          "
-          empty-text="/"
-          font-length="6"
-          end-length="6">
-          <template #text="textScope">
-            <a
-              :href="
-                createLink(baseInfo.platform, descriptionTemplate['Privileged Operation'].address)
-              "
-              target="_blank">
-              {{ ` ${textScope.item}` }}</a
-            >
-          </template>
-        </ellipsis-copy>
+          >{{ descriptionTemplate['Privileged Operation'].text }} &nbsp;
+          <ellipsis-copy
+            v-if="descriptionTemplate['Privileged Operation'].type === 1"
+            :is-show-copy-btn="false"
+            custom-class="detail-copy"
+            :target-str="descriptionTemplate['Privileged Operation'].content"
+            :is-ellipsis="
+              descriptionTemplate['Privileged Operation'].content.length > 20 ? true : false
+            "
+            empty-text="/"
+            font-length="6"
+            end-length="6">
+            <template #text="textScope">
+              <a
+                :href="
+                  createLink(baseInfo.platform, descriptionTemplate['Privileged Operation'].address)
+                "
+                target="_blank">
+                {{ ` ${textScope.item}` }}</a
+              >
+            </template>
+          </ellipsis-copy>
+        </span>
         <span v-if="descriptionTemplate['Privileged Operation'].type === 2" class="descr-text"
-          >&nbsp;{{ descriptionTemplate['Privileged Operation'].text }}&nbsp;</span
-        >
-        <ellipsis-copy
-          v-if="descriptionTemplate['Privileged Operation'].type === 2"
-          custom-class="detail-copy"
-          :is-show-copy-btn="false"
-          :target-str="descriptionTemplate['Privileged Operation'].contentOne"
-          :is-ellipsis="
-            descriptionTemplate['Privileged Operation'].contentOne.length > 20 ? true : false
-          "
-          empty-text="/"
-          font-length="6"
-          end-length="6">
-          <template #text="textScope">
-            <a
-              :href="
-                createLink(
-                  baseInfo.platform,
-                  descriptionTemplate['Privileged Operation'].addressOne
-                )
-              "
-              target="_blank">
-              {{ ` ${textScope.item}` }}</a
-            >
-          </template>
-        </ellipsis-copy>
-        <span v-if="descriptionTemplate['Privileged Operation'].type === 2" class="descr-text"
-          >&nbsp;To&nbsp;</span
-        >
-        <ellipsis-copy
-          v-if="descriptionTemplate['Privileged Operation'].type === 2"
-          custom-class="detail-copy"
-          :is-show-copy-btn="false"
-          :target-str="descriptionTemplate['Privileged Operation'].contentSec"
-          :is-ellipsis="
-            descriptionTemplate['Privileged Operation'].contentSec.length > 20 ? true : false
-          "
-          empty-text="/"
-          font-length="6"
-          end-length="6">
-          <template #text="textScope">
-            <a
-              :href="
-                createLink(
-                  baseInfo.platform,
-                  descriptionTemplate['Privileged Operation'].addressSec
-                )
-              "
-              target="_blank">
-              {{ ` ${textScope.item}` }}</a
-            >
-          </template>
-        </ellipsis-copy>
+          >&nbsp;{{ descriptionTemplate['Privileged Operation'].text }}&nbsp;
+          <ellipsis-copy
+            v-if="descriptionTemplate['Privileged Operation'].type === 2"
+            custom-class="detail-copy"
+            :is-show-copy-btn="false"
+            :target-str="descriptionTemplate['Privileged Operation'].contentOne"
+            :is-ellipsis="
+              descriptionTemplate['Privileged Operation'].contentOne.length > 20 ? true : false
+            "
+            empty-text="/"
+            font-length="6"
+            end-length="6">
+            <template #text="textScope">
+              <a
+                :href="
+                  createLink(
+                    baseInfo.platform,
+                    descriptionTemplate['Privileged Operation'].addressOne
+                  )
+                "
+                target="_blank">
+                {{ ` ${textScope.item}` }}</a
+              >
+            </template>
+          </ellipsis-copy>
+          To
+          <ellipsis-copy
+            v-if="descriptionTemplate['Privileged Operation'].type === 2"
+            custom-class="detail-copy"
+            :is-show-copy-btn="false"
+            :target-str="descriptionTemplate['Privileged Operation'].contentSec"
+            :is-ellipsis="
+              descriptionTemplate['Privileged Operation'].contentSec.length > 20 ? true : false
+            "
+            empty-text="/"
+            font-length="6"
+            end-length="6">
+            <template #text="textScope">
+              <a
+                :href="
+                  createLink(
+                    baseInfo.platform,
+                    descriptionTemplate['Privileged Operation'].addressSec
+                  )
+                "
+                target="_blank">
+                {{ ` ${textScope.item}` }}</a
+              >
+            </template>
+          </ellipsis-copy>
+        </span>
       </p>
       <p v-if="descriptionTemplate['Exploiter On The Move']" class="descr">
         <icon-cell
@@ -178,55 +178,55 @@
           style="margin-right: 10px; width: 200px"
           content="Exploiter On The Move"
           icon="iconExploiter"></icon-cell>
-        <ellipsis-copy
-          custom-class="detail-copy"
-          :is-show-copy-btn="false"
-          :target-str="descriptionTemplate['Exploiter On The Move'].contentOne"
-          :is-ellipsis="
-            descriptionTemplate['Exploiter On The Move'].contentOne.length > 20 ? true : false
-          "
-          empty-text="/"
-          font-length="6"
-          end-length="6">
-          <template #text="textScope">
-            <a
-              :href="
-                createLink(
-                  baseInfo.platform,
-                  descriptionTemplate['Exploiter On The Move'].addressOne
-                )
-              "
-              target="_blank">
-              {{ ` ${textScope.item}` }}</a
-            >
-          </template>
-        </ellipsis-copy>
-        <span class="descr-text"
-          >&nbsp;{{ descriptionTemplate['Exploiter On The Move'].text }}&nbsp;</span
-        >
-        <ellipsis-copy
-          custom-class="detail-copy"
-          :is-show-copy-btn="false"
-          :target-str="descriptionTemplate['Exploiter On The Move'].contentSec"
-          :is-ellipsis="
-            descriptionTemplate['Exploiter On The Move'].contentSec.length > 20 ? true : false
-          "
-          empty-text="/"
-          font-length="6"
-          end-length="6">
-          <template #text="textScope">
-            <a
-              :href="
-                createLink(
-                  baseInfo.platform,
-                  descriptionTemplate['Exploiter On The Move'].addressSec
-                )
-              "
-              target="_blank">
-              {{ ` ${textScope.item}` }}</a
-            >
-          </template>
-        </ellipsis-copy>
+        <span class="descr-text">
+          <ellipsis-copy
+            custom-class="detail-copy"
+            :is-show-copy-btn="false"
+            :target-str="descriptionTemplate['Exploiter On The Move'].contentOne"
+            :is-ellipsis="
+              descriptionTemplate['Exploiter On The Move'].contentOne.length > 20 ? true : false
+            "
+            empty-text="/"
+            font-length="6"
+            end-length="6">
+            <template #text="textScope">
+              <a
+                :href="
+                  createLink(
+                    baseInfo.platform,
+                    descriptionTemplate['Exploiter On The Move'].addressOne
+                  )
+                "
+                target="_blank">
+                {{ ` ${textScope.item}` }}</a
+              >
+            </template>
+          </ellipsis-copy>
+          &nbsp;{{ descriptionTemplate['Exploiter On The Move'].text }}&nbsp;
+          <ellipsis-copy
+            custom-class="detail-copy"
+            :is-show-copy-btn="false"
+            :target-str="descriptionTemplate['Exploiter On The Move'].contentSec"
+            :is-ellipsis="
+              descriptionTemplate['Exploiter On The Move'].contentSec.length > 20 ? true : false
+            "
+            empty-text="/"
+            font-length="6"
+            end-length="6">
+            <template #text="textScope">
+              <a
+                :href="
+                  createLink(
+                    baseInfo.platform,
+                    descriptionTemplate['Exploiter On The Move'].addressSec
+                  )
+                "
+                target="_blank">
+                {{ ` ${textScope.item}` }}</a
+              >
+            </template>
+          </ellipsis-copy>
+        </span>
       </p>
     </div>
     <!--   地址收益     -->
