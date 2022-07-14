@@ -32,5 +32,6 @@ export function addIpLog(params: IAddLog) {
   return request({
     url: `${config.baseURL}/ussa/ip/log/add?${qs.stringify(params)}`,
     method: 'post',
-  })
+    isNanToken: true,
+  } as any)
 }
