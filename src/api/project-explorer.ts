@@ -18,7 +18,8 @@ export function getProjectListUser(params: IProjParam) {
     url: `${config.baseURL}/ussa/project/user/search`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export interface IPublicOpinion extends IPageParam {
@@ -29,7 +30,8 @@ export function getPublicOpinion(params: IPublicOpinion) {
     url: `${config.baseURL}/ussa/opinion/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export function getProjectSituation(params: IPublicOpinion) {
@@ -37,7 +39,8 @@ export function getProjectSituation(params: IPublicOpinion) {
     url: `${config.baseURL}/ussa/project/situation`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export function getProjectSituationStatistics(params: IPublicOpinion) {
@@ -45,7 +48,8 @@ export function getProjectSituationStatistics(params: IPublicOpinion) {
     url: `${config.baseURL}/ussa/project/situation/contract/statistics`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export function getProjectListCurUser(params: IProjParam) {
@@ -53,7 +57,8 @@ export function getProjectListCurUser(params: IProjParam) {
     url: `${config.baseURL}/ussa/project/user/search`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 
 /**
@@ -67,14 +72,16 @@ export function createSubscribe(params: ISubscribe) {
   return request({
     url: `${config.baseURL}/ussa/project/subscription/create/${params.project_id}`,
     method: 'post',
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export function deleteSubscribe(params: ISubscribe) {
   return request({
     url: `${config.baseURL}/ussa/project/subscription/delete/${params.project_id}`,
     method: 'post',
-  })
+    isNanToken: true,
+  } as any)
 }
 export interface IContractReport extends IPageParam {
   project_id: number
@@ -85,14 +92,16 @@ export function getContractReportList(params: IContractReport) {
     url: `${config.baseURL}/ussa/project/contract/report/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export function getExploreInfo() {
   return request({
     url: `${config.baseURL}/ussa/project/explore/info`,
     method: 'get',
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export function getExploreList(params: IProjParam) {
@@ -100,7 +109,8 @@ export function getExploreList(params: IProjParam) {
     url: `${config.baseURL}/ussa/project/explore/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 
 export function getTop10HolderList(params: IContractReport) {
@@ -108,19 +118,22 @@ export function getTop10HolderList(params: IContractReport) {
     url: `${config.baseURL}/ussa/project/decentralization/token/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 export function getPrivilege(params: IContractReport) {
   return request({
     url: `${config.baseURL}/ussa/project/decentralization/privilege/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }
 export function getLiquidity(params: IContractReport) {
   return request({
     url: `${config.baseURL}/ussa/project/decentralization/liquidity/list`,
     method: 'post',
     params,
-  })
+    isNanToken: true,
+  } as any)
 }

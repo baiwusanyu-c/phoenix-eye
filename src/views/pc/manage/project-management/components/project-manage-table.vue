@@ -3,6 +3,7 @@
   <el-table
     ref="projManagementTable"
     :data="list"
+    :cell-class-name="type === 'system' ? 'cursor-pointer' : ''"
     @sort-change="handleSort"
     @row-click="routerSwitch">
     <template #empty>

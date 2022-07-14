@@ -102,7 +102,7 @@
             if (res) {
               message('success', `${t('lang.delete')} ${t('lang.success')}`)
               // 更新列表
-              getList('reset')
+              getList('keep')
               showDelete.value = false
             }
           })
@@ -142,6 +142,10 @@
         if (type === 'reset') {
           searchParams.value = ''
           resetPageParam()
+        }
+        if (type === 'keep') {
+          const currentPageSize = pageParams.value.pageSize
+          resetPageParam(currentPageSize === 10 ? 10 : currentPageSize)
         }
         const params: IProjectListAdmin = {
           page_num: pageParams.value.currentPage,
@@ -188,9 +192,7 @@
       const sortParams = ref<ISort>({})
       const handleSort = (sort: ISort): void => {
         sortParams.value = sort
-        const currentPageSize = pageParams.value.pageSize
-        resetPageParam(currentPageSize === 10 ? 10 : currentPageSize)
-        getList()
+        getList('keep')
       }
       return {
         handleSort,

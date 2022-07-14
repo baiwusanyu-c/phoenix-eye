@@ -387,3 +387,12 @@ export type ISort = {
 export type IProjectManageTable = {
   projManagementTable?: any
 }
+
+export type IDescriptionTemplate = {
+  text?: string
+  type?: string
+  params?: Array<{
+    address: string
+    tag_name: string
+  }>
+}

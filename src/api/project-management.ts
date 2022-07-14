@@ -32,7 +32,8 @@ export function createProject(params: ICreateProj) {
     url: `${config.baseURL}/ussa/project/add`,
     method: 'post',
     params,
-  })
+    isNanToken: params.type === 'user' ? true : false,
+  } as any)
 }
 
 // 重新评估项目 (暫時不做)

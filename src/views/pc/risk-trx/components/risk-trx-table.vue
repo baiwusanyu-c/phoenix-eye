@@ -11,12 +11,14 @@
       <template #empty>
         <empty-data content="lang.noRisk"></empty-data>
       </template>
-      <el-table-column prop="platform" width="120" align="center">
+      <el-table-column prop="platform" width="120" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.platform') }}</span>
         </template>
         <template #default="scope">
-          <platform-cell :platform="scope.row.platform"></platform-cell>
+          <platform-cell
+            :platform="scope.row.platform"
+            custom-class="justify-start"></platform-cell>
         </template>
       </el-table-column>
       <el-table-column prop="tx_hash" width="180" align="left">
@@ -127,16 +129,13 @@
           {{ isEmpty(scope.row.amount, '/') === '/' ? '/' : `$ ${scope.row.amount}` }}
         </template>
       </el-table-column>-->
-      <el-table-column prop="Description" align="left" show-overflow-tooltip>
+      <el-table-column prop="Description" align="left">
         <template #header>
-          <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
+          <span class="table-head">{{ $t('lang.riskConfig.description') }}</span>
         </template>
-        <!--            <template #default="scope">
-                DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescri
-                ptionDescriptionDescriptionDescriptionDescriptionDescription
-            </template>-->
-        DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescri
-        ptionDescriptionDescriptionDescriptionDescriptionDescription
+        <template #default="scope">
+          <span class="ellipsis-text">{{ scope.row.descript }}</span>
+        </template>
       </el-table-column>
       <el-table-column width="180" prop="tx_time" align="left">
         <template #header>
@@ -262,7 +261,25 @@
               return
             }
             if (res.data) {
+              // 组装descript字段数据
+              res.data.page_infos.forEach((val: any) => {
+                val.description.forEach((descri: any) => {
+                  if (descri.type === 'Large Outflow') {
+                    val.descript = descri.text
+                    return
+                  }
+                  descri.params.forEach((spl: any) => {
+                    const text: string = descri.text
+                    const sIndex: number = text.search('%s')
+                    const textArr: Array<string> = text.split('')
+                    textArr.splice(sIndex, 2, spl.tag_name ? spl.tag_name : spl.address)
+                    descri.text = textArr.join('')
+                    val.descript = descri.text
+                  })
+                })
+              })
               tableData.value = res.data.page_infos
+
               pageParams.value.total = res.data.total
             } else {
               tableData.value = []
@@ -320,9 +337,9 @@
         getList('reset')
       })
       const typeDict = {
-        'Large outflow': 'iconLargeOutflow2',
-        'Flash loan': 'iconFlash2',
-        'Privileged operation': 'iconPrivileged2',
+        'Large Outflow': 'iconLargeOutflow2',
+        'Flash Loan': 'iconFlash2',
+        'Privileged Operation': 'iconPrivileged2',
         'Exploiter On The Move': 'iconExploiter',
       }
       return {
