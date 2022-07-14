@@ -264,6 +264,10 @@
               // 组装descript字段数据
               res.data.page_infos.forEach((val: any) => {
                 val.description.forEach((descri: any) => {
+                  if (descri.type === 'Large Outflow') {
+                    val.descript = descri.text
+                    return
+                  }
                   descri.params.forEach((spl: any) => {
                     const text: string = descri.text
                     const sIndex: number = text.search('%s')
