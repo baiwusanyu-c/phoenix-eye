@@ -42,6 +42,7 @@
           <ellipsis-copy
             :is-show-copy-btn="false"
             custom-class="detail-copy"
+            :tooltip-txt="descriptionTemplate['Large Outflow'].address"
             :target-str="descriptionTemplate['Large Outflow'].content"
             :is-ellipsis="descriptionTemplate['Large Outflow'].content.length > 20 ? true : false"
             empty-text="/"
@@ -70,6 +71,7 @@
           <ellipsis-copy
             custom-class="detail-copy"
             :is-show-copy-btn="false"
+            :tooltip-txt="descriptionTemplate['Flash Loan'].address"
             :target-str="descriptionTemplate['Flash Loan'].content"
             :is-ellipsis="descriptionTemplate['Flash Loan'].content.length > 20 ? true : false"
             empty-text="/"
@@ -99,6 +101,7 @@
             v-if="descriptionTemplate['Privileged Operation'].type === 1"
             :is-show-copy-btn="false"
             custom-class="detail-copy"
+            :tooltip-txt="descriptionTemplate['Privileged Operation'].address"
             :target-str="descriptionTemplate['Privileged Operation'].content"
             :is-ellipsis="
               descriptionTemplate['Privileged Operation'].content.length > 20 ? true : false
@@ -123,6 +126,7 @@
             v-if="descriptionTemplate['Privileged Operation'].type === 2"
             custom-class="detail-copy"
             :is-show-copy-btn="false"
+            :tooltip-txt="descriptionTemplate['Privileged Operation'].addressOne"
             :target-str="descriptionTemplate['Privileged Operation'].contentOne"
             :is-ellipsis="
               descriptionTemplate['Privileged Operation'].contentOne.length > 20 ? true : false
@@ -148,6 +152,7 @@
             v-if="descriptionTemplate['Privileged Operation'].type === 2"
             custom-class="detail-copy"
             :is-show-copy-btn="false"
+            :tooltip-txt="descriptionTemplate['Privileged Operation'].addressSec"
             :target-str="descriptionTemplate['Privileged Operation'].contentSec"
             :is-ellipsis="
               descriptionTemplate['Privileged Operation'].contentSec.length > 20 ? true : false
@@ -182,6 +187,7 @@
           <ellipsis-copy
             custom-class="detail-copy"
             :is-show-copy-btn="false"
+            :tooltip-txt="descriptionTemplate['Exploiter On The Move'].addressOne"
             :target-str="descriptionTemplate['Exploiter On The Move'].contentOne"
             :is-ellipsis="
               descriptionTemplate['Exploiter On The Move'].contentOne.length > 20 ? true : false
@@ -206,6 +212,7 @@
           <ellipsis-copy
             custom-class="detail-copy"
             :is-show-copy-btn="false"
+            :tooltip-txt="descriptionTemplate['Exploiter On The Move'].addressSec"
             :target-str="descriptionTemplate['Exploiter On The Move'].contentSec"
             :is-ellipsis="
               descriptionTemplate['Exploiter On The Move'].contentSec.length > 20 ? true : false
