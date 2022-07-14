@@ -37,23 +37,25 @@
           content="Large Outflow"
           style="margin-right: 10px; width: 200px"
           icon="iconLargeOutflow2"></icon-cell>
-        <span class="descr-text">{{ descriptionTemplate['Large Outflow'].text }} &nbsp;</span>
-        <ellipsis-copy
-          :is-show-copy-btn="false"
-          custom-class="detail-copy"
-          :target-str="descriptionTemplate['Large Outflow'].content"
-          :is-ellipsis="descriptionTemplate['Large Outflow'].content.length > 20 ? true : false"
-          empty-text="/"
-          font-length="6"
-          end-length="6">
-          <template #text="textScope">
-            <a
-              :href="createLink(baseInfo.platform, descriptionTemplate['Large Outflow'].address)"
-              target="_blank">
-              {{ ` ${textScope.item}` }}</a
-            >
-          </template>
-        </ellipsis-copy>
+        <span class="descr-text"
+          >{{ descriptionTemplate['Large Outflow'].text }} &nbsp;
+          <ellipsis-copy
+            :is-show-copy-btn="false"
+            custom-class="detail-copy"
+            :target-str="descriptionTemplate['Large Outflow'].content"
+            :is-ellipsis="descriptionTemplate['Large Outflow'].content.length > 20 ? true : false"
+            empty-text="/"
+            font-length="6"
+            end-length="6">
+            <template #text="textScope">
+              <a
+                :href="createLink(baseInfo.platform, descriptionTemplate['Large Outflow'].address)"
+                target="_blank">
+                {{ ` ${textScope.item}` }}</a
+              >
+            </template>
+          </ellipsis-copy>
+        </span>
       </p>
       <p v-if="descriptionTemplate['Flash Loan']" class="descr">
         <icon-cell
@@ -659,6 +661,7 @@
     .detail-copy {
       width: initial;
       min-width: initial !important;
+      display: inline-flex;
     }
 
     position: relative;
@@ -689,20 +692,22 @@
       .descr {
         margin: 32px 0 16px 0;
         display: flex;
-        align-items: center;
+        align-items: baseline;
         .descr-text {
           font-size: 16px;
           font-family: 'Barlow', sans-serif;
           font-weight: bold;
           color: $textColor3;
-          line-height: 16px;
+          line-height: 26px;
+          display: inline-block;
+          width: 900px;
         }
         a {
           font-weight: bold;
           color: $lessColor3;
           font-family: 'Barlow', sans-serif;
           font-size: 16px;
-          line-height: 16px;
+          line-height: 26px;
         }
       }
       .detail-item {
@@ -836,6 +841,7 @@
   @media screen and (max-width: 1280px) {
     .risk-trx-detail .detail-body,
     .risk-trx-detail .detail-profit,
+    .risk-trx-detail .detail-title,
     .risk-trx-detail .detail-slump {
       width: 92%;
     }
@@ -869,6 +875,7 @@
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
     .risk-trx-detail .detail-body,
     .risk-trx-detail .detail-profit,
+    .risk-trx-detail .detail-title,
     .risk-trx-detail .detail-slump {
       width: 92%;
     }
