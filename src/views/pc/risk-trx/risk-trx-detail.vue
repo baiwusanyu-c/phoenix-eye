@@ -12,7 +12,7 @@
         <ellipsis-copy
           custom-class="detail-copy"
           :target-str="baseInfo.tx_hash"
-          :is-ellipsis="baseInfo.tx_hash && baseInfo.tx_hash.length > 64 ? true : false"
+          :is-ellipsis="false"
           empty-text="/"
           styles="color: #008EE9;cursor:pointer;font-weight: 500"
           font-length="30"
@@ -35,7 +35,7 @@
           font-size="16"
           size="20"
           content="Large Outflow"
-          style="margin-right: 10px; width: 200px"
+          style="margin-right: 10px; width: 200px; height: 26px"
           icon="iconLargeOutflow2"></icon-cell>
         <span class="descr-text"
           >{{ descriptionTemplate['Large Outflow'].text }} &nbsp;
@@ -62,7 +62,7 @@
           font-weight="400"
           font-size="16"
           size="20"
-          style="margin-right: 10px; width: 200px"
+          style="margin-right: 10px; width: 200px; height: 26px"
           content="Flash Loan"
           icon="iconFlash2"></icon-cell>
         <span class="descr-text"
@@ -90,7 +90,7 @@
           font-weight="400"
           font-size="16"
           size="20"
-          style="margin-right: 10px; width: 200px"
+          style="margin-right: 10px; width: 200px; height: 26px"
           content="Privileged Operation"
           icon="iconPrivileged2"></icon-cell>
         <span v-if="descriptionTemplate['Privileged Operation'].type === 1" class="descr-text"
@@ -175,7 +175,7 @@
           font-weight="400"
           font-size="16"
           size="20"
-          style="margin-right: 10px; width: 200px"
+          style="margin-right: 10px; width: 200px; height: 26px"
           content="Exploiter On The Move"
           icon="iconExploiter"></icon-cell>
         <span class="descr-text">
@@ -548,7 +548,7 @@
             (val.type === 'Privileged Operation' && val.params?.length === 2)
           ) {
             descriptionTemplate.value[val.type!] = {
-              text: val.text ? val.text.replace('%s', '') : '',
+              text: val.text ? val.text.replaceAll('%s', '') : '',
               addressOne: val.params && val.params.length > 0 ? val.params[0].address : '',
               tag_nameOne: val.params && val.params.length > 0 ? val.params[0].tag_name : '',
               addressSec: val.params && val.params.length > 0 ? val.params[1].address : '',
@@ -692,7 +692,6 @@
       .descr {
         margin: 32px 0 16px 0;
         display: flex;
-        align-items: baseline;
         .descr-text {
           font-size: 16px;
           font-family: 'Barlow', sans-serif;
