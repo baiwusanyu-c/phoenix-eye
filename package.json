@@ -1,6 +1,6 @@
 {
   "name": "eagle-eye",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "scripts": {
     "init": "pnpm i",
     "serve:dev02": "vite --host --mode development02",
