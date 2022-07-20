@@ -58,7 +58,6 @@
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
   import { BeButton, BeDialog } from '@eagle-eye/be-ui'
-  import { Num } from 'windicss/types/lang/tokens'
   import composition from '../../../../utils/mixin/common-func'
   import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
   import type { PropType } from 'vue'

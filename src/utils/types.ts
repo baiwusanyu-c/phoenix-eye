@@ -368,7 +368,7 @@ export type ILiquidity = {
 
 export type IWhalePieData = {
   chartData?: Array<{ ratio: number; feature: string; color: string }>
-  total?: number
+  total?: number | string
 }
 
 // related-project

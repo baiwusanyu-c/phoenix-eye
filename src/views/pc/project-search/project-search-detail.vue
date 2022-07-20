@@ -675,7 +675,7 @@
                 hasTokenAddress.value = true
               }
               if (res.data.decentralization) {
-                whalePieData.value.total = res.data.decentralization.token_info.total_supply
+                whalePieData.value.total = nFormats(res.data.details.total_supply)
                 const radio1To10 =
                   Math.floor(res.data.decentralization.token_info.top_1_10_ratio * 10000) / 10000
                 const radio11To50 =
