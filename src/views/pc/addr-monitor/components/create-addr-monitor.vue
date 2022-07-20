@@ -14,27 +14,29 @@
         <el-form :label-position="labelPosition" label-width="124px">
           <el-form-item :label="$t('lang.addrMonitor.form.labelAddr') + ':'">
             <span class="reg-start feed-back--star">*</span>
-            <el-input v-model="form.address" :disabled="type === 'edit'"></el-input>
+            <el-input v-model.trim="form.address" :disabled="type === 'edit'"></el-input>
           </el-form-item>
           <el-form-item :label="$t('lang.addrMonitor.form.labelRemark') + ':'">
             <el-input
-              v-model="form.remark"
+              v-model.trim="form.remark"
               type="textarea"
               :rows="7"
               resize="none"
               maxlength="300"></el-input>
           </el-form-item>
-          <!--<el-form-item :label="$t('lang.addrMonitor.form.labelLink') + ':'">
-            <div class="form&#45;&#45;link">
-              <be-tooltip
-                placement="top"
-                custom-class="addr-monitor&#45;&#45;link"
-                :content="$t('lang.addrMonitor.form.linkDiscr')">
-                <be-icon icon="query" color="#333"></be-icon>
-              </be-tooltip>
-              <el-input v-model="form.event_link" class="form&#45;&#45;link__input"></el-input>
+          <el-form-item :label="$t('lang.addrMonitor.form.filter')">
+            <div class="form--link">
+              <el-input
+                v-model.trim="form.amount"
+                :disabled="type === 'edit'"
+                class="form--link__input"
+                @input="limitInput">
+                <template #prefix>
+                  <span style="margin-right: 10px">$</span>
+                </template>
+              </el-input>
             </div>
-          </el-form-item>-->
+          </el-form-item>
         </el-form>
       </div>
       <template #footer>
@@ -56,6 +58,7 @@
   import { useI18n } from 'vue-i18n'
   // @ts-ignore
   import { BeButton, BeDialog } from '@eagle-eye/be-ui'
+  import { Num } from 'windicss/types/lang/tokens'
   import composition from '../../../../utils/mixin/common-func'
   import { addAddressMonitor, updateAddressMonitor } from '../../../../api/addr-monitor'
   import type { PropType } from 'vue'
@@ -92,6 +95,7 @@
         address: '',
         remark: '',
         address_monitor_id: '',
+        amount: '',
       })
       watch(showDialog, nVal => {
         if (nVal) {
@@ -121,6 +125,7 @@
           address: '',
           remark: '',
           address_monitor_id: '',
+          amount: '',
         }
       }
       /**
@@ -171,6 +176,7 @@
         const params = {
           address: form.value.address,
           remark: form.value.remark,
+          amount: Number(form.value.amount),
         }
         addAddressMonitor(params)
           .then((res: any) => {
@@ -199,6 +205,7 @@
         if (!formVerification()) {
           return
         }
+        form.value.amount = Number(form.value.amount)
         updateAddressMonitor(form.value)
           .then((res: any) => {
             if (!res) {
@@ -218,7 +225,11 @@
             console.error(err)
           })
       }
+      const limitInput = (): void => {
+        form.value.amount = (form.value.amount as string).replace(/[^0-9]/g, '')
+      }
       return {
+        limitInput,
         handleConfirm,
         form,
         labelPosition,
@@ -268,7 +279,7 @@
     .feed-back--star {
       position: absolute;
       top: 7px;
-      left: -134px;
+      left: -15px;
     }
   }
 

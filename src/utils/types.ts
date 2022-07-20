@@ -178,6 +178,7 @@ export interface IAddrMonitorForm {
   event_link?: string
   address_monitor_id?: string
   id?: string
+  amount?: string | number
 }
 
 // addr-monitor
