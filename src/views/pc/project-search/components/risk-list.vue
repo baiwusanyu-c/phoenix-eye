@@ -6,6 +6,7 @@
       v-loading="loading"
       tooltip-effect="light"
       :data="tableData"
+      row-class-name="cursor-pointer"
       @row-click="routerSwitch">
       <template #empty>
         <empty-data content="lang.noRisk"></empty-data>

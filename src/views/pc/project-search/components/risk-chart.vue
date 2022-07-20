@@ -56,7 +56,7 @@
       },
     },
     setup(props) {
-      const selectVal = ref<string>('1')
+      const selectVal = ref<string>('30')
       const computePropsData = computed(() => {
         return props.data
       })
@@ -65,8 +65,8 @@
         () => {
           nextTick(() => {
             nextTick(() => {
-              if (computePropsData.value?.stat_1_day_data) {
-                innerData.value = jsonClone(computePropsData.value?.stat_1_day_data)
+              if (computePropsData.value?.stat_30_day_data) {
+                innerData.value = jsonClone(computePropsData.value?.stat_30_day_data)
                 createPieData(innerData.value!)
               }
             })
