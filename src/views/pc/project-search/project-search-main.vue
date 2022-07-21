@@ -312,7 +312,7 @@
         }
         // 从 create/form 重定向到首页，打开项目创建弹窗
         if (urlParams.create === 'project') {
-          busCreateProjectUser.emit('redirectOpen')
+          busCreateProjectUser.emit()
         }
       }
       const showSecurityList = ref<boolean>(true)

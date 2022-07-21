@@ -181,7 +181,7 @@ export default {
         '● The total circulation market value of a cryptocurrency. It is analogous to the free-float capitalization in the stock market.',
       descr5: '● Market Cap = Current Price x Supply.',
       descr6: '● Change is for the past 24 hours.',
-      descr7: 'Proportion of excluded black hole addresses、contract address 、 exchange address',
+      descr7: 'Proportion of excluded black hole addresses,contract address,exchange address',
       tokenPrice: 'Token Price',
       tokenPrice1: 'Token price for the past 30 days',
       user: 'Users (Total)',

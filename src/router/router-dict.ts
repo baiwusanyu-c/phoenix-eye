@@ -43,3 +43,10 @@ export const STATISTICS_ROUTER: IOption = {
   '/ProjectSearch': 'project explore',
   '/detail': 'project details',
 }
+// 手机端的url参数格式和pc不一样，pc端输入移动端地址
+// 需要映射成pc
+export const MOBILE_ROUTER_LIST: Array<string> = [
+  '/addressMonitorDetail/',
+  '/detail/',
+  '/riskTrxDetail/',
+]

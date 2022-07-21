@@ -60,7 +60,7 @@
           <template #listFooter>
             <div id="create_one_body" class="create-one--body">
               <span>{{ $t('lang.createProject.notFound') }}?</span>
-              <div role="button" class="create-one eagle-btn" @click="openDialog('add')">
+              <div role="button" class="create-one eagle-btn" @click="busCreateProjectUser.emit()">
                 {{ $t('lang.createProject.createOne') }}
               </div>
             </div>
@@ -498,23 +498,19 @@
        */
       const { createDialog, openDialog } = compositionDialog()
       const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
-      let openType = ''
-      busCreateProjectUser.on((type: string) => {
-        openType = type
+      busCreateProjectUser.on(() => {
+        routerPush(route.path, { create: 'project' })
         openDialog('add')
       })
       const handleClose = (): void => {
-        // 从 create/form 重定向到首页，
-        // 打开项目创建弹窗,关闭后清空url参数
-        if (openType === 'redirectOpen') {
-          routerPush('/ProjectSearch')
-        }
+        routerPush(route.path)
       }
       const searchParamsInput = ref<string>('')
       return {
         handleClose,
         searchParamsInput,
         openDialog,
+        busCreateProjectUser,
         createDialog,
         getProjectUser,
         openRequestAudit,

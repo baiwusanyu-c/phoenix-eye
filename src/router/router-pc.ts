@@ -8,6 +8,7 @@ import store from '../store/store'
 import { addIpLog } from '../api/operational-statistics'
 import {
   META_TITLE_DICT,
+  MOBILE_ROUTER_LIST,
   ROUTER_COMPONENT_DICT,
   STATISTICS_ROUTER,
   WHITE_LIST,
@@ -160,7 +161,6 @@ export function getRouterData(
       console.error(err)
     })
 }
-
 /**
  * 路由守卫方法
  * @param {Object} router - 路由对象
@@ -168,15 +168,17 @@ export function getRouterData(
 const beforeEachHandle = (router: Router) => {
   router.beforeEach(
     (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function) => {
-      // 設置是否手機訪問變量
-      // const ua = navigator.userAgent
-      // const ipad = ua.match(/(iPad).*OS\s([\d_]+)/)
-      // const isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/)
-      // const isAndroid = ua.match(/(Android)\s+([\d.]+)/)
-      // const isMobile = ref<RegExpMatchArray | null>(isIphone || isAndroid)
-      // if (to.path === '/ProjectSearch' && isMobile.value) {
-      //   window.location.reload()
-      // }
+      // 处理手机端的地址
+      const arg: Array<string> = to.path.split('/')
+      if (to.path.indexOf(MOBILE_ROUTER_LIST[0]) >= 0) {
+        next(`/addressMonitorDetail?address=${arg[arg.length - 1]}`)
+      }
+      if (to.path.indexOf(MOBILE_ROUTER_LIST[1]) >= 0) {
+        next(`/detail?id=${arg[arg.length - 1]}`)
+      }
+      if (to.path.indexOf(MOBILE_ROUTER_LIST[2]) >= 0) {
+        next(`/riskTrxDetail?tx_hash=${arg[arg.length - 1]}`)
+      }
       // 匹配运营统计路由
       if (STATISTICS_ROUTER[to.path]) {
         addIpLog({ module: STATISTICS_ROUTER[to.path] }).catch(err => {
