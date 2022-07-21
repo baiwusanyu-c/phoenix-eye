@@ -141,9 +141,9 @@
           <template #default="scope">
             <el-tooltip placement="top" effect="light">
               <template #content>
-                <a target="_blank" :href="createUrlWeb(scope.row.pair_address, 'lp', platform)">{{
-                  scope.row.pair_address
-                }}</a>
+                <a target="_blank" :href="createUrlWeb(scope.row.pair_address, 'token', platform)">
+                  {{ scope.row.pair_address }}</a
+                >
               </template>
               <div class="token-val" style="width: max-content">
                 <ellipsis-copy
