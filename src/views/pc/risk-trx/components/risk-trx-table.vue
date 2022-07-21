@@ -80,55 +80,6 @@
           </div>
         </template>
       </el-table-column>
-
-      <!--      <el-table-column prop="from_address" :width="tableHeader('from_address')" align="left">
-        <template #header>
-          <span class="table-head">
-            {{ $t('lang.riskConfig.tableHeader.gainer') }}
-          </span>
-          <be-tooltip :content="$t('lang.riskConfig.gainerExp')" custom-class="table-tooltip">
-            <be-icon icon="iconHelpEagle"></be-icon>
-          </be-tooltip>
-        </template>
-        <template #default="scope">
-          <ellipsis-copy
-            v-if="!scope.row.gainer_address_tag"
-            :target-str="scope.row.gainer_address"
-            :is-show-copy-btn="false"
-            empty-text="/"
-            font-length="8"
-            end-length="8">
-          </ellipsis-copy>
-          <ellipsis-copy
-            v-if="scope.row.gainer_address_tag"
-            :target-str="scope.row.gainer_address_tag"
-            :is-show-copy-btn="false"
-            :tooltip-txt="scope.row.gainer_address"
-            empty-text="/"
-            :is-ellipsis="scope.row.gainer_address_tag.length > 16 ? true : false"
-            style="color: #1496f2"
-            font-length="8"
-            end-length="8">
-            <template #content>
-              <p style="text-align: center">{{ scope.row.gainer_address }}</p>
-              <p v-if="scope.row.gainer_address_tag.length > 16" style="text-align: center">
-                {{ scope.row.gainer_address_tag }}
-              </p>
-            </template>
-          </ellipsis-copy>
-        </template>
-      </el-table-column>
-      <el-table-column prop="amount" :width="tableHeader('amount')" align="center">
-        <template #header>
-          <span class="table-head">{{ $t('lang.riskConfig.tableHeader.amount') }}</span>
-          <be-tooltip :content="$t('lang.riskConfig.amountExp')" custom-class="table-tooltip">
-            <be-icon icon="iconHelpEagle"></be-icon>
-          </be-tooltip>
-        </template>
-        <template #default="scope">
-          {{ isEmpty(scope.row.amount, '/') === '/' ? '/' : `$ ${scope.row.amount}` }}
-        </template>
-      </el-table-column>-->
       <el-table-column prop="Description" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.description') }}</span>

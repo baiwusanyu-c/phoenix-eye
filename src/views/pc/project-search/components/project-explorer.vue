@@ -51,38 +51,6 @@
             </div>
           </template>
         </remote-search>
-
-        <!--        <el-select
-          ref="projectSelect"
-          v-model="selectVal"
-          filterable
-          remote
-          :placeholder="$t('lang.pleaseSelect')"
-          clearable
-          :loading="selectLoading"
-          :remote-method="getProjectUser"
-          popper-class="project-select"
-          class="project-select-remote"
-          @change="handleProjectSelect">
-          <el-option
-            v-for="item in searchProjectList"
-            :key="item.project_id"
-            :label="item.project_name"
-            :value="item.project_id">
-            <div class="project-select&#45;&#45;option">
-              <project-name-cell
-                :url="item.logo_url"
-                :name="item.project_name"
-                :is-ell="false"></project-name-cell>
-              <span class="project-select&#45;&#45;platform">{{ platformToCurrency[item.platform] }}</span>
-            </div>
-          </el-option>
-        </el-select>
-
-
-        <div class="project-select-remote&#45;&#45;btn">
-          <be-icon icon="iconSearchEagle" color="#fff"></be-icon>
-        </div>-->
       </div>
     </div>
     <div class="project-explorer--table eagle-table">

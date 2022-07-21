@@ -492,11 +492,6 @@
         if (hasEmptyOrErr) {
           return false
         }
-        // if (contractInfos.length === 0) {
-        //   const msg = t('lang.createProject.verInfo')
-        //   message('warning', msg)
-        //   return false
-        // }
         contractInfos && (params.contract_address_arr = contractInfos)
         return true
       }
