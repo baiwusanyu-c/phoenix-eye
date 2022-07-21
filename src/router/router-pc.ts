@@ -19,6 +19,11 @@ const routes = [
     path: '/',
     redirect: '/ProjectSearch',
   },
+  // 手机端创建项目表单重定向到首页，自动打开表单
+  {
+    path: '/form/create',
+    redirect: '/ProjectSearch?create=project',
+  },
   {
     path: '/',
     component: () => import('../views/pc/layout/layout.vue'),
@@ -172,7 +177,6 @@ const beforeEachHandle = (router: Router) => {
       // if (to.path === '/ProjectSearch' && isMobile.value) {
       //   window.location.reload()
       // }
-
       // 匹配运营统计路由
       if (STATISTICS_ROUTER[to.path]) {
         addIpLog({ module: STATISTICS_ROUTER[to.path] }).catch(err => {

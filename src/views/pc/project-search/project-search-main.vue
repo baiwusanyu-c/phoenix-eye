@@ -300,6 +300,7 @@
         getList()
       }
 
+      const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
       const ProjIdByEmail = ref<number>(-1)
       const initPage = (): void => {
         const urlParams = getUrlkey()
@@ -308,6 +309,10 @@
           ProjIdByEmail.value = urlParams.id
           // 直接去态势详情页面
           routerSwitch(ProjIdByEmail.value.toString())
+        }
+        // 从 create/form 重定向到首页，打开项目创建弹窗
+        if (urlParams.create === 'project') {
+          busCreateProjectUser.emit('redirectOpen')
         }
       }
       const showSecurityList = ref<boolean>(true)
@@ -354,10 +359,8 @@
           return nFormats(val)
         }
       })
-      onMounted(() => {
-        initPage()
-        getInfoData()
-      })
+      initPage()
+      getInfoData()
       return {
         showSecurityList,
         handleShowSecurityList,

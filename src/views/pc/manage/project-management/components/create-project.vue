@@ -10,7 +10,8 @@
             ? $t('lang.createProject.createProjectTitle')
             : $t('lang.createProject.editProjectTitle')
         "
-        width="1000px">
+        width="1000px"
+        @close="createProjectCancel">
         <div>
           <el-form label-position="left" label-width="170px" class="projectForm">
             <!--      ****** contact *********        -->
@@ -153,8 +154,6 @@
     IWebsiteForm,
   } from '../../../../../utils/types'
   import type { IContractInfos, IReport } from '../../../../../api/project-management'
-
-  // TODO 重构
   export default defineComponent({
     name: 'CreateProject',
     components: { BaseForm, OperatingForm, WebsiteForm, ContactForm, BeIcon, BeButton, BeTag },
@@ -181,7 +180,8 @@
         },
       },
     },
-    setup(props) {
+    emits: ['onClose'],
+    setup(props, { emit }) {
       const { t } = useI18n()
       const { message } = composition()
       const showDialog = ref<boolean>(false)
@@ -266,12 +266,14 @@
         if (props.type === 'edit') {
           await editProject()
         }
+        emit('onClose')
       }
       /**
        * 弹窗取消方法
        */
       const createProjectCancel = () => {
         showDialog.value = false
+        emit('onClose')
       }
       /**
        * 增加合约表单项

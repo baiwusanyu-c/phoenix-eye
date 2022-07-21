@@ -166,7 +166,12 @@
 
   <request-audit ref="requestAudit"></request-audit>
   <!--项目创建弹窗-->
-  <create-project ref="createDialog" style="text-align: initial" type="add" tab-type="usr">
+  <create-project
+    ref="createDialog"
+    style="text-align: initial"
+    type="add"
+    tab-type="usr"
+    @on-close="handleClose">
   </create-project>
 </template>
 
@@ -493,11 +498,21 @@
        */
       const { createDialog, openDialog } = compositionDialog()
       const busCreateProjectUser = useEventBus<string>('openCreateProjectUser')
-      busCreateProjectUser.on(() => {
+      let openType = ''
+      busCreateProjectUser.on((type: string) => {
+        openType = type
         openDialog('add')
       })
+      const handleClose = (): void => {
+        // 从 create/form 重定向到首页，
+        // 打开项目创建弹窗,关闭后清空url参数
+        if (openType === 'redirectOpen') {
+          routerPush('/ProjectSearch')
+        }
+      }
       const searchParamsInput = ref<string>('')
       return {
+        handleClose,
         searchParamsInput,
         openDialog,
         createDialog,
