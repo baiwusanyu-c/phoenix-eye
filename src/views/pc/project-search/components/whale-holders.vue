@@ -139,7 +139,12 @@
             }}</span>
           </template>
           <template #default="scope">
-            <el-tooltip :content="scope.row.pair_address" placement="top" effect="light">
+            <el-tooltip placement="top" effect="light">
+              <template #content>
+                <a target="_blank" :href="createUrlWeb(scope.row.pair_address, 'lp', platform)">{{
+                  scope.row.pair_address
+                }}</a>
+              </template>
               <div class="token-val" style="width: max-content">
                 <ellipsis-copy
                   empty-text=" "
@@ -380,12 +385,16 @@
     simulateToFixed,
   } from '../../../../utils/common'
   // @ts-ignore
+  import { webURL } from '../../../../enums/link'
   import type { ILiquidity, IPrivilege, ITop10Holder, IWhalePieData } from '../../../../utils/types'
   import type { PropType } from 'vue'
   export default defineComponent({
     name: 'WhaleHolders',
     components: { BeIcon, BeProgress },
     props: {
+      platform: {
+        type: String,
+      },
       projectId: {
         type: String,
         default: '',
@@ -399,7 +408,7 @@
       const handleTabClick = (type: string): void => {
         activeTab.value = type
       }
-      const { message } = composition()
+      const { message, createUrlWeb } = composition()
       const { pageParams, resetPageParam, createPageParam, nextPage, prevPage } = compositionPage()
       const pageNum = ref<number>(0)
       /**************************** top10Holder数据获取、翻页 **************************************/
@@ -559,6 +568,7 @@
         }
       )
       return {
+        createUrlWeb,
         nFormats,
         simulateToFixed,
         pageNum,
@@ -584,6 +594,7 @@
         getTop10Holder,
         getLiquidityList,
         getPrivilegesList,
+        webURL,
       }
     },
   })

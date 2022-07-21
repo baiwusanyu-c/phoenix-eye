@@ -93,11 +93,15 @@ export default () => {
   const openWeb = (params: string, type: string, platform: string): void => {
     if (!params || params === 'eth' || params === 'bnb' || params === 'ht' || params === 'matic')
       return
-    const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
-    const url = `${mainUrl}${params}`
+    const url = createUrlWeb(params, type, platform)
     openWindow(url)
   }
+  const createUrlWeb = (params: string, type: string, platform: string): string => {
+    const mainUrl: string = (webURL as any)[`${platform}_${type}`] as string
+    return `${mainUrl}${params}`
+  }
   return {
+    createUrlWeb,
     openWeb,
     msgBox,
     isEmpty,

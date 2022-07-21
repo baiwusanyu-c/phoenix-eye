@@ -15,6 +15,11 @@ export enum webURL {
   eth_addr = 'https://etherscan.io/address/',
   polygon_addr = 'https://polygonscan.com/address/',
 
+  bsc_lp = 'https://bscscan.com/lp/',
+  heco_lp = 'https://hecoinfo.com/lp/',
+  eth_lp = 'https://etherscan.io/lp/',
+  polygon_lp = 'https://polygonscan.com/lp/',
+
   bsc_token = 'https://bscscan.com/token/',
   heco_token = 'https://hecoinfo.com/token/',
   eth_token = 'https://etherscan.io/token/',

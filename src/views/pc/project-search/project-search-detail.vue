@@ -440,7 +440,10 @@
           :name="$t('lang.projectExplorer.detail.titleDecent')">
         </title-cell>
       </div>
-      <whale-holders :project-id="projectId" :pie-data="whalePieData"></whale-holders>
+      <whale-holders
+        :project-id="projectId"
+        :pie-data="whalePieData"
+        :platform="baseInfo.platform"></whale-holders>
     </div>
     <!--  Market Volatility    -->
     <div v-if="hasTokenAddress" class="project-detail-market">
