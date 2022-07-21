@@ -25,6 +25,14 @@
         <div style="width: 50%">
           <p class="whale-sub-title" style="margin-bottom: 22px">
             {{ $t('lang.projectExplorer.detail.whaleTitle1') }}
+            <el-tooltip placement="top">
+              <template #content>
+                {{ $t('lang.projectExplorer.detail.descr7') }}
+              </template>
+              <be-icon
+                icon="iconHelpEagle"
+                style="margin-left: 6px; vertical-align: bottom"></be-icon>
+            </el-tooltip>
           </p>
           <pie-cell
             dom-id="whale_chart__pie"
@@ -636,12 +644,13 @@
       font-weight: bold;
       color: $textColor3;
       line-height: 20px;
+      margin-bottom: 26px;
     }
     .token-holders-distribution {
       display: flex;
       justify-content: space-between;
       .pie-cell {
-        height: calc(80% - 44px);
+        height: calc(90% - 44px);
       }
     }
     .function-tag {

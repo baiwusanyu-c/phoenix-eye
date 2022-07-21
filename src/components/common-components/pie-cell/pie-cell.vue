@@ -198,7 +198,7 @@
     display: flex;
     align-items: center;
     .pie-cell-legend {
-      width: 50%;
+      width: 40%;
       height: 200px;
       display: flex;
       align-items: center;
@@ -210,8 +210,8 @@
       position: absolute;
     }
     .pie-cell--chart {
-      width: 50%;
-      height: 200px;
+      width: 60%;
+      height: 260px;
     }
     .pie-cell-legend--item {
       display: flex;
