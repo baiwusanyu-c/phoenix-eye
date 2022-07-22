@@ -336,6 +336,8 @@ export type IChainData = {
   holders_ratio?: number
   transactions?: number
   transactions_ratio?: number
+  full_diluted_market_cap?: number
+  full_diluted_market_cap_ratio?: number
 }
 export type ITop10Holder = {
   address?: string

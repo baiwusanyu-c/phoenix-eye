@@ -250,6 +250,42 @@
                 </p>
                 <up-down :data="onChainData.market_cap_ratio"></up-down>
               </div>
+              <div class="market-diluted">
+                <div class="uam-item">
+                  <span class="user-active-market--title">
+                    {{ $t('lang.projectExplorer.detail.MarketCapDiluted') }}</span
+                  >
+                  <el-tooltip placement="top">
+                    <template #content>
+                      {{ $t('lang.projectExplorer.detail.descr4') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr5') }}
+                      <br />
+                      {{ $t('lang.projectExplorer.detail.descr6') }}
+                    </template>
+                    <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
+                  </el-tooltip>
+                </div>
+                <p class="uam-item-val">
+                  <el-tooltip
+                    :content="onChainData.full_diluted_market_cap"
+                    placement="top"
+                    effect="light"
+                    :disabled="
+                      !onChainData.full_diluted_market_cap ||
+                      onChainData.full_diluted_market_cap < 0
+                    ">
+                    <span style="width: max-content">
+                      {{
+                        isEmpty(onChainData.full_diluted_market_cap, '/') === '/'
+                          ? '/'
+                          : `$${marketCapBaseInfo(onChainData.full_diluted_market_cap)}`
+                      }}
+                    </span>
+                  </el-tooltip>
+                </p>
+                <up-down :data="onChainData.full_diluted_market_cap_ratio"></up-down>
+              </div>
             </div>
           </div>
           <div v-if="!hasTokenAddress" class="token-price" style="position: relative">
@@ -639,6 +675,8 @@
         holders_ratio: 0,
         transactions: 0,
         transactions_ratio: 0,
+        full_diluted_market_cap: 0,
+        full_diluted_market_cap_ratio: 0,
       })
       const relatedProject = ref<Array<IRelateProject>>([])
       const scoreItemComp = ref<string>('')
@@ -1118,6 +1156,9 @@
         .market,
         .user {
           flex: 1;
+        }
+        .market-diluted {
+          flex: 1.1;
         }
         .uam-item {
           display: flex;
