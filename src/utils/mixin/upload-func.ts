@@ -41,7 +41,7 @@ export default () => {
       }
       uploadFile(params)
         .then((res: IAxiosRes) => {
-          if (res.code === 200) {
+          if (res.code === '0000') {
             cb(res)
             message('success', `${t('lang.upload')} ${t('lang.success')}`)
           } else {

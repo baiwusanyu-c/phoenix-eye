@@ -95,7 +95,7 @@ export interface IUpLoad {
 }
 export function uploadFile(params?: IUpLoad) {
   return request({
-    url: `${config.baseURL}/website/article/admin/uploadImg`,
+    url: `${config.baseURL}/ussa/upload/image`,
     method: 'post',
     params,
   })
