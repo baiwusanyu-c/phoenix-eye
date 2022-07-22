@@ -39,7 +39,6 @@ export function getProjectSituation(params: IPublicOpinion) {
     url: `${config.baseURL}/ussa/project/situation`,
     method: 'post',
     params,
-    isNanToken: true,
   } as any)
 }
 
@@ -72,7 +71,6 @@ export function createSubscribe(params: ISubscribe) {
   return request({
     url: `${config.baseURL}/ussa/project/subscription/create/${params.project_id}`,
     method: 'post',
-    isNanToken: true,
   } as any)
 }
 
@@ -80,7 +78,6 @@ export function deleteSubscribe(params: ISubscribe) {
   return request({
     url: `${config.baseURL}/ussa/project/subscription/delete/${params.project_id}`,
     method: 'post',
-    isNanToken: true,
   } as any)
 }
 export interface IContractReport extends IPageParam {

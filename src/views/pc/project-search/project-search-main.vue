@@ -184,7 +184,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, nextTick, onMounted, ref } from 'vue'
+  import { computed, defineComponent, nextTick, ref } from 'vue'
   import { useEventBus } from '@vueuse/core'
   import { BeButton, BeIcon } from '@eagle-eye/be-ui'
   import composition from '../../../utils/mixin/common-func'
