@@ -6,7 +6,6 @@
       <!--    logo    -->
       <div class="expend-logo" @click="routerPush('/ProjectSearch')">
         <img src="../assets/image/pc/logo.png" alt="Beosin-Eagle-Eye" />
-        <span>EagleEye</span>
       </div>
       <!--    菜单    -->
       <div class="tsgz-nav-menu-container">
@@ -846,8 +845,6 @@
       cursor: pointer;
       img {
         display: inline;
-        width: 32px;
-        height: 32px;
       }
 
       span {

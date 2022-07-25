@@ -142,11 +142,13 @@
           <template #default="scope">
             <el-tooltip placement="top" effect="light">
               <template #content>
-                <a target="_blank" :href="createUrlWeb(scope.row.pair_address, 'token', platform)">
-                  {{ scope.row.pair_address }}</a
-                >
+                {{ scope.row.pair_address }}
               </template>
-              <div class="token-val" style="width: max-content">
+              <a
+                target="_blank"
+                class="token-val"
+                style="width: max-content"
+                :href="createUrlWeb(scope.row.pair_address, 'token', platform)">
                 <ellipsis-copy
                   empty-text=" "
                   :target-str="scope.row.showTokenVal1"
@@ -173,7 +175,7 @@
                   font-length="6"
                   end-length="6">
                 </ellipsis-copy>
-              </div>
+              </a>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -684,7 +686,9 @@
         width: auto;
       }
       .link-span {
+        font-weight: bold;
         margin: 0 10px;
+        color: $mainColor3;
       }
     }
     .token-percentage .be-progress {
