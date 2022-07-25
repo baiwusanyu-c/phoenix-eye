@@ -1,7 +1,8 @@
 /* * @title-cell.vue * @deprecated * @author czh * @update (czh 2022/5/19) */
 <template>
   <div class="flex items-center title-cell">
-    <img v-if="url" :src="url" alt=" " :style="`width:${size}px;height:${size}px`" />
+    <img v-if="url && !svg" :src="url" alt=" " :style="`width:${size}px;height:${size}px`" />
+    <be-icon v-if="svg" :icon="icon" :style="`width:${size}px;height:${size}px`" />
     <span :style="`font-size:${fontSize}px`" :class="{ 'span--bold': bold }">{{ name }}</span>
     <span :style="`font-size:${20}px;color:#8A96A3;font-weight:400`">{{ subContent }}</span>
   </div>
@@ -9,9 +10,11 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
+  import { BeIcon } from '@eagle-eye/be-ui'
 
   export default defineComponent({
     name: 'TitleCell',
+    components: { BeIcon },
     props: {
       name: {
         type: String,
@@ -31,6 +34,14 @@
         type: Boolean,
         default: true,
       },
+      icon: {
+        type: String,
+        default: '',
+      },
+      svg: {
+        type: Boolean,
+        default: false,
+      },
       url: {
         type: String,
         default: 'https://avatars.githubusercontent.com/u/32354856?v=4',
@@ -48,6 +59,10 @@
     }
     .span--bold {
       font-weight: bold;
+    }
+    .be-icon--container {
+      height: v-bind(size) px;
+      width: v-bind(size) px;
     }
   }
 </style>

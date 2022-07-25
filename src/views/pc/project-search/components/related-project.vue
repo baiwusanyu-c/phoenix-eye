@@ -2,7 +2,10 @@
 <template>
   <div class="project-detail-related">
     <div class="project-detail--header">
-      <title-cell :url="related" :name="$t('lang.projectExplorer.detail.titleRelated')">
+      <title-cell
+        icon="iconRelatedEagle"
+        svg
+        :name="$t('lang.projectExplorer.detail.titleRelated')">
       </title-cell>
     </div>
     <div class="related-list">
@@ -20,7 +23,6 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import related from '../../../../assets/image/pc/related.png'
   import { openWindow } from '../../../../utils/common'
   import RelateProjectCard from './relate-project-card.vue'
   import type { IRelateProject } from '../../../../utils/types'
@@ -35,7 +37,6 @@
     },
     setup() {
       return {
-        related,
         openWindow,
       }
     },

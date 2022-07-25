@@ -38,6 +38,7 @@
             dom-id="whale_chart__pie"
             :pie-data="pieData.chartData"
             :content="pieData.total"
+            :height="260"
             item="feature"
             percent="ratio"></pie-cell>
         </div>
@@ -646,7 +647,7 @@
     .top-10-row {
       height: 44px;
       .cell {
-        padding: 0px;
+        padding: 0 0 0 12px;
       }
     }
     .whale-sub-title {

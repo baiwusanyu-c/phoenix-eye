@@ -4,7 +4,8 @@
     <!--      TODO: Project Explorer Filter & Search         -->
     <div class="project-explorer-tb--search">
       <div class="title">
-        <title-cell :name="$t('lang.projectExplorer.exp.title')" :url="explorerProj"> </title-cell>
+        <title-cell :name="$t('lang.projectExplorer.exp.title')" svg icon="iconExplorerProjEagle">
+        </title-cell>
         <el-select v-model="selectValue" @change="handleSelect">
           <template #prefix>
             <img alt="beosin-select" src="../../../../assets/image/pc/select-all.png" />
@@ -103,8 +104,7 @@
             </div>
           </template>
         </el-table-column>
-
-        <el-table-column
+        <!--        <el-table-column
           sortable="custom"
           :sort-orders="['ascending', 'descending']"
           prop="tx_24"
@@ -120,8 +120,7 @@
               }}</span>
             </el-tooltip>
           </template>
-        </el-table-column>
-
+        </el-table-column>-->
         <el-table-column
           sortable="custom"
           :sort-orders="['ascending', 'descending']"
@@ -249,7 +248,6 @@
   import { platformListDict, platformToCurrency } from '../../../../utils/platform-dict'
   import ProjectNameCell from '../../../../components/common-components/project-name-cell/project-name-cell.vue'
   import LineCell from '../../../../components/common-components/line-cell/line-cell.vue'
-  import explorerProj from '../../../../assets/image/pc/explorer-proj.png'
   import type { IOption, ISort, projListType } from '../../../../utils/types'
   import type { IProjParam } from '../../../../api/project-explorer'
   import type { ElTable } from 'element-plus'
@@ -414,7 +412,6 @@
         handleSelect,
         createDate,
         formatDate,
-        explorerProj,
         nFormats,
       }
     },
@@ -479,9 +476,6 @@
     box-sizing: border-box;
     .el-table__row {
       cursor: pointer;
-    }
-    .table-head {
-      font-size: 12px;
     }
     .el-table .cell {
       padding: 0 4px;

@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div :id="domId" class="pie-cell--chart"></div>
+    <div :id="domId" class="pie-cell--chart" :style="`height: ${height}px`"></div>
   </div>
 </template>
 
@@ -48,6 +48,10 @@
       content: {
         type: String,
         default: '',
+      },
+      height: {
+        type: Number,
+        default: 200,
       },
     },
     setup(props) {
@@ -211,7 +215,6 @@
     }
     .pie-cell--chart {
       width: 60%;
-      height: 260px;
     }
     .pie-cell-legend--item {
       display: flex;

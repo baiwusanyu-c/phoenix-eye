@@ -2,7 +2,8 @@
 <template>
   <div class="market-govern">
     <title-cell
-      :url="governLogo"
+      svg
+      icon="iconGovernLogoEagle"
       font-size="20"
       :name="$t('lang.projectExplorer.detail.titleGovern')">
     </title-cell>
@@ -107,7 +108,6 @@
   import TitleCell from '../../../../components/common-components/title-cell/title-cell.vue'
   // @ts-ignore
   import { openWindow } from '../../../../utils/common'
-  import governLogo from '../../../../assets/image/pc/govern-logo.png'
   import type { PropType } from 'vue'
   import type { IGovern } from '../../../../utils/types'
   export default defineComponent({
@@ -146,7 +146,6 @@
         openWindow,
         setBtnText,
         setBtnClass,
-        governLogo,
       }
     },
   })

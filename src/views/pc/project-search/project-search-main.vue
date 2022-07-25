@@ -152,7 +152,8 @@
               :name="$t('lang.projectExplorer.exp.addTitle')"
               :size="24"
               :font-size="18"
-              :url="addProj">
+              svg
+              icon="iconAddProjEagle">
             </title-cell>
           </div>
           <empty-data v-if="guardProjectList.length === 0"></empty-data>
@@ -166,6 +167,9 @@
               :url="item.logo_url"
               is-fixed-width
               :size="24"
+              :font-len="17"
+              width="140"
+              :ellipsis-len="20"
               :font-size="12">
             </project-name-cell>
             <p class="date">{{ formatDate(createDate(item.create_time), 'Y-m-d') }}</p>
@@ -175,7 +179,8 @@
     </div>
     <div v-show="showSecurityList" class="project-risk--container">
       <div class="project-risk--search">
-        <title-cell :name="$t('lang.projectExplorer.security.title')" :url="security"> </title-cell>
+        <title-cell :name="$t('lang.projectExplorer.security.title')" svg icon="iconSecurityEagle">
+        </title-cell>
       </div>
       <security-list @show="handleShowSecurityList"></security-list>
     </div>
@@ -201,9 +206,6 @@
   import TitleCell from '../../../components/common-components/title-cell/title-cell.vue'
   import EmptyData from '../../../components/common-components/empty-data/empty-data.vue'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
-
-  import security from '../../../assets/image/pc/security.png'
-  import addProj from '../../../assets/image/pc/add-proj.png'
   import hot from '../../../assets/image/pc/hot.png'
   import alert from '../../../assets/image/pc/alert.png'
   import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
@@ -379,8 +381,6 @@
         marketCapBaseInfo,
         riskAlertList,
         hotProjectList,
-        security,
-        addProj,
         hot,
         alert,
         openWindow,
@@ -676,7 +676,7 @@
         }
 
         .date {
-          font-size: 12px;
+          font-size: 14px;
           font-family: 'Barlow', sans-serif;
           font-weight: 400;
           color: $textColor3;
@@ -698,6 +698,11 @@
       bottom: 8px;
       width: 45%;
     }
+    .project-explorer--container .project-explorer--guard .project-explorer--guard--proj {
+      .date {
+        font-size: 12px;
+      }
+    }
   }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
@@ -711,6 +716,11 @@
       right: 0;
       bottom: 8px;
       width: 45%;
+    }
+    .project-explorer--container .project-explorer--guard .project-explorer--guard--proj {
+      .date {
+        font-size: 12px;
+      }
     }
   }
   /*

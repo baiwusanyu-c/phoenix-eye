@@ -15,19 +15,21 @@
         <span class="tx24">{{ scope.row.index }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="project_name" align="center">
+    <el-table-column prop="project_name" align="center" width="200">
       <template #header></template>
       <template #default="scope">
         <project-name-cell
           :size="32"
           :name="scope.row.project_name"
           :url="scope.row.logo_url"
-          :ellipsis-len="10">
+          :font-len="16"
+          width="180"
+          :ellipsis-len="20">
         </project-name-cell>
       </template>
     </el-table-column>
 
-    <el-table-column prop="project_name" align="center" width="50">
+    <el-table-column prop="project_name" align="center" width="45">
       <template #header></template>
       <template #default="scope">
         <div style="display: flex; justify-content: center">
@@ -163,7 +165,7 @@
       cursor: pointer;
     }
     .el-table .cell {
-      padding: 0;
+      padding: 0 12px 0 0;
     }
     .el-table__header-wrapper {
       display: none;

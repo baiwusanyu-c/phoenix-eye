@@ -11,7 +11,7 @@
       <template #empty>
         <empty-data content="lang.noRisk"></empty-data>
       </template>
-      <el-table-column prop="tx_hash" align="center">
+      <el-table-column prop="tx_hash" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
         </template>
@@ -25,7 +25,7 @@
           </ellipsis-copy>
         </template>
       </el-table-column>
-      <el-table-column prop="alert_level" align="center" width="110">
+      <el-table-column prop="alert_level" align="center" width="120">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.level') }}</span>
         </template>
@@ -35,7 +35,7 @@
           <span v-if="scope.row.alert_level === 'MEDIUM'" class="level-medium">Medium</span>
         </template>
       </el-table-column>
-      <el-table-column prop="tag_list" align="left">
+      <el-table-column prop="tag_list" align="center">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.warningType') }}</span>
         </template>
@@ -51,7 +51,7 @@
           </be-icon>
         </template>
       </el-table-column>
-      <el-table-column prop="tx_time" align="right">
+      <el-table-column prop="tx_time" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txTime') }}</span>
         </template>

@@ -471,7 +471,8 @@
     <div v-if="hasTokenAddress" class="project-detail-decent">
       <div class="project-detail--header">
         <title-cell
-          :url="decentLogo"
+          icon="iconDecentLogoEagle"
+          svg
           :sub-content="$t('lang.projectExplorer.detail.titleDecentSub')"
           :name="$t('lang.projectExplorer.detail.titleDecent')">
         </title-cell>
@@ -487,7 +488,8 @@
         <div class="project-detail--header">
           <title-cell
             :sub-content="$t('lang.projectExplorer.detail.titleMarketSub')"
-            :url="marketLogo"
+            svg
+            icon="iconMarketLogoEagle"
             :name="$t('lang.projectExplorer.detail.titleMarket')">
           </title-cell>
         </div>
@@ -501,7 +503,8 @@
       <div class="project-detail--header">
         <title-cell
           :sub-content="$t('lang.projectExplorer.detail.titleRiskSub')"
-          :url="riskLogo"
+          icon="iconRiskLogoEagle"
+          svg
           :name="$t('lang.projectExplorer.detail.titleRisk')">
         </title-cell>
       </div>
@@ -512,14 +515,17 @@
     </div>
     <div v-show="showSecurityList && hasTokenAddress" class="project-detail-public-info">
       <div class="project-detail--header">
-        <title-cell :url="security" :name="$t('lang.projectExplorer.detail.titleInfo')">
+        <title-cell :name="$t('lang.projectExplorer.security.title')" svg icon="iconSecurityEagle">
         </title-cell>
       </div>
       <security-list :param="projectId" @show="handleShowSecurityList"></security-list>
     </div>
     <div v-if="securityEventList.length > 0 && hasTokenAddress" class="project-detail-security">
       <div class="project-detail--header">
-        <title-cell :url="security2" :name="$t('lang.projectExplorer.detail.titleSecurity')">
+        <title-cell
+          icon="iconSecurity2Eagle"
+          svg
+          :name="$t('lang.projectExplorer.detail.titleSecurity')">
         </title-cell>
       </div>
       <security-info-card :data-list="securityEventList"></security-info-card>
@@ -566,11 +572,8 @@
   import UpDown from '../../../components/common-components/up-down/up-down.vue'
   import BarCell from '../../../components/common-components/bar-cell/bar-cell.vue'
   import { webURL } from '../../../enums/link'
-  import decentLogo from '../../../assets/image/pc/decent-logo.png'
-  import marketLogo from '../../../assets/image/pc/market-logo.png'
+
   import riskLogo from '../../../assets/image/pc/risk-logo.png'
-  import security from '../../../assets/image/pc/security.png'
-  import security2 from '../../../assets/image/pc/security2.png'
   import ContactBar from '../../../components/common-components/contact-bar/contact-bar.vue'
   import ProjectNameCell from '../../../components/common-components/project-name-cell/project-name-cell.vue'
   import { setPrevUrl } from '../../../utils/request'
@@ -975,11 +978,8 @@
         twitterAnalysisData,
         onChainData,
         webURL,
-        decentLogo,
-        marketLogo,
+
         riskLogo,
-        security,
-        security2,
         whalePieData,
         handleContractSelect,
         hasTokenAddress,
