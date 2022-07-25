@@ -223,7 +223,11 @@
                     const text: string = descri.text
                     const sIndex: number = text.search('%s')
                     const textArr: Array<string> = text.split('')
-                    textArr.splice(sIndex, 2, spl.tag_name ? spl.tag_name : spl.address)
+                    textArr.splice(
+                      sIndex,
+                      2,
+                      spl.tag_name ? spl.tag_name : `${spl.address.substring(0, 6)}...`
+                    )
                     descri.text = textArr.join('')
                     val.descript = descri.text
                   })
