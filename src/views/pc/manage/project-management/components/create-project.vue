@@ -22,6 +22,7 @@
             <!--      ****** base information *********        -->
             <base-form
               v-model="formBasic"
+              :type="dialogType"
               :ver-tip-name="verTipName"
               :ver-tip-keyword="verTipKeyword"
               :ver-tip-chain="verTipChain"

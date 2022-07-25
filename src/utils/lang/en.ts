@@ -340,7 +340,7 @@ export default {
     form: {
       labelAddr: 'Address',
       labelRemark: 'Remark',
-      filter: 'Filter:  Amount >',
+      filter: 'Amount >',
     },
   },
   operationalStatistics: {

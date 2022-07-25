@@ -2,7 +2,7 @@
 <template>
   <h2 class="create--label">1.{{ $t('lang.createProject.label1') }}</h2>
   <!--      ***************        -->
-  <el-form-item :label="$t('lang.createProject.top') + ':'">
+  <el-form-item v-if="type === 3" :label="$t('lang.createProject.top') + ':'">
     <be-switch v-model="modelValueInner.top_flag" custom-class="create-proj--top"> </be-switch>
   </el-form-item>
   <!--      ***************        -->
@@ -77,6 +77,10 @@
       verTipToken: {
         type: String,
         default: '',
+      },
+      type: {
+        type: Number,
+        default: 3,
       },
     },
     emits: ['update:modelValue'],

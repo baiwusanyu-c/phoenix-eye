@@ -30,6 +30,7 @@
                 v-model.trim="form.amount"
                 :disabled="type === 'edit'"
                 class="form--link__input"
+                @blur="limitNum"
                 @input="limitInput">
                 <template #prefix>
                   <span style="margin-right: 10px">$</span>
@@ -225,9 +226,16 @@
           })
       }
       const limitInput = (): void => {
-        form.value.amount = (form.value.amount as string).replace(/[^0-9]/g, '')
+        form.value.amount = (form.value.amount as string).replace(/[^\d^.]+/g, '')
+      }
+      const limitNum = (): void => {
+        const amount = form.value.amount as string
+        if (amount[amount.length - 1] === '.') {
+          form.value.amount = amount.substr(0, amount.length - 1)
+        }
       }
       return {
+        limitNum,
         limitInput,
         handleConfirm,
         form,
@@ -278,7 +286,7 @@
     .feed-back--star {
       position: absolute;
       top: 7px;
-      left: -15px;
+      left: -84px;
     }
   }
 
