@@ -256,10 +256,10 @@
                   >
                   <el-tooltip placement="top">
                     <template #content>
-                      The Fully-diluted market cap (FDMC) value of a cryptocurrency's total supply.
+                      The Fully diluted market cap (FDMC) value of a cryptocurrency's total supply.
                       <br />
-                      Fully-diluted market cap (FDMC) = price x total supply. if it is
-                      available,shows N/A.
+                      Fully diluted market cap (FDMC) = price x total supply. if it is not
+                      available,shows /.
                       <br />
                     </template>
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
