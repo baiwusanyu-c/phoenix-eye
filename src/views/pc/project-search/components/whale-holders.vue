@@ -180,7 +180,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="percentage" width="320" align="center">
+        <el-table-column prop="percentage" align="center">
           <template #header>
             <span class="table-head">{{
               $t('lang.projectExplorer.detail.tableHeader1.proportion')
