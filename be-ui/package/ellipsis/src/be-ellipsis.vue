@@ -72,14 +72,18 @@
           const elpNumCenter = props.elpNum / 2
           const lenCenter = props.text?.length / 2
           const subStrHead = props.text?.substr(0, lenCenter - elpNumCenter)
-          const subStrFoot = props.text?.substr(lenCenter + elpNumCenter, props.text.length)
+          const subStrFoot = props.text?.substr(lenCenter + elpNumCenter, props.text?.length)
           state.textInner = `${subStrHead}...${subStrFoot}`
         }
-        if (props.placement === 'right')
-          state.textInner = `...${props.text.substring(props.elpNum, props.text.length)}`
+        if (props.placement === 'right') {
+          state.textInner = `...${props.text?.substring(
+            props.elpNum as number,
+            props.text?.length
+          )}`
+        }
       }
       watchEffect(() => {
-        state.textCache = props.text
+        state.textCache = props.text as string
         handleText()
       })
       /**
