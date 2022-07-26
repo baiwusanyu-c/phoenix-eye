@@ -224,11 +224,10 @@
                   >
                   <el-tooltip placement="top">
                     <template #content>
-                      {{ $t('lang.projectExplorer.detail.descr4') }}
+                      The market cap value of a cryptocurrency's circulating supply.
                       <br />
-                      {{ $t('lang.projectExplorer.detail.descr5') }}
+                      Market Cap = Token Price x Circulating Supply.
                       <br />
-                      {{ $t('lang.projectExplorer.detail.descr6') }}
                     </template>
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
@@ -257,11 +256,11 @@
                   >
                   <el-tooltip placement="top">
                     <template #content>
-                      {{ $t('lang.projectExplorer.detail.descr4') }}
+                      The Fully-diluted market cap (FDMC) value of a cryptocurrency's total supply.
                       <br />
-                      {{ $t('lang.projectExplorer.detail.descr5') }}
+                      Fully-diluted market cap (FDMC) = price x total supply. if it is
+                      available,shows N/A.
                       <br />
-                      {{ $t('lang.projectExplorer.detail.descr6') }}
                     </template>
                     <be-icon icon="iconHelpEagle" style="margin-left: 6px"></be-icon>
                   </el-tooltip>
