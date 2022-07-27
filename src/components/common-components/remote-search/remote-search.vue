@@ -12,6 +12,7 @@
       <be-input
         :id="`remote-search-input_${uid}`"
         v-model="searchParamsInput"
+        autocomplete="off"
         tabindex="0"
         custom-class="remote-search-input"
         size="medium"

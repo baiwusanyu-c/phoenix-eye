@@ -81,6 +81,7 @@
               chart.value.forceFit()
             })
             chart.value.data(pieData)
+            chart.value.annotation().option[0].content = props.content
             chart.value.render(isUpdate)
             return
           }
@@ -158,28 +159,7 @@
               },
             })
           if (props.content) {
-            chart.value
-              .annotation()
-              .text({
-                position: ['50%', '50%'],
-                content: props.content,
-                style: {
-                  fontSize: 26,
-                  fill: '#18304E',
-                  textAlign: 'center',
-                },
-                offsetY: -10,
-              })
-              .text({
-                position: ['50%', '50%'],
-                content: 'Total supply',
-                style: {
-                  fontSize: 12,
-                  fill: '#8A96A3',
-                  textAlign: 'center',
-                },
-                offsetY: 20,
-              })
+            setContent()
           }
 
           chart.value.interaction('element-active')
@@ -188,6 +168,30 @@
             chart.value.forceFit()
           })
         }
+      }
+      const setContent = () => {
+        chart.value
+          .annotation()
+          .text({
+            position: ['50%', '50%'],
+            content: props.content,
+            style: {
+              fontSize: 26,
+              fill: '#18304E',
+              textAlign: 'center',
+            },
+            offsetY: -10,
+          })
+          .text({
+            position: ['50%', '50%'],
+            content: 'Total supply',
+            style: {
+              fontSize: 12,
+              fill: '#8A96A3',
+              textAlign: 'center',
+            },
+            offsetY: 20,
+          })
       }
       return {
         simulateToFixed,
