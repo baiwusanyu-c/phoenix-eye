@@ -39,7 +39,7 @@
           icon="iconLargeOutflow2"></icon-cell>
         <span class="descr-text"
           >{{ descriptionTemplate['Large Outflow'].text }} &nbsp;
-          <!--          <ellipsis-copy
+          <ellipsis-copy
             :is-show-copy-btn="false"
             custom-class="detail-copy"
             :tooltip-txt="descriptionTemplate['Large Outflow'].address"
@@ -55,7 +55,7 @@
                 {{ ` ${textScope.item}` }}</a
               >
             </template>
-          </ellipsis-copy>-->
+          </ellipsis-copy>
         </span>
       </p>
       <p v-if="descriptionTemplate['Flash Loan']" class="descr">
