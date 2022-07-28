@@ -81,7 +81,8 @@
               chart.value.forceFit()
             })
             chart.value.data(pieData)
-            chart.value.annotation().option[0].content = props.content
+            chart.value.annotation().option[0] &&
+              (chart.value.annotation().option[0].content = props.content)
             chart.value.render(isUpdate)
             return
           }
