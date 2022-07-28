@@ -598,6 +598,17 @@
               if (!res.data) {
                 message('warning', `${t('lang.emptyData')}`)
               }
+              let isUnAllEmpty = false
+              for (const resKey in res.data) {
+                if (res.data[resKey]) {
+                  isUnAllEmpty = true
+                  break
+                }
+              }
+              if (!isUnAllEmpty) {
+                message('warning', `${t('lang.emptyData')}`)
+                return
+              }
               websiteForm.value = res.data
             } else {
               catchErr(res)
