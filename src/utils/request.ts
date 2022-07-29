@@ -8,6 +8,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { useEventBus } from '@vueuse/core'
 import configUrl from '../enums/config'
+import { WHITE_LIST } from '../router/router-dict'
 import { getSession, getStore, message, removeSession, removeStore, setSession } from './common'
 import type { AxiosResponse } from 'axios'
 export const setHeader = (): string => {
@@ -94,6 +95,7 @@ service.interceptors.response.use(
           const err = getStore('language') === 'en_US' ? 'Login Expired' : '登录过期'
           message('error', err)
           setSession('loginExpiredNum', 'true')
+
           if (
             location.pathname.indexOf('/addressMonitorDetail') >= 0 ||
             location.pathname === '/addressMonitor'
@@ -105,9 +107,11 @@ service.interceptors.response.use(
           }
         }
         setTimeout(() => {
-          window.location.href = '/ProjectSearch'
+          if (!WHITE_LIST.includes(window.location.pathname)) {
+            window.location.href = '/ProjectSearch'
+          }
         }, 1500)
-        return null
+        return 'expired'
       }
       return Promise.reject(new Error(res.msg || res.message || 'Error'))
     } else {

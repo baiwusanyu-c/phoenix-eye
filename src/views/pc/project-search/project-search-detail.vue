@@ -817,6 +817,11 @@
         }
         createSubscribe(params)
           .then((res: any) => {
+            if (res === 'expired') {
+              const busLogin = useEventBus<string>('openLogin')
+              busLogin.emit()
+              return
+            }
             if (res && res.success) {
               msgBox(
                 t('lang.subscribe.titleSuccess'),
@@ -846,6 +851,11 @@
         }
         deleteSubscribe(params)
           .then((res: any) => {
+            if (res === 'expired') {
+              const busLogin = useEventBus<string>('openLogin')
+              busLogin.emit()
+              return
+            }
             if (res.code === '0000') {
               msgBox(t('lang.subscribe.titleUn'), t('lang.subscribe.unSubscribes'), 'subscribe')
               baseInfo.value.is_subscribe = !baseInfo.value.is_subscribe
