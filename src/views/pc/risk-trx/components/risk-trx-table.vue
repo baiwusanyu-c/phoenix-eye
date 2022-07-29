@@ -21,7 +21,7 @@
             custom-class="justify-start"></platform-cell>
         </template>
       </el-table-column>
-      <el-table-column prop="tx_hash" width="180" align="left">
+      <el-table-column prop="tx_hash" width="200" align="left">
         <template #header>
           <span class="table-head">{{ $t('lang.riskConfig.tableHeader.txHash') }}</span>
         </template>
@@ -29,7 +29,7 @@
           <ellipsis-copy
             custom-class="risk-table-inner--addr"
             :target-str="scope.row.tx_hash"
-            :is-show-copy-btn="false"
+            :is-show-copy-btn="true"
             font-length="6"
             end-length="6">
           </ellipsis-copy>
@@ -85,7 +85,7 @@
           <span class="table-head">{{ $t('lang.riskConfig.description') }}</span>
         </template>
         <template #default="scope">
-          <span class="ellipsis-text">{{ scope.row.descript }}</span>
+          <span class="ellipsis-text" style="width: 260px">{{ scope.row.descript }}</span>
         </template>
       </el-table-column>
       <el-table-column width="180" prop="tx_time" align="left">
@@ -326,7 +326,7 @@
       margin: 5px;
     }
     .risk-table-inner--addr {
-      width: 120px;
+      width: 160px;
       min-width: 100px !important;
     }
   }

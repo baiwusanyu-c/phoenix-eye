@@ -305,6 +305,7 @@
   margin-right: 10px;
   color: $mainColor3;
   border: 1px solid $mainColor16-025;
+  cursor: default !important;
   &:hover{
     color: $mainColor3;
     background-color: $mainColor16-025;

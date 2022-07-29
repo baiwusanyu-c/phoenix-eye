@@ -1458,6 +1458,12 @@
         width: 92%;
       }
     }
+    .project-search-detail
+      .project-detail-base--body
+      .user-active-market
+      .user-active-market--title {
+      font-size: 12px;
+    }
   }
   /* 150% 适配 */
   @media screen and (min-width: 1280px) and (max-width: 1326px) {
@@ -1471,6 +1477,12 @@
       .project-detail-market {
         width: 92%;
       }
+    }
+    .project-search-detail
+      .project-detail-base--body
+      .user-active-market
+      .user-active-market--title {
+      font-size: 12px;
     }
   }
   /*

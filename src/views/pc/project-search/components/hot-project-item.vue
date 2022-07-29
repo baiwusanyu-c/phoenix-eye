@@ -9,7 +9,7 @@
     <template #empty>
       <empty-data content="lang.noRisk"></empty-data>
     </template>
-    <el-table-column align="center" width="48">
+    <el-table-column align="center" width="40">
       <template #header></template>
       <template #default="scope">
         <span class="tx24">{{ scope.row.index }}</span>
@@ -23,7 +23,7 @@
           :name="scope.row.project_name"
           :url="scope.row.logo_url"
           :font-len="16"
-          width="180"
+          width="160"
           :ellipsis-len="20">
         </project-name-cell>
       </template>
@@ -169,6 +169,27 @@
     }
     .el-table__header-wrapper {
       display: none;
+    }
+  }
+  /* 移动端预留 适配 */
+  @media screen and (max-width: 1280px) {
+    .hot-project {
+      .el-table .cell {
+        padding: 0 6px 0 0;
+      }
+      .tx24 {
+        font-size: 12px;
+      }
+    }
+  }
+  @media screen and (min-width: 1280px) and (max-width: 1326px) {
+    .hot-project {
+      .el-table .cell {
+        padding: 0 6px 0 0;
+      }
+      .tx24 {
+        font-size: 12px;
+      }
     }
   }
 </style>

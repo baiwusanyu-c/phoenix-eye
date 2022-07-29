@@ -48,17 +48,19 @@
             <template #empty>
               <empty-data></empty-data>
             </template>
-            <el-table-column prop="address" width="60">
+            <el-table-column prop="address" width="50">
               <template #header>
                 <span class="table-head"></span>
               </template>
               <template #default="scope">
-                <be-icon
-                  v-if="scope.row.percentage > 20"
-                  width="32"
-                  height="32"
-                  icon="iconJing"></be-icon>
-                <span v-else></span>
+                <div class="flex justify-center items-center">
+                  <be-icon
+                    v-if="scope.row.percentage > 20"
+                    width="32"
+                    height="32"
+                    icon="iconJing"></be-icon>
+                  <span v-else></span>
+                </div>
               </template>
             </el-table-column>
             <el-table-column prop="address" width="140">
@@ -100,7 +102,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="quantity" width="170">
+            <el-table-column prop="quantity" width="160">
               <template #header>
                 <span class="table-head">{{
                   $t('lang.projectExplorer.detail.tableHeader1.amount')

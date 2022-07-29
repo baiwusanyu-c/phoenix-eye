@@ -40,7 +40,6 @@
         <span class="descr-text"
           >{{ descriptionTemplate['Large Outflow'].text }} &nbsp;
           <ellipsis-copy
-            :is-show-copy-btn="false"
             custom-class="detail-copy"
             :tooltip-txt="descriptionTemplate['Large Outflow'].address"
             :target-str="descriptionTemplate['Large Outflow'].content"
@@ -70,7 +69,6 @@
           >{{ descriptionTemplate['Flash Loan'].text }} &nbsp;
           <ellipsis-copy
             custom-class="detail-copy"
-            :is-show-copy-btn="false"
             :tooltip-txt="descriptionTemplate['Flash Loan'].address"
             :target-str="descriptionTemplate['Flash Loan'].content"
             :is-ellipsis="descriptionTemplate['Flash Loan'].content.length > 20 ? true : false"
@@ -125,7 +123,6 @@
           <ellipsis-copy
             v-if="descriptionTemplate['Privileged Operation'].type === 2"
             custom-class="detail-copy"
-            :is-show-copy-btn="false"
             :tooltip-txt="descriptionTemplate['Privileged Operation'].addressOne"
             :target-str="descriptionTemplate['Privileged Operation'].contentOne"
             :is-ellipsis="
@@ -151,7 +148,6 @@
           <ellipsis-copy
             v-if="descriptionTemplate['Privileged Operation'].type === 2"
             custom-class="detail-copy"
-            :is-show-copy-btn="false"
             :tooltip-txt="descriptionTemplate['Privileged Operation'].addressSec"
             :target-str="descriptionTemplate['Privileged Operation'].contentSec"
             :is-ellipsis="
@@ -211,7 +207,6 @@
           &nbsp;{{ descriptionTemplate['Exploiter On The Move'].text }}&nbsp;
           <ellipsis-copy
             custom-class="detail-copy"
-            :is-show-copy-btn="false"
             :tooltip-txt="descriptionTemplate['Exploiter On The Move'].addressSec"
             :target-str="descriptionTemplate['Exploiter On The Move'].contentSec"
             :is-ellipsis="
@@ -267,7 +262,6 @@
                   :target-str="scope.row.address_tag"
                   :copy-content="scope.row.address"
                   :tooltip-txt="scope.row.address"
-                  :is-show-copy-btn="false"
                   empty-text="/"
                   :is-ellipsis="false"
                   @click="openWeb(scope.row.address, 'addr', baseInfo.platform)">
@@ -286,7 +280,6 @@
                   v-if="!scope.row.address_tag"
                   :target-str="scope.row.address"
                   empty-text="/"
-                  :is-show-copy-btn="false"
                   :is-ellipsis="isEllipsis || scope.row.address.length >= 45"
                   styles="font-weight: bold;color:#409EFF"
                   font-length="8"
@@ -316,7 +309,6 @@
               <ellipsis-copy
                 :target-str="scope.row.token_name"
                 :is-ellipsis="scope.row.token_name.length > 25 ? true : false"
-                :is-show-copy-btn="true"
                 :copy-content="scope.row.contract_address"
                 :tooltip-txt="scope.row.contract_address"
                 empty-text="/"
